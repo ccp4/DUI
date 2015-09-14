@@ -89,8 +89,11 @@ subprocess.Popen([jsrview, os.path.join(dir_test, "index.html")])
 # ****************************************************************
 
 if (delay1>0):  sleep ( delay1 )
-print rvapi_add_header ( "RVAPI Demo Page 1" ),
+print rvapi_add_header ( "DUI Demo Page 1" ),
 #  print rvapi_add_tab    ( "tab1","Report"  ,True  ),
+#rvapi_add_tab("tab 1", "another tsab", False)
+
+
 print rvapi_add_tab    ( "tab2","Log file",False ),
 print rvapi_insert_tab ( "tab1","Report","tab2",True  ),
 
