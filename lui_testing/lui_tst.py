@@ -101,9 +101,9 @@ print rvapi_flush()
 ##################################################################################
 
 print rvapi_add_tree_widget ( "panel_container","","sec1",0,0,1,1 ),
-print rvapi_add_panel      ( "tree_panel_1","panel_container",0,0,1,1 ),
-print rvapi_add_text      ( "Text inside panel 1","tree_panel_1",0,0,1,1 ),
-print rvapi_set_tree_node ( "panel_container","tree_panel_1","Graph 1","auto","" ),
-print rvapi_add_panel     ( "tree_panel_2","panel_container",0,0,1,1 ),
-print rvapi_add_text      ( "Another text in another panel","tree_panel_2",0,0,1,1 ),
-print rvapi_set_tree_node ( "panel_container","tree_panel_2","Text 2","auto","" ),
+print rvapi_add_panel       ( "tree_panel_1","panel_container",0,0,1,1 ),
+print rvapi_add_text        ( "Text inside panel 1","tree_panel_1",0,0,1,1 ),
+print rvapi_set_tree_node   ( "panel_container","tree_panel_1","tree switch 1","auto","" ),
+print rvapi_add_panel       ( "tree_panel_2","panel_container",0,0,1,1 ),
+print rvapi_add_text        ( "Another text in another panel","tree_panel_2",0,0,1,1 ),
+print rvapi_set_tree_node   ( "panel_container","tree_panel_2","tree switch 2","auto","" ),
