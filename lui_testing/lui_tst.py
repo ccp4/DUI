@@ -6,20 +6,14 @@ if not "CCP4" in os.environ:
 
 ccp4 = os.environ["CCP4"]
 import pyrvapi
-#for item in dir(pyrvapi):
-#   print item
-
-#print pyrvapi.RVAPI_MODE_Silent, 'pyrvapi.RVAPI_MODE_Silent'
-#print pyrvapi.RVAPI_MODE_Html, 'pyrvapi.RVAPI_MODE_Html'
-#print pyrvapi.RVAPI_LAYOUT_Header, 'pyrvapi.RVAPI_LAYOUT_Header'
-#print pyrvapi.RVAPI_LAYOUT_Toolbar, 'pyrvapi.RVAPI_LAYOUT_Toolbar'
-#print pyrvapi.RVAPI_LAYOUT_Tabs, 'pyrvapi.RVAPI_LAYOUT_Tabs'
-#print pyrvapi.RVAPI_LAYOUT_Full, 'pyrvapi.RVAPI_LAYOUT_Full'
 
 from pyrvapi import *
-from math import cos, sin
-from time import sleep
 import subprocess
+
+
+#from math import cos, sin
+from time import sleep
+
 
 def makeLogFile(log, nrecords):
    lst = [log]
@@ -77,10 +71,39 @@ else:
    os.mkdir(dir_test)
 
 
-delay1 = 1.0
-delay2 = 1.0
-delay3 = 1.0
+delay1 = 2.0
+
 lastLogPos = 0
 print rvapi_init_document ( "TestRun",dir_test,"RVAPI Demo 1",1,7,share_jsrview,None,None,None,None ),
 subprocess.Popen([jsrview, os.path.join(dir_test, "index.html")])
 
+# Starting to test new code here
+#______________________________________________________________________________________________________
+
+rvapi_add_header ( "DUI Demo Page 1" )
+
+print rvapi_add_tab    ( "single_tab","DIALS U. I.",True ),
+
+#if (delay1>0):  sleep ( delay1 )
+print rvapi_add_section  ( "sec1","Control"   ,"single_tab",0,0,1,1,True ),
+print rvapi_add_section1 ( "single_tab/sec2","Logs or CLI outputs",1,0,1,1,True ),
+print rvapi_flush(),
+
+
+print rvapi_add_text ( "To run in CLI","sec1",0,0,1,1 ),
+print rvapi_add_text ( "some log here \n<br>" "or\n<br>" " command line output","sec2",0,0,1,1 ),
+
+print rvapi_add_line_edit ( "CLI_input", "command line input", "Empty for now", 40, "sec1",1,0,2,40)
+print rvapi_add_button ( "GO_button", "Go", "ls", "prv_01", False , "sec1",2,0,5,40);
+
+print rvapi_flush()
+
+##################################################################################
+
+print rvapi_add_tree_widget ( "panel_container","","sec1",0,0,1,1 ),
+print rvapi_add_panel      ( "tree_panel_1","panel_container",0,0,1,1 ),
+print rvapi_add_text      ( "Text inside panel 1","tree_panel_1",0,0,1,1 ),
+print rvapi_set_tree_node ( "panel_container","tree_panel_1","Graph 1","auto","" ),
+print rvapi_add_panel     ( "tree_panel_2","panel_container",0,0,1,1 ),
+print rvapi_add_text      ( "Another text in another panel","tree_panel_2",0,0,1,1 ),
+print rvapi_set_tree_node ( "panel_container","tree_panel_2","Text 2","auto","" ),
