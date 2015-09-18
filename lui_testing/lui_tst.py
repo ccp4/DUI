@@ -71,11 +71,15 @@ else:
    os.mkdir(dir_test)
 
 
-delay1 = 2.0
+delay1 = 20.0
 
 lastLogPos = 0
 print rvapi_init_document ( "TestRun",dir_test,"RVAPI Demo 1",1,7,share_jsrview,None,None,None,None ),
 subprocess.Popen([jsrview, os.path.join(dir_test, "index.html")])
+
+
+def prv():
+  print "Yes"
 
 # Starting to test new code here
 #______________________________________________________________________________________________________
@@ -84,19 +88,16 @@ rvapi_add_header ( "DUI Demo Page 1" )
 
 print rvapi_add_tab    ( "single_tab","DIALS U. I.",True ),
 
-#if (delay1>0):  sleep ( delay1 )
 print rvapi_add_section  ( "sec1","Control"   ,"single_tab",0,0,1,1,True ),
 print rvapi_add_section1 ( "single_tab/sec2","Logs or CLI outputs",1,0,1,1,True ),
-print rvapi_flush(),
-
 
 print rvapi_add_text ( "To run in CLI","sec1",0,0,1,1 ),
 print rvapi_add_text ( "some log here \n<br>" "or\n<br>" " command line output","sec2",0,0,1,1 ),
 
 print rvapi_add_line_edit ( "CLI_input", "command line input", "Empty for now", 40, "sec1",1,0,2,40)
-print rvapi_add_button ( "GO_button", "Go", "ls", "prv_01", False , "sec1",2,0,5,40);
+print rvapi_add_button ( "GO_button", "Go", RVAPI_BUTTON_Function, "prv", False , "sec1",2,0,5,40);
 
-print rvapi_flush()
+
 
 ##################################################################################
 
@@ -107,3 +108,6 @@ print rvapi_set_tree_node   ( "panel_container","tree_panel_1","tree switch 1","
 print rvapi_add_panel       ( "tree_panel_2","panel_container",0,0,1,1 ),
 print rvapi_add_text        ( "Another text in another panel","tree_panel_2",0,0,1,1 ),
 print rvapi_set_tree_node   ( "panel_container","tree_panel_2","tree switch 2","auto","" ),
+print rvapi_flush()
+
+if (delay1>0):  sleep ( delay1 )
