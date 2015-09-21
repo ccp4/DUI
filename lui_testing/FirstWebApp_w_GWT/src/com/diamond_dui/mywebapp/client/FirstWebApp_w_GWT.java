@@ -44,7 +44,7 @@ public class FirstWebApp_w_GWT implements EntryPoint {
     final Label errorLabel = new Label();
 
     // We can add style names to widgets
-    sendButton.addStyleName("sendButton");
+    //sendButton.addStyleName("sendButton");
 
     // Add the nameField and sendButton to the RootPanel
     // Use RootPanel.get() to get the entire body element
@@ -52,14 +52,8 @@ public class FirstWebApp_w_GWT implements EntryPoint {
     RootPanel.get("sendButtonContainer").add(sendButton);
     RootPanel.get("errorLabelContainer").add(errorLabel);
 
-    // Focus the cursor on the name field when the app loads
-    nameField.setFocus(true);
     nameField.selectAll();
 
-    // Create the popup dialog box
-    final DialogBox dialogBox = new DialogBox();
-    dialogBox.setText("Remote Procedure Call");
-    dialogBox.setAnimationEnabled(true);
     final Button closeButton = new Button("Close");
     // We can set the id of a widget by accessing its Element
     closeButton.getElement().setId("closeButton");
@@ -73,12 +67,10 @@ public class FirstWebApp_w_GWT implements EntryPoint {
     dialogVPanel.add(serverResponseLabel);
     dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
     dialogVPanel.add(closeButton);
-    dialogBox.setWidget(dialogVPanel);
 
     // Add a handler to close the DialogBox
     closeButton.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
-        dialogBox.hide();
         sendButton.setEnabled(true);
         sendButton.setFocus(true);
       }
@@ -113,26 +105,21 @@ public class FirstWebApp_w_GWT implements EntryPoint {
           errorLabel.setText("Please enter at least four characters");
           return;
         }
-        
+
         // Then, we send the input to the server.
         sendButton.setEnabled(false);
         textToServerLabel.setText(textToServer);
         serverResponseLabel.setText("");
         greetingService.greetServer(textToServer, new AsyncCallback<String>() {
           public void onFailure(Throwable caught) {
-            // Show the RPC error message to the user
-            dialogBox.setText("Remote Procedure Call - Failure");
             serverResponseLabel.addStyleName("serverResponseLabelError");
             serverResponseLabel.setHTML(SERVER_ERROR);
-            dialogBox.center();
             closeButton.setFocus(true);
           }
 
           public void onSuccess(String result) {
-            dialogBox.setText("Remote Procedure Call");
             serverResponseLabel.removeStyleName("serverResponseLabelError");
             serverResponseLabel.setHTML(result);
-            dialogBox.center();
             closeButton.setFocus(true);
           }
         });
