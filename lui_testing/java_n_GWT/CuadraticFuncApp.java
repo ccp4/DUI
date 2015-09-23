@@ -64,8 +64,8 @@ class cuadratic_function {
 class MainApp {
     public static void main(String[] args) {
         System.out.println("Cuadratic function");
-        cuadratic_function func_1 = new cuadratic_function(2, -3, 1);
-        //cuadratic_function func_1 = new cuadratic_function(1, 2, 3);
+        //cuadratic_function func_1 = new cuadratic_function(2, -3, 1);
+        cuadratic_function func_1 = new cuadratic_function(1, 2, 3);
         System.out.println("D(call)  = " + func_1.get_D());
         double[] main_x1_x2;
         int nr = 0;
@@ -74,7 +74,7 @@ class MainApp {
         System.out.println("x1, x2  = " + main_x1_x2[0] +
                            " ,  " + main_x1_x2[1]);
 
-        //func_1.print_result();
+        func_1.print_result();
 
     }
 }

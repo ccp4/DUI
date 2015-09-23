@@ -20,7 +20,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
           "Name must be at least 4 characters long");
     }
     // Here is the code that will run from the server when the name is ok
-    System.out.println("Test from server 00001");
+    System.out.println("Here from server ");
 
     String serverInfo = getServletContext().getServerInfo();
     String userAgent = getThreadLocalRequest().getHeader("User-Agent");

@@ -1,5 +1,5 @@
 rm *.class
 echo compiling
-javac CuadraticFuncApp.java
+javac CLI_tst.java
 echo running
-java MainApp
+java CLI_tst
