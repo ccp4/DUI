@@ -4,6 +4,8 @@ import com.diamond_dui.mywebapp.client.GreetingService;
 import com.diamond_dui.mywebapp.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import java.io.*;
+
 /**
  * The server-side implementation of the RPC service.
  */
@@ -17,10 +19,43 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
       // If the input is not valid, throw an IllegalArgumentException back to
       // the client.
       throw new IllegalArgumentException(
-          "Name must be at least 4 characters long");
+          "command must be at least 2 characters long");
     }
-    // Here is the code that will run from the server when the name is ok
+    ////////////////////////////////////////////////////
+    // Here is the code that will run from the server  /
+    ////////////////////////////////////////////////////
+
+
+
     System.out.println("Here from server ");
+    System.out.println("Entered " + input);
+
+
+
+
+    String s = null;
+    try {
+
+      // using the Runtime exec method:
+      Process p = Runtime.getRuntime().exec(input);
+
+      BufferedReader stdInput = new BufferedReader(new
+           InputStreamReader(p.getInputStream()));
+
+      // read the output from the command
+      System.out.println("Running CLI:\n");
+      while ((s = stdInput.readLine()) != null) {
+          System.out.println(s);
+      }
+
+      //System.exit(0);
+    }
+    catch (IOException e) {
+      System.out.println("exception happened");
+      //System.exit(-1);
+    }
+
+
 
     String serverInfo = getServletContext().getServerInfo();
     String userAgent = getThreadLocalRequest().getHeader("User-Agent");

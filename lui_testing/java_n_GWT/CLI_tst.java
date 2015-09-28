@@ -8,7 +8,7 @@ class CLI_tst {
     try {
 
       // using the Runtime exec method:
-      Process p = Runtime.getRuntime().exec("echo dials.import");
+      Process p = Runtime.getRuntime().exec("dials.import");
 
       BufferedReader stdInput = new BufferedReader(new
            InputStreamReader(p.getInputStream()));

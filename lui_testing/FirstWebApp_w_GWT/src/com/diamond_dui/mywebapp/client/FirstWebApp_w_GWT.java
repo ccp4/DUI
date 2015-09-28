@@ -38,7 +38,7 @@ public class FirstWebApp_w_GWT implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    final Button sendButton = new Button("Send");
+    final Button sendButton = new Button("Go");
     final TextBox nameField = new TextBox();
     nameField.setText("GWT User");
     final Label errorLabel = new Label();
@@ -90,10 +90,13 @@ public class FirstWebApp_w_GWT implements EntryPoint {
         // First, we validate the input.
         errorLabel.setText("");
         String textToServer = nameField.getText();
+
+
         if (!FieldVerifier.isValidName(textToServer)) {
-          errorLabel.setText("Please enter at least four characters");
+          errorLabel.setText("To short command line");
           return;
         }
+
 
         // Then, we send the input to the server.
         sendButton.setEnabled(false);
