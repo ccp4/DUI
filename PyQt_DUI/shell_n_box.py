@@ -1,7 +1,6 @@
 from subprocess import call as shell_func
 import sys
-
-from PySide import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 
 class Example(QtGui.QWidget):
 
@@ -31,6 +30,10 @@ class Example(QtGui.QWidget):
         top_box = QtGui.QHBoxLayout()
         top_box.addLayout(vbox)
         top_box.addStretch(1)
+        pixmap = QtGui.QPixmap("../../../Downloads/dart-logo-400x400.png")
+        lbl = QtGui.QLabel(self)
+        lbl.setPixmap(pixmap)
+        top_box.addWidget(lbl)
 
         hbox = QtGui.QHBoxLayout()
         hbox.addWidget(self.lin_txt)
@@ -65,3 +68,4 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
+
