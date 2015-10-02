@@ -24,21 +24,23 @@ class Example(QtGui.QWidget):
         self.btn_go = QtGui.QPushButton('\n      Go      \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
-        print "Hi 01"
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.btn1)
         vbox.addWidget(self.btn2)
         vbox.addWidget(self.btn3)
-        print "Hi 02"
+        top_box = QtGui.QHBoxLayout()
+        top_box.addLayout(vbox)
+        top_box.addStretch(1)
+
         hbox = QtGui.QHBoxLayout()
         hbox.addWidget(self.lin_txt)
         hbox.addWidget(self.btn_go)
-        print "Hi 03"
+
         bg_box = QtGui.QVBoxLayout(self)
-        bg_box.addLayout(vbox)
+        bg_box.addLayout(top_box)
         bg_box.addStretch(1)
         bg_box.addLayout(hbox)
-        print "Hi 04"
+
         self.setGeometry(100, 200, 1150, 850)
         self.setLayout(bg_box)
         self.setWindowTitle('Shell dialog')
