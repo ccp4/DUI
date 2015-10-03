@@ -30,7 +30,7 @@ class Example(QtGui.QWidget):
         top_box = QtGui.QHBoxLayout()
         top_box.addLayout(vbox)
         top_box.addStretch(1)
-        pixmap = QtGui.QPixmap("../../../Downloads/dart-logo-400x400.png")
+        pixmap = QtGui.QPixmap("../../../Pictures/crouton_powered_01.jpg")
         lbl = QtGui.QLabel(self)
         lbl.setPixmap(pixmap)
         top_box.addWidget(lbl)
