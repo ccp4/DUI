@@ -29,16 +29,13 @@ class Example(QtGui.QWidget):
         vbox.addWidget(self.btn3)
         top_box = QtGui.QHBoxLayout()
         top_box.addLayout(vbox)
-        top_box.addStretch(1)
-
-
+        #top_box.addStretch(1)
 
         pixmap = QtGui.QPixmap("../../../Pictures/crouton_powered_01.jpg")
         lbl = QtGui.QLabel(self)
         lbl.setPixmap(pixmap)
 
         scrollArea = QtGui.QScrollArea()
-        #scrollArea.setBackgroundRole(QPalette.Dark)
         scrollArea.setWidget(lbl)
 
         top_box.addWidget(scrollArea)
@@ -49,7 +46,7 @@ class Example(QtGui.QWidget):
 
         bg_box = QtGui.QVBoxLayout(self)
         bg_box.addLayout(top_box)
-        bg_box.addStretch(1)
+        #bg_box.addStretch(1)
         bg_box.addLayout(hbox)
 
         self.setGeometry(100, 200, 1150, 850)
