@@ -1,8 +1,12 @@
 from subprocess import call as shell_func
 import sys
-from PyQt4 import QtGui, QtCore
 
-class Example(QtGui.QWidget):
+#from PyQt4 import QtGui, QtCore
+
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+
+class Example( QWidget):
 
     def __init__(self):
         super(Example, self).__init__()
@@ -10,41 +14,60 @@ class Example(QtGui.QWidget):
 
     def initUI(self):
 
-        self.btn1 = QtGui.QPushButton('\n\n     import    \n\n', self)
+        self.btn1 =  QPushButton('\n\n     import    \n\n', self)
         self.btn1.clicked.connect(self.B_clicked1)
 
-        self.btn2 = QtGui.QPushButton('\n\n find_spots \n\n', self)
+        self.btn2 =  QPushButton('\n\n find_spots \n\n', self)
         self.btn2.clicked.connect(self.B_clicked2)
 
-        self.btn3 = QtGui.QPushButton('\n\n    index     \n\n', self)
+        self.btn3 =  QPushButton('\n\n    index     \n\n', self)
         self.btn3.clicked.connect(self.B_clicked3)
 
-        self.lin_txt = QtGui.QLineEdit(self)
-        self.btn_go = QtGui.QPushButton('\n      Go      \n', self)
+        self.lin_txt =  QLineEdit(self)
+        self.btn_go =  QPushButton('\n      Go      \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
-        vbox = QtGui.QVBoxLayout()
+        vbox =  QVBoxLayout()
         vbox.addWidget(self.btn1)
         vbox.addWidget(self.btn2)
         vbox.addWidget(self.btn3)
-        top_box = QtGui.QHBoxLayout()
+        top_box =  QHBoxLayout()
         top_box.addLayout(vbox)
         #top_box.addStretch(1)
 
-        pixmap = QtGui.QPixmap("../../../Pictures/crouton_powered_01.jpg")
-        lbl = QtGui.QLabel(self)
+        pixmap =  QPixmap("../../../Pictures/crouton_powered_01.jpg")
+
+
+        '''
+        pixmap  =  QPixmap(QSize(400,400))
+        painter =  QPainter(pixmap)
+        gradient =  QLinearGradient(QPointF(pixmap.rect().topLeft()),
+                       QPointF(pixmap.rect().bottomLeft()))
+
+        gradient.setColorAt(0,    Qt.blue)
+        gradient.setColorAt(0.4,  Qt.cyan)
+        gradient.setColorAt(1,    Qt.green)
+
+        brush   =  QBrush(gradient)
+        painter.fillRect(  QRectF(0, 0, 400, 400), brush)
+        painter.drawText(  QRectF(0, 0, 400, 400),  Qt.AlignCenter,
+                  "This is an image created with QPainter and QPixmap")
+        '''
+
+
+        lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
 
-        scrollArea = QtGui.QScrollArea()
+        scrollArea =  QScrollArea()
         scrollArea.setWidget(lbl)
 
         top_box.addWidget(scrollArea)
 
-        hbox = QtGui.QHBoxLayout()
+        hbox =  QHBoxLayout()
         hbox.addWidget(self.lin_txt)
         hbox.addWidget(self.btn_go)
 
-        bg_box = QtGui.QVBoxLayout(self)
+        bg_box =  QVBoxLayout(self)
         bg_box.addLayout(top_box)
         #bg_box.addStretch(1)
         bg_box.addLayout(hbox)
@@ -70,7 +93,7 @@ class Example(QtGui.QWidget):
         self.lin_txt.setText(str(""))
 
 if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
+    app =  QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
 
