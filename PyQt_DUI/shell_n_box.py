@@ -37,22 +37,6 @@ class Example( QWidget):
 
         pixmap =  QPixmap("../../../Pictures/crouton_powered_01.jpg")
 
-        '''
-        pixmap  =  QPixmap(QSize(400,400))
-        painter =  QPainter(pixmap)
-        gradient =  QLinearGradient(QPointF(pixmap.rect().topLeft()),
-                       QPointF(pixmap.rect().bottomLeft()))
-
-        gradient.setColorAt(0,    Qt.blue)
-        gradient.setColorAt(0.4,  Qt.cyan)
-        gradient.setColorAt(1,    Qt.green)
-
-        brush   =  QBrush(gradient)
-        painter.fillRect(  QRectF(0, 0, 400, 400), brush)
-        painter.drawText(  QRectF(0, 0, 400, 400),  Qt.AlignCenter,
-                  "This is an image created with QPainter and QPixmap")
-        '''
-
         lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
 
@@ -88,6 +72,7 @@ class Example( QWidget):
     def B_go_clicked(self):
         shell_str = str(self.lin_txt.text())
         shell_func(shell_str, shell=True)
+        print"\n Ok \n"
         self.lin_txt.setText(str(""))
 
 if __name__ == '__main__':
