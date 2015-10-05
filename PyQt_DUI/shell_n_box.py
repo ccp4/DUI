@@ -37,7 +37,6 @@ class Example( QWidget):
 
         pixmap =  QPixmap("../../../Pictures/crouton_powered_01.jpg")
 
-
         '''
         pixmap  =  QPixmap(QSize(400,400))
         painter =  QPainter(pixmap)
@@ -53,7 +52,6 @@ class Example( QWidget):
         painter.drawText(  QRectF(0, 0, 400, 400),  Qt.AlignCenter,
                   "This is an image created with QPainter and QPixmap")
         '''
-
 
         lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
