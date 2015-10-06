@@ -16,8 +16,8 @@ class step(object):
 steps = []
 
 import_step = step()
-import_step.Bttlabel = "\n\n     import    \n\n"
-import_step.action = "dials.import"
+#import_step.Bttlabel = "\n\n     import    \n\n"
+#import_step.action = "dials.import"
 steps.append(import_step)
 
 find_step = step()
@@ -29,6 +29,21 @@ index_step = step()
 index_step.Bttlabel = "\n\n     index    \n\n"
 index_step.action = "dials.index"
 steps.append(index_step)
+
+refine_step = step()
+refine_step.Bttlabel = "\n\n     refine    \n\n"
+refine_step.action = "dials.refine"
+steps.append(refine_step)
+
+integrate_step = step()
+integrate_step.Bttlabel = "\n\n     integrate    \n\n"
+integrate_step.action = "dials.integrate"
+steps.append(integrate_step)
+
+export_step = step()
+export_step.Bttlabel = "\n\n     export    \n\n"
+export_step.action = "dials.export"
+steps.append(export_step)
 
 class Example( QWidget):
 
@@ -57,7 +72,7 @@ class Example( QWidget):
         top_box.addLayout(vbox)
         top_box.addStretch(1)
 
-        pixmap =  QPixmap("/home/dev/dui_code/trunk/PyQt_DUI/dart-logo.png")
+        pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
 
         lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
