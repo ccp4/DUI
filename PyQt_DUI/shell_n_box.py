@@ -6,6 +6,30 @@ import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+
+class step(object):
+    def __init__(self):
+        self.Bttlabel = "\n\n     import    \n\n"
+        self.action = "dials.import"
+
+
+steps = []
+
+import_step = step()
+import_step.Bttlabel = "\n\n     import    \n\n"
+import_step.action = "dials.import"
+steps.append(import_step)
+
+find_step = step()
+find_step.Bttlabel = "\n\n     find spots    \n\n"
+find_step.action = "dials.find_spots"
+steps.append(find_step)
+
+index_step = step()
+index_step.Bttlabel = "\n\n     index    \n\n"
+index_step.action = "dials.index"
+steps.append(index_step)
+
 class Example( QWidget):
 
     def __init__(self):
@@ -14,28 +38,26 @@ class Example( QWidget):
 
     def initUI(self):
 
-        self.btn1 =  QPushButton('\n\n     import    \n\n', self)
-        self.btn1.clicked.connect(self.B_clicked1)
+        self.btn_lst = []
+        for step in steps:
+            btn_tmp = QPushButton(step.Bttlabel, self)
+            btn_tmp.clicked.connect(self.B_clicked_any)
 
-        self.btn2 =  QPushButton('\n\n find_spots \n\n', self)
-        self.btn2.clicked.connect(self.B_clicked2)
-
-        self.btn3 =  QPushButton('\n\n    index     \n\n', self)
-        self.btn3.clicked.connect(self.B_clicked3)
+            self.btn_lst.append(btn_tmp)
 
         self.lin_txt =  QLineEdit(self)
         self.btn_go =  QPushButton('\n      Go      \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
         vbox =  QVBoxLayout()
-        vbox.addWidget(self.btn1)
-        vbox.addWidget(self.btn2)
-        vbox.addWidget(self.btn3)
+        for btn in self.btn_lst:
+            vbox.addWidget(btn)
+
         top_box =  QHBoxLayout()
         top_box.addLayout(vbox)
-        #top_box.addStretch(1)
+        top_box.addStretch(1)
 
-        pixmap =  QPixmap("../../../Pictures/crouton_powered_01.jpg")
+        pixmap =  QPixmap("/home/dev/dui_code/trunk/PyQt_DUI/dart-logo.png")
 
         lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
@@ -58,6 +80,14 @@ class Example( QWidget):
         self.setLayout(bg_box)
         self.setWindowTitle('Shell dialog')
         self.show()
+
+
+    def B_clicked_any(self):
+        btn_sender = self.sender()
+
+        for pos, btn  in enumerate(self.btn_lst):
+            if( btn == btn_sender ):
+                self.lin_txt.setText(str(steps[pos].action))
 
 
     def B_clicked1(self):
