@@ -8,6 +8,22 @@ class step(object):
         self.default_action = "dials.some_command"
 
 
+
+
+class EmptyInnerBox( QWidget):
+
+    def __init__(self):
+        super(EmptyInnerBox, self).__init__()
+        self.initUI()
+
+    def initUI(self):
+
+        self.scrollArea =  QScrollArea()
+        main_box =  QHBoxLayout()
+        main_box.addWidget(self.scrollArea)
+
+        self.setLayout(main_box)
+
 class InnerBox( QWidget):
 
     def __init__(self):
@@ -58,8 +74,8 @@ class MainWidget( QWidget):
         top_box =  QHBoxLayout()
         top_box.addLayout(vbox)
 
-        self.scroll_area =  QScrollArea()
-        top_box.addWidget(self.scroll_area)
+        self.first_iner_box =  EmptyInnerBox()
+        top_box.addWidget(self.first_iner_box)
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.lin_txt)
@@ -83,12 +99,12 @@ class MainWidget( QWidget):
             if( btn == btn_sender ):
                 self.lin_txt.setText(str(self.gui_button_steps[pos].default_action))
 
-        self.layout().removeWidget(self.scroll_area)
+        self.first_iner_box.layout().removeWidget(self.first_iner_box.scrollArea)
 
         in_box = InnerBox()
         #top_box.addWidget(in_box)
 
-        self.layout().addWidget(in_box)
+        self.first_iner_box.layout().addWidget(in_box)
 
 
 
