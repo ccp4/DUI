@@ -15,8 +15,8 @@ class InnerBox( QWidget):
         self.initUI()
 
     def initUI(self):
-        pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
-        #pixmap =  QPixmap("/home/dev/Downloads/tux2_w_dart_logo.png")
+        #pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
+        pixmap =  QPixmap("/home/dev/Downloads/tux2_w_dart_logo.png")
         lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
 
@@ -58,10 +58,8 @@ class MainWidget( QWidget):
         top_box =  QHBoxLayout()
         top_box.addLayout(vbox)
 
-
-
-        in_box = InnerBox()
-        top_box.addWidget(in_box)
+        self.scroll_area =  QScrollArea()
+        top_box.addWidget(self.scroll_area)
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.lin_txt)
@@ -84,6 +82,17 @@ class MainWidget( QWidget):
         for pos, btn  in enumerate(self.btn_lst):
             if( btn == btn_sender ):
                 self.lin_txt.setText(str(self.gui_button_steps[pos].default_action))
+
+        self.layout().removeWidget(self.scroll_area)
+
+        in_box = InnerBox()
+        #top_box.addWidget(in_box)
+
+        self.layout().addWidget(in_box)
+
+
+
+
 
 
     def B_go_clicked(self):
