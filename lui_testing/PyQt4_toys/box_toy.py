@@ -31,6 +31,7 @@ class inner_widg( QWidget):
 
     def B_go_clicked(self):
         print"\n Ok    from inner_widg \n"
+        self.paret_widget.to_be_caled_from_son_widg(4)
 
 
 class MainWidget( QWidget):
@@ -49,6 +50,10 @@ class MainWidget( QWidget):
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
+    def to_be_caled_from_son_widg(self, n):
+        print "n =", n
+
+        print "from parent paret_widget"
 
 
 if __name__ == '__main__':
