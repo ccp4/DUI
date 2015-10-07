@@ -7,14 +7,16 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 
-class Example( QWidget):
 
-    def __init__(self):
-        super(Example, self).__init__()
+class inner_widg( QWidget):
+
+    def __init__(self, parent):
+        super(inner_widg, self).__init__()
+        self.paret_widget = parent
         self.initUI()
 
     def initUI(self):
-        self.btn_go =  QPushButton('\n      Go      \n', self)
+        self.btn_go =  QPushButton('\n      Go   \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
         hbox =  QHBoxLayout()
@@ -23,16 +25,33 @@ class Example( QWidget):
         bg_box =  QVBoxLayout(self)
         bg_box.addLayout(hbox)
 
-        self.setGeometry(100, 200, 1150, 850)
         self.setLayout(bg_box)
-        self.setWindowTitle('Shell dialog')
         self.show()
 
 
     def B_go_clicked(self):
-        print"\n Ok \n"
+        print"\n Ok    from inner_widg \n"
+
+
+class MainWidget( QWidget):
+
+    def __init__(self):
+        super(MainWidget, self).__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.btn_go = inner_widg(self)
+
+        hbox =  QHBoxLayout()
+        hbox.addWidget(self.btn_go)
+
+        self.setGeometry(1100, 200, 550, 250)
+        self.setLayout(hbox)
+        self.setWindowTitle('Shell dialog')
+        self.show()
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = Example()
+    ex = MainWidget()
     sys.exit(app.exec_())
