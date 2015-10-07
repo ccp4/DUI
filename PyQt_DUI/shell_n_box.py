@@ -46,10 +46,10 @@ export_step.action = "dials.export integrated.pickle integrated.h5"
 steps.append(export_step)
 
 
-class Example( QWidget):
+class MainWidget( QWidget):
 
     def __init__(self):
-        super(Example, self).__init__()
+        super(MainWidget, self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -114,6 +114,6 @@ class Example( QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = Example()
+    ex = MainWidget()
     sys.exit(app.exec_())
 

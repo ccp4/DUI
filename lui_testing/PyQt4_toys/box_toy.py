@@ -12,7 +12,7 @@ class inner_widg( QWidget):
 
     def __init__(self, parent):
         super(inner_widg, self).__init__()
-        self.paret_widget = parent
+        self.parent_widget = parent
         self.initUI()
 
     def initUI(self):
@@ -31,7 +31,7 @@ class inner_widg( QWidget):
 
     def B_go_clicked(self):
         print"\n Ok    from inner_widg \n"
-        self.paret_widget.to_be_caled_from_son_widg(4)
+        self.parent_widget.to_be_caled_from_son_widg(4)
 
 
 class MainWidget( QWidget):
@@ -53,7 +53,7 @@ class MainWidget( QWidget):
     def to_be_caled_from_son_widg(self, n):
         print "n =", n
 
-        print "from parent paret_widget"
+        print "from parent parent_widget"
 
 
 if __name__ == '__main__':
