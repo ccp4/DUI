@@ -34,7 +34,8 @@ class MainWidget( QWidget):
         top_box.addLayout(vbox)
         top_box.addStretch(1)
 
-        pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
+        #pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
+        pixmap =  QPixmap("/home/dev/Downloads/tux2_w_dart_logo.png")
 
         lbl =  QLabel(self)
         lbl.setPixmap(pixmap)
