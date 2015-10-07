@@ -22,9 +22,13 @@ class InnerBox( QWidget):
 
         scrollArea =  QScrollArea()
         scrollArea.setWidget(lbl)
+        btn_tmp = QPushButton("test", self)
 
         main_box =  QHBoxLayout()
+        main_box.addWidget(btn_tmp)
+        #main_box.addStretch(1)
         main_box.addWidget(scrollArea)
+
         self.setLayout(main_box)
 
 
@@ -53,7 +57,7 @@ class MainWidget( QWidget):
 
         top_box =  QHBoxLayout()
         top_box.addLayout(vbox)
-        top_box.addStretch(1)
+
 
 
         in_box = InnerBox()
@@ -65,7 +69,7 @@ class MainWidget( QWidget):
 
         bg_box =  QVBoxLayout(self)
         bg_box.addLayout(top_box)
-        #bg_box.addStretch(1)
+
         bg_box.addLayout(hbox)
 
         self.setGeometry(100, 200, 1150, 850)
