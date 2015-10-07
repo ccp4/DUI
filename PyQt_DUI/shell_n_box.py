@@ -106,15 +106,6 @@ class Example( QWidget):
                 self.lin_txt.setText(str(steps[pos].action))
 
 
-    def B_clicked1(self):
-        self.lin_txt.setText(str("dials.import"))
-
-    def B_clicked2(self):
-        self.lin_txt.setText(str("dials.find_spots"))
-
-    def B_clicked3(self):
-        self.lin_txt.setText(str("dials.index"))
-
     def B_go_clicked(self):
         shell_str = str(self.lin_txt.text())
         shell_func(shell_str, shell=True)
