@@ -7,6 +7,27 @@ class step(object):
         self.Bttlabel = "\n\n     CLI command    \n\n"
         self.default_action = "dials.some_command"
 
+
+class InnerBox( QWidget):
+
+    def __init__(self):
+        super(InnerBox, self).__init__()
+        self.initUI()
+
+    def initUI(self):
+        pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
+        #pixmap =  QPixmap("/home/dev/Downloads/tux2_w_dart_logo.png")
+        lbl =  QLabel(self)
+        lbl.setPixmap(pixmap)
+
+        scrollArea =  QScrollArea()
+        scrollArea.setWidget(lbl)
+
+        main_box =  QHBoxLayout()
+        main_box.addWidget(scrollArea)
+        self.setLayout(main_box)
+
+
 class MainWidget( QWidget):
 
     def __init__(self, steps_in):
@@ -34,16 +55,9 @@ class MainWidget( QWidget):
         top_box.addLayout(vbox)
         top_box.addStretch(1)
 
-        #pixmap =  QPixmap("/home/lui/Pictures/dials_logo01.png")
-        pixmap =  QPixmap("/home/dev/Downloads/tux2_w_dart_logo.png")
 
-        lbl =  QLabel(self)
-        lbl.setPixmap(pixmap)
-
-        scrollArea =  QScrollArea()
-        scrollArea.setWidget(lbl)
-
-        top_box.addWidget(scrollArea)
+        in_box = InnerBox()
+        top_box.addWidget(in_box)
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.lin_txt)
