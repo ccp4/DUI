@@ -71,18 +71,18 @@ class MainWidget( QWidget):
         for btn in self.btn_lst:
             vbox.addWidget(btn)
 
-        top_box =  QHBoxLayout()
-        top_box.addLayout(vbox)
+        self.top_box =  QHBoxLayout()
+        self.top_box.addLayout(vbox)
 
-        self.first_iner_box =  EmptyInnerBox()
-        top_box.addWidget(self.first_iner_box)
+        self.in_box =  EmptyInnerBox()
+        self.top_box.addWidget(self.in_box)
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.lin_txt)
         hbox.addWidget(self.btn_go)
 
         bg_box =  QVBoxLayout(self)
-        bg_box.addLayout(top_box)
+        bg_box.addLayout(self.top_box)
 
         bg_box.addLayout(hbox)
 
@@ -98,19 +98,11 @@ class MainWidget( QWidget):
         for pos, btn  in enumerate(self.btn_lst):
             if( btn == btn_sender ):
                 self.lin_txt.setText(str(self.gui_button_steps[pos].default_action))
-        '''
-
-        self.first_iner_box.layout().removeWidget(self.first_iner_box)
-
-        self.first_iner_box.in_box = InnerBox()
-        #top_box.addWidget(in_box)
-
-        #clearLayout
-
-        self.first_iner_box.layout().addWidget(self.first_iner_box.in_box)
-        '''
 
 
+        self.top_box.removeWidget(self.in_box)
+        self.in_box = InnerBox()
+        self.top_box.addWidget(self.in_box)
 
 
 
