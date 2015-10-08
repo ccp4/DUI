@@ -98,13 +98,17 @@ class MainWidget( QWidget):
         for pos, btn  in enumerate(self.btn_lst):
             if( btn == btn_sender ):
                 self.lin_txt.setText(str(self.gui_button_steps[pos].default_action))
+        '''
 
-        self.first_iner_box.layout().removeWidget(self.first_iner_box.scrollArea)
+        self.first_iner_box.layout().removeWidget(self.first_iner_box)
 
-        in_box = InnerBox()
+        self.first_iner_box.in_box = InnerBox()
         #top_box.addWidget(in_box)
 
-        self.first_iner_box.layout().addWidget(in_box)
+        #clearLayout
+
+        self.first_iner_box.layout().addWidget(self.first_iner_box.in_box)
+        '''
 
 
 
