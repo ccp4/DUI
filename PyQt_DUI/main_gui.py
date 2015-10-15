@@ -2,13 +2,12 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from subprocess import call as shell_func
 
+
 class step(object):
     def __init__(self):
-        self.Bttlabel = "\n\n     CLI command    \n\n"
-        self.default_action = "dials.some_command"
-
-
-
+        self.Bttlabel = None
+        self.default_action = None
+        self.InnerBox = None
 
 class EmptyInnerBox( QWidget):
 
@@ -24,10 +23,11 @@ class EmptyInnerBox( QWidget):
 
         self.setLayout(main_box)
 
-class InnerBox( QWidget):
+
+class btn__img_ibox( QWidget):
 
     def __init__(self):
-        super(InnerBox, self).__init__()
+        super(btn__img_ibox, self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -97,11 +97,17 @@ class MainWidget( QWidget):
 
         for pos, btn  in enumerate(self.btn_lst):
             if( btn == btn_sender ):
-                self.lin_txt.setText(str(self.gui_button_steps[pos].default_action))
+                corr_pos = pos
+
+
+        self.lin_txt.setText(str(self.gui_button_steps[pos].default_action))
 
 
         self.top_box.removeWidget(self.in_box)
-        self.in_box = InnerBox()
+        #self.in_box = InnerBox()
+        self.in_box = self.gui_button_steps[pos].InnerBox
+        #self.in_box.update()
+        self.update()
         self.top_box.addWidget(self.in_box)
 
 

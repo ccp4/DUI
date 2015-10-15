@@ -24,6 +24,8 @@ class Example(QtGui.QWidget):
         self.btn_go = QtGui.QPushButton('\n      Go      \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
+        self.My_stacked_wd = QStackedWidget(self)
+
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.btn1)
         vbox.addWidget(self.btn2)
@@ -41,7 +43,7 @@ class Example(QtGui.QWidget):
         bg_box.addStretch(1)
         bg_box.addLayout(hbox)
 
-        self.setGeometry(100, 200, 1150, 850)
+        self.setGeometry(1200, 200, 450, 350)
         self.setLayout(bg_box)
         self.setWindowTitle('Shell dialog')
         self.show()
@@ -60,6 +62,21 @@ class Example(QtGui.QWidget):
         shell_str = str(self.lin_txt.text())
         shell_func(shell_str, shell=True)
         self.lin_txt.setText(str(""))
+
+'''
+     QWidget *firstPageWidget = new QWidget;
+     QWidget *secondPageWidget = new QWidget;
+     QWidget *thirdPageWidget = new QWidget;
+
+     QStackedWidget *stackedWidget = new QStackedWidget;
+     stackedWidget->addWidget(firstPageWidget);
+     stackedWidget->addWidget(secondPageWidget);
+     stackedWidget->addWidget(thirdPageWidget);
+
+     QVBoxLayout *layout = new QVBoxLayout;
+     layout->addWidget(stackedWidget);
+     setLayout(layout);
+'''
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
