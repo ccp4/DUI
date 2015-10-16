@@ -3,10 +3,52 @@
 from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
 
+from subprocess import call as shell_func
+'''
 
-class ConfigurationPage(QtGui.QWidget):
+    import_step = step()
+    import_step.Bttlabel = "\n\n     import    \n\n"
+    import_step.default_action = "dials.import ~/data/th_8_2_0*"
+    import_step.InnerBox = btn__img_ibox()
+    steps.append(import_step)
+
+    find_step = step()
+    find_step.Bttlabel = "\n\n     find spots    \n\n"
+    find_step.default_action = "dials.find_spots datablock.json"
+    find_step.InnerBox = EmptyInnerBox()
+    steps.append(find_step)
+
+    index_step = step()
+    index_step.Bttlabel = "\n\n     index    \n\n"
+    index_step.default_action = "dials.index datablock.json strong.pickle"
+    index_step.InnerBox = btn__img_ibox()
+    steps.append(index_step)
+
+    refine_step = step()
+    refine_step.Bttlabel = "\n\n     refine    \n\n"
+    refine_step.default_action = "dials.refine experiments.json indexed.pickle"
+    refine_step.InnerBox = EmptyInnerBox()
+    steps.append(refine_step)
+
+    integrate_step = step()
+    integrate_step.Bttlabel = "\n\n     integrate    \n\n"
+    integrate_step.default_action = "dials.integrate refined_experiments.json refined.pickle"
+    integrate_step.InnerBox = btn__img_ibox()
+    steps.append(integrate_step)
+
+    export_step = step()
+    export_step.Bttlabel = "\n\n     export    \n\n"
+    export_step.default_action = "dials.export integrated.pickle integrated.h5"
+    export_step.InnerBox = EmptyInnerBox()
+    steps.append(export_step)
+
+
+'''
+class ImportPage(QtGui.QWidget):
     def __init__(self, parent=None):
-        super(ConfigurationPage, self).__init__(parent)
+        super(ImportPage, self).__init__(parent)
+
+        self.button_label = "dials.import ~/data/th_8_2_0*"
 
         configGroup = QtGui.QGroupBox("Box 01")
         configLayout = QtGui.QVBoxLayout()
@@ -25,9 +67,12 @@ class ConfigurationPage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-class UpdatePage(QtGui.QWidget):
+class SpotFindPage(QtGui.QWidget):
     def __init__(self, parent=None):
-        super(UpdatePage, self).__init__(parent)
+
+        self.button_label = "dials.find_spots datablock.json"
+
+        super(SpotFindPage, self).__init__(parent)
 
         updateGroup = QtGui.QGroupBox("Box 02")
         systemCheckBox = QtGui.QCheckBox("Check 01")
@@ -44,9 +89,11 @@ class UpdatePage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-class QueryPage(QtGui.QWidget):
+class IndexPage(QtGui.QWidget):
     def __init__(self, parent=None):
-        super(QueryPage, self).__init__(parent)
+        super(IndexPage, self).__init__(parent)
+
+        self.button_label = "dials.index datablock.json strong.pickle"
 
         startQueryButton = QtGui.QPushButton("Bttn tst")
         mainLayout = QtGui.QVBoxLayout()
@@ -62,16 +109,20 @@ class MyMainDialog(QtGui.QDialog):
         super(MyMainDialog, self).__init__(parent)
 
         self.contentsWidget = QtGui.QListWidget()
-        #self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
-        #self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
-        #self.contentsWidget.setMovement(QtGui.QListView.Static)
+        self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
+        self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
+        self.contentsWidget.setMovement(QtGui.QListView.Static)
         self.contentsWidget.setMaximumWidth(128)
         self.contentsWidget.setSpacing(12)
 
         self.pagesWidget = QtGui.QStackedWidget()
-        self.pagesWidget.addWidget(ConfigurationPage())
-        self.pagesWidget.addWidget(UpdatePage())
-        self.pagesWidget.addWidget(QueryPage())
+        self.widget_list = []
+        self.widget_list.append(ImportPage())
+        self.widget_list.append(SpotFindPage())
+        self.widget_list.append(IndexPage())
+
+        for widg in self.widget_list:
+            self.pagesWidget.addWidget(widg)
 
         Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
 
@@ -85,7 +136,10 @@ class MyMainDialog(QtGui.QDialog):
         horizontalLayout.addWidget(self.pagesWidget, 1)
 
         buttonsLayout = QtGui.QHBoxLayout()
-        buttonsLayout.addStretch(1)
+
+        self.lin_txt =  QtGui.QLineEdit(self)
+        buttonsLayout.addWidget(self.lin_txt)
+
         buttonsLayout.addWidget(Go_button)
 
         mainLayout = QtGui.QVBoxLayout()
@@ -101,8 +155,15 @@ class MyMainDialog(QtGui.QDialog):
     def changePage(self, current, previous):
         if not current:
             current = previous
-
         self.pagesWidget.setCurrentIndex(self.contentsWidget.row(current))
+
+        idx = self.pagesWidget.currentIndex()
+        cli_str = self.widget_list[idx].button_label
+
+        try:
+            self.lin_txt.setText(str(cli_str))
+        except:
+            pass
 
     def createIcons(self):
         page_01_button = QtGui.QListWidgetItem(self.contentsWidget)
@@ -125,9 +186,15 @@ class MyMainDialog(QtGui.QDialog):
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
 
+        #print "self.contentsWidget =", dir(self.contentsWidget)
+
 
     def onGoBtn(self, event):
         print "Go pressed"
+        shell_str = str(self.lin_txt.text())
+        shell_func(shell_str, shell=True)
+        print"\n Ok \n"
+        self.lin_txt.setText(str(""))
 
 
 if __name__ == '__main__':
