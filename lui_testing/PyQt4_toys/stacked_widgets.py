@@ -166,27 +166,14 @@ class MyMainDialog(QtGui.QDialog):
             pass
 
     def createIcons(self):
-        page_01_button = QtGui.QListWidgetItem(self.contentsWidget)
-        #page_01_button.setIcon(QtGui.QIcon(':/images/config.png'))
-        page_01_button.setText("Page n 1")
-        page_01_button.setTextAlignment(QtCore.Qt.AlignHCenter)
-        page_01_button.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-
-        page_02_button = QtGui.QListWidgetItem(self.contentsWidget)
-        #page_02_button.setIcon(QtGui.QIcon(':/images/update.png'))
-        page_02_button.setText("Page n 2")
-        page_02_button.setTextAlignment(QtCore.Qt.AlignHCenter)
-        page_02_button.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-
-        page_03_button = QtGui.QListWidgetItem(self.contentsWidget)
-        #page_03_button.setIcon(QtGui.QIcon(':/images/query.png'))
-        page_03_button.setText("Page n 3")
-        page_03_button.setTextAlignment(QtCore.Qt.AlignHCenter)
-        page_03_button.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+        for page_text in ["Page n 1","Page n 2","Page n 3"]:
+            page_n_button = QtGui.QListWidgetItem(self.contentsWidget)
+            #page_n_button.setIcon(QtGui.QIcon(':/images/config.png'))
+            page_n_button.setText(page_text)
+            page_n_button.setTextAlignment(QtCore.Qt.AlignHCenter)
+            page_n_button.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
-
-        #print "self.contentsWidget =", dir(self.contentsWidget)
 
 
     def onGoBtn(self, event):
