@@ -48,7 +48,9 @@ class ImportPage(QtGui.QWidget):
     def __init__(self, parent=None):
         super(ImportPage, self).__init__(parent)
 
-        self.button_label = "dials.import ~/data/th_8_2_0*"
+        self.cmd_lin_default = "dials.import ~/data/th_8_2_0*"
+        self.button_label = "Import"
+        self.logo_path = "dartlang_logo_small.png"
 
         configGroup = QtGui.QGroupBox("Box 01")
         configLayout = QtGui.QVBoxLayout()
@@ -69,10 +71,11 @@ class ImportPage(QtGui.QWidget):
 
 class SpotFindPage(QtGui.QWidget):
     def __init__(self, parent=None):
-
-        self.button_label = "dials.find_spots datablock.json"
-
         super(SpotFindPage, self).__init__(parent)
+
+        self.cmd_lin_default = "dials.find_spots datablock.json"
+        self.button_label = "Find Spots"
+        self.logo_path = "nuclear_dartlang_logo_small.png"
 
         updateGroup = QtGui.QGroupBox("Box 02")
         systemCheckBox = QtGui.QCheckBox("Check 01")
@@ -93,7 +96,9 @@ class IndexPage(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IndexPage, self).__init__(parent)
 
-        self.button_label = "dials.index datablock.json strong.pickle"
+        self.cmd_lin_default = "dials.index datablock.json strong.pickle"
+        self.button_label = "Index"
+        self.logo_path = "bird_dartlang_logo_small.png"
 
         startQueryButton = QtGui.QPushButton("Bttn tst")
         mainLayout = QtGui.QVBoxLayout()
@@ -158,7 +163,7 @@ class MyMainDialog(QtGui.QDialog):
         self.pagesWidget.setCurrentIndex(self.contentsWidget.row(current))
 
         idx = self.pagesWidget.currentIndex()
-        cli_str = self.widget_list[idx].button_label
+        cli_str = self.widget_list[idx].cmd_lin_default
 
         try:
             self.lin_txt.setText(str(cli_str))
@@ -166,10 +171,12 @@ class MyMainDialog(QtGui.QDialog):
             pass
 
     def createIcons(self):
-        for page_text in ["Page n 1","Page n 2","Page n 3"]:
+
+        for widget in self.widget_list:
+
             page_n_button = QtGui.QListWidgetItem(self.contentsWidget)
-            #page_n_button.setIcon(QtGui.QIcon(':/images/config.png'))
-            page_n_button.setText(page_text)
+            page_n_button.setIcon(QtGui.QIcon(widget.logo_path))
+            page_n_button.setText(widget.button_label)
             page_n_button.setTextAlignment(QtCore.Qt.AlignHCenter)
             page_n_button.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
