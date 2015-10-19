@@ -117,7 +117,13 @@ class MyMainDialog(QtGui.QDialog):
         self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
         self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
         self.contentsWidget.setMovement(QtGui.QListView.Static)
-        self.contentsWidget.setMaximumWidth(128)
+        #self.contentsWidget.setMaximumWidth(128)
+        self.contentsWidget.setMaximumWidth(148)
+
+        #self.contentsWidget.setMaximumHeight(528)
+        self.contentsWidget.setMinimumHeight(524)
+
+
         self.contentsWidget.setSpacing(12)
 
         self.pagesWidget = QtGui.QStackedWidget()
@@ -140,18 +146,18 @@ class MyMainDialog(QtGui.QDialog):
         horizontalLayout.addWidget(self.contentsWidget)
         horizontalLayout.addWidget(self.pagesWidget, 1)
 
-        buttonsLayout = QtGui.QHBoxLayout()
+        exec_layout = QtGui.QHBoxLayout()
 
         self.lin_txt =  QtGui.QLineEdit(self)
-        buttonsLayout.addWidget(self.lin_txt)
+        exec_layout.addWidget(self.lin_txt)
 
-        buttonsLayout.addWidget(Go_button)
+        exec_layout.addWidget(Go_button)
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addLayout(horizontalLayout)
         mainLayout.addStretch(1)
         mainLayout.addSpacing(12)
-        mainLayout.addLayout(buttonsLayout)
+        mainLayout.addLayout(exec_layout)
 
         self.setLayout(mainLayout)
 
