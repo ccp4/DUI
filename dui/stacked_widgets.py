@@ -4,6 +4,9 @@ from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
 
 from subprocess import call as shell_func
+
+import os
+
 '''
 
     import_step = step()
@@ -50,7 +53,9 @@ class ImportPage(QtGui.QWidget):
 
         self.cmd_lin_default = "dials.import ~/data/th_8_2_0*"
         self.button_label = "Import"
-        self.logo_path = "dartlang_logo_small.png"
+
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
 
         configGroup = QtGui.QGroupBox("Box 01")
         configLayout = QtGui.QVBoxLayout()
@@ -75,7 +80,8 @@ class SpotFindPage(QtGui.QWidget):
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "Find Spots"
-        self.logo_path = "nuclear_dartlang_logo_small.png"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
 
         updateGroup = QtGui.QGroupBox("Box 02")
         systemCheckBox = QtGui.QCheckBox("Check 01")
@@ -98,7 +104,8 @@ class IndexPage(QtGui.QWidget):
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
         self.button_label = "Index"
-        self.logo_path = "bird_dartlang_logo_small.png"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
 
         startQueryButton = QtGui.QPushButton("Bttn tst")
         mainLayout = QtGui.QVBoxLayout()
