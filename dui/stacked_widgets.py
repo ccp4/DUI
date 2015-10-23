@@ -132,17 +132,21 @@ class ExportPage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-def main():
+
+if __name__ == '__main__':
     import sys
 
     app = QtGui.QApplication(sys.argv)
-    ex = ExportPage()
+
+    #ex = ImportPage()
+    #ex = SpotFindPage()
+    #ex = IndexPage()
+    #ex = RefinePage()
+    ex = IntegratePage()
+    #ex = ExportPage()
+
     ex.show()
     sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
 
 
 
