@@ -112,10 +112,11 @@ class IntegratePage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-
 class ExportPage(QtGui.QWidget):
-    def __init__(self, parent=None):
+
+    def __init__(self, parent = None):
         super(ExportPage, self).__init__(parent)
+
 
         self.cmd_lin_default = "dials.export integrated.pickle integrated.h5"
         self.button_label = "Export"
@@ -131,35 +132,12 @@ class ExportPage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-
-import sys
-
-
-class Example(QtGui.QWidget):
-
-    def __init__(self):
-        super(Example, self).__init__()
-        self.initUI()
-
-    def initUI(self):
-
-        hbox = QtGui.QHBoxLayout(self)
-        pixmap = QtGui.QPixmap("dartlang_logo_small.png")
-
-        lbl = QtGui.QLabel(self)
-        lbl.setPixmap(pixmap)
-
-        hbox.addWidget(lbl)
-        self.setLayout(hbox)
-
-        self.move(300, 200)
-        self.setWindowTitle('Red Rock')
-        self.show()
-
 def main():
+    import sys
 
     app = QtGui.QApplication(sys.argv)
-    ex = Example()
+    ex = ExportPage()
+    ex.show()
     sys.exit(app.exec_())
 
 
