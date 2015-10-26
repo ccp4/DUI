@@ -392,7 +392,7 @@ class IntegrateParameterWidget(ParameterWidget):
 
 
 
-'''
+
 class FindspotstParameterWidget(ParameterWidget):
 
   def __init__(self, parent=None):
@@ -400,17 +400,26 @@ class FindspotstParameterWidget(ParameterWidget):
 
     # Init parent
     super(FindspotstParameterWidget, self).__init__(parent, phil_scope)
-'''
 
 
-class FindspotstParameterWidget(ParameterWidget):
+
+class RefineParameterWidget(ParameterWidget):
 
   def __init__(self, parent=None):
-    from dials.command_line.index import phil_scope
+    from dials.command_line.refine import phil_scope
 
     # Init parent
-    super(FindspotstParameterWidget, self).__init__(parent, phil_scope)
+    super(RefineParameterWidget, self).__init__(parent, phil_scope)
 
+
+
+class IntegrateParameterWidget(ParameterWidget):
+
+  def __init__(self, parent=None):
+    from dials.command_line.integrate import phil_scope
+
+    # Init parent
+    super(IntegrateParameterWidget, self).__init__(parent, phil_scope)
 
 
 
@@ -422,8 +431,9 @@ class MainWindow(QMainWindow):
     super(MainWindow, self).__init__(parent)
 
     # Create the parameter window widget
-    params = FindspotstParameterWidget()
-    #params = IntegrateParameterWidget()
+    #params = FindspotstParameterWidget()
+    #params = RefineParameterWidget()
+    params = IntegrateParameterWidget()
 
     # Create the window layout
     layout = QVBoxLayout()
