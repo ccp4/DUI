@@ -132,6 +132,54 @@ class ExportPage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
+class MainWindow(QtGui.QMainWindow):
+
+  def __init__(self, parent=None):
+
+    # Call the parent constructor
+    super(MainWindow, self).__init__(parent)
+
+    # Create the parameter window widget
+    params = ExportPage()
+
+
+    '''
+    params = ImportPage()
+    params = SpotFindPage()
+    params = IndexPage()
+    params = RefinePage()
+    params = IntegratePage()
+    params = ExportPage()
+
+    '''
+
+
+    # Create the window layout
+    layout = QtGui.QVBoxLayout()
+    layout.addWidget(params)
+
+    # Setup the window contents
+    window = QtGui.QWidget()
+    window.setLayout(layout)
+    self.setCentralWidget(window)
+
+
+if __name__ == '__main__':
+  import sys
+
+  # Create the application
+  app = QtGui.QApplication(sys.argv)
+
+  # Create the main window
+  window = MainWindow()
+  window.resize(800, 600)
+  window.show()
+
+  # Execute the application
+  sys.exit(app.exec_())
+
+
+'''
 
 if __name__ == '__main__':
     import sys
@@ -149,5 +197,5 @@ if __name__ == '__main__':
     sys.exit(app.exec_())
 
 
-
+'''
 
