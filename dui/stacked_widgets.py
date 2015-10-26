@@ -1,7 +1,45 @@
 #!/usr/bin/env python
 
 from PyQt4 import QtCore, QtGui
-#from PySide import QtCore, QtGui
+from phil_param_widget_builder import ParameterWidget
+
+
+
+
+
+class FindspotstParameterWidget(ParameterWidget):
+
+    def __init__(self, parent=None):
+        from dials.command_line.find_spots import phil_scope
+        super(FindspotstParameterWidget, self).__init__(parent, phil_scope)
+        self.cmd_lin_default = "dials.find_spots datablock.json"
+        self.button_label = "Find Spots"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
+
+
+class RefineParameterWidget(ParameterWidget):
+
+    def __init__(self, parent=None):
+        from dials.command_line.refine import phil_scope
+        super(RefineParameterWidget, self).__init__(parent, phil_scope)
+        self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
+        self.button_label = "Refine"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
+
+
+class IntegrateParameterWidget(ParameterWidget):
+
+    def __init__(self, parent=None):
+        from dials.command_line.integrate import phil_scope
+        super(IntegrateParameterWidget, self).__init__(parent, phil_scope)
+        self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
+        self.button_label = "Integrate"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
+
+
 
 from subprocess import call as shell_func
 import os
@@ -94,23 +132,6 @@ class RefinePage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-class IntegratePage(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(IntegratePage, self).__init__(parent)
-
-        self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
-        self.button_label = "Integrate"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
-
-        startQueryButton = QtGui.QPushButton("Bttn tst")
-        mainLayout = QtGui.QVBoxLayout()
-
-        mainLayout.addWidget(startQueryButton)
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
-
 
 class ExportPage(QtGui.QWidget):
 
@@ -140,14 +161,15 @@ class MainWindow(QtGui.QMainWindow):
     super(MainWindow, self).__init__(parent)
 
     # Create the parameter window widget
-    params = ExportPage()
 
+    #params = IntegrateParameterWidget()
+    #params = RefineParameterWidget()
+    params = FindspotstParameterWidget()
 
     '''
     params = ImportPage()
     params = SpotFindPage()
     params = IndexPage()
-    params = RefinePage()
     params = IntegratePage()
     params = ExportPage()
 
@@ -177,25 +199,4 @@ if __name__ == '__main__':
 
   # Execute the application
   sys.exit(app.exec_())
-
-
-'''
-
-if __name__ == '__main__':
-    import sys
-
-    app = QtGui.QApplication(sys.argv)
-
-    #ex = ImportPage()
-    #ex = SpotFindPage()
-    #ex = IndexPage()
-    #ex = RefinePage()
-    ex = IntegratePage()
-    #ex = ExportPage()
-
-    ex.show()
-    sys.exit(app.exec_())
-
-
-'''
 

@@ -2,12 +2,12 @@
 
 from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
-from stacked_widgets import ImportPage, SpotFindPage, IndexPage, RefinePage, IntegratePage, ExportPage
+from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexPage, RefineParameterWidget, IntegrateParameterWidget, ExportPage
 
 from subprocess import call as shell_func
 import os
 
-class MyMainDialog(QtGui.QDialog):
+class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(MyMainDialog, self).__init__(parent)
 
@@ -27,10 +27,10 @@ class MyMainDialog(QtGui.QDialog):
         self.pagesWidget = QtGui.QStackedWidget()
         self.widget_list = []
         self.widget_list.append(ImportPage())
-        self.widget_list.append(SpotFindPage())
+        self.widget_list.append(FindspotstParameterWidget())
         self.widget_list.append(IndexPage())
-        self.widget_list.append(RefinePage())
-        self.widget_list.append(IntegratePage())
+        self.widget_list.append(RefineParameterWidget())
+        self.widget_list.append(IntegrateParameterWidget())
         self.widget_list.append(ExportPage())
 
         for widg in self.widget_list:
@@ -60,9 +60,11 @@ class MyMainDialog(QtGui.QDialog):
         mainLayout.addSpacing(12)
         mainLayout.addLayout(exec_layout)
 
-        self.setLayout(mainLayout)
+        window = QtGui.QWidget()
+        window.setLayout(mainLayout)
 
-        self.setWindowTitle("Main GUI")
+        self.setCentralWidget(window)
+
 
     def changePage(self, current, previous):
         if not current:
@@ -104,5 +106,28 @@ if __name__ == '__main__':
 
     app = QtGui.QApplication(sys.argv)
     dialog = MyMainDialog()
-    sys.exit(dialog.exec_())
+    dialog.show()
+    sys.exit(app.exec_())
 
+
+'''
+
+
+
+if __name__ == '__main__':
+  import sys
+
+  # Create the application
+  app = QApplication(sys.argv)
+
+  # Create the main window
+  window = MainWindow()
+  window.resize(800, 600)
+  window.show()
+
+  # Execute the application
+  sys.exit(app.exec_())
+
+
+
+'''
