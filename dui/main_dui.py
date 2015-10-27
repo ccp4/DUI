@@ -19,7 +19,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.contentsWidget.setMaximumWidth(148)
 
         #self.contentsWidget.setMaximumHeight(528)
-        self.contentsWidget.setMinimumHeight(524)
+        self.contentsWidget.setMinimumHeight(724)
 
 
         self.contentsWidget.setSpacing(12)
@@ -33,8 +33,12 @@ class MyMainDialog(QtGui.QMainWindow):
         self.widget_list.append(IntegrateParameterWidget())
         self.widget_list.append(ExportParameterWidget())
 
+
+
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
+
+
 
         Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
 
@@ -60,10 +64,10 @@ class MyMainDialog(QtGui.QMainWindow):
         mainLayout.addSpacing(12)
         mainLayout.addLayout(exec_layout)
 
-        window = QtGui.QWidget()
-        window.setLayout(mainLayout)
-
-        self.setCentralWidget(window)
+        main_widget = QtGui.QWidget()
+        main_widget.setLayout(mainLayout)
+        self.resize(1200, 900)
+        self.setCentralWidget(main_widget)
 
 
     def changePage(self, current, previous):
@@ -109,25 +113,3 @@ if __name__ == '__main__':
     dialog.show()
     sys.exit(app.exec_())
 
-
-'''
-
-
-
-if __name__ == '__main__':
-  import sys
-
-  # Create the application
-  app = QApplication(sys.argv)
-
-  # Create the main window
-  window = MainWindow()
-  window.resize(800, 600)
-  window.show()
-
-  # Execute the application
-  sys.exit(app.exec_())
-
-
-
-'''

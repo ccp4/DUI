@@ -80,31 +80,6 @@ class ImportPage(QtGui.QWidget):
 
         self.setLayout(mainLayout)
 
-
-class SpotFindPage(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(SpotFindPage, self).__init__(parent)
-
-        self.cmd_lin_default = "dials.find_spots datablock.json"
-        self.button_label = "Find Spots"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
-
-        updateGroup = QtGui.QGroupBox("Box 02")
-        systemCheckBox = QtGui.QCheckBox("Check 01")
-
-        updateLayout = QtGui.QVBoxLayout()
-        updateLayout.addWidget(systemCheckBox)
-        updateGroup.setLayout(updateLayout)
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(updateGroup)
-
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
-
-
 class IndexPage(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IndexPage, self).__init__(parent)
@@ -124,44 +99,6 @@ class IndexPage(QtGui.QWidget):
 
 
 
-class RefinePage(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(RefinePage, self).__init__(parent)
-
-        self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
-        self.button_label = "Refine"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
-
-        startQueryButton = QtGui.QPushButton("Bttn tst")
-        mainLayout = QtGui.QVBoxLayout()
-
-        mainLayout.addWidget(startQueryButton)
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
-
-
-
-class ExportPage(QtGui.QWidget):
-
-    def __init__(self, parent = None):
-        super(ExportPage, self).__init__(parent)
-
-
-        self.cmd_lin_default = "dials.export integrated.pickle integrated.h5"
-        self.button_label = "Export"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
-
-        startQueryButton = QtGui.QPushButton("Bttn tst")
-        mainLayout = QtGui.QVBoxLayout()
-
-        mainLayout.addWidget(startQueryButton)
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
-
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -176,16 +113,6 @@ class MainWindow(QtGui.QMainWindow):
     #params = RefineParameterWidget()
     #params = FindspotstParameterWidget()
     params = ExportParameterWidget()
-
-    '''
-    params = ImportPage()
-    params = SpotFindPage()
-    params = IndexPage()
-    params = IntegratePage()
-    params = ExportPage()
-
-    '''
-
 
     # Create the window layout
     layout = QtGui.QVBoxLayout()
