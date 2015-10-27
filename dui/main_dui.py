@@ -15,30 +15,27 @@ class MyMainDialog(QtGui.QMainWindow):
         self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
         self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
         self.contentsWidget.setMovement(QtGui.QListView.Static)
-        #self.contentsWidget.setMaximumWidth(128)
+
         self.contentsWidget.setMaximumWidth(148)
-
-        #self.contentsWidget.setMaximumHeight(528)
         self.contentsWidget.setMinimumHeight(724)
-
-
         self.contentsWidget.setSpacing(12)
 
         self.pagesWidget = QtGui.QStackedWidget()
         self.widget_list = []
         self.widget_list.append(ImportPage())
+        print "\n\n"
         self.widget_list.append(FindspotstParameterWidget())
+        print "\n\n"
         self.widget_list.append(IndexPage())
+        print "\n\n"
         self.widget_list.append(RefineParameterWidget())
+        print "\n\n"
         self.widget_list.append(IntegrateParameterWidget())
+        print "\n\n"
         self.widget_list.append(ExportParameterWidget())
-
-
 
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
-
-
 
         Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
 

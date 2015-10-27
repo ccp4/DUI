@@ -24,6 +24,10 @@ from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import QModelIndex
 
 
+def MyChangedData(obj_in):
+    print "obj_in =", obj_in
+
+
 class StringEditor(QLineEdit):
 
   def __init__(self, parent=None):
@@ -65,6 +69,7 @@ class FloatEditor(QDoubleSpinBox):
 
   def __init__(self, parent=None, value_min=None, value_max=None):
     super(FloatEditor, self).__init__(parent)
+    self.prn_widg = parent
     if value_min is not None:
       self.setMinimum(value_min)
     else:
@@ -74,6 +79,14 @@ class FloatEditor(QDoubleSpinBox):
     else:
       self.setMaximum(1e9)
     self.setDecimals(2)
+
+    self.valueChanged.connect(self.onChanged)
+
+
+  def onChanged(self, event):
+    print "onChanged(self, event)"
+    MyChangedData(self)
+
 
   def setEditorData(self, index):
     value = index.model().data(index, Qt.EditRole).toFloat()
@@ -182,6 +195,9 @@ class ParameterItemModel(QStandardItemModel):
     def add_parameters(root, parameter):
       if parameter.is_scope:
         name_node = QStandardItem(parameter.name)
+
+        #print "[is_scope]parameter.name =", parameter.name
+
         name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
         name_node.setData(parameter, Qt.UserRole + 1)
         for obj in parameter.objects:
@@ -189,6 +205,9 @@ class ParameterItemModel(QStandardItemModel):
         root.appendRow(name_node)
       elif parameter.is_definition:
         name_node = QStandardItem(parameter.name)
+
+        print "parameter.name =", parameter.name
+
         name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
         name_node.setData(parameter, Qt.UserRole + 1)
         value_node = QStandardItem(str(parameter.extract()))
@@ -342,7 +361,6 @@ class ParameterTreeWidget(QWidget):
 
   def setSearchString(self, text):
     self.tree.model().setSearchString(text)
-
 
 class ParameterWidget(QWidget):
 
