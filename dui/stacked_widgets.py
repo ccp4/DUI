@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+# FIXME Copied from dials.index.py. This is needed here because scipy needs to
+# be imported before cctbx otherwise there will be a segmentation fault. This
+# should be fixed in dials.index so that we don't need to import here.
+try:
+  # try importing scipy.linalg before any cctbx modules, otherwise we
+  # sometimes get a segmentation fault/core dump if it is imported after
+  # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
+  import scipy.linalg # import dependency
+except ImportError, e:
+  pass
+
 from PyQt4 import QtCore, QtGui
 from phil_param_widget_builder import ParameterWidget
 
@@ -80,9 +91,16 @@ class ImportPage(QtGui.QWidget):
 
         self.setLayout(mainLayout)
 
-class IndexPage(QtGui.QWidget):
+
+
+
+
+
+class IndexParameterWidget(ParameterWidget):
+
     def __init__(self, parent=None):
-        super(IndexPage, self).__init__(parent)
+        from dials.command_line.index import phil_scope
+        super(IndexParameterWidget, self).__init__(parent, phil_scope)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
         self.button_label = "Index"
@@ -109,10 +127,10 @@ class MainWindow(QtGui.QMainWindow):
 
     # Create the parameter window widget
 
-    #params = IntegrateParameterWidget()
+    params = IntegrateParameterWidget()
     #params = RefineParameterWidget()
     #params = FindspotstParameterWidget()
-    params = ExportParameterWidget()
+    #params = ExportParameterWidget()
 
     # Create the window layout
     layout = QtGui.QVBoxLayout()

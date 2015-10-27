@@ -82,12 +82,6 @@ class FloatEditor(QDoubleSpinBox):
 
     self.valueChanged.connect(self.onChanged)
 
-
-  def onChanged(self, event):
-    print "onChanged(self, event)"
-    MyChangedData(self)
-
-
   def setEditorData(self, index):
     value = index.model().data(index, Qt.EditRole).toFloat()
     self.setValue(value[0])
@@ -96,6 +90,14 @@ class FloatEditor(QDoubleSpinBox):
     self.interpretText()
     value = self.value()
     model.setData(index, value, Qt.EditRole)
+
+
+
+
+  def onChanged(self, event):
+    print "onChanged(self, event)"
+    #MyChangedData(self)
+
 
 
 class ChoiceEditor(QComboBox):
@@ -137,6 +139,7 @@ class ParameterItemDelegate(QStyledItemDelegate):
 
     super(ParameterItemDelegate, self).__init__(parent)
 
+
   def createEditor(self, parent, option, index):
     parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
     dtype = parameter.type
@@ -161,6 +164,7 @@ class ParameterItemDelegate(QStyledItemDelegate):
       raise RuntimeError("Handle type %s" % dtype)
     return editor
 
+
   def setEditorData(self, editor, index):
     editor.setEditorData(index)
 
@@ -177,6 +181,7 @@ class ParameterItemDelegate(QStyledItemDelegate):
     return size
 
 
+
 class ParameterItemModel(QStandardItemModel):
 
   def __init__(self, parameters=None):
@@ -190,6 +195,9 @@ class ParameterItemModel(QStandardItemModel):
 
     # Clear the model
     self.clear()
+
+    # Set to make sure it has the right number of columns
+    self.setHorizontalHeaderLabels(["Name", "Value"])
 
     # Traverse the parameter tree and add to the tree view widget
     def add_parameters(root, parameter):
@@ -206,7 +214,7 @@ class ParameterItemModel(QStandardItemModel):
       elif parameter.is_definition:
         name_node = QStandardItem(parameter.name)
 
-        print "parameter.name =", parameter.name
+        print "parameter.name =", parameter.name, parameter.extract()
 
         name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
         name_node.setData(parameter, Qt.UserRole + 1)

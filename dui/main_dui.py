@@ -1,8 +1,18 @@
 #!/usr/bin/env python
+# FIXME Copied from dials.index.py. This is needed here because scipy needs to
+# be imported before cctbx otherwise there will be a segmentation fault. This
+# should be fixed in dials.index so that we don't need to import here.
+try:
+  # try importing scipy.linalg before any cctbx modules, otherwise we
+  # sometimes get a segmentation fault/core dump if it is imported after
+  # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
+  import scipy.linalg # import dependency
+except ImportError, e:
+  pass
 
 from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
-from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexPage, RefineParameterWidget, IntegrateParameterWidget, ExportParameterWidget
+from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexParameterWidget, RefineParameterWidget, IntegrateParameterWidget, ExportParameterWidget
 
 from subprocess import call as shell_func
 import os
@@ -26,7 +36,7 @@ class MyMainDialog(QtGui.QMainWindow):
         print "\n\n"
         self.widget_list.append(FindspotstParameterWidget())
         print "\n\n"
-        self.widget_list.append(IndexPage())
+        self.widget_list.append(IndexParameterWidget())
         print "\n\n"
         self.widget_list.append(RefineParameterWidget())
         print "\n\n"
