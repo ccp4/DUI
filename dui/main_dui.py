@@ -2,7 +2,7 @@
 
 from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
-from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexPage, RefineParameterWidget, IntegrateParameterWidget, ExportPage
+from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexPage, RefineParameterWidget, IntegrateParameterWidget, ExportParameterWidget
 
 from subprocess import call as shell_func
 import os
@@ -31,7 +31,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.widget_list.append(IndexPage())
         self.widget_list.append(RefineParameterWidget())
         self.widget_list.append(IntegrateParameterWidget())
-        self.widget_list.append(ExportPage())
+        self.widget_list.append(ExportParameterWidget())
 
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)

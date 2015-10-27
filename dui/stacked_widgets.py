@@ -40,6 +40,16 @@ class IntegrateParameterWidget(ParameterWidget):
         self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
 
 
+class ExportParameterWidget(ParameterWidget):
+
+    def __init__(self, parent=None):
+        from dials.command_line.export_mtz import phil_scope
+        super(ExportParameterWidget, self).__init__(parent, phil_scope)
+        self.cmd_lin_default = "dials.export_mtz experiments.json integrated.pickle hklout=integrated.mtz"
+        self.button_label = "Export mtx"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
+
 
 from subprocess import call as shell_func
 import os
@@ -164,7 +174,8 @@ class MainWindow(QtGui.QMainWindow):
 
     #params = IntegrateParameterWidget()
     #params = RefineParameterWidget()
-    params = FindspotstParameterWidget()
+    #params = FindspotstParameterWidget()
+    params = ExportParameterWidget()
 
     '''
     params = ImportPage()
