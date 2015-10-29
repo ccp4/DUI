@@ -126,11 +126,16 @@ class MainWindow(QtGui.QMainWindow):
     super(MainWindow, self).__init__(parent)
 
     # Create the parameter window widget
-
-    params = IntegrateParameterWidget()
-    #params = RefineParameterWidget()
     #params = FindspotstParameterWidget()
+    params = IndexParameterWidget()
+    #params = RefineParameterWidget()
+    #params = IntegrateParameterWidget()
     #params = ExportParameterWidget()
+
+    to_consider_later = '''
+    params.parameterChanged.connect(self.onParameterChanged)
+    self.params=params
+    '''
 
     # Create the window layout
     layout = QtGui.QVBoxLayout()
@@ -141,6 +146,11 @@ class MainWindow(QtGui.QMainWindow):
     window.setLayout(layout)
     self.setCentralWidget(window)
 
+  to_consider_later = '''
+  def onParameterChanged(self):
+    print "PARAMETER CHANGED"
+    #parameters = self.params.getParameters()
+  '''
 
 if __name__ == '__main__':
   import sys

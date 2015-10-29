@@ -22,7 +22,9 @@ from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QString
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import QModelIndex
-
+to_consider_later = '''
+from PyQt4.QtCore import pyqtSignal
+'''
 
 def MyChangedData(obj_in):
     print "obj_in =", obj_in
@@ -90,14 +92,11 @@ class FloatEditor(QDoubleSpinBox):
     self.interpretText()
     value = self.value()
     model.setData(index, value, Qt.EditRole)
-
-
-
+    parameter = model.data(index, Qt.UserRole+1).toPyObject()
+    print parameter.words
 
   def onChanged(self, event):
-    print "onChanged(self, event)"
-    #MyChangedData(self)
-
+    print "onChanged(FloatEditor)"
 
 
 class ChoiceEditor(QComboBox):
@@ -332,6 +331,11 @@ class ParameterTreeView(QTreeView):
 
 class ParameterTreeWidget(QWidget):
 
+  to_consider_later = '''
+  # Signal to notify when an item changes
+  itemChanged = pyqtSignal()
+  '''
+
   def __init__(self, parent=None, parameters=None):
 
     # Init the parent
@@ -339,6 +343,9 @@ class ParameterTreeWidget(QWidget):
 
     # Create the model
     model = ParameterItemModel(parameters)
+    to_consider_later = '''
+    model.itemChanged.connect(self.itemChanged)
+    '''
 
     # Create a parameter tree
     self.tree = ParameterTreeView()
@@ -370,7 +377,19 @@ class ParameterTreeWidget(QWidget):
   def setSearchString(self, text):
     self.tree.model().setSearchString(text)
 
+  def setParameters(self, parameters):
+    self.model.setParameters(parameters)
+
+  def getParameters(self):
+    return self.model.getParameters()
+
+
 class ParameterWidget(QWidget):
+
+  to_consider_later = '''
+  # A signal to notify when a parameter has changed
+  parameterChanged = pyqtSignal()
+  '''
 
   def __init__(self, parent=None, parameters=None):
 
@@ -378,6 +397,9 @@ class ParameterWidget(QWidget):
 
     # Create the parameter window widget
     self.params = ParameterTreeWidget(None, parameters)
+    to_consider_later = '''
+    self.params.itemChanged.connect(self.onItemChanged)
+    '''
 
     # Create the search widget
     self.search = QLineEdit()
@@ -404,6 +426,15 @@ class ParameterWidget(QWidget):
   def setParameters(self, parameters):
     self.params.setParameters(parameters)
 
+  def getParameters(self):
+    return self.params.getParameters()
+
   def setExpertLevel(self, level):
     self.params.setExpertLevel(level)
+
+to_consider_later = '''
+  def onItemChanged(self):
+    self.parameterChanged.emit()
+'''
+
 
