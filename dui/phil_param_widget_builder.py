@@ -69,9 +69,9 @@ class IntEditor(QSpinBox):
 
 class FloatEditor(QDoubleSpinBox):
 
-  def __init__(self, parent=None, value_min=None, value_max=None):
+  def __init__(self, parent=None, value_min=None, value_max=None, s_parent = None):
     super(FloatEditor, self).__init__(parent)
-    self.prn_widg = parent
+    self.super_parent = s_parent
     if value_min is not None:
       self.setMinimum(value_min)
     else:
@@ -96,7 +96,8 @@ class FloatEditor(QDoubleSpinBox):
     print parameter.words
 
   def onChanged(self, event):
-    print "onChanged(FloatEditor)"
+    print "onChanged(FloatEditor) 01"
+    self.super_parent.test_to_be_called()
 
 
 class ChoiceEditor(QComboBox):
@@ -137,16 +138,18 @@ class ParameterItemDelegate(QStyledItemDelegate):
   def __init__(self, parent=None):
 
     super(ParameterItemDelegate, self).__init__(parent)
-
+    self.super_parent = parent
 
   def createEditor(self, parent, option, index):
+
+
     parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
     dtype = parameter.type
     ptype = dtype.phil_type
     if ptype == 'str':
       editor = StringEditor(parent)
     elif ptype == 'float':
-      editor = FloatEditor(parent, dtype.value_min, dtype.value_max)
+      editor = FloatEditor(parent, dtype.value_min, dtype.value_max, self.super_parent)
     elif ptype == 'int':
       editor = IntEditor(parent, dtype.value_min, dtype.value_max)
     elif ptype == 'choice':
@@ -178,7 +181,6 @@ class ParameterItemDelegate(QStyledItemDelegate):
     size.setWidth(size.width() * 1.5)
     size.setHeight(size.height() * 2)
     return size
-
 
 
 class ParameterItemModel(QStandardItemModel):
@@ -317,9 +319,10 @@ class ParameterSortFilterProxyModel(QSortFilterProxyModel):
 class ParameterTreeView(QTreeView):
 
   def __init__(self, parent=None):
-
     super(ParameterTreeView, self).__init__(parent)
-    self.setItemDelegate(ParameterItemDelegate())
+
+    self.super_parent = parent
+    self.setItemDelegate(ParameterItemDelegate(self.super_parent))
     self.setAlternatingRowColors(True)
     self.setSortingEnabled(False)
     self.setHeaderHidden(True)
@@ -337,9 +340,10 @@ class ParameterTreeWidget(QWidget):
   '''
 
   def __init__(self, parent=None, parameters=None):
-
     # Init the parent
     super(ParameterTreeWidget, self).__init__(parent)
+
+    self.super_parent = parent
 
     # Create the model
     model = ParameterItemModel(parameters)
@@ -348,7 +352,7 @@ class ParameterTreeWidget(QWidget):
     '''
 
     # Create a parameter tree
-    self.tree = ParameterTreeView()
+    self.tree = ParameterTreeView(self.super_parent)
 
     # Create the filter model
     filter_model = ParameterSortFilterProxyModel()
@@ -396,7 +400,7 @@ class ParameterWidget(QWidget):
     super(ParameterWidget, self).__init__(parent)
 
     # Create the parameter window widget
-    self.params = ParameterTreeWidget(None, parameters)
+    self.params = ParameterTreeWidget(self, parameters)
     to_consider_later = '''
     self.params.itemChanged.connect(self.onItemChanged)
     '''
@@ -431,6 +435,11 @@ class ParameterWidget(QWidget):
 
   def setExpertLevel(self, level):
     self.params.setExpertLevel(level)
+
+
+  def test_to_be_called(self):
+    print "from tmp parent.test_to_be_called"
+
 
 to_consider_later = '''
   def onItemChanged(self):
