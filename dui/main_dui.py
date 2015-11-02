@@ -34,7 +34,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.widget_list = []
         self.widget_list.append(ImportPage())
         print "\n\n"
-        self.widget_list.append(FindspotstParameterWidget())
+        self.widget_list.append(FindspotstParameterWidget(self))
         print "\n\n"
         self.widget_list.append(IndexParameterWidget())
         print "\n\n"
@@ -76,6 +76,10 @@ class MyMainDialog(QtGui.QMainWindow):
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
 
+
+
+    def test_to_be_called(self):
+        self.lin_txt.setText(str("changing from inner, inner .... inner widget"))
 
     def changePage(self, current, previous):
         if not current:

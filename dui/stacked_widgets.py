@@ -15,19 +15,25 @@ from PyQt4 import QtCore, QtGui
 from phil_param_widget_builder import ParameterWidget
 
 
-
-
-
-class FindspotstParameterWidget(ParameterWidget):
+#class FindspotstParameterWidget(ParameterWidget):
+class FindspotstParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from dials.command_line.find_spots import phil_scope
-        super(FindspotstParameterWidget, self).__init__(parent, phil_scope)
+        #super(FindspotstParameterWidget, self).__init__(parent, phil_scope)
+        super(FindspotstParameterWidget, self).__init__(parent)
+
+        self.super_parent = parent
+        fnd_spt_widg = ParameterWidget(self.super_parent, phil_scope)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(fnd_spt_widg)
+        self.setLayout(mainLayout)
+
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "Find Spots"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
-
 
 class RefineParameterWidget(ParameterWidget):
 
@@ -126,8 +132,8 @@ class MainWindow(QtGui.QMainWindow):
     super(MainWindow, self).__init__(parent)
 
     # Create the parameter window widget
-    #params = FindspotstParameterWidget()
-    params = IndexParameterWidget()
+    params = FindspotstParameterWidget(self)
+    #params = IndexParameterWidget()
     #params = RefineParameterWidget()
     #params = IntegrateParameterWidget()
     #params = ExportParameterWidget()
@@ -145,6 +151,11 @@ class MainWindow(QtGui.QMainWindow):
     window = QtGui.QWidget()
     window.setLayout(layout)
     self.setCentralWidget(window)
+
+
+  def test_to_be_called(self):
+    print "from tmp parent.test_to_be_called"
+
 
   to_consider_later = '''
   def onParameterChanged(self):

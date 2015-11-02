@@ -396,11 +396,12 @@ class ParameterWidget(QWidget):
   '''
 
   def __init__(self, parent=None, parameters=None):
-
     super(ParameterWidget, self).__init__(parent)
 
+    self.super_parent = parent
+
     # Create the parameter window widget
-    self.params = ParameterTreeWidget(self, parameters)
+    self.params = ParameterTreeWidget(self.super_parent, parameters)
     to_consider_later = '''
     self.params.itemChanged.connect(self.onItemChanged)
     '''
@@ -436,9 +437,6 @@ class ParameterWidget(QWidget):
   def setExpertLevel(self, level):
     self.params.setExpertLevel(level)
 
-
-  def test_to_be_called(self):
-    print "from tmp parent.test_to_be_called"
 
 
 to_consider_later = '''
