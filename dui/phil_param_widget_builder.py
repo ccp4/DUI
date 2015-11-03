@@ -79,14 +79,14 @@ class FloatEditor(QDoubleSpinBox):
       self.setMaximum(1e9)
     self.setDecimals(2)
 
-    self.valueChanged.connect(self.onChanged)
+    #self.valueChanged.connect(self.onChanged)
 
 
   def setEditorData(self, index):
     value = index.model().data(index, Qt.EditRole).toFloat()
     self.setValue(value[0])
 
-    print "value =", value
+    #print "value =", value
 
 
   def setModelData(self, model, index):
@@ -97,11 +97,11 @@ class FloatEditor(QDoubleSpinBox):
     #print "dir(parameter.words) =", dir(parameter.words)
 
 
-  def onChanged(self, event):
-    print "onChanged(FloatEditor) 01"
-    self.super_parent.test_to_be_called()
-    #print "dir(self) =", dir(self), "\n\n\n"
-    print "my value =", self.value()
+  #def onChanged(self, event):
+  #  print "onChanged(FloatEditor) 01"
+  #  self.super_parent.test_to_be_called()
+  #  #print "dir(self) =", dir(self), "\n\n\n"
+  #  print "my value =", self.value()
 
 class ChoiceEditor(QComboBox):
 
@@ -192,9 +192,45 @@ class ParameterItemModel(QStandardItemModel):
     super(ParameterItemModel, self).__init__()
     self.setParameters(parameters)
 
+    # An item in the model has changed, we want to handle it here so we can update
+    # the parameters in the parameter database (self.parameters)
+    self.itemChanged.connect(self.onItemChanged)
+
+  def onItemChanged(self, item):
+
+    print "ITEM CHANGED", item
+
+    # Get the parameter name that has changed
+    parameter = self.data(item.index(), Qt.UserRole+1).toPyObject()
+    name = parameter.name
+
+    # Get the full parameter path
+    path = parameter.full_path()
+
+    # Get the new parameter value
+    value = item.data(Qt.EditRole).toString()
+    print path, value
+
+    # FOR LUSIO!
+    #
+    # So now we have the full path, name and new value of a parameter.
+    # In the PhilIndex class there might be a method you can use to
+    # set the parameter based on this information. Set the new parameter value here!
+
   def setParameters(self, parameters):
 
     # Save the parameters
+    #
+    # FOR LUISO!
+    #
+    # Currently the parameters are stored here as a phil_scope object.
+    # Maybe we should actually be using the PhilIndex class as in xia2. This could
+    # work by passing the master (default) phil scope object as we are currently
+    # doing in the constructor and then we could create the PhilIndex object here.
+    #
+    # This object would keep track of the default parameters for us and then when we
+    # update the parameters we can query the diff of the parameters from it.
+    #
     self.parameters = parameters
 
     # Clear the model
