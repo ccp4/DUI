@@ -24,10 +24,10 @@ class FindspotstParameterWidget(QtGui.QWidget):
         super(FindspotstParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
-        fnd_spt_widg = ParameterWidget(self.super_parent, phil_scope)
+        param_widg = ParameterWidget(self.super_parent, phil_scope)
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(fnd_spt_widg)
+        mainLayout.addWidget(param_widg)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
@@ -35,33 +35,85 @@ class FindspotstParameterWidget(QtGui.QWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
 
-class RefineParameterWidget(ParameterWidget):
+
+class IndexParameterWidget(QtGui.QWidget):
+
+    def __init__(self, parent=None):
+        from dials.command_line.index import phil_scope
+        super(IndexParameterWidget, self).__init__(parent)
+
+        self.super_parent = parent
+        param_widg = ParameterWidget(self.super_parent, phil_scope)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(param_widg)
+        self.setLayout(mainLayout)
+
+        self.cmd_lin_default = "dials.index datablock.json strong.pickle"
+        self.button_label = "Index"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
+
+        startQueryButton = QtGui.QPushButton("Bttn tst")
+        mainLayout = QtGui.QVBoxLayout()
+
+        mainLayout.addWidget(startQueryButton)
+        mainLayout.addStretch(1)
+
+        self.setLayout(mainLayout)
+
+
+class RefineParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from dials.command_line.refine import phil_scope
-        super(RefineParameterWidget, self).__init__(parent, phil_scope)
+        super(RefineParameterWidget, self).__init__(parent)
+
+        self.super_parent = parent
+        param_widg = ParameterWidget(self.super_parent, phil_scope)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(param_widg)
+        self.setLayout(mainLayout)
+
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
         self.button_label = "Refine"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
 
 
-class IntegrateParameterWidget(ParameterWidget):
+class IntegrateParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from dials.command_line.integrate import phil_scope
-        super(IntegrateParameterWidget, self).__init__(parent, phil_scope)
+        super(IntegrateParameterWidget, self).__init__(parent)
+
+        self.super_parent = parent
+        param_widg = ParameterWidget(self.super_parent, phil_scope)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(param_widg)
+        self.setLayout(mainLayout)
+
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
         self.button_label = "Integrate"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
 
 
-class ExportParameterWidget(ParameterWidget):
+class ExportParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from dials.command_line.export_mtz import phil_scope
-        super(ExportParameterWidget, self).__init__(parent, phil_scope)
+        super(ExportParameterWidget, self).__init__(parent)
+
+        self.super_parent = parent
+        param_widg = ParameterWidget(self.super_parent, phil_scope)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(param_widg)
+        self.setLayout(mainLayout)
+
         self.cmd_lin_default = "dials.export_mtz experiments.json integrated.pickle hklout=integrated.mtz"
         self.button_label = "Export mtx"
         my_dui_path = os.environ["DUI_PATH"]
@@ -96,31 +148,6 @@ class ImportPage(QtGui.QWidget):
         mainLayout.addStretch(1)
 
         self.setLayout(mainLayout)
-
-
-
-
-
-
-class IndexParameterWidget(ParameterWidget):
-
-    def __init__(self, parent=None):
-        from dials.command_line.index import phil_scope
-        super(IndexParameterWidget, self).__init__(parent, phil_scope)
-
-        self.cmd_lin_default = "dials.index datablock.json strong.pickle"
-        self.button_label = "Index"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
-
-        startQueryButton = QtGui.QPushButton("Bttn tst")
-        mainLayout = QtGui.QVBoxLayout()
-
-        mainLayout.addWidget(startQueryButton)
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
-
 
 
 

@@ -30,19 +30,19 @@ class MyMainDialog(QtGui.QMainWindow):
         self.contentsWidget.setMinimumHeight(724)
         self.contentsWidget.setSpacing(12)
 
-        self.pagesWidget = QtGui.QStackedWidget()
+        self.pagesWidget = QtGui.QStackedWidget(self)
         self.widget_list = []
-        self.widget_list.append(ImportPage())
+        self.widget_list.append(ImportPage(self))
         print "\n\n"
         self.widget_list.append(FindspotstParameterWidget(self))
         print "\n\n"
-        self.widget_list.append(IndexParameterWidget())
+        self.widget_list.append(IndexParameterWidget(self))
         print "\n\n"
-        self.widget_list.append(RefineParameterWidget())
+        self.widget_list.append(RefineParameterWidget(self))
         print "\n\n"
-        self.widget_list.append(IntegrateParameterWidget())
+        self.widget_list.append(IntegrateParameterWidget(self))
         print "\n\n"
-        self.widget_list.append(ExportParameterWidget())
+        self.widget_list.append(ExportParameterWidget(self))
 
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
