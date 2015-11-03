@@ -84,21 +84,27 @@ class FloatEditor(QDoubleSpinBox):
 
     self.valueChanged.connect(self.onChanged)
 
+
   def setEditorData(self, index):
     value = index.model().data(index, Qt.EditRole).toFloat()
     self.setValue(value[0])
+
+    print "value =", value
+
 
   def setModelData(self, model, index):
     self.interpretText()
     value = self.value()
     model.setData(index, value, Qt.EditRole)
     parameter = model.data(index, Qt.UserRole+1).toPyObject()
-    print parameter.words
+    print "parameter.words =", parameter.words
+
 
   def onChanged(self, event):
     print "onChanged(FloatEditor) 01"
     self.super_parent.test_to_be_called()
-
+    #print "dir(self) =", dir(self), "\n\n\n"
+    print "my value =", self.value()
 
 class ChoiceEditor(QComboBox):
 
@@ -215,7 +221,9 @@ class ParameterItemModel(QStandardItemModel):
       elif parameter.is_definition:
         name_node = QStandardItem(parameter.name)
 
+        to_reuse_latter = '''
         print "parameter.name =", parameter.name, parameter.extract()
+        '''
 
         name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
         name_node.setData(parameter, Qt.UserRole + 1)

@@ -15,12 +15,34 @@ from PyQt4 import QtCore, QtGui
 from phil_param_widget_builder import ParameterWidget
 
 
-#class FindspotstParameterWidget(ParameterWidget):
+class ImportPage(QtGui.QWidget):
+    def __init__(self, parent=None):
+        super(ImportPage, self).__init__(parent)
+
+        self.cmd_lin_default = "dials.import ~/data/th_8_2_0*"
+        self.button_label = "Import"
+
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
+
+        configGroup = QtGui.QGroupBox("Box 01")
+        configLayout = QtGui.QVBoxLayout()
+
+        lin_txt =  QtGui.QLineEdit(self)
+        configLayout.addWidget(lin_txt)
+        configGroup.setLayout(configLayout)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(configGroup)
+        mainLayout.addStretch(1)
+
+        self.setLayout(mainLayout)
+
+
 class FindspotstParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from dials.command_line.find_spots import phil_scope
-        #super(FindspotstParameterWidget, self).__init__(parent, phil_scope)
         super(FindspotstParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
@@ -54,13 +76,6 @@ class IndexParameterWidget(QtGui.QWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
 
-        startQueryButton = QtGui.QPushButton("Bttn tst")
-        mainLayout = QtGui.QVBoxLayout()
-
-        mainLayout.addWidget(startQueryButton)
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
 
 
 class RefineParameterWidget(QtGui.QWidget):
@@ -122,33 +137,6 @@ class ExportParameterWidget(QtGui.QWidget):
 
 from subprocess import call as shell_func
 import os
-
-class ImportPage(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(ImportPage, self).__init__(parent)
-
-        self.cmd_lin_default = "dials.import ~/data/th_8_2_0*"
-        self.button_label = "Import"
-
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
-
-        configGroup = QtGui.QGroupBox("Box 01")
-        configLayout = QtGui.QVBoxLayout()
-
-
-
-        lin_txt =  QtGui.QLineEdit(self)
-        configLayout.addWidget(lin_txt)
-
-        configGroup.setLayout(configLayout)
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(configGroup)
-        mainLayout.addStretch(1)
-
-        self.setLayout(mainLayout)
-
 
 
 class MainWindow(QtGui.QMainWindow):
