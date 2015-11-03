@@ -153,11 +153,6 @@ class MainWindow(QtGui.QMainWindow):
     #params = IntegrateParameterWidget()
     #params = ExportParameterWidget()
 
-    to_consider_later = '''
-    params.parameterChanged.connect(self.onParameterChanged)
-    self.params=params
-    '''
-
     # Create the window layout
     layout = QtGui.QVBoxLayout()
     layout.addWidget(params)
@@ -167,16 +162,8 @@ class MainWindow(QtGui.QMainWindow):
     window.setLayout(layout)
     self.setCentralWidget(window)
 
-
   def test_to_be_called(self):
     print "from tmp parent.test_to_be_called"
-
-
-  to_consider_later = '''
-  def onParameterChanged(self):
-    print "PARAMETER CHANGED"
-    #parameters = self.params.getParameters()
-  '''
 
 if __name__ == '__main__':
   import sys

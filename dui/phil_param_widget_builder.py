@@ -22,9 +22,6 @@ from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QString
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import QModelIndex
-to_consider_later = '''
-from PyQt4.QtCore import pyqtSignal
-'''
 
 def MyChangedData(obj_in):
     print "obj_in =", obj_in
@@ -97,7 +94,7 @@ class FloatEditor(QDoubleSpinBox):
     value = self.value()
     model.setData(index, value, Qt.EditRole)
     parameter = model.data(index, Qt.UserRole+1).toPyObject()
-    print "parameter.words =", parameter.words
+    #print "dir(parameter.words) =", dir(parameter.words)
 
 
   def onChanged(self, event):
@@ -339,13 +336,10 @@ class ParameterTreeView(QTreeView):
     self.setEditTriggers(QAbstractItemView.AllEditTriggers)
     self.setIndentation(30)
 
+    #print "\n\n\n", "dir(self) =", dir(self), "\n\n\n"
+
 
 class ParameterTreeWidget(QWidget):
-
-  to_consider_later = '''
-  # Signal to notify when an item changes
-  itemChanged = pyqtSignal()
-  '''
 
   def __init__(self, parent=None, parameters=None):
     # Init the parent
@@ -355,9 +349,6 @@ class ParameterTreeWidget(QWidget):
 
     # Create the model
     model = ParameterItemModel(parameters)
-    to_consider_later = '''
-    model.itemChanged.connect(self.itemChanged)
-    '''
 
     # Create a parameter tree
     self.tree = ParameterTreeView(self.super_parent)
@@ -398,11 +389,6 @@ class ParameterTreeWidget(QWidget):
 
 class ParameterWidget(QWidget):
 
-  to_consider_later = '''
-  # A signal to notify when a parameter has changed
-  parameterChanged = pyqtSignal()
-  '''
-
   def __init__(self, parent=None, parameters=None):
     super(ParameterWidget, self).__init__(parent)
 
@@ -410,9 +396,6 @@ class ParameterWidget(QWidget):
 
     # Create the parameter window widget
     self.params = ParameterTreeWidget(self.super_parent, parameters)
-    to_consider_later = '''
-    self.params.itemChanged.connect(self.onItemChanged)
-    '''
 
     # Create the search widget
     self.search = QLineEdit()
@@ -444,12 +427,4 @@ class ParameterWidget(QWidget):
 
   def setExpertLevel(self, level):
     self.params.setExpertLevel(level)
-
-
-
-to_consider_later = '''
-  def onItemChanged(self):
-    self.parameterChanged.emit()
-'''
-
 
