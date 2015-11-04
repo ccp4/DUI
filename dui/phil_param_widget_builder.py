@@ -219,7 +219,7 @@ class ParameterItemModel(QStandardItemModel):
     #print path, value
     print name, value
 
-    self.super_parent.update_lin_txt()
+    self.super_parent.update_lin_txt(name, value)
 
     # FOR LUISO!
     #

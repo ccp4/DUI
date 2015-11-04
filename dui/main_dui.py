@@ -33,15 +33,10 @@ class MyMainDialog(QtGui.QMainWindow):
         self.pagesWidget = QtGui.QStackedWidget(self)
         self.widget_list = []
         self.widget_list.append(ImportPage(self))
-        print "\n\n"
         self.widget_list.append(FindspotstParameterWidget(self))
-        print "\n\n"
         self.widget_list.append(IndexParameterWidget(self))
-        print "\n\n"
         self.widget_list.append(RefineParameterWidget(self))
-        print "\n\n"
         self.widget_list.append(IntegrateParameterWidget(self))
-        print "\n\n"
         self.widget_list.append(ExportParameterWidget(self))
 
         for widg in self.widget_list:
@@ -60,8 +55,8 @@ class MyMainDialog(QtGui.QMainWindow):
 
         exec_layout = QtGui.QHBoxLayout()
 
-        self.lin_txt =  QtGui.QLineEdit(self)
-        exec_layout.addWidget(self.lin_txt)
+        self.gui_line_edit =  QtGui.QLineEdit(self)
+        exec_layout.addWidget(self.gui_line_edit)
 
         exec_layout.addWidget(Go_button)
 
@@ -78,8 +73,9 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
 
-    def update_lin_txt(self):
-        self.lin_txt.setText(str("changing from inner, inner .... inner widget"))
+    def update_lin_txt(self, param_name = None, param_value = None):
+        self.gui_line_edit.setText(self.cli_str + " " + str(param_name) + "=" +
+                             str(param_value))
 
     def changePage(self, current, previous):
         if not current:
@@ -87,10 +83,10 @@ class MyMainDialog(QtGui.QMainWindow):
         self.pagesWidget.setCurrentIndex(self.contentsWidget.row(current))
 
         idx = self.pagesWidget.currentIndex()
-        cli_str = self.widget_list[idx].cmd_lin_default
+        self.cli_str = self.widget_list[idx].cmd_lin_default
 
         try:
-            self.lin_txt.setText(str(cli_str))
+            self.gui_line_edit.setText(str(self.cli_str))
         except:
             pass
 
@@ -109,10 +105,10 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def onGoBtn(self, event):
         print "Go pressed"
-        shell_str = str(self.lin_txt.text())
+        shell_str = str(self.gui_line_edit.text())
         shell_func(shell_str, shell=True)
         print"\n Ok \n"
-        self.lin_txt.setText(str(""))
+        self.gui_line_edit.setText(str(""))
 
 
 if __name__ == '__main__':
