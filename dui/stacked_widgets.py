@@ -162,8 +162,8 @@ class MainWindow(QtGui.QMainWindow):
     window.setLayout(layout)
     self.setCentralWidget(window)
 
-  def test_to_be_called(self):
-    print "from tmp parent.test_to_be_called"
+  def update_lin_txt(self):
+    print "from tmp parent.update_lin_txt"
 
 if __name__ == '__main__':
   import sys

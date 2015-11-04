@@ -102,7 +102,7 @@ class FloatEditor(QDoubleSpinBox):
 
   #def onChanged(self, event):
   #  print "onChanged(FloatEditor) 01"
-  #  self.super_parent.test_to_be_called()
+  #  self.super_parent.update_lin_txt()
   #  #print "dir(self) =", dir(self), "\n\n\n"
   #  print "my value =", self.value()
 
@@ -194,9 +194,10 @@ class ParameterItemDelegate(QStyledItemDelegate):
 
 class ParameterItemModel(QStandardItemModel):
 
-  def __init__(self, parameters=None):
+  def __init__(self, parameters=None, parent = None):
     super(ParameterItemModel, self).__init__()
     self.setParameters(parameters)
+    self.super_parent = parent
 
     # An item in the model has changed, we want to handle it here so we can update
     # the parameters in the parameter database (self.parameters)
@@ -215,9 +216,12 @@ class ParameterItemModel(QStandardItemModel):
 
     # Get the new parameter value
     value = item.data(Qt.EditRole).toString()
-    print path, value
+    #print path, value
+    print name, value
 
-    # FOR LUSIO!
+    self.super_parent.update_lin_txt()
+
+    # FOR LUISO!
     #
     # So now we have the full path, name and new value of a parameter.
     # In the PhilIndex class there might be a method you can use to
@@ -390,7 +394,7 @@ class ParameterTreeWidget(QWidget):
     self.super_parent = parent
 
     # Create the model
-    model = ParameterItemModel(parameters)
+    model = ParameterItemModel(parameters, self.super_parent)
 
     # Create a parameter tree
     self.tree = ParameterTreeView(self.super_parent)

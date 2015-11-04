@@ -78,7 +78,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
 
-    def test_to_be_called(self):
+    def update_lin_txt(self):
         self.lin_txt.setText(str("changing from inner, inner .... inner widget"))
 
     def changePage(self, current, previous):
