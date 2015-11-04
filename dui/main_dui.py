@@ -74,8 +74,23 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
     def update_lin_txt(self, param_name = None, param_value = None):
-        self.gui_line_edit.setText(self.cli_str + " " + str(param_name) + "=" +
-                             str(param_value))
+        if(param_name != None):
+            found_param = False
+            for local_pname in self.param_changed_lst:
+                if( local_pname[0] == param_name ):
+                    local_pname[1] = param_value
+                    found_param = True
+
+            if(found_param == False):
+                self.param_changed_lst.append([param_name,param_value])
+
+            my_cli_string = self.cli_str
+
+            for local_pname in self.param_changed_lst:
+                my_cli_string += ( " " + str(local_pname[0]) +
+                                   "=" + str(local_pname[1]) )
+
+            self.gui_line_edit.setText(my_cli_string)
 
     def changePage(self, current, previous):
         if not current:
@@ -89,6 +104,7 @@ class MyMainDialog(QtGui.QMainWindow):
             self.gui_line_edit.setText(str(self.cli_str))
         except:
             pass
+        self.param_changed_lst = []
 
     def createIcons(self):
 
