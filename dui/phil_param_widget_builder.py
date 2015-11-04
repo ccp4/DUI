@@ -69,6 +69,9 @@ class FloatEditor(QDoubleSpinBox):
   def __init__(self, parent=None, value_min=None, value_max=None, s_parent = None):
     super(FloatEditor, self).__init__(parent)
     self.super_parent = s_parent
+
+    self.my_parent = parent
+
     if value_min is not None:
       self.setMinimum(value_min)
     else:
@@ -102,6 +105,9 @@ class FloatEditor(QDoubleSpinBox):
   #  self.super_parent.test_to_be_called()
   #  #print "dir(self) =", dir(self), "\n\n\n"
   #  print "my value =", self.value()
+
+    print "my_parent =", self.my_parent
+
 
 class ChoiceEditor(QComboBox):
 
