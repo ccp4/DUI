@@ -7,9 +7,6 @@ class Example(QtGui.QWidget):
 
     def __init__(self):
         super(Example, self).__init__()
-        self.initUI()
-
-    def initUI(self):
 
         self.btn1 = QtGui.QPushButton('\n\n     import    \n\n', self)
         self.btn1.clicked.connect(self.B_clicked1)
@@ -23,8 +20,6 @@ class Example(QtGui.QWidget):
         self.lin_txt = QtGui.QLineEdit(self)
         self.btn_go = QtGui.QPushButton('\n      Go      \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
-
-        self.My_stacked_wd = QStackedWidget(self)
 
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.btn1)
@@ -48,7 +43,6 @@ class Example(QtGui.QWidget):
         self.setWindowTitle('Shell dialog')
         self.show()
 
-
     def B_clicked1(self):
         self.lin_txt.setText(str("dials.import"))
 
@@ -62,21 +56,6 @@ class Example(QtGui.QWidget):
         shell_str = str(self.lin_txt.text())
         shell_func(shell_str, shell=True)
         self.lin_txt.setText(str(""))
-
-'''
-     QWidget *firstPageWidget = new QWidget;
-     QWidget *secondPageWidget = new QWidget;
-     QWidget *thirdPageWidget = new QWidget;
-
-     QStackedWidget *stackedWidget = new QStackedWidget;
-     stackedWidget->addWidget(firstPageWidget);
-     stackedWidget->addWidget(secondPageWidget);
-     stackedWidget->addWidget(thirdPageWidget);
-
-     QVBoxLayout *layout = new QVBoxLayout;
-     layout->addWidget(stackedWidget);
-     setLayout(layout);
-'''
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

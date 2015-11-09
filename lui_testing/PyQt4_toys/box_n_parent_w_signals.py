@@ -18,7 +18,7 @@ class inner_widg( QWidget):
         self.initUI()
 
     def initUI(self):
-        self.btn_go =  QPushButton('\n      Go   \n', self)
+        self.btn_go =  QPushButton('\n     Go   \n', self)
         self.btn_go.clicked.connect(self.goClicked)
 
         hbox =  QHBoxLayout()
@@ -47,15 +47,47 @@ class MainWidget( QWidget):
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
-    def to_be_caled_from_son_widg(self, n):
-        print "n =", n
 
-        print "from parent parent_widget"
     def onGoClicked(self):
-        print"\n Ok    from inner_widg \n"
-        self.to_be_caled_from_son_widg(4)
+        print"\n Ok    from parent_widg \n"
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = MainWidget()
     sys.exit(app.exec_())
+
+
+
+'''
+
+class A(QGroupBox):
+    def __init__(self, parent=None):
+        super(A, self).__init__(parent)
+        self.button1= QPushButton('bt1')
+        self.button1.show()
+
+class B(QGroupBox):
+    def __init__(self, parent=None):
+        super(B, self).__init__(parent)
+        self.line2 = QLineEdit()
+        self.line2.show()
+
+        self.connect(self.okButton, QtCore.SIGNAL("clicked()"),
+                     self, QtCore.SLOT("accept()"))
+
+ob1 = A()
+ob2 = B()
+
+
+
+Yes, create a method in object B that's
+tied to a signal in object A. Note how connect is called (this is just an example):
+
+    self.connect(self.okButton, QtCore.SIGNAL("clicked()"),
+                 self, QtCore.SLOT("accept()"))
+
+The third argument is the object with the slot, and the fourth the slot name.
+The sending and receiving objects can definitely be different.
+
+
+'''

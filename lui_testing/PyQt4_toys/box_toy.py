@@ -1,62 +1,51 @@
 from subprocess import call as shell_func
 import sys
 
-#from PyQt4 import QtGui, QtCore
+from PySide import QtGui, QtCore
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
-
-
-class inner_widg( QWidget):
-
-    def __init__(self, parent):
-        super(inner_widg, self).__init__()
-        self.parent_widget = parent
-        self.initUI()
-
-    def initUI(self):
-        self.btn_go =  QPushButton('\n      Go   \n', self)
-        self.btn_go.clicked.connect(self.B_go_clicked)
-
-        hbox =  QHBoxLayout()
-        hbox.addWidget(self.btn_go)
-
-        bg_box =  QVBoxLayout(self)
-        bg_box.addLayout(hbox)
-
-        self.setLayout(bg_box)
-        self.show()
-
-
-    def B_go_clicked(self):
-        print"\n Ok    from inner_widg \n"
-        self.parent_widget.to_be_caled_from_son_widg(4)
-
-
-class MainWidget( QWidget):
+class Example(QtGui.QWidget):
 
     def __init__(self):
-        super(MainWidget, self).__init__()
-        self.initUI()
+        super(Example, self).__init__()
 
-    def initUI(self):
-        self.btn_go = inner_widg(self)
+        self.btn1 = QtGui.QPushButton('\n\n     listing    \n\n', self)
+        self.btn1.clicked.connect(self.B_clicked1)
 
-        hbox =  QHBoxLayout()
+        self.lin_txt = QtGui.QLineEdit(self)
+        self.btn_go = QtGui.QPushButton('\n      Go      \n', self)
+        self.btn_go.clicked.connect(self.B_go_clicked)
+
+        vbox = QtGui.QVBoxLayout()
+        vbox.addWidget(self.btn1)
+
+        top_box = QtGui.QHBoxLayout()
+        top_box.addLayout(vbox)
+        top_box.addStretch(1)
+
+        hbox = QtGui.QHBoxLayout()
+        hbox.addWidget(self.lin_txt)
         hbox.addWidget(self.btn_go)
 
-        self.setGeometry(1100, 200, 550, 250)
-        self.setLayout(hbox)
+        bg_box = QtGui.QVBoxLayout(self)
+        bg_box.addLayout(top_box)
+        bg_box.addStretch(1)
+        bg_box.addLayout(hbox)
+
+        self.setGeometry(1200, 200, 450, 350)
+        self.setLayout(bg_box)
         self.setWindowTitle('Shell dialog')
         self.show()
-    def to_be_caled_from_son_widg(self, n):
-        print "n =", n
 
-        print "from parent parent_widget"
+    def B_clicked1(self):
+        self.lin_txt.setText(str("ls -al"))
 
+    def B_go_clicked(self):
+        shell_str = str(self.lin_txt.text())
+        shell_func(shell_str, shell=True)
+        #p = subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1)
+        self.lin_txt.setText(str(""))
 
 if __name__ == '__main__':
-    app =  QApplication(sys.argv)
-    ex = MainWidget()
+    app = QtGui.QApplication(sys.argv)
+    ex = Example()
     sys.exit(app.exec_())

@@ -45,9 +45,6 @@ class Example(QtGui.QMainWindow):
     def __init__(self):
         super(Example, self).__init__()
 
-        #self.mousePressEvent.connect(self.tst_func)
-
-
         my_wg = inner_widg()
 
         mainLayout = QtGui.QVBoxLayout()
@@ -64,11 +61,7 @@ class Example(QtGui.QMainWindow):
 
     def tst_func(self):
         print "from tst_func"
-'''
-    def mousePressEvent(self, event):
-        print "from mousePressEvent"
-        #self.c.clickApp.emit()
-'''
+
 
 def main():
     app = QtGui.QApplication(sys.argv)
