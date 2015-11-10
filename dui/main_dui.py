@@ -14,8 +14,12 @@ from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
 from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexParameterWidget, RefineParameterWidget, IntegrateParameterWidget, ExportParameterWidget
 
-from subprocess import call as shell_func
-import os
+#from subprocess import call as shell_func
+#import os
+
+import subprocess
+import sys
+
 
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -63,7 +67,13 @@ class MyMainDialog(QtGui.QMainWindow):
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addLayout(horizontalLayout)
         mainLayout.addStretch(1)
-        mainLayout.addSpacing(12)
+
+
+
+        self.multi_line_txt = QtGui.QTextEdit()
+        self.multi_line_txt.setReadOnly(True)
+
+        mainLayout.addWidget(self.multi_line_txt)
         mainLayout.addLayout(exec_layout)
 
         main_widget = QtGui.QWidget()
@@ -120,12 +130,17 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
     def onGoBtn(self, event):
-        print "Go pressed"
-        shell_str = str(self.gui_line_edit.text())
-        shell_func(shell_str, shell=True)
-        print"\n Ok \n"
-        self.gui_line_edit.setText(str(""))
 
+        shell_str = str(self.gui_line_edit.text())
+        p = subprocess.Popen(shell_str, stdout = subprocess.PIPE, bufsize = 1, shell = True)
+        for line in iter(p.stdout.readline, b''):
+            #print line,
+            #self.multi_line_txt.append("Hi")
+            self.multi_line_txt.append(line)
+
+        p.stdout.close()
+        p.wait()
+        self.gui_line_edit.setText(str(""))
 
 if __name__ == '__main__':
 
