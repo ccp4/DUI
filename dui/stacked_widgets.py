@@ -38,6 +38,16 @@ class ImportPage(QtGui.QWidget):
 
         self.setLayout(mainLayout)
 
+        fl_diag = QtGui.QFileDialog()
+        fileName = fl_diag.getOpenFileName(self, "Open File")#,QtCore.QDir.currentPath())
+        print "Hi 01"
+        if fileName:
+            print "Hi 02"
+            image = QtGui.QImage(fileName)
+            if image.isNull():
+                print "image.isNull()"
+        print "image =", image
+
 
 class FindspotstParameterWidget(QtGui.QWidget):
 
