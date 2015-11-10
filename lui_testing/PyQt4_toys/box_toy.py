@@ -13,6 +13,8 @@ class Example(QtGui.QWidget):
         self.btn1.clicked.connect(self.B_clicked1)
 
         self.lin_txt = QtGui.QLineEdit(self)
+        self.lin_txt.setReadOnly(True)
+
         self.btn_go = QtGui.QPushButton('\n      Go      \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
