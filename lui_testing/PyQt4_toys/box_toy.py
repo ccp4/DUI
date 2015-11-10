@@ -18,6 +18,7 @@ class Example(QtGui.QWidget):
 
 
         self.multi_line_txt = QtGui.QTextEdit()
+        self.multi_line_txt.setReadOnly(True)
 
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.btn1)
@@ -53,7 +54,7 @@ class Example(QtGui.QWidget):
 
         p = subprocess.Popen(shell_str, stdout = subprocess.PIPE, bufsize = 1, shell = True)
         for line in iter(p.stdout.readline, b''):
-            print line,
+            #print line,
             #self.multi_line_txt.append("Hi")
             self.multi_line_txt.append(line)
 
@@ -63,36 +64,6 @@ class Example(QtGui.QWidget):
 
         self.lin_txt.setText(str(""))
 
-to_copy_from = '''
-
-class MyQProcess(QProcess):
-  def __init__(self):
-   #Call base class method
-   QProcess.__init__(self)
-   #Create an instance variable here (of type QTextEdit)
-   self.edit  = QTextEdit()
-   self.edit.setWindowTitle("QTextEdit Standard Output Redirection")
-   self.edit.show()
-
-  #Define Slot Here
-  @pyqtSlot()
-  def readStdOutput(self):
-    self.edit.append(QString(self.readAllStandardOutput()))
-
-
-def main():
-    app   = QApplication(sys.argv)
-    qProcess  = MyQProcess()
-
-    qProcess.setProcessChannelMode(QProcess.MergedChannels);
-    #qProcess.start("ldconfig -v")
-    qProcess.start("ls -al")
-
-    QObject.connect(qProcess,SIGNAL("readyReadStandardOutput()"),qProcess,SLOT("readStdOutput()"));
-
-    return app.exec_()
-
-'''
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
