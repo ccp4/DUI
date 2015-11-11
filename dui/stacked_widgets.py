@@ -19,17 +19,22 @@ class ImportPage(QtGui.QWidget):
     def __init__(self, parent=None):
         super(ImportPage, self).__init__(parent)
 
-        self.cmd_lin_default = "dials.import ~/data/th_8_2_0*"
+        self.super_parent = parent
+
+        self.cmd_lin_default = "dials.import ~/put/your/path/here"
         self.button_label = "Import"
 
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
 
-        configGroup = QtGui.QGroupBox("Box 01")
-        configLayout = QtGui.QVBoxLayout()
+        configGroup = QtGui.QGroupBox("Experiment IMG Directory")
+        configLayout = QtGui.QHBoxLayout()
 
-        lin_txt =  QtGui.QLineEdit(self)
-        configLayout.addWidget(lin_txt)
+        self.lin_txt =  QtGui.QLineEdit(self)
+        configLayout.addWidget(self.lin_txt)
+        dir_but = QtGui.QPushButton(" \n    Find experiment dir            . \n")
+        dir_but.clicked.connect(self.find_my_dir)
+        configLayout.addWidget(dir_but)
         configGroup.setLayout(configLayout)
 
         mainLayout = QtGui.QVBoxLayout()
@@ -38,11 +43,13 @@ class ImportPage(QtGui.QWidget):
 
         self.setLayout(mainLayout)
 
+    def find_my_dir(self, event):
         dir_name = QtGui.QFileDialog.getExistingDirectory(self,"Open Directory")
         if dir_name:
-            print dir_name
-
-
+            self.lin_txt.setText(dir_name)
+            self.cmd_lin_default = "dials.import "+ dir_name
+        print "CLI =", self.cmd_lin_default
+        self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
 
 class FindspotstParameterWidget(QtGui.QWidget):
 
