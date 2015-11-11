@@ -38,55 +38,10 @@ class ImportPage(QtGui.QWidget):
 
         self.setLayout(mainLayout)
 
-        fl_diag = QtGui.QFileDialog()
-        fileName = fl_diag.getOpenFileName(self, "Open File")#,QtCore.QDir.currentPath())
-        print "Hi 01"
-        if fileName:
-            print "Hi 02"
-            image = QtGui.QImage(fileName)
-            if image.isNull():
-                print "image.isNull()"
-        print "image =", image
+        dir_name = QtGui.QFileDialog.getExistingDirectory(self,"Open Directory")
+        if dir_name:
+            print dir_name
 
-        example_from_the_mouse_n_the_python = '''
-            #----------------------------------------------------------------------
-            def openFileDialog(self):
-                """
-                Opens a file dialog and sets the label to the chosen path
-                """
-                import os
-                path, _ = QtGui.QFileDialog.getOpenFileName(self, "Open File", os.getcwd())
-                self.label.setText(path)
-
-            #----------------------------------------------------------------------
-            def openDirectoryDialog(self):
-                """
-                Opens a dialog to allow user to choose a directory
-                """
-                flags = QtGui.QFileDialog.DontResolveSymlinks | QtGui.QFileDialog.ShowDirsOnly
-                d = directory = QtGui.QFileDialog.getExistingDirectory(self,
-                                                                       "Open Directory",
-                                                                       os.getcwd(),
-                                                                       flags)
-                self.label.setText(d)
-
-        '''
-
-        example_from_StackOverflow = '''
-          fileName = QtGui.QFileDialog.getSaveFileName(self, 'Dialog Title', '/path/to/default/directory', selectedFilter='*.txt')
-          if fileName:
-              print fileName
-
-        '''
-
-        example_from_StackOverflow_02 = '''
-          from PySide import QtGui
-          app = QtGui.QApplication([])
-          dialog = QtGui.QFileDialog()
-          dialog.setFileMode(QtGui.QFileDialog.Directory)
-          dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
-          dialog.exec_()
-        '''
 
 
 class FindspotstParameterWidget(QtGui.QWidget):
