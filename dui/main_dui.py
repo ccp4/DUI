@@ -133,10 +133,9 @@ class MyMainDialog(QtGui.QMainWindow):
 
         shell_str = str(self.gui_line_edit.text())
         p = subprocess.Popen(shell_str, stdout = subprocess.PIPE, bufsize = 1, shell = True)
-        for line in iter(p.stdout.readline, b''):
-            #print line,
-            #self.multi_line_txt.append("Hi")
-            self.multi_line_txt.append(line)
+        for line_w_return in iter(p.stdout.readline, b''):
+            single_line = line_w_return[0:len(line_w_return)-1]
+            self.multi_line_txt.append(single_line)
 
         p.stdout.close()
         p.wait()
