@@ -45,6 +45,8 @@ class MyMainDialog(QtGui.QMainWindow):
         self.widget_list.append(IntegrateParameterWidget(self))
         self.widget_list.append(ExportParameterWidget(self))
 
+        self.pagesWidget.setMaximumWidth(650)
+
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
 
@@ -67,21 +69,16 @@ class MyMainDialog(QtGui.QMainWindow):
         exec_layout.addWidget(Go_button)
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addLayout(horizontalLayout)
-        mainLayout.addStretch(1)
-
-
 
         self.multi_line_txt = QtGui.QTextEdit()
-        self.multi_line_txt.setMaximumHeight(524)
+        self.multi_line_txt.setMaximumHeight(724)
         self.multi_line_txt.setMinimumHeight(24)
         self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
 
         self.multi_line_txt.setReadOnly(True)
+        horizontalLayout.addWidget(self.multi_line_txt)
 
-        mainLayout.addWidget(self.multi_line_txt)
-
-
+        mainLayout.addLayout(horizontalLayout)
         mainLayout.addLayout(exec_layout)
 
         main_widget = QtGui.QWidget()
@@ -154,6 +151,14 @@ if __name__ == '__main__':
     import sys
 
     app = QtGui.QApplication(sys.argv)
+
+
+    screen_resolution = app.desktop().screenGeometry()
+    width, height = screen_resolution.width(), screen_resolution.height()
+
+    print "width, height =", width, height
+
+
     dialog = MyMainDialog()
     dialog.show()
     sys.exit(app.exec_())
