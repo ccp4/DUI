@@ -27,11 +27,13 @@ class MyMainDialog(QtGui.QMainWindow):
 
         self.contentsWidget = QtGui.QListWidget()
         self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
-        self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
+        #self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
+        self.contentsWidget.setIconSize(QtCore.QSize(56, 44))
         self.contentsWidget.setMovement(QtGui.QListView.Static)
 
-        self.contentsWidget.setMaximumWidth(148)
-        self.contentsWidget.setMinimumHeight(724)
+        self.contentsWidget.setMaximumWidth(88)
+        #self.contentsWidget.setMinimumHeight(724)
+        self.contentsWidget.setMinimumHeight(524)
         self.contentsWidget.setSpacing(12)
 
         self.pagesWidget = QtGui.QStackedWidget(self)
@@ -71,9 +73,15 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
         self.multi_line_txt = QtGui.QTextEdit()
+        self.multi_line_txt.setMaximumHeight(524)
+        self.multi_line_txt.setMinimumHeight(24)
+        self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
+
         self.multi_line_txt.setReadOnly(True)
 
         mainLayout.addWidget(self.multi_line_txt)
+
+
         mainLayout.addLayout(exec_layout)
 
         main_widget = QtGui.QWidget()
