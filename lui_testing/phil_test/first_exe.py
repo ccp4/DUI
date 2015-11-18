@@ -11,12 +11,12 @@ try:
 except ImportError, e:
   pass
 
-
 #from dials.command_line.integrate import phil_scope
 #from dials.command_line.refine import phil_scope
 #from dials.command_line.index import phil_scope
-
-
 from dials.command_line.find_spots import phil_scope
+
+for single_obj in phil_scope.objects:
+  print single_obj
 
 print phil_scope.objects
