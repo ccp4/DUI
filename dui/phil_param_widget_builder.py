@@ -192,34 +192,6 @@ class ParameterItemDelegate(QStyledItemDelegate):
     return size
 
 
-# Traverse the parameter tree and add to the tree view widget
-def add_parameters(root, parameter):
-  if parameter.is_scope:
-    name_node = QStandardItem(parameter.name)
-
-    #print "[is_scope]parameter.name =", parameter.name
-
-    name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
-    name_node.setData(parameter, Qt.UserRole + 1)
-    for obj in parameter.objects:
-      add_parameters(name_node, obj)
-    root.appendRow(name_node)
-  elif parameter.is_definition:
-    name_node = QStandardItem(parameter.name)
-
-    to_reuse_latter = '''
-    print "parameter.name =", parameter.name, parameter.extract()
-    '''
-
-    name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
-    name_node.setData(parameter, Qt.UserRole + 1)
-    value_node = QStandardItem(str(parameter.extract()))
-    value_node.setData(parameter, Qt.UserRole + 1)
-    root.appendRow([name_node, value_node])
-  else:
-    raise RuntimeError('Handle This!')
-
-
 class ParameterItemModel(QStandardItemModel):
 
   def __init__(self, parameters=None, parent = None):
@@ -276,6 +248,33 @@ class ParameterItemModel(QStandardItemModel):
 
     # Set to make sure it has the right number of columns
     self.setHorizontalHeaderLabels(["Name", "Value"])
+
+    # Traverse the parameter tree and add to the tree view widget
+    def add_parameters(root, parameter):
+      if parameter.is_scope:
+        name_node = QStandardItem(parameter.name)
+
+        #print "[is_scope]parameter.name =", parameter.name
+
+        name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+        name_node.setData(parameter, Qt.UserRole + 1)
+        for obj in parameter.objects:
+          add_parameters(name_node, obj)
+        root.appendRow(name_node)
+      elif parameter.is_definition:
+        name_node = QStandardItem(parameter.name)
+
+        to_reuse_latter = '''
+        print "parameter.name =", parameter.name, parameter.extract()
+        '''
+
+        name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+        name_node.setData(parameter, Qt.UserRole + 1)
+        value_node = QStandardItem(str(parameter.extract()))
+        value_node.setData(parameter, Qt.UserRole + 1)
+        root.appendRow([name_node, value_node])
+      else:
+        raise RuntimeError('Handle This!')
 
     # Populate the tree
     if parameters is not None:
