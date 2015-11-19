@@ -70,12 +70,11 @@ class MyMainDialog(QtGui.QMainWindow):
 
         mainLayout = QtGui.QVBoxLayout()
 
-        self.multi_line_txt = QtGui.QTextEdit()
+        self.multi_line_txt = QtGui.QTextBrowser()
         self.multi_line_txt.setMaximumHeight(724)
         self.multi_line_txt.setMinimumHeight(24)
         self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
 
-        self.multi_line_txt.setReadOnly(True)
         horizontalLayout.addWidget(self.multi_line_txt)
 
         mainLayout.addLayout(horizontalLayout)
@@ -85,7 +84,6 @@ class MyMainDialog(QtGui.QMainWindow):
         main_widget.setLayout(mainLayout)
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
-
 
 
     def update_lin_txt(self, param_name = None, param_value = None):
