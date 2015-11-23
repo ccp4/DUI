@@ -7,7 +7,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 
-
 class inner_widg( QWidget):
 
     def __init__(self, parent):
@@ -17,7 +16,10 @@ class inner_widg( QWidget):
 
     def initUI(self):
         self.btn_go =  QPushButton('\n      Go   \n', self)
-        self.btn_go.clicked.connect(self.B_go_clicked)
+
+        #self.btn_go.clicked.connect(self.B_go_clicked)
+        self.connect(self.btn_go, SINGNAL("clicked"), self.B_go_clicked)
+
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.btn_go)
@@ -41,15 +43,16 @@ class MainWidget( QWidget):
         self.initUI()
 
     def initUI(self):
-        self.btn_go = inner_widg(self)
-
+        self.inner_btn = inner_widg(self)
         hbox =  QHBoxLayout()
-        hbox.addWidget(self.btn_go)
+        hbox.addWidget(self.inner_btn)
 
         self.setGeometry(1100, 200, 550, 250)
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
+
+
     def to_be_caled_from_son_widg(self, n):
         print "n =", n
 

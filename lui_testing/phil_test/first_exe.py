@@ -20,8 +20,19 @@ def deep_in_rec(phl_obj):
       print "single_obj.name =", single_obj.name
       local_val = single_obj.extract()
 
+      if( single_obj.name == "d_min" ):
+          print "\n\n\n___________________________________________________________found d_min"
+
+          print "dir(single_obj) =", dir(single_obj), "\n\n"
+          print "single_obj.extract_format =", single_obj.extract_format()
+          print "single_obj.type =", single_obj.type
+
+
+          print "\n\n\n"
+
       print "single_obj.extract =", local_val
-      print "type(local_val) =", type(local_val)
+      print "type(local_type) =", type(local_val)
+
 
     lst_obj.append(single_obj)
 
