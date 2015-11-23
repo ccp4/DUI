@@ -17,9 +17,7 @@ class inner_widg( QWidget):
     def initUI(self):
         self.btn_go =  QPushButton('\n      Go   \n', self)
 
-        #self.btn_go.clicked.connect(self.B_go_clicked)
-        self.connect(self.btn_go, SINGNAL("clicked"), self.B_go_clicked)
-
+        self.btn_go.clicked.connect(self.B_go_clicked)
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.btn_go)
