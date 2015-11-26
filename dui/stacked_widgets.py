@@ -14,6 +14,8 @@ except ImportError, e:
 from PyQt4 import QtCore, QtGui
 from phil_param_widget_builder import ParameterWidget
 
+from subprocess import call as shell_func
+import os
 
 class ImportPage(QtGui.QWidget):
     def __init__(self, parent=None):
@@ -131,7 +133,7 @@ class IntegrateParameterWidget(QtGui.QWidget):
 class ExportParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from dials.command_line.export_mtz import phil_scope
+        from dials.command_line.export import phil_scope
         super(ExportParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
@@ -141,14 +143,10 @@ class ExportParameterWidget(QtGui.QWidget):
         mainLayout.addWidget(param_widg)
         self.setLayout(mainLayout)
 
-        self.cmd_lin_default = "dials.export_mtz experiments.json integrated.pickle hklout=integrated.mtz"
+        self.cmd_lin_default = "dials.export experiments.json integrated.pickle hklout=integrated.mtz"
         self.button_label = "Export mtx"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
-
-
-from subprocess import call as shell_func
-import os
 
 
 class MainWindow(QtGui.QMainWindow):
