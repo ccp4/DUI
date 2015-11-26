@@ -1,7 +1,7 @@
 from subprocess import call as shell_func
 import sys
 
-from PySide import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 
 class Example(QtGui.QWidget):
 
@@ -58,6 +58,7 @@ class Example(QtGui.QWidget):
 
     def B_pop_clicked(self):
         print "B_pop_clicked()"
+        shell_func("dials.image_viewer datablock.json &", shell=True)
 
     def B_go_clicked(self):
         shell_str = str(self.lin_txt.text())

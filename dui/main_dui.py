@@ -16,7 +16,7 @@ from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexParamete
 
 #from subprocess import call as shell_func
 #import os
-
+#from subprocess import call as shell_func
 import subprocess
 import sys
 
@@ -51,12 +51,14 @@ class MyMainDialog(QtGui.QMainWindow):
             self.pagesWidget.addWidget(widg)
 
         Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
-
+        pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
+        pop_but = QtGui.QPushButton(" \n    show image viewer")
         self.createIcons()
         self.contentsWidget.setCurrentRow(0)
 
         Go_button.clicked.connect(self.onGoBtn)
-
+        pop_but.clicked.connect(self.onImgViewBtn)
+        pop_ref_view_but.clicked.connect(self.onRefViewBtn)
         horizontalLayout = QtGui.QHBoxLayout()
         horizontalLayout.addWidget(self.contentsWidget)
         horizontalLayout.addWidget(self.pagesWidget, 1)
@@ -75,7 +77,13 @@ class MyMainDialog(QtGui.QMainWindow):
         self.multi_line_txt.setMinimumHeight(24)
         self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
 
-        horizontalLayout.addWidget(self.multi_line_txt)
+        pop_viewers_layout = QtGui.QHBoxLayout()
+        pop_viewers_layout.addWidget(pop_ref_view_but)
+        pop_viewers_layout.addWidget(pop_but)
+        right_side_layout = QtGui.QVBoxLayout()
+        right_side_layout.addWidget(self.multi_line_txt)
+        right_side_layout.addLayout(pop_viewers_layout)
+        horizontalLayout.addLayout(right_side_layout)
 
         mainLayout.addLayout(horizontalLayout)
         mainLayout.addLayout(exec_layout)
@@ -143,6 +151,12 @@ class MyMainDialog(QtGui.QMainWindow):
         p.stdout.close()
         p.wait()
         self.gui_line_edit.setText(str(""))
+
+    def onImgViewBtn(self):
+        subprocess.call("dials.image_viewer datablock.json &", shell=True)
+
+    def onRefViewBtn(self):
+        subprocess.call("dials.reflection_viewer strong.pickle &", shell=True)
 
 if __name__ == '__main__':
 
