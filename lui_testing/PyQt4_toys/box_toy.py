@@ -56,8 +56,7 @@ class Example(QtGui.QWidget):
 
         p = subprocess.Popen(shell_str, stdout = subprocess.PIPE, bufsize = 1, shell = True)
         for line in iter(p.stdout.readline, b''):
-            #print line,
-            #self.multi_line_txt.append("Hi")
+
             self.multi_line_txt.append(line)
 
         p.stdout.close()
