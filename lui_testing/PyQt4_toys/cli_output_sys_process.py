@@ -1,9 +1,12 @@
 import subprocess
 import sys
-
-p = subprocess.Popen("dials.import", stdout = subprocess.PIPE, bufsize = 1, shell = True)
+print "before subprocess"
+p = subprocess.Popen("./sec_interval.sh", stdout = subprocess.PIPE, bufsize = 1, shell = True)
+print "after subprocess"
 for line in iter(p.stdout.readline, b''):
-    print line,
+    single_line = line[0:len(line)-1]
+    print line
+
 p.stdout.close()
 p.wait()
 
