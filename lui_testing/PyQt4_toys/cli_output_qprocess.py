@@ -4,18 +4,19 @@ import sys
 
 
 class MyQProcess(QProcess):
-  def __init__(self):
-   #Call base class method
-   QProcess.__init__(self)
-   #Create an instance variable here (of type QTextEdit)
-   self.edit  = QTextEdit()
-   self.edit.setWindowTitle("QTextEdit Standard Output Redirection")
-   self.edit.show()
+    def __init__(self):
+        #Call base class method
+        QProcess.__init__(self)
+        #Create an instance variable here (of type QTextEdit)
+        self.edit  = QTextEdit()
+        self.edit.setWindowTitle("QTextEdit Standard Output Redirection")
+        self.edit.show()
 
-  #Define Slot Here
-  @pyqtSlot()
-  def readStdOutput(self):
-    self.edit.append(QString(self.readAllStandardOutput()))
+
+    #Define Slot Here
+    @pyqtSlot()
+    def readStdOutput(self):
+        self.edit.append(QString(self.readAllStandardOutput()))
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
 
     qProcess.setProcessChannelMode(QProcess.MergedChannels);
     #qProcess.start("ldconfig -v")
-    qProcess.start("ls -al")
+    qProcess.start("./sec_interval.sh")
 
     QObject.connect(qProcess,SIGNAL("readyReadStandardOutput()"),qProcess,SLOT("readStdOutput()"));
 

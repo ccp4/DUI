@@ -133,7 +133,11 @@ class IntegrateParameterWidget(QtGui.QWidget):
 class ExportParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from dials.command_line.export import phil_scope
+        try:
+            from dials.command_line.export import phil_scope
+        except:
+            from dials.command_line.export_mtz import phil_scope
+
         super(ExportParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
