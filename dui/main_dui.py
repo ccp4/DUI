@@ -157,22 +157,9 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
     def onGoBtn(self, event):
-
         shell_str = str(self.gui_line_edit.text())
         self.qProcess.start(shell_str)
-
-        old_way = '''
-        p = subprocess.Popen(shell_str, stdout = subprocess.PIPE, bufsize = 1, shell = True)
-        for line_w_return in iter(p.stdout.readline, b''):
-            single_line = line_w_return[0:len(line_w_return)-1]
-            #self.multi_line_txt.append(single_line)
-            self.append_line(single_line)
-
-        p.stdout.close()
-        p.wait()
-        '''
         self.gui_line_edit.setText(str(""))
-
 
     def append_line(self, single_line):
         self.multi_line_txt.append(single_line)
@@ -183,31 +170,7 @@ class MyMainDialog(QtGui.QMainWindow):
     def onRefViewBtn(self):
         subprocess.call("dials.reflection_viewer strong.pickle &", shell=True)
 
-'''
 
-class MyQProcess(QProcess):
-    def __init__(self):
-        super(MyQProcess, self).__init__()
-        #Create an instance variable here (of type QTextEdit)
-        self.edit  = QTextEdit()
-        self.edit.setWindowTitle("QTextEdit Standard Output Redirection")
-        self.edit.show()
-        self.readyReadStandardOutput.connect(self.readStdOutput)
-
-    def readStdOutput(self):
-        line_string = str(self.readAllStandardOutput())
-        single_line = line_string[0:len(line_string) - 1]
-        self.edit.append(single_line)
-
-def main():
-
-    app   = QApplication(sys.argv)
-
-    qProcess  = MyQProcess()
-    qProcess.setProcessChannelMode(QProcess.MergedChannels);
-    qProcess.start("./sec_interval.sh")
-
-'''
 if __name__ == '__main__':
 
     import sys
