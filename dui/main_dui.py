@@ -30,7 +30,7 @@ class MyQProcess(QtCore.QProcess):
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
         single_line = line_string[0:len(line_string) - 1]
-        print "...>>", single_line
+        #print "...>>", single_line
         self.super_parent.append_line(single_line)
 
 class MyMainDialog(QtGui.QMainWindow):
