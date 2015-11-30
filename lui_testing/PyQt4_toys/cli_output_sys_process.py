@@ -10,3 +10,4 @@ for line in iter(p.stdout.readline, b''):
 p.stdout.close()
 p.wait()
 
+print "after stdout.close()"
