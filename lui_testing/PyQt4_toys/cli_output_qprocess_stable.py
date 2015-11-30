@@ -19,11 +19,15 @@ class MyQProcess(QProcess):
         self.edit.setWindowTitle("QTextEdit Standard Output Redirection")
         self.edit.show()
         self.readyReadStandardOutput.connect(self.readStdOutput)
+        self.finished.connect(self.on_finish)
 
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
         single_line = line_string[0:len(line_string) - 1]
         self.edit.append(single_line)
+
+    def on_finish(self):
+        print "on_finish"
 
 def main():
 
