@@ -63,13 +63,13 @@ class MyMainDialog(QtGui.QMainWindow):
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
 
-        Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
+        self.Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
         pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
         pop_but = QtGui.QPushButton(" \n    show image viewer")
         self.createIcons()
         self.contentsWidget.setCurrentRow(0)
 
-        Go_button.clicked.connect(self.onGoBtn)
+        self.Go_button.clicked.connect(self.onGoBtn)
         pop_but.clicked.connect(self.onImgViewBtn)
         pop_ref_view_but.clicked.connect(self.onRefViewBtn)
         horizontalLayout = QtGui.QHBoxLayout()
@@ -81,7 +81,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.gui_line_edit =  QtGui.QLineEdit(self)
         exec_layout.addWidget(self.gui_line_edit)
 
-        exec_layout.addWidget(Go_button)
+        exec_layout.addWidget(self.Go_button)
 
         mainLayout = QtGui.QVBoxLayout()
 
@@ -163,9 +163,11 @@ class MyMainDialog(QtGui.QMainWindow):
         self.gui_line_edit.setText(str(""))
 
     def on_started(self):
+        self.Go_button.setText(" \n\n Running \n\n ")
         print "Starting job"
 
     def on_finished(self):
+        self.Go_button.setText(" \n\n    Go    \n\n")
         print "Done job"
 
     def append_line(self, single_line):
