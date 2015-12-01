@@ -6,7 +6,7 @@ print "wprks with PyQt4"
 #py_side = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-print "works with PySide"
+print "testing with PySide"
 #'''
 
 import sys
@@ -22,10 +22,6 @@ class MyQProcess(QProcess):
         self.readyReadStandardOutput.connect(self.readStdOutput)
         self.finished.connect(self.on_finish)
 
-
-        my_timer = QTimer()
-        my_timer.timeout.connect.(self.on_timeout)
-
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
         single_line = line_string[0:len(line_string) - 1]
@@ -33,6 +29,10 @@ class MyQProcess(QProcess):
 
     def on_start(self):
         print "on_start"
+        my_timer = QTimer(self)
+        #my_timer.setInterval(500)
+        my_timer.timeout.connect(self.on_timeout)
+        my_timer.start(500)
 
     def on_finish(self):
         print "on_finish"
