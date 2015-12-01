@@ -12,7 +12,9 @@ except ImportError, e:
 
 from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
-from stacked_widgets import ImportPage, FindspotstParameterWidget, IndexParameterWidget, RefineParameterWidget, IntegrateParameterWidget, ExportParameterWidget
+from stacked_widgets import ImportPage, FindspotstParameterWidget,\
+                            IndexParameterWidget, RefineParameterWidget,\
+                            IntegrateParameterWidget, ExportParameterWidget
 
 #from subprocess import call as shell_func
 #import os
@@ -24,15 +26,33 @@ class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
         super(MyQProcess, self).__init__()
         self.super_parent = parent
-        self.started.connect(self.super_parent.on_started)
+        self.started.connect(self.local_start)
         self.readyReadStandardOutput.connect(self.readStdOutput)
-        self.finished.connect(self.super_parent.on_finished)
+        self.finished.connect(self.local_finished)
+
+    def local_start(self):
+        self.super_parent.on_started()
+
+        self.go_btn_txt = "running  "
+
+        self.my_timer = QtCore.QTimer(self)
+        self.my_timer.timeout.connect(self.on_timeout)
+        self.my_timer.start(500)
+
+    def on_timeout(self):
+        self.go_btn_txt = self.go_btn_txt[1:] + self.go_btn_txt[:1]
+        self.super_parent.update_go_txt(self.go_btn_txt)
 
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
         single_line = line_string[0:len(line_string) - 1]
         #print "...>>", single_line
         self.super_parent.append_line(single_line)
+
+    def local_finished(self):
+        self.super_parent.on_finished()
+        self.my_timer.stop()
+
 
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -165,6 +185,10 @@ class MyMainDialog(QtGui.QMainWindow):
     def on_started(self):
         self.Go_button.setText(" \n\n Running \n\n ")
         print "Starting job"
+
+    def update_go_txt(self, txt_str):
+        tmp_txt = "\n\n " + txt_str + " \n\n"
+        self.Go_button.setText(tmp_txt)
 
     def on_finished(self):
         self.Go_button.setText(" \n\n    Go    \n\n")

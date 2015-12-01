@@ -29,13 +29,13 @@ class MyQProcess(QProcess):
 
     def on_start(self):
         print "on_start"
-        my_timer = QTimer(self)
-        #my_timer.setInterval(500)
-        my_timer.timeout.connect(self.on_timeout)
-        my_timer.start(500)
+        self.my_timer = QTimer(self)
+        self.my_timer.timeout.connect(self.on_timeout)
+        self.my_timer.start(500)
 
     def on_finish(self):
         print "on_finish"
+        self.my_timer.stop()
 
     def on_timeout(self):
         print "on_timeout"
