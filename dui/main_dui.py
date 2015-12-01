@@ -26,14 +26,15 @@ class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
         super(MyQProcess, self).__init__()
         self.super_parent = parent
+        self.run_stat = False
         self.started.connect(self.local_start)
         self.readyReadStandardOutput.connect(self.readStdOutput)
         self.finished.connect(self.local_finished)
 
     def local_start(self):
         self.super_parent.on_started()
-
         self.go_btn_txt = "Running  "
+        self.run_stat = True
 
         self.my_timer = QtCore.QTimer(self)
         self.my_timer.timeout.connect(self.on_timeout)
@@ -52,6 +53,7 @@ class MyQProcess(QtCore.QProcess):
     def local_finished(self):
         self.super_parent.on_finished()
         self.my_timer.stop()
+        self.run_stat = False
 
 
 class MyMainDialog(QtGui.QMainWindow):
@@ -178,9 +180,10 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
     def onGoBtn(self, event):
-        shell_str = str(self.gui_line_edit.text())
-        self.qProcess.start(shell_str)
-        self.gui_line_edit.setText(str(""))
+        if( self.qProcess.run_stat == False ):
+            shell_str = str(self.gui_line_edit.text())
+            self.qProcess.start(shell_str)
+            self.gui_line_edit.setText(str("Running >>> " + shell_str))
 
     def on_started(self):
         self.Go_button.setText(" \n\n Running \n\n ")
@@ -192,7 +195,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def on_finished(self):
         self.Go_button.setText(" \n\n    Go    \n\n")
-        print "Done job"
+        self.gui_line_edit.setText(str(""))
 
     def append_line(self, single_line):
         self.multi_line_txt.append(single_line)
