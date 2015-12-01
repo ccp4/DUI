@@ -23,9 +23,10 @@ import sys
 class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
         super(MyQProcess, self).__init__()
-
         self.super_parent = parent
+        self.started.connect(self.super_parent.on_started)
         self.readyReadStandardOutput.connect(self.readStdOutput)
+        self.finished.connect(self.super_parent.on_finished)
 
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
@@ -160,6 +161,12 @@ class MyMainDialog(QtGui.QMainWindow):
         shell_str = str(self.gui_line_edit.text())
         self.qProcess.start(shell_str)
         self.gui_line_edit.setText(str(""))
+
+    def on_started(self):
+        print "Starting job"
+
+    def on_finished(self):
+        print "Done job"
 
     def append_line(self, single_line):
         self.multi_line_txt.append(single_line)

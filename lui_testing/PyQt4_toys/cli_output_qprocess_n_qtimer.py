@@ -1,7 +1,7 @@
 gpl = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-print "wprks with PyQt4"
+print "testing with PyQt4"
 #'''
 #py_side = '''
 from PySide.QtGui import *
