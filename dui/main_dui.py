@@ -33,11 +33,11 @@ class MyQProcess(QtCore.QProcess):
     def local_start(self):
         self.super_parent.on_started()
 
-        self.go_btn_txt = "running  "
+        self.go_btn_txt = "Running  "
 
         self.my_timer = QtCore.QTimer(self)
         self.my_timer.timeout.connect(self.on_timeout)
-        self.my_timer.start(500)
+        self.my_timer.start(300)
 
     def on_timeout(self):
         self.go_btn_txt = self.go_btn_txt[1:] + self.go_btn_txt[:1]
