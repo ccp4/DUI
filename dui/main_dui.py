@@ -167,9 +167,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.param_changed_lst = []
 
     def createIcons(self):
-
         for widget in self.widget_list:
-
             page_n_button = QtGui.QListWidgetItem(self.contentsWidget)
             page_n_button.setIcon(QtGui.QIcon(widget.logo_path))
             page_n_button.setText(widget.button_label)
@@ -177,7 +175,6 @@ class MyMainDialog(QtGui.QMainWindow):
             page_n_button.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
-
 
     def onGoBtn(self, event):
         if( self.qProcess.run_stat == False ):
