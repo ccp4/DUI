@@ -33,7 +33,7 @@ class MyQProcess(QtCore.QProcess):
 
     def local_start(self):
         self.super_parent.on_started()
-        self.go_btn_txt = "Running  "
+        self.go_btn_txt = "  Running "
         self.run_stat = True
 
         self.my_timer = QtCore.QTimer(self)
@@ -85,7 +85,10 @@ class MyMainDialog(QtGui.QMainWindow):
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
 
-        self.Go_button = QtGui.QPushButton(" \n\n    Go    \n\n")
+        self.default_go_label = " \n\n    Go    \n\n"
+        self.go_underline = "\n__________________\n"
+
+        self.Go_button = QtGui.QPushButton(self.default_go_label)
         pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
         pop_but = QtGui.QPushButton(" \n    show image viewer")
         self.createIcons()
@@ -183,15 +186,15 @@ class MyMainDialog(QtGui.QMainWindow):
             self.gui_line_edit.setText(str("Running >>> " + shell_str))
 
     def on_started(self):
-        self.Go_button.setText(" \n\n Running \n\n ")
-        print "Starting job"
+        tmp_txt = "\n" + " Starting " + self.go_underline
+        self.Go_button.setText(tmp_txt)
 
     def update_go_txt(self, txt_str):
-        tmp_txt = "\n\n " + txt_str + " \n\n"
+        tmp_txt = "\n" + txt_str + self.go_underline
         self.Go_button.setText(tmp_txt)
 
     def on_finished(self):
-        self.Go_button.setText(" \n\n    Go    \n\n")
+        self.Go_button.setText(self.default_go_label)
         self.gui_line_edit.setText(str(""))
 
     def append_line(self, single_line):
