@@ -85,8 +85,8 @@ class MyMainDialog(QtGui.QMainWindow):
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
 
-        self.default_go_label = " \n\n    Go    \n\n"
-        self.go_underline = "\n__________________\n"
+        self.default_go_label = " \n                      Go \n\n"
+        self.go_underline = "\n_________________\n"
 
         self.Go_button = QtGui.QPushButton(self.default_go_label)
         pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
