@@ -16,9 +16,6 @@ from stacked_widgets import ImportPage, FindspotstParameterWidget,\
                             IndexParameterWidget, RefineParameterWidget,\
                             IntegrateParameterWidget, ExportParameterWidget
 
-#from subprocess import call as shell_func
-#import os
-#from subprocess import call as shell_func
 import subprocess
 import sys
 

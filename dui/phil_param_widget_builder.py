@@ -1,47 +1,26 @@
 
 from __future__ import division
-from PyQt4.QtGui import QMainWindow
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QTreeView
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QStandardItemModel
-from PyQt4.QtGui import QSortFilterProxyModel
-from PyQt4.QtGui import QStandardItem
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QStyledItemDelegate
-from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QDoubleSpinBox
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import QString
-from PyQt4.QtCore import QRegExp
-from PyQt4.QtCore import QModelIndex
+from PyQt4 import QtCore, QtGui
 
 def MyChangedData(obj_in):
     print "obj_in =", obj_in
 
 
-class StringEditor(QLineEdit):
+class StringEditor(QtGui.QLineEdit):
 
   def __init__(self, parent=None):
     super(StringEditor, self).__init__(parent)
 
   def setEditorData(self, index):
-    value = index.model().data(index, Qt.EditRole).toString()
+    value = index.model().data(index, QtCore.Qt.EditRole).toString()
     self.setText(value)
 
   def setModelData(self, model, index):
     value = self.text()
-    model.setData(index, value, Qt.EditRole)
+    model.setData(index, value, QtCore.Qt.EditRole)
 
 
-class IntEditor(QSpinBox):
+class IntEditor(QtGui.QSpinBox):
 
   def __init__(self, parent=None, value_min=None, value_max=None):
     super(IntEditor, self).__init__(parent)
@@ -55,16 +34,16 @@ class IntEditor(QSpinBox):
       self.setMaximum(1e9)
 
   def setEditorData(self, index):
-    value = index.model().data(index, Qt.EditRole).toInt()
+    value = index.model().data(index, QtCore.Qt.EditRole).toInt()
     self.setValue(value[0])
 
   def setModelData(self, model, index):
     self.interpretText()
     value = self.value()
-    model.setData(index, value, Qt.EditRole)
+    model.setData(index, value, QtCore.Qt.EditRole)
 
 
-class FloatEditor(QDoubleSpinBox):
+class FloatEditor(QtGui.QDoubleSpinBox):
 
   def __init__(self, parent=None, value_min=None, value_max=None, s_parent = None):
     super(FloatEditor, self).__init__(parent)
@@ -86,7 +65,7 @@ class FloatEditor(QDoubleSpinBox):
 
 
   def setEditorData(self, index):
-    value = index.model().data(index, Qt.EditRole).toFloat()
+    value = index.model().data(index, QtCore.Qt.EditRole).toFloat()
     self.setValue(value[0])
 
     #print "value =", value
@@ -95,8 +74,8 @@ class FloatEditor(QDoubleSpinBox):
   def setModelData(self, model, index):
     self.interpretText()
     value = self.value()
-    model.setData(index, value, Qt.EditRole)
-    parameter = model.data(index, Qt.UserRole+1).toPyObject()
+    model.setData(index, value, QtCore.Qt.EditRole)
+    parameter = model.data(index, QtCore.Qt.UserRole+1).toPyObject()
     #print "dir(parameter.words) =", dir(parameter.words)
 
 
@@ -109,7 +88,7 @@ class FloatEditor(QDoubleSpinBox):
     print "my_parent =", self.my_parent
 
 
-class ChoiceEditor(QComboBox):
+class ChoiceEditor(QtGui.QComboBox):
 
   def __init__(self, parent=None, choices=None):
     super(ChoiceEditor, self).__init__(parent)
@@ -118,15 +97,15 @@ class ChoiceEditor(QComboBox):
         self.addItem(choice)
 
   def setEditorData(self, index):
-    value = index.model().data(index, Qt.EditRole).toString()
+    value = index.model().data(index, QtCore.Qt.EditRole).toString()
     self.setCurrentIndex(self.findText(value))
 
   def setModelData(self, model, index):
     value = self.currentText()
-    model.setData(index, value, Qt.EditRole)
+    model.setData(index, value, QtCore.Qt.EditRole)
 
 
-class BoolEditor(QComboBox):
+class BoolEditor(QtGui.QComboBox):
 
   def __init__(self, parent=None):
     super(BoolEditor, self).__init__(parent)
@@ -134,15 +113,15 @@ class BoolEditor(QComboBox):
     self.addItem("True")
 
   def setEditorData(self, index):
-    value = index.model().data(index, Qt.EditRole).toString()
+    value = index.model().data(index, QtCore.Qt.EditRole).toString()
     self.setCurrentIndex(self.findText(value))
 
   def setModelData(self, model, index):
     value = self.currentText()
-    model.setData(index, value, Qt.EditRole)
+    model.setData(index, value, QtCore.Qt.EditRole)
 
 
-class ParameterItemDelegate(QStyledItemDelegate):
+class ParameterItemDelegate(QtGui.QStyledItemDelegate):
 
   def __init__(self, parent=None):
 
@@ -152,7 +131,7 @@ class ParameterItemDelegate(QStyledItemDelegate):
   def createEditor(self, parent, option, index):
 
 
-    parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
+    parameter = index.model().data(index, QtCore.Qt.UserRole+1).toPyObject()
     dtype = parameter.type
     ptype = dtype.phil_type
     if ptype == 'str':
@@ -192,7 +171,7 @@ class ParameterItemDelegate(QStyledItemDelegate):
     return size
 
 
-class ParameterItemModel(QStandardItemModel):
+class ParameterItemModel(QtGui.QStandardItemModel):
 
   def __init__(self, parameters=None, parent = None):
     super(ParameterItemModel, self).__init__()
@@ -208,14 +187,14 @@ class ParameterItemModel(QStandardItemModel):
     print "ITEM CHANGED", item
 
     # Get the parameter name that has changed
-    parameter = self.data(item.index(), Qt.UserRole+1).toPyObject()
+    parameter = self.data(item.index(), QtCore.Qt.UserRole+1).toPyObject()
     name = parameter.name
 
     # Get the full parameter path
     path = parameter.full_path()
 
     # Get the new parameter value
-    value = item.data(Qt.EditRole).toString()
+    value = item.data(QtCore.Qt.EditRole).toString()
     #print path, value
     print name, value
 
@@ -252,26 +231,26 @@ class ParameterItemModel(QStandardItemModel):
     # Traverse the parameter tree and add to the tree view widget
     def add_parameters(root, parameter):
       if parameter.is_scope:
-        name_node = QStandardItem(parameter.name)
+        name_node = QtGui.QStandardItem(parameter.name)
 
         #print "[is_scope]parameter.name =", parameter.name
 
-        name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
-        name_node.setData(parameter, Qt.UserRole + 1)
+        name_node.setFlags(QtCore.Qt.NoItemFlags | QtCore.Qt.ItemIsEnabled)
+        name_node.setData(parameter, QtCore.Qt.UserRole + 1)
         for obj in parameter.objects:
           add_parameters(name_node, obj)
         root.appendRow(name_node)
       elif parameter.is_definition:
-        name_node = QStandardItem(parameter.name)
+        name_node = QtGui.QStandardItem(parameter.name)
 
         to_reuse_latter = '''
         print "parameter.name =", parameter.name, parameter.extract()
         '''
 
-        name_node.setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
-        name_node.setData(parameter, Qt.UserRole + 1)
-        value_node = QStandardItem(str(parameter.extract()))
-        value_node.setData(parameter, Qt.UserRole + 1)
+        name_node.setFlags(QtCore.Qt.NoItemFlags | QtCore.Qt.ItemIsEnabled)
+        name_node.setData(parameter, QtCore.Qt.UserRole + 1)
+        value_node = QtGui.QStandardItem(str(parameter.extract()))
+        value_node.setData(parameter, QtCore.Qt.UserRole + 1)
         root.appendRow([name_node, value_node])
       else:
         raise RuntimeError('Handle This!')
@@ -284,16 +263,16 @@ class ParameterItemModel(QStandardItemModel):
   def getParameters(self):
     return self.parameters
 
-  def data(self, index, role=Qt.DisplayRole):
-    if role == Qt.ToolTipRole:
-      parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
+  def data(self, index, role=QtCore.Qt.DisplayRole):
+    if role == QtCore.Qt.ToolTipRole:
+      parameter = index.model().data(index, QtCore.Qt.UserRole+1).toPyObject()
       if parameter is None:
         return ""
       return str(parameter.help)
     return super(ParameterItemModel, self).data(index, role)
 
 
-class ParameterSortFilterProxyModel(QSortFilterProxyModel):
+class ParameterSortFilterProxyModel(QtGui.QSortFilterProxyModel):
 
   def __init__(self, parent=None):
 
@@ -326,7 +305,7 @@ class ParameterSortFilterProxyModel(QSortFilterProxyModel):
       show_parent = False
       for row in range(model.rowCount(parent)):
         index = model.index(row, 0, parent)
-        parameter = model.data(index, Qt.UserRole+1).toPyObject()
+        parameter = model.data(index, QtCore.Qt.UserRole+1).toPyObject()
         name = parameter.full_path()
         if model.hasChildren(index):
           show = update_string_filter_cache(model, index)
@@ -337,7 +316,7 @@ class ParameterSortFilterProxyModel(QSortFilterProxyModel):
       return show_parent
 
     # Update the string filter cache
-    update_string_filter_cache(model, QModelIndex())
+    update_string_filter_cache(model, QtCore.QModelIndex())
 
     # Call the parent method
     super(ParameterSortFilterProxyModel, self).invalidateFilter()
@@ -348,7 +327,7 @@ class ParameterSortFilterProxyModel(QSortFilterProxyModel):
     index = self.sourceModel().index(row, 0, parent)
 
     # Get the parameter
-    parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
+    parameter = index.model().data(index, QtCore.Qt.UserRole+1).toPyObject()
 
     # Get the expert level
     expert = parameter.expert_level
@@ -367,7 +346,7 @@ class ParameterSortFilterProxyModel(QSortFilterProxyModel):
     return True
 
 
-class ParameterTreeView(QTreeView):
+class ParameterTreeView(QtGui.QTreeView):
 
   def __init__(self, parent=None):
     super(ParameterTreeView, self).__init__(parent)
@@ -378,14 +357,14 @@ class ParameterTreeView(QTreeView):
     self.setSortingEnabled(False)
     self.setHeaderHidden(True)
     self.setAnimated(True)
-    self.setSelectionBehavior(QAbstractItemView.SelectItems)
-    self.setEditTriggers(QAbstractItemView.AllEditTriggers)
+    self.setSelectionBehavior(QtGui.QAbstractItemView.SelectItems)
+    self.setEditTriggers(QtGui.QAbstractItemView.AllEditTriggers)
     self.setIndentation(30)
 
     #print "\n\n\n", "dir(self) =", dir(self), "\n\n\n"
 
 
-class ParameterTreeWidget(QWidget):
+class ParameterTreeWidget(QtGui.QWidget):
 
   def __init__(self, parent=None, parameters=None):
     # Init the parent
@@ -409,13 +388,13 @@ class ParameterTreeWidget(QWidget):
 
     # Set the header mode
     self.tree.header().setStretchLastSection(True)
-    self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
+    self.tree.header().setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
 
     # Start everything expanded
     self.tree.expandAll()
 
     # Create the layout
-    layout = QVBoxLayout()
+    layout = QtGui.QVBoxLayout()
     layout.setMargin(0)
     layout.addWidget(self.tree)
     self.setLayout(layout)
@@ -433,7 +412,7 @@ class ParameterTreeWidget(QWidget):
     return self.model.getParameters()
 
 
-class ParameterWidget(QWidget):
+class ParameterWidget(QtGui.QWidget):
 
   def __init__(self, parent=None, parameters=None):
     super(ParameterWidget, self).__init__(parent)
@@ -444,23 +423,23 @@ class ParameterWidget(QWidget):
     self.params = ParameterTreeWidget(self.super_parent, parameters)
 
     # Create the search widget
-    self.search = QLineEdit()
+    self.search = QtGui.QLineEdit()
     self.search.setPlaceholderText("Search...")
     self.search.textChanged.connect(self.params.setSearchString)
 
     # Create the expert level widget
-    self.expert = QComboBox()
+    self.expert = QtGui.QComboBox()
     self.expert.addItem("Simple")
     self.expert.addItem("Advanced")
     self.expert.currentIndexChanged.connect(self.params.setExpertLevel)
 
     # Layout the controls
-    control_layout = QHBoxLayout()
+    control_layout = QtGui.QHBoxLayout()
     control_layout.addWidget(self.expert)
     control_layout.addWidget(self.search)
 
     # Create the widget layout
-    main_layout = QVBoxLayout()
+    main_layout = QtGui.QVBoxLayout()
     main_layout.addLayout(control_layout)
     main_layout.addWidget(self.params)
     self.setLayout(main_layout)
