@@ -12,6 +12,8 @@ except ImportError, e:
   pass
 
 from PyQt4 import QtCore, QtGui
+#from PySide import QtCore, QtGui
+
 from phil_param_widget_builder import ParameterWidget
 
 from subprocess import call as shell_func
@@ -46,8 +48,39 @@ class ImportPage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
     def find_my_dir(self, event):
-        dir_name = QtGui.QFileDialog.getExistingDirectory(self,"Open Directory")
+        dir_name = QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir")
+        print "[file path found] =", dir_name
         if dir_name:
+            for pos, single_char in enumerate(dir_name):
+                print "single_char =", single_char
+                print "pos =", pos
+                if( single_char == "." ):
+                    pos_dot = pos
+
+            print "pos_dot =", pos_dot
+            print "[char in pos_dot] =", dir_name[pos_dot]
+
+            found_non_number = False
+            for pos in range(pos_dot - 1,0,-1):
+                print "pos =", pos
+                print "dir_name[pos] =", dir_name[pos]
+                if( dir_name[pos] != "0" and dir_name[pos] != "1" and
+                    dir_name[pos] != "2" and dir_name[pos] != "3" and
+                    dir_name[pos] != "4" and dir_name[pos] != "5" and
+                    dir_name[pos] != "6" and dir_name[pos] != "7" and
+                    dir_name[pos] != "8" and dir_name[pos] != "9" ):
+
+                    found_non_number = True
+                    pos_non_num = pos
+                    print "should exit for loop here"
+                    break
+
+            if( found_non_number ):
+                #dir_name = dir_name[:pos_non_num] + "*" + dir_name[pos_dot:]
+                dir_name = dir_name[:pos_non_num + 1] + "*"
+
+            print "final dir_name =", dir_name
+
             self.lin_txt.setText(dir_name)
             self.cmd_lin_default = "dials.import "+ dir_name
         print "CLI =", self.cmd_lin_default

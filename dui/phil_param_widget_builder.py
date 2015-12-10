@@ -1,6 +1,8 @@
 
 from __future__ import division
+
 from PyQt4 import QtCore, QtGui
+#from PySide import QtCore, QtGui
 
 def MyChangedData(obj_in):
     print "obj_in =", obj_in

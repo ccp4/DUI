@@ -12,6 +12,7 @@ except ImportError, e:
 
 from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
+
 from stacked_widgets import ImportPage, FindspotstParameterWidget,\
                             IndexParameterWidget, RefineParameterWidget,\
                             IntegrateParameterWidget, ExportParameterWidget
