@@ -180,6 +180,9 @@ class MyMainDialog(QtGui.QMainWindow):
     def onGoBtn(self, event):
         if( self.qProcess.run_stat == False ):
             shell_str = str(self.gui_line_edit.text())
+
+            print "CLI to Run =", shell_str
+
             self.qProcess.start(shell_str)
             self.gui_line_edit.setText(str("Running >>> " + shell_str))
 
