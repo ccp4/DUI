@@ -89,11 +89,16 @@ class ImportPage(QtGui.QWidget):
                     pos_sep = pos
             dir_name = dir_name[:pos_sep]
             print "dir_name(final) =", dir_name
+            self.lin_txt.setText(dir_name)
+            self.cmd_lin_default = "dials.import "+ dir_name
+            print "CLI =", self.cmd_lin_default
 
-        self.lin_txt.setText(dir_name)
-        self.cmd_lin_default = "dials.import "+ dir_name
-        print "CLI =", self.cmd_lin_default
+        else:
+            print "Failed to pick dir"
+            self.cmd_lin_default = " "
+
         self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
+
 
 class FindspotstParameterWidget(QtGui.QWidget):
 
