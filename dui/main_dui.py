@@ -27,7 +27,11 @@ class MyQProcess(QtCore.QProcess):
         self.run_stat = False
         self.started.connect(self.local_start)
         self.readyReadStandardOutput.connect(self.readStdOutput)
+        self.readyReadStandardError.connect(self.readStdError)
         self.finished.connect(self.local_finished)
+
+
+
 
     def local_start(self):
         self.super_parent.on_started()
@@ -45,8 +49,11 @@ class MyQProcess(QtCore.QProcess):
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
         single_line = line_string[0:len(line_string) - 1]
-        #print "...>>", single_line
         self.super_parent.append_line(single_line)
+
+    def readStdError(self):
+        error_string = str(self.readAllStandardError())
+        print "error = >>", error_string
 
     def local_finished(self):
         self.super_parent.on_finished()
@@ -131,8 +138,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
 
         self.qProcess  = MyQProcess(self)
-        self.qProcess.setProcessChannelMode(QtCore.QProcess.MergedChannels);
-
+        self.qProcess.setProcessChannelMode(QtCore.QProcess.SeparateChannels);
 
     def update_lin_txt(self, param_name = None, param_value = None):
         if(param_name != None):
