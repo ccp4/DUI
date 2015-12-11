@@ -52,8 +52,8 @@ class MyQProcess(QtCore.QProcess):
         self.super_parent.append_line(single_line)
 
     def readStdError(self):
-        error_string = str(self.readAllStandardError())
-        print "error = >>", error_string
+        line_string = str(self.readAllStandardError())
+        self.super_parent.append_line(line_string, err_out = True)
 
     def local_finished(self):
         self.super_parent.on_finished()
@@ -119,6 +119,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.multi_line_txt.setMaximumHeight(724)
         self.multi_line_txt.setMinimumHeight(24)
         self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
+        self.multi_line_txt.setTextColor(QtGui.QColor("black"))
 
         pop_viewers_layout = QtGui.QHBoxLayout()
         pop_viewers_layout.addWidget(pop_ref_view_but)
@@ -204,8 +205,17 @@ class MyMainDialog(QtGui.QMainWindow):
         self.Go_button.setText(self.default_go_label)
         self.gui_line_edit.setText(str(""))
 
-    def append_line(self, single_line):
-        self.multi_line_txt.append(single_line)
+    def append_line(self, line_out, err_out = False):
+        if( not err_out ):
+            self.multi_line_txt.setTextColor(QtGui.QColor("black"))
+            self.multi_line_txt.append(line_out)
+
+        else:
+            print "Error detected"
+            err_line = "<<<" + line_out + ">>>"
+            self.multi_line_txt.setTextColor(QtGui.QColor("red"))
+            self.multi_line_txt.append(err_line)
+
 
     def onImgViewBtn(self):
         subprocess.call("dials.image_viewer datablock.json &", shell=True)
