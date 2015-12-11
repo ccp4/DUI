@@ -51,6 +51,7 @@ class ImportPage(QtGui.QWidget):
         dir_name = QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir")
         print "[file path found] =", dir_name
         if dir_name:
+            to_try_to_fix_later = '''
             for pos, single_char in enumerate(dir_name):
                 print "single_char =", single_char
                 print "pos =", pos
@@ -78,11 +79,19 @@ class ImportPage(QtGui.QWidget):
             if( found_non_number ):
                 #dir_name = dir_name[:pos_non_num] + "*" + dir_name[pos_dot:]
                 dir_name = dir_name[:pos_non_num + 1] + "*"
-
             print "final dir_name =", dir_name
+        '''
+        if( dir_name ):
+            for pos, single_char in enumerate(dir_name):
+                print "single_char =", single_char
+                print "pos =", pos
+                if( single_char == "/" or single_char == "\\" ):
+                    pos_sep = pos
+            dir_name = dir_name[:pos_sep]
+            print "dir_name(final) =", dir_name
 
-            self.lin_txt.setText(dir_name)
-            self.cmd_lin_default = "dials.import "+ dir_name
+        self.lin_txt.setText(dir_name)
+        self.cmd_lin_default = "dials.import "+ dir_name
         print "CLI =", self.cmd_lin_default
         self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
 
