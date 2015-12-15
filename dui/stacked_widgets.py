@@ -31,27 +31,27 @@ class ImportPage(QtGui.QWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/dartlang_logo_small.png"
 
-        configGroup = QtGui.QGroupBox("Experiment IMG Directory")
-        configLayout = QtGui.QHBoxLayout()
+        import_path_group = QtGui.QGroupBox("Experiment IMG Directory")
+        import_path_layout = QtGui.QHBoxLayout()
 
-        self.lin_txt =  QtGui.QLineEdit(self)
-        configLayout.addWidget(self.lin_txt)
-        dir_but = QtGui.QPushButton(" \n    Find experiment dir            . \n")
-        dir_but.clicked.connect(self.find_my_dir)
-        configLayout.addWidget(dir_but)
-        configGroup.setLayout(configLayout)
+        self.lin_import_path =  QtGui.QLineEdit(self)
+        import_path_layout.addWidget(self.lin_import_path)
+        import_dir_button = QtGui.QPushButton(" \n    Find experiment Dir            . \n")
+        import_dir_button.clicked.connect(self.find_my_dir)
+        import_path_layout.addWidget(import_dir_button)
+        import_path_group.setLayout(import_path_layout)
+
+        w_dir_group = QtGui.QGroupBox("Working Directory")
+        w_dir_layout = QtGui.QHBoxLayout()
+        self.lin_w_dir_lin =  QtGui.QLineEdit(self)
+        w_dir_layout.addWidget(self.lin_w_dir_lin)
+        w_dir_button = QtGui.QPushButton(" \n    Change Working Dir    . \n")
+        w_dir_layout.addWidget(w_dir_button)
+        w_dir_group.setLayout(w_dir_layout)
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(configGroup)
-        ###########################################################################
-        configGroup1 = QtGui.QGroupBox("Experiment IMG Directory")
-        configLayout1 = QtGui.QHBoxLayout()
-        self.lin_txt1 =  QtGui.QLineEdit(self)
-        configLayout1.addWidget(self.lin_txt1)
-        configGroup1.setLayout(configLayout1)
-        mainLayout.addWidget(configGroup1)
-        ###########################################################################
-
+        mainLayout.addWidget(import_path_group)
+        mainLayout.addWidget(w_dir_group)
 
         mainLayout.addStretch(1)
 
@@ -93,13 +93,13 @@ class ImportPage(QtGui.QWidget):
         '''
         if( dir_name ):
             for pos, single_char in enumerate(dir_name):
-                print "single_char =", single_char
-                print "pos =", pos
+                #print "single_char =", single_char
+                #print "pos =", pos
                 if( single_char == "/" or single_char == "\\" ):
                     pos_sep = pos
             dir_name = dir_name[:pos_sep]
             print "dir_name(final) =", dir_name
-            self.lin_txt.setText(dir_name)
+            self.lin_import_path.setText(dir_name)
             self.cmd_lin_default = "dials.import "+ dir_name
             print "CLI =", self.cmd_lin_default
 
