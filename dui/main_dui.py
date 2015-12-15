@@ -212,10 +212,9 @@ class MyMainDialog(QtGui.QMainWindow):
 
         else:
             print "Error detected"
-            err_line = "<<<" + line_out + ">>>"
+            err_line = "ERROR: { \n" + line_out + " } "
             self.multi_line_txt.setTextColor(QtGui.QColor("red"))
             self.multi_line_txt.append(err_line)
-
 
     def onImgViewBtn(self):
         subprocess.call("dials.image_viewer datablock.json &", shell=True)

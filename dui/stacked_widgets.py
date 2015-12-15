@@ -43,6 +43,16 @@ class ImportPage(QtGui.QWidget):
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(configGroup)
+        ###########################################################################
+        configGroup1 = QtGui.QGroupBox("Experiment IMG Directory")
+        configLayout1 = QtGui.QHBoxLayout()
+        self.lin_txt1 =  QtGui.QLineEdit(self)
+        configLayout1.addWidget(self.lin_txt1)
+        configGroup1.setLayout(configLayout1)
+        mainLayout.addWidget(configGroup1)
+        ###########################################################################
+
+
         mainLayout.addStretch(1)
 
         self.setLayout(mainLayout)
