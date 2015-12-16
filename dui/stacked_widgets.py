@@ -36,16 +36,17 @@ class ImportPage(QtGui.QWidget):
 
         self.lin_import_path =  QtGui.QLineEdit(self)
         import_path_layout.addWidget(self.lin_import_path)
-        import_dir_button = QtGui.QPushButton(" \n    Find experiment Dir            . \n")
-        import_dir_button.clicked.connect(self.find_my_dir)
-        import_path_layout.addWidget(import_dir_button)
+        import_path_button = QtGui.QPushButton(" \n    Find experiment Dir            . \n")
+        import_path_button.clicked.connect(self.find_my_img_dir)
+        import_path_layout.addWidget(import_path_button)
         import_path_group.setLayout(import_path_layout)
 
         w_dir_group = QtGui.QGroupBox("Working Directory")
         w_dir_layout = QtGui.QHBoxLayout()
-        self.lin_w_dir_lin =  QtGui.QLineEdit(self)
-        w_dir_layout.addWidget(self.lin_w_dir_lin)
+        self.w_dir_lin =  QtGui.QLineEdit(self)
+        w_dir_layout.addWidget(self.w_dir_lin)
         w_dir_button = QtGui.QPushButton(" \n    Change Working Dir    . \n")
+        w_dir_button.clicked.connect(self.change_w_dir)
         w_dir_layout.addWidget(w_dir_button)
         w_dir_group.setLayout(w_dir_layout)
 
@@ -57,47 +58,16 @@ class ImportPage(QtGui.QWidget):
 
         self.setLayout(mainLayout)
 
-    def find_my_dir(self, event):
-        dir_name = QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir")
-        print "[file path found] =", dir_name
-        if dir_name:
-            to_try_to_fix_later = '''
-            for pos, single_char in enumerate(dir_name):
-                print "single_char =", single_char
-                print "pos =", pos
-                if( single_char == "." ):
-                    pos_dot = pos
+    def find_my_img_dir(self, event):
+        selected_file_path = QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir")
+        print "[file path found] =", selected_file_path
 
-            print "pos_dot =", pos_dot
-            print "[char in pos_dot] =", dir_name[pos_dot]
-
-            found_non_number = False
-            for pos in range(pos_dot - 1,0,-1):
-                print "pos =", pos
-                print "dir_name[pos] =", dir_name[pos]
-                if( dir_name[pos] != "0" and dir_name[pos] != "1" and
-                    dir_name[pos] != "2" and dir_name[pos] != "3" and
-                    dir_name[pos] != "4" and dir_name[pos] != "5" and
-                    dir_name[pos] != "6" and dir_name[pos] != "7" and
-                    dir_name[pos] != "8" and dir_name[pos] != "9" ):
-
-                    found_non_number = True
-                    pos_non_num = pos
-                    print "should exit for loop here"
-                    break
-
-            if( found_non_number ):
-                #dir_name = dir_name[:pos_non_num] + "*" + dir_name[pos_dot:]
-                dir_name = dir_name[:pos_non_num + 1] + "*"
-            print "final dir_name =", dir_name
-        '''
-        if( dir_name ):
-            for pos, single_char in enumerate(dir_name):
-                #print "single_char =", single_char
-                #print "pos =", pos
+        if( selected_file_path ):
+            for pos, single_char in enumerate(selected_file_path):
                 if( single_char == "/" or single_char == "\\" ):
                     pos_sep = pos
-            dir_name = dir_name[:pos_sep]
+
+            dir_name = selected_file_path[:pos_sep]
             print "dir_name(final) =", dir_name
             self.lin_import_path.setText(dir_name)
             self.cmd_lin_default = "dials.import "+ dir_name
@@ -108,6 +78,21 @@ class ImportPage(QtGui.QWidget):
             self.cmd_lin_default = " "
 
         self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
+
+
+    def change_w_dir(self, event):
+        dir_name = QtGui.QFileDialog.getExistingDirectory(self, "Change Working Dir")
+        print "[dir path found] =", dir_name
+
+        if( dir_name ):
+            print "dir_name(final) =", dir_name
+            os.chdir(dir_name)
+            self.w_dir_lin.setText(dir_name)
+
+        else:
+            print "Failed to pick dir"
+
+
 
 
 class FindspotstParameterWidget(QtGui.QWidget):
