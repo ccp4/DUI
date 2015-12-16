@@ -20,6 +20,8 @@ from subprocess import call as shell_func
 import os
 
 class ImportPage(QtGui.QWidget):
+    # FIXME when the user enters a path without images dials fails to import
+    # but does not raises an error consequently there is no red output in the GUI
     def __init__(self, parent=None):
         super(ImportPage, self).__init__(parent)
 
