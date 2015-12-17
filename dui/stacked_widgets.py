@@ -24,9 +24,9 @@ class ImportPage(QtGui.QWidget):
     # but does not raises an error consequently there is no red output in the GUI
     def __init__(self, parent=None):
         super(ImportPage, self).__init__(parent)
-
         self.super_parent = parent
 
+        self.w_dir_str = os.getcwd()
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
         self.button_label = "Import"
 
@@ -46,15 +46,23 @@ class ImportPage(QtGui.QWidget):
         w_dir_group = QtGui.QGroupBox("Working Directory")
         w_dir_layout = QtGui.QHBoxLayout()
         self.w_dir_lin =  QtGui.QLineEdit(self)
+        self.w_dir_lin.setText(self.w_dir_str)
         w_dir_layout.addWidget(self.w_dir_lin)
         w_dir_button = QtGui.QPushButton(" \n    Change Working Dir    . \n")
         w_dir_button.clicked.connect(self.change_w_dir)
         w_dir_layout.addWidget(w_dir_button)
         w_dir_group.setLayout(w_dir_layout)
 
+        self.log_json_txt = QtGui.QTextBrowser()
+        #self.log_json_txt.setMaximumHeight(724)
+        #self.log_json_txt.setMinimumHeight(24)
+        self.log_json_txt.setCurrentFont(QtGui.QFont("Monospace"))
+        self.log_json_txt.setTextColor(QtGui.QColor("black"))
+
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(import_path_group)
         mainLayout.addWidget(w_dir_group)
+        mainLayout.addWidget(self.log_json_txt)
 
         mainLayout.addStretch(1)
 
@@ -88,8 +96,9 @@ class ImportPage(QtGui.QWidget):
 
         if( dir_name ):
             print "dir_name(final) =", dir_name
-            os.chdir(dir_name)
-            self.w_dir_lin.setText(dir_name)
+            self.w_dir_str = dir_name
+            os.chdir(self.w_dir_str)
+            self.w_dir_lin.setText(self.w_dir_str)
 
         else:
             print "Failed to pick dir"
