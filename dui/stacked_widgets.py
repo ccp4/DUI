@@ -59,14 +59,29 @@ class ImportPage(QtGui.QWidget):
         self.log_json_txt.setCurrentFont(QtGui.QFont("Monospace"))
         self.log_json_txt.setTextColor(QtGui.QColor("black"))
 
+        self.auto_next_check = QtGui.QCheckBox("Enable auto-Next Feature")
+        self.auto_next_check.stateChanged.connect(self.changed_auto_next)
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(import_path_group)
         mainLayout.addWidget(w_dir_group)
         mainLayout.addWidget(self.log_json_txt)
-
         mainLayout.addStretch(1)
+        mainLayout.addWidget(self.auto_next_check)
 
         self.setLayout(mainLayout)
+
+
+    def changed_auto_next(self):
+        print "changed_auto_next"
+        self.update_auto_next_flag()
+
+    def update_auto_next_flag(self):
+        print "self.auto_next_check.checkState() =", self.auto_next_check.checkState()
+        state = self.auto_next_check.checkState()
+        if( state == 0 ):
+            self.auto_next_flag = "unchecked"
+        else:
+            self.auto_next_flag = "checked"
 
     def find_my_img_dir(self, event):
         selected_file_path = QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir")
