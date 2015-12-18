@@ -30,9 +30,6 @@ class MyQProcess(QtCore.QProcess):
         self.readyReadStandardError.connect(self.readStdError)
         self.finished.connect(self.local_finished)
 
-
-
-
     def local_start(self):
         self.super_parent.on_started()
         self.go_btn_txt = "  Running "
@@ -59,7 +56,6 @@ class MyQProcess(QtCore.QProcess):
         self.super_parent.on_finished()
         self.my_timer.stop()
         self.run_stat = False
-
 
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -186,16 +182,19 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def onGoBtn(self, event):
         if( self.qProcess.run_stat == False ):
-            shell_str = str(self.gui_line_edit.text())
+            self.shell_str_to_run = str(self.gui_line_edit.text())
 
-            print "CLI to Run =", shell_str
+            print "CLI to Run =", self.shell_str_to_run
 
-            self.qProcess.start(shell_str)
-            self.gui_line_edit.setText(str("Running >>> " + shell_str))
+            self.qProcess.start(self.shell_str_to_run)
+            self.gui_line_edit.setText(str("Running >> {" + self.shell_str_to_run + " }" ))
 
     def on_started(self):
         tmp_txt = "\n" + " Starting " + self.go_underline
         self.Go_button.setText(tmp_txt)
+
+        self.multi_line_txt.setTextColor(QtGui.QColor("green"))
+        self.multi_line_txt.append(str("\nRunning >> { " + self.shell_str_to_run + " }" ))
 
     def update_go_txt(self, txt_str):
         tmp_txt = "\n" + txt_str + self.go_underline
