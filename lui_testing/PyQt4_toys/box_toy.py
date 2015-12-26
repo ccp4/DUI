@@ -26,8 +26,6 @@ class Example(QtGui.QWidget):
         vbox.addWidget(self.btn1)
         vbox.addWidget(self.multi_line_txt)
 
-
-
         top_box = QtGui.QHBoxLayout()
         top_box.addLayout(vbox)
         top_box.addStretch(1)
@@ -53,7 +51,6 @@ class Example(QtGui.QWidget):
         shell_str = str(self.lin_txt.text())
         #shell_func(shell_str, shell=True)
 
-
         p = subprocess.Popen(shell_str, stdout = subprocess.PIPE, bufsize = 1, shell = True)
         for line in iter(p.stdout.readline, b''):
 
@@ -62,9 +59,7 @@ class Example(QtGui.QWidget):
         p.stdout.close()
         p.wait()
 
-
         self.lin_txt.setText(str(""))
-
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
