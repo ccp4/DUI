@@ -160,18 +160,36 @@ if( __name__ == "__main__"):
     for obj in lst_obj:
         print obj
 
-        if(obj[1] == 'float' ):
-            print "_________________________ << type float"
+        if(obj[1] == 'float' or obj[1] == 'int' ):
+            print "_________________________ << type float or int"
 
-            box_name = "box_" + str(obj[0])
-            src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
-            src_code_aut.append("        bg_box.addWidget(" + box_name + ")")
+
+            h_box_name = "hbox_" + str(obj[0])
+
+            src_code_aut.append("        " + h_box_name + "=  QHBoxLayout()")
+
 
             label_name = "label_" + str(obj[0])
             str_to_add = "        " + label_name + " = QLabel(\"" + str(obj[0])  + "\")"
             src_code_aut.append(str_to_add)
-            print "str_to_add =", str_to_add
-            src_code_aut.append("        bg_box.addWidget(" + label_name + ")")
+
+            src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
+
+            #src_code_aut.append("        bg_box.addWidget(" + label_name + ")")
+
+            box_name = "spn_box_" + str(obj[0])
+            if( obj[1] == 'float' ):
+                src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
+
+            elif( obj[1] == 'int' ):
+                src_code_aut.append("        " + box_name + " = QSpinBox()")
+
+            src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
+            src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
+
+
+
+
 
             from_JMPs_code = '''
             class FloatEditor(QDoubleSpinBox):
@@ -198,18 +216,6 @@ if( __name__ == "__main__"):
                 model.setData(index, value, Qt.EditRole)
             '''
 
-        elif(obj[1] == 'int' ):
-            print "_________________________ << type int"
-
-            box_name = "box_" + str(obj[0])
-            src_code_aut.append("        " + box_name + " = QSpinBox()")
-            src_code_aut.append("        bg_box.addWidget(" + box_name + ")")
-
-            label_name = "label_" + str(obj[0])
-            str_to_add = "        " + label_name + " = QLabel(\"" + str(obj[0])  + "\")"
-            src_code_aut.append(str_to_add)
-            print "str_to_add =", str_to_add
-            src_code_aut.append("        bg_box.addWidget(" + label_name + ")")
 
         elif(obj[1] == 'str' ):
             print "_________________________ << type str"
