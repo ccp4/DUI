@@ -18,14 +18,14 @@ class gen_code(object):
         self.src_code_1 = []
         self.src_code_1.append("import sys")
         #self.src_code_1.append(" ")
-        self.src_code_1.append("PyQt4_ver = '''")
+        self.src_code_1.append("#PyQt4_ver = '''")
         self.src_code_1.append("from PyQt4.QtGui import *")
         self.src_code_1.append("from PyQt4.QtCore import *")
         self.src_code_1.append("#Signal = pyqtSignal")
         self.src_code_1.append("print \"using PyQt4\"")
         self.src_code_1.append("#'''")
         #self.src_code_1.append(" ")
-        self.src_code_1.append("#PySide_ver = '''")
+        self.src_code_1.append("PySide_ver = '''")
         self.src_code_1.append("from PySide.QtGui import *")
         self.src_code_1.append("from PySide.QtCore import *")
         self.src_code_1.append("pyqtSignal = Signal")
@@ -43,14 +43,14 @@ class gen_code(object):
         self.src_code_1.append("        hbox =  QHBoxLayout()")
         self.src_code_1.append("        hbox.addWidget(self.btn_go)")
         self.src_code_1.append("        bg_box =  QVBoxLayout(self)")
-        self.src_code_1.append("        bg_box.addLayout(hbox)")
-        self.src_code_1.append("        self.setLayout(bg_box)")
-        self.src_code_1.append("        self.show()")
-        #self.src_code_1.append(" ")
+        self.src_code_1.append(" ")
 
         #between this two pieces of code goes the phil auto-generated  code
-
         self.src_code_2 = []
+        self.src_code_2.append(" ")
+        self.src_code_2.append("        bg_box.addLayout(hbox)")
+        self.src_code_2.append("        self.setLayout(bg_box)")
+        self.src_code_2.append("        self.show()")
         self.src_code_2.append("class MainWidget( QWidget):")
         #self.src_code_2.append(" ")
         self.src_code_2.append("    def __init__(self):")
@@ -73,7 +73,7 @@ class gen_code(object):
         self.src_code_2.append("    sys.exit(app.exec_())")
         #self.src_code_2.append(" ")
 
-    def write_file(self):
+    def write_file(self, to_insert = None):
 
         myfile = open("gui_tst_code.py", "w")
 
@@ -81,7 +81,11 @@ class gen_code(object):
             myfile.write(line)
             myfile.write("\n")
 
-        myfile.write("#next class\n")
+        if( to_insert != None ):
+            print "inserting auto-generated code"
+            for line in to_insert:
+                myfile.write(line)
+                myfile.write("\n")
 
         for line in self.src_code_2:
             myfile.write(line)
@@ -150,13 +154,43 @@ if( __name__ == "__main__"):
     phl_obj = phil_scope.objects
     lst_obj = []
     deep_in_rec(phl_obj)
+
+    src_code_aut = []
+
     for obj in lst_obj:
         print obj
 
         if(obj[1] == 'float' ):
             print "_________________________ << type float"
 
-            
+            box_name = "box_" + str(obj[0])
+
+            src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
+            src_code_aut.append("        bg_box.addWidget(" + box_name + ")")
+            '''
+            class FloatEditor(QDoubleSpinBox):
+
+              def __init__(self, parent=None, value_min=None, value_max=None):
+                super(FloatEditor, self).__init__(parent)
+                if value_min is not None:
+                  self.setMinimum(value_min)
+                else:
+                  self.setMinimum(-1e9)
+                if value_max is not None:
+                  self.setMaximum(value_max)
+                else:
+                  self.setMaximum(1e9)
+                self.setDecimals(2)
+
+              def setEditorData(self, index):
+                value = index.model().data(index, Qt.EditRole).toFloat()
+                self.setValue(value[0])
+
+              def setModelData(self, model, index):
+                self.interpretText()
+                value = self.value()
+                model.setData(index, value, Qt.EditRole)
+            '''
 
 
         elif(obj[1] == 'str' ):
@@ -173,6 +207,6 @@ if( __name__ == "__main__"):
 
     s_code = gen_code()
 
-    s_code.write_file()
+    s_code.write_file(src_code_aut)
 
 
