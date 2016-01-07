@@ -164,10 +164,16 @@ if( __name__ == "__main__"):
             print "_________________________ << type float"
 
             box_name = "box_" + str(obj[0])
-
             src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
             src_code_aut.append("        bg_box.addWidget(" + box_name + ")")
-            '''
+
+            label_name = "label_" + str(obj[0])
+            str_to_add = "        " + label_name + " = QLabel(\"" + str(obj[0])  + "\")"
+            src_code_aut.append(str_to_add)
+            print "str_to_add =", str_to_add
+            src_code_aut.append("        bg_box.addWidget(" + label_name + ")")
+
+            from_JMPs_code = '''
             class FloatEditor(QDoubleSpinBox):
 
               def __init__(self, parent=None, value_min=None, value_max=None):
