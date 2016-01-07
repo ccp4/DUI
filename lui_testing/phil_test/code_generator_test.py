@@ -198,11 +198,22 @@ if( __name__ == "__main__"):
                 model.setData(index, value, Qt.EditRole)
             '''
 
+        elif(obj[1] == 'int' ):
+            print "_________________________ << type int"
+
+            box_name = "box_" + str(obj[0])
+            src_code_aut.append("        " + box_name + " = QSpinBox()")
+            src_code_aut.append("        bg_box.addWidget(" + box_name + ")")
+
+            label_name = "label_" + str(obj[0])
+            str_to_add = "        " + label_name + " = QLabel(\"" + str(obj[0])  + "\")"
+            src_code_aut.append(str_to_add)
+            print "str_to_add =", str_to_add
+            src_code_aut.append("        bg_box.addWidget(" + label_name + ")")
 
         elif(obj[1] == 'str' ):
             print "_________________________ << type str"
-        elif(obj[1] == 'int' ):
-            print "_________________________ << type int"
+
         elif(obj[1] == 'choice' ):
             print "_________________________ << type choice"
         elif(obj[1] == 'bool' ):
