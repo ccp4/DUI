@@ -97,44 +97,82 @@ class gen_code(object):
         '''
 
 def deep_in_rec(phl_obj):
-  for single_obj in phl_obj:
-    if( single_obj.is_scope ):
-      #print "is_scope \n" # deep_in_rec here
-      deep_in_rec(single_obj.objects)
-    elif( single_obj.is_definition):
-      #print "single_obj.name =", single_obj.name
-      local_val = single_obj.extract()
+    for single_obj in phl_obj:
+        if( single_obj.is_scope ):
+            #print "is_scope \n" # deep_in_rec here
+            deep_in_rec(single_obj.objects)
+        elif( single_obj.is_definition):
+            #print "single_obj.name =", single_obj.name
+            local_val = single_obj.extract()
 
-      if( single_obj.name == "d_min"):
-          print "\n\n\n___________________________________________________________found d_min"
+            #print "dir(single_obj) =", dir(single_obj), "\n\n"
+            #print "single_obj.extract_format =", single_obj.extract_format()
+            #print "single_obj.type =", single_obj.type.phil_type
+            #print "single_obj.extract =", local_val
 
-          #print "dir(single_obj) =", dir(single_obj), "\n\n"
-          #print "single_obj.extract_format =", single_obj.extract_format()
-          #print "single_obj.type =", single_obj.type
-
-
-          #print "\n\n\n"
-
-      #print "single_obj.extract =", local_val
-      #print "type(local_type) =", type(local_val)
-      elm = [single_obj.name, single_obj.type]
-      lst_obj.append(elm)
+            elm = [single_obj.name, single_obj.type.phil_type]
+            lst_obj.append(elm)
 
 
+from_JMPs_code = '''
+
+  def createEditor(self, parent, option, index):
+    parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
+    dtype = parameter.type
+    ptype = dtype.phil_type
+    if ptype == 'str':
+      editor = StringEditor(parent)
+    elif ptype == 'float':
+      editor = FloatEditor(parent, dtype.value_min, dtype.value_max)
+    elif ptype == 'int':
+      editor = IntEditor(parent, dtype.value_min, dtype.value_max)
+    elif ptype == 'choice':
+      def strip(w):
+        w = str(w)
+        if w.startswith("*"):
+          return w[1:]
+        return w
+      choices = [strip(w) for w in parameter.words]
+      editor = ChoiceEditor(parent, choices)
+    elif ptype == 'bool':
+      editor = BoolEditor(parent)
+    else:
+      raise RuntimeError("Handle type %s" % dtype)
+    return editor
+
+'''
 
 if( __name__ == "__main__"):
-  #from dials.command_line.integrate import phil_scope
-  #from dials.command_line.refine import phil_scope
-  #from dials.command_line.index import phil_scope
-  from dials.command_line.find_spots import phil_scope
-  phl_obj = phil_scope.objects
-  lst_obj = []
-  deep_in_rec(phl_obj)
-  for obj in lst_obj:
-    print obj
+    from dials.command_line.integrate import phil_scope
+    #from dials.command_line.refine import phil_scope
+    #from dials.command_line.index import phil_scope
+    #from dials.command_line.find_spots import phil_scope
+    phl_obj = phil_scope.objects
+    lst_obj = []
+    deep_in_rec(phl_obj)
+    for obj in lst_obj:
+        print obj
 
-  s_code = gen_code()
+        if(obj[1] == 'float' ):
+            print "_________________________ << type float"
 
-  s_code.write_file()
+            
+
+
+        elif(obj[1] == 'str' ):
+            print "_________________________ << type str"
+        elif(obj[1] == 'int' ):
+            print "_________________________ << type int"
+        elif(obj[1] == 'choice' ):
+            print "_________________________ << type choice"
+        elif(obj[1] == 'bool' ):
+            print "_________________________ << type bool"
+        else:
+            print "__________________________________ << WARNING find something ELSE"
+
+
+    s_code = gen_code()
+
+    s_code.write_file()
 
 
