@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 
 import sys
-'''
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtWebKit import *
-'''
 
-from PySide import QtCore, QtGui, QtWebKit
+#from PySide import QtCore, QtGui, QtWebKit
+from PyQt4 import QtCore, QtGui, QtWebKit
 
 from subprocess import call as shell_func
 import sys
@@ -49,7 +45,8 @@ class MainWidget( QtGui.QWidget):
 
 
         self.web = QtWebKit.QWebView()
-        self.web.load(QtCore.QUrl("http://google.co.uk"))
+        self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+
 
         hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.btn_go)
