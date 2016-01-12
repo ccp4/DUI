@@ -10,7 +10,7 @@ try:
 except ImportError, e:
   pass
 
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, QtWebKit
 #from PySide import QtCore, QtGui
 
 from stacked_widgets import ImportPage, FindspotstParameterWidget,\
@@ -20,13 +20,21 @@ from stacked_widgets import ImportPage, FindspotstParameterWidget,\
 import subprocess
 import sys
 
-class ImgTab(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(ImgTab, self).__init__(parent)
-        readable = QtGui.QCheckBox("CheckBox")
-        localLayout = QtGui.QVBoxLayout()
-        localLayout.addWidget(readable)
-        self.setLayout(localLayout)
+class ImgTab( QtGui.QWidget):
+
+    def __init__(self):
+        super(ImgTab, self).__init__()
+
+        self.web = QtWebKit.QWebView()
+        #self.web.load(QtCore.QUrl("http://google.co.uk"))
+        self.web.load(QtCore.QUrl("file:///home/lui/only_10_img/tst_run/xia2-report.html"))
+        hbox =  QtGui.QHBoxLayout()
+        hbox.addWidget(self.web)
+
+        #self.setGeometry(1100, 200, 550, 250)
+        self.setLayout(hbox)
+        self.setWindowTitle('Shell dialog')
+        self.show()
 
 class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
