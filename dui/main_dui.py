@@ -20,6 +20,14 @@ from stacked_widgets import ImportPage, FindspotstParameterWidget,\
 import subprocess
 import sys
 
+class ImgTab(QtGui.QWidget):
+    def __init__(self, parent=None):
+        super(ImgTab, self).__init__(parent)
+        readable = QtGui.QCheckBox("CheckBox")
+        localLayout = QtGui.QVBoxLayout()
+        localLayout.addWidget(readable)
+        self.setLayout(localLayout)
+
 class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
         super(MyQProcess, self).__init__()
@@ -121,7 +129,13 @@ class MyMainDialog(QtGui.QMainWindow):
         pop_viewers_layout.addWidget(pop_ref_view_but)
         pop_viewers_layout.addWidget(pop_but)
         right_side_layout = QtGui.QVBoxLayout()
-        right_side_layout.addWidget(self.multi_line_txt)
+
+        tabWidget = QtGui.QTabWidget()
+        tabWidget.addTab(self.multi_line_txt, "Tab 1")
+        tabWidget.addTab(ImgTab(), "tab 2")
+
+        right_side_layout.addWidget(tabWidget)
+
         right_side_layout.addLayout(pop_viewers_layout)
         horizontalLayout.addLayout(right_side_layout)
 

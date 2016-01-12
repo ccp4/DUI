@@ -1,23 +1,18 @@
 #!/usr/bin/env python
 
 import sys
+'''
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4.QtWebKit import *
+'''
 
-
+from PySide import QtCore, QtGui, QtWebKit
 
 from subprocess import call as shell_func
 import sys
 
-#from PyQt4 import QtGui, QtCore
-
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
-
-
-class inner_widg( QWidget):
+class inner_widg( QtGui.QWidget):
 
     def __init__(self, parent):
         super(inner_widg, self).__init__()
@@ -25,13 +20,13 @@ class inner_widg( QWidget):
         self.initUI()
 
     def initUI(self):
-        self.btn_go =  QPushButton('\n      Go   \n', self)
+        self.btn_go = QtGui.QPushButton('\n      Go   \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
 
-        hbox =  QHBoxLayout()
+        hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.btn_go)
 
-        bg_box =  QVBoxLayout(self)
+        bg_box =  QtGui.QVBoxLayout(self)
         bg_box.addLayout(hbox)
 
         self.setLayout(bg_box)
@@ -43,7 +38,7 @@ class inner_widg( QWidget):
         self.parent_widget.to_be_caled_from_son_widg(4)
 
 
-class MainWidget( QWidget):
+class MainWidget( QtGui.QWidget):
 
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -53,10 +48,10 @@ class MainWidget( QWidget):
         self.btn_go = inner_widg(self)
 
 
-        self.web = QWebView()
-        self.web.load(QUrl("http://google.co.uk"))
+        self.web = QtWebKit.QWebView()
+        self.web.load(QtCore.QUrl("http://google.co.uk"))
 
-        hbox =  QHBoxLayout()
+        hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.btn_go)
         hbox.addWidget(self.web)
 
@@ -71,7 +66,7 @@ class MainWidget( QWidget):
 
 
 if __name__ == '__main__':
-    app =  QApplication(sys.argv)
+    app = QtGui.QApplication(sys.argv)
     ex = MainWidget()
     sys.exit(app.exec_())
 
