@@ -166,7 +166,7 @@ if( __name__ == "__main__"):
 
             h_box_name = "hbox_" + str(obj[0])
 
-            src_code_aut.append("        " + h_box_name + "=  QHBoxLayout()")
+            src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
 
 
             label_name = "label_" + str(obj[0])
