@@ -140,17 +140,35 @@ class FindspotstParameterWidget(QtGui.QWidget):
         self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
 
 
+
+class PermissionsTab(QtGui.QWidget):
+    def __init__(self, parent=None):
+        super(PermissionsTab, self).__init__(parent)
+        readable = QtGui.QCheckBox("CheckBox")
+        localLayout = QtGui.QVBoxLayout()
+        localLayout.addWidget(readable)
+        self.setLayout(localLayout)
+
+
 class IndexParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from dials.command_line.index import phil_scope
         super(IndexParameterWidget, self).__init__(parent)
-
         self.super_parent = parent
+
         param_widg = ParameterWidget(self.super_parent, phil_scope)
 
+        dumy_tab = PermissionsTab()
+
+        tabWidget = QtGui.QTabWidget()
+        tabWidget.addTab(dumy_tab, "Tab 1")
+        tabWidget.addTab(param_widg, "tab 2")
+
+
+
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
+        mainLayout.addWidget(tabWidget)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
