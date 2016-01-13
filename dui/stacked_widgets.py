@@ -144,9 +144,11 @@ class FindspotstParameterWidget(QtGui.QWidget):
 class PermissionsTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(PermissionsTab, self).__init__(parent)
-        readable = QtGui.QCheckBox("CheckBox")
+        scan_varying_check = QtGui.QCheckBox("scan_varying")
+        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
         localLayout = QtGui.QVBoxLayout()
-        localLayout.addWidget(readable)
+        localLayout.addWidget(scan_varying_check)
+        localLayout.addWidget(use_all_refl_check)
         self.setLayout(localLayout)
 
 
