@@ -1,4 +1,12 @@
 #!/usr/bin/env python
+# LIBTBX_PRE_DISPATCHER_INCLUDE_SH export BOOST_ADAPTBX_FPE_DEFAULT=1
+# LIBTBX_PRE_DISPATCHER_INCLUDE_SH export BOOST_ADAPTBX_SIGNALS_DEFAULT=1
+from __future__ import division
+
+or_run_from_cli = '''
+export BOOST_ADAPTBX_FPE_DEFAULT=1
+export BOOST_ADAPTBX_SIGNALS_DEFAULT=1
+'''
 # FIXME Copied from dials.index.py. This is needed here because scipy needs to
 # be imported before cctbx otherwise there will be a segmentation fault. This
 # should be fixed in dials.index so that we don't need to import here.

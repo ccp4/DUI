@@ -10,7 +10,13 @@ class ImgTab( QtGui.QWidget):
     def __init__(self):
         super(ImgTab, self).__init__()
 
+        print "QtWebKit.QWebSettings.JavascriptEnabled =", QtWebKit.QWebSettings.JavascriptEnabled
+
+        QtWebKit.QWebSettings.JavascriptEnabled = True
+
         self.web = QtWebKit.QWebView()
+        #print "dir(self.web) =", dir(self.web)
+
         #self.web.load(QtCore.QUrl("http://google.co.uk"))
         self.web.load(QtCore.QUrl("file:///home/lui/only_10_img/tst_run/xia2-report.html"))
         hbox =  QtGui.QHBoxLayout()
