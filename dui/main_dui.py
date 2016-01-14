@@ -35,9 +35,7 @@ class ImgTab( QtGui.QWidget):
         super(ImgTab, self).__init__()
 
         self.web = QtWebKit.QWebView()
-        #self.web.load(QtCore.QUrl("http://google.co.uk"))
         self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
-        #self.web.load(QtCore.QUrl("file:///home/lui/only_10_img/tst_run/xia2-report.html"))
         hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.web)
 
@@ -138,8 +136,8 @@ class MyMainDialog(QtGui.QMainWindow):
         mainLayout = QtGui.QVBoxLayout()
 
         self.multi_line_txt = QtGui.QTextBrowser()
-        self.multi_line_txt.setMaximumHeight(724)
-        self.multi_line_txt.setMinimumHeight(24)
+        #self.multi_line_txt.setMaximumHeight(724)
+        #self.multi_line_txt.setMinimumHeight(24)
         self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
         self.multi_line_txt.setTextColor(QtGui.QColor("black"))
 
