@@ -36,7 +36,8 @@ class ImgTab( QtGui.QWidget):
 
         self.web = QtWebKit.QWebView()
         #self.web.load(QtCore.QUrl("http://google.co.uk"))
-        self.web.load(QtCore.QUrl("file:///home/lui/only_10_img/tst_run/xia2-report.html"))
+        self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+        #self.web.load(QtCore.QUrl("file:///home/lui/only_10_img/tst_run/xia2-report.html"))
         hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.web)
 
