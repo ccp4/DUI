@@ -17,7 +17,7 @@ class gen_code(object):
 
         self.src_code_1 = []
         self.src_code_1.append("import sys")
-        self.src_code_1.append(" ")
+        #self.src_code_1.append(" ")
         self.src_code_1.append("PyQt4_ver = '''")
         self.src_code_1.append("from PyQt4.QtGui import *")
         self.src_code_1.append("from PyQt4.QtCore import *")
@@ -100,11 +100,11 @@ class gen_code(object):
         myfile.close()
         '''
 
-def deep_in_rec(phl_obj):
+def deep_in_rec(phl_obj, lst_obj):
     for single_obj in phl_obj:
         if( single_obj.is_scope ):
             #print "is_scope \n" # deep_in_rec here
-            deep_in_rec(single_obj.objects)
+            deep_in_rec(single_obj.objects, lst_obj)
             lst_obj.append("is_scope")
 
             print "scope.name = ",
@@ -176,7 +176,7 @@ if( __name__ == "__main__"):
     #from dials.command_line.find_spots import phil_scope
     phl_obj = phil_scope.objects
     lst_obj = []
-    deep_in_rec(phl_obj)
+    deep_in_rec(phl_obj, lst_obj)
 
     src_code_aut = []
     write_to_disc()
