@@ -17,7 +17,7 @@ class gen_code(object):
 
         self.src_code_1 = []
         self.src_code_1.append("import sys")
-        #self.src_code_1.append(" ")
+        self.src_code_1.append(" ")
         self.src_code_1.append("PyQt4_ver = '''")
         self.src_code_1.append("from PyQt4.QtGui import *")
         self.src_code_1.append("from PyQt4.QtCore import *")
@@ -126,25 +126,14 @@ def deep_in_rec(phl_obj):
 
 scope_str = ""
 
-if( __name__ == "__main__"):
-    from dials.command_line.integrate import phil_scope
-    #from dials.command_line.refine import phil_scope
-    #from dials.command_line.index import phil_scope
-    #from dials.command_line.find_spots import phil_scope
-    phl_obj = phil_scope.objects
-    lst_obj = []
-    deep_in_rec(phl_obj)
-
-    src_code_aut = []
+def write_to_disc():
 
     for obj in lst_obj:
         #print obj
         if( obj == "is_scope" ):
             print "scope found"
 
-
         else:
-
             if(obj[1] == 'float' or obj[1] == 'int' ):
                 print "_________________________ << type float or int"
 
@@ -179,3 +168,15 @@ if( __name__ == "__main__"):
     s_code.write_file(src_code_aut)
 
 
+
+if( __name__ == "__main__"):
+    from dials.command_line.integrate import phil_scope
+    #from dials.command_line.refine import phil_scope
+    #from dials.command_line.index import phil_scope
+    #from dials.command_line.find_spots import phil_scope
+    phl_obj = phil_scope.objects
+    lst_obj = []
+    deep_in_rec(phl_obj)
+
+    src_code_aut = []
+    write_to_disc()
