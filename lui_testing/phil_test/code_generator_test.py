@@ -126,8 +126,8 @@ def deep_in_rec(phl_obj, lst_obj):
 
 scope_str = ""
 
-def write_to_disc():
-
+def write_to_disc(lst_obj):
+    src_code_aut = []
     for obj in lst_obj:
         #print obj
         if( obj == "is_scope" ):
@@ -136,7 +136,6 @@ def write_to_disc():
         else:
             if(obj[1] == 'float' or obj[1] == 'int' ):
                 print "_________________________ << type float or int"
-
                 h_box_name = "hbox_" + str(obj[0])
                 src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
                 label_name = "label_" + str(obj[0])
@@ -144,6 +143,7 @@ def write_to_disc():
                 src_code_aut.append(str_to_add)
                 src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
                 box_name = "spn_box_" + str(obj[0])
+
                 if( obj[1] == 'float' ):
                     src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
 
@@ -162,11 +162,8 @@ def write_to_disc():
             else:
                 print "__________________________________ << WARNING find something ELSE"
 
-
     s_code = gen_code()
-
     s_code.write_file(src_code_aut)
-
 
 
 if( __name__ == "__main__"):
@@ -177,6 +174,4 @@ if( __name__ == "__main__"):
     phl_obj = phil_scope.objects
     lst_obj = []
     deep_in_rec(phl_obj, lst_obj)
-
-    src_code_aut = []
-    write_to_disc()
+    write_to_disc(lst_obj)
