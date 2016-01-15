@@ -18,14 +18,14 @@ class gen_code(object):
         self.src_code_1 = []
         self.src_code_1.append("import sys")
         #self.src_code_1.append(" ")
-        self.src_code_1.append("#PyQt4_ver = '''")
+        self.src_code_1.append("PyQt4_ver = '''")
         self.src_code_1.append("from PyQt4.QtGui import *")
         self.src_code_1.append("from PyQt4.QtCore import *")
         self.src_code_1.append("#Signal = pyqtSignal")
         self.src_code_1.append("print \"using PyQt4\"")
         self.src_code_1.append("#'''")
         #self.src_code_1.append(" ")
-        self.src_code_1.append("PySide_ver = '''")
+        self.src_code_1.append("#PySide_ver = '''")
         self.src_code_1.append("from PySide.QtGui import *")
         self.src_code_1.append("from PySide.QtCore import *")
         self.src_code_1.append("pyqtSignal = Signal")
@@ -105,6 +105,11 @@ def deep_in_rec(phl_obj):
         if( single_obj.is_scope ):
             #print "is_scope \n" # deep_in_rec here
             deep_in_rec(single_obj.objects)
+            lst_obj.append("is_scope")
+
+            print "scope.name = ",
+            nm = single_obj.name
+            print nm
         elif( single_obj.is_definition):
             #print "single_obj.name =", single_obj.name
             local_val = single_obj.extract()
@@ -116,35 +121,10 @@ def deep_in_rec(phl_obj):
 
             elm = [single_obj.name, single_obj.type.phil_type]
             lst_obj.append(elm)
+        else:
+            print "_______________________________________________________ in else"
 
-
-from_JMPs_code = '''
-
-  def createEditor(self, parent, option, index):
-    parameter = index.model().data(index, Qt.UserRole+1).toPyObject()
-    dtype = parameter.type
-    ptype = dtype.phil_type
-    if ptype == 'str':
-      editor = StringEditor(parent)
-    elif ptype == 'float':
-      editor = FloatEditor(parent, dtype.value_min, dtype.value_max)
-    elif ptype == 'int':
-      editor = IntEditor(parent, dtype.value_min, dtype.value_max)
-    elif ptype == 'choice':
-      def strip(w):
-        w = str(w)
-        if w.startswith("*"):
-          return w[1:]
-        return w
-      choices = [strip(w) for w in parameter.words]
-      editor = ChoiceEditor(parent, choices)
-    elif ptype == 'bool':
-      editor = BoolEditor(parent)
-    else:
-      raise RuntimeError("Handle type %s" % dtype)
-    return editor
-
-'''
+scope_str = ""
 
 if( __name__ == "__main__"):
     from dials.command_line.integrate import phil_scope
@@ -158,74 +138,40 @@ if( __name__ == "__main__"):
     src_code_aut = []
 
     for obj in lst_obj:
-        print obj
-
-        if(obj[1] == 'float' or obj[1] == 'int' ):
-            print "_________________________ << type float or int"
-
-
-            h_box_name = "hbox_" + str(obj[0])
-
-            src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
+        #print obj
+        if( obj == "is_scope" ):
+            print "scope found"
 
 
-            label_name = "label_" + str(obj[0])
-            str_to_add = "        " + label_name + " = QLabel(\"" + str(obj[0])  + "\")"
-            src_code_aut.append(str_to_add)
-
-            src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
-
-            #src_code_aut.append("        bg_box.addWidget(" + label_name + ")")
-
-            box_name = "spn_box_" + str(obj[0])
-            if( obj[1] == 'float' ):
-                src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
-
-            elif( obj[1] == 'int' ):
-                src_code_aut.append("        " + box_name + " = QSpinBox()")
-
-            src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
-            src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
-
-
-
-
-
-            from_JMPs_code = '''
-            class FloatEditor(QDoubleSpinBox):
-
-              def __init__(self, parent=None, value_min=None, value_max=None):
-                super(FloatEditor, self).__init__(parent)
-                if value_min is not None:
-                  self.setMinimum(value_min)
-                else:
-                  self.setMinimum(-1e9)
-                if value_max is not None:
-                  self.setMaximum(value_max)
-                else:
-                  self.setMaximum(1e9)
-                self.setDecimals(2)
-
-              def setEditorData(self, index):
-                value = index.model().data(index, Qt.EditRole).toFloat()
-                self.setValue(value[0])
-
-              def setModelData(self, model, index):
-                self.interpretText()
-                value = self.value()
-                model.setData(index, value, Qt.EditRole)
-            '''
-
-
-        elif(obj[1] == 'str' ):
-            print "_________________________ << type str"
-
-        elif(obj[1] == 'choice' ):
-            print "_________________________ << type choice"
-        elif(obj[1] == 'bool' ):
-            print "_________________________ << type bool"
         else:
-            print "__________________________________ << WARNING find something ELSE"
+
+            if(obj[1] == 'float' or obj[1] == 'int' ):
+                print "_________________________ << type float or int"
+
+                h_box_name = "hbox_" + str(obj[0])
+                src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
+                label_name = "label_" + str(obj[0])
+                str_to_add = "        " + label_name + " = QLabel(\"" + str(obj[0])  + "\")"
+                src_code_aut.append(str_to_add)
+                src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
+                box_name = "spn_box_" + str(obj[0])
+                if( obj[1] == 'float' ):
+                    src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
+
+                elif( obj[1] == 'int' ):
+                    src_code_aut.append("        " + box_name + " = QSpinBox()")
+
+                src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
+                src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
+
+            elif(obj[1] == 'str' ):
+                print "_________________________ << type str"
+            elif(obj[1] == 'choice' ):
+                print "_________________________ << type choice"
+            elif(obj[1] == 'bool' ):
+                print "_________________________ << type bool"
+            else:
+                print "__________________________________ << WARNING find something ELSE"
 
 
     s_code = gen_code()
