@@ -93,13 +93,6 @@ class gen_code(object):
 
         myfile.close()
 
-        if_we_wanna_read = '''
-        os.system("./psl_calc.r c ori_SI.cfl")
-        myfile = open("calc_pk.dat", "r")
-        lines = myfile.readlines()
-        myfile.close()
-        '''
-
 def deep_in_rec(phl_obj, lst_obj):
     for single_obj in phl_obj:
         if( single_obj.is_scope ):
@@ -174,4 +167,4 @@ if( __name__ == "__main__"):
     phl_obj = phil_scope.objects
     lst_obj = []
     deep_in_rec(phl_obj, lst_obj)
-    write_to_disc(lst_obj)
+    #write_to_disc(lst_obj)
