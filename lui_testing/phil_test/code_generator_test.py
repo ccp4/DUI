@@ -42,30 +42,17 @@ class gen_code(object):
 
         self.src_code_2 = []
         self.src_code_2.append(" ")
-        #self.src_code_2.append("        bg_box.addLayout(hbox)")
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
         self.src_code_2.append("class MainWidget( QWidget):")
         #self.src_code_2.append(" ")
         self.src_code_2.append("    def __init__(self):")
         self.src_code_2.append("        super(MainWidget, self).__init__()")
-        #self.src_code_2.append(" ")
-        #self.src_code_2.append("        self.inner_btn = inner_widg(self)")
-
-
-
-
         self.src_code_2.append("        self.scrollable_widget = inner_widg(self)")
         self.src_code_2.append("        scrollArea = QScrollArea()")
         self.src_code_2.append("        scrollArea.setWidget(self.scrollable_widget)")
         self.src_code_2.append("        hbox =  QHBoxLayout()")
         self.src_code_2.append("        hbox.addWidget(scrollArea)")
-
-
-
-
-        #self.src_code_2.append("        hbox =  QHBoxLayout()")
-        #self.src_code_2.append("        hbox.addWidget(self.inner_btn)")
         self.src_code_2.append("        self.setLayout(hbox)")
         self.src_code_2.append("        self.setWindowTitle('Phil dialog')")
         self.src_code_2.append("        self.show()")
