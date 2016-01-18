@@ -28,27 +28,21 @@ class gen_code(object):
         self.src_code_1.append("#PySide_ver = '''")
         self.src_code_1.append("from PySide.QtGui import *")
         self.src_code_1.append("from PySide.QtCore import *")
-        self.src_code_1.append("pyqtSignal = Signal")
+        #self.src_code_1.append("pyqtSignal = Signal")
         self.src_code_1.append("print \"using PySide\"")
         self.src_code_1.append("#'''")
         #self.src_code_1.append(" ")
         self.src_code_1.append("class inner_widg( QWidget):")
-        self.src_code_1.append("    goClicked = pyqtSignal()")
+        #self.src_code_1.append("    goClicked = pyqtSignal()")
         self.src_code_1.append("    def __init__(self, parent):")
         self.src_code_1.append("        super(inner_widg, self).__init__()")
         #self.src_code_1.append(" ")
-        self.src_code_1.append("        self.btn_go =  QPushButton('\\n      Go   \\n', self)")
-        self.src_code_1.append("        #self.btn_go.clicked.connect(self.B_go_clicked)")
-        self.src_code_1.append("        self.btn_go.clicked.connect(self.goClicked)")
-        self.src_code_1.append("        hbox =  QHBoxLayout()")
-        self.src_code_1.append("        hbox.addWidget(self.btn_go)")
         self.src_code_1.append("        bg_box =  QVBoxLayout(self)")
         self.src_code_1.append(" ")
 
-        #between this two pieces of code goes the phil auto-generated  code
         self.src_code_2 = []
         self.src_code_2.append(" ")
-        self.src_code_2.append("        bg_box.addLayout(hbox)")
+        #self.src_code_2.append("        bg_box.addLayout(hbox)")
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
         self.src_code_2.append("class MainWidget( QWidget):")
@@ -56,12 +50,24 @@ class gen_code(object):
         self.src_code_2.append("    def __init__(self):")
         self.src_code_2.append("        super(MainWidget, self).__init__()")
         #self.src_code_2.append(" ")
-        self.src_code_2.append("        self.inner_btn = inner_widg(self)")
+        #self.src_code_2.append("        self.inner_btn = inner_widg(self)")
+
+
+
+
+        self.src_code_2.append("        self.scrollable_widget = inner_widg(self)")
+        self.src_code_2.append("        scrollArea = QScrollArea()")
+        self.src_code_2.append("        scrollArea.setWidget(self.scrollable_widget)")
         self.src_code_2.append("        hbox =  QHBoxLayout()")
-        self.src_code_2.append("        hbox.addWidget(self.inner_btn)")
-        self.src_code_2.append("        self.inner_btn.goClicked.connect(self.to_be_caled_from_son_widg)")
+        self.src_code_2.append("        hbox.addWidget(scrollArea)")
+
+
+
+
+        #self.src_code_2.append("        hbox =  QHBoxLayout()")
+        #self.src_code_2.append("        hbox.addWidget(self.inner_btn)")
         self.src_code_2.append("        self.setLayout(hbox)")
-        self.src_code_2.append("        self.setWindowTitle('Shell dialog')")
+        self.src_code_2.append("        self.setWindowTitle('Phil dialog')")
         self.src_code_2.append("        self.show()")
         #self.src_code_2.append(" ")
         self.src_code_2.append("    def to_be_caled_from_son_widg(self):")
@@ -167,4 +173,4 @@ if( __name__ == "__main__"):
     phl_obj = phil_scope.objects
     lst_obj = []
     deep_in_rec(phl_obj, lst_obj)
-    #write_to_disc(lst_obj)
+    write_to_disc(lst_obj)
