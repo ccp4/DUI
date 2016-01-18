@@ -91,7 +91,7 @@ def deep_in_rec(phl_obj, lst_obj):
         if( single_obj.is_scope ):
             #print "is_scope \n" # deep_in_rec here
             deep_in_rec(single_obj.objects, lst_obj)
-            lst_obj.append("is_scope")
+            lst_obj.append(str(single_obj.name))
 
             print "scope.name = ",
             nm = single_obj.name
@@ -115,9 +115,15 @@ scope_str = ""
 def write_to_disc(lst_obj):
     src_code_aut = []
     for obj in lst_obj:
-        #print obj
-        if( obj == "is_scope" ):
+        #if( obj == "is_scope" ):
+        print "type =", str(type(obj))
+
+        if( str(type(obj)) == "<type \'str\'>" ):
+
             print "scope found"
+
+            src_code_aut.append("        label_tst = QLabel(\"" +  str(obj)  + "\")")
+            src_code_aut.append("        bg_box.addWidget(label_tst)")
 
         else:
             if(obj[1] == 'float' or obj[1] == 'int' ):
