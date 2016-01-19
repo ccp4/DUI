@@ -119,13 +119,13 @@ def write_to_disc(lst_obj):
 
         if( str(type(obj)) == "<type \'str\'>" ):
 
-            print "[scope] =", str(obj)
+            print "[scope] =", obj
             src_code_aut.append("        label_tst = QLabel(\"" +  str(obj)  + "\")")
             src_code_aut.append("        bg_box.addWidget(label_tst)")
 
         else:
-            if(obj[1] == 'float' or obj[1] == 'int' ):
-                print "_________________________ << type float or int"
+            if(obj[1] == 'float' or obj[1] == 'int' or obj[1] == 'str' or obj[1] == 'bool' ):
+                print "___________________ << supported type found "
                 h_box_name = "hbox_" + str(obj[0])
                 src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
                 label_name = "label_" + str(obj[0])
@@ -140,17 +140,27 @@ def write_to_disc(lst_obj):
                 elif( obj[1] == 'int' ):
                     src_code_aut.append("        " + box_name + " = QSpinBox()")
 
+                elif( obj[1] == 'str' ):
+                    src_code_aut.append("        " + box_name + " = QLineEdit()")
+
+                    '''
+                elif( obj[1] == 'choice' ):
+                    src_code_aut.append("        " + box_name + " = QComboBox()")
+                    '''
+
+                elif(obj[1] == 'bool' ):
+                    print "________________________________________________________ bool found"
+                    src_code_aut.append("        " + box_name + " = QComboBox()")
+                    src_code_aut.append("        " + box_name + ".addItem(\"False\")")
+                    src_code_aut.append("        " + box_name + ".addItem(\"True\")")
+
                 src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
                 src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
 
-            elif(obj[1] == 'str' ):
-                print "_________________________ << type str"
-            elif(obj[1] == 'choice' ):
-                print "_________________________ << type choice"
-            elif(obj[1] == 'bool' ):
-                print "_________________________ << type bool"
+
             else:
                 print "__________________________________ << WARNING find something ELSE"
+                print "__________________________________ << find", obj[1]
 
     s_code = gen_code()
     s_code.write_file(src_code_aut)
