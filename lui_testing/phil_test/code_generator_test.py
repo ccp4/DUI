@@ -87,26 +87,25 @@ class gen_code(object):
         myfile.close()
 
 def deep_in_rec(phl_obj, lst_obj):
-    for single_obj in phl_obj:
-        if( single_obj.is_scope ):
-            #print "is_scope \n" # deep_in_rec here
-            deep_in_rec(single_obj.objects, lst_obj)
-            lst_obj.append(str(single_obj.name))
 
+    for single_obj in phl_obj:
+
+        if( single_obj.is_definition):
+            print "         single_obj.name =", single_obj.name
+            local_val = single_obj.extract()
+            #print "single_obj.type =", single_obj.type.phil_type
+            #print "single_obj.extract =", local_val
+            elm = [single_obj.name, single_obj.type.phil_type]
+            lst_obj.append(elm)
+
+        elif( single_obj.is_scope ):
+            #print "is_scope \n" # deep_in_rec here
+            lst_obj.append(str(single_obj.name))
+            deep_in_rec(single_obj.objects, lst_obj)
             print "scope.name = ",
             nm = single_obj.name
             print nm
-        elif( single_obj.is_definition):
-            #print "single_obj.name =", single_obj.name
-            local_val = single_obj.extract()
 
-            #print "dir(single_obj) =", dir(single_obj), "\n\n"
-            #print "single_obj.extract_format =", single_obj.extract_format()
-            #print "single_obj.type =", single_obj.type.phil_type
-            #print "single_obj.extract =", local_val
-
-            elm = [single_obj.name, single_obj.type.phil_type]
-            lst_obj.append(elm)
         else:
             print "_______________________________________________________ in else"
 
@@ -120,8 +119,7 @@ def write_to_disc(lst_obj):
 
         if( str(type(obj)) == "<type \'str\'>" ):
 
-            print "scope found"
-
+            print "[scope] =", str(obj)
             src_code_aut.append("        label_tst = QLabel(\"" +  str(obj)  + "\")")
             src_code_aut.append("        bg_box.addWidget(label_tst)")
 
@@ -165,5 +163,13 @@ if( __name__ == "__main__"):
     #from dials.command_line.find_spots import phil_scope
     phl_obj = phil_scope.objects
     lst_obj = []
+
+    for single_obj in phl_obj:
+        print single_obj.name
+    print "end \n\n\n"
+
     deep_in_rec(phl_obj, lst_obj)
     write_to_disc(lst_obj)
+
+    print phil_scope.show()
+
