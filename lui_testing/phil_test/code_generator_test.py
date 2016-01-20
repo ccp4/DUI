@@ -95,16 +95,18 @@ def deep_in_rec(phl_obj, lst_obj):
             local_val = single_obj.extract()
             #print "single_obj.type =", single_obj.type.phil_type
             #print "single_obj.extract =", local_val
+
+            path = single_obj.full_path()
+            print "          full_path =", path
+            print
             elm = [single_obj.name, single_obj.type.phil_type]
             lst_obj.append(elm)
 
         elif( single_obj.is_scope ):
-            #print "is_scope \n" # deep_in_rec here
+            print "scope.name = ", single_obj.name
+
             lst_obj.append(str(single_obj.name))
             deep_in_rec(single_obj.objects, lst_obj)
-            print "scope.name = ",
-            nm = single_obj.name
-            print nm
 
         else:
             print "_______________________________________________________ in else"
