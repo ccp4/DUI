@@ -137,15 +137,16 @@ def write_to_disc(lst_obj):
 
             elif( obj.type.phil_type == 'bool' ):# or obj.type.phil_type == 'choice' ):
 
-                    print "________________________________________________________ bool found"
-                    src_code_aut.append("        " + box_name + " = QComboBox()")
-                    src_code_aut.append("        " + box_name + ".addItem(\"False\")")
-                    src_code_aut.append("        " + box_name + ".addItem(\"True\")")
+                print "________________________________________________________ bool found"
+                src_code_aut.append("        " + box_name + " = QComboBox()")
+                src_code_aut.append("        " + box_name + ".addItem(\"False\")")
+                src_code_aut.append("        " + box_name + ".addItem(\"True\")")
 
-                    '''
-                elif( obj.type.phil_type == 'choice' ):
-                    src_code_aut.append("        " + box_name + " = QComboBox()")
-                    '''
+            elif( obj.type.phil_type == 'choice' ):
+                src_code_aut.append("        " + box_name + " = QComboBox()")
+                src_code_aut.append("        " + box_name + ".addItem(\"Op 1 \")")
+                src_code_aut.append("        " + box_name + ".addItem(\"Op 2 \")")
+                src_code_aut.append("        " + box_name + ".addItem(\"Op 3 \")")
 
             else:
                 print "__________________________________ << WARNING find something ELSE"
