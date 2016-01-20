@@ -89,30 +89,14 @@ class gen_code(object):
 def deep_in_rec(phl_obj, lst_obj):
 
     for single_obj in phl_obj:
-
         if( single_obj.is_definition):
-            old_way = '''
-            print "         single_obj.name =", single_obj.name
-            local_val = single_obj.extract()
-            #print "single_obj.type =", single_obj.type.phil_type
-            #print "single_obj.extract =", local_val
-
-            path = single_obj.full_path()
-            print "          full_path =", path
-            print
-            elm = [single_obj.name, single_obj.type.phil_type]
-            lst_obj.append(elm)
-            '''
             lst_obj.append(single_obj)
-
         elif( single_obj.is_scope ):
             print "scope.name = ", single_obj.name
-
             lst_obj.append(str(single_obj.name))
             deep_in_rec(single_obj.objects, lst_obj)
-
         else:
-            print "_______________________________________________________ in else"
+            print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
 scope_str = ""
 
@@ -129,44 +113,48 @@ def write_to_disc(lst_obj):
             src_code_aut.append("        bg_box.addWidget(label_tst)")
 
         else:
-
-            if(obj.type.phil_type == 'float' or obj.type.phil_type == 'int' or obj.type.phil_type == 'str' or obj.type.phil_type == 'bool' ):
-                print "___________________ << supported type found "
-                h_box_name = "hbox_" + str(obj.name)
-                src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
-                label_name = "label_" + str(obj.name)
-                str_to_add = "        " + label_name + " = QLabel(\"" + str(obj.name)  + "\")"
-                src_code_aut.append(str_to_add)
-                src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
-                box_name = "spn_box_" + str(obj.name)
+            print "___________________ << supported type found "
+            h_box_name = "hbox_" + str(obj.name)
+            src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
+            label_name = "label_" + str(obj.name)
+            str_to_add = "        " + label_name + " = QLabel(\"" + str(obj.name)  + "\")"
+            src_code_aut.append(str_to_add)
+            src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
+            box_name = "spn_box_" + str(obj.name)
+            something_else = False
+            if(obj.type.phil_type == 'float' or obj.type.phil_type == 'int' or obj.type.phil_type == 'str' ):
 
                 if( obj.type.phil_type == 'float' ):
-                    src_code_aut.append("        " + box_name + " = QDoubleSpinBox()")
+                    widget_type_str =" = QDoubleSpinBox()"
 
                 elif( obj.type.phil_type == 'int' ):
-                    src_code_aut.append("        " + box_name + " = QSpinBox()")
+                    widget_type_str =" = QSpinBox()"
 
                 elif( obj.type.phil_type == 'str' ):
-                    src_code_aut.append("        " + box_name + " = QLineEdit()")
+                    widget_type_str =" = QLineEdit()"
+
+                src_code_aut.append("        " + box_name + widget_type_str)
+
+            elif( obj.type.phil_type == 'bool' ):# or obj.type.phil_type == 'choice' ):
+
+                    print "________________________________________________________ bool found"
+                    src_code_aut.append("        " + box_name + " = QComboBox()")
+                    src_code_aut.append("        " + box_name + ".addItem(\"False\")")
+                    src_code_aut.append("        " + box_name + ".addItem(\"True\")")
 
                     '''
                 elif( obj.type.phil_type == 'choice' ):
                     src_code_aut.append("        " + box_name + " = QComboBox()")
                     '''
 
-                elif(obj.type.phil_type == 'bool' ):
-                    print "________________________________________________________ bool found"
-                    src_code_aut.append("        " + box_name + " = QComboBox()")
-                    src_code_aut.append("        " + box_name + ".addItem(\"False\")")
-                    src_code_aut.append("        " + box_name + ".addItem(\"True\")")
-
-                src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
-                src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
-
-
             else:
                 print "__________________________________ << WARNING find something ELSE"
                 print "__________________________________ << find", obj.type.phil_type
+                something_else = True
+
+            if( something_else == False ):
+                src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
+                src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
 
     s_code = gen_code()
     s_code.write_file(src_code_aut)
