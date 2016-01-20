@@ -234,8 +234,10 @@ class ExportParameterWidget(QtGui.QWidget):
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(param_widg)
         self.setLayout(mainLayout)
-
+        self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
+        old_ver = '''
         self.cmd_lin_default = "dials.export experiments.json integrated.pickle hklout=integrated.mtz"
+        '''
         self.button_label = "Export mtx"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
