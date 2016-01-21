@@ -143,10 +143,23 @@ def write_to_disc(lst_obj):
                 src_code_aut.append("        " + box_name + ".addItem(\"True\")")
 
             elif( obj.type.phil_type == 'choice' ):
+                '''
+                choices = [strip(w) for w in parameter.words]
+                if choices is not None:
+                    for choice in choices:
+                '''
+                #print dir(obj)
+                print "\n\n obj.words = \n", obj.words, "\n\n"
+                for opt in obj.words:
+                    print opt
+                print "\n\n"
+
                 src_code_aut.append("        " + box_name + " = QComboBox()")
-                src_code_aut.append("        " + box_name + ".addItem(\"Op 1 \")")
-                src_code_aut.append("        " + box_name + ".addItem(\"Op 2 \")")
-                src_code_aut.append("        " + box_name + ".addItem(\"Op 3 \")")
+
+                for opt in obj.words:
+                    src_code_aut.append("        " + box_name + ".addItem(\"" + str(opt) + "\")")
+                    #src_code_aut.append("        " + box_name + ".addItem(\"Op 2 \")")
+                    #src_code_aut.append("        " + box_name + ".addItem(\"Op 3 \")")
 
             else:
                 print "__________________________________ << WARNING find something ELSE"
