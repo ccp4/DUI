@@ -110,6 +110,7 @@ def write_to_disc(lst_obj):
 
             print "[scope] =", obj
             src_code_aut.append("        label_tst = QLabel(\"" +  str(obj)  + "\")")
+            src_code_aut.append("        label_tst.setFont(QFont(\"Monospace\", 11, QFont.Bold))")
             src_code_aut.append("        bg_box.addWidget(label_tst)")
 
         else:
@@ -119,6 +120,7 @@ def write_to_disc(lst_obj):
             label_name = "label_" + str(obj.name)
             str_to_add = "        " + label_name + " = QLabel(\"" + str(obj.name)  + "\")"
             src_code_aut.append(str_to_add)
+            src_code_aut.append("        " + label_name + ".setFont(QFont(\"Monospace\", 10))")
             src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
             box_name = "spn_box_" + str(obj.name)
             something_else = False
@@ -143,12 +145,7 @@ def write_to_disc(lst_obj):
                 src_code_aut.append("        " + box_name + ".addItem(\"True\")")
 
             elif( obj.type.phil_type == 'choice' ):
-                '''
-                choices = [strip(w) for w in parameter.words]
-                if choices is not None:
-                    for choice in choices:
-                '''
-                #print dir(obj)
+
                 print "\n\n obj.words = \n", obj.words, "\n\n"
                 for opt in obj.words:
                     print opt
@@ -158,8 +155,6 @@ def write_to_disc(lst_obj):
 
                 for opt in obj.words:
                     src_code_aut.append("        " + box_name + ".addItem(\"" + str(opt) + "\")")
-                    #src_code_aut.append("        " + box_name + ".addItem(\"Op 2 \")")
-                    #src_code_aut.append("        " + box_name + ".addItem(\"Op 3 \")")
 
             else:
                 print "__________________________________ << WARNING find something ELSE"
