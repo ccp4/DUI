@@ -86,6 +86,10 @@ class gen_code(object):
 
         myfile.close()
 
+class ScopeData(object):
+    pass
+
+
 def deep_in_rec(phl_obj, lst_obj):
 
     for single_obj in phl_obj:
@@ -93,7 +97,10 @@ def deep_in_rec(phl_obj, lst_obj):
             lst_obj.append(single_obj)
         elif( single_obj.is_scope ):
             print "scope.name = ", single_obj.name
-            lst_obj.append(str(single_obj.name))
+            scope_info = ScopeData()
+            scope_info.name = str(single_obj.name)
+            scope_info.f_path = str(single_obj.full_path())
+            lst_obj.append(scope_info)
             deep_in_rec(single_obj.objects, lst_obj)
         else:
             print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
@@ -106,19 +113,18 @@ def write_to_disc(lst_obj):
         #if( obj == "is_scope" ):
         print "type =", str(type(obj))
 
-        if( str(type(obj)) == "<type \'str\'>" ):
-
-            print "[scope] =", obj
-            src_code_aut.append("        label_tst = QLabel(\"" +  str(obj)  + "\")")
+        if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
+            print "[scope] =", obj.name
+            print "obj.full_path = ", obj.f_path
+            src_code_aut.append("        label_tst = QLabel(\"" +  str(obj.name)  + "\")")
             src_code_aut.append("        label_tst.setFont(QFont(\"Monospace\", 11, QFont.Bold))")
             src_code_aut.append("        bg_box.addWidget(label_tst)")
 
         else:
-            print "___________________ << supported type found "
             h_box_name = "hbox_" + str(obj.name)
             src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
             label_name = "label_" + str(obj.name)
-            str_to_add = "        " + label_name + " = QLabel(\"" + str(obj.name)  + "\")"
+            str_to_add = "        " + label_name + " = QLabel(\"    " + str(obj.name)  + "\")"
             src_code_aut.append(str_to_add)
             src_code_aut.append("        " + label_name + ".setFont(QFont(\"Monospace\", 10))")
             src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
@@ -139,17 +145,12 @@ def write_to_disc(lst_obj):
 
             elif( obj.type.phil_type == 'bool' ):# or obj.type.phil_type == 'choice' ):
 
-                print "________________________________________________________ bool found"
                 src_code_aut.append("        " + box_name + " = QComboBox()")
                 src_code_aut.append("        " + box_name + ".addItem(\"False\")")
                 src_code_aut.append("        " + box_name + ".addItem(\"True\")")
 
             elif( obj.type.phil_type == 'choice' ):
 
-                print "\n\n obj.words = \n", obj.words, "\n\n"
-                for opt in obj.words:
-                    print opt
-                print "\n\n"
 
                 src_code_aut.append("        " + box_name + " = QComboBox()")
 
@@ -157,13 +158,16 @@ def write_to_disc(lst_obj):
                     src_code_aut.append("        " + box_name + ".addItem(\"" + str(opt) + "\")")
 
             else:
+                '''
                 print "__________________________________ << WARNING find something ELSE"
                 print "__________________________________ << find", obj.type.phil_type
+                '''
                 something_else = True
 
             if( something_else == False ):
                 src_code_aut.append("        " + h_box_name + ".addWidget(" + box_name + ")")
                 src_code_aut.append("        bg_box.addLayout(" + h_box_name + ")")
+            print "obj.full_path()    =", obj.full_path()
 
     s_code = gen_code()
     s_code.write_file(src_code_aut)
