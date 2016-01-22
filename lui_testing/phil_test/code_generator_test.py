@@ -100,8 +100,15 @@ def deep_in_rec(phl_obj, lst_obj):
             scope_info = ScopeData()
             scope_info.name = str(single_obj.name)
             scope_info.f_path = str(single_obj.full_path())
+
+            print "scope_info.f_path =", scope_info.f_path
+            scope_info.indent_level = scope_info.f_path.count('.')
+            print "scope_info.f_path.count('.')", scope_info.f_path.count('.')
+
             lst_obj.append(scope_info)
             deep_in_rec(single_obj.objects, lst_obj)
+
+
         else:
             print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
@@ -116,7 +123,7 @@ def write_to_disc(lst_obj):
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
             print "[scope] =", obj.name
             print "obj.full_path = ", obj.f_path
-            src_code_aut.append("        label_tst = QLabel(\"" +  str(obj.name)  + "\")")
+            src_code_aut.append("        label_tst = QLabel(\"" + " " * obj.indent_level * 6 +  str(obj.name)  + "\")")
             src_code_aut.append("        label_tst.setFont(QFont(\"Monospace\", 11, QFont.Bold))")
             src_code_aut.append("        bg_box.addWidget(label_tst)")
 
@@ -124,7 +131,8 @@ def write_to_disc(lst_obj):
             h_box_name = "hbox_" + str(obj.name)
             src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
             label_name = "label_" + str(obj.name)
-            str_to_add = "        " + label_name + " = QLabel(\"    " + str(obj.name)  + "\")"
+            indent_level = str(obj.full_path()).count('.')
+            str_to_add = "        " + label_name + " = QLabel(\""  + " " * indent_level * 6  + str(obj.name)  + "\")"
             src_code_aut.append(str_to_add)
             src_code_aut.append("        " + label_name + ".setFont(QFont(\"Monospace\", 10))")
             src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
@@ -188,5 +196,5 @@ if( __name__ == "__main__"):
     deep_in_rec(phl_obj, lst_obj)
     write_to_disc(lst_obj)
 
-    print phil_scope.show()
+    #print phil_scope.show()
 
