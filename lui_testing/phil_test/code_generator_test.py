@@ -112,7 +112,7 @@ def deep_in_rec(phl_obj, lst_obj):
         else:
             print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
-scope_str = ""
+#scope_str = ""
 
 def write_to_disc(lst_obj):
     src_code_aut = []
@@ -122,10 +122,12 @@ def write_to_disc(lst_obj):
 
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
             src_code_aut.append("        label_tst = QLabel(\"" + " " * obj.indent_level * 4 +  str(obj.name)  + "\")")
-            if( obj.indent_level < 4 ):
+
+
+            if( obj.indent_level < 3 ):
                 f_siz = str(14 - obj.indent_level)
             else:
-                f_siz = "8"
+                f_siz = "13"
 
             src_code_aut.append("        label_tst.setFont(QFont(\"Monospace\", " + f_siz + ", QFont.Bold))")
             src_code_aut.append("        bg_box.addWidget(label_tst)")
@@ -135,12 +137,13 @@ def write_to_disc(lst_obj):
             src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
             label_name = "label_" + str(obj.name)
             indent_level = str(obj.full_path()).count('.')
-            str_to_add = "        " + label_name + " = QLabel(\""  + " " * indent_level * 9  + str(obj.name)  + "\")"
+            str_to_add = "        " + label_name + " = QLabel(\""  + " " * indent_level * 8  + str(obj.name)  + "\")"
             src_code_aut.append(str_to_add)
-            if( indent_level < 4 ):
-                f_siz = str(14 - indent_level)
+
+            if( indent_level < 3 ):
+                f_siz = str(int((14 - indent_level) * 1.3))
             else:
-                f_siz = "8"
+                f_siz = "14"
 
             src_code_aut.append("        " + label_name + ".setFont(QFont(\"Times\"," + f_siz + ", QFont.Bold))")
             src_code_aut.append("        " + h_box_name + ".addWidget(" + label_name + ")")
@@ -190,9 +193,9 @@ def write_to_disc(lst_obj):
 
 
 if( __name__ == "__main__"):
-    from dials.command_line.integrate import phil_scope
+    #from dials.command_line.integrate import phil_scope
     #from dials.command_line.refine import phil_scope
-    #from dials.command_line.index import phil_scope
+    from dials.command_line.index import phil_scope
     #from dials.command_line.find_spots import phil_scope
     phl_obj = phil_scope.objects
     lst_obj = []
