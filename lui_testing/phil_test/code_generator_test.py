@@ -94,11 +94,17 @@ class gen_code(object):
 
 class ScopeData(object):
     '''
-    class conceived to store only data
+    class conceived to store only data related to the scope Phil object
     '''
     pass
 
 class tree_2_lineal(object):
+
+    '''
+    Recursively navigates the Phil objects in a way that the final
+    self.lst_obj is a lineal list without ramifications, this final list
+    will be used by phil_list_2_disc() to generate runnable code
+    '''
 
     def __init__(self, phl_obj):
         self.lst_obj = []
@@ -108,12 +114,6 @@ class tree_2_lineal(object):
         return self.lst_obj
 
     def deep_in_rec(self, phl_obj):
-
-        '''
-        Recursive way to navigate the Phil objects in a way that the final
-        self.lst_obj is a lineal list without ramifications, this final list
-        will be used by phil_list_2_disc() to generate runnable code
-        '''
 
         for single_obj in phl_obj:
             if( single_obj.is_definition):
@@ -135,17 +135,16 @@ class tree_2_lineal(object):
                 print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
 
-
-
 def phil_list_2_disc(lst_obj):
+
     '''
-    generator of either PyQt4 or PySide GUI code
-    that lets the user edit the Phil parameters
+    generator of either PyQt4 or PySide GUI code that lets the user edit
+    the Phil parameters, the code auto-generated here should be inserted
+    between the s_code.src_code_1 and s_code.src_code_2 lists
     '''
+
     src_code_aut = []
     for obj in lst_obj:
-        #if( obj == "is_scope" ):
-        print "type =", str(type(obj))
 
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
             src_code_aut.append("        label_tst = QLabel(\"" + " " * obj.indent_level * 4 +  str(obj.name)  + "\")")
