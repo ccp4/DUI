@@ -17,35 +17,32 @@ class gen_code(object):
 
         self.src_code_1 = []
         self.src_code_1.append("import sys")
-        #self.src_code_1.append(" ")
         self.src_code_1.append("PyQt4_ver = '''")
         self.src_code_1.append("from PyQt4.QtGui import *")
         self.src_code_1.append("from PyQt4.QtCore import *")
-        self.src_code_1.append("#Signal = pyqtSignal")
         self.src_code_1.append("print \"using PyQt4\"")
         self.src_code_1.append("#'''")
-        #self.src_code_1.append(" ")
         self.src_code_1.append("#PySide_ver = '''")
         self.src_code_1.append("from PySide.QtGui import *")
         self.src_code_1.append("from PySide.QtCore import *")
-        #self.src_code_1.append("pyqtSignal = Signal")
+        self.src_code_1.append("pyqtSignal = Signal")
         self.src_code_1.append("print \"using PySide\"")
         self.src_code_1.append("#'''")
-        #self.src_code_1.append(" ")
+
+        self.src_code_1.append("\n")
         self.src_code_1.append("class inner_widg( QWidget):")
-        #self.src_code_1.append("    goClicked = pyqtSignal()")
+        self.src_code_1.append("    item_changed = pyqtSignal()")
         self.src_code_1.append("    def __init__(self, parent):")
         self.src_code_1.append("        super(inner_widg, self).__init__()")
-        #self.src_code_1.append(" ")
         self.src_code_1.append("        bg_box =  QVBoxLayout(self)")
-        self.src_code_1.append(" ")
+        self.src_code_1.append("\n")
 
         self.src_code_2 = []
         self.src_code_2.append(" ")
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
         self.src_code_2.append("class MainWidget( QWidget):")
-        #self.src_code_2.append(" ")
+
         self.src_code_2.append("    def __init__(self):")
         self.src_code_2.append("        super(MainWidget, self).__init__()")
         self.src_code_2.append("        self.scrollable_widget = inner_widg(self)")
@@ -56,15 +53,15 @@ class gen_code(object):
         self.src_code_2.append("        self.setLayout(hbox)")
         self.src_code_2.append("        self.setWindowTitle('Phil dialog')")
         self.src_code_2.append("        self.show()")
-        #self.src_code_2.append(" ")
+        self.src_code_2.append("\n")
         self.src_code_2.append("    def to_be_caled_from_son_widg(self):")
         self.src_code_2.append("        print \"from parent parent_widget\"")
-        #self.src_code_2.append(" ")
+        self.src_code_2.append("\n")
         self.src_code_2.append("if __name__ == '__main__':")
         self.src_code_2.append("    app =  QApplication(sys.argv)")
         self.src_code_2.append("    ex = MainWidget()")
         self.src_code_2.append("    sys.exit(app.exec_())")
-        #self.src_code_2.append(" ")
+
 
     def write_file(self, to_insert = None):
 
