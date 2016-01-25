@@ -128,6 +128,12 @@ def deep_in_rec(phl_obj, lst_obj):
             print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
 
+def tree_2_lineal(phl_obj):
+    lst_obj = []
+    deep_in_rec(phl_obj, lst_obj)
+    return lst_obj
+
+
 def read_lineal_phil_objs(lst_obj):
     '''
     generator of either PyQt4 or PySide GUI code
@@ -215,13 +221,8 @@ if( __name__ == "__main__"):
     from dials.command_line.index import phil_scope
     #from dials.command_line.find_spots import phil_scope
     phl_obj = phil_scope.objects
-    lst_obj = []
 
-    for single_obj in phl_obj:
-        print single_obj.name
-    print "end \n\n\n"
-
-    deep_in_rec(phl_obj, lst_obj)
+    lst_obj = tree_2_lineal(phl_obj)
     read_lineal_phil_objs(lst_obj)
 
     print phil_scope.show()
