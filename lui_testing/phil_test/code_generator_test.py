@@ -98,40 +98,44 @@ class ScopeData(object):
     '''
     pass
 
+class tree_2_lineal(object):
 
-def deep_in_rec(phl_obj, lst_obj):
-
-    '''
-    Recursive way to navigate the Phil objects in a way that the final
-    lst_obj is a lineal list without ramifications, this final list
-    will be used by read_lineal_phil_objs() to generate runnable code
-    '''
-
-    for single_obj in phl_obj:
-        if( single_obj.is_definition):
-            lst_obj.append(single_obj)
-        elif( single_obj.is_scope ):
-            print "scope.name = ", single_obj.name
-            scope_info = ScopeData()
-            scope_info.name = str(single_obj.name)
-            scope_info.f_path = str(single_obj.full_path())
-
-            print "scope_info.f_path =", scope_info.f_path
-            scope_info.indent_level = scope_info.f_path.count('.')
-            print "scope_info.f_path.count('.')", scope_info.f_path.count('.')
-
-            lst_obj.append(scope_info)
-            deep_in_rec(single_obj.objects, lst_obj)
+    def __init__(self, phl_obj):
+        self.lst_obj = []
+        self.deep_in_rec(phl_obj)
 
 
-        else:
-            print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
+    def __call__(self):
+        return self.lst_obj
+
+    def deep_in_rec(self, phl_obj):
+
+        '''
+        Recursive way to navigate the Phil objects in a way that the final
+        self.lst_obj is a lineal list without ramifications, this final list
+        will be used by read_lineal_phil_objs() to generate runnable code
+        '''
+
+        for single_obj in phl_obj:
+            if( single_obj.is_definition):
+                self.lst_obj.append(single_obj)
+            elif( single_obj.is_scope ):
+                print "scope.name = ", single_obj.name
+                scope_info = ScopeData()
+                scope_info.name = str(single_obj.name)
+                scope_info.f_path = str(single_obj.full_path())
+
+                print "scope_info.f_path =", scope_info.f_path
+                scope_info.indent_level = scope_info.f_path.count('.')
+                print "scope_info.f_path.count('.')", scope_info.f_path.count('.')
+
+                self.lst_obj.append(scope_info)
+                self.deep_in_rec(single_obj.objects)
+
+            else:
+                print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
 
-def tree_2_lineal(phl_obj):
-    lst_obj = []
-    deep_in_rec(phl_obj, lst_obj)
-    return lst_obj
 
 
 def read_lineal_phil_objs(lst_obj):
@@ -223,7 +227,8 @@ if( __name__ == "__main__"):
     phl_obj = phil_scope.objects
 
     lst_obj = tree_2_lineal(phl_obj)
-    read_lineal_phil_objs(lst_obj)
+
+    read_lineal_phil_objs(lst_obj())
 
     print phil_scope.show()
 
