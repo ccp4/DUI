@@ -104,7 +104,6 @@ class tree_2_lineal(object):
         self.lst_obj = []
         self.deep_in_rec(phl_obj)
 
-
     def __call__(self):
         return self.lst_obj
 
@@ -113,7 +112,7 @@ class tree_2_lineal(object):
         '''
         Recursive way to navigate the Phil objects in a way that the final
         self.lst_obj is a lineal list without ramifications, this final list
-        will be used by read_lineal_phil_objs() to generate runnable code
+        will be used by phil_list_2_disc() to generate runnable code
         '''
 
         for single_obj in phl_obj:
@@ -138,7 +137,7 @@ class tree_2_lineal(object):
 
 
 
-def read_lineal_phil_objs(lst_obj):
+def phil_list_2_disc(lst_obj):
     '''
     generator of either PyQt4 or PySide GUI code
     that lets the user edit the Phil parameters
@@ -227,8 +226,7 @@ if( __name__ == "__main__"):
     phl_obj = phil_scope.objects
 
     lst_obj = tree_2_lineal(phl_obj)
-
-    read_lineal_phil_objs(lst_obj())
+    phil_list_2_disc(lst_obj())
 
     print phil_scope.show()
 
