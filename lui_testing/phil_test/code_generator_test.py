@@ -13,6 +13,14 @@ except ImportError, e:
 
 
 class gen_code(object):
+
+    '''
+    Source code generator in a non analytical way, this means this class does
+    not read the Phil parameters, just generates the code after and before of
+    the Phil dependent code, and writes into disc once passed the Phil
+    dependent piece of code
+    '''
+
     def __init__(self):
 
         self.src_code_1 = []
@@ -28,7 +36,6 @@ class gen_code(object):
         self.src_code_1.append("pyqtSignal = Signal")
         self.src_code_1.append("print \"using PySide\"")
         self.src_code_1.append("#'''")
-
         self.src_code_1.append("\n")
         self.src_code_1.append("class inner_widg( QWidget):")
         self.src_code_1.append("    item_changed = pyqtSignal()")
@@ -42,7 +49,6 @@ class gen_code(object):
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
         self.src_code_2.append("class MainWidget( QWidget):")
-
         self.src_code_2.append("    def __init__(self):")
         self.src_code_2.append("        super(MainWidget, self).__init__()")
         self.src_code_2.append("        self.scrollable_widget = inner_widg(self)")
@@ -64,6 +70,9 @@ class gen_code(object):
 
 
     def write_file(self, to_insert = None):
+        '''
+        Writes code into a disc, but includes the "to_insert" list in the middle
+        '''
 
         myfile = open("gui_tst_code.py", "w")
 
@@ -84,10 +93,19 @@ class gen_code(object):
         myfile.close()
 
 class ScopeData(object):
+    '''
+    class conceived to store only data
+    '''
     pass
 
 
 def deep_in_rec(phl_obj, lst_obj):
+
+    '''
+    Recursive way to navigate the Phil objects in a way that the final
+    lst_obj is a lineal list without ramifications, this final list
+    will be used by read_lineal_phil_objs() to generate runnable code
+    '''
 
     for single_obj in phl_obj:
         if( single_obj.is_definition):
@@ -109,9 +127,12 @@ def deep_in_rec(phl_obj, lst_obj):
         else:
             print "\n\n _____________________ <<< WARNING neither definition or scope\n\n"
 
-#scope_str = ""
 
-def write_to_disc(lst_obj):
+def read_lineal_phil_objs(lst_obj):
+    '''
+    generator of either PyQt4 or PySide GUI code
+    that lets the user edit the Phil parameters
+    '''
     src_code_aut = []
     for obj in lst_obj:
         #if( obj == "is_scope" ):
@@ -119,7 +140,6 @@ def write_to_disc(lst_obj):
 
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
             src_code_aut.append("        label_tst = QLabel(\"" + " " * obj.indent_level * 4 +  str(obj.name)  + "\")")
-
 
             if( obj.indent_level < 3 ):
                 f_siz = str(14 - obj.indent_level)
@@ -202,7 +222,7 @@ if( __name__ == "__main__"):
     print "end \n\n\n"
 
     deep_in_rec(phl_obj, lst_obj)
-    write_to_disc(lst_obj)
+    read_lineal_phil_objs(lst_obj)
 
     print phil_scope.show()
 
