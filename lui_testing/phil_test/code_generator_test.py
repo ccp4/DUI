@@ -125,7 +125,7 @@ class tree_2_lineal(object):
                 scope_info.f_path = str(single_obj.full_path())
 
                 print "scope_info.f_path =", scope_info.f_path
-                scope_info.indent_level = scope_info.f_path.count('.')
+                scope_info.indent = scope_info.f_path.count('.')
                 print "scope_info.f_path.count('.')", scope_info.f_path.count('.')
 
                 self.lst_obj.append(scope_info)
@@ -147,26 +147,28 @@ def phil_list_2_disc(lst_obj):
     for obj in lst_obj:
 
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
-            src_code_aut.append("        label_tst = QLabel(\"" + " " * obj.indent_level * 4 +  str(obj.name)  + "\")")
+            my_str = "        label_tst = QLabel(\"" + " " * obj.indent * 4 + str(obj.name)  + "\")"
+            src_code_aut.append(my_str)
 
-            if( obj.indent_level < 3 ):
-                f_siz = str(14 - obj.indent_level)
+            if( obj.indent < 3 ):
+                f_siz = str(14 - obj.indent)
             else:
                 f_siz = "13"
-
-            src_code_aut.append("        label_tst.setFont(QFont(\"Monospace\", " + f_siz + ", QFont.Bold))")
-            src_code_aut.append("        bg_box.addWidget(label_tst)")
+            my_str = "        label_tst.setFont(QFont(\"Monospace\", " + f_siz + ", QFont.Bold))"
+            src_code_aut.append(my_str)
+            my_str = "        bg_box.addWidget(label_tst)"
+            src_code_aut.append(my_str)
 
         else:
             h_box_name = "hbox_" + str(obj.name)
             src_code_aut.append("        " + h_box_name + " =  QHBoxLayout()")
             label_name = "label_" + str(obj.name)
-            indent_level = str(obj.full_path()).count('.')
-            str_to_add = "        " + label_name + " = QLabel(\""  + " " * indent_level * 8  + str(obj.name)  + "\")"
+            indent = str(obj.full_path()).count('.')
+            str_to_add = "        " + label_name + " = QLabel(\""  + " " * indent * 8 + str(obj.name)  + "\")"
             src_code_aut.append(str_to_add)
 
-            if( indent_level < 3 ):
-                f_siz = str(int((14 - indent_level) * 1.3))
+            if( indent < 3 ):
+                f_siz = str(int((14 - indent) * 1.3))
             else:
                 f_siz = "14"
 
