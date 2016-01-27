@@ -232,6 +232,18 @@ def phil_list_2_disc(lst_obj):
                 src_code_aut.append(my_str)
             print "obj.full_path()    =", obj.full_path()
 
+    to_add_something_like = '''
+
+        spn_box_verbosity.valueChanged.connect(self.func_tst)
+        #changeEvent
+
+
+    def func_tst(self, a):
+        print "in(func_tst)"
+        print "a = ",a
+        print dir(a)
+    '''
+
     s_code = gen_code()
     s_code.write_file(src_code_aut)
 
