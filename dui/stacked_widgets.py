@@ -159,14 +159,16 @@ class IndexParameterWidget(QtGui.QWidget):
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        param_widg = ParameterWidget(self.super_parent, phil_scope)
+        #param_widg = ParameterWidget(self.super_parent, phil_scope)
+        from gui_tst_code import MainWidget
+        param_widg = MainWidget()
 
         dumy_tab = PermissionsTab()
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(dumy_tab, "Tab 1")
-        tabWidget.addTab(param_widg, "tab 2")
 
+        tabWidget.addTab(param_widg, "tab 2")
 
 
         mainLayout = QtGui.QVBoxLayout()
