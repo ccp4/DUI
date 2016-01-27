@@ -48,9 +48,9 @@ class gen_code(object):
         self.src_code_2.append(" ")
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
-        self.src_code_2.append("class MainWidget( QWidget):")
+        self.src_code_2.append("class ParamMainWidget( QWidget):")
         self.src_code_2.append("    def __init__(self):")
-        self.src_code_2.append("        super(MainWidget, self).__init__()")
+        self.src_code_2.append("        super(ParamMainWidget, self).__init__()")
         self.src_code_2.append("        self.scrollable_widget = inner_widg(self)")
         self.src_code_2.append("        scrollArea = QScrollArea()")
         self.src_code_2.append("        scrollArea.setWidget(self.scrollable_widget)")
@@ -65,7 +65,7 @@ class gen_code(object):
         self.src_code_2.append("\n")
         self.src_code_2.append("if __name__ == '__main__':")
         self.src_code_2.append("    app =  QApplication(sys.argv)")
-        self.src_code_2.append("    ex = MainWidget()")
+        self.src_code_2.append("    ex = ParamMainWidget()")
         self.src_code_2.append("    sys.exit(app.exec_())")
 
 

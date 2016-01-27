@@ -141,9 +141,9 @@ class FindspotstParameterWidget(QtGui.QWidget):
 
 
 
-class PermissionsTab(QtGui.QWidget):
+class SimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
-        super(PermissionsTab, self).__init__(parent)
+        super(SimplerParamTab, self).__init__(parent)
         scan_varying_check = QtGui.QCheckBox("scan_varying")
         use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
         localLayout = QtGui.QVBoxLayout()
@@ -159,14 +159,13 @@ class IndexParameterWidget(QtGui.QWidget):
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        #param_widg = ParameterWidget(self.super_parent, phil_scope)
-        from gui_tst_code import MainWidget
-        param_widg = MainWidget()
+        from gui_tst_code import ParamMainWidget
+        param_widg = ParamMainWidget()
 
-        dumy_tab = PermissionsTab()
+        default_tab = SimplerParamTab()
 
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(dumy_tab, "Tab 1")
+        tabWidget.addTab(default_tab, "Tab 1")
 
         tabWidget.addTab(param_widg, "tab 2")
 
