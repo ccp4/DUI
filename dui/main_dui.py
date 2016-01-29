@@ -28,6 +28,7 @@ from stacked_widgets import ImportPage, FindspotstParameterWidget,\
 
 import subprocess
 import sys
+import os
 
 class ImgTab( QtGui.QWidget):
 
@@ -35,7 +36,19 @@ class ImgTab( QtGui.QWidget):
         super(ImgTab, self).__init__()
 
         self.web = QtWebKit.QWebView()
-        self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+
+        my_dui_path = os.environ["DUI_PATH"]
+        print "my_dui_path =", my_dui_path
+        tmp_path = my_dui_path[0:len(my_dui_path) - 12]
+        print "tmp_path =", tmp_path
+        self.html_path = tmp_path + "/dui/xia2-report.html"
+        print "self.html_path =", self.html_path
+
+
+        #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+        self.web.load(QtCore.QUrl(self.html_path))
+
+
         hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.web)
 

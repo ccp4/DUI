@@ -15,8 +15,6 @@ from PyQt4 import QtCore, QtGui
 #from PySide import QtCore, QtGui
 
 from phil_param_widget_builder import ParameterWidget
-
-from subprocess import call as shell_func
 import os
 
 class ImportPage(QtGui.QWidget):
