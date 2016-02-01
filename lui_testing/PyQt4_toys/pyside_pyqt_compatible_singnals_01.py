@@ -10,7 +10,6 @@ print "using PyQt4"
 #PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-pyqtSignal = Signal
 print "using PySide"
 #'''
 
@@ -29,12 +28,6 @@ class MainWidget( QWidget):
 
         hbox.addWidget(self.btn_go_01)
         hbox.addWidget(self.btn_go_02)
-
-        self.setLayout(hbox)
-        self.show()
-
-
-
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
