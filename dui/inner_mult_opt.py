@@ -26,7 +26,11 @@ class inner_widg( QWidget):
         label_nproc = QLabel("        nproc")
         label_nproc.setFont(QFont("Times",16, QFont.Bold))
         hbox_nproc.addWidget(label_nproc)
+
         spn_box_nproc = QSpinBox()
+        spn_box_nproc.local_path = "dummy path"
+        spn_box_nproc.valueChanged.connect(self.spnbox_changed)
+
         hbox_nproc.addWidget(spn_box_nproc)
         bg_box.addLayout(hbox_nproc)
         hbox_discover_better_experimental_model =  QHBoxLayout()
@@ -48,42 +52,66 @@ class inner_widg( QWidget):
         label_mm_search_scope = QLabel("        mm_search_scope")
         label_mm_search_scope.setFont(QFont("Times",16, QFont.Bold))
         hbox_mm_search_scope.addWidget(label_mm_search_scope)
+
         spn_box_mm_search_scope = QDoubleSpinBox()
+        spn_box_mm_search_scope.local_path = "dummy path"
+        spn_box_mm_search_scope.valueChanged.connect(self.spnbox_changed)
+
         hbox_mm_search_scope.addWidget(spn_box_mm_search_scope)
         bg_box.addLayout(hbox_mm_search_scope)
         hbox_wide_search_binning =  QHBoxLayout()
         label_wide_search_binning = QLabel("        wide_search_binning")
         label_wide_search_binning.setFont(QFont("Times",16, QFont.Bold))
         hbox_wide_search_binning.addWidget(label_wide_search_binning)
+
         spn_box_wide_search_binning = QDoubleSpinBox()
+        spn_box_wide_search_binning.local_path = "dummy path"
+        spn_box_wide_search_binning.valueChanged.connect(self.spnbox_changed)
+
         hbox_wide_search_binning.addWidget(spn_box_wide_search_binning)
         bg_box.addLayout(hbox_wide_search_binning)
         hbox_min_cell =  QHBoxLayout()
         label_min_cell = QLabel("        min_cell")
         label_min_cell.setFont(QFont("Times",16, QFont.Bold))
         hbox_min_cell.addWidget(label_min_cell)
+
         spn_box_min_cell = QDoubleSpinBox()
+        spn_box_min_cell.local_path = "dummy path"
+        spn_box_min_cell.valueChanged.connect(self.spnbox_changed)
+
         hbox_min_cell.addWidget(spn_box_min_cell)
         bg_box.addLayout(hbox_min_cell)
         hbox_max_cell =  QHBoxLayout()
         label_max_cell = QLabel("        max_cell")
         label_max_cell.setFont(QFont("Times",16, QFont.Bold))
         hbox_max_cell.addWidget(label_max_cell)
+
         spn_box_max_cell = QDoubleSpinBox()
+        spn_box_max_cell.local_path = "dummy path"
+        spn_box_max_cell.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_cell.addWidget(spn_box_max_cell)
         bg_box.addLayout(hbox_max_cell)
         hbox_max_cell_multiplier =  QHBoxLayout()
         label_max_cell_multiplier = QLabel("        max_cell_multiplier")
         label_max_cell_multiplier.setFont(QFont("Times",16, QFont.Bold))
         hbox_max_cell_multiplier.addWidget(label_max_cell_multiplier)
+
         spn_box_max_cell_multiplier = QDoubleSpinBox()
+        spn_box_max_cell_multiplier.local_path = "dummy path"
+        spn_box_max_cell_multiplier.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_cell_multiplier.addWidget(spn_box_max_cell_multiplier)
         bg_box.addLayout(hbox_max_cell_multiplier)
         hbox_nearest_neighbor_percentile =  QHBoxLayout()
         label_nearest_neighbor_percentile = QLabel("        nearest_neighbor_percentile")
         label_nearest_neighbor_percentile.setFont(QFont("Times",16, QFont.Bold))
         hbox_nearest_neighbor_percentile.addWidget(label_nearest_neighbor_percentile)
+
         spn_box_nearest_neighbor_percentile = QDoubleSpinBox()
+        spn_box_nearest_neighbor_percentile.local_path = "dummy path"
+        spn_box_nearest_neighbor_percentile.valueChanged.connect(self.spnbox_changed)
+
         hbox_nearest_neighbor_percentile.addWidget(spn_box_nearest_neighbor_percentile)
         bg_box.addLayout(hbox_nearest_neighbor_percentile)
         hbox_filter_ice =  QHBoxLayout()
@@ -123,7 +151,11 @@ class inner_widg( QWidget):
         label_peak_volume_cutoff = QLabel("                peak_volume_cutoff")
         label_peak_volume_cutoff.setFont(QFont("Times",15, QFont.Bold))
         hbox_peak_volume_cutoff.addWidget(label_peak_volume_cutoff)
+
         spn_box_peak_volume_cutoff = QDoubleSpinBox()
+        spn_box_peak_volume_cutoff.local_path = "dummy path"
+        spn_box_peak_volume_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_peak_volume_cutoff.addWidget(spn_box_peak_volume_cutoff)
         bg_box.addLayout(hbox_peak_volume_cutoff)
         label_tst = QLabel("        reciprocal_space_grid")
@@ -133,35 +165,55 @@ class inner_widg( QWidget):
         label_n_points = QLabel("                        n_points")
         label_n_points.setFont(QFont("Times",14, QFont.Bold))
         hbox_n_points.addWidget(label_n_points)
+
         spn_box_n_points = QSpinBox()
+        spn_box_n_points.local_path = "dummy path"
+        spn_box_n_points.valueChanged.connect(self.spnbox_changed)
+
         hbox_n_points.addWidget(spn_box_n_points)
         bg_box.addLayout(hbox_n_points)
         hbox_d_min =  QHBoxLayout()
         label_d_min = QLabel("                        d_min")
         label_d_min.setFont(QFont("Times",14, QFont.Bold))
         hbox_d_min.addWidget(label_d_min)
+
         spn_box_d_min = QDoubleSpinBox()
+        spn_box_d_min.local_path = "dummy path"
+        spn_box_d_min.valueChanged.connect(self.spnbox_changed)
+
         hbox_d_min.addWidget(spn_box_d_min)
         bg_box.addLayout(hbox_d_min)
         hbox_sigma_phi_deg =  QHBoxLayout()
         label_sigma_phi_deg = QLabel("        sigma_phi_deg")
         label_sigma_phi_deg.setFont(QFont("Times",16, QFont.Bold))
         hbox_sigma_phi_deg.addWidget(label_sigma_phi_deg)
+
         spn_box_sigma_phi_deg = QDoubleSpinBox()
+        spn_box_sigma_phi_deg.local_path = "dummy path"
+        spn_box_sigma_phi_deg.valueChanged.connect(self.spnbox_changed)
+
         hbox_sigma_phi_deg.addWidget(spn_box_sigma_phi_deg)
         bg_box.addLayout(hbox_sigma_phi_deg)
         hbox_b_iso =  QHBoxLayout()
         label_b_iso = QLabel("        b_iso")
         label_b_iso.setFont(QFont("Times",16, QFont.Bold))
         hbox_b_iso.addWidget(label_b_iso)
+
         spn_box_b_iso = QDoubleSpinBox()
+        spn_box_b_iso.local_path = "dummy path"
+        spn_box_b_iso.valueChanged.connect(self.spnbox_changed)
+
         hbox_b_iso.addWidget(spn_box_b_iso)
         bg_box.addLayout(hbox_b_iso)
         hbox_rmsd_cutoff =  QHBoxLayout()
         label_rmsd_cutoff = QLabel("        rmsd_cutoff")
         label_rmsd_cutoff.setFont(QFont("Times",16, QFont.Bold))
         hbox_rmsd_cutoff.addWidget(label_rmsd_cutoff)
+
         spn_box_rmsd_cutoff = QDoubleSpinBox()
+        spn_box_rmsd_cutoff.local_path = "dummy path"
+        spn_box_rmsd_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_rmsd_cutoff.addWidget(spn_box_rmsd_cutoff)
         bg_box.addLayout(hbox_rmsd_cutoff)
         hbox_scan_range =  QHBoxLayout()
@@ -183,21 +235,33 @@ class inner_widg( QWidget):
         label_relative_length_tolerance = QLabel("                relative_length_tolerance")
         label_relative_length_tolerance.setFont(QFont("Times",15, QFont.Bold))
         hbox_relative_length_tolerance.addWidget(label_relative_length_tolerance)
+
         spn_box_relative_length_tolerance = QDoubleSpinBox()
+        spn_box_relative_length_tolerance.local_path = "dummy path"
+        spn_box_relative_length_tolerance.valueChanged.connect(self.spnbox_changed)
+
         hbox_relative_length_tolerance.addWidget(spn_box_relative_length_tolerance)
         bg_box.addLayout(hbox_relative_length_tolerance)
         hbox_absolute_angle_tolerance =  QHBoxLayout()
         label_absolute_angle_tolerance = QLabel("                absolute_angle_tolerance")
         label_absolute_angle_tolerance.setFont(QFont("Times",15, QFont.Bold))
         hbox_absolute_angle_tolerance.addWidget(label_absolute_angle_tolerance)
+
         spn_box_absolute_angle_tolerance = QDoubleSpinBox()
+        spn_box_absolute_angle_tolerance.local_path = "dummy path"
+        spn_box_absolute_angle_tolerance.valueChanged.connect(self.spnbox_changed)
+
         hbox_absolute_angle_tolerance.addWidget(spn_box_absolute_angle_tolerance)
         bg_box.addLayout(hbox_absolute_angle_tolerance)
         hbox_max_delta =  QHBoxLayout()
         label_max_delta = QLabel("                max_delta")
         label_max_delta.setFont(QFont("Times",15, QFont.Bold))
         hbox_max_delta.addWidget(label_max_delta)
+
         spn_box_max_delta = QDoubleSpinBox()
+        spn_box_max_delta.local_path = "dummy path"
+        spn_box_max_delta.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_delta.addWidget(spn_box_max_delta)
         bg_box.addLayout(hbox_max_delta)
         label_tst = QLabel("    basis_vector_combinations")
@@ -207,7 +271,11 @@ class inner_widg( QWidget):
         label_max_try = QLabel("                max_try")
         label_max_try.setFont(QFont("Times",15, QFont.Bold))
         hbox_max_try.addWidget(label_max_try)
+
         spn_box_max_try = QSpinBox()
+        spn_box_max_try.local_path = "dummy path"
+        spn_box_max_try.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_try.addWidget(spn_box_max_try)
         bg_box.addLayout(hbox_max_try)
         hbox_solution_scorer =  QHBoxLayout()
@@ -247,21 +315,33 @@ class inner_widg( QWidget):
         label_likelihood_cutoff = QLabel("                        likelihood_cutoff")
         label_likelihood_cutoff.setFont(QFont("Times",14, QFont.Bold))
         hbox_likelihood_cutoff.addWidget(label_likelihood_cutoff)
+
         spn_box_likelihood_cutoff = QDoubleSpinBox()
+        spn_box_likelihood_cutoff.local_path = "dummy path"
+        spn_box_likelihood_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_likelihood_cutoff.addWidget(spn_box_likelihood_cutoff)
         bg_box.addLayout(hbox_likelihood_cutoff)
         hbox_volume_cutoff =  QHBoxLayout()
         label_volume_cutoff = QLabel("                        volume_cutoff")
         label_volume_cutoff.setFont(QFont("Times",14, QFont.Bold))
         hbox_volume_cutoff.addWidget(label_volume_cutoff)
+
         spn_box_volume_cutoff = QDoubleSpinBox()
+        spn_box_volume_cutoff.local_path = "dummy path"
+        spn_box_volume_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_volume_cutoff.addWidget(spn_box_volume_cutoff)
         bg_box.addLayout(hbox_volume_cutoff)
         hbox_n_indexed_cutoff =  QHBoxLayout()
         label_n_indexed_cutoff = QLabel("                        n_indexed_cutoff")
         label_n_indexed_cutoff.setFont(QFont("Times",14, QFont.Bold))
         hbox_n_indexed_cutoff.addWidget(label_n_indexed_cutoff)
+
         spn_box_n_indexed_cutoff = QDoubleSpinBox()
+        spn_box_n_indexed_cutoff.local_path = "dummy path"
+        spn_box_n_indexed_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_n_indexed_cutoff.addWidget(spn_box_n_indexed_cutoff)
         bg_box.addLayout(hbox_n_indexed_cutoff)
         label_tst = QLabel("        weighted")
@@ -271,28 +351,44 @@ class inner_widg( QWidget):
         label_power = QLabel("                        power")
         label_power.setFont(QFont("Times",14, QFont.Bold))
         hbox_power.addWidget(label_power)
+
         spn_box_power = QSpinBox()
+        spn_box_power.local_path = "dummy path"
+        spn_box_power.valueChanged.connect(self.spnbox_changed)
+
         hbox_power.addWidget(spn_box_power)
         bg_box.addLayout(hbox_power)
         hbox_volume_weight =  QHBoxLayout()
         label_volume_weight = QLabel("                        volume_weight")
         label_volume_weight.setFont(QFont("Times",14, QFont.Bold))
         hbox_volume_weight.addWidget(label_volume_weight)
+
         spn_box_volume_weight = QDoubleSpinBox()
+        spn_box_volume_weight.local_path = "dummy path"
+        spn_box_volume_weight.valueChanged.connect(self.spnbox_changed)
+
         hbox_volume_weight.addWidget(spn_box_volume_weight)
         bg_box.addLayout(hbox_volume_weight)
         hbox_n_indexed_weight =  QHBoxLayout()
         label_n_indexed_weight = QLabel("                        n_indexed_weight")
         label_n_indexed_weight.setFont(QFont("Times",14, QFont.Bold))
         hbox_n_indexed_weight.addWidget(label_n_indexed_weight)
+
         spn_box_n_indexed_weight = QDoubleSpinBox()
+        spn_box_n_indexed_weight.local_path = "dummy path"
+        spn_box_n_indexed_weight.valueChanged.connect(self.spnbox_changed)
+
         hbox_n_indexed_weight.addWidget(spn_box_n_indexed_weight)
         bg_box.addLayout(hbox_n_indexed_weight)
         hbox_rmsd_weight =  QHBoxLayout()
         label_rmsd_weight = QLabel("                        rmsd_weight")
         label_rmsd_weight.setFont(QFont("Times",14, QFont.Bold))
         hbox_rmsd_weight.addWidget(label_rmsd_weight)
+
         spn_box_rmsd_weight = QDoubleSpinBox()
+        spn_box_rmsd_weight.local_path = "dummy path"
+        spn_box_rmsd_weight.valueChanged.connect(self.spnbox_changed)
+
         hbox_rmsd_weight.addWidget(spn_box_rmsd_weight)
         bg_box.addLayout(hbox_rmsd_weight)
         label_tst = QLabel("    index_assignment")
@@ -320,7 +416,11 @@ class inner_widg( QWidget):
         label_hkl_tolerance = QLabel("                        hkl_tolerance")
         label_hkl_tolerance.setFont(QFont("Times",14, QFont.Bold))
         hbox_hkl_tolerance.addWidget(label_hkl_tolerance)
+
         spn_box_hkl_tolerance = QDoubleSpinBox()
+        spn_box_hkl_tolerance.local_path = "dummy path"
+        spn_box_hkl_tolerance.valueChanged.connect(self.spnbox_changed)
+
         hbox_hkl_tolerance.addWidget(spn_box_hkl_tolerance)
         bg_box.addLayout(hbox_hkl_tolerance)
         label_tst = QLabel("        local")
@@ -330,28 +430,44 @@ class inner_widg( QWidget):
         label_epsilon = QLabel("                        epsilon")
         label_epsilon.setFont(QFont("Times",14, QFont.Bold))
         hbox_epsilon.addWidget(label_epsilon)
+
         spn_box_epsilon = QDoubleSpinBox()
+        spn_box_epsilon.local_path = "dummy path"
+        spn_box_epsilon.valueChanged.connect(self.spnbox_changed)
+
         hbox_epsilon.addWidget(spn_box_epsilon)
         bg_box.addLayout(hbox_epsilon)
         hbox_delta =  QHBoxLayout()
         label_delta = QLabel("                        delta")
         label_delta.setFont(QFont("Times",14, QFont.Bold))
         hbox_delta.addWidget(label_delta)
+
         spn_box_delta = QSpinBox()
+        spn_box_delta.local_path = "dummy path"
+        spn_box_delta.valueChanged.connect(self.spnbox_changed)
+
         hbox_delta.addWidget(spn_box_delta)
         bg_box.addLayout(hbox_delta)
         hbox_l_min =  QHBoxLayout()
         label_l_min = QLabel("                        l_min")
         label_l_min.setFont(QFont("Times",14, QFont.Bold))
         hbox_l_min.addWidget(label_l_min)
+
         spn_box_l_min = QDoubleSpinBox()
+        spn_box_l_min.local_path = "dummy path"
+        spn_box_l_min.valueChanged.connect(self.spnbox_changed)
+
         hbox_l_min.addWidget(spn_box_l_min)
         bg_box.addLayout(hbox_l_min)
         hbox_nearest_neighbours =  QHBoxLayout()
         label_nearest_neighbours = QLabel("                        nearest_neighbours")
         label_nearest_neighbours.setFont(QFont("Times",14, QFont.Bold))
         hbox_nearest_neighbours.addWidget(label_nearest_neighbours)
+
         spn_box_nearest_neighbours = QSpinBox()
+        spn_box_nearest_neighbours.local_path = "dummy path"
+        spn_box_nearest_neighbours.valueChanged.connect(self.spnbox_changed)
+
         hbox_nearest_neighbours.addWidget(spn_box_nearest_neighbours)
         bg_box.addLayout(hbox_nearest_neighbours)
         hbox_optimise_initial_basis_vectors =  QHBoxLayout()
@@ -421,35 +537,55 @@ class inner_widg( QWidget):
         label_n_macro_cycles = QLabel("                n_macro_cycles")
         label_n_macro_cycles.setFont(QFont("Times",15, QFont.Bold))
         hbox_n_macro_cycles.addWidget(label_n_macro_cycles)
+
         spn_box_n_macro_cycles = QSpinBox()
+        spn_box_n_macro_cycles.local_path = "dummy path"
+        spn_box_n_macro_cycles.valueChanged.connect(self.spnbox_changed)
+
         hbox_n_macro_cycles.addWidget(spn_box_n_macro_cycles)
         bg_box.addLayout(hbox_n_macro_cycles)
         hbox_d_min_step =  QHBoxLayout()
         label_d_min_step = QLabel("                d_min_step")
         label_d_min_step.setFont(QFont("Times",15, QFont.Bold))
         hbox_d_min_step.addWidget(label_d_min_step)
+
         spn_box_d_min_step = QDoubleSpinBox()
+        spn_box_d_min_step.local_path = "dummy path"
+        spn_box_d_min_step.valueChanged.connect(self.spnbox_changed)
+
         hbox_d_min_step.addWidget(spn_box_d_min_step)
         bg_box.addLayout(hbox_d_min_step)
         hbox_d_min_start =  QHBoxLayout()
         label_d_min_start = QLabel("                d_min_start")
         label_d_min_start.setFont(QFont("Times",15, QFont.Bold))
         hbox_d_min_start.addWidget(label_d_min_start)
+
         spn_box_d_min_start = QDoubleSpinBox()
+        spn_box_d_min_start.local_path = "dummy path"
+        spn_box_d_min_start.valueChanged.connect(self.spnbox_changed)
+
         hbox_d_min_start.addWidget(spn_box_d_min_start)
         bg_box.addLayout(hbox_d_min_start)
         hbox_d_min_final =  QHBoxLayout()
         label_d_min_final = QLabel("                d_min_final")
         label_d_min_final.setFont(QFont("Times",15, QFont.Bold))
         hbox_d_min_final.addWidget(label_d_min_final)
+
         spn_box_d_min_final = QDoubleSpinBox()
+        spn_box_d_min_final.local_path = "dummy path"
+        spn_box_d_min_final.valueChanged.connect(self.spnbox_changed)
+
         hbox_d_min_final.addWidget(spn_box_d_min_final)
         bg_box.addLayout(hbox_d_min_final)
         hbox_verbosity =  QHBoxLayout()
         label_verbosity = QLabel("                verbosity")
         label_verbosity.setFont(QFont("Times",15, QFont.Bold))
         hbox_verbosity.addWidget(label_verbosity)
+
         spn_box_verbosity = QSpinBox()
+        spn_box_verbosity.local_path = "dummy path"
+        spn_box_verbosity.valueChanged.connect(self.spnbox_changed)
+
         hbox_verbosity.addWidget(spn_box_verbosity)
         bg_box.addLayout(hbox_verbosity)
         hbox_disable_unit_cell_volume_sanity_check =  QHBoxLayout()
@@ -474,14 +610,22 @@ class inner_widg( QWidget):
         label_maximum_spot_error = QLabel("                        maximum_spot_error")
         label_maximum_spot_error.setFont(QFont("Times",14, QFont.Bold))
         hbox_maximum_spot_error.addWidget(label_maximum_spot_error)
+
         spn_box_maximum_spot_error = QDoubleSpinBox()
+        spn_box_maximum_spot_error.local_path = "dummy path"
+        spn_box_maximum_spot_error.valueChanged.connect(self.spnbox_changed)
+
         hbox_maximum_spot_error.addWidget(spn_box_maximum_spot_error)
         bg_box.addLayout(hbox_maximum_spot_error)
         hbox_maximum_phi_error =  QHBoxLayout()
         label_maximum_phi_error = QLabel("                        maximum_phi_error")
         label_maximum_phi_error.setFont(QFont("Times",14, QFont.Bold))
         hbox_maximum_phi_error.addWidget(label_maximum_phi_error)
+
         spn_box_maximum_phi_error = QDoubleSpinBox()
+        spn_box_maximum_phi_error.local_path = "dummy path"
+        spn_box_maximum_phi_error.valueChanged.connect(self.spnbox_changed)
+
         hbox_maximum_phi_error.addWidget(spn_box_maximum_phi_error)
         bg_box.addLayout(hbox_maximum_phi_error)
         hbox_method =  QHBoxLayout()
@@ -537,21 +681,33 @@ class inner_widg( QWidget):
         label_recycle_unindexed_reflections_cutoff = QLabel("                recycle_unindexed_reflections_cutoff")
         label_recycle_unindexed_reflections_cutoff.setFont(QFont("Times",15, QFont.Bold))
         hbox_recycle_unindexed_reflections_cutoff.addWidget(label_recycle_unindexed_reflections_cutoff)
+
         spn_box_recycle_unindexed_reflections_cutoff = QDoubleSpinBox()
+        spn_box_recycle_unindexed_reflections_cutoff.local_path = "dummy path"
+        spn_box_recycle_unindexed_reflections_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_recycle_unindexed_reflections_cutoff.addWidget(spn_box_recycle_unindexed_reflections_cutoff)
         bg_box.addLayout(hbox_recycle_unindexed_reflections_cutoff)
         hbox_minimum_angular_separation =  QHBoxLayout()
         label_minimum_angular_separation = QLabel("                minimum_angular_separation")
         label_minimum_angular_separation.setFont(QFont("Times",15, QFont.Bold))
         hbox_minimum_angular_separation.addWidget(label_minimum_angular_separation)
+
         spn_box_minimum_angular_separation = QDoubleSpinBox()
+        spn_box_minimum_angular_separation.local_path = "dummy path"
+        spn_box_minimum_angular_separation.valueChanged.connect(self.spnbox_changed)
+
         hbox_minimum_angular_separation.addWidget(spn_box_minimum_angular_separation)
         bg_box.addLayout(hbox_minimum_angular_separation)
         hbox_max_lattices =  QHBoxLayout()
         label_max_lattices = QLabel("                max_lattices")
         label_max_lattices.setFont(QFont("Times",15, QFont.Bold))
         hbox_max_lattices.addWidget(label_max_lattices)
+
         spn_box_max_lattices = QSpinBox()
+        spn_box_max_lattices.local_path = "dummy path"
+        spn_box_max_lattices.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_lattices.addWidget(spn_box_max_lattices)
         bg_box.addLayout(hbox_max_lattices)
         label_tst = QLabel("        cluster_analysis")
@@ -610,7 +766,11 @@ class inner_widg( QWidget):
         label_cutoff = QLabel("                                cutoff")
         label_cutoff.setFont(QFont("Times",14, QFont.Bold))
         hbox_cutoff.addWidget(label_cutoff)
+
         spn_box_cutoff = QDoubleSpinBox()
+        spn_box_cutoff.local_path = "dummy path"
+        spn_box_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_cutoff.addWidget(spn_box_cutoff)
         bg_box.addLayout(hbox_cutoff)
         hbox_cutoff_criterion =  QHBoxLayout()
@@ -635,28 +795,44 @@ class inner_widg( QWidget):
         label_eps = QLabel("                                eps")
         label_eps.setFont(QFont("Times",14, QFont.Bold))
         hbox_eps.addWidget(label_eps)
+
         spn_box_eps = QDoubleSpinBox()
+        spn_box_eps.local_path = "dummy path"
+        spn_box_eps.valueChanged.connect(self.spnbox_changed)
+
         hbox_eps.addWidget(spn_box_eps)
         bg_box.addLayout(hbox_eps)
         hbox_min_samples =  QHBoxLayout()
         label_min_samples = QLabel("                                min_samples")
         label_min_samples.setFont(QFont("Times",14, QFont.Bold))
         hbox_min_samples.addWidget(label_min_samples)
+
         spn_box_min_samples = QSpinBox()
+        spn_box_min_samples.local_path = "dummy path"
+        spn_box_min_samples.valueChanged.connect(self.spnbox_changed)
+
         hbox_min_samples.addWidget(spn_box_min_samples)
         bg_box.addLayout(hbox_min_samples)
         hbox_min_cluster_size =  QHBoxLayout()
         label_min_cluster_size = QLabel("                        min_cluster_size")
         label_min_cluster_size.setFont(QFont("Times",14, QFont.Bold))
         hbox_min_cluster_size.addWidget(label_min_cluster_size)
+
         spn_box_min_cluster_size = QSpinBox()
+        spn_box_min_cluster_size.local_path = "dummy path"
+        spn_box_min_cluster_size.valueChanged.connect(self.spnbox_changed)
+
         hbox_min_cluster_size.addWidget(spn_box_min_cluster_size)
         bg_box.addLayout(hbox_min_cluster_size)
         hbox_intersection_union_ratio_cutoff =  QHBoxLayout()
         label_intersection_union_ratio_cutoff = QLabel("                        intersection_union_ratio_cutoff")
         label_intersection_union_ratio_cutoff.setFont(QFont("Times",14, QFont.Bold))
         hbox_intersection_union_ratio_cutoff.addWidget(label_intersection_union_ratio_cutoff)
+
         spn_box_intersection_union_ratio_cutoff = QDoubleSpinBox()
+        spn_box_intersection_union_ratio_cutoff.local_path = "dummy path"
+        spn_box_intersection_union_ratio_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_intersection_union_ratio_cutoff.addWidget(spn_box_intersection_union_ratio_cutoff)
         bg_box.addLayout(hbox_intersection_union_ratio_cutoff)
         label_tst = QLabel("    real_space_grid_search")
@@ -666,7 +842,11 @@ class inner_widg( QWidget):
         label_characteristic_grid = QLabel("                characteristic_grid")
         label_characteristic_grid.setFont(QFont("Times",15, QFont.Bold))
         hbox_characteristic_grid.addWidget(label_characteristic_grid)
+
         spn_box_characteristic_grid = QDoubleSpinBox()
+        spn_box_characteristic_grid.local_path = "dummy path"
+        spn_box_characteristic_grid.valueChanged.connect(self.spnbox_changed)
+
         hbox_characteristic_grid.addWidget(spn_box_characteristic_grid)
         bg_box.addLayout(hbox_characteristic_grid)
         label_tst = QLabel("refinement")
@@ -679,14 +859,22 @@ class inner_widg( QWidget):
         label_nproc = QLabel("                nproc")
         label_nproc.setFont(QFont("Times",15, QFont.Bold))
         hbox_nproc.addWidget(label_nproc)
+
         spn_box_nproc = QSpinBox()
+        spn_box_nproc.local_path = "dummy path"
+        spn_box_nproc.valueChanged.connect(self.spnbox_changed)
+
         hbox_nproc.addWidget(spn_box_nproc)
         bg_box.addLayout(hbox_nproc)
         hbox_verbosity =  QHBoxLayout()
         label_verbosity = QLabel("        verbosity")
         label_verbosity.setFont(QFont("Times",16, QFont.Bold))
         hbox_verbosity.addWidget(label_verbosity)
+
         spn_box_verbosity = QSpinBox()
+        spn_box_verbosity.local_path = "dummy path"
+        spn_box_verbosity.valueChanged.connect(self.spnbox_changed)
+
         hbox_verbosity.addWidget(spn_box_verbosity)
         bg_box.addLayout(hbox_verbosity)
         label_tst = QLabel("    parameterisation")
@@ -699,7 +887,11 @@ class inner_widg( QWidget):
         label_min_nref_per_parameter = QLabel("                        min_nref_per_parameter")
         label_min_nref_per_parameter.setFont(QFont("Times",14, QFont.Bold))
         hbox_min_nref_per_parameter.addWidget(label_min_nref_per_parameter)
+
         spn_box_min_nref_per_parameter = QSpinBox()
+        spn_box_min_nref_per_parameter.local_path = "dummy path"
+        spn_box_min_nref_per_parameter.valueChanged.connect(self.spnbox_changed)
+
         hbox_min_nref_per_parameter.addWidget(spn_box_min_nref_per_parameter)
         bg_box.addLayout(hbox_min_nref_per_parameter)
         hbox_action =  QHBoxLayout()
@@ -803,14 +995,22 @@ class inner_widg( QWidget):
         label_interval_width_degrees = QLabel("                        interval_width_degrees")
         label_interval_width_degrees.setFont(QFont("Times",14, QFont.Bold))
         hbox_interval_width_degrees.addWidget(label_interval_width_degrees)
+
         spn_box_interval_width_degrees = QDoubleSpinBox()
+        spn_box_interval_width_degrees.local_path = "dummy path"
+        spn_box_interval_width_degrees.valueChanged.connect(self.spnbox_changed)
+
         hbox_interval_width_degrees.addWidget(spn_box_interval_width_degrees)
         bg_box.addLayout(hbox_interval_width_degrees)
         hbox_absolute_num_intervals =  QHBoxLayout()
         label_absolute_num_intervals = QLabel("                        absolute_num_intervals")
         label_absolute_num_intervals.setFont(QFont("Times",14, QFont.Bold))
         hbox_absolute_num_intervals.addWidget(label_absolute_num_intervals)
+
         spn_box_absolute_num_intervals = QSpinBox()
+        spn_box_absolute_num_intervals.local_path = "dummy path"
+        spn_box_absolute_num_intervals.valueChanged.connect(self.spnbox_changed)
+
         hbox_absolute_num_intervals.addWidget(spn_box_absolute_num_intervals)
         bg_box.addLayout(hbox_absolute_num_intervals)
         hbox_UB_model_per =  QHBoxLayout()
@@ -853,7 +1053,11 @@ class inner_widg( QWidget):
         label_hierarchy_level = QLabel("                        hierarchy_level")
         label_hierarchy_level.setFont(QFont("Times",14, QFont.Bold))
         hbox_hierarchy_level.addWidget(label_hierarchy_level)
+
         spn_box_hierarchy_level = QSpinBox()
+        spn_box_hierarchy_level.local_path = "dummy path"
+        spn_box_hierarchy_level.valueChanged.connect(self.spnbox_changed)
+
         hbox_hierarchy_level.addWidget(spn_box_hierarchy_level)
         bg_box.addLayout(hbox_hierarchy_level)
         hbox_fix =  QHBoxLayout()
@@ -994,7 +1198,11 @@ class inner_widg( QWidget):
         label_max_iterations = QLabel("                max_iterations")
         label_max_iterations.setFont(QFont("Times",15, QFont.Bold))
         hbox_max_iterations.addWidget(label_max_iterations)
+
         spn_box_max_iterations = QSpinBox()
+        spn_box_max_iterations.local_path = "dummy path"
+        spn_box_max_iterations.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_iterations.addWidget(spn_box_max_iterations)
         bg_box.addLayout(hbox_max_iterations)
         label_tst = QLabel("    target")
@@ -1019,7 +1227,11 @@ class inner_widg( QWidget):
         label_bin_size_fraction = QLabel("                bin_size_fraction")
         label_bin_size_fraction.setFont(QFont("Times",15, QFont.Bold))
         hbox_bin_size_fraction.addWidget(label_bin_size_fraction)
+
         spn_box_bin_size_fraction = QDoubleSpinBox()
+        spn_box_bin_size_fraction.local_path = "dummy path"
+        spn_box_bin_size_fraction.valueChanged.connect(self.spnbox_changed)
+
         hbox_bin_size_fraction.addWidget(spn_box_bin_size_fraction)
         bg_box.addLayout(hbox_bin_size_fraction)
         hbox_absolute_cutoffs =  QHBoxLayout()
@@ -1030,7 +1242,11 @@ class inner_widg( QWidget):
         label_gradient_calculation_blocksize = QLabel("                gradient_calculation_blocksize")
         label_gradient_calculation_blocksize.setFont(QFont("Times",15, QFont.Bold))
         hbox_gradient_calculation_blocksize.addWidget(label_gradient_calculation_blocksize)
+
         spn_box_gradient_calculation_blocksize = QSpinBox()
+        spn_box_gradient_calculation_blocksize.local_path = "dummy path"
+        spn_box_gradient_calculation_blocksize.valueChanged.connect(self.spnbox_changed)
+
         hbox_gradient_calculation_blocksize.addWidget(spn_box_gradient_calculation_blocksize)
         bg_box.addLayout(hbox_gradient_calculation_blocksize)
         label_tst = QLabel("    reflections")
@@ -1040,21 +1256,33 @@ class inner_widg( QWidget):
         label_reflections_per_degree = QLabel("                reflections_per_degree")
         label_reflections_per_degree.setFont(QFont("Times",15, QFont.Bold))
         hbox_reflections_per_degree.addWidget(label_reflections_per_degree)
+
         spn_box_reflections_per_degree = QDoubleSpinBox()
+        spn_box_reflections_per_degree.local_path = "dummy path"
+        spn_box_reflections_per_degree.valueChanged.connect(self.spnbox_changed)
+
         hbox_reflections_per_degree.addWidget(spn_box_reflections_per_degree)
         bg_box.addLayout(hbox_reflections_per_degree)
         hbox_minimum_sample_size =  QHBoxLayout()
         label_minimum_sample_size = QLabel("                minimum_sample_size")
         label_minimum_sample_size.setFont(QFont("Times",15, QFont.Bold))
         hbox_minimum_sample_size.addWidget(label_minimum_sample_size)
+
         spn_box_minimum_sample_size = QSpinBox()
+        spn_box_minimum_sample_size.local_path = "dummy path"
+        spn_box_minimum_sample_size.valueChanged.connect(self.spnbox_changed)
+
         hbox_minimum_sample_size.addWidget(spn_box_minimum_sample_size)
         bg_box.addLayout(hbox_minimum_sample_size)
         hbox_maximum_sample_size =  QHBoxLayout()
         label_maximum_sample_size = QLabel("                maximum_sample_size")
         label_maximum_sample_size.setFont(QFont("Times",15, QFont.Bold))
         hbox_maximum_sample_size.addWidget(label_maximum_sample_size)
+
         spn_box_maximum_sample_size = QSpinBox()
+        spn_box_maximum_sample_size.local_path = "dummy path"
+        spn_box_maximum_sample_size.valueChanged.connect(self.spnbox_changed)
+
         hbox_maximum_sample_size.addWidget(spn_box_maximum_sample_size)
         bg_box.addLayout(hbox_maximum_sample_size)
         hbox_use_all_reflections =  QHBoxLayout()
@@ -1076,21 +1304,33 @@ class inner_widg( QWidget):
         label_random_seed = QLabel("                random_seed")
         label_random_seed.setFont(QFont("Times",15, QFont.Bold))
         hbox_random_seed.addWidget(label_random_seed)
+
         spn_box_random_seed = QSpinBox()
+        spn_box_random_seed.local_path = "dummy path"
+        spn_box_random_seed.valueChanged.connect(self.spnbox_changed)
+
         hbox_random_seed.addWidget(spn_box_random_seed)
         bg_box.addLayout(hbox_random_seed)
         hbox_close_to_spindle_cutoff =  QHBoxLayout()
         label_close_to_spindle_cutoff = QLabel("                close_to_spindle_cutoff")
         label_close_to_spindle_cutoff.setFont(QFont("Times",15, QFont.Bold))
         hbox_close_to_spindle_cutoff.addWidget(label_close_to_spindle_cutoff)
+
         spn_box_close_to_spindle_cutoff = QDoubleSpinBox()
+        spn_box_close_to_spindle_cutoff.local_path = "dummy path"
+        spn_box_close_to_spindle_cutoff.valueChanged.connect(self.spnbox_changed)
+
         hbox_close_to_spindle_cutoff.addWidget(spn_box_close_to_spindle_cutoff)
         bg_box.addLayout(hbox_close_to_spindle_cutoff)
         hbox_block_width =  QHBoxLayout()
         label_block_width = QLabel("                block_width")
         label_block_width.setFont(QFont("Times",15, QFont.Bold))
         hbox_block_width.addWidget(label_block_width)
+
         spn_box_block_width = QDoubleSpinBox()
+        spn_box_block_width.local_path = "dummy path"
+        spn_box_block_width.valueChanged.connect(self.spnbox_changed)
+
         hbox_block_width.addWidget(spn_box_block_width)
         bg_box.addLayout(hbox_block_width)
         label_tst = QLabel("        weighting_strategy")
@@ -1116,7 +1356,11 @@ class inner_widg( QWidget):
         label_delpsi_constant = QLabel("                        delpsi_constant")
         label_delpsi_constant.setFont(QFont("Times",14, QFont.Bold))
         hbox_delpsi_constant.addWidget(label_delpsi_constant)
+
         spn_box_delpsi_constant = QDoubleSpinBox()
+        spn_box_delpsi_constant.local_path = "dummy path"
+        spn_box_delpsi_constant.valueChanged.connect(self.spnbox_changed)
+
         hbox_delpsi_constant.addWidget(spn_box_delpsi_constant)
         bg_box.addLayout(hbox_delpsi_constant)
         hbox_constants =  QHBoxLayout()
@@ -1148,7 +1392,11 @@ class inner_widg( QWidget):
         label_minimum_number_of_reflections = QLabel("                        minimum_number_of_reflections")
         label_minimum_number_of_reflections.setFont(QFont("Times",14, QFont.Bold))
         hbox_minimum_number_of_reflections.addWidget(label_minimum_number_of_reflections)
+
         spn_box_minimum_number_of_reflections = QSpinBox()
+        spn_box_minimum_number_of_reflections.local_path = "dummy path"
+        spn_box_minimum_number_of_reflections.valueChanged.connect(self.spnbox_changed)
+
         hbox_minimum_number_of_reflections.addWidget(spn_box_minimum_number_of_reflections)
         bg_box.addLayout(hbox_minimum_number_of_reflections)
         hbox_separate_experiments =  QHBoxLayout()
@@ -1188,7 +1436,11 @@ class inner_widg( QWidget):
         label_iqr_multiplier = QLabel("                                iqr_multiplier")
         label_iqr_multiplier.setFont(QFont("Times",14, QFont.Bold))
         hbox_iqr_multiplier.addWidget(label_iqr_multiplier)
+
         spn_box_iqr_multiplier = QDoubleSpinBox()
+        spn_box_iqr_multiplier.local_path = "dummy path"
+        spn_box_iqr_multiplier.valueChanged.connect(self.spnbox_changed)
+
         hbox_iqr_multiplier.addWidget(spn_box_iqr_multiplier)
         bg_box.addLayout(hbox_iqr_multiplier)
         label_tst = QLabel("            mcd")
@@ -1198,56 +1450,88 @@ class inner_widg( QWidget):
         label_alpha = QLabel("                                alpha")
         label_alpha.setFont(QFont("Times",14, QFont.Bold))
         hbox_alpha.addWidget(label_alpha)
+
         spn_box_alpha = QDoubleSpinBox()
+        spn_box_alpha.local_path = "dummy path"
+        spn_box_alpha.valueChanged.connect(self.spnbox_changed)
+
         hbox_alpha.addWidget(spn_box_alpha)
         bg_box.addLayout(hbox_alpha)
         hbox_max_n_groups =  QHBoxLayout()
         label_max_n_groups = QLabel("                                max_n_groups")
         label_max_n_groups.setFont(QFont("Times",14, QFont.Bold))
         hbox_max_n_groups.addWidget(label_max_n_groups)
+
         spn_box_max_n_groups = QSpinBox()
+        spn_box_max_n_groups.local_path = "dummy path"
+        spn_box_max_n_groups.valueChanged.connect(self.spnbox_changed)
+
         hbox_max_n_groups.addWidget(spn_box_max_n_groups)
         bg_box.addLayout(hbox_max_n_groups)
         hbox_min_group_size =  QHBoxLayout()
         label_min_group_size = QLabel("                                min_group_size")
         label_min_group_size.setFont(QFont("Times",14, QFont.Bold))
         hbox_min_group_size.addWidget(label_min_group_size)
+
         spn_box_min_group_size = QSpinBox()
+        spn_box_min_group_size.local_path = "dummy path"
+        spn_box_min_group_size.valueChanged.connect(self.spnbox_changed)
+
         hbox_min_group_size.addWidget(spn_box_min_group_size)
         bg_box.addLayout(hbox_min_group_size)
         hbox_n_trials =  QHBoxLayout()
         label_n_trials = QLabel("                                n_trials")
         label_n_trials.setFont(QFont("Times",14, QFont.Bold))
         hbox_n_trials.addWidget(label_n_trials)
+
         spn_box_n_trials = QSpinBox()
+        spn_box_n_trials.local_path = "dummy path"
+        spn_box_n_trials.valueChanged.connect(self.spnbox_changed)
+
         hbox_n_trials.addWidget(spn_box_n_trials)
         bg_box.addLayout(hbox_n_trials)
         hbox_k1 =  QHBoxLayout()
         label_k1 = QLabel("                                k1")
         label_k1.setFont(QFont("Times",14, QFont.Bold))
         hbox_k1.addWidget(label_k1)
+
         spn_box_k1 = QSpinBox()
+        spn_box_k1.local_path = "dummy path"
+        spn_box_k1.valueChanged.connect(self.spnbox_changed)
+
         hbox_k1.addWidget(spn_box_k1)
         bg_box.addLayout(hbox_k1)
         hbox_k2 =  QHBoxLayout()
         label_k2 = QLabel("                                k2")
         label_k2.setFont(QFont("Times",14, QFont.Bold))
         hbox_k2.addWidget(label_k2)
+
         spn_box_k2 = QSpinBox()
+        spn_box_k2.local_path = "dummy path"
+        spn_box_k2.valueChanged.connect(self.spnbox_changed)
+
         hbox_k2.addWidget(spn_box_k2)
         bg_box.addLayout(hbox_k2)
         hbox_k3 =  QHBoxLayout()
         label_k3 = QLabel("                                k3")
         label_k3.setFont(QFont("Times",14, QFont.Bold))
         hbox_k3.addWidget(label_k3)
+
         spn_box_k3 = QSpinBox()
+        spn_box_k3.local_path = "dummy path"
+        spn_box_k3.valueChanged.connect(self.spnbox_changed)
+
         hbox_k3.addWidget(spn_box_k3)
         bg_box.addLayout(hbox_k3)
         hbox_threshold_probability =  QHBoxLayout()
         label_threshold_probability = QLabel("                                threshold_probability")
         label_threshold_probability.setFont(QFont("Times",14, QFont.Bold))
         hbox_threshold_probability.addWidget(label_threshold_probability)
+
         spn_box_threshold_probability = QDoubleSpinBox()
+        spn_box_threshold_probability.local_path = "dummy path"
+        spn_box_threshold_probability.valueChanged.connect(self.spnbox_changed)
+
         hbox_threshold_probability.addWidget(spn_box_threshold_probability)
         bg_box.addLayout(hbox_threshold_probability)
         label_tst = QLabel("            sauter_poon")
@@ -1276,9 +1560,6 @@ class inner_widg( QWidget):
         label_pdf = QLabel("                                pdf")
         label_pdf.setFont(QFont("Times",14, QFont.Bold))
         hbox_pdf.addWidget(label_pdf)
-        spn_box_pdf = QLineEdit()
-        hbox_pdf.addWidget(spn_box_pdf)
-        bg_box.addLayout(hbox_pdf)
         label_tst = QLabel("output")
         label_tst.setFont(QFont("Monospace", 14, QFont.Bold))
         bg_box.addWidget(label_tst)
@@ -1298,12 +1579,24 @@ class inner_widg( QWidget):
         label_verbosity = QLabel("verbosity")
         label_verbosity.setFont(QFont("Times",18, QFont.Bold))
         hbox_verbosity.addWidget(label_verbosity)
+
         spn_box_verbosity = QSpinBox()
+        spn_box_verbosity.local_path = "dummy path"
+        spn_box_verbosity.valueChanged.connect(self.spnbox_changed)
+
         hbox_verbosity.addWidget(spn_box_verbosity)
         bg_box.addLayout(hbox_verbosity)
  
         self.setLayout(bg_box)
         self.show()
+
+
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        print "sender =", sender
+        print "spnbox_changed to:", value
+
+
     def combobox_changed(self, value):
         sender = self.sender()
         print "sender =", sender

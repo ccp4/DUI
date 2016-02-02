@@ -1,10 +1,11 @@
 import sys
-PyQt4_ver = '''
+#PyQt4_ver = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
-'''
-#PySide_ver = '''
+#'''
+
+PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
 pyqtSignal = Signal
@@ -1161,12 +1162,21 @@ class inner_widg( QWidget):
         label_verbosity.setFont(QFont("Times",18, QFont.Bold))
         hbox_verbosity.addWidget(label_verbosity)
         spn_box_verbosity = QSpinBox()
+
+        spn_box_verbosity.local_path = "dummy path"
+        spn_box_verbosity.valueChanged.connect(self.spnbox_changed)
+
         hbox_verbosity.addWidget(spn_box_verbosity)
         bg_box.addLayout(hbox_verbosity)
 
         self.setLayout(bg_box)
         self.show()
 
+
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        print "sender =", sender
+        print "spnbox_changed to:", value
 
 
     def combobox_changed(self, value):
