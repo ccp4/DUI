@@ -157,7 +157,7 @@ class IndexParameterWidget(QtGui.QWidget):
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        from gui_tst_code import ParamMainWidget
+        from inner_mult_opt import ParamMainWidget
         param_widg = ParamMainWidget()
 
         default_tab = SimplerParamTab()

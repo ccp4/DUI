@@ -74,7 +74,7 @@ class gen_code(object):
         Writes code into a disc, but includes the "to_insert" list in the middle
         '''
 
-        myfile = open("gui_tst_code.py", "w")
+        myfile = open("inner_mult_opt.py", "w")
 
         for line in self.src_code_1:
             myfile.write(line)
