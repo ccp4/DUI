@@ -108,9 +108,15 @@ class inner_widg( QWidget):
         label_peak_search = QLabel("                peak_search")
         label_peak_search.setFont(QFont("Times",15, QFont.Bold))
         hbox_peak_search.addWidget(label_peak_search)
+
         spn_box_peak_search = QComboBox()
-        spn_box_peak_search.addItem("*flood_fill")
-        spn_box_peak_search.addItem("clean")
+        spn_box_peak_search.tmp_lst=[]
+        spn_box_peak_search.tmp_lst.append("*flood_fill")
+        spn_box_peak_search.tmp_lst.append("clean")
+        for lst_itm in spn_box_peak_search.tmp_lst:
+            spn_box_peak_search.addItem(lst_itm)
+        spn_box_peak_search.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_peak_search.addWidget(spn_box_peak_search)
         bg_box.addLayout(hbox_peak_search)
         hbox_peak_volume_cutoff =  QHBoxLayout()
@@ -208,9 +214,15 @@ class inner_widg( QWidget):
         label_solution_scorer = QLabel("                solution_scorer")
         label_solution_scorer.setFont(QFont("Times",15, QFont.Bold))
         hbox_solution_scorer.addWidget(label_solution_scorer)
+
         spn_box_solution_scorer = QComboBox()
-        spn_box_solution_scorer.addItem("filter")
-        spn_box_solution_scorer.addItem("*weighted")
+        spn_box_solution_scorer.tmp_lst=[]
+        spn_box_solution_scorer.tmp_lst.append("filter")
+        spn_box_solution_scorer.tmp_lst.append("*weighted")
+        for lst_itm in spn_box_solution_scorer.tmp_lst:
+            spn_box_solution_scorer.addItem(lst_itm)
+        spn_box_solution_scorer.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_solution_scorer.addWidget(spn_box_solution_scorer)
         bg_box.addLayout(hbox_solution_scorer)
         label_tst = QLabel("        filter")
@@ -290,9 +302,15 @@ class inner_widg( QWidget):
         label_method = QLabel("                method")
         label_method.setFont(QFont("Times",15, QFont.Bold))
         hbox_method.addWidget(label_method)
+
         spn_box_method = QComboBox()
-        spn_box_method.addItem("*simple")
-        spn_box_method.addItem("local")
+        spn_box_method.tmp_lst=[]
+        spn_box_method.tmp_lst.append("*simple")
+        spn_box_method.tmp_lst.append("local")
+        for lst_itm in spn_box_method.tmp_lst:
+            spn_box_method.addItem(lst_itm)
+        spn_box_method.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_method.addWidget(spn_box_method)
         bg_box.addLayout(hbox_method)
         label_tst = QLabel("        simple")
@@ -470,10 +488,16 @@ class inner_widg( QWidget):
         label_method = QLabel("        method")
         label_method.setFont(QFont("Times",16, QFont.Bold))
         hbox_method.addWidget(label_method)
+
         spn_box_method = QComboBox()
-        spn_box_method.addItem("*fft3d")
-        spn_box_method.addItem("fft1d")
-        spn_box_method.addItem("real_space_grid_search")
+        spn_box_method.tmp_lst=[]
+        spn_box_method.tmp_lst.append("*fft3d")
+        spn_box_method.tmp_lst.append("fft1d")
+        spn_box_method.tmp_lst.append("real_space_grid_search")
+        for lst_itm in spn_box_method.tmp_lst:
+            spn_box_method.addItem(lst_itm)
+        spn_box_method.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_method.addWidget(spn_box_method)
         bg_box.addLayout(hbox_method)
         label_tst = QLabel("    multiple_lattice_search")
@@ -537,9 +561,15 @@ class inner_widg( QWidget):
         label_method = QLabel("                        method")
         label_method.setFont(QFont("Times",14, QFont.Bold))
         hbox_method.addWidget(label_method)
+
         spn_box_method = QComboBox()
-        spn_box_method.addItem("*dbscan")
-        spn_box_method.addItem("hcluster")
+        spn_box_method.tmp_lst=[]
+        spn_box_method.tmp_lst.append("*dbscan")
+        spn_box_method.tmp_lst.append("hcluster")
+        for lst_itm in spn_box_method.tmp_lst:
+            spn_box_method.addItem(lst_itm)
+        spn_box_method.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_method.addWidget(spn_box_method)
         bg_box.addLayout(hbox_method)
         label_tst = QLabel("            hcluster")
@@ -552,16 +582,28 @@ class inner_widg( QWidget):
         label_method = QLabel("                                        method")
         label_method.setFont(QFont("Times",14, QFont.Bold))
         hbox_method.addWidget(label_method)
+
         spn_box_method = QComboBox()
-        spn_box_method.addItem("*ward")
+        spn_box_method.tmp_lst=[]
+        spn_box_method.tmp_lst.append("*ward")
+        for lst_itm in spn_box_method.tmp_lst:
+            spn_box_method.addItem(lst_itm)
+        spn_box_method.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_method.addWidget(spn_box_method)
         bg_box.addLayout(hbox_method)
         hbox_metric =  QHBoxLayout()
         label_metric = QLabel("                                        metric")
         label_metric.setFont(QFont("Times",14, QFont.Bold))
         hbox_metric.addWidget(label_metric)
+
         spn_box_metric = QComboBox()
-        spn_box_metric.addItem("*euclidean")
+        spn_box_metric.tmp_lst=[]
+        spn_box_metric.tmp_lst.append("*euclidean")
+        for lst_itm in spn_box_metric.tmp_lst:
+            spn_box_metric.addItem(lst_itm)
+        spn_box_metric.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_metric.addWidget(spn_box_metric)
         bg_box.addLayout(hbox_metric)
         hbox_cutoff =  QHBoxLayout()
@@ -575,9 +617,15 @@ class inner_widg( QWidget):
         label_cutoff_criterion = QLabel("                                cutoff_criterion")
         label_cutoff_criterion.setFont(QFont("Times",14, QFont.Bold))
         hbox_cutoff_criterion.addWidget(label_cutoff_criterion)
+
         spn_box_cutoff_criterion = QComboBox()
-        spn_box_cutoff_criterion.addItem("*distance")
-        spn_box_cutoff_criterion.addItem("inconsistent")
+        spn_box_cutoff_criterion.tmp_lst=[]
+        spn_box_cutoff_criterion.tmp_lst.append("*distance")
+        spn_box_cutoff_criterion.tmp_lst.append("inconsistent")
+        for lst_itm in spn_box_cutoff_criterion.tmp_lst:
+            spn_box_cutoff_criterion.addItem(lst_itm)
+        spn_box_cutoff_criterion.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_cutoff_criterion.addWidget(spn_box_cutoff_criterion)
         bg_box.addLayout(hbox_cutoff_criterion)
         label_tst = QLabel("            dbscan")
@@ -658,10 +706,16 @@ class inner_widg( QWidget):
         label_action = QLabel("                        action")
         label_action.setFont(QFont("Times",14, QFont.Bold))
         hbox_action.addWidget(label_action)
+
         spn_box_action = QComboBox()
-        spn_box_action.addItem("*fail")
-        spn_box_action.addItem("fix")
-        spn_box_action.addItem("remove")
+        spn_box_action.tmp_lst=[]
+        spn_box_action.tmp_lst.append("*fail")
+        spn_box_action.tmp_lst.append("fix")
+        spn_box_action.tmp_lst.append("remove")
+        for lst_itm in spn_box_action.tmp_lst:
+            spn_box_action.addItem(lst_itm)
+        spn_box_action.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_action.addWidget(spn_box_action)
         bg_box.addLayout(hbox_action)
         label_tst = QLabel("        beam")
@@ -671,11 +725,17 @@ class inner_widg( QWidget):
         label_fix = QLabel("                        fix")
         label_fix.setFont(QFont("Times",14, QFont.Bold))
         hbox_fix.addWidget(label_fix)
+
         spn_box_fix = QComboBox()
-        spn_box_fix.addItem("all")
-        spn_box_fix.addItem("*in_spindle_plane")
-        spn_box_fix.addItem("out_spindle_plane")
-        spn_box_fix.addItem("*wavelength")
+        spn_box_fix.tmp_lst=[]
+        spn_box_fix.tmp_lst.append("all")
+        spn_box_fix.tmp_lst.append("*in_spindle_plane")
+        spn_box_fix.tmp_lst.append("out_spindle_plane")
+        spn_box_fix.tmp_lst.append("*wavelength")
+        for lst_itm in spn_box_fix.tmp_lst:
+            spn_box_fix.addItem(lst_itm)
+        spn_box_fix.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_fix.addWidget(spn_box_fix)
         bg_box.addLayout(hbox_fix)
         hbox_fix_list =  QHBoxLayout()
@@ -689,10 +749,16 @@ class inner_widg( QWidget):
         label_fix = QLabel("                        fix")
         label_fix.setFont(QFont("Times",14, QFont.Bold))
         hbox_fix.addWidget(label_fix)
+
         spn_box_fix = QComboBox()
-        spn_box_fix.addItem("all")
-        spn_box_fix.addItem("cell")
-        spn_box_fix.addItem("orientation")
+        spn_box_fix.tmp_lst=[]
+        spn_box_fix.tmp_lst.append("all")
+        spn_box_fix.tmp_lst.append("cell")
+        spn_box_fix.tmp_lst.append("orientation")
+        for lst_itm in spn_box_fix.tmp_lst:
+            spn_box_fix.addItem(lst_itm)
+        spn_box_fix.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_fix.addWidget(spn_box_fix)
         bg_box.addLayout(hbox_fix)
         hbox_cell_fix_list =  QHBoxLayout()
@@ -722,9 +788,15 @@ class inner_widg( QWidget):
         label_num_intervals = QLabel("                        num_intervals")
         label_num_intervals.setFont(QFont("Times",14, QFont.Bold))
         hbox_num_intervals.addWidget(label_num_intervals)
+
         spn_box_num_intervals = QComboBox()
-        spn_box_num_intervals.addItem("*fixed_width")
-        spn_box_num_intervals.addItem("absolute")
+        spn_box_num_intervals.tmp_lst=[]
+        spn_box_num_intervals.tmp_lst.append("*fixed_width")
+        spn_box_num_intervals.tmp_lst.append("absolute")
+        for lst_itm in spn_box_num_intervals.tmp_lst:
+            spn_box_num_intervals.addItem(lst_itm)
+        spn_box_num_intervals.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_num_intervals.addWidget(spn_box_num_intervals)
         bg_box.addLayout(hbox_num_intervals)
         hbox_interval_width_degrees =  QHBoxLayout()
@@ -745,10 +817,16 @@ class inner_widg( QWidget):
         label_UB_model_per = QLabel("                        UB_model_per")
         label_UB_model_per.setFont(QFont("Times",14, QFont.Bold))
         hbox_UB_model_per.addWidget(label_UB_model_per)
+
         spn_box_UB_model_per = QComboBox()
-        spn_box_UB_model_per.addItem("reflection")
-        spn_box_UB_model_per.addItem("image")
-        spn_box_UB_model_per.addItem("*block")
+        spn_box_UB_model_per.tmp_lst=[]
+        spn_box_UB_model_per.tmp_lst.append("reflection")
+        spn_box_UB_model_per.tmp_lst.append("image")
+        spn_box_UB_model_per.tmp_lst.append("*block")
+        for lst_itm in spn_box_UB_model_per.tmp_lst:
+            spn_box_UB_model_per.addItem(lst_itm)
+        spn_box_UB_model_per.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_UB_model_per.addWidget(spn_box_UB_model_per)
         bg_box.addLayout(hbox_UB_model_per)
         label_tst = QLabel("        detector")
@@ -758,11 +836,17 @@ class inner_widg( QWidget):
         label_panels = QLabel("                        panels")
         label_panels.setFont(QFont("Times",14, QFont.Bold))
         hbox_panels.addWidget(label_panels)
+
         spn_box_panels = QComboBox()
-        spn_box_panels.addItem("*automatic")
-        spn_box_panels.addItem("single")
-        spn_box_panels.addItem("multiple")
-        spn_box_panels.addItem("hierarchical")
+        spn_box_panels.tmp_lst=[]
+        spn_box_panels.tmp_lst.append("*automatic")
+        spn_box_panels.tmp_lst.append("single")
+        spn_box_panels.tmp_lst.append("multiple")
+        spn_box_panels.tmp_lst.append("hierarchical")
+        for lst_itm in spn_box_panels.tmp_lst:
+            spn_box_panels.addItem(lst_itm)
+        spn_box_panels.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_panels.addWidget(spn_box_panels)
         bg_box.addLayout(hbox_panels)
         hbox_hierarchy_level =  QHBoxLayout()
@@ -776,10 +860,16 @@ class inner_widg( QWidget):
         label_fix = QLabel("                        fix")
         label_fix.setFont(QFont("Times",14, QFont.Bold))
         hbox_fix.addWidget(label_fix)
+
         spn_box_fix = QComboBox()
-        spn_box_fix.addItem("all")
-        spn_box_fix.addItem("position")
-        spn_box_fix.addItem("orientation")
+        spn_box_fix.tmp_lst=[]
+        spn_box_fix.tmp_lst.append("all")
+        spn_box_fix.tmp_lst.append("position")
+        spn_box_fix.tmp_lst.append("orientation")
+        for lst_itm in spn_box_fix.tmp_lst:
+            spn_box_fix.addItem(lst_itm)
+        spn_box_fix.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_fix.addWidget(spn_box_fix)
         bg_box.addLayout(hbox_fix)
         hbox_fix_list =  QHBoxLayout()
@@ -823,11 +913,17 @@ class inner_widg( QWidget):
         label_engine = QLabel("                engine")
         label_engine.setFont(QFont("Times",15, QFont.Bold))
         hbox_engine.addWidget(label_engine)
+
         spn_box_engine = QComboBox()
-        spn_box_engine.addItem("SimpleLBFGS")
-        spn_box_engine.addItem("LBFGScurvs")
-        spn_box_engine.addItem("GaussNewton")
-        spn_box_engine.addItem("*LevMar")
+        spn_box_engine.tmp_lst=[]
+        spn_box_engine.tmp_lst.append("SimpleLBFGS")
+        spn_box_engine.tmp_lst.append("LBFGScurvs")
+        spn_box_engine.tmp_lst.append("GaussNewton")
+        spn_box_engine.tmp_lst.append("*LevMar")
+        for lst_itm in spn_box_engine.tmp_lst:
+            spn_box_engine.addItem(lst_itm)
+        spn_box_engine.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_engine.addWidget(spn_box_engine)
         bg_box.addLayout(hbox_engine)
         hbox_track_step =  QHBoxLayout()
@@ -908,9 +1004,15 @@ class inner_widg( QWidget):
         label_rmsd_cutoff = QLabel("                rmsd_cutoff")
         label_rmsd_cutoff.setFont(QFont("Times",15, QFont.Bold))
         hbox_rmsd_cutoff.addWidget(label_rmsd_cutoff)
+
         spn_box_rmsd_cutoff = QComboBox()
-        spn_box_rmsd_cutoff.addItem("*fraction_of_bin_size")
-        spn_box_rmsd_cutoff.addItem("absolute")
+        spn_box_rmsd_cutoff.tmp_lst=[]
+        spn_box_rmsd_cutoff.tmp_lst.append("*fraction_of_bin_size")
+        spn_box_rmsd_cutoff.tmp_lst.append("absolute")
+        for lst_itm in spn_box_rmsd_cutoff.tmp_lst:
+            spn_box_rmsd_cutoff.addItem(lst_itm)
+        spn_box_rmsd_cutoff.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_rmsd_cutoff.addWidget(spn_box_rmsd_cutoff)
         bg_box.addLayout(hbox_rmsd_cutoff)
         hbox_bin_size_fraction =  QHBoxLayout()
@@ -998,10 +1100,16 @@ class inner_widg( QWidget):
         label_override = QLabel("                        override")
         label_override.setFont(QFont("Times",14, QFont.Bold))
         hbox_override.addWidget(label_override)
+
         spn_box_override = QComboBox()
-        spn_box_override.addItem("statistical")
-        spn_box_override.addItem("stills")
-        spn_box_override.addItem("constant")
+        spn_box_override.tmp_lst=[]
+        spn_box_override.tmp_lst.append("statistical")
+        spn_box_override.tmp_lst.append("stills")
+        spn_box_override.tmp_lst.append("constant")
+        for lst_itm in spn_box_override.tmp_lst:
+            spn_box_override.addItem(lst_itm)
+        spn_box_override.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_override.addWidget(spn_box_override)
         bg_box.addLayout(hbox_override)
         hbox_delpsi_constant =  QHBoxLayout()
@@ -1022,12 +1130,18 @@ class inner_widg( QWidget):
         label_algorithm = QLabel("                        algorithm")
         label_algorithm.setFont(QFont("Times",14, QFont.Bold))
         hbox_algorithm.addWidget(label_algorithm)
+
         spn_box_algorithm = QComboBox()
-        spn_box_algorithm.addItem("null")
-        spn_box_algorithm.addItem("*auto")
-        spn_box_algorithm.addItem("mcd")
-        spn_box_algorithm.addItem("tukey")
-        spn_box_algorithm.addItem("sauter_poon")
+        spn_box_algorithm.tmp_lst=[]
+        spn_box_algorithm.tmp_lst.append("null")
+        spn_box_algorithm.tmp_lst.append("*auto")
+        spn_box_algorithm.tmp_lst.append("mcd")
+        spn_box_algorithm.tmp_lst.append("tukey")
+        spn_box_algorithm.tmp_lst.append("sauter_poon")
+        for lst_itm in spn_box_algorithm.tmp_lst:
+            spn_box_algorithm.addItem(lst_itm)
+        spn_box_algorithm.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_algorithm.addWidget(spn_box_algorithm)
         bg_box.addLayout(hbox_algorithm)
         hbox_minimum_number_of_reflections =  QHBoxLayout()

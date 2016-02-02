@@ -229,6 +229,24 @@ def phil_list_2_disc(lst_obj):
 
             elif( obj.type.phil_type == 'choice' ):
 
+                src_code_aut.append("")
+                my_str = "        " + box_name + " = QComboBox()"
+                src_code_aut.append(my_str)
+                my_str = "        " + box_name + ".tmp_lst=[]"
+                src_code_aut.append(my_str)
+                for opt in obj.words:
+                    my_str = "        " + box_name + ".tmp_lst.append(\"" + str(opt) + "\")"
+                    src_code_aut.append(my_str)
+
+                my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
+                src_code_aut.append(my_str)
+                my_str = "            " + box_name + ".addItem(lst_itm)"
+                src_code_aut.append(my_str)
+                my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
+
+                src_code_aut.append(my_str)
+                src_code_aut.append("")
+                '''
                 my_str = "        " + box_name + " = QComboBox()"
                 src_code_aut.append(my_str)
 
@@ -236,6 +254,7 @@ def phil_list_2_disc(lst_obj):
                     my_str = "        " + box_name
                     my_str += ".addItem(\"" + str(opt) + "\")"
                     src_code_aut.append(my_str)
+                '''
 
             else:
                 '''
