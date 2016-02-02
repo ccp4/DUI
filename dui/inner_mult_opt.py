@@ -33,9 +33,15 @@ class inner_widg( QWidget):
         label_discover_better_experimental_model = QLabel("        discover_better_experimental_model")
         label_discover_better_experimental_model.setFont(QFont("Times",16, QFont.Bold))
         hbox_discover_better_experimental_model.addWidget(label_discover_better_experimental_model)
+
         spn_box_discover_better_experimental_model = QComboBox()
-        spn_box_discover_better_experimental_model.addItem("False")
-        spn_box_discover_better_experimental_model.addItem("True")
+        spn_box_discover_better_experimental_model.tmp_lst=[]
+        spn_box_discover_better_experimental_model.tmp_lst.append("True")
+        spn_box_discover_better_experimental_model.tmp_lst.append("False")
+        for lst_itm in spn_box_discover_better_experimental_model.tmp_lst:
+            spn_box_discover_better_experimental_model.addItem(lst_itm)
+        spn_box_discover_better_experimental_model.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_discover_better_experimental_model.addWidget(spn_box_discover_better_experimental_model)
         bg_box.addLayout(hbox_discover_better_experimental_model)
         hbox_mm_search_scope =  QHBoxLayout()
@@ -84,9 +90,15 @@ class inner_widg( QWidget):
         label_filter_ice = QLabel("        filter_ice")
         label_filter_ice.setFont(QFont("Times",16, QFont.Bold))
         hbox_filter_ice.addWidget(label_filter_ice)
+
         spn_box_filter_ice = QComboBox()
-        spn_box_filter_ice.addItem("False")
-        spn_box_filter_ice.addItem("True")
+        spn_box_filter_ice.tmp_lst=[]
+        spn_box_filter_ice.tmp_lst.append("True")
+        spn_box_filter_ice.tmp_lst.append("False")
+        for lst_itm in spn_box_filter_ice.tmp_lst:
+            spn_box_filter_ice.addItem(lst_itm)
+        spn_box_filter_ice.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_filter_ice.addWidget(spn_box_filter_ice)
         bg_box.addLayout(hbox_filter_ice)
         label_tst = QLabel("    fft3d")
@@ -208,9 +220,15 @@ class inner_widg( QWidget):
         label_check_doubled_cell = QLabel("                        check_doubled_cell")
         label_check_doubled_cell.setFont(QFont("Times",14, QFont.Bold))
         hbox_check_doubled_cell.addWidget(label_check_doubled_cell)
+
         spn_box_check_doubled_cell = QComboBox()
-        spn_box_check_doubled_cell.addItem("False")
-        spn_box_check_doubled_cell.addItem("True")
+        spn_box_check_doubled_cell.tmp_lst=[]
+        spn_box_check_doubled_cell.tmp_lst.append("True")
+        spn_box_check_doubled_cell.tmp_lst.append("False")
+        for lst_itm in spn_box_check_doubled_cell.tmp_lst:
+            spn_box_check_doubled_cell.addItem(lst_itm)
+        spn_box_check_doubled_cell.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_check_doubled_cell.addWidget(spn_box_check_doubled_cell)
         bg_box.addLayout(hbox_check_doubled_cell)
         hbox_likelihood_cutoff =  QHBoxLayout()
@@ -322,36 +340,60 @@ class inner_widg( QWidget):
         label_optimise_initial_basis_vectors = QLabel("        optimise_initial_basis_vectors")
         label_optimise_initial_basis_vectors.setFont(QFont("Times",16, QFont.Bold))
         hbox_optimise_initial_basis_vectors.addWidget(label_optimise_initial_basis_vectors)
+
         spn_box_optimise_initial_basis_vectors = QComboBox()
-        spn_box_optimise_initial_basis_vectors.addItem("False")
-        spn_box_optimise_initial_basis_vectors.addItem("True")
+        spn_box_optimise_initial_basis_vectors.tmp_lst=[]
+        spn_box_optimise_initial_basis_vectors.tmp_lst.append("True")
+        spn_box_optimise_initial_basis_vectors.tmp_lst.append("False")
+        for lst_itm in spn_box_optimise_initial_basis_vectors.tmp_lst:
+            spn_box_optimise_initial_basis_vectors.addItem(lst_itm)
+        spn_box_optimise_initial_basis_vectors.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_optimise_initial_basis_vectors.addWidget(spn_box_optimise_initial_basis_vectors)
         bg_box.addLayout(hbox_optimise_initial_basis_vectors)
         hbox_debug =  QHBoxLayout()
         label_debug = QLabel("        debug")
         label_debug.setFont(QFont("Times",16, QFont.Bold))
         hbox_debug.addWidget(label_debug)
+
         spn_box_debug = QComboBox()
-        spn_box_debug.addItem("False")
-        spn_box_debug.addItem("True")
+        spn_box_debug.tmp_lst=[]
+        spn_box_debug.tmp_lst.append("True")
+        spn_box_debug.tmp_lst.append("False")
+        for lst_itm in spn_box_debug.tmp_lst:
+            spn_box_debug.addItem(lst_itm)
+        spn_box_debug.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_debug.addWidget(spn_box_debug)
         bg_box.addLayout(hbox_debug)
         hbox_debug_plots =  QHBoxLayout()
         label_debug_plots = QLabel("        debug_plots")
         label_debug_plots.setFont(QFont("Times",16, QFont.Bold))
         hbox_debug_plots.addWidget(label_debug_plots)
+
         spn_box_debug_plots = QComboBox()
-        spn_box_debug_plots.addItem("False")
-        spn_box_debug_plots.addItem("True")
+        spn_box_debug_plots.tmp_lst=[]
+        spn_box_debug_plots.tmp_lst.append("True")
+        spn_box_debug_plots.tmp_lst.append("False")
+        for lst_itm in spn_box_debug_plots.tmp_lst:
+            spn_box_debug_plots.addItem(lst_itm)
+        spn_box_debug_plots.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_debug_plots.addWidget(spn_box_debug_plots)
         bg_box.addLayout(hbox_debug_plots)
         hbox_combine_scans =  QHBoxLayout()
         label_combine_scans = QLabel("        combine_scans")
         label_combine_scans.setFont(QFont("Times",16, QFont.Bold))
         hbox_combine_scans.addWidget(label_combine_scans)
+
         spn_box_combine_scans = QComboBox()
-        spn_box_combine_scans.addItem("False")
-        spn_box_combine_scans.addItem("True")
+        spn_box_combine_scans.tmp_lst=[]
+        spn_box_combine_scans.tmp_lst.append("True")
+        spn_box_combine_scans.tmp_lst.append("False")
+        for lst_itm in spn_box_combine_scans.tmp_lst:
+            spn_box_combine_scans.addItem(lst_itm)
+        spn_box_combine_scans.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_combine_scans.addWidget(spn_box_combine_scans)
         bg_box.addLayout(hbox_combine_scans)
         label_tst = QLabel("    refinement_protocol")
@@ -396,9 +438,15 @@ class inner_widg( QWidget):
         label_disable_unit_cell_volume_sanity_check = QLabel("                disable_unit_cell_volume_sanity_check")
         label_disable_unit_cell_volume_sanity_check.setFont(QFont("Times",15, QFont.Bold))
         hbox_disable_unit_cell_volume_sanity_check.addWidget(label_disable_unit_cell_volume_sanity_check)
+
         spn_box_disable_unit_cell_volume_sanity_check = QComboBox()
-        spn_box_disable_unit_cell_volume_sanity_check.addItem("False")
-        spn_box_disable_unit_cell_volume_sanity_check.addItem("True")
+        spn_box_disable_unit_cell_volume_sanity_check.tmp_lst=[]
+        spn_box_disable_unit_cell_volume_sanity_check.tmp_lst.append("True")
+        spn_box_disable_unit_cell_volume_sanity_check.tmp_lst.append("False")
+        for lst_itm in spn_box_disable_unit_cell_volume_sanity_check.tmp_lst:
+            spn_box_disable_unit_cell_volume_sanity_check.addItem(lst_itm)
+        spn_box_disable_unit_cell_volume_sanity_check.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_disable_unit_cell_volume_sanity_check.addWidget(spn_box_disable_unit_cell_volume_sanity_check)
         bg_box.addLayout(hbox_disable_unit_cell_volume_sanity_check)
         label_tst = QLabel("        outlier_rejection")
@@ -435,18 +483,30 @@ class inner_widg( QWidget):
         label_cluster_analysis_search = QLabel("                cluster_analysis_search")
         label_cluster_analysis_search.setFont(QFont("Times",15, QFont.Bold))
         hbox_cluster_analysis_search.addWidget(label_cluster_analysis_search)
+
         spn_box_cluster_analysis_search = QComboBox()
-        spn_box_cluster_analysis_search.addItem("False")
-        spn_box_cluster_analysis_search.addItem("True")
+        spn_box_cluster_analysis_search.tmp_lst=[]
+        spn_box_cluster_analysis_search.tmp_lst.append("True")
+        spn_box_cluster_analysis_search.tmp_lst.append("False")
+        for lst_itm in spn_box_cluster_analysis_search.tmp_lst:
+            spn_box_cluster_analysis_search.addItem(lst_itm)
+        spn_box_cluster_analysis_search.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_cluster_analysis_search.addWidget(spn_box_cluster_analysis_search)
         bg_box.addLayout(hbox_cluster_analysis_search)
         hbox_recycle_unindexed_reflections =  QHBoxLayout()
         label_recycle_unindexed_reflections = QLabel("                recycle_unindexed_reflections")
         label_recycle_unindexed_reflections.setFont(QFont("Times",15, QFont.Bold))
         hbox_recycle_unindexed_reflections.addWidget(label_recycle_unindexed_reflections)
+
         spn_box_recycle_unindexed_reflections = QComboBox()
-        spn_box_recycle_unindexed_reflections.addItem("False")
-        spn_box_recycle_unindexed_reflections.addItem("True")
+        spn_box_recycle_unindexed_reflections.tmp_lst=[]
+        spn_box_recycle_unindexed_reflections.tmp_lst.append("True")
+        spn_box_recycle_unindexed_reflections.tmp_lst.append("False")
+        for lst_itm in spn_box_recycle_unindexed_reflections.tmp_lst:
+            spn_box_recycle_unindexed_reflections.addItem(lst_itm)
+        spn_box_recycle_unindexed_reflections.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_recycle_unindexed_reflections.addWidget(spn_box_recycle_unindexed_reflections)
         bg_box.addLayout(hbox_recycle_unindexed_reflections)
         hbox_recycle_unindexed_reflections_cutoff =  QHBoxLayout()
@@ -647,9 +707,15 @@ class inner_widg( QWidget):
         label_scan_varying = QLabel("                        scan_varying")
         label_scan_varying.setFont(QFont("Times",14, QFont.Bold))
         hbox_scan_varying.addWidget(label_scan_varying)
+
         spn_box_scan_varying = QComboBox()
-        spn_box_scan_varying.addItem("False")
-        spn_box_scan_varying.addItem("True")
+        spn_box_scan_varying.tmp_lst=[]
+        spn_box_scan_varying.tmp_lst.append("True")
+        spn_box_scan_varying.tmp_lst.append("False")
+        for lst_itm in spn_box_scan_varying.tmp_lst:
+            spn_box_scan_varying.addItem(lst_itm)
+        spn_box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_scan_varying.addWidget(spn_box_scan_varying)
         bg_box.addLayout(hbox_scan_varying)
         hbox_num_intervals =  QHBoxLayout()
@@ -724,18 +790,30 @@ class inner_widg( QWidget):
         label_sparse = QLabel("                sparse")
         label_sparse.setFont(QFont("Times",15, QFont.Bold))
         hbox_sparse.addWidget(label_sparse)
+
         spn_box_sparse = QComboBox()
-        spn_box_sparse.addItem("False")
-        spn_box_sparse.addItem("True")
+        spn_box_sparse.tmp_lst=[]
+        spn_box_sparse.tmp_lst.append("True")
+        spn_box_sparse.tmp_lst.append("False")
+        for lst_itm in spn_box_sparse.tmp_lst:
+            spn_box_sparse.addItem(lst_itm)
+        spn_box_sparse.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_sparse.addWidget(spn_box_sparse)
         bg_box.addLayout(hbox_sparse)
         hbox_treat_single_image_as_still =  QHBoxLayout()
         label_treat_single_image_as_still = QLabel("                treat_single_image_as_still")
         label_treat_single_image_as_still.setFont(QFont("Times",15, QFont.Bold))
         hbox_treat_single_image_as_still.addWidget(label_treat_single_image_as_still)
+
         spn_box_treat_single_image_as_still = QComboBox()
-        spn_box_treat_single_image_as_still.addItem("False")
-        spn_box_treat_single_image_as_still.addItem("True")
+        spn_box_treat_single_image_as_still.tmp_lst=[]
+        spn_box_treat_single_image_as_still.tmp_lst.append("True")
+        spn_box_treat_single_image_as_still.tmp_lst.append("False")
+        for lst_itm in spn_box_treat_single_image_as_still.tmp_lst:
+            spn_box_treat_single_image_as_still.addItem(lst_itm)
+        spn_box_treat_single_image_as_still.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_treat_single_image_as_still.addWidget(spn_box_treat_single_image_as_still)
         bg_box.addLayout(hbox_treat_single_image_as_still)
         label_tst = QLabel("    refinery")
@@ -756,36 +834,60 @@ class inner_widg( QWidget):
         label_track_step = QLabel("                track_step")
         label_track_step.setFont(QFont("Times",15, QFont.Bold))
         hbox_track_step.addWidget(label_track_step)
+
         spn_box_track_step = QComboBox()
-        spn_box_track_step.addItem("False")
-        spn_box_track_step.addItem("True")
+        spn_box_track_step.tmp_lst=[]
+        spn_box_track_step.tmp_lst.append("True")
+        spn_box_track_step.tmp_lst.append("False")
+        for lst_itm in spn_box_track_step.tmp_lst:
+            spn_box_track_step.addItem(lst_itm)
+        spn_box_track_step.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_track_step.addWidget(spn_box_track_step)
         bg_box.addLayout(hbox_track_step)
         hbox_track_gradient =  QHBoxLayout()
         label_track_gradient = QLabel("                track_gradient")
         label_track_gradient.setFont(QFont("Times",15, QFont.Bold))
         hbox_track_gradient.addWidget(label_track_gradient)
+
         spn_box_track_gradient = QComboBox()
-        spn_box_track_gradient.addItem("False")
-        spn_box_track_gradient.addItem("True")
+        spn_box_track_gradient.tmp_lst=[]
+        spn_box_track_gradient.tmp_lst.append("True")
+        spn_box_track_gradient.tmp_lst.append("False")
+        for lst_itm in spn_box_track_gradient.tmp_lst:
+            spn_box_track_gradient.addItem(lst_itm)
+        spn_box_track_gradient.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_track_gradient.addWidget(spn_box_track_gradient)
         bg_box.addLayout(hbox_track_gradient)
         hbox_track_parameter_correlation =  QHBoxLayout()
         label_track_parameter_correlation = QLabel("                track_parameter_correlation")
         label_track_parameter_correlation.setFont(QFont("Times",15, QFont.Bold))
         hbox_track_parameter_correlation.addWidget(label_track_parameter_correlation)
+
         spn_box_track_parameter_correlation = QComboBox()
-        spn_box_track_parameter_correlation.addItem("False")
-        spn_box_track_parameter_correlation.addItem("True")
+        spn_box_track_parameter_correlation.tmp_lst=[]
+        spn_box_track_parameter_correlation.tmp_lst.append("True")
+        spn_box_track_parameter_correlation.tmp_lst.append("False")
+        for lst_itm in spn_box_track_parameter_correlation.tmp_lst:
+            spn_box_track_parameter_correlation.addItem(lst_itm)
+        spn_box_track_parameter_correlation.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_track_parameter_correlation.addWidget(spn_box_track_parameter_correlation)
         bg_box.addLayout(hbox_track_parameter_correlation)
         hbox_track_out_of_sample_rmsd =  QHBoxLayout()
         label_track_out_of_sample_rmsd = QLabel("                track_out_of_sample_rmsd")
         label_track_out_of_sample_rmsd.setFont(QFont("Times",15, QFont.Bold))
         hbox_track_out_of_sample_rmsd.addWidget(label_track_out_of_sample_rmsd)
+
         spn_box_track_out_of_sample_rmsd = QComboBox()
-        spn_box_track_out_of_sample_rmsd.addItem("False")
-        spn_box_track_out_of_sample_rmsd.addItem("True")
+        spn_box_track_out_of_sample_rmsd.tmp_lst=[]
+        spn_box_track_out_of_sample_rmsd.tmp_lst.append("True")
+        spn_box_track_out_of_sample_rmsd.tmp_lst.append("False")
+        for lst_itm in spn_box_track_out_of_sample_rmsd.tmp_lst:
+            spn_box_track_out_of_sample_rmsd.addItem(lst_itm)
+        spn_box_track_out_of_sample_rmsd.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_track_out_of_sample_rmsd.addWidget(spn_box_track_out_of_sample_rmsd)
         bg_box.addLayout(hbox_track_out_of_sample_rmsd)
         hbox_log =  QHBoxLayout()
@@ -857,9 +959,15 @@ class inner_widg( QWidget):
         label_use_all_reflections = QLabel("                use_all_reflections")
         label_use_all_reflections.setFont(QFont("Times",15, QFont.Bold))
         hbox_use_all_reflections.addWidget(label_use_all_reflections)
+
         spn_box_use_all_reflections = QComboBox()
-        spn_box_use_all_reflections.addItem("False")
-        spn_box_use_all_reflections.addItem("True")
+        spn_box_use_all_reflections.tmp_lst=[]
+        spn_box_use_all_reflections.tmp_lst.append("True")
+        spn_box_use_all_reflections.tmp_lst.append("False")
+        for lst_itm in spn_box_use_all_reflections.tmp_lst:
+            spn_box_use_all_reflections.addItem(lst_itm)
+        spn_box_use_all_reflections.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_use_all_reflections.addWidget(spn_box_use_all_reflections)
         bg_box.addLayout(hbox_use_all_reflections)
         hbox_random_seed =  QHBoxLayout()
@@ -933,18 +1041,30 @@ class inner_widg( QWidget):
         label_separate_experiments = QLabel("                        separate_experiments")
         label_separate_experiments.setFont(QFont("Times",14, QFont.Bold))
         hbox_separate_experiments.addWidget(label_separate_experiments)
+
         spn_box_separate_experiments = QComboBox()
-        spn_box_separate_experiments.addItem("False")
-        spn_box_separate_experiments.addItem("True")
+        spn_box_separate_experiments.tmp_lst=[]
+        spn_box_separate_experiments.tmp_lst.append("True")
+        spn_box_separate_experiments.tmp_lst.append("False")
+        for lst_itm in spn_box_separate_experiments.tmp_lst:
+            spn_box_separate_experiments.addItem(lst_itm)
+        spn_box_separate_experiments.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_separate_experiments.addWidget(spn_box_separate_experiments)
         bg_box.addLayout(hbox_separate_experiments)
         hbox_separate_panels =  QHBoxLayout()
         label_separate_panels = QLabel("                        separate_panels")
         label_separate_panels.setFont(QFont("Times",14, QFont.Bold))
         hbox_separate_panels.addWidget(label_separate_panels)
+
         spn_box_separate_panels = QComboBox()
-        spn_box_separate_panels.addItem("False")
-        spn_box_separate_panels.addItem("True")
+        spn_box_separate_panels.tmp_lst=[]
+        spn_box_separate_panels.tmp_lst.append("True")
+        spn_box_separate_panels.tmp_lst.append("False")
+        for lst_itm in spn_box_separate_panels.tmp_lst:
+            spn_box_separate_panels.addItem(lst_itm)
+        spn_box_separate_panels.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_separate_panels.addWidget(spn_box_separate_panels)
         bg_box.addLayout(hbox_separate_panels)
         label_tst = QLabel("            tukey")
@@ -1027,9 +1147,15 @@ class inner_widg( QWidget):
         label_verbose = QLabel("                                verbose")
         label_verbose.setFont(QFont("Times",14, QFont.Bold))
         hbox_verbose.addWidget(label_verbose)
+
         spn_box_verbose = QComboBox()
-        spn_box_verbose.addItem("False")
-        spn_box_verbose.addItem("True")
+        spn_box_verbose.tmp_lst=[]
+        spn_box_verbose.tmp_lst.append("True")
+        spn_box_verbose.tmp_lst.append("False")
+        for lst_itm in spn_box_verbose.tmp_lst:
+            spn_box_verbose.addItem(lst_itm)
+        spn_box_verbose.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_verbose.addWidget(spn_box_verbose)
         bg_box.addLayout(hbox_verbose)
         hbox_pdf =  QHBoxLayout()
@@ -1064,6 +1190,13 @@ class inner_widg( QWidget):
  
         self.setLayout(bg_box)
         self.show()
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "sender =", sender
+        print "combobox_changed to:"
+        print sender.tmp_lst[value] 
+
+
 class ParamMainWidget( QWidget):
     def __init__(self):
         super(ParamMainWidget, self).__init__()

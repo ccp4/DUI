@@ -45,9 +45,17 @@ class gen_code(object):
         self.src_code_1.append("\n")
 
         self.src_code_2 = []
+
         self.src_code_2.append(" ")
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
+
+        self.src_code_2.append("    def combobox_changed(self, value):")
+        self.src_code_2.append("        sender = self.sender()")
+        self.src_code_2.append("        print \"sender =\", sender")
+        self.src_code_2.append("        print \"combobox_changed to:\"")
+        self.src_code_2.append("        print sender.tmp_lst[value] ")
+        self.src_code_2.append("\n")
         self.src_code_2.append("class ParamMainWidget( QWidget):")
         self.src_code_2.append("    def __init__(self):")
         self.src_code_2.append("        super(ParamMainWidget, self).__init__()")
@@ -200,13 +208,24 @@ def phil_list_2_disc(lst_obj):
                 src_code_aut.append(my_str)
 
             elif( obj.type.phil_type == 'bool' ):
+
+                src_code_aut.append("")
                 my_str = "        " + box_name + " = QComboBox()"
                 src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".addItem(\"False\")"
+                my_str = "        " + box_name + ".tmp_lst=[]"
                 src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".addItem(\"True\")"
+                my_str = "        " + box_name + ".tmp_lst.append(\"True\")"
                 src_code_aut.append(my_str)
+                my_str = "        " + box_name + ".tmp_lst.append(\"False\")"
+                src_code_aut.append(my_str)
+                my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
+                src_code_aut.append(my_str)
+                my_str = "            " + box_name + ".addItem(lst_itm)"
+                src_code_aut.append(my_str)
+                my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
 
+                src_code_aut.append(my_str)
+                src_code_aut.append("")
 
             elif( obj.type.phil_type == 'choice' ):
 
