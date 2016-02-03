@@ -201,9 +201,8 @@ def phil_list_2_disc(lst_obj):
             box_name = "spn_box_" + str(obj.name)
             something_else = False
             if(obj.type.phil_type == 'float' or
-               obj.type.phil_type == 'int'):
-                '''   or
-               obj.type.phil_type == 'str'     ):'''
+               obj.type.phil_type == 'int'   or
+               obj.type.phil_type == 'str'     ):
                 src_code_aut.append("")
                 if( obj.type.phil_type == 'float' ):
                     widget_type_str =" = QDoubleSpinBox()"
@@ -216,11 +215,14 @@ def phil_list_2_disc(lst_obj):
 
                 my_str = "        " + box_name + widget_type_str
                 src_code_aut.append(my_str)
-
-
                 my_str = "        " + box_name + ".local_path = \"dummy path\""
                 src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".valueChanged.connect(self.spnbox_changed)"
+
+                if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
+                    my_str = "        " + box_name + ".valueChanged.connect(self.spnbox_changed)"
+                else:
+                    my_str = "        " + box_name + ".textChanged.connect(self.spnbox_changed)"
+
                 src_code_aut.append(my_str)
                 src_code_aut.append("")
             elif( obj.type.phil_type == 'bool' ):

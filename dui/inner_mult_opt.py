@@ -1560,6 +1560,13 @@ class inner_widg( QWidget):
         label_pdf = QLabel("                                pdf")
         label_pdf.setFont(QFont("Times",14, QFont.Bold))
         hbox_pdf.addWidget(label_pdf)
+
+        spn_box_pdf = QLineEdit()
+        spn_box_pdf.local_path = "dummy path"
+        spn_box_pdf.textChanged.connect(self.spnbox_changed)
+
+        hbox_pdf.addWidget(spn_box_pdf)
+        bg_box.addLayout(hbox_pdf)
         label_tst = QLabel("output")
         label_tst.setFont(QFont("Monospace", 14, QFont.Bold))
         bg_box.addWidget(label_tst)
