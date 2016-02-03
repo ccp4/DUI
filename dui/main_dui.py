@@ -179,6 +179,7 @@ class MyMainDialog(QtGui.QMainWindow):
         try:
             self.qProcess  = MyQProcess(self)
             self.qProcess.setProcessChannelMode(QtCore.QProcess.SeparateChannels);
+            print "MyQProcess() ready"
         except:
             print "Failed to create MyQProcess()"
 
