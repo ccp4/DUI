@@ -176,9 +176,12 @@ class MyMainDialog(QtGui.QMainWindow):
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
 
+        try:
+            self.qProcess  = MyQProcess(self)
+            self.qProcess.setProcessChannelMode(QtCore.QProcess.SeparateChannels);
+        except:
+            print "Failed to create MyQProcess()"
 
-        self.qProcess  = MyQProcess(self)
-        self.qProcess.setProcessChannelMode(QtCore.QProcess.SeparateChannels);
 
     def update_lin_txt(self, param_name = None, param_value = None):
         if(param_name != None):
