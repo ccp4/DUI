@@ -161,10 +161,10 @@ def phil_list_2_disc(lst_obj):
     '''
 
     src_code_aut = []
-    for obj in lst_obj:
+    for nm, obj in enumerate(lst_obj):
 
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
-            my_str = "        label_tst = QLabel(\"" + " " * obj.indent * 4
+            my_str = "        label_" + str(nm) + " = QLabel(\"" + " " * obj.indent * 4
             my_str += str(obj.name)  + "\")"
             src_code_aut.append(my_str)
 
@@ -172,17 +172,17 @@ def phil_list_2_disc(lst_obj):
                 f_siz = str(14 - obj.indent)
             else:
                 f_siz = "13"
-            my_str = "        label_tst.setFont(QFont(\"Monospace\", "
+            my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
             my_str += f_siz + ", QFont.Bold))"
             src_code_aut.append(my_str)
-            my_str = "        bg_box.addWidget(label_tst)"
+            my_str = "        bg_box.addWidget(label_" + str(nm) + ")"
             src_code_aut.append(my_str)
 
         else:
-            h_box_name = "hbox_" + str(obj.name)
+            h_box_name = "hbox_" + str(obj.name) + "_" + str(nm)
             my_str = "        " + h_box_name + " =  QHBoxLayout()"
             src_code_aut.append(my_str)
-            label_name = "label_" + str(obj.name)
+            label_name = "label_" + str(obj.name) + "_" + str(nm)
             indent = str(obj.full_path()).count('.')
             my_str = "        " + label_name + " = QLabel(\""
             my_str += " " * indent * 8 + str(obj.name)  + "\")"
@@ -198,7 +198,7 @@ def phil_list_2_disc(lst_obj):
             src_code_aut.append(my_str)
             my_str = "        " + h_box_name + ".addWidget(" + label_name + ")"
             src_code_aut.append(my_str)
-            box_name = "spn_box_" + str(obj.name)
+            box_name = "box_" + str(obj.name) + "_" + str(nm)
             something_else = False
             if(obj.type.phil_type == 'float' or
                obj.type.phil_type == 'int'   or
@@ -264,15 +264,6 @@ def phil_list_2_disc(lst_obj):
 
                 src_code_aut.append(my_str)
                 src_code_aut.append("")
-                '''
-                my_str = "        " + box_name + " = QComboBox()"
-                src_code_aut.append(my_str)
-
-                for opt in obj.words:
-                    my_str = "        " + box_name
-                    my_str += ".addItem(\"" + str(opt) + "\")"
-                    src_code_aut.append(my_str)
-                '''
 
             else:
                 '''
