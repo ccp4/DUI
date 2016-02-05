@@ -290,16 +290,27 @@ def phil_list_2_disc(lst_obj, file_name):
 
 
 if( __name__ == "__main__"):
-    #from dials.command_line.integrate import phil_scope
-    #from dials.command_line.refine import phil_scope
+    from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
     from dials.command_line.index import phil_scope as phil_scope_index
-    #from dials.command_line.find_spots import phil_scope
+    from dials.command_line.refine import phil_scope as phil_scope_refine
+    from dials.command_line.integrate import phil_scope as phil_scope_integrate
 
-    phl_obj = phil_scope_index.objects
+    lst_phl_obj = []
+    lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
+    lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
+    lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
 
-    lst_obj = tree_2_lineal(phl_obj)
-    file_name = "refine_mult_opt"
-    phil_list_2_disc(lst_obj(), file_name)
 
-    #print phil_scope_index.show()
+    for phl_obj in lst_phl_obj:
+        lst_obj = tree_2_lineal(phl_obj[0].objects)
+        phil_list_2_disc(lst_obj(), phl_obj[1])
+        print "got here "
 
+        #print phil_scope_index.show()
+
+
+    '''
+    lst_obj = tree_2_lineal(phil_scope_integrate.objects)
+    phil_list_2_disc(lst_obj(), "integrate_mult_opt")
+    '''

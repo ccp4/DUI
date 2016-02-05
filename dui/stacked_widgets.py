@@ -122,11 +122,11 @@ class ImportPage(QtGui.QWidget):
 class FindspotstParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from dials.command_line.find_spots import phil_scope
+        from find_spots_mult_opt import ParamMainWidget
         super(FindspotstParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
-        param_widg = ParameterWidget(self.super_parent, phil_scope)
+        param_widg = ParamMainWidget()
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(param_widg)
@@ -143,16 +143,15 @@ class FindspotstParameterWidget(QtGui.QWidget):
 class IndexParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from dials.command_line.index import phil_scope
+        from index_mult_opt import ParamMainWidget
         super(IndexParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
-        param_widg = ParameterWidget(self.super_parent, phil_scope)
+        param_widg = ParamMainWidget()
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(param_widg)
         self.setLayout(mainLayout)
-
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
         self.button_label = "Index"
@@ -175,13 +174,11 @@ class SimplerParamTab(QtGui.QWidget):
 class RefineParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        #from dials.command_line.index import phil_scope
+        from refine_mult_opt import ParamMainWidget
         super(RefineParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        from refine_mult_opt import ParamMainWidget
         param_widg = ParamMainWidget()
-
         default_tab = SimplerParamTab()
 
         tabWidget = QtGui.QTabWidget()
@@ -203,11 +200,11 @@ class RefineParameterWidget(QtGui.QWidget):
 class IntegrateParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from dials.command_line.integrate import phil_scope
+        from integrate_mult_opt import ParamMainWidget
         super(IntegrateParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
-        param_widg = ParameterWidget(self.super_parent, phil_scope)
+        param_widg = ParamMainWidget()
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(param_widg)
