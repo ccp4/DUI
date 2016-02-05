@@ -139,6 +139,28 @@ class FindspotstParameterWidget(QtGui.QWidget):
 
 
 
+
+class IndexParameterWidget(QtGui.QWidget):
+
+    def __init__(self, parent=None):
+        from dials.command_line.index import phil_scope
+        super(IndexParameterWidget, self).__init__(parent)
+
+        self.super_parent = parent
+        param_widg = ParameterWidget(self.super_parent, phil_scope)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(param_widg)
+        self.setLayout(mainLayout)
+
+
+        self.cmd_lin_default = "dials.index datablock.json strong.pickle"
+        self.button_label = "Index"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
+
+
+
 class SimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(SimplerParamTab, self).__init__(parent)
@@ -150,14 +172,14 @@ class SimplerParamTab(QtGui.QWidget):
         self.setLayout(localLayout)
 
 
-class IndexParameterWidget(QtGui.QWidget):
+class RefineParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from dials.command_line.index import phil_scope
-        super(IndexParameterWidget, self).__init__(parent)
+        #from dials.command_line.index import phil_scope
+        super(RefineParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        from inner_mult_opt import ParamMainWidget
+        from refine_mult_opt import ParamMainWidget
         param_widg = ParamMainWidget()
 
         default_tab = SimplerParamTab()
@@ -170,26 +192,6 @@ class IndexParameterWidget(QtGui.QWidget):
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)
-        self.setLayout(mainLayout)
-
-        self.cmd_lin_default = "dials.index datablock.json strong.pickle"
-        self.button_label = "Index"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
-
-
-
-class RefineParameterWidget(QtGui.QWidget):
-
-    def __init__(self, parent=None):
-        from dials.command_line.refine import phil_scope
-        super(RefineParameterWidget, self).__init__(parent)
-
-        self.super_parent = parent
-        param_widg = ParameterWidget(self.super_parent, phil_scope)
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"

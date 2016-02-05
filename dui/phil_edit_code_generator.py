@@ -86,12 +86,16 @@ class gen_code(object):
         self.src_code_2.append("    sys.exit(app.exec_())")
 
 
-    def write_file(self, to_insert = None):
+    def write_file(self, to_insert = None, file_name = None):
         '''
         Writes code into a disc, but includes the "to_insert" list in the middle
         '''
+        if( file_name == None ):
+            file_name = "inner_mult_opt.py"
+        else:
+            file_name = file_name + ".py"
 
-        myfile = open("inner_mult_opt.py", "w")
+        myfile = open(file_name, "w")
 
         for line in self.src_code_1:
             myfile.write(line)
@@ -152,7 +156,7 @@ class tree_2_lineal(object):
                 print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
 
 
-def phil_list_2_disc(lst_obj):
+def phil_list_2_disc(lst_obj, file_name):
 
     '''
     generator of either PyQt4 or PySide GUI code that lets the user edit
@@ -279,30 +283,23 @@ def phil_list_2_disc(lst_obj):
                 src_code_aut.append(my_str)
             print "obj.full_path()    =", obj.full_path()
 
-    to_add_something_like = '''
 
-        spn_box_verbosity.valueChanged.connect(self.func_tst)
-        #changeEvent
-
-    def func_tst(self, a):
-        print "in(func_tst)"
-        print "a = ",a
-        print dir(a)
-    '''
 
     s_code = gen_code()
-    s_code.write_file(src_code_aut)
+    s_code.write_file(src_code_aut, file_name)
 
 
 if( __name__ == "__main__"):
     #from dials.command_line.integrate import phil_scope
     #from dials.command_line.refine import phil_scope
-    from dials.command_line.index import phil_scope
+    from dials.command_line.index import phil_scope as phil_scope_index
     #from dials.command_line.find_spots import phil_scope
-    phl_obj = phil_scope.objects
+
+    phl_obj = phil_scope_index.objects
 
     lst_obj = tree_2_lineal(phl_obj)
-    phil_list_2_disc(lst_obj())
+    file_name = "refine_mult_opt"
+    phil_list_2_disc(lst_obj(), file_name)
 
-    print phil_scope.show()
+    #print phil_scope_index.show()
 
