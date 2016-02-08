@@ -183,107 +183,160 @@ def phil_list_2_disc(lst_obj, file_name):
             src_code_aut.append(my_str)
 
         else:
-            h_box_name = "hbox_" + str(obj.name) + "_" + str(nm)
-            my_str = "        " + h_box_name + " =  QHBoxLayout()"
-            src_code_aut.append(my_str)
-            label_name = "label_" + str(obj.name) + "_" + str(nm)
-            indent = str(obj.full_path()).count('.')
-            my_str = "        " + label_name + " = QLabel(\""
-            my_str += " " * indent * 8 + str(obj.name)  + "\")"
-            src_code_aut.append(my_str)
-
-            if( indent < 3 ):
-                f_siz = str(int((14 - indent) * 1.3))
-            else:
-                f_siz = "14"
-
-            my_str = "        " + label_name + ".setFont(QFont(\"Times\","
-            my_str += f_siz + ", QFont.Bold))"
-            src_code_aut.append(my_str)
-            my_str = "        " + h_box_name + ".addWidget(" + label_name + ")"
-            src_code_aut.append(my_str)
-            box_name = "box_" + str(obj.name) + "_" + str(nm)
-            something_else = False
             if(obj.type.phil_type == 'float' or
                obj.type.phil_type == 'int'   or
-               obj.type.phil_type == 'str'     ):
-                src_code_aut.append("")
-                if( obj.type.phil_type == 'float' ):
-                    widget_type_str =" = QDoubleSpinBox()"
+               obj.type.phil_type == 'str'   or
+               obj.type.phil_type == 'bool'  or
+               obj.type.phil_type == 'choice' ):
 
-                elif( obj.type.phil_type == 'int' ):
-                    widget_type_str =" = QSpinBox()"
-
-                elif( obj.type.phil_type == 'str' ):
-                    widget_type_str =" = QLineEdit()"
-
-                my_str = "        " + box_name + widget_type_str
+                h_box_name = "hbox_lay_" + str(obj.name) + "_" + str(nm)
+                my_str = "        " + h_box_name + " =  QHBoxLayout()"
                 src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".local_path = \"dummy path\""
+                label_name = "label_" + str(obj.name) + "_" + str(nm)
+                indent = str(obj.full_path()).count('.')
+                my_str = "        " + label_name + " = QLabel(\""
+                my_str += " " * indent * 8 + str(obj.name)  + "\")"
                 src_code_aut.append(my_str)
 
-                if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
-                    my_str = "        " + box_name + ".valueChanged.connect(self.spnbox_changed)"
+                if( indent < 3 ):
+                    f_siz = str(int((14 - indent) * 1.3))
                 else:
-                    my_str = "        " + box_name + ".textChanged.connect(self.spnbox_changed)"
+                    f_siz = "14"
 
+                my_str = "        " + label_name + ".setFont(QFont(\"Times\","
+                my_str += f_siz + ", QFont.Bold))"
                 src_code_aut.append(my_str)
-                src_code_aut.append("")
-            elif( obj.type.phil_type == 'bool' ):
+                my_str = "        " + h_box_name + ".addWidget(" + label_name + ")"
+                src_code_aut.append(my_str)
 
-                src_code_aut.append("")
-                my_str = "        " + box_name + " = QComboBox()"
-                src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".tmp_lst=[]"
-                src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".tmp_lst.append(\"True\")"
-                src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".tmp_lst.append(\"False\")"
-                src_code_aut.append(my_str)
-                my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
-                src_code_aut.append(my_str)
-                my_str = "            " + box_name + ".addItem(lst_itm)"
-                src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
+                box_name = "box_" + str(obj.name) + "_" + str(nm)
+                something_else = False
+                if(obj.type.phil_type == 'float' or
+                   obj.type.phil_type == 'int'   or
+                   obj.type.phil_type == 'str'     ):
+                    src_code_aut.append("")
+                    if( obj.type.phil_type == 'float' ):
+                        widget_type_str =" = QDoubleSpinBox()"
 
-                src_code_aut.append(my_str)
-                src_code_aut.append("")
+                    elif( obj.type.phil_type == 'int' ):
+                        widget_type_str =" = QSpinBox()"
 
-            elif( obj.type.phil_type == 'choice' ):
+                    elif( obj.type.phil_type == 'str' ):
+                        widget_type_str =" = QLineEdit()"
 
-                src_code_aut.append("")
-                my_str = "        " + box_name + " = QComboBox()"
-                src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".tmp_lst=[]"
-                src_code_aut.append(my_str)
-                for opt in obj.words:
-                    my_str = "        " + box_name + ".tmp_lst.append(\"" + str(opt) + "\")"
+                    my_str = "        " + box_name + widget_type_str
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".local_path = \"dummy path\""
                     src_code_aut.append(my_str)
 
-                my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
-                src_code_aut.append(my_str)
-                my_str = "            " + box_name + ".addItem(lst_itm)"
-                src_code_aut.append(my_str)
-                my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
+                    if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
+                        my_str = "        " + box_name + ".valueChanged.connect(self.spnbox_changed)"
+                    else:
+                        my_str = "        " + box_name + ".textChanged.connect(self.spnbox_changed)"
 
-                src_code_aut.append(my_str)
-                src_code_aut.append("")
+                    src_code_aut.append(my_str)
+
+                elif( obj.type.phil_type == 'bool' ):
+
+                    src_code_aut.append("")
+                    my_str = "        " + box_name + " = QComboBox()"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".tmp_lst=[]"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".tmp_lst.append(\"True\")"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".tmp_lst.append(\"False\")"
+                    src_code_aut.append(my_str)
+                    my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
+                    src_code_aut.append(my_str)
+                    my_str = "            " + box_name + ".addItem(lst_itm)"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
+
+                    src_code_aut.append(my_str)
+
+
+                elif( obj.type.phil_type == 'choice' ):
+
+                    src_code_aut.append("")
+                    my_str = "        " + box_name + " = QComboBox()"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".tmp_lst=[]"
+                    src_code_aut.append(my_str)
+                    for opt in obj.words:
+                        my_str = "        " + box_name + ".tmp_lst.append(\"" + str(opt) + "\")"
+                        src_code_aut.append(my_str)
+
+                    my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
+                    src_code_aut.append(my_str)
+                    my_str = "            " + box_name + ".addItem(lst_itm)"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
+
+                    src_code_aut.append(my_str)
+
+
+            elif( obj.type.phil_type == 'ints' ):
+
+                if( str(obj.type) == 'ints(size=2)' ):
+
+                    h_box_name_01 = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
+                    my_str = "        " + h_box_name_01 + " =  QHBoxLayout()"
+                    src_code_aut.append(my_str)
+                    label_name_01 = "label_" + str(obj.name) + "_" + str(nm)
+                    indent = str(obj.full_path()).count('.')
+                    my_str = "        " + label_name_01 + " = QLabel(\""
+                    my_str += " " * indent * 8 + str(obj.name)  + "\")"
+                    src_code_aut.append(my_str)
+                    if( indent < 3 ):
+                        f_siz = str(int((14 - indent) * 1.3))
+                    else:
+                        f_siz = "14"
+
+                    my_str = "        " + label_name_01 + ".setFont(QFont(\"Times\","
+                    my_str += f_siz + ", QFont.Bold))"
+                    src_code_aut.append(my_str)
+                    my_str = "        " + h_box_name_01 + ".addWidget(" + label_name_01 + ")"
+                    src_code_aut.append(my_str)
+                    box_name_01 = "box_" + str(obj.name) + "_" + str(nm)
+
+                    widget_type_str =" = QSpinBox()"
+
+                    my_str = "        " + box_name_01 + widget_type_str
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name_01 + ".local_path = \"dummy path\""
+                    src_code_aut.append(my_str)
+                    my_str = "        " + box_name_01 + ".valueChanged.connect(self.spnbox_changed)"
+                    src_code_aut.append(my_str)
+
+                else:
+                    print
+                    print "obj.type.phil_type == \'ints\' but not \'ints(size=2)\'"
+                    print "full_path =", obj.full_path()
+                    print "obj.type.phil_type =", obj.type.phil_type
+                    print "obj.type =", obj.type
+                    print
+                    something_else = True
 
             else:
-                '''
+
+                #to_debugg = '''
                 print "_____________________ << WARNING find something ELSE"
-                print "_____________________ << find", obj.type.phil_type
-                '''
+                print "_____________________ << full_path =", obj.full_path()
+                print "_____________________ << obj.type.phil_type =", obj.type.phil_type
+                print "_____________________ << obj.type =", obj.type
+                #'''
+                if( obj.type == 'ints(size=2)' ):
+                    print "here yes"
                 something_else = True
+
 
             if( something_else == False ):
                 my_str = "        " + h_box_name + ".addWidget(" + box_name + ")"
                 src_code_aut.append(my_str)
                 my_str = "        bg_box.addLayout(" + h_box_name + ")"
                 src_code_aut.append(my_str)
-            print "obj.full_path()    =", obj.full_path()
-
-
+                src_code_aut.append("")
 
     s_code = gen_code()
     s_code.write_file(src_code_aut, file_name)
@@ -297,17 +350,16 @@ if( __name__ == "__main__"):
 
     lst_phl_obj = []
     lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
-    lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
-    lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
-    lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
+    #lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
+    #lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    #lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
 
 
     for phl_obj in lst_phl_obj:
         lst_obj = tree_2_lineal(phl_obj[0].objects)
         phil_list_2_disc(lst_obj(), phl_obj[1])
-        print "got here "
 
-        #print phil_scope_index.show()
+        print phl_obj[0].show()
 
 
     '''
