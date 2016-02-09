@@ -296,7 +296,7 @@ def phil_list_2_disc(lst_obj, file_name):
 
                         indent = str(obj.full_path()).count('.')
                         my_str = "        " + label_name_lst[indx] + " = QLabel(\""
-                        my_str += " " * indent * 8 + str(obj.name)  + "\")"
+                        my_str += " " * indent * 8 + str(obj.name) + "[" + str(indx + 1) + "]" + "\")"
                         src_code_aut.append(my_str)
                         if( indent < 3 ):
                             f_siz = str(int((14 - indent) * 1.3))
