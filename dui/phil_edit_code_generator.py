@@ -284,6 +284,13 @@ def phil_list_2_disc(lst_obj, file_name):
                     label_name_lst = []
                     box_name_lst = []
 
+
+                    indent = str(obj.full_path()).count('.')
+                    if( indent < 3 ):
+                        f_siz = str(int((14 - indent) * 1.3))
+                    else:
+                        f_siz = "14"
+
                     for indx in range(2):
 
                         h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
@@ -294,14 +301,10 @@ def phil_list_2_disc(lst_obj, file_name):
                         label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         label_name_lst.append(label_name_str)
 
-                        indent = str(obj.full_path()).count('.')
+
                         my_str = "        " + label_name_lst[indx] + " = QLabel(\""
                         my_str += " " * indent * 8 + str(obj.name) + "[" + str(indx + 1) + "]" + "\")"
                         src_code_aut.append(my_str)
-                        if( indent < 3 ):
-                            f_siz = str(int((14 - indent) * 1.3))
-                        else:
-                            f_siz = "14"
 
                         my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Times\","
                         my_str += f_siz + ", QFont.Bold))"
