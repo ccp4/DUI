@@ -284,40 +284,41 @@ def phil_list_2_disc(lst_obj, file_name):
                     label_name_lst = []
                     box_name_lst = []
 
+                    for indx in range(1):
 
-                    h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
-                    h_box_name_lst.append(h_box_name_str)
+                        h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
+                        h_box_name_lst.append(h_box_name_str)
 
-                    my_str = "        " + h_box_name_lst[0] + " =  QHBoxLayout()"
-                    src_code_aut.append(my_str)
-                    label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_01"
-                    label_name_lst.append(label_name_str)
+                        my_str = "        " + h_box_name_lst[indx] + " =  QHBoxLayout()"
+                        src_code_aut.append(my_str)
+                        label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_01"
+                        label_name_lst.append(label_name_str)
 
-                    indent = str(obj.full_path()).count('.')
-                    my_str = "        " + label_name_lst[0] + " = QLabel(\""
-                    my_str += " " * indent * 8 + str(obj.name)  + "\")"
-                    src_code_aut.append(my_str)
-                    if( indent < 3 ):
-                        f_siz = str(int((14 - indent) * 1.3))
-                    else:
-                        f_siz = "14"
+                        indent = str(obj.full_path()).count('.')
+                        my_str = "        " + label_name_lst[indx] + " = QLabel(\""
+                        my_str += " " * indent * 8 + str(obj.name)  + "\")"
+                        src_code_aut.append(my_str)
+                        if( indent < 3 ):
+                            f_siz = str(int((14 - indent) * 1.3))
+                        else:
+                            f_siz = "14"
 
-                    my_str = "        " + label_name_lst[0] + ".setFont(QFont(\"Times\","
-                    my_str += f_siz + ", QFont.Bold))"
-                    src_code_aut.append(my_str)
-                    my_str = "        " + h_box_name_lst[0] + ".addWidget(" + label_name_lst[0] + ")"
-                    src_code_aut.append(my_str)
-                    box_name_str = "box_" + str(obj.name) + "_" + str(nm) + "_01"
-                    box_name_lst.append(box_name_str)
+                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Times\","
+                        my_str += f_siz + ", QFont.Bold))"
+                        src_code_aut.append(my_str)
+                        my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + label_name_lst[indx] + ")"
+                        src_code_aut.append(my_str)
+                        box_name_str = "box_" + str(obj.name) + "_" + str(nm) + "_01"
+                        box_name_lst.append(box_name_str)
 
-                    widget_type_str =" = QSpinBox()"
+                        widget_type_str =" = QSpinBox()"
 
-                    my_str = "        " + box_name_lst[0] + widget_type_str
-                    src_code_aut.append(my_str)
-                    my_str = "        " + box_name_lst[0] + ".local_path = \"dummy path\""
-                    src_code_aut.append(my_str)
-                    my_str = "        " + box_name_lst[0] + ".valueChanged.connect(self.spnbox_changed)"
-                    src_code_aut.append(my_str)
+                        my_str = "        " + box_name_lst[indx] + widget_type_str
+                        src_code_aut.append(my_str)
+                        my_str = "        " + box_name_lst[indx] + ".local_path = \"dummy path\""
+                        src_code_aut.append(my_str)
+                        my_str = "        " + box_name_lst[indx] + ".valueChanged.connect(self.spnbox_changed)"
+                        src_code_aut.append(my_str)
                     multiple_index = True
 
                 else:
@@ -352,11 +353,12 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
                     src_code_aut.append("")
                 else:
-                    my_str = "        " + h_box_name_lst[0] + ".addWidget(" + box_name_lst[0] + ")"
-                    src_code_aut.append(my_str)
-                    my_str = "        bg_box.addLayout(" + h_box_name_lst[0] + ")"
-                    src_code_aut.append(my_str)
-                    src_code_aut.append("")
+                    for indx in range(1):
+                        my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + box_name_lst[indx] + ")"
+                        src_code_aut.append(my_str)
+                        my_str = "        bg_box.addLayout(" + h_box_name_lst[indx] + ")"
+                        src_code_aut.append(my_str)
+                        src_code_aut.append("")
 
     s_code = gen_code()
     s_code.write_file(src_code_aut, file_name)
