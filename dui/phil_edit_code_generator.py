@@ -183,6 +183,7 @@ def phil_list_2_disc(lst_obj, file_name):
             src_code_aut.append(my_str)
 
         else:
+            multiple_index = False
             if(obj.type.phil_type == 'float' or
                obj.type.phil_type == 'int'   or
                obj.type.phil_type == 'str'   or
@@ -283,7 +284,7 @@ def phil_list_2_disc(lst_obj, file_name):
                     h_box_name_01 = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
                     my_str = "        " + h_box_name_01 + " =  QHBoxLayout()"
                     src_code_aut.append(my_str)
-                    label_name_01 = "label_" + str(obj.name) + "_" + str(nm)
+                    label_name_01 = "label_" + str(obj.name) + "_" + str(nm) + "_01"
                     indent = str(obj.full_path()).count('.')
                     my_str = "        " + label_name_01 + " = QLabel(\""
                     my_str += " " * indent * 8 + str(obj.name)  + "\")"
@@ -298,7 +299,7 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
                     my_str = "        " + h_box_name_01 + ".addWidget(" + label_name_01 + ")"
                     src_code_aut.append(my_str)
-                    box_name_01 = "box_" + str(obj.name) + "_" + str(nm)
+                    box_name_01 = "box_" + str(obj.name) + "_" + str(nm) + "_01"
 
                     widget_type_str =" = QSpinBox()"
 
@@ -308,6 +309,7 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
                     my_str = "        " + box_name_01 + ".valueChanged.connect(self.spnbox_changed)"
                     src_code_aut.append(my_str)
+                    multiple_index = True
 
                 else:
                     print
@@ -332,11 +334,18 @@ def phil_list_2_disc(lst_obj, file_name):
 
 
             if( something_else == False ):
-                my_str = "        " + h_box_name + ".addWidget(" + box_name + ")"
-                src_code_aut.append(my_str)
-                my_str = "        bg_box.addLayout(" + h_box_name + ")"
-                src_code_aut.append(my_str)
-                src_code_aut.append("")
+                if(multiple_index == False):
+                    my_str = "        " + h_box_name + ".addWidget(" + box_name + ")"
+                    src_code_aut.append(my_str)
+                    my_str = "        bg_box.addLayout(" + h_box_name + ")"
+                    src_code_aut.append(my_str)
+                    src_code_aut.append("")
+                else:
+                    my_str = "        " + h_box_name_01 + ".addWidget(" + box_name_01 + ")"
+                    src_code_aut.append(my_str)
+                    my_str = "        bg_box.addLayout(" + h_box_name_01 + ")"
+                    src_code_aut.append(my_str)
+                    src_code_aut.append("")
 
     s_code = gen_code()
     s_code.write_file(src_code_aut, file_name)
