@@ -313,7 +313,7 @@ def phil_list_2_disc(lst_obj, file_name):
 
                 else:
                     print
-                    print "obj.type.phil_type == \'ints\' but not \'ints(size=2)\'"
+                    print "_______ << WARNING  obj.type.phil_type == \'ints\' but not \'ints(size=2)\'"
                     print "full_path =", obj.full_path()
                     print "obj.type.phil_type =", obj.type.phil_type
                     print "obj.type =", obj.type
@@ -323,10 +323,12 @@ def phil_list_2_disc(lst_obj, file_name):
             else:
 
                 #to_debugg = '''
+                print
                 print "_____________________ << WARNING find something ELSE"
                 print "_____________________ << full_path =", obj.full_path()
                 print "_____________________ << obj.type.phil_type =", obj.type.phil_type
                 print "_____________________ << obj.type =", obj.type
+                print
                 #'''
                 if( obj.type == 'ints(size=2)' ):
                     print "here yes"
@@ -359,9 +361,9 @@ if( __name__ == "__main__"):
 
     lst_phl_obj = []
     lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
-    #lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
-    #lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
-    #lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
+    lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
+    lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
 
 
     for phl_obj in lst_phl_obj:
