@@ -284,14 +284,14 @@ def phil_list_2_disc(lst_obj, file_name):
                     label_name_lst = []
                     box_name_lst = []
 
-                    for indx in range(1):
+                    for indx in range(2):
 
-                        h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
+                        h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         h_box_name_lst.append(h_box_name_str)
 
                         my_str = "        " + h_box_name_lst[indx] + " =  QHBoxLayout()"
                         src_code_aut.append(my_str)
-                        label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_01"
+                        label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         label_name_lst.append(label_name_str)
 
                         indent = str(obj.full_path()).count('.')
@@ -308,7 +308,7 @@ def phil_list_2_disc(lst_obj, file_name):
                         src_code_aut.append(my_str)
                         my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + label_name_lst[indx] + ")"
                         src_code_aut.append(my_str)
-                        box_name_str = "box_" + str(obj.name) + "_" + str(nm) + "_01"
+                        box_name_str = "box_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         box_name_lst.append(box_name_str)
 
                         widget_type_str =" = QSpinBox()"
@@ -353,7 +353,7 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
                     src_code_aut.append("")
                 else:
-                    for indx in range(1):
+                    for indx in range(2):
                         my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + box_name_lst[indx] + ")"
                         src_code_aut.append(my_str)
                         my_str = "        bg_box.addLayout(" + h_box_name_lst[indx] + ")"
