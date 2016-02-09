@@ -280,13 +280,21 @@ def phil_list_2_disc(lst_obj, file_name):
             elif( obj.type.phil_type == 'ints' ):
 
                 if( str(obj.type) == 'ints(size=2)' ):
+                    h_box_name_lst = []
+                    label_name_lst = []
+                    box_name_lst = []
 
-                    h_box_name_01 = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
-                    my_str = "        " + h_box_name_01 + " =  QHBoxLayout()"
+
+                    h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_01"
+                    h_box_name_lst.append(h_box_name_str)
+
+                    my_str = "        " + h_box_name_lst[0] + " =  QHBoxLayout()"
                     src_code_aut.append(my_str)
-                    label_name_01 = "label_" + str(obj.name) + "_" + str(nm) + "_01"
+                    label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_01"
+                    label_name_lst.append(label_name_str)
+
                     indent = str(obj.full_path()).count('.')
-                    my_str = "        " + label_name_01 + " = QLabel(\""
+                    my_str = "        " + label_name_lst[0] + " = QLabel(\""
                     my_str += " " * indent * 8 + str(obj.name)  + "\")"
                     src_code_aut.append(my_str)
                     if( indent < 3 ):
@@ -294,20 +302,21 @@ def phil_list_2_disc(lst_obj, file_name):
                     else:
                         f_siz = "14"
 
-                    my_str = "        " + label_name_01 + ".setFont(QFont(\"Times\","
+                    my_str = "        " + label_name_lst[0] + ".setFont(QFont(\"Times\","
                     my_str += f_siz + ", QFont.Bold))"
                     src_code_aut.append(my_str)
-                    my_str = "        " + h_box_name_01 + ".addWidget(" + label_name_01 + ")"
+                    my_str = "        " + h_box_name_lst[0] + ".addWidget(" + label_name_lst[0] + ")"
                     src_code_aut.append(my_str)
-                    box_name_01 = "box_" + str(obj.name) + "_" + str(nm) + "_01"
+                    box_name_str = "box_" + str(obj.name) + "_" + str(nm) + "_01"
+                    box_name_lst.append(box_name_str)
 
                     widget_type_str =" = QSpinBox()"
 
-                    my_str = "        " + box_name_01 + widget_type_str
+                    my_str = "        " + box_name_lst[0] + widget_type_str
                     src_code_aut.append(my_str)
-                    my_str = "        " + box_name_01 + ".local_path = \"dummy path\""
+                    my_str = "        " + box_name_lst[0] + ".local_path = \"dummy path\""
                     src_code_aut.append(my_str)
-                    my_str = "        " + box_name_01 + ".valueChanged.connect(self.spnbox_changed)"
+                    my_str = "        " + box_name_lst[0] + ".valueChanged.connect(self.spnbox_changed)"
                     src_code_aut.append(my_str)
                     multiple_index = True
 
@@ -343,9 +352,9 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
                     src_code_aut.append("")
                 else:
-                    my_str = "        " + h_box_name_01 + ".addWidget(" + box_name_01 + ")"
+                    my_str = "        " + h_box_name_lst[0] + ".addWidget(" + box_name_lst[0] + ")"
                     src_code_aut.append(my_str)
-                    my_str = "        bg_box.addLayout(" + h_box_name_01 + ")"
+                    my_str = "        bg_box.addLayout(" + h_box_name_lst[0] + ")"
                     src_code_aut.append(my_str)
                     src_code_aut.append("")
 
@@ -373,7 +382,3 @@ if( __name__ == "__main__"):
         print phl_obj[0].show()
 
 
-    '''
-    lst_obj = tree_2_lineal(phil_scope_integrate.objects)
-    phil_list_2_disc(lst_obj(), "integrate_mult_opt")
-    '''
