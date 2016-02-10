@@ -277,9 +277,21 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
 
 
-            elif( obj.type.phil_type == 'ints' ):
+            elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
 
-                if( str(obj.type) == 'ints(size=2)' ):
+                print "\n\n"
+                print "str(obj.type)=", str(obj.type)
+                print "str(obj.type.phil_type)=", str(obj.type.phil_type)
+                #print "\n dir(obj) =", dir(obj)
+                #print "\n dir(obj.type) =", dir(obj.type)
+                print "\n obj.full_path() =", obj.full_path()
+                print "\n obj.type.size_max =", obj.type.size_max
+                print "\n obj.type.size_min =", obj.type.size_min
+                print "\n\n"
+
+
+                if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
+                    obj.type.size_max == obj.type.size_min and obj.type.size_max != None ):
                     h_box_name_lst = []
                     label_name_lst = []
                     box_name_lst = []
@@ -291,21 +303,16 @@ def phil_list_2_disc(lst_obj, file_name):
                     else:
                         f_siz = "14"
 
-                    for indx in range(2):
-
+                    for indx in range(obj.type.size_max):
                         h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         h_box_name_lst.append(h_box_name_str)
-
                         my_str = "        " + h_box_name_lst[indx] + " =  QHBoxLayout()"
                         src_code_aut.append(my_str)
                         label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         label_name_lst.append(label_name_str)
-
-
                         my_str = "        " + label_name_lst[indx] + " = QLabel(\""
                         my_str += " " * indent * 8 + str(obj.name) + "[" + str(indx + 1) + "]" + "\")"
                         src_code_aut.append(my_str)
-
                         my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Times\","
                         my_str += f_siz + ", QFont.Bold))"
                         src_code_aut.append(my_str)
@@ -313,9 +320,10 @@ def phil_list_2_disc(lst_obj, file_name):
                         src_code_aut.append(my_str)
                         box_name_str = "box_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         box_name_lst.append(box_name_str)
-
-                        widget_type_str =" = QSpinBox()"
-
+                        if(obj.type.phil_type == 'ints'):
+                            widget_type_str =" = QSpinBox()"
+                        elif( obj.type.phil_type == 'floats' ):
+                            widget_type_str =" = QDoubleSpinBox()"
                         my_str = "        " + box_name_lst[indx] + widget_type_str
                         src_code_aut.append(my_str)
                         my_str = "        " + box_name_lst[indx] + ".local_path = \"dummy path\""
@@ -324,14 +332,18 @@ def phil_list_2_disc(lst_obj, file_name):
                         src_code_aut.append(my_str)
                     multiple_index = True
 
+
                 else:
+                    '''
                     print
-                    print "_______ << WARNING  obj.type.phil_type == \'ints\' but not \'ints(size=2)\'"
+                    print "_______ << WARNING  obj.type.phil_type not previewed"
                     print "full_path =", obj.full_path()
                     print "obj.type.phil_type =", obj.type.phil_type
                     print "obj.type =", obj.type
                     print
+                    '''
                     something_else = True
+
 
             else:
 
@@ -343,8 +355,7 @@ def phil_list_2_disc(lst_obj, file_name):
                 print "_____________________ << obj.type =", obj.type
                 print
                 #'''
-                if( obj.type == 'ints(size=2)' ):
-                    print "here yes"
+
                 something_else = True
 
 
@@ -356,7 +367,7 @@ def phil_list_2_disc(lst_obj, file_name):
                     src_code_aut.append(my_str)
                     src_code_aut.append("")
                 else:
-                    for indx in range(2):
+                    for indx in range(obj.type.size_max):
                         my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + box_name_lst[indx] + ")"
                         src_code_aut.append(my_str)
                         my_str = "        bg_box.addLayout(" + h_box_name_lst[indx] + ")"
@@ -374,10 +385,10 @@ if( __name__ == "__main__"):
     from dials.command_line.integrate import phil_scope as phil_scope_integrate
 
     lst_phl_obj = []
-    lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
+    #lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
     lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
-    lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
-    lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
+    #lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    #lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
 
 
     for phl_obj in lst_phl_obj:
