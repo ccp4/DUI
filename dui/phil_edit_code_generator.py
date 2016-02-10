@@ -385,10 +385,10 @@ if( __name__ == "__main__"):
     from dials.command_line.integrate import phil_scope as phil_scope_integrate
 
     lst_phl_obj = []
-    #lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
+    lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
     lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
-    #lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
-    #lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
+    lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
 
 
     for phl_obj in lst_phl_obj:

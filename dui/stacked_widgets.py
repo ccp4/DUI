@@ -117,13 +117,11 @@ class ImportPage(QtGui.QWidget):
             print "Failed to pick dir"
 
 
-
-
-class FindspotstParameterWidget(QtGui.QWidget):
+class FindspotsParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from find_spots_mult_opt import ParamMainWidget
-        super(FindspotstParameterWidget, self).__init__(parent)
+        super(FindspotsParameterWidget, self).__init__(parent)
 
         self.super_parent = parent
         param_widg = ParamMainWidget()
@@ -138,6 +136,44 @@ class FindspotstParameterWidget(QtGui.QWidget):
         self.logo_path = my_dui_path + "/../dui/nuclear_dartlang_logo_small.png"
 
 
+class IndexSimplerParamTab(QtGui.QWidget):
+    def __init__(self, parent=None):
+        super(IndexSimplerParamTab, self).__init__(parent)
+        scan_varying_check = QtGui.QCheckBox("scan_varying")
+        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
+        indexing_method_check = QtGui.QCheckBox("indexing.method")
+
+
+
+
+
+        hbox_lay_method_62 =  QtGui.QHBoxLayout()
+        label_method_62 = QtGui.QLabel("        method")
+        label_method_62.setFont(QtGui.QFont("Times",16, QtGui.QFont.Bold))
+        hbox_lay_method_62.addWidget(label_method_62)
+
+        box_method_62 = QtGui.QComboBox()
+        box_method_62.tmp_lst=[]
+        box_method_62.tmp_lst.append("*fft3d")
+        box_method_62.tmp_lst.append("fft1d")
+        box_method_62.tmp_lst.append("real_space_grid_search")
+        for lst_itm in box_method_62.tmp_lst:
+            box_method_62.addItem(lst_itm)
+
+        hbox_lay_method_62.addWidget(box_method_62)
+        #bg_box.addLayout(hbox_lay_method_62)
+
+
+
+
+
+
+
+        localLayout = QtGui.QVBoxLayout()
+        localLayout.addWidget(scan_varying_check)
+        localLayout.addWidget(use_all_refl_check)
+        localLayout.addLayout(hbox_lay_method_62)
+        self.setLayout(localLayout)
 
 
 class IndexParameterWidget(QtGui.QWidget):
@@ -145,12 +181,18 @@ class IndexParameterWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         from index_mult_opt import ParamMainWidget
         super(IndexParameterWidget, self).__init__(parent)
-
         self.super_parent = parent
+
         param_widg = ParamMainWidget()
+        default_tab = IndexSimplerParamTab()
+
+        tabWidget = QtGui.QTabWidget()
+        tabWidget.addTab(default_tab, "Tab 1")
+
+        tabWidget.addTab(param_widg, "tab 2")
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
+        mainLayout.addWidget(tabWidget)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
@@ -159,10 +201,9 @@ class IndexParameterWidget(QtGui.QWidget):
         self.logo_path = my_dui_path + "/../dui/bird_dartlang_logo_small.png"
 
 
-
-class SimplerParamTab(QtGui.QWidget):
+class RefineSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
-        super(SimplerParamTab, self).__init__(parent)
+        super(RefineSimplerParamTab, self).__init__(parent)
         scan_varying_check = QtGui.QCheckBox("scan_varying")
         use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
         localLayout = QtGui.QVBoxLayout()
@@ -179,13 +220,12 @@ class RefineParameterWidget(QtGui.QWidget):
         self.super_parent = parent
 
         param_widg = ParamMainWidget()
-        default_tab = SimplerParamTab()
+        default_tab = RefineSimplerParamTab()
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
 
         tabWidget.addTab(param_widg, "tab 2")
-
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)
@@ -249,7 +289,7 @@ class MainWindow(QtGui.QMainWindow):
     super(MainWindow, self).__init__(parent)
 
     # Create the parameter window widget
-    params = FindspotstParameterWidget(self)
+    params = FindspotsParameterWidget(self)
     #params = IndexParameterWidget()
     #params = RefineParameterWidget()
     #params = IntegrateParameterWidget()

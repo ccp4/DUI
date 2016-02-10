@@ -22,7 +22,7 @@ except ImportError, e:
 from PyQt4 import QtCore, QtGui, QtWebKit
 #from PySide import QtCore, QtGui
 
-from stacked_widgets import ImportPage, FindspotstParameterWidget,\
+from stacked_widgets import ImportPage, FindspotsParameterWidget,\
                             IndexParameterWidget, RefineParameterWidget,\
                             IntegrateParameterWidget, ExportParameterWidget
 
@@ -112,7 +112,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.pagesWidget = QtGui.QStackedWidget(self)
         self.widget_list = []
         self.widget_list.append(ImportPage(self))
-        self.widget_list.append(FindspotstParameterWidget(self))
+        self.widget_list.append(FindspotsParameterWidget(self))
         self.widget_list.append(IndexParameterWidget(self))
         self.widget_list.append(RefineParameterWidget(self))
         self.widget_list.append(IntegrateParameterWidget(self))
