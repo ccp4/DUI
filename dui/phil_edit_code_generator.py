@@ -163,7 +163,7 @@ def phil_list_2_disc(lst_obj, file_name):
     the Phil parameters, the code auto-generated here should be inserted
     between the s_code.src_code_1 and s_code.src_code_2 lists
     '''
-
+    f_siz = "10"
     src_code_aut = []
     for nm, obj in enumerate(lst_obj):
 
@@ -172,10 +172,14 @@ def phil_list_2_disc(lst_obj, file_name):
             my_str += str(obj.name)  + "\")"
             src_code_aut.append(my_str)
 
+
+            not_needed_for_now = '''
+
             if( obj.indent < 3 ):
                 f_siz = str(14 - obj.indent)
             else:
                 f_siz = "13"
+            '''
             my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
             my_str += f_siz + ", QFont.Bold))"
             src_code_aut.append(my_str)
@@ -196,15 +200,17 @@ def phil_list_2_disc(lst_obj, file_name):
                 label_name = "label_" + str(obj.name) + "_" + str(nm)
                 indent = str(obj.full_path()).count('.')
                 my_str = "        " + label_name + " = QLabel(\""
-                my_str += " " * indent * 8 + str(obj.name)  + "\")"
+                my_str += " " * indent * 4 + str(obj.name)  + "\")"
                 src_code_aut.append(my_str)
 
+                not_needed_for_now = '''
                 if( indent < 3 ):
                     f_siz = str(int((14 - indent) * 1.3))
                 else:
                     f_siz = "14"
+                '''
 
-                my_str = "        " + label_name + ".setFont(QFont(\"Times\","
+                my_str = "        " + label_name + ".setFont(QFont(\"Monospace\","
                 my_str += f_siz + ", QFont.Bold))"
                 src_code_aut.append(my_str)
                 my_str = "        " + h_box_name + ".addWidget(" + label_name + ")"
@@ -295,13 +301,13 @@ def phil_list_2_disc(lst_obj, file_name):
                     h_box_name_lst = []
                     label_name_lst = []
                     box_name_lst = []
-
-
                     indent = str(obj.full_path()).count('.')
+                    not_needed_for_now = '''
                     if( indent < 3 ):
                         f_siz = str(int((14 - indent) * 1.3))
                     else:
                         f_siz = "14"
+                    '''
 
                     for indx in range(obj.type.size_max):
                         h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
@@ -311,9 +317,9 @@ def phil_list_2_disc(lst_obj, file_name):
                         label_name_str = "label_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
                         label_name_lst.append(label_name_str)
                         my_str = "        " + label_name_lst[indx] + " = QLabel(\""
-                        my_str += " " * indent * 8 + str(obj.name) + "[" + str(indx + 1) + "]" + "\")"
+                        my_str += " " * indent * 4 + str(obj.name) + "[" + str(indx + 1) + "]" + "\")"
                         src_code_aut.append(my_str)
-                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Times\","
+                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\","
                         my_str += f_siz + ", QFont.Bold))"
                         src_code_aut.append(my_str)
                         my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + label_name_lst[indx] + ")"
