@@ -104,8 +104,8 @@ class MyMainDialog(QtGui.QMainWindow):
         self.contentsWidget.setIconSize(QtCore.QSize(56, 44))
         self.contentsWidget.setMovement(QtGui.QListView.Static)
 
-        self.contentsWidget.setMaximumWidth(88)
-        #self.contentsWidget.setMinimumHeight(724)
+        self.contentsWidget.setMaximumWidth(128)
+        self.contentsWidget.setMinimumWidth(118)
         self.contentsWidget.setMinimumHeight(524)
         self.contentsWidget.setSpacing(12)
 
