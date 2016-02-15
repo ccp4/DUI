@@ -144,9 +144,6 @@ class IndexSimplerParamTab(QtGui.QWidget):
         indexing_method_check = QtGui.QCheckBox("indexing.method")
 
 
-
-
-
         hbox_lay_method_62 =  QtGui.QHBoxLayout()
         label_method_62 = QtGui.QLabel("        method")
         label_method_62.setFont(QtGui.QFont("Times",16, QtGui.QFont.Bold))
@@ -161,12 +158,6 @@ class IndexSimplerParamTab(QtGui.QWidget):
             box_method_62.addItem(lst_itm)
 
         hbox_lay_method_62.addWidget(box_method_62)
-        #bg_box.addLayout(hbox_lay_method_62)
-
-
-
-
-
 
 
         localLayout = QtGui.QVBoxLayout()
