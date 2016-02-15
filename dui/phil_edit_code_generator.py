@@ -168,18 +168,10 @@ def phil_list_2_disc(lst_obj, file_name):
     for nm, obj in enumerate(lst_obj):
 
         if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
-            my_str = "        label_" + str(nm) + " = QLabel(\"" + " " * obj.indent * 4
+            my_str = "        label_" + str(nm) + " = QLabel(\"" + " " * int(obj.indent * 4)
             my_str += str(obj.name)  + "\")"
             src_code_aut.append(my_str)
 
-
-            not_needed_for_now = '''
-
-            if( obj.indent < 3 ):
-                f_siz = str(14 - obj.indent)
-            else:
-                f_siz = "13"
-            '''
             my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
             my_str += f_siz + ", QFont.Bold))"
             src_code_aut.append(my_str)
@@ -202,14 +194,6 @@ def phil_list_2_disc(lst_obj, file_name):
                 my_str = "        " + label_name + " = QLabel(\""
                 my_str += " " * indent * 4 + str(obj.name)  + "\")"
                 src_code_aut.append(my_str)
-
-                not_needed_for_now = '''
-                if( indent < 3 ):
-                    f_siz = str(int((14 - indent) * 1.3))
-                else:
-                    f_siz = "14"
-                '''
-
                 my_str = "        " + label_name + ".setFont(QFont(\"Monospace\","
                 my_str += f_siz + ", QFont.Bold))"
                 src_code_aut.append(my_str)
@@ -302,12 +286,6 @@ def phil_list_2_disc(lst_obj, file_name):
                     label_name_lst = []
                     box_name_lst = []
                     indent = str(obj.full_path()).count('.')
-                    not_needed_for_now = '''
-                    if( indent < 3 ):
-                        f_siz = str(int((14 - indent) * 1.3))
-                    else:
-                        f_siz = "14"
-                    '''
 
                     for indx in range(obj.type.size_max):
                         h_box_name_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
