@@ -123,8 +123,12 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
 
         xds_gain_label = QtGui.QLabel("spotfinder.threshold.xds.gain")
         xds_gain_spn_bx = QtGui.QDoubleSpinBox()
-        xds_kernel_size_label = QtGui.QLabel("spotfinder.threshold.xds.kernel_size")
-        xds_kernel_size_spn_bx = QtGui.QDoubleSpinBox()
+
+        xds_kernel_size_label_x = QtGui.QLabel("spotfinder.threshold.xds.kernel_size(X)")
+        xds_kernel_size_spn_bx_x = QtGui.QSpinBox()
+        xds_kernel_size_label_y = QtGui.QLabel("spotfinder.threshold.xds.kernel_size(Y)")
+        xds_kernel_size_spn_bx_y = QtGui.QSpinBox()
+
         xds_sigma_background_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_background")
         xds_sigma_background_spn_bx = QtGui.QDoubleSpinBox()
         xds_sigma_strong_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_strong")
@@ -139,10 +143,16 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         xds_gain_hb.addWidget(xds_gain_spn_bx)
         localLayout.addLayout(xds_gain_hb)
 
-        xds_kernel_size_hb = QtGui.QHBoxLayout()
-        xds_kernel_size_hb.addWidget(xds_kernel_size_label)
-        xds_kernel_size_hb.addWidget(xds_kernel_size_spn_bx)
-        localLayout.addLayout(xds_kernel_size_hb)
+        xds_kernel_size_hb_x = QtGui.QHBoxLayout()
+        xds_kernel_size_hb_x.addWidget(xds_kernel_size_label_x)
+        xds_kernel_size_hb_x.addWidget(xds_kernel_size_spn_bx_x)
+        localLayout.addLayout(xds_kernel_size_hb_x)
+
+        xds_kernel_size_hb_y = QtGui.QHBoxLayout()
+        xds_kernel_size_hb_y.addWidget(xds_kernel_size_label_y)
+        xds_kernel_size_hb_y.addWidget(xds_kernel_size_spn_bx_y)
+        localLayout.addLayout(xds_kernel_size_hb_y)
+
 
         xds_sigma_background_hb = QtGui.QHBoxLayout()
         xds_sigma_background_hb.addWidget(xds_sigma_background_label)
