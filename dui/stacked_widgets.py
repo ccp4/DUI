@@ -122,59 +122,42 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         super(FindspotsSimplerParameterTab, self).__init__(parent)
 
         xds_gain_label = QtGui.QLabel("spotfinder.threshold.xds.gain")
-        xds_gain_check = QtGui.QDoubleSpinBox()
-
+        xds_gain_spn_bx = QtGui.QDoubleSpinBox()
         xds_kernel_size_label = QtGui.QLabel("spotfinder.threshold.xds.kernel_size")
-        xds_kernel_size_check = QtGui.QDoubleSpinBox()
-
+        xds_kernel_size_spn_bx = QtGui.QDoubleSpinBox()
         xds_sigma_background_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_background")
-        xds_sigma_background_check = QtGui.QDoubleSpinBox()
-
+        xds_sigma_background_spn_bx = QtGui.QDoubleSpinBox()
         xds_sigma_strong_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_strong")
-        xds_sigma_strong_check = QtGui.QDoubleSpinBox()
-
+        xds_sigma_strong_spn_bx = QtGui.QDoubleSpinBox()
         xds_global_threshold_label = QtGui.QLabel("spotfinder.threshold.xds.global_threshold")
-        xds_global_threshold_check = QtGui.QDoubleSpinBox()
+        xds_global_threshold_spn_bx = QtGui.QDoubleSpinBox()
 
-        '''
-
-Find spots step:
-
-theshold.xds. [all but min_local] =
-
-spotfinder.threshold.xds.gain
-spotfinder.threshold.xds.kernel_size
-spotfinder.threshold.xds.sigma_background
-spotfinder.threshold.xds.sigma_strong
-spotfinder.threshold.xds.global_threshold
-
-        '''
         localLayout = QtGui.QVBoxLayout()
 
-        xds_gain_check_hb = QtGui.QHBoxLayout()
-        xds_gain_check_hb.addWidget(xds_gain_label)
-        xds_gain_check_hb.addWidget(xds_gain_check)
-        localLayout.addLayout(xds_gain_check_hb)
+        xds_gain_hb = QtGui.QHBoxLayout()
+        xds_gain_hb.addWidget(xds_gain_label)
+        xds_gain_hb.addWidget(xds_gain_spn_bx)
+        localLayout.addLayout(xds_gain_hb)
 
-        xds_kernel_size_check_hb = QtGui.QHBoxLayout()
-        xds_kernel_size_check_hb.addWidget(xds_kernel_size_label)
-        xds_kernel_size_check_hb.addWidget(xds_kernel_size_check)
-        localLayout.addLayout(xds_kernel_size_check_hb)
+        xds_kernel_size_hb = QtGui.QHBoxLayout()
+        xds_kernel_size_hb.addWidget(xds_kernel_size_label)
+        xds_kernel_size_hb.addWidget(xds_kernel_size_spn_bx)
+        localLayout.addLayout(xds_kernel_size_hb)
 
-        xds_sigma_background_check_hb = QtGui.QHBoxLayout()
-        xds_sigma_background_check_hb.addWidget(xds_sigma_background_label)
-        xds_sigma_background_check_hb.addWidget(xds_sigma_background_check)
-        localLayout.addLayout(xds_sigma_background_check_hb)
+        xds_sigma_background_hb = QtGui.QHBoxLayout()
+        xds_sigma_background_hb.addWidget(xds_sigma_background_label)
+        xds_sigma_background_hb.addWidget(xds_sigma_background_spn_bx)
+        localLayout.addLayout(xds_sigma_background_hb)
 
-        xds_sigma_strong_check_hb = QtGui.QHBoxLayout()
-        xds_sigma_strong_check_hb.addWidget(xds_sigma_strong_label)
-        xds_sigma_strong_check_hb.addWidget(xds_sigma_strong_check)
-        localLayout.addLayout(xds_sigma_strong_check_hb)
+        xds_sigma_strong_hb = QtGui.QHBoxLayout()
+        xds_sigma_strong_hb.addWidget(xds_sigma_strong_label)
+        xds_sigma_strong_hb.addWidget(xds_sigma_strong_spn_bx)
+        localLayout.addLayout(xds_sigma_strong_hb)
 
-        xds_global_threshold_check_hb = QtGui.QHBoxLayout()
-        xds_global_threshold_check_hb.addWidget(xds_global_threshold_label)
-        xds_global_threshold_check_hb.addWidget(xds_global_threshold_check)
-        localLayout.addLayout(xds_global_threshold_check_hb)
+        xds_global_threshold_hb = QtGui.QHBoxLayout()
+        xds_global_threshold_hb.addWidget(xds_global_threshold_label)
+        xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
+        localLayout.addLayout(xds_global_threshold_hb)
 
         self.setLayout(localLayout)
 
