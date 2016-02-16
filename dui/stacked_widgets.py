@@ -238,7 +238,6 @@ class IndexParameterWidget(QtGui.QWidget):
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
-
         tabWidget.addTab(param_widg, "tab 2")
 
         mainLayout = QtGui.QVBoxLayout()
@@ -286,26 +285,7 @@ class RefineParameterWidget(QtGui.QWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/refine.png"
 
-
-class IntegrateParameterWidget(QtGui.QWidget):
-
-    def __init__(self, parent=None):
-        from integrate_mult_opt import ParamMainWidget
-        super(IntegrateParameterWidget, self).__init__(parent)
-
-        self.super_parent = parent
-        param_widg = ParamMainWidget()
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
-        self.setLayout(mainLayout)
-
-        self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
-        self.button_label = "Integrate"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/integrate.png"
-
-        '''
+'''
 Integrate step
 1 - profile.fitting
 True
@@ -315,7 +295,41 @@ False
 null
 glm
 
-        '''
+'''
+class IntegrateSimplerParamTab(QtGui.QWidget):
+    def __init__(self, parent=None):
+        super(IntegrateSimplerParamTab, self).__init__(parent)
+        profile_fitting_check = QtGui.QCheckBox("profile.fitting")
+        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
+        localLayout = QtGui.QVBoxLayout()
+        localLayout.addWidget(profile_fitting_check)
+        localLayout.addWidget(use_all_refl_check)
+        self.setLayout(localLayout)
+
+class IntegrateParameterWidget(QtGui.QWidget):
+
+    def __init__(self, parent=None):
+        from integrate_mult_opt import ParamMainWidget
+        super(IntegrateParameterWidget, self).__init__(parent)
+        self.super_parent = parent
+
+        param_widg = ParamMainWidget()
+        default_tab = IntegrateSimplerParamTab()
+
+        tabWidget = QtGui.QTabWidget()
+        tabWidget.addTab(default_tab, "Tab 1")
+        tabWidget.addTab(param_widg, "tab 2")
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(tabWidget)
+        self.setLayout(mainLayout)
+
+        self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
+        self.button_label = "Integrate"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/integrate.png"
+
+
 
 
 class ExportParameterWidget(QtGui.QWidget):
