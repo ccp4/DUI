@@ -41,24 +41,23 @@ class gen_code(object):
         self.src_code_1.append("    item_changed = pyqtSignal()")
         self.src_code_1.append("    def __init__(self, parent):")
         self.src_code_1.append("        super(inner_widg, self).__init__()")
+        self.src_code_1.append("        palette_scope = QPalette()")
+        self.src_code_1.append("        palette_scope.setColor(QPalette.Foreground, QColor(75, 75, 75, 255))")
+        self.src_code_1.append("        palette_object = QPalette()")
+        self.src_code_1.append("        palette_object.setColor(QPalette.Foreground,Qt.black)")
         self.src_code_1.append("        bg_box =  QVBoxLayout(self)")
         self.src_code_1.append("\n")
 
         self.src_code_2 = []
-
         self.src_code_2.append(" ")
         self.src_code_2.append("        self.setLayout(bg_box)")
         self.src_code_2.append("        self.show()")
-
         self.src_code_2.append("\n")
-
-
         self.src_code_2.append("    def spnbox_changed(self, value):")
         self.src_code_2.append("        sender = self.sender()")
         self.src_code_2.append("        print \"sender =\", sender")
         self.src_code_2.append("        print \"spnbox_changed to:\", value")
         self.src_code_2.append("\n")
-
         self.src_code_2.append("    def combobox_changed(self, value):")
         self.src_code_2.append("        sender = self.sender()")
         self.src_code_2.append("        print \"sender =\", sender")
@@ -171,7 +170,8 @@ def phil_list_2_disc(lst_obj, file_name):
             my_str = "        label_" + str(nm) + " = QLabel(\"" + " " * int(obj.indent * 4)
             my_str += str(obj.name)  + "\")"
             src_code_aut.append(my_str)
-
+            my_str = "        label_" + str(nm) + ".setPalette(palette_scope)"
+            src_code_aut.append(my_str)
             my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
             my_str += f_siz + ", QFont.Bold))"
             src_code_aut.append(my_str)
@@ -193,6 +193,8 @@ def phil_list_2_disc(lst_obj, file_name):
                 indent = str(obj.full_path()).count('.')
                 my_str = "        " + label_name + " = QLabel(\""
                 my_str += " " * indent * 4 + str(obj.name)  + "\")"
+                src_code_aut.append(my_str)
+                my_str = "        " + label_name + ".setPalette(palette_object)"
                 src_code_aut.append(my_str)
                 my_str = "        " + label_name + ".setFont(QFont(\"Monospace\","
                 my_str += f_siz + ", QFont.Bold))"
@@ -296,6 +298,9 @@ def phil_list_2_disc(lst_obj, file_name):
                         label_name_lst.append(label_name_str)
                         my_str = "        " + label_name_lst[indx] + " = QLabel(\""
                         my_str += " " * indent * 4 + str(obj.name) + "[" + str(indx + 1) + "]" + "\")"
+                        src_code_aut.append(my_str)
+
+                        my_str = "        " + label_name_lst[indx] + ".setPalette(palette_object)"
                         src_code_aut.append(my_str)
                         my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\","
                         my_str += f_siz + ", QFont.Bold))"

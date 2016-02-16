@@ -17,7 +17,8 @@ def main():
     palette = QtGui.QPalette()
     label   = QtGui.QLabel("TEST LABEL")
 
-    palette.setColor(QtGui.QPalette.Foreground,QtCore.Qt.red)
+    #palette.setColor(QtGui.QPalette.Foreground,QtCore.Qt.red)
+    palette.setColor(QtGui.QPalette.Foreground, QtGui.QColor(0, 0, 255, 127))
     label.setPalette(palette)
 
     #w.setCentralWidget(label);

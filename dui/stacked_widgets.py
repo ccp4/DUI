@@ -117,17 +117,35 @@ class ImportPage(QtGui.QWidget):
             print "Failed to pick dir"
 
 
+class FindspotsSimplerParameterTab(QtGui.QWidget):
+    def __init__(self, parent = None):
+        super(FindspotsSimplerParameterTab, self).__init__(parent)
+        scan_varying_check = QtGui.QCheckBox("scan_varying")
+        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
+        indexing_method_check = QtGui.QCheckBox("indexing.method")
+
+        localLayout = QtGui.QVBoxLayout()
+        localLayout.addWidget(scan_varying_check)
+        localLayout.addWidget(use_all_refl_check)
+        localLayout.addWidget(indexing_method_check)
+        self.setLayout(localLayout)
+
+
 class FindspotsParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         from find_spots_mult_opt import ParamMainWidget
         super(FindspotsParameterWidget, self).__init__(parent)
-
         self.super_parent = parent
+
         param_widg = ParamMainWidget()
+        default_tab = FindspotsSimplerParameterTab()
+        tabWidget = QtGui.QTabWidget()
+        tabWidget.addTab(default_tab, "Tab 1")
+        tabWidget.addTab(param_widg, "tab 2")
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
+        mainLayout.addWidget(tabWidget)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
