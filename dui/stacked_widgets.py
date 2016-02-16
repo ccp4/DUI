@@ -120,12 +120,21 @@ class ImportPage(QtGui.QWidget):
 class FindspotsSimplerParameterTab(QtGui.QWidget):
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__(parent)
-        spotfinder_threshold_xds_gain_check = QtGui.QCheckBox("spotfinder.threshold.xds.gain")
-        spotfinder_threshold_xds_kernel_size_check = QtGui.QCheckBox("spotfinder.threshold.xds.kernel_size")
-        spotfinder_threshold_xds_sigma_background_check = QtGui.QCheckBox("spotfinder.threshold.xds.sigma_background")
-        spotfinder_threshold_xds_sigma_strong_check = QtGui.QCheckBox("spotfinder.threshold.xds.sigma_strong")
-        spotfinder_threshold_xds_global_threshold_check = QtGui.QCheckBox("spotfinder.threshold.xds.global_threshold")
 
+        xds_gain_label = QtGui.QLabel("spotfinder.threshold.xds.gain")
+        xds_gain_check = QtGui.QCheckBox("spotfinder.threshold.xds.gain")
+
+        xds_kernel_size_label = QtGui.QLabel("spotfinder.threshold.xds.kernel_size")
+        xds_kernel_size_check = QtGui.QCheckBox("spotfinder.threshold.xds.kernel_size")
+
+        xds_sigma_background_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_background")
+        xds_sigma_background_check = QtGui.QCheckBox("spotfinder.threshold.xds.sigma_background")
+
+        xds_sigma_strong_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_strong")
+        xds_sigma_strong_check = QtGui.QCheckBox("spotfinder.threshold.xds.sigma_strong")
+
+        xds_global_threshold_label = QtGui.QLabel("spotfinder.threshold.xds.global_threshold")
+        xds_global_threshold_check = QtGui.QCheckBox("spotfinder.threshold.xds.global_threshold")
 
         '''
 
@@ -141,11 +150,11 @@ spotfinder.threshold.xds.global_threshold
 
         '''
         localLayout = QtGui.QVBoxLayout()
-        localLayout.addWidget(spotfinder_threshold_xds_gain_check)
-        localLayout.addWidget(spotfinder_threshold_xds_kernel_size_check)
-        localLayout.addWidget(spotfinder_threshold_xds_sigma_background_check)
-        localLayout.addWidget(spotfinder_threshold_xds_sigma_strong_check)
-        localLayout.addWidget(spotfinder_threshold_xds_global_threshold_check)
+        localLayout.addWidget(xds_gain_check)
+        localLayout.addWidget(xds_kernel_size_check)
+        localLayout.addWidget(xds_sigma_background_check)
+        localLayout.addWidget(xds_sigma_strong_check)
+        localLayout.addWidget(xds_global_threshold_check)
 
         self.setLayout(localLayout)
 
@@ -282,6 +291,18 @@ class IntegrateParameterWidget(QtGui.QWidget):
         self.button_label = "Integrate"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/integrate.png"
+
+        '''
+Integrate step
+1 - profile.fitting
+True
+False
+2 - background.algorithm
+*simple
+null
+glm
+
+        '''
 
 
 class ExportParameterWidget(QtGui.QWidget):
