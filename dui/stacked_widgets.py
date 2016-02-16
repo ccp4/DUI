@@ -120,14 +120,33 @@ class ImportPage(QtGui.QWidget):
 class FindspotsSimplerParameterTab(QtGui.QWidget):
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__(parent)
-        scan_varying_check = QtGui.QCheckBox("scan_varying")
-        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
-        indexing_method_check = QtGui.QCheckBox("indexing.method")
+        spotfinder_threshold_xds_gain_check = QtGui.QCheckBox("spotfinder.threshold.xds.gain")
+        spotfinder_threshold_xds_kernel_size_check = QtGui.QCheckBox("spotfinder.threshold.xds.kernel_size")
+        spotfinder_threshold_xds_sigma_background_check = QtGui.QCheckBox("spotfinder.threshold.xds.sigma_background")
+        spotfinder_threshold_xds_sigma_strong_check = QtGui.QCheckBox("spotfinder.threshold.xds.sigma_strong")
+        spotfinder_threshold_xds_global_threshold_check = QtGui.QCheckBox("spotfinder.threshold.xds.global_threshold")
 
+
+        '''
+
+Find spots step:
+
+theshold.xds. [all but min_local] =
+
+spotfinder.threshold.xds.gain
+spotfinder.threshold.xds.kernel_size
+spotfinder.threshold.xds.sigma_background
+spotfinder.threshold.xds.sigma_strong
+spotfinder.threshold.xds.global_threshold
+
+        '''
         localLayout = QtGui.QVBoxLayout()
-        localLayout.addWidget(scan_varying_check)
-        localLayout.addWidget(use_all_refl_check)
-        localLayout.addWidget(indexing_method_check)
+        localLayout.addWidget(spotfinder_threshold_xds_gain_check)
+        localLayout.addWidget(spotfinder_threshold_xds_kernel_size_check)
+        localLayout.addWidget(spotfinder_threshold_xds_sigma_background_check)
+        localLayout.addWidget(spotfinder_threshold_xds_sigma_strong_check)
+        localLayout.addWidget(spotfinder_threshold_xds_global_threshold_check)
+
         self.setLayout(localLayout)
 
 
