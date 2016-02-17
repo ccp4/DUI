@@ -299,12 +299,42 @@ glm
 class IntegrateSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__(parent)
-        profile_fitting_check = QtGui.QCheckBox("profile.fitting")
-        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
         localLayout = QtGui.QVBoxLayout()
+
+        profile_fitting_check = QtGui.QCheckBox("profile.fitting")
+
+
+
+        label_52 = QtGui.QLabel("    background")
+        #label_52.setPalette(palette_scope)
+        #label_52.setFont(QFont("Monospace", 10, QFont.Bold))
+        localLayout.addWidget(label_52)
+        hbox_lay_algorithm_53 =  QtGui.QHBoxLayout()
+        label_algorithm_53 = QtGui.QLabel("        algorithm")
+        #label_algorithm_53.setPalette(palette_object)
+        #label_algorithm_53.setFont(QFont("Monospace",10, QFont.Bold))
+        hbox_lay_algorithm_53.addWidget(label_algorithm_53)
+
+        box_algorithm_53 = QtGui.QComboBox()
+        box_algorithm_53.tmp_lst=[]
+        box_algorithm_53.tmp_lst.append("simple")
+        box_algorithm_53.tmp_lst.append("null")
+        box_algorithm_53.tmp_lst.append("*glm")
+        box_algorithm_53.tmp_lst.append("const_d")
+        for lst_itm in box_algorithm_53.tmp_lst:
+            box_algorithm_53.addItem(lst_itm)
+        #box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_algorithm_53.addWidget(box_algorithm_53)
+        localLayout.addLayout(hbox_lay_algorithm_53)
+
+
+        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
+
         localLayout.addWidget(profile_fitting_check)
         localLayout.addWidget(use_all_refl_check)
         self.setLayout(localLayout)
+
+
 
 class IntegrateParameterWidget(QtGui.QWidget):
 
