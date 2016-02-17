@@ -198,14 +198,14 @@ class FindspotsParameterWidget(QtGui.QWidget):
 class IndexSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IndexSimplerParamTab, self).__init__(parent)
-        scan_varying_check = QtGui.QCheckBox("scan_varying")
-        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
+        scan_varying_check = QtGui.QCheckBox("refinement.parameterisation.crystal.scan_varying")
+        use_all_refl_check = QtGui.QCheckBox("refinement.reflections.use_all_reflections")
         indexing_method_check = QtGui.QCheckBox("indexing.method")
 
 
         hbox_lay_method_62 =  QtGui.QHBoxLayout()
-        label_method_62 = QtGui.QLabel("        method")
-        label_method_62.setFont(QtGui.QFont("Times",16, QtGui.QFont.Bold))
+        label_method_62 = QtGui.QLabel("indexing.method")
+        #label_method_62.setFont(QtGui.QFont("Times",16, QtGui.QFont.Bold))
         hbox_lay_method_62.addWidget(label_method_62)
 
         box_method_62 = QtGui.QComboBox()
@@ -253,8 +253,9 @@ class IndexParameterWidget(QtGui.QWidget):
 class RefineSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__(parent)
-        scan_varying_check = QtGui.QCheckBox("scan_varying")
-        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
+
+        scan_varying_check = QtGui.QCheckBox("refinement.parameterisation.crystal.scan_varying")
+        use_all_refl_check = QtGui.QCheckBox("refinement.reflections.use_all_reflections")
         localLayout = QtGui.QVBoxLayout()
         localLayout.addWidget(scan_varying_check)
         localLayout.addWidget(use_all_refl_check)
@@ -285,34 +286,16 @@ class RefineParameterWidget(QtGui.QWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/refine.png"
 
-'''
-Integrate step
-1 - profile.fitting
-True
-False
-2 - background.algorithm
-*simple
-null
-glm
 
-'''
 class IntegrateSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__(parent)
         localLayout = QtGui.QVBoxLayout()
 
-        profile_fitting_check = QtGui.QCheckBox("profile.fitting")
+        profile_fitting_check = QtGui.QCheckBox("integration.profile.fitting")
 
-
-
-        label_52 = QtGui.QLabel("    background")
-        #label_52.setPalette(palette_scope)
-        #label_52.setFont(QFont("Monospace", 10, QFont.Bold))
-        localLayout.addWidget(label_52)
         hbox_lay_algorithm_53 =  QtGui.QHBoxLayout()
-        label_algorithm_53 = QtGui.QLabel("        algorithm")
-        #label_algorithm_53.setPalette(palette_object)
-        #label_algorithm_53.setFont(QFont("Monospace",10, QFont.Bold))
+        label_algorithm_53 = QtGui.QLabel("integration.background.algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
         box_algorithm_53 = QtGui.QComboBox()
@@ -323,15 +306,12 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         box_algorithm_53.tmp_lst.append("const_d")
         for lst_itm in box_algorithm_53.tmp_lst:
             box_algorithm_53.addItem(lst_itm)
-        #box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
 
-
-        use_all_refl_check = QtGui.QCheckBox("use_all_reflections")
-
         localLayout.addWidget(profile_fitting_check)
-        localLayout.addWidget(use_all_refl_check)
+
         self.setLayout(localLayout)
 
 
