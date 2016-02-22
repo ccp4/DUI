@@ -340,8 +340,27 @@ class IntegrateParameterWidget(QtGui.QWidget):
         self.logo_path = my_dui_path + "/../dui/integrate.png"
 
 
+class ExportParameterWidget(QtGui.QWidget):
+
+    def __init__(self, parent=None):
+        from export_mult_opt import ParamMainWidget
+        super(ExportParameterWidget, self).__init__(parent)
+        self.super_parent = parent
+
+        param_widg = ParamMainWidget()
 
 
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(param_widg)
+        self.setLayout(mainLayout)
+
+        self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
+        self.button_label = "Export mtz"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/export.png"
+
+
+'''
 class ExportParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
@@ -359,13 +378,11 @@ class ExportParameterWidget(QtGui.QWidget):
         mainLayout.addWidget(param_widg)
         self.setLayout(mainLayout)
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
-        old_ver = '''
-        self.cmd_lin_default = "dials.export experiments.json integrated.pickle hklout=integrated.mtz"
-        '''
+
         self.button_label = "Export mtz"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/export.png"
-
+'''
 
 class MainWindow(QtGui.QMainWindow):
 

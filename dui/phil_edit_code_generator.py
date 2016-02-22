@@ -139,14 +139,14 @@ class tree_2_lineal(object):
             if( single_obj.is_definition):
                 self.lst_obj.append(single_obj)
             elif( single_obj.is_scope ):
-                print "scope.name = ", single_obj.name
+                #print "scope.name = ", single_obj.name
                 scope_info = ScopeData()
                 scope_info.name = str(single_obj.name)
                 scope_info.f_path = str(single_obj.full_path())
 
-                print "scope_info.f_path =", scope_info.f_path
+                #print "scope_info.f_path =", scope_info.f_path
                 scope_info.indent = scope_info.f_path.count('.')
-                print "scope_info.f_path.count('.') =", scope_info.indent
+                #print "scope_info.f_path.count('.') =", scope_info.indent
 
                 self.lst_obj.append(scope_info)
                 self.deep_in_rec(single_obj.objects)
@@ -270,17 +270,15 @@ def phil_list_2_disc(lst_obj, file_name):
 
 
             elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
-
+                to_debugg = '''
                 print "\n\n"
                 print "str(obj.type)=", str(obj.type)
                 print "str(obj.type.phil_type)=", str(obj.type.phil_type)
-                #print "\n dir(obj) =", dir(obj)
-                #print "\n dir(obj.type) =", dir(obj.type)
                 print "\n obj.full_path() =", obj.full_path()
                 print "\n obj.type.size_max =", obj.type.size_max
                 print "\n obj.type.size_min =", obj.type.size_min
                 print "\n\n"
-
+                '''
 
                 if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
                     obj.type.size_max == obj.type.size_min and obj.type.size_max != None ):
@@ -336,7 +334,7 @@ def phil_list_2_disc(lst_obj, file_name):
 
             else:
 
-                #to_debugg = '''
+                to_debugg = '''
                 print
                 print "_____________________ << WARNING find something ELSE"
                 print "_____________________ << full_path =", obj.full_path()
@@ -368,22 +366,30 @@ def phil_list_2_disc(lst_obj, file_name):
 
 
 if( __name__ == "__main__"):
-    from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
-    from dials.command_line.index import phil_scope as phil_scope_index
-    from dials.command_line.refine import phil_scope as phil_scope_refine
-    from dials.command_line.integrate import phil_scope as phil_scope_integrate
 
     lst_phl_obj = []
+
+    from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
     lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
+    from dials.command_line.index import phil_scope as phil_scope_index
     lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
+    from dials.command_line.refine import phil_scope as phil_scope_refine
     lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    from dials.command_line.integrate import phil_scope as phil_scope_integrate
     lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
+
+    try:
+        from dials.command_line.export import phil_scope as phil_scope_export
+    except:
+        from dials.command_line.export_mtz import phil_scope as phil_scope_export
+
+    lst_phl_obj.append([phil_scope_export, "export_mult_opt"])
 
 
     for phl_obj in lst_phl_obj:
         lst_obj = tree_2_lineal(phl_obj[0].objects)
         phil_list_2_disc(lst_obj(), phl_obj[1])
 
-        print phl_obj[0].show()
+        #print phl_obj[0].show()
 
 
