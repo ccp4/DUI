@@ -19,8 +19,8 @@ try:
 except ImportError, e:
   pass
 
-from PyQt4 import QtCore, QtGui, QtWebKit
-#from PySide import QtCore, QtGui
+#from PyQt4 import QtCore, QtGui, QtWebKit
+from PySide import QtCore, QtGui, QtWebKit
 
 from stacked_widgets import ImportPage, FindspotsParameterWidget,\
                             IndexParameterWidget, RefineParameterWidget,\
@@ -227,7 +227,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
 
-    def onGoBtn(self, event):
+    def onGoBtn(self, event = None):
         if( self.qProcess.run_stat == False ):
             self.shell_str_to_run = str(self.gui_line_edit.text())
 

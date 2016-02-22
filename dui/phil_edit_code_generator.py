@@ -25,12 +25,12 @@ class gen_code(object):
 
         self.src_code_1 = []
         self.src_code_1.append("import sys")
-        self.src_code_1.append("#PyQt4_ver = '''")
+        self.src_code_1.append("PyQt4_ver = '''")
         self.src_code_1.append("from PyQt4.QtGui import *")
         self.src_code_1.append("from PyQt4.QtCore import *")
         self.src_code_1.append("print \"using PyQt4\"")
         self.src_code_1.append("#'''")
-        self.src_code_1.append("PySide_ver = '''")
+        self.src_code_1.append("#PySide_ver = '''")
         self.src_code_1.append("from PySide.QtGui import *")
         self.src_code_1.append("from PySide.QtCore import *")
         self.src_code_1.append("pyqtSignal = Signal")

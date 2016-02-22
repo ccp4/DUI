@@ -11,8 +11,8 @@ try:
 except ImportError, e:
   pass
 
-from PyQt4 import QtCore, QtGui
-#from PySide import QtCore, QtGui
+#from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 
 from phil_param_widget_builder import ParameterWidget
 import os
@@ -81,8 +81,8 @@ class ImportPage(QtGui.QWidget):
         else:
             self.auto_next_flag = "checked"
 
-    def find_my_img_dir(self, event):
-        selected_file_path = QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir")
+    def find_my_img_dir(self, event = None):
+        selected_file_path = str(QtGui.QFileDialog.getOpenFileName(self, "Open IMG Dir"))
         print "[file path found] =", selected_file_path
 
         if( selected_file_path ):
@@ -91,6 +91,10 @@ class ImportPage(QtGui.QWidget):
                     pos_sep = pos
 
             dir_name = selected_file_path[:pos_sep]
+            if( dir_name[0:3] == "(u\'" ):
+                print "dir_name[0:3] == \"(u\'\""
+                dir_name = dir_name[3:]
+
             print "dir_name(final) =", dir_name
             self.lin_import_path.setText(dir_name)
             self.cmd_lin_default = "dials.import "+ dir_name
@@ -103,7 +107,7 @@ class ImportPage(QtGui.QWidget):
         self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
 
 
-    def change_w_dir(self, event):
+    def change_w_dir(self, event = None):
         dir_name = QtGui.QFileDialog.getExistingDirectory(self, "Change Working Dir")
         print "[dir path found] =", dir_name
 
