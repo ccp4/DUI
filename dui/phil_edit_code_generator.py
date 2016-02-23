@@ -21,21 +21,22 @@ class gen_code(object):
     dependent piece of code
     '''
 
-    def __init__(self):
+    def __init__(self, qt_tool = "PyQt4"):
 
         self.src_code_1 = []
         self.src_code_1.append("import sys")
-        self.src_code_1.append("PyQt4_ver = '''")
-        self.src_code_1.append("from PyQt4.QtGui import *")
-        self.src_code_1.append("from PyQt4.QtCore import *")
-        self.src_code_1.append("print \"using PyQt4\"")
-        self.src_code_1.append("#'''")
-        self.src_code_1.append("#PySide_ver = '''")
-        self.src_code_1.append("from PySide.QtGui import *")
-        self.src_code_1.append("from PySide.QtCore import *")
-        self.src_code_1.append("pyqtSignal = Signal")
-        self.src_code_1.append("print \"using PySide\"")
-        self.src_code_1.append("#'''")
+
+        if( qt_tool == "PyQt4" ):
+            self.src_code_1.append("from PyQt4.QtGui import *")
+            self.src_code_1.append("from PyQt4.QtCore import *")
+            self.src_code_1.append("print \"using PyQt4\"")
+
+        else:
+            self.src_code_1.append("from PySide.QtGui import *")
+            self.src_code_1.append("from PySide.QtCore import *")
+            self.src_code_1.append("pyqtSignal = Signal")
+            self.src_code_1.append("print \"using PySide\"")
+
         self.src_code_1.append("\n")
         self.src_code_1.append("class inner_widg( QWidget):")
         self.src_code_1.append("    item_changed = pyqtSignal()")
@@ -101,7 +102,6 @@ class gen_code(object):
             myfile.write("\n")
 
         if( to_insert != None ):
-            print "inserting auto-generated code"
             for line in to_insert:
                 myfile.write(line)
                 myfile.write("\n")
@@ -155,7 +155,7 @@ class tree_2_lineal(object):
                 print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
 
 
-def phil_list_2_disc(lst_obj, file_name):
+def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
     '''
     generator of either PyQt4 or PySide GUI code that lets the user edit
@@ -361,11 +361,16 @@ def phil_list_2_disc(lst_obj, file_name):
                         src_code_aut.append(my_str)
                         src_code_aut.append("")
 
-    s_code = gen_code()
+    s_code = gen_code(qt_tool)
     s_code.write_file(src_code_aut, file_name)
 
 
 if( __name__ == "__main__"):
+
+    from python_qt_bind import GuiBinding
+    gui_lib = GuiBinding()
+    print "using ", gui_lib.pyhon_binding
+    qt_tool = gui_lib.pyhon_binding
 
     lst_phl_obj = []
 
@@ -388,7 +393,7 @@ if( __name__ == "__main__"):
 
     for phl_obj in lst_phl_obj:
         lst_obj = tree_2_lineal(phl_obj[0].objects)
-        phil_list_2_disc(lst_obj(), phl_obj[1])
+        phil_list_2_disc(lst_obj(), phl_obj[1], qt_tool)
 
         #print phl_obj[0].show()
 

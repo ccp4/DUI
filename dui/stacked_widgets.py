@@ -11,10 +11,18 @@ try:
 except ImportError, e:
   pass
 
-#from PyQt4 import QtCore, QtGui
-from PySide import QtCore, QtGui
 
-from phil_param_widget_builder import ParameterWidget
+from python_qt_bind import GuiBinding
+gui_lib = GuiBinding()
+print "using ", gui_lib.pyhon_binding
+qt_tool = gui_lib.pyhon_binding
+
+if( qt_tool == "PyQt4" ):
+    from PyQt4 import QtCore, QtGui, QtWebKit
+
+else:
+    from PySide import QtCore, QtGui, QtWebKit
+
 import os
 
 class ImportPage(QtGui.QWidget):

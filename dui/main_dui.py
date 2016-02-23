@@ -19,12 +19,10 @@ try:
 except ImportError, e:
   pass
 
-#from PyQt4 import QtCore, QtGui, QtWebKit
-from PySide import QtCore, QtGui, QtWebKit
-
 from stacked_widgets import ImportPage, FindspotsParameterWidget,\
                             IndexParameterWidget, RefineParameterWidget,\
-                            IntegrateParameterWidget, ExportParameterWidget
+                            IntegrateParameterWidget, ExportParameterWidget, \
+                            QtCore, QtGui, QtWebKit
 
 import subprocess
 import sys
