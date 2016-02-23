@@ -58,12 +58,14 @@ class gen_code(object):
         self.src_code_2.append("        sender = self.sender()")
         self.src_code_2.append("        print \"sender =\", sender")
         self.src_code_2.append("        print \"spnbox_changed to:\", value")
+        self.src_code_2.append("        print \"local_path =\", sender.local_path")
         self.src_code_2.append("\n")
         self.src_code_2.append("    def combobox_changed(self, value):")
         self.src_code_2.append("        sender = self.sender()")
         self.src_code_2.append("        print \"sender =\", sender")
         self.src_code_2.append("        print \"combobox_changed to:\"")
         self.src_code_2.append("        print sender.tmp_lst[value] ")
+        self.src_code_2.append("        print \"local_path =\", sender.local_path")
         self.src_code_2.append("\n")
         self.src_code_2.append("class ParamMainWidget( QWidget):")
         self.src_code_2.append("    def __init__(self):")
@@ -219,7 +221,8 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
                     my_str = "        " + box_name + widget_type_str
                     src_code_aut.append(my_str)
-                    my_str = "        " + box_name + ".local_path = \"dummy path\""
+
+                    my_str = "        " + box_name + ".local_path = \"" + str(obj.full_path()) +"\""
                     src_code_aut.append(my_str)
 
                     if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
@@ -234,6 +237,13 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     src_code_aut.append("")
                     my_str = "        " + box_name + " = QComboBox()"
                     src_code_aut.append(my_str)
+
+
+                    my_str = "        " + box_name + ".local_path = \"" + str(obj.full_path()) +"\""
+                    src_code_aut.append(my_str)
+
+
+
                     my_str = "        " + box_name + ".tmp_lst=[]"
                     src_code_aut.append(my_str)
                     my_str = "        " + box_name + ".tmp_lst.append(\"True\")"
@@ -254,6 +264,12 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     src_code_aut.append("")
                     my_str = "        " + box_name + " = QComboBox()"
                     src_code_aut.append(my_str)
+
+
+                    my_str = "        " + box_name + ".local_path = \"" + str(obj.full_path()) +"\""
+                    src_code_aut.append(my_str)
+
+
                     my_str = "        " + box_name + ".tmp_lst=[]"
                     src_code_aut.append(my_str)
                     for opt in obj.words:
@@ -313,7 +329,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                             widget_type_str =" = QDoubleSpinBox()"
                         my_str = "        " + box_name_lst[indx] + widget_type_str
                         src_code_aut.append(my_str)
-                        my_str = "        " + box_name_lst[indx] + ".local_path = \"dummy path\""
+                        my_str = "        " + box_name_lst[indx] + ".local_path = \"" + str(obj.full_path()) +"\""
                         src_code_aut.append(my_str)
                         my_str = "        " + box_name_lst[indx] + ".valueChanged.connect(self.spnbox_changed)"
                         src_code_aut.append(my_str)
