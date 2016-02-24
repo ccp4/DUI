@@ -64,27 +64,57 @@ class gen_code(object):
         self.src_code_2.append("    def spnbox_changed(self, value):")
         self.src_code_2.append("        sender = self.sender()")
         self.src_code_2.append("        print \"sender =\", sender")
-        self.src_code_2.append("        print \"spnbox_changed to:\", value")
-        self.src_code_2.append("        print \"local_path =\", sender.local_path")
+        self.src_code_2.append("        print \"spnbox_changed to:\",")
+        self.src_code_2.append("        str_value = str(value)")
+        self.src_code_2.append("        print value")
+        self.src_code_2.append("        print \"local_path =\",")
+        self.src_code_2.append("        str_path = str(sender.local_path)")
+        self.src_code_2.append("        self.super_parent.update_lin_txt(str_path, str_value)")
+
+
+
+
+        '''
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        print "sender =", sender
+        print "spnbox_changed to:",
+        str_value = str(value)
+        print value
+        print "local_path =",
+        str_path = str(sender.local_path)
+        self.super_parent.update_lin_txt(str_path, str_value)
+        '''
+
 
         self.src_code_2.append("        self.super_parent.update_lin_txt(sender.local_path, value)")
-
         self.src_code_2.append("\n")
         self.src_code_2.append("    def combobox_changed(self, value):")
         self.src_code_2.append("        sender = self.sender()")
-        self.src_code_2.append("        print \"sender =\", sender")
-        self.src_code_2.append("        print \"combobox_changed to:\"")
-        self.src_code_2.append("        print sender.tmp_lst[value] ")
-        self.src_code_2.append("        print \"local_path =\", sender.local_path")
+        self.src_code_2.append("        print \"combobox_changed to: \",")
+        self.src_code_2.append("        str_value = str(sender.tmp_lst[value])")
+        self.src_code_2.append("        print str_value")
+        self.src_code_2.append("        print \"local_path =\",")
+        self.src_code_2.append("        str_path = str(sender.local_path)")
+        self.src_code_2.append("        print str_path")
+        self.src_code_2.append("        self.super_parent.update_lin_txt(str_path, str_value)")
 
-        self.src_code_2.append("        self.super_parent.update_lin_txt(sender.local_path, value)")
+
+
 
         self.src_code_2.append("\n")
+
+
         '''
-                                    def __init__(self, parent = None):
-                                        super(ParamMainWidget, self).__init__(parent)
-                                        self.super_parent = parent
-                                        self.scrollable_widget = inner_widg(self.super_parent)
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "combobox_changed to: ",
+        str_value = str(sender.tmp_lst[value])
+        print str_value
+        print "local_path =",
+        str_path = str(sender.local_path)
+        print str_path
+        self.super_parent.update_lin_txt(str_path, str_value)
         '''
         self.src_code_2.append("class ParamMainWidget( QWidget):")
         self.src_code_2.append("    def __init__(self, parent = None):")
