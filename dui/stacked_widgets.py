@@ -191,7 +191,7 @@ class FindspotsParameterWidget(QtGui.QWidget):
         super(FindspotsParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        param_widg = ParamMainWidget()
+        param_widg = ParamMainWidget(self.super_parent)
         default_tab = FindspotsSimplerParameterTab()
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
@@ -245,7 +245,7 @@ class IndexParameterWidget(QtGui.QWidget):
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        param_widg = ParamMainWidget()
+        param_widg = ParamMainWidget(self.super_parent)
         default_tab = IndexSimplerParamTab()
 
         tabWidget = QtGui.QTabWidget()
@@ -281,7 +281,7 @@ class RefineParameterWidget(QtGui.QWidget):
         super(RefineParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        param_widg = ParamMainWidget()
+        param_widg = ParamMainWidget(self.super_parent)
         default_tab = RefineSimplerParamTab()
 
         tabWidget = QtGui.QTabWidget()
@@ -335,7 +335,7 @@ class IntegrateParameterWidget(QtGui.QWidget):
         super(IntegrateParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        param_widg = ParamMainWidget()
+        param_widg = ParamMainWidget(self.super_parent)
         default_tab = IntegrateSimplerParamTab()
 
         tabWidget = QtGui.QTabWidget()
@@ -359,7 +359,7 @@ class ExportParameterWidget(QtGui.QWidget):
         super(ExportParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
-        param_widg = ParamMainWidget()
+        param_widg = ParamMainWidget(self.super_parent)
 
 
         mainLayout = QtGui.QVBoxLayout()
@@ -372,29 +372,6 @@ class ExportParameterWidget(QtGui.QWidget):
         self.logo_path = my_dui_path + "/../dui/export.png"
 
 
-'''
-class ExportParameterWidget(QtGui.QWidget):
-
-    def __init__(self, parent=None):
-        try:
-            from dials.command_line.export import phil_scope
-        except:
-            from dials.command_line.export_mtz import phil_scope
-
-        super(ExportParameterWidget, self).__init__(parent)
-
-        self.super_parent = parent
-        param_widg = ParameterWidget(self.super_parent, phil_scope)
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
-        self.setLayout(mainLayout)
-        self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
-
-        self.button_label = "Export mtz"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/export.png"
-'''
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -418,9 +395,6 @@ class MainWindow(QtGui.QMainWindow):
     window = QtGui.QWidget()
     window.setLayout(layout)
     self.setCentralWidget(window)
-
-  def update_lin_txt(self):
-    print "from tmp parent.update_lin_txt"
 
 if __name__ == '__main__':
   import sys

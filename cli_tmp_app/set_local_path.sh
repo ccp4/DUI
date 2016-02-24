@@ -8,3 +8,4 @@ cd $DUI_PATH
 echo "done"
 echo ""
 echo "type run_DUI.sh to launch Dials User Interface"
+echo ""

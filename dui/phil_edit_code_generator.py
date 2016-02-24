@@ -38,10 +38,17 @@ class gen_code(object):
             self.src_code_1.append("print \"using PySide\"")
 
         self.src_code_1.append("\n")
+
+        '''
+                                    def __init__(self, parent = None):
+                                        super(inner_widg, self).__init__(parent)
+                                        self.super_parent = parent
+        '''
         self.src_code_1.append("class inner_widg( QWidget):")
         self.src_code_1.append("    item_changed = pyqtSignal()")
-        self.src_code_1.append("    def __init__(self, parent):")
-        self.src_code_1.append("        super(inner_widg, self).__init__()")
+        self.src_code_1.append("    def __init__(self, parent = None):")
+        self.src_code_1.append("        super(inner_widg, self).__init__(parent)")
+        self.src_code_1.append("        self.super_parent = parent")
         self.src_code_1.append("        palette_scope = QPalette()")
         self.src_code_1.append("        palette_scope.setColor(QPalette.Foreground, QColor(75, 75, 75, 255))")
         self.src_code_1.append("        palette_object = QPalette()")
@@ -59,6 +66,9 @@ class gen_code(object):
         self.src_code_2.append("        print \"sender =\", sender")
         self.src_code_2.append("        print \"spnbox_changed to:\", value")
         self.src_code_2.append("        print \"local_path =\", sender.local_path")
+
+        self.src_code_2.append("        self.super_parent.update_lin_txt(sender.local_path, value)")
+
         self.src_code_2.append("\n")
         self.src_code_2.append("    def combobox_changed(self, value):")
         self.src_code_2.append("        sender = self.sender()")
@@ -66,11 +76,21 @@ class gen_code(object):
         self.src_code_2.append("        print \"combobox_changed to:\"")
         self.src_code_2.append("        print sender.tmp_lst[value] ")
         self.src_code_2.append("        print \"local_path =\", sender.local_path")
+
+        self.src_code_2.append("        self.super_parent.update_lin_txt(sender.local_path, value)")
+
         self.src_code_2.append("\n")
+        '''
+                                    def __init__(self, parent = None):
+                                        super(ParamMainWidget, self).__init__(parent)
+                                        self.super_parent = parent
+                                        self.scrollable_widget = inner_widg(self.super_parent)
+        '''
         self.src_code_2.append("class ParamMainWidget( QWidget):")
-        self.src_code_2.append("    def __init__(self):")
-        self.src_code_2.append("        super(ParamMainWidget, self).__init__()")
-        self.src_code_2.append("        self.scrollable_widget = inner_widg(self)")
+        self.src_code_2.append("    def __init__(self, parent = None):")
+        self.src_code_2.append("        super(ParamMainWidget, self).__init__(parent)")
+        self.src_code_2.append("        self.super_parent = parent")
+        self.src_code_2.append("        self.scrollable_widget = inner_widg(self.super_parent)")
         self.src_code_2.append("        scrollArea = QScrollArea()")
         self.src_code_2.append("        scrollArea.setWidget(self.scrollable_widget)")
         self.src_code_2.append("        hbox =  QHBoxLayout()")
@@ -331,7 +351,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                         src_code_aut.append(my_str)
                         my_str = "        " + box_name_lst[indx] + ".local_path = \"" + str(obj.full_path()) +"\""
                         src_code_aut.append(my_str)
-                        my_str = "        " + box_name_lst[indx] + ".valueChanged.connect(self.spnbox_changed)"
+                        my_str = "        #" + box_name_lst[indx] + ".valueChanged.connect(self.spnbox_changed)"
                         src_code_aut.append(my_str)
                     multiple_index = True
 
