@@ -39,11 +39,6 @@ class gen_code(object):
 
         self.src_code_1.append("\n")
 
-        '''
-                                    def __init__(self, parent = None):
-                                        super(inner_widg, self).__init__(parent)
-                                        self.super_parent = parent
-        '''
         self.src_code_1.append("class inner_widg( QWidget):")
         self.src_code_1.append("    item_changed = pyqtSignal()")
         self.src_code_1.append("    def __init__(self, parent = None):")
@@ -70,23 +65,6 @@ class gen_code(object):
         self.src_code_2.append("        print \"local_path =\",")
         self.src_code_2.append("        str_path = str(sender.local_path)")
         self.src_code_2.append("        self.super_parent.update_lin_txt(str_path, str_value)")
-
-
-
-
-        '''
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        print "sender =", sender
-        print "spnbox_changed to:",
-        str_value = str(value)
-        print value
-        print "local_path =",
-        str_path = str(sender.local_path)
-        self.super_parent.update_lin_txt(str_path, str_value)
-        '''
-
-
         self.src_code_2.append("        self.super_parent.update_lin_txt(sender.local_path, value)")
         self.src_code_2.append("\n")
         self.src_code_2.append("    def combobox_changed(self, value):")
@@ -98,24 +76,7 @@ class gen_code(object):
         self.src_code_2.append("        str_path = str(sender.local_path)")
         self.src_code_2.append("        print str_path")
         self.src_code_2.append("        self.super_parent.update_lin_txt(str_path, str_value)")
-
-
-
-
         self.src_code_2.append("\n")
-
-
-        '''
-    def combobox_changed(self, value):
-        sender = self.sender()
-        print "combobox_changed to: ",
-        str_value = str(sender.tmp_lst[value])
-        print str_value
-        print "local_path =",
-        str_path = str(sender.local_path)
-        print str_path
-        self.super_parent.update_lin_txt(str_path, str_value)
-        '''
         self.src_code_2.append("class ParamMainWidget( QWidget):")
         self.src_code_2.append("    def __init__(self, parent = None):")
         self.src_code_2.append("        super(ParamMainWidget, self).__init__(parent)")
@@ -224,8 +185,9 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
             src_code_aut.append(my_str)
             my_str = "        label_" + str(nm) + ".setPalette(palette_scope)"
             src_code_aut.append(my_str)
-            my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
-            my_str += f_siz + ", QFont.Bold))"
+            my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\"))"
+            #my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
+            #my_str += f_siz + ", QFont.Bold))"
             src_code_aut.append(my_str)
             my_str = "        bg_box.addWidget(label_" + str(nm) + ")"
             src_code_aut.append(my_str)
@@ -248,8 +210,9 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                 src_code_aut.append(my_str)
                 my_str = "        " + label_name + ".setPalette(palette_object)"
                 src_code_aut.append(my_str)
-                my_str = "        " + label_name + ".setFont(QFont(\"Monospace\","
-                my_str += f_siz + ", QFont.Bold))"
+                my_str = "        " + label_name + ".setFont(QFont(\"Monospace\"))"
+                #my_str = "        " + label_name + ".setFont(QFont(\"Monospace\","
+                #my_str += f_siz + ", QFont.Bold))"
                 src_code_aut.append(my_str)
                 my_str = "        " + h_box_name + ".addWidget(" + label_name + ")"
                 src_code_aut.append(my_str)
@@ -366,8 +329,9 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
                         my_str = "        " + label_name_lst[indx] + ".setPalette(palette_object)"
                         src_code_aut.append(my_str)
-                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\","
-                        my_str += f_siz + ", QFont.Bold))"
+                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\"))"
+                        #my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\","
+                        #my_str += f_siz + ", QFont.Bold))"
                         src_code_aut.append(my_str)
                         my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + label_name_lst[indx] + ")"
                         src_code_aut.append(my_str)
