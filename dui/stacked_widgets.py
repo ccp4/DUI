@@ -132,9 +132,14 @@ class ImportPage(QtGui.QWidget):
 class FindspotsSimplerParameterTab(QtGui.QWidget):
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__(parent)
+        self.super_parent = parent
 
         xds_gain_label = QtGui.QLabel("spotfinder.threshold.xds.gain")
         xds_gain_spn_bx = QtGui.QDoubleSpinBox()
+
+        xds_gain_spn_bx.local_path = "spotfinder.threshold.xds.gain"
+
+
 
         xds_kernel_size_label_x = QtGui.QLabel("spotfinder.threshold.xds.kernel_size(X)")
         xds_kernel_size_spn_bx_x = QtGui.QSpinBox()
@@ -181,7 +186,22 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
         localLayout.addLayout(xds_global_threshold_hb)
 
+        xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
+
+
         self.setLayout(localLayout)
+
+
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        print "sender =", sender
+        print "spnbox_changed to:",
+        str_value = str(value)
+        print value
+        print "local_path =",
+        str_path = str(sender.local_path)
+        self.super_parent.update_lin_txt(str_path, str_value)
+        self.super_parent.update_lin_txt(sender.local_path, value)
 
 
 class FindspotsParameterWidget(QtGui.QWidget):
@@ -192,7 +212,7 @@ class FindspotsParameterWidget(QtGui.QWidget):
         self.super_parent = parent
 
         param_widg = ParamMainWidget(self.super_parent)
-        default_tab = FindspotsSimplerParameterTab()
+        default_tab = FindspotsSimplerParameterTab(self.super_parent)
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
         tabWidget.addTab(param_widg, "tab 2")
