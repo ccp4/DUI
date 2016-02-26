@@ -222,8 +222,8 @@ class FindspotsParameterWidget(QtGui.QWidget):
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = FindspotsSimplerParameterTab(self.super_parent)
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Tab 1")
-        tabWidget.addTab(param_widg, "tab 2")
+        tabWidget.addTab(default_tab, "Simple")
+        tabWidget.addTab(param_widg, "Advanced")
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)
@@ -300,8 +300,8 @@ class IndexParameterWidget(QtGui.QWidget):
         default_tab = IndexSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Tab 1")
-        tabWidget.addTab(param_widg, "tab 2")
+        tabWidget.addTab(default_tab, "Simple")
+        tabWidget.addTab(param_widg, "Advanced")
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)
@@ -356,9 +356,9 @@ class RefineParameterWidget(QtGui.QWidget):
         default_tab = RefineSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Tab 1")
+        tabWidget.addTab(default_tab, "Simple")
 
-        tabWidget.addTab(param_widg, "tab 2")
+        tabWidget.addTab(param_widg, "Advanced")
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)
@@ -433,8 +433,8 @@ class IntegrateParameterWidget(QtGui.QWidget):
         default_tab = IntegrateSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Tab 1")
-        tabWidget.addTab(param_widg, "tab 2")
+        tabWidget.addTab(default_tab, "Simple")
+        tabWidget.addTab(param_widg, "Advanced")
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)

@@ -159,8 +159,8 @@ class MyMainDialog(QtGui.QMainWindow):
         right_side_layout = QtGui.QVBoxLayout()
 
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(self.multi_line_txt, "Tab 1")
-        tabWidget.addTab(ImgTab(), "tab 2")
+        tabWidget.addTab(self.multi_line_txt, "Shell Log")
+        tabWidget.addTab(ImgTab(), "Graphic Reports")
 
         right_side_layout.addWidget(tabWidget)
 
