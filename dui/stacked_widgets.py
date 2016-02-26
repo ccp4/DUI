@@ -134,24 +134,36 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         super(FindspotsSimplerParameterTab, self).__init__(parent)
         self.super_parent = parent
 
+
         xds_gain_label = QtGui.QLabel("spotfinder.threshold.xds.gain")
         xds_gain_spn_bx = QtGui.QDoubleSpinBox()
-
         xds_gain_spn_bx.local_path = "spotfinder.threshold.xds.gain"
-
-
+        xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         xds_kernel_size_label_x = QtGui.QLabel("spotfinder.threshold.xds.kernel_size(X)")
         xds_kernel_size_spn_bx_x = QtGui.QSpinBox()
+        xds_kernel_size_spn_bx_x.local_path = "spotfinder.threshold.xds.kernel_size(X)"
+        xds_kernel_size_spn_bx_x.valueChanged.connect(self.spnbox_changed)
+
         xds_kernel_size_label_y = QtGui.QLabel("spotfinder.threshold.xds.kernel_size(Y)")
         xds_kernel_size_spn_bx_y = QtGui.QSpinBox()
+        xds_kernel_size_spn_bx_y.local_path = "spotfinder.threshold.xds.kernel_size(Y)"
+        xds_kernel_size_spn_bx_y.valueChanged.connect(self.spnbox_changed)
 
         xds_sigma_background_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_background")
         xds_sigma_background_spn_bx = QtGui.QDoubleSpinBox()
+        xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.xds.sigma_background"
+        xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
+
         xds_sigma_strong_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_strong")
         xds_sigma_strong_spn_bx = QtGui.QDoubleSpinBox()
+        xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.xds.sigma_strong"
+        xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
+
         xds_global_threshold_label = QtGui.QLabel("spotfinder.threshold.xds.global_threshold")
         xds_global_threshold_spn_bx = QtGui.QDoubleSpinBox()
+        xds_global_threshold_spn_bx.local_path = "spotfinder.threshold.xds.global_threshold"
+        xds_global_threshold_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         localLayout = QtGui.QVBoxLayout()
 
@@ -186,16 +198,12 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
         localLayout.addLayout(xds_global_threshold_hb)
 
-        xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
-
 
         self.setLayout(localLayout)
 
 
     def spnbox_changed(self, value):
         sender = self.sender()
-        print "sender =", sender
-        print "spnbox_changed to:",
         str_value = str(value)
         print value
         print "local_path =",
