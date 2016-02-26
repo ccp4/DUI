@@ -241,7 +241,7 @@ class IndexSimplerParamTab(QtGui.QWidget):
         self.super_parent = parent
 
         hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
-        label_scan_varying_117 = QtGui.QLabel("            scan_varying")
+        label_scan_varying_117 = QtGui.QLabel("scan_varying")
         label_scan_varying_117.setFont(QtGui.QFont("Monospace"))
         hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
 
@@ -255,18 +255,10 @@ class IndexSimplerParamTab(QtGui.QWidget):
         box_scan_varying_117.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying_117.addWidget(box_scan_varying_117)
 
-
-
-
-        use_all_refl_check = QtGui.QCheckBox("refinement.reflections.use_all_reflections")
         indexing_method_check = QtGui.QCheckBox("indexing.method")
-
-
         hbox_method =  QtGui.QHBoxLayout()
         label_method_62 = QtGui.QLabel("indexing.method")
-        #label_method_62.setFont(QtGui.QFont("Times",16, QtGui.QFont.Bold))
         hbox_method.addWidget(label_method_62)
-
         box_method_62 = QtGui.QComboBox()
         box_method_62.tmp_lst=[]
         box_method_62.local_path = "indexing.method"
@@ -278,16 +270,12 @@ class IndexSimplerParamTab(QtGui.QWidget):
         box_method_62.currentIndexChanged.connect(self.combobox_changed)
 
 
-
-
-
-
         hbox_method.addWidget(box_method_62)
 
 
         localLayout = QtGui.QVBoxLayout()
         localLayout.addLayout(hbox_lay_scan_varying_117)
-        localLayout.addWidget(use_all_refl_check)
+
         localLayout.addLayout(hbox_method)
         self.setLayout(localLayout)
 
@@ -328,14 +316,34 @@ class IndexParameterWidget(QtGui.QWidget):
 class RefineSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__(parent)
+        self.super_parent = parent
 
-        scan_varying_check = QtGui.QCheckBox("refinement.parameterisation.crystal.scan_varying")
-        use_all_refl_check = QtGui.QCheckBox("refinement.reflections.use_all_reflections")
-        localLayout = QtGui.QVBoxLayout()
-        localLayout.addWidget(scan_varying_check)
-        localLayout.addWidget(use_all_refl_check)
-        self.setLayout(localLayout)
+        hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
+        label_scan_varying_117 = QtGui.QLabel("scan_varying")
+        label_scan_varying_117.setFont(QtGui.QFont("Monospace"))
+        hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
 
+        box_scan_varying_117 = QtGui.QComboBox()
+        box_scan_varying_117.local_path = "refinement.parameterisation.crystal.scan_varying"
+        box_scan_varying_117.tmp_lst=[]
+        box_scan_varying_117.tmp_lst.append("True")
+        box_scan_varying_117.tmp_lst.append("False")
+        for lst_itm in box_scan_varying_117.tmp_lst:
+            box_scan_varying_117.addItem(lst_itm)
+        box_scan_varying_117.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying_117.addWidget(box_scan_varying_117)
+
+        self.setLayout(hbox_lay_scan_varying_117)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "combobox_changed to: ",
+        str_value = str(sender.tmp_lst[value])
+        print str_value
+        print "local_path =",
+        str_path = str(sender.local_path)
+        print str_path
+        self.super_parent.update_lin_txt(str_path, str_value)
 
 class RefineParameterWidget(QtGui.QWidget):
 
@@ -345,7 +353,7 @@ class RefineParameterWidget(QtGui.QWidget):
         self.super_parent = parent
 
         param_widg = ParamMainWidget(self.super_parent)
-        default_tab = RefineSimplerParamTab()
+        default_tab = RefineSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
@@ -366,14 +374,30 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__(parent)
         localLayout = QtGui.QVBoxLayout()
+        self.super_parent = parent
 
-        profile_fitting_check = QtGui.QCheckBox("integration.profile.fitting")
+        PrFit_lay_out =  QtGui.QHBoxLayout()
+        label_PrFit = QtGui.QLabel("integration.profile.fitting")
+        PrFit_lay_out.addWidget(label_PrFit)
+
+        PrFit_comb_bx = QtGui.QComboBox()
+        PrFit_comb_bx.local_path = "integration.profile.fitting"
+        PrFit_comb_bx.tmp_lst=[]
+        PrFit_comb_bx.tmp_lst.append("True")
+        PrFit_comb_bx.tmp_lst.append("False")
+
+        for lst_itm in PrFit_comb_bx.tmp_lst:
+            PrFit_comb_bx.addItem(lst_itm)
+        PrFit_comb_bx.currentIndexChanged.connect(self.combobox_changed)
+        PrFit_lay_out.addWidget(PrFit_comb_bx)
+        localLayout.addLayout(PrFit_lay_out)
 
         hbox_lay_algorithm_53 =  QtGui.QHBoxLayout()
         label_algorithm_53 = QtGui.QLabel("integration.background.algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
         box_algorithm_53 = QtGui.QComboBox()
+        box_algorithm_53.local_path = "integration.background.algorithm"
         box_algorithm_53.tmp_lst=[]
         box_algorithm_53.tmp_lst.append("simple")
         box_algorithm_53.tmp_lst.append("null")
@@ -381,14 +405,21 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         box_algorithm_53.tmp_lst.append("const_d")
         for lst_itm in box_algorithm_53.tmp_lst:
             box_algorithm_53.addItem(lst_itm)
-
+        box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
 
-        localLayout.addWidget(profile_fitting_check)
-
         self.setLayout(localLayout)
 
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "combobox_changed to: ",
+        str_value = str(sender.tmp_lst[value])
+        print str_value
+        print "local_path =",
+        str_path = str(sender.local_path)
+        print str_path
+        self.super_parent.update_lin_txt(str_path, str_value)
 
 
 class IntegrateParameterWidget(QtGui.QWidget):
@@ -399,7 +430,7 @@ class IntegrateParameterWidget(QtGui.QWidget):
         self.super_parent = parent
 
         param_widg = ParamMainWidget(self.super_parent)
-        default_tab = IntegrateSimplerParamTab()
+        default_tab = IntegrateSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
