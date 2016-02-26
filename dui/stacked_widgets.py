@@ -62,7 +62,7 @@ class ImportPage(QtGui.QWidget):
         self.log_json_txt = QtGui.QTextBrowser()
         #self.log_json_txt.setMaximumHeight(724)
         #self.log_json_txt.setMinimumHeight(24)
-        self.log_json_txt.setCurrentFont(QtGui.QFont("Monospace"))
+
         self.log_json_txt.setTextColor(QtGui.QColor("black"))
 
         self.auto_next_check = QtGui.QCheckBox("Enable auto-Next Feature")
@@ -241,8 +241,8 @@ class IndexSimplerParamTab(QtGui.QWidget):
         self.super_parent = parent
 
         hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
-        label_scan_varying_117 = QtGui.QLabel("scan_varying")
-        label_scan_varying_117.setFont(QtGui.QFont("Monospace"))
+        label_scan_varying_117 = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
+
         hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
 
         box_scan_varying_117 = QtGui.QComboBox()
@@ -319,8 +319,8 @@ class RefineSimplerParamTab(QtGui.QWidget):
         self.super_parent = parent
 
         hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
-        label_scan_varying_117 = QtGui.QLabel("scan_varying")
-        label_scan_varying_117.setFont(QtGui.QFont("Monospace"))
+        label_scan_varying_117 = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
+
         hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
 
         box_scan_varying_117 = QtGui.QComboBox()
