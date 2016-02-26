@@ -37,7 +37,7 @@ class ImportPage(QtGui.QWidget):
         self.button_label = "Import"
 
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/import.png"
+        self.logo_path = my_dui_path + "/../dui/resources/import.png"
 
         import_path_group = QtGui.QGroupBox("Experiment IMG Directory")
         import_path_layout = QtGui.QHBoxLayout()
@@ -232,7 +232,7 @@ class FindspotsParameterWidget(QtGui.QWidget):
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "Find Spots"
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/find_spots.png"
+        self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
 
 
 class IndexSimplerParamTab(QtGui.QWidget):
@@ -308,7 +308,7 @@ class IndexParameterWidget(QtGui.QWidget):
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
         self.button_label = "Index"
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/index.png"
+        self.logo_path = my_dui_path + "/../dui/resources/index.png"
 
 
 class RefineSimplerParamTab(QtGui.QWidget):
@@ -365,7 +365,7 @@ class RefineParameterWidget(QtGui.QWidget):
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
         self.button_label = "Refine"
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/refine.png"
+        self.logo_path = my_dui_path + "/../dui/resources/refine.png"
 
 
 class IntegrateSimplerParamTab(QtGui.QWidget):
@@ -441,7 +441,7 @@ class IntegrateParameterWidget(QtGui.QWidget):
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
         self.button_label = "Integrate"
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/integrate.png"
+        self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
 
 
 class ExportParameterWidget(QtGui.QWidget):
@@ -460,7 +460,7 @@ class ExportParameterWidget(QtGui.QWidget):
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
         self.button_label = "Export mtz"
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/export.png"
+        self.logo_path = my_dui_path + "/../dui/resources/export.png"
 
 
 class MainWindow(QtGui.QMainWindow):
