@@ -12,7 +12,7 @@ except ImportError, e:
   pass
 
 
-from python_qt_bind import GuiBinding
+from resources.python_qt_bind import GuiBinding
 gui_lib = GuiBinding()
 print "using ", gui_lib.pyhon_binding
 qt_tool = gui_lib.pyhon_binding
@@ -215,7 +215,7 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
 class FindspotsParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from find_spots_mult_opt import ParamMainWidget
+        from resources.find_spots_mult_opt import ParamMainWidget
         super(FindspotsParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
@@ -240,20 +240,20 @@ class IndexSimplerParamTab(QtGui.QWidget):
         super(IndexSimplerParamTab, self).__init__(parent)
         self.super_parent = parent
 
-        hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
-        label_scan_varying_117 = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
+        hbox_lay_scan_varying =  QtGui.QHBoxLayout()
+        label_scan_varying = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
 
-        hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
 
-        box_scan_varying_117 = QtGui.QComboBox()
-        box_scan_varying_117.local_path = "refinement.parameterisation.crystal.scan_varying"
-        box_scan_varying_117.tmp_lst=[]
-        box_scan_varying_117.tmp_lst.append("True")
-        box_scan_varying_117.tmp_lst.append("False")
-        for lst_itm in box_scan_varying_117.tmp_lst:
-            box_scan_varying_117.addItem(lst_itm)
-        box_scan_varying_117.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying_117.addWidget(box_scan_varying_117)
+        box_scan_varying = QtGui.QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.crystal.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
 
         indexing_method_check = QtGui.QCheckBox("indexing.method")
         hbox_method =  QtGui.QHBoxLayout()
@@ -269,12 +269,10 @@ class IndexSimplerParamTab(QtGui.QWidget):
             box_method_62.addItem(lst_itm)
         box_method_62.currentIndexChanged.connect(self.combobox_changed)
 
-
         hbox_method.addWidget(box_method_62)
 
-
         localLayout = QtGui.QVBoxLayout()
-        localLayout.addLayout(hbox_lay_scan_varying_117)
+        localLayout.addLayout(hbox_lay_scan_varying)
 
         localLayout.addLayout(hbox_method)
         self.setLayout(localLayout)
@@ -292,7 +290,7 @@ class IndexSimplerParamTab(QtGui.QWidget):
 class IndexParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from index_mult_opt import ParamMainWidget
+        from resources.index_mult_opt import ParamMainWidget
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
@@ -318,22 +316,22 @@ class RefineSimplerParamTab(QtGui.QWidget):
         super(RefineSimplerParamTab, self).__init__(parent)
         self.super_parent = parent
 
-        hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
-        label_scan_varying_117 = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
+        hbox_lay_scan_varying =  QtGui.QHBoxLayout()
+        label_scan_varying = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
 
-        hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
 
-        box_scan_varying_117 = QtGui.QComboBox()
-        box_scan_varying_117.local_path = "refinement.parameterisation.crystal.scan_varying"
-        box_scan_varying_117.tmp_lst=[]
-        box_scan_varying_117.tmp_lst.append("True")
-        box_scan_varying_117.tmp_lst.append("False")
-        for lst_itm in box_scan_varying_117.tmp_lst:
-            box_scan_varying_117.addItem(lst_itm)
-        box_scan_varying_117.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying_117.addWidget(box_scan_varying_117)
+        box_scan_varying = QtGui.QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.crystal.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
 
-        self.setLayout(hbox_lay_scan_varying_117)
+        self.setLayout(hbox_lay_scan_varying)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -348,7 +346,7 @@ class RefineSimplerParamTab(QtGui.QWidget):
 class RefineParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from refine_mult_opt import ParamMainWidget
+        from resources.refine_mult_opt import ParamMainWidget
         super(RefineParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
@@ -425,7 +423,7 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
 class IntegrateParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from integrate_mult_opt import ParamMainWidget
+        from resources.integrate_mult_opt import ParamMainWidget
         super(IntegrateParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
@@ -449,12 +447,11 @@ class IntegrateParameterWidget(QtGui.QWidget):
 class ExportParameterWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        from export_mult_opt import ParamMainWidget
+        from resources.export_mult_opt import ParamMainWidget
         super(ExportParameterWidget, self).__init__(parent)
         self.super_parent = parent
 
         param_widg = ParamMainWidget(self.super_parent)
-
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(param_widg)
@@ -464,7 +461,6 @@ class ExportParameterWidget(QtGui.QWidget):
         self.button_label = "Export mtz"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/export.png"
-
 
 
 class MainWindow(QtGui.QMainWindow):
