@@ -238,33 +238,68 @@ class FindspotsParameterWidget(QtGui.QWidget):
 class IndexSimplerParamTab(QtGui.QWidget):
     def __init__(self, parent=None):
         super(IndexSimplerParamTab, self).__init__(parent)
-        scan_varying_check = QtGui.QCheckBox("refinement.parameterisation.crystal.scan_varying")
+        self.super_parent = parent
+
+        hbox_lay_scan_varying_117 =  QtGui.QHBoxLayout()
+        label_scan_varying_117 = QtGui.QLabel("            scan_varying")
+        label_scan_varying_117.setFont(QtGui.QFont("Monospace"))
+        hbox_lay_scan_varying_117.addWidget(label_scan_varying_117)
+
+        box_scan_varying_117 = QtGui.QComboBox()
+        box_scan_varying_117.local_path = "refinement.parameterisation.crystal.scan_varying"
+        box_scan_varying_117.tmp_lst=[]
+        box_scan_varying_117.tmp_lst.append("True")
+        box_scan_varying_117.tmp_lst.append("False")
+        for lst_itm in box_scan_varying_117.tmp_lst:
+            box_scan_varying_117.addItem(lst_itm)
+        box_scan_varying_117.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying_117.addWidget(box_scan_varying_117)
+
+
+
+
         use_all_refl_check = QtGui.QCheckBox("refinement.reflections.use_all_reflections")
         indexing_method_check = QtGui.QCheckBox("indexing.method")
 
 
-        hbox_lay_method_62 =  QtGui.QHBoxLayout()
+        hbox_method =  QtGui.QHBoxLayout()
         label_method_62 = QtGui.QLabel("indexing.method")
         #label_method_62.setFont(QtGui.QFont("Times",16, QtGui.QFont.Bold))
-        hbox_lay_method_62.addWidget(label_method_62)
+        hbox_method.addWidget(label_method_62)
 
         box_method_62 = QtGui.QComboBox()
         box_method_62.tmp_lst=[]
+        box_method_62.local_path = "indexing.method"
         box_method_62.tmp_lst.append("*fft3d")
         box_method_62.tmp_lst.append("fft1d")
         box_method_62.tmp_lst.append("real_space_grid_search")
         for lst_itm in box_method_62.tmp_lst:
             box_method_62.addItem(lst_itm)
+        box_method_62.currentIndexChanged.connect(self.combobox_changed)
 
-        hbox_lay_method_62.addWidget(box_method_62)
+
+
+
+
+
+        hbox_method.addWidget(box_method_62)
 
 
         localLayout = QtGui.QVBoxLayout()
-        localLayout.addWidget(scan_varying_check)
+        localLayout.addLayout(hbox_lay_scan_varying_117)
         localLayout.addWidget(use_all_refl_check)
-        localLayout.addLayout(hbox_lay_method_62)
+        localLayout.addLayout(hbox_method)
         self.setLayout(localLayout)
 
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "combobox_changed to: ",
+        str_value = str(sender.tmp_lst[value])
+        print str_value
+        print "local_path =",
+        str_path = str(sender.local_path)
+        print str_path
+        self.super_parent.update_lin_txt(str_path, str_value)
 
 class IndexParameterWidget(QtGui.QWidget):
 
@@ -274,7 +309,7 @@ class IndexParameterWidget(QtGui.QWidget):
         self.super_parent = parent
 
         param_widg = ParamMainWidget(self.super_parent)
-        default_tab = IndexSimplerParamTab()
+        default_tab = IndexSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Tab 1")
