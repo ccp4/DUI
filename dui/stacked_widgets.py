@@ -26,11 +26,25 @@ else:
 import os
 
 class ImportPage(QtGui.QWidget):
+
+    '''
+    This stacked widget basically helps the user to browse the input images
+    path and the working directory, there is no auto-generated code in use
+    withing this widget and there is no multiple tabs like the other stacked
+    widgets.
+    '''
+
     # FIXME when the user enters a path without images dials fails to import
     # but does not raises an error consequently there is no red output in the GUI
+
+    # FIXME consider something like:
+    # dials.import template=/my/path/to/my/data/th_8_2_####.cbf
+    # instead of:
+    # dials.import /my/path/to/my/data/
+    # as the generated line to run
     def __init__(self, parent=None):
         super(ImportPage, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         self.w_dir_str = os.getcwd()
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
@@ -60,9 +74,6 @@ class ImportPage(QtGui.QWidget):
         w_dir_group.setLayout(w_dir_layout)
 
         self.log_json_txt = QtGui.QTextBrowser()
-        #self.log_json_txt.setMaximumHeight(724)
-        #self.log_json_txt.setMinimumHeight(24)
-
         self.log_json_txt.setTextColor(QtGui.QColor("black"))
 
         self.auto_next_check = QtGui.QCheckBox("Enable auto-Next Feature")
@@ -130,9 +141,15 @@ class ImportPage(QtGui.QWidget):
 
 
 class FindspotsSimplerParameterTab(QtGui.QWidget):
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the spot-finder, this widget is the first to appear once the button
+    "Find Sots" at the left side of the GUI is clicked
+
+    '''
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
 
         xds_gain_label = QtGui.QLabel("spotfinder.threshold.xds.gain")
@@ -197,7 +214,7 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         xds_global_threshold_hb.addWidget(xds_global_threshold_label)
         xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
         localLayout.addLayout(xds_global_threshold_hb)
-
+        localLayout.addStretch(1)
 
         self.setLayout(localLayout)
 
@@ -213,11 +230,16 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
 
 
 class FindspotsParameterWidget(QtGui.QWidget):
+    '''
+    The duty of this widget is to contain 2 tabs with the 2
+    levels of expertise and with different amounts of parameters
+    to adjust in the find spot algorithm
+    '''
 
     def __init__(self, parent=None):
         from resources.find_spots_mult_opt import ParamMainWidget
         super(FindspotsParameterWidget, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = FindspotsSimplerParameterTab(self.super_parent)
@@ -236,9 +258,18 @@ class FindspotsParameterWidget(QtGui.QWidget):
 
 
 class IndexSimplerParamTab(QtGui.QWidget):
+
+
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the indexer, this widget is the first to appear once the button
+    "Index" at the left side of the GUI is clicked
+
+    '''
+
     def __init__(self, parent=None):
         super(IndexSimplerParamTab, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         hbox_lay_scan_varying =  QtGui.QHBoxLayout()
         label_scan_varying = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
@@ -275,6 +306,9 @@ class IndexSimplerParamTab(QtGui.QWidget):
         localLayout.addLayout(hbox_lay_scan_varying)
 
         localLayout.addLayout(hbox_method)
+
+        localLayout.addStretch(1)
+
         self.setLayout(localLayout)
 
     def combobox_changed(self, value):
@@ -288,11 +322,15 @@ class IndexSimplerParamTab(QtGui.QWidget):
         self.super_parent.update_lin_txt(str_path, str_value)
 
 class IndexParameterWidget(QtGui.QWidget):
-
+    '''
+    The duty of this widget is to contain 2 tabs with the 2
+    levels of expertise and with different amounts of parameters
+    to adjust in the indexing algorithm
+    '''
     def __init__(self, parent=None):
         from resources.index_mult_opt import ParamMainWidget
         super(IndexParameterWidget, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = IndexSimplerParamTab(self.super_parent)
@@ -312,11 +350,19 @@ class IndexParameterWidget(QtGui.QWidget):
 
 
 class RefineSimplerParamTab(QtGui.QWidget):
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the refiner, this widget is the first to appear once the button
+    "Refine" at the left side of the GUI is clicked
+    '''
+
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__(parent)
-        self.super_parent = parent
+
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         hbox_lay_scan_varying =  QtGui.QHBoxLayout()
+        localLayout = QtGui.QVBoxLayout()
         label_scan_varying = QtGui.QLabel("refinement.parameterisation.crystal.scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
@@ -330,8 +376,9 @@ class RefineSimplerParamTab(QtGui.QWidget):
             box_scan_varying.addItem(lst_itm)
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
-
-        self.setLayout(hbox_lay_scan_varying)
+        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -344,18 +391,21 @@ class RefineSimplerParamTab(QtGui.QWidget):
         self.super_parent.update_lin_txt(str_path, str_value)
 
 class RefineParameterWidget(QtGui.QWidget):
-
+    '''
+    The duty of this widget is to contain 2 tabs with the 2
+    levels of expertise and with different amounts of parameters
+    to adjust in the refine algorithm
+    '''
     def __init__(self, parent=None):
         from resources.refine_mult_opt import ParamMainWidget
         super(RefineParameterWidget, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = RefineSimplerParamTab(self.super_parent)
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(default_tab, "Simple")
-
         tabWidget.addTab(param_widg, "Advanced")
 
         mainLayout = QtGui.QVBoxLayout()
@@ -369,10 +419,16 @@ class RefineParameterWidget(QtGui.QWidget):
 
 
 class IntegrateSimplerParamTab(QtGui.QWidget):
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the integrate algorithm, this widget is the first to appear once the button
+    "Integrate" at the left side of the GUI is clicked
+
+    '''
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__(parent)
         localLayout = QtGui.QVBoxLayout()
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         PrFit_lay_out =  QtGui.QHBoxLayout()
         label_PrFit = QtGui.QLabel("integration.profile.fitting")
@@ -406,7 +462,7 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
-
+        localLayout.addStretch(1)
         self.setLayout(localLayout)
 
     def combobox_changed(self, value):
@@ -421,11 +477,15 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
 
 
 class IntegrateParameterWidget(QtGui.QWidget):
-
+    '''
+    The duty of this widget is to contain 2 tabs with the 2
+    levels of expertise and with different amounts of parameters
+    to adjust in the integration algorithm
+    '''
     def __init__(self, parent=None):
         from resources.integrate_mult_opt import ParamMainWidget
         super(IntegrateParameterWidget, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = IntegrateSimplerParamTab(self.super_parent)
@@ -445,11 +505,15 @@ class IntegrateParameterWidget(QtGui.QWidget):
 
 
 class ExportParameterWidget(QtGui.QWidget):
+    '''
+    This widget like the import one has no multiple tabs, but it does have
+    auto generated code on it
+    '''
 
     def __init__(self, parent=None):
         from resources.export_mult_opt import ParamMainWidget
         super(ExportParameterWidget, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
 
@@ -462,8 +526,29 @@ class ExportParameterWidget(QtGui.QWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/export.png"
 
+        To_run_pointless_n_aimless__simplest_case = '''
+
+        pointless < pointless.dat | tee pointless.log
+        aimless < aimless.dat | tee aimless.log
+
+        where pointless.dat contains:
+        HKLIN integrated.mtz
+        HKLOUT unscaled.mtz
+
+        And aimless.dat contains:
+        HKLIN unscaled.mtz
+        HKLOUT scaled.mtz
+
+
+        '''
+
 
 class MainWindow(QtGui.QMainWindow):
+  '''
+  This Main window widget is here just for debugging purpose,
+  the Dials GUI will continue working if this class and the
+  next __main__ code is removed
+  '''
 
   def __init__(self, parent=None):
 
@@ -499,4 +584,3 @@ if __name__ == '__main__':
 
   # Execute the application
   sys.exit(app.exec_())
-

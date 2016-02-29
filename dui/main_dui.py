@@ -59,7 +59,7 @@ class ImgTab( QtGui.QWidget):
 class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
         super(MyQProcess, self).__init__()
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.run_stat = False
         self.started.connect(self.local_start)
         self.readyReadStandardOutput.connect(self.readStdOutput)

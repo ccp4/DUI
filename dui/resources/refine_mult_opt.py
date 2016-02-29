@@ -8,7 +8,7 @@ class inner_widg( QWidget):
     item_changed = pyqtSignal()
     def __init__(self, parent = None):
         super(inner_widg, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
         palette_scope = QPalette()
         palette_scope.setColor(QPalette.Foreground, QColor(75, 75, 75, 255))
         palette_object = QPalette()
@@ -1197,7 +1197,7 @@ class inner_widg( QWidget):
 class ParamMainWidget( QWidget):
     def __init__(self, parent = None):
         super(ParamMainWidget, self).__init__(parent)
-        self.super_parent = parent
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.scrollable_widget = inner_widg(self.super_parent)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
