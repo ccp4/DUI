@@ -17,13 +17,73 @@ else:
     from PySide import QtCore, QtGui, QtWebKit
 
 
+class MyQProcess(QtCore.QProcess):
+    def __init__(self, parent):
+        super(MyQProcess, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.run_stat = False
+        self.started.connect(self.local_start)
+        self.readyReadStandardOutput.connect(self.readStdOutput)
+        self.readyReadStandardError.connect(self.readStdError)
+        self.finished.connect(self.local_finished)
+
+    def local_start(self):
+        self.super_parent.on_started()
+        self.go_btn_txt = "  Running "
+        self.run_stat = True
+
+        self.my_timer = QtCore.QTimer(self)
+        self.my_timer.timeout.connect(self.on_timeout)
+        self.my_timer.start(300)
+
+    def on_timeout(self):
+        self.go_btn_txt = self.go_btn_txt[1:] + self.go_btn_txt[:1]
+        self.super_parent.update_go_txt(self.go_btn_txt)
+
+    def readStdOutput(self):
+        line_string = str(self.readAllStandardOutput())
+        single_line = line_string[0:len(line_string) - 1]
+        self.super_parent.append_line(single_line)
+
+    def readStdError(self):
+        line_string = str(self.readAllStandardError())
+        self.super_parent.append_line(line_string, err_out = True)
+
+    def local_finished(self):
+        self.super_parent.on_finished()
+        self.my_timer.stop()
+        self.run_stat = False
 
 class TextBrows(QtGui.QTextBrowser):
     def __init__(self):
         super(TextBrows, self).__init__()
-        #self.multi_line_txt = QtGui.QTextBrowser()
-        #self.multi_line_txt.setMaximumHeight(724)
-        #self.multi_line_txt.setMinimumHeight(24)
+        self.set_black_font()
+
+    def set_black_font(self):
+        self.setCurrentFont(QtGui.QFont("Monospace"))
+        self.setTextColor(QtGui.QColor("black"))
+
+    def set_green_font(self):
+        self.setCurrentFont(QtGui.QFont("Monospace"))
+        self.setTextColor(QtGui.QColor("green"))
+
+    def set_red_font(self):
+        self.setCurrentFont(QtGui.QFont("Monospace"))
+        self.setTextColor(QtGui.QColor("red"))
+
+    def append_black(self, to_print):
+        self.set_black_font()
+        self.append(to_print)
+
+    def append_green(self, to_print):
+        self.set_green_font()
+        self.append(to_print)
+
+    def append_red(self, to_print):
+        self.set_red_font()
+        self.append(to_print)
+
+
 
 class ImgTab( QtGui.QWidget):
 

@@ -25,7 +25,7 @@ else:
 
 import os
 
-from cli_interactions import ImgTab
+from cli_interactions import ImgTab, TextBrows
 
 class ImportPage(QtGui.QWidget):
 
@@ -251,7 +251,8 @@ class FindspotsParameterWidget(QtGui.QWidget):
 
 
         rtabWidget = QtGui.QTabWidget()
-        #rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        self.multi_line_txt = TextBrows()
+        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(ImgTab(), "Graphic Reports")
 
 
@@ -348,12 +349,20 @@ class IndexParameterWidget(QtGui.QWidget):
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = IndexSimplerParamTab(self.super_parent)
 
-        tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Simple")
-        tabWidget.addTab(param_widg, "Advanced")
+        ltabWidget = QtGui.QTabWidget()
+        ltabWidget.addTab(default_tab, "Simple")
+        ltabWidget.addTab(param_widg, "Advanced")
 
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(tabWidget)
+
+        rtabWidget = QtGui.QTabWidget()
+        self.multi_line_txt = TextBrows()
+        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+
+
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(ltabWidget)
+        mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
@@ -417,12 +426,20 @@ class RefineParameterWidget(QtGui.QWidget):
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = RefineSimplerParamTab(self.super_parent)
 
-        tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Simple")
-        tabWidget.addTab(param_widg, "Advanced")
+        ltabWidget = QtGui.QTabWidget()
+        ltabWidget.addTab(default_tab, "Simple")
+        ltabWidget.addTab(param_widg, "Advanced")
 
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(tabWidget)
+
+        rtabWidget = QtGui.QTabWidget()
+        self.multi_line_txt = TextBrows()
+        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+
+
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(ltabWidget)
+        mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
@@ -503,12 +520,20 @@ class IntegrateParameterWidget(QtGui.QWidget):
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = IntegrateSimplerParamTab(self.super_parent)
 
-        tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Simple")
-        tabWidget.addTab(param_widg, "Advanced")
+        ltabWidget = QtGui.QTabWidget()
+        ltabWidget.addTab(default_tab, "Simple")
+        ltabWidget.addTab(param_widg, "Advanced")
 
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(tabWidget)
+
+        rtabWidget = QtGui.QTabWidget()
+        self.multi_line_txt = TextBrows()
+        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+
+
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(ltabWidget)
+        mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"

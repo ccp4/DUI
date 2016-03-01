@@ -29,46 +29,7 @@ import subprocess
 import sys
 import os
 
-
-from cli_interactions import ImgTab, TextBrows
-
-
-class MyQProcess(QtCore.QProcess):
-    def __init__(self, parent):
-        super(MyQProcess, self).__init__()
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.run_stat = False
-        self.started.connect(self.local_start)
-        self.readyReadStandardOutput.connect(self.readStdOutput)
-        self.readyReadStandardError.connect(self.readStdError)
-        self.finished.connect(self.local_finished)
-
-    def local_start(self):
-        self.super_parent.on_started()
-        self.go_btn_txt = "  Running "
-        self.run_stat = True
-
-        self.my_timer = QtCore.QTimer(self)
-        self.my_timer.timeout.connect(self.on_timeout)
-        self.my_timer.start(300)
-
-    def on_timeout(self):
-        self.go_btn_txt = self.go_btn_txt[1:] + self.go_btn_txt[:1]
-        self.super_parent.update_go_txt(self.go_btn_txt)
-
-    def readStdOutput(self):
-        line_string = str(self.readAllStandardOutput())
-        single_line = line_string[0:len(line_string) - 1]
-        self.super_parent.append_line(single_line)
-
-    def readStdError(self):
-        line_string = str(self.readAllStandardError())
-        self.super_parent.append_line(line_string, err_out = True)
-
-    def local_finished(self):
-        self.super_parent.on_finished()
-        self.my_timer.stop()
-        self.run_stat = False
+from cli_interactions import ImgTab, TextBrows, MyQProcess
 
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -94,7 +55,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.widget_list.append(IntegrateParameterWidget(self))
         self.widget_list.append(ExportParameterWidget(self))
 
-        self.pagesWidget.setMaximumWidth(650)
+        #self.pagesWidget.setMaximumWidth(650)
 
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
@@ -126,24 +87,15 @@ class MyMainDialog(QtGui.QMainWindow):
 
         self.multi_line_txt = TextBrows()
 
-        self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
-        self.multi_line_txt.setTextColor(QtGui.QColor("black"))
-
+        '''
         pop_viewers_layout = QtGui.QHBoxLayout()
         pop_viewers_layout.addWidget(pop_ref_view_but)
         pop_viewers_layout.addWidget(pop_but)
         right_side_layout = QtGui.QVBoxLayout()
 
-        #to_move = '''
-        tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(self.multi_line_txt, "Shell Log")
-        tabWidget.addTab(ImgTab(), "Graphic Reports")
-
-        right_side_layout.addWidget(tabWidget)
-        #'''
-
         right_side_layout.addLayout(pop_viewers_layout)
         horizontalLayout.addLayout(right_side_layout)
+        #'''
 
         mainLayout.addLayout(horizontalLayout)
         mainLayout.addLayout(exec_layout)
@@ -216,9 +168,17 @@ class MyMainDialog(QtGui.QMainWindow):
     def on_started(self):
         tmp_txt = "\n" + " Starting " + self.go_underline
         self.Go_button.setText(tmp_txt)
+        str_to_print = str("\nRunning >> { " + self.shell_str_to_run + " }" )
+        #self.multi_line_txt.append_green(str_to_print)
 
-        self.multi_line_txt.setTextColor(QtGui.QColor("green"))
-        self.multi_line_txt.append(str("\nRunning >> { " + self.shell_str_to_run + " }" ))
+
+        idx = self.pagesWidget.currentIndex()
+        self.widget_list[idx].multi_line_txt.append_green(str_to_print)
+
+        print "idx =", idx
+
+
+
 
     def update_go_txt(self, txt_str):
         tmp_txt = "\n" + txt_str + self.go_underline
@@ -230,14 +190,18 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):
-            self.multi_line_txt.setTextColor(QtGui.QColor("black"))
-            self.multi_line_txt.append(line_out)
+            #self.multi_line_txt.append_black(line_out)
+            idx = self.pagesWidget.currentIndex()
+            self.widget_list[idx].multi_line_txt.append_black(line_out)
+
 
         else:
             print "Error detected"
             err_line = "ERROR: { \n" + line_out + " } "
-            self.multi_line_txt.setTextColor(QtGui.QColor("red"))
-            self.multi_line_txt.append(err_line)
+            #self.multi_line_txt.append_red(err_line)
+            idx = self.pagesWidget.currentIndex()
+            self.widget_list[idx].multi_line_txt.append_red(err_line)
+
 
     def onImgViewBtn(self):
         subprocess.call("dials.image_viewer datablock.json &", shell=True)
