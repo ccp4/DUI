@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt4 import QtGui, QtCore
+from PySide import QtGui, QtCore
 
 class Example(QtGui.QWidget):
 

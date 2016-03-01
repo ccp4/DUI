@@ -84,30 +84,53 @@ class TextBrows(QtGui.QTextBrowser):
         self.append(to_print)
 
 
-
+old_html_thing = '''
 class ImgTab( QtGui.QWidget):
 
     def __init__(self):
         super(ImgTab, self).__init__()
 
-        self.web = QtWebKit.QWebView()
+        hbox =  QtGui.QHBoxLayout()
 
+
+        self.web = QtWebKit.QWebView()
         my_dui_path = os.environ["DUI_PATH"]
         print "my_dui_path =", my_dui_path
         tmp_path = my_dui_path[0:len(my_dui_path) - 12]
         print "tmp_path =", tmp_path
         self.html_path = tmp_path + "/dui/xia2-report.html"
         print "self.html_path =", self.html_path
-
-
         #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
         self.web.load(QtCore.QUrl(self.html_path))
-
-
-        hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.web)
 
-        #self.setGeometry(1100, 200, 550, 250)
+
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
+#'''
+
+class ImgTab(QtGui.QWidget):
+
+    def __init__(self):
+        super(ImgTab, self).__init__()
+        #self.setGeometry(300, 300, 250, 150)
+
+
+        imageLabel = QtGui.QLabel()
+        image = QtGui.QImage("/home/lui/dui_code/lui_testing/PyQt4_toys/tux_n_chrome.png")
+
+        print "Hi from ImgTab"
+
+        imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
+
+        scrollArea = QtGui.QScrollArea()
+        scrollArea.setWidget(imageLabel)
+
+        main_box = QtGui.QHBoxLayout()
+        main_box.addWidget(scrollArea)
+        self.setLayout(main_box)
+        self.show()
+
+
+

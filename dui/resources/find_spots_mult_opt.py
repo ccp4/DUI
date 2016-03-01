@@ -1,8 +1,7 @@
 import sys
-from PySide.QtGui import *
-from PySide.QtCore import *
-pyqtSignal = Signal
-print "using PySide"
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+print "using PyQt4"
 
 
 class inner_widg( QWidget):
