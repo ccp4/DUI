@@ -29,32 +29,9 @@ import subprocess
 import sys
 import os
 
-class ImgTab( QtGui.QWidget):
 
-    def __init__(self):
-        super(ImgTab, self).__init__()
+from cli_interactions import ImgTab, TextBrows
 
-        self.web = QtWebKit.QWebView()
-
-        my_dui_path = os.environ["DUI_PATH"]
-        print "my_dui_path =", my_dui_path
-        tmp_path = my_dui_path[0:len(my_dui_path) - 12]
-        print "tmp_path =", tmp_path
-        self.html_path = tmp_path + "/dui/xia2-report.html"
-        print "self.html_path =", self.html_path
-
-
-        #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
-        self.web.load(QtCore.QUrl(self.html_path))
-
-
-        hbox =  QtGui.QHBoxLayout()
-        hbox.addWidget(self.web)
-
-        #self.setGeometry(1100, 200, 550, 250)
-        self.setLayout(hbox)
-        self.setWindowTitle('Shell dialog')
-        self.show()
 
 class MyQProcess(QtCore.QProcess):
     def __init__(self, parent):
@@ -147,9 +124,8 @@ class MyMainDialog(QtGui.QMainWindow):
 
         mainLayout = QtGui.QVBoxLayout()
 
-        self.multi_line_txt = QtGui.QTextBrowser()
-        #self.multi_line_txt.setMaximumHeight(724)
-        #self.multi_line_txt.setMinimumHeight(24)
+        self.multi_line_txt = TextBrows()
+
         self.multi_line_txt.setCurrentFont(QtGui.QFont("Monospace"))
         self.multi_line_txt.setTextColor(QtGui.QColor("black"))
 
@@ -158,11 +134,13 @@ class MyMainDialog(QtGui.QMainWindow):
         pop_viewers_layout.addWidget(pop_but)
         right_side_layout = QtGui.QVBoxLayout()
 
+        #to_move = '''
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(self.multi_line_txt, "Shell Log")
         tabWidget.addTab(ImgTab(), "Graphic Reports")
 
         right_side_layout.addWidget(tabWidget)
+        #'''
 
         right_side_layout.addLayout(pop_viewers_layout)
         horizontalLayout.addLayout(right_side_layout)
@@ -273,13 +251,10 @@ if __name__ == '__main__':
     import sys
 
     app = QtGui.QApplication(sys.argv)
-
-
     screen_resolution = app.desktop().screenGeometry()
     width, height = screen_resolution.width(), screen_resolution.height()
 
-    print "width, height =", width, height
-
+    print "screen (width, height) =", width, height
 
     dialog = MyMainDialog()
     dialog.show()

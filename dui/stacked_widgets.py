@@ -25,6 +25,8 @@ else:
 
 import os
 
+from cli_interactions import ImgTab
+
 class ImportPage(QtGui.QWidget):
 
     '''
@@ -243,13 +245,24 @@ class FindspotsParameterWidget(QtGui.QWidget):
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = FindspotsSimplerParameterTab(self.super_parent)
-        tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(default_tab, "Simple")
-        tabWidget.addTab(param_widg, "Advanced")
+        ltabWidget = QtGui.QTabWidget()
+        ltabWidget.addTab(default_tab, "Simple")
+        ltabWidget.addTab(param_widg, "Advanced")
 
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(tabWidget)
+
+        rtabWidget = QtGui.QTabWidget()
+        #rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+
+
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(ltabWidget)
+        mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
+
+
+
+
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "Find Spots"
