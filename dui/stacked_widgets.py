@@ -249,21 +249,15 @@ class FindspotsParameterWidget(QtGui.QWidget):
         ltabWidget.addTab(default_tab, "Simple")
         ltabWidget.addTab(param_widg, "Advanced")
 
-
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(ImgTab(), "Graphic Reports")
 
-
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
         mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
-
-
-
-
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "Find Spots"
@@ -353,12 +347,10 @@ class IndexParameterWidget(QtGui.QWidget):
         ltabWidget.addTab(default_tab, "Simple")
         ltabWidget.addTab(param_widg, "Advanced")
 
-
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(ImgTab(), "Graphic Reports")
-
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
@@ -430,12 +422,10 @@ class RefineParameterWidget(QtGui.QWidget):
         ltabWidget.addTab(default_tab, "Simple")
         ltabWidget.addTab(param_widg, "Advanced")
 
-
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(ImgTab(), "Graphic Reports")
-
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
@@ -524,12 +514,10 @@ class IntegrateParameterWidget(QtGui.QWidget):
         ltabWidget.addTab(default_tab, "Simple")
         ltabWidget.addTab(param_widg, "Advanced")
 
-
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(ImgTab(), "Graphic Reports")
-
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
