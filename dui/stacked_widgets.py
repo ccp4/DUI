@@ -44,11 +44,15 @@ class ImportPage(QtGui.QWidget):
     # instead of:
     # dials.import /my/path/to/my/data/
     # as the generated line to run
+
+    # And study the file:
+    # Dxtbx/sweep_filenames.py
+
     def __init__(self, parent=None):
         super(ImportPage, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        self.w_dir_str = os.getcwd()
+        self.super_parent.w_dir = os.getcwd()
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
         self.button_label = "Import"
 
@@ -68,7 +72,7 @@ class ImportPage(QtGui.QWidget):
         w_dir_group = QtGui.QGroupBox("Working Directory")
         w_dir_layout = QtGui.QHBoxLayout()
         self.w_dir_lin =  QtGui.QLineEdit(self)
-        self.w_dir_lin.setText(self.w_dir_str)
+        self.w_dir_lin.setText(self.super_parent.w_dir)
         w_dir_layout.addWidget(self.w_dir_lin)
         w_dir_button = QtGui.QPushButton(" \n    Change Working Dir    . \n")
         w_dir_button.clicked.connect(self.change_w_dir)
@@ -129,14 +133,14 @@ class ImportPage(QtGui.QWidget):
 
 
     def change_w_dir(self, event = None):
-        dir_name = QtGui.QFileDialog.getExistingDirectory(self, "Change Working Dir")
+        dir_name = str(QtGui.QFileDialog.getExistingDirectory(self, "Change Working Dir"))
         print "[dir path found] =", dir_name
 
         if( dir_name ):
-            print "dir_name(final) =", dir_name
-            self.w_dir_str = dir_name
-            os.chdir(self.w_dir_str)
-            self.w_dir_lin.setText(self.w_dir_str)
+            self.super_parent.w_dir = dir_name
+            os.chdir(self.super_parent.w_dir)
+            self.w_dir_lin.setText(self.super_parent.w_dir)
+            print "dir_name(w_dir) =", self.super_parent.w_dir
 
         else:
             print "Failed to pick dir"
@@ -251,8 +255,9 @@ class FindspotsParameterWidget(QtGui.QWidget):
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
+        self.analyse_out_img = ImgTab(self.super_parent)
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
@@ -349,8 +354,9 @@ class IndexParameterWidget(QtGui.QWidget):
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
+        self.analyse_out_img = ImgTab(self.super_parent)
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
@@ -425,7 +431,8 @@ class RefineParameterWidget(QtGui.QWidget):
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+        self.analyse_out_img = ImgTab(self.super_parent)
+        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
@@ -516,8 +523,9 @@ class IntegrateParameterWidget(QtGui.QWidget):
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
+        self.analyse_out_img = ImgTab(self.super_parent)
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(ImgTab(), "Graphic Reports")
+        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)

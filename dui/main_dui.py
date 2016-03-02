@@ -87,16 +87,6 @@ class MyMainDialog(QtGui.QMainWindow):
 
         self.multi_line_txt = TextBrows()
 
-        '''
-        pop_viewers_layout = QtGui.QHBoxLayout()
-        pop_viewers_layout.addWidget(pop_ref_view_but)
-        pop_viewers_layout.addWidget(pop_but)
-        right_side_layout = QtGui.QVBoxLayout()
-
-        right_side_layout.addLayout(pop_viewers_layout)
-        horizontalLayout.addLayout(right_side_layout)
-        #'''
-
         mainLayout.addLayout(horizontalLayout)
         mainLayout.addLayout(exec_layout)
 
@@ -177,7 +167,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
         print "idx =", idx
 
-
+        self.widget_list[idx].analyse_out_img.update_img()
 
 
     def update_go_txt(self, txt_str):

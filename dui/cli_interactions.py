@@ -18,7 +18,7 @@ else:
 
 
 class MyQProcess(QtCore.QProcess):
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(MyQProcess, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.run_stat = False
@@ -112,16 +112,13 @@ class ImgTab( QtGui.QWidget):
 
 class ImgTab(QtGui.QWidget):
 
-    def __init__(self):
+    def __init__(self, parent = None):
         super(ImgTab, self).__init__()
-        #self.setGeometry(300, 300, 250, 150)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
 
         imageLabel = QtGui.QLabel()
         image = QtGui.QImage("/home/lui/dui_code/lui_testing/PyQt4_toys/tux_n_chrome.png")
-
-        print "Hi from ImgTab"
-
         imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
 
         scrollArea = QtGui.QScrollArea()
@@ -132,5 +129,24 @@ class ImgTab(QtGui.QWidget):
         self.setLayout(main_box)
         self.show()
 
+
+    def update_img(self):
+
+        try:
+            print "dir_name(w_dir) =", self.super_parent.w_dir
+
+            print "self.super_parent.w_dir =", self.super_parent.w_dir
+        except:
+            print "NON existent self.super_parent.w_dir Var"
+
+        '''
+        pop_viewers_layout = QtGui.QHBoxLayout()
+        pop_viewers_layout.addWidget(pop_ref_view_but)
+        pop_viewers_layout.addWidget(pop_but)
+        right_side_layout = QtGui.QVBoxLayout()
+
+        right_side_layout.addLayout(pop_viewers_layout)
+        horizontalLayout.addLayout(right_side_layout)
+        #'''
 
 
