@@ -84,32 +84,9 @@ class TextBrows(QtGui.QTextBrowser):
         self.append(to_print)
 
 
-old_html_thing = '''
-class ImgTab( QtGui.QWidget):
-
-    def __init__(self):
-        super(ImgTab, self).__init__()
-
-        hbox =  QtGui.QHBoxLayout()
 
 
-        self.web = QtWebKit.QWebView()
-        my_dui_path = os.environ["DUI_PATH"]
-        print "my_dui_path =", my_dui_path
-        tmp_path = my_dui_path[0:len(my_dui_path) - 12]
-        print "tmp_path =", tmp_path
-        self.html_path = tmp_path + "/dui/xia2-report.html"
-        print "self.html_path =", self.html_path
-        #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
-        self.web.load(QtCore.QUrl(self.html_path))
-        hbox.addWidget(self.web)
-
-
-        self.setLayout(hbox)
-        self.setWindowTitle('Shell dialog')
-        self.show()
-#'''
-
+first_attempt_w_png_files = '''
 class ImgTab(QtGui.QWidget):
 
     def __init__(self, parent = None):
@@ -154,14 +131,78 @@ class ImgTab(QtGui.QWidget):
         #except:
         #    print "NON existent self.super_parent.w_dir Var"
 
-        '''
-        pop_viewers_layout = QtGui.QHBoxLayout()
-        pop_viewers_layout.addWidget(pop_ref_view_but)
-        pop_viewers_layout.addWidget(pop_but)
-        right_side_layout = QtGui.QVBoxLayout()
 
-        right_side_layout.addLayout(pop_viewers_layout)
-        horizontalLayout.addLayout(right_side_layout)
+        #pop_viewers_layout = QtGui.QHBoxLayout()
+        #pop_viewers_layout.addWidget(pop_ref_view_but)
+        #pop_viewers_layout.addWidget(pop_but)
+        #right_side_layout = QtGui.QVBoxLayout()
+        #
+        #right_side_layout.addLayout(pop_viewers_layout)
+        #horizontalLayout.addLayout(right_side_layout)
         #'''
 
 
+class ImgWidg(QtGui.QWidget):
+    def __init__(self, parent = None, img_path_lst = None):
+        super(ImgWidg, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        bg_box =  QtGui.QHBoxLayout(self)
+        #img_path = self.super_parent.w_dir + "/output/analysis/centroid/" + "centroid_diff_x.png"
+        img_path = "/home/lui/dui_code/lui_testing/PyQt4_toys/img_layouts/" + "centroid_diff_x.png"
+        img_path_lst = [img_path]
+        print "img_path_lst[0] =", img_path_lst[0]
+
+        for single_img_path in img_path_lst:
+
+            imageLabel = QtGui.QLabel()
+            image = QtGui.QImage(single_img_path)
+            imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
+
+            bg_box.addWidget(imageLabel)
+
+        self.setLayout(bg_box)
+        self.show()
+
+
+class ImgTab(QtGui.QScrollArea):
+
+    def __init__(self, parent = None, lst_img = None):
+        super(ImgTab, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.imageWidg = ImgWidg(self.super_parent, lst_img)
+        self.setWidget(self.imageWidg)
+        self.show()
+
+    def update_me(self, lst_img = None):
+        print "update_me(self)"
+
+        self.imageWidg = ImgWidg(self, lst_img)
+        self.setWidget(self.imageWidg)
+        self.show()
+
+
+old_html_thing = '''
+class ImgTab( QtGui.QWidget):
+
+    def __init__(self):
+        super(ImgTab, self).__init__()
+
+        hbox =  QtGui.QHBoxLayout()
+
+
+        self.web = QtWebKit.QWebView()
+        my_dui_path = os.environ["DUI_PATH"]
+        print "my_dui_path =", my_dui_path
+        tmp_path = my_dui_path[0:len(my_dui_path) - 12]
+        print "tmp_path =", tmp_path
+        self.html_path = tmp_path + "/dui/xia2-report.html"
+        print "self.html_path =", self.html_path
+        #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+        self.web.load(QtCore.QUrl(self.html_path))
+        hbox.addWidget(self.web)
+
+
+        self.setLayout(hbox)
+        self.setWindowTitle('Shell dialog')
+        self.show()
+#'''
