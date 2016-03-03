@@ -117,27 +117,42 @@ class ImgTab(QtGui.QWidget):
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
 
-        imageLabel = QtGui.QLabel()
-        image = QtGui.QImage("/home/lui/dui_code/lui_testing/PyQt4_toys/tux_n_chrome.png")
-        imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
+        self.imageLabel = QtGui.QLabel()
+        self.image = QtGui.QImage("/home/lui/dui_code/lui_testing/PyQt4_toys/tux_n_chrome.png")
+        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(self.image))
 
-        scrollArea = QtGui.QScrollArea()
-        scrollArea.setWidget(imageLabel)
+        self.scrollArea = QtGui.QScrollArea()
+        self.scrollArea.setWidget(self.imageLabel)
 
         main_box = QtGui.QHBoxLayout()
-        main_box.addWidget(scrollArea)
+        main_box.addWidget(self.scrollArea)
         self.setLayout(main_box)
         self.show()
 
 
     def update_img(self):
 
-        try:
-            print "dir_name(w_dir) =", self.super_parent.w_dir
+        #try:
+        print "dir_name(w_dir) =", self.super_parent.w_dir
+        print "self.super_parent.w_dir =", self.super_parent.w_dir
+        img_path = self.super_parent.w_dir + "/output/analysis/centroid/" + "centroid_diff_x.png"
+        print "img_path =", img_path
 
-            print "self.super_parent.w_dir =", self.super_parent.w_dir
-        except:
-            print "NON existent self.super_parent.w_dir Var"
+        self.imageLabel = QtGui.QLabel(img_path)
+        self.image = QtGui.QImage()
+        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(self.image))
+
+        self.scrollArea = QtGui.QScrollArea()
+        self.scrollArea.setWidget(self.imageLabel)
+
+        print "img updated internally"
+        self.super_parent.update()
+        self.super_parent.repaint()
+        #self.refresh()
+
+
+        #except:
+        #    print "NON existent self.super_parent.w_dir Var"
 
         '''
         pop_viewers_layout = QtGui.QHBoxLayout()

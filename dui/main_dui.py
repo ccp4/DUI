@@ -161,14 +161,8 @@ class MyMainDialog(QtGui.QMainWindow):
         str_to_print = str("\nRunning >> { " + self.shell_str_to_run + " }" )
         #self.multi_line_txt.append_green(str_to_print)
 
-
         idx = self.pagesWidget.currentIndex()
         self.widget_list[idx].multi_line_txt.append_green(str_to_print)
-
-        print "idx =", idx
-
-        self.widget_list[idx].analyse_out_img.update_img()
-
 
     def update_go_txt(self, txt_str):
         tmp_txt = "\n" + txt_str + self.go_underline
@@ -178,12 +172,15 @@ class MyMainDialog(QtGui.QMainWindow):
         self.Go_button.setText(self.default_go_label)
         self.gui_line_edit.setText(str(""))
 
+        print "Done CLI"
+        idx = self.pagesWidget.currentIndex()
+        self.widget_list[idx].analyse_out_img.update_img()
+
     def append_line(self, line_out, err_out = False):
         if( not err_out ):
             #self.multi_line_txt.append_black(line_out)
             idx = self.pagesWidget.currentIndex()
             self.widget_list[idx].multi_line_txt.append_black(line_out)
-
 
         else:
             print "Error detected"
