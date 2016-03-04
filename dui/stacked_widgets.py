@@ -234,14 +234,50 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         self.super_parent.update_lin_txt(str_path, str_value)
         self.super_parent.update_lin_txt(sender.local_path, value)
 
+class GenericParameterWidget(QtGui.QWidget):
+    '''
+    All dual tab parameter widgets should inherit from this one
+    as they all look alike
+    '''
+    def __init__(self, parent=None, simpler_par_widget = None, advanced_par_widget = None):
+        super(GenericParameterWidget, self).__init__(parent)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
+
+        ltabWidget = QtGui.QTabWidget()
+
+        if( simpler_par_widget != None ):
+            default_tab = simpler_par_widget(self.super_parent)
+            ltabWidget.addTab(default_tab, "Simple")
+
+        if( advanced_par_widget != None ):
+            param_widg = advanced_par_widget(self.super_parent)
+            ltabWidget.addTab(param_widg, "Advanced")
+
+        rtabWidget = QtGui.QTabWidget()
+        self.multi_line_txt = TextBrows()
+        self.analyse_out_img = ImgTab(self.super_parent)
+        self.report_out_widg = HtmlTab()
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
+        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
+
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(ltabWidget)
+        mainLayout.addWidget(rtabWidget)
+        self.setLayout(mainLayout)
+
+        self.cmd_lin_default = "dials.find_spots datablock.json"
+        self.button_label = "Find Spots"
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
+
+
+
+
+
+#old_stable_FindspotsParameterWidget = '''
 class FindspotsParameterWidget(QtGui.QWidget):
-    '''
-    The duty of this widget is to contain 2 tabs with the 2
-    levels of expertise and with different amounts of parameters
-    to adjust in the find spot algorithm
-    '''
-
     def __init__(self, parent=None):
         from resources.find_spots_mult_opt import ParamMainWidget
         super(FindspotsParameterWidget, self).__init__(parent)
@@ -270,6 +306,10 @@ class FindspotsParameterWidget(QtGui.QWidget):
         self.button_label = "Find Spots"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
+
+
+#'''
+
 
 
 class IndexSimplerParamTab(QtGui.QWidget):
