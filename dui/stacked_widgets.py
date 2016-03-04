@@ -25,7 +25,7 @@ else:
 
 import os
 
-from cli_interactions import ImgTab, TextBrows
+from cli_interactions import ImgTab, TextBrows, HtmlTab
 
 class ImportPage(QtGui.QWidget):
 
@@ -256,6 +256,8 @@ class FindspotsParameterWidget(QtGui.QWidget):
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         self.analyse_out_img = ImgTab(self.super_parent)
+        self.report_out_widg = HtmlTab()
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
@@ -355,6 +357,8 @@ class IndexParameterWidget(QtGui.QWidget):
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         self.analyse_out_img = ImgTab(self.super_parent)
+        self.report_out_widg = HtmlTab()
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
@@ -430,6 +434,8 @@ class RefineParameterWidget(QtGui.QWidget):
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
+        self.report_out_widg = HtmlTab()
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         self.analyse_out_img = ImgTab(self.super_parent)
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
@@ -524,6 +530,8 @@ class IntegrateParameterWidget(QtGui.QWidget):
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
         self.analyse_out_img = ImgTab(self.super_parent)
+        self.report_out_widg = HtmlTab()
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 

@@ -29,7 +29,7 @@ import subprocess
 import sys
 import os
 
-from cli_interactions import ImgTab, TextBrows, MyQProcess
+from cli_interactions import TextBrows, MyQProcess
 
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -174,7 +174,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
         print "Done CLI"
         idx = self.pagesWidget.currentIndex()
-        self.widget_list[idx].analyse_out_img.update_img()
+        self.widget_list[idx].analyse_out_img.update_me()
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):

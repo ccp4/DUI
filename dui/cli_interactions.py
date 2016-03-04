@@ -4,6 +4,7 @@ import sys
 '''
 
 import os
+from subprocess import call as shell_func
 
 from resources.python_qt_bind import GuiBinding
 gui_lib = GuiBinding()
@@ -85,70 +86,16 @@ class TextBrows(QtGui.QTextBrowser):
 
 
 
-
-first_attempt_w_png_files = '''
-class ImgTab(QtGui.QWidget):
-
-    def __init__(self, parent = None):
-        super(ImgTab, self).__init__()
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-
-
-        self.imageLabel = QtGui.QLabel()
-        self.image = QtGui.QImage("/home/lui/dui_code/lui_testing/PyQt4_toys/tux_n_chrome.png")
-        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(self.image))
-
-        self.scrollArea = QtGui.QScrollArea()
-        self.scrollArea.setWidget(self.imageLabel)
-
-        main_box = QtGui.QHBoxLayout()
-        main_box.addWidget(self.scrollArea)
-        self.setLayout(main_box)
-        self.show()
-
-
-    def update_img(self):
-
-        #try:
-        print "dir_name(w_dir) =", self.super_parent.w_dir
-        print "self.super_parent.w_dir =", self.super_parent.w_dir
-        img_path = self.super_parent.w_dir + "/output/analysis/centroid/" + "centroid_diff_x.png"
-        print "img_path =", img_path
-
-        self.imageLabel = QtGui.QLabel(img_path)
-        self.image = QtGui.QImage()
-        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(self.image))
-
-        self.scrollArea = QtGui.QScrollArea()
-        self.scrollArea.setWidget(self.imageLabel)
-
-        print "img updated internally"
-        self.super_parent.update()
-        self.super_parent.repaint()
-        #self.refresh()
-
-
-        #except:
-        #    print "NON existent self.super_parent.w_dir Var"
-
-
-        #pop_viewers_layout = QtGui.QHBoxLayout()
-        #pop_viewers_layout.addWidget(pop_ref_view_but)
-        #pop_viewers_layout.addWidget(pop_but)
-        #right_side_layout = QtGui.QVBoxLayout()
-        #
-        #right_side_layout.addLayout(pop_viewers_layout)
-        #horizontalLayout.addLayout(right_side_layout)
-        #'''
-
-
 class ImgWidg(QtGui.QWidget):
     def __init__(self, parent = None, img_path_lst = None):
         super(ImgWidg, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         bg_box =  QtGui.QHBoxLayout(self)
-        #img_path = self.super_parent.w_dir + "/output/analysis/centroid/" + "centroid_diff_x.png"
-        img_path = "/home/lui/dui_code/lui_testing/PyQt4_toys/img_layouts/" + "centroid_diff_x.png"
+        img_path = self.super_parent.w_dir + "/spot_find_output/analysis/strong/" + "spots_per_image.png"
+
+        #/home/lui/dui_testind_w_imgs/only_10_img/New_04/analysis/strong
+
+        #img_path = "/home/lui/dui_code/lui_testing/PyQt4_toys/img_layouts/" + "centroid_diff_x.png"
         img_path_lst = [img_path]
         print "img_path_lst[0] =", img_path_lst[0]
 
@@ -176,16 +123,24 @@ class ImgTab(QtGui.QScrollArea):
     def update_me(self, lst_img = None):
         print "update_me(self)"
 
-        self.imageWidg = ImgWidg(self, lst_img)
+        try:
+            print "Running output generator"
+            my_cmd = "dials.analyse_output output.directory=spot_find_output strong.pickle"
+            shell_func(my_cmd, shell=True)
+
+        except:
+            print "WARNING something went wrong with the output generator"
+
+
+        self.imageWidg = ImgWidg(self.super_parent, lst_img)
         self.setWidget(self.imageWidg)
         self.show()
 
 
-old_html_thing = '''
-class ImgTab( QtGui.QWidget):
+class HtmlTab( QtGui.QWidget):
 
     def __init__(self):
-        super(ImgTab, self).__init__()
+        super(HtmlTab, self).__init__()
 
         hbox =  QtGui.QHBoxLayout()
 
@@ -205,4 +160,3 @@ class ImgTab( QtGui.QWidget):
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
-#'''
