@@ -239,19 +239,20 @@ class GenericParameterWidget(QtGui.QWidget):
     All dual tab parameter widgets should inherit from this one
     as they all look alike
     '''
-    def __init__(self, parent=None, simpler_par_widget = None, advanced_par_widget = None):
+    def __init__(self, parent=None):
         super(GenericParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
+    def add_tabs(self, simpler_par_widget = None, advanced_par_widget = None):
 
         ltabWidget = QtGui.QTabWidget()
 
         if( simpler_par_widget != None ):
-            default_tab = simpler_par_widget(self.super_parent)
+            default_tab = simpler_par_widget
             ltabWidget.addTab(default_tab, "Simple")
 
         if( advanced_par_widget != None ):
-            param_widg = advanced_par_widget(self.super_parent)
+            param_widg = advanced_par_widget
             ltabWidget.addTab(param_widg, "Advanced")
 
         rtabWidget = QtGui.QTabWidget()
@@ -267,17 +268,7 @@ class GenericParameterWidget(QtGui.QWidget):
         mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
 
-        self.cmd_lin_default = "dials.find_spots datablock.json"
-        self.button_label = "Find Spots"
-        my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
-
-
-
-
-
-#old_stable_FindspotsParameterWidget = '''
-class FindspotsParameterWidget(QtGui.QWidget):
+class FindspotsParameterWidget(GenericParameterWidget):
     def __init__(self, parent=None):
         from resources.find_spots_mult_opt import ParamMainWidget
         super(FindspotsParameterWidget, self).__init__(parent)
@@ -285,30 +276,12 @@ class FindspotsParameterWidget(QtGui.QWidget):
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = FindspotsSimplerParameterTab(self.super_parent)
-        ltabWidget = QtGui.QTabWidget()
-        ltabWidget.addTab(default_tab, "Simple")
-        ltabWidget.addTab(param_widg, "Advanced")
-
-        rtabWidget = QtGui.QTabWidget()
-        self.multi_line_txt = TextBrows()
-        self.analyse_out_img = ImgTab(self.super_parent)
-        self.report_out_widg = HtmlTab()
-        rtabWidget.addTab(self.report_out_widg, "HTML output")
-        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
-
-        mainLayout = QtGui.QHBoxLayout()
-        mainLayout.addWidget(ltabWidget)
-        mainLayout.addWidget(rtabWidget)
-        self.setLayout(mainLayout)
+        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "Find Spots"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
-
-
-#'''
 
 
 
@@ -376,7 +349,7 @@ class IndexSimplerParamTab(QtGui.QWidget):
         print str_path
         self.super_parent.update_lin_txt(str_path, str_value)
 
-class IndexParameterWidget(QtGui.QWidget):
+class IndexParameterWidget(GenericParameterWidget):
     '''
     The duty of this widget is to contain 2 tabs with the 2
     levels of expertise and with different amounts of parameters
@@ -389,23 +362,7 @@ class IndexParameterWidget(QtGui.QWidget):
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = IndexSimplerParamTab(self.super_parent)
-
-        ltabWidget = QtGui.QTabWidget()
-        ltabWidget.addTab(default_tab, "Simple")
-        ltabWidget.addTab(param_widg, "Advanced")
-
-        rtabWidget = QtGui.QTabWidget()
-        self.multi_line_txt = TextBrows()
-        self.analyse_out_img = ImgTab(self.super_parent)
-        self.report_out_widg = HtmlTab()
-        rtabWidget.addTab(self.report_out_widg, "HTML output")
-        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
-
-        mainLayout = QtGui.QHBoxLayout()
-        mainLayout.addWidget(ltabWidget)
-        mainLayout.addWidget(rtabWidget)
-        self.setLayout(mainLayout)
+        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
         self.button_label = "Index"
@@ -454,7 +411,7 @@ class RefineSimplerParamTab(QtGui.QWidget):
         print str_path
         self.super_parent.update_lin_txt(str_path, str_value)
 
-class RefineParameterWidget(QtGui.QWidget):
+class RefineParameterWidget(GenericParameterWidget):
     '''
     The duty of this widget is to contain 2 tabs with the 2
     levels of expertise and with different amounts of parameters
@@ -466,24 +423,8 @@ class RefineParameterWidget(QtGui.QWidget):
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
-        default_tab = RefineSimplerParamTab(self.super_parent)
-
-        ltabWidget = QtGui.QTabWidget()
-        ltabWidget.addTab(default_tab, "Simple")
-        ltabWidget.addTab(param_widg, "Advanced")
-
-        rtabWidget = QtGui.QTabWidget()
-        self.multi_line_txt = TextBrows()
-        self.report_out_widg = HtmlTab()
-        rtabWidget.addTab(self.report_out_widg, "HTML output")
-        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        self.analyse_out_img = ImgTab(self.super_parent)
-        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
-
-        mainLayout = QtGui.QHBoxLayout()
-        mainLayout.addWidget(ltabWidget)
-        mainLayout.addWidget(rtabWidget)
-        self.setLayout(mainLayout)
+        default_tab = IndexSimplerParamTab(self.super_parent)
+        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
         self.button_label = "Refine"
@@ -549,7 +490,7 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         self.super_parent.update_lin_txt(str_path, str_value)
 
 
-class IntegrateParameterWidget(QtGui.QWidget):
+class IntegrateParameterWidget(GenericParameterWidget):
     '''
     The duty of this widget is to contain 2 tabs with the 2
     levels of expertise and with different amounts of parameters
@@ -562,23 +503,8 @@ class IntegrateParameterWidget(QtGui.QWidget):
 
         param_widg = ParamMainWidget(self.super_parent)
         default_tab = IntegrateSimplerParamTab(self.super_parent)
+        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
-        ltabWidget = QtGui.QTabWidget()
-        ltabWidget.addTab(default_tab, "Simple")
-        ltabWidget.addTab(param_widg, "Advanced")
-
-        rtabWidget = QtGui.QTabWidget()
-        self.multi_line_txt = TextBrows()
-        self.analyse_out_img = ImgTab(self.super_parent)
-        self.report_out_widg = HtmlTab()
-        rtabWidget.addTab(self.report_out_widg, "HTML output")
-        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
-
-        mainLayout = QtGui.QHBoxLayout()
-        mainLayout.addWidget(ltabWidget)
-        mainLayout.addWidget(rtabWidget)
-        self.setLayout(mainLayout)
 
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
         self.button_label = "Integrate"
