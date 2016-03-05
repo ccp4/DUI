@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+
+
 from __future__ import division
 type_from_sh_cli = '''
 export BOOST_ADAPTBX_FPE_DEFAULT=1
@@ -34,6 +35,10 @@ from cli_interactions import TextBrows, MyQProcess
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(MyMainDialog, self).__init__(parent)
+
+        my_dui_path = os.environ["DUI_PATH"]
+        dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_icon_ish.png"
+        self.setWindowIcon(QtGui.QIcon(dials_logo_path))
 
         self.contentsWidget = QtGui.QListWidget()
         self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
