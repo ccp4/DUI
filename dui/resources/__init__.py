@@ -1,12 +1,11 @@
 '''
-__init__ needed to reuse code in this dir
+__init__ needed to reuse code in directories tree
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
-
-copyright CCP4 - DLS '''
-
+copyright (c) CCP4 - DLS
+'''
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
 #as published by the Free Software Foundation; either version 2

@@ -1,13 +1,11 @@
 '''
-
 DUI's code generator from phil parameters
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
-
-copyright CCP4 - DLS
-
+copyright (c) CCP4 - DLS
+'''
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
 #as published by the Free Software Foundation; either version 2
@@ -23,7 +21,7 @@ copyright CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-'''
+
 
 # FIXME Copied from dials.index.py. This is needed here because scipy needs to
 # be imported before cctbx otherwise there will be a segmentation fault. This
