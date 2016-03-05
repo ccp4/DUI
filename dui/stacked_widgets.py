@@ -175,10 +175,11 @@ class GenericParameterWidget(QtGui.QWidget):
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
-        self.analyse_out_img = ImgTab(self.super_parent)
         self.report_out_widg = HtmlTab()
-        rtabWidget.addTab(self.report_out_widg, "HTML output")
+        self.analyse_out_img = ImgTab(self.super_parent)
+
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
         mainLayout = QtGui.QHBoxLayout()
@@ -520,7 +521,37 @@ class IntegrateParameterWidget(GenericParameterWidget):
         self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
 
 
-class ExportParameterWidget(QtGui.QWidget):
+class ExportSimplerParameterWidget(QtGui.QWidget):
+    '''
+    This widget like the import one has no multiple tabs, but it does have
+    auto generated code on it
+    '''
+
+    def __init__(self, parent=None):
+        from resources.export_mult_opt import ParamMainWidget
+        super(ExportSimplerParameterWidget, self).__init__(parent)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+
+
+        hbox_lay_hklout_6 = QtGui.QHBoxLayout()
+        label_hklout_6 = QtGui.QLabel("    hklout")
+
+        label_hklout_6.setFont(QtGui.QFont("Monospace"))
+        hbox_lay_hklout_6.addWidget(label_hklout_6)
+
+        box_hklout_6 = QtGui.QLineEdit()
+        box_hklout_6.local_path = "mtz.hklout"
+        #box_hklout_6.textChanged.connect(self.spnbox_changed)
+        hbox_lay_hklout_6.addWidget(box_hklout_6)
+        bg_box = QtGui.QVBoxLayout()
+        bg_box.addLayout(hbox_lay_hklout_6)
+        bg_box.addStretch()
+
+        self.setLayout(bg_box)
+
+
+
+class ExportParameterWidget(GenericParameterWidget):
     '''
     This widget like the import one has no multiple tabs, but it does have
     auto generated code on it
@@ -532,10 +563,10 @@ class ExportParameterWidget(QtGui.QWidget):
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
+        default_tab = ExportSimplerParameterWidget(self.super_parent)
+        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(param_widg)
-        self.setLayout(mainLayout)
+
 
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
         self.button_label = "Export mtz"
