@@ -91,7 +91,13 @@ class ImportPage(QtGui.QWidget):
         mainLayout.addStretch(1)
         mainLayout.addWidget(self.auto_next_check)
 
-        self.setLayout(mainLayout)
+        big_layout = QtGui.QHBoxLayout()
+        big_layout.addLayout(mainLayout)
+
+        self.multi_line_txt = TextBrows()
+        big_layout.addWidget(self.multi_line_txt)
+
+        self.setLayout(big_layout)
 
 
     def changed_auto_next(self):
@@ -144,6 +150,41 @@ class ImportPage(QtGui.QWidget):
 
         else:
             print "Failed to pick dir"
+
+
+class GenericParameterWidget(QtGui.QWidget):
+    '''
+    All dual tab parameter widgets should inherit from this one
+    as they all look alike
+    '''
+    def __init__(self, parent=None):
+        super(GenericParameterWidget, self).__init__(parent)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+
+    def add_tabs(self, simpler_par_widget = None, advanced_par_widget = None):
+
+        ltabWidget = QtGui.QTabWidget()
+
+        if( simpler_par_widget != None ):
+            default_tab = simpler_par_widget
+            ltabWidget.addTab(default_tab, "Simple")
+
+        if( advanced_par_widget != None ):
+            param_widg = advanced_par_widget
+            ltabWidget.addTab(param_widg, "Advanced")
+
+        rtabWidget = QtGui.QTabWidget()
+        self.multi_line_txt = TextBrows()
+        self.analyse_out_img = ImgTab(self.super_parent)
+        self.report_out_widg = HtmlTab()
+        rtabWidget.addTab(self.report_out_widg, "HTML output")
+        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
+
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(ltabWidget)
+        mainLayout.addWidget(rtabWidget)
+        self.setLayout(mainLayout)
 
 
 class FindspotsSimplerParameterTab(QtGui.QWidget):
@@ -234,39 +275,6 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         self.super_parent.update_lin_txt(str_path, str_value)
         self.super_parent.update_lin_txt(sender.local_path, value)
 
-class GenericParameterWidget(QtGui.QWidget):
-    '''
-    All dual tab parameter widgets should inherit from this one
-    as they all look alike
-    '''
-    def __init__(self, parent=None):
-        super(GenericParameterWidget, self).__init__(parent)
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-
-    def add_tabs(self, simpler_par_widget = None, advanced_par_widget = None):
-
-        ltabWidget = QtGui.QTabWidget()
-
-        if( simpler_par_widget != None ):
-            default_tab = simpler_par_widget
-            ltabWidget.addTab(default_tab, "Simple")
-
-        if( advanced_par_widget != None ):
-            param_widg = advanced_par_widget
-            ltabWidget.addTab(param_widg, "Advanced")
-
-        rtabWidget = QtGui.QTabWidget()
-        self.multi_line_txt = TextBrows()
-        self.analyse_out_img = ImgTab(self.super_parent)
-        self.report_out_widg = HtmlTab()
-        rtabWidget.addTab(self.report_out_widg, "HTML output")
-        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
-        rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
-
-        mainLayout = QtGui.QHBoxLayout()
-        mainLayout.addWidget(ltabWidget)
-        mainLayout.addWidget(rtabWidget)
-        self.setLayout(mainLayout)
 
 class FindspotsParameterWidget(GenericParameterWidget):
     def __init__(self, parent=None):

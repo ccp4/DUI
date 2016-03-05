@@ -174,7 +174,9 @@ class MyMainDialog(QtGui.QMainWindow):
 
         print "Done CLI"
         idx = self.pagesWidget.currentIndex()
-        self.widget_list[idx].analyse_out_img.update_me()
+
+        if( idx != 0 ):
+            self.widget_list[idx].analyse_out_img.update_me()
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):
