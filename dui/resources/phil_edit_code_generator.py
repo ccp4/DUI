@@ -281,8 +281,8 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     src_code_aut.append(my_str)
 
                     if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
-                        print "str(obj.extract()) =", str(obj.extract())
-                        print "type(obj.extract()) =", type(obj.extract())
+                        #print "str(obj.extract()) =", str(obj.extract())
+                        #print "type(obj.extract()) =", type(obj.extract())
                         if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
                             print "TODO fix the libtbx.AutoType in double Phil parameter"
 
@@ -333,23 +333,31 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     my_str = "        " + box_name + " = QComboBox()"
                     src_code_aut.append(my_str)
 
-
                     my_str = "        " + box_name + ".local_path = \"" + str(obj.full_path()) +"\""
                     src_code_aut.append(my_str)
 
-
                     my_str = "        " + box_name + ".tmp_lst=[]"
                     src_code_aut.append(my_str)
-                    for opt in obj.words:
-                        my_str = "        " + box_name + ".tmp_lst.append(\"" + str(opt) + "\")"
+
+                    pos = 0
+                    for nm, opt in enumerate(obj.words):
+                        opt = str(opt)
+                        if( opt[0] == "*" ):
+                            opt = opt[1:]
+                            pos = nm
+
+                        my_str = "        " + box_name + ".tmp_lst.append(\"" + opt + "\")"
                         src_code_aut.append(my_str)
 
                     my_str = "        for lst_itm in " + box_name + ".tmp_lst:"
                     src_code_aut.append(my_str)
                     my_str = "            " + box_name + ".addItem(lst_itm)"
                     src_code_aut.append(my_str)
-                    my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
 
+                    my_str = "        " + box_name + ".setCurrentIndex(" + str(pos) + ")"
+                    src_code_aut.append(my_str)
+
+                    my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
                     src_code_aut.append(my_str)
 
 
@@ -416,9 +424,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     print "obj.type =", obj.type
                     print
                     '''
-
                     something_else = True
-
 
             else:
 
@@ -428,10 +434,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                 print "_____________________ << obj.type.phil_type =", obj.type.phil_type
                 print "_____________________ << obj.type =", obj.type
                 print
-
-
                 something_else = True
-
 
             if( something_else == False ):
                 if(multiple_index == False):
@@ -440,6 +443,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     my_str = "        bg_box.addLayout(" + h_box_name + ")"
                     src_code_aut.append(my_str)
                     src_code_aut.append("")
+
                 else:
                     for indx in range(obj.type.size_max):
                         my_str = "        " + h_box_name_lst[indx] + ".addWidget(" + box_name_lst[indx] + ")"
@@ -447,6 +451,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                         my_str = "        bg_box.addLayout(" + h_box_name_lst[indx] + ")"
                         src_code_aut.append(my_str)
                         src_code_aut.append("")
+        src_code_aut.append("")
 
     s_code = gen_code(qt_tool)
     s_code.write_file(src_code_aut, file_name)
@@ -482,6 +487,6 @@ if( __name__ == "__main__"):
         lst_obj = tree_2_lineal(phl_obj[0].objects)
         phil_list_2_disc(lst_obj(), phl_obj[1], qt_tool)
 
-        #print phl_obj[0].show()
+        print phl_obj[0].show()
 
 
