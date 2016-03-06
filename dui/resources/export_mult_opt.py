@@ -36,7 +36,6 @@ class inner_widg( QWidget):
         hbox_lay_format_0.addWidget(box_format_0)
         bg_box.addLayout(hbox_lay_format_0)
 
-
         label_1 = QLabel("mtz")
         label_1.setPalette(palette_scope)
         label_1.setFont(QFont("Monospace"))
@@ -55,10 +54,10 @@ class inner_widg( QWidget):
         box_ignore_panels_2.tmp_lst.append("False")
         for lst_itm in box_ignore_panels_2.tmp_lst:
             box_ignore_panels_2.addItem(lst_itm)
+        box_ignore_panels_2.setCurrentIndex(1)
         box_ignore_panels_2.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_ignore_panels_2.addWidget(box_ignore_panels_2)
         bg_box.addLayout(hbox_lay_ignore_panels_2)
-
 
         hbox_lay_include_partials_3 =  QHBoxLayout()
         label_include_partials_3 = QLabel("    include_partials")
@@ -73,10 +72,10 @@ class inner_widg( QWidget):
         box_include_partials_3.tmp_lst.append("False")
         for lst_itm in box_include_partials_3.tmp_lst:
             box_include_partials_3.addItem(lst_itm)
+        box_include_partials_3.setCurrentIndex(1)
         box_include_partials_3.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_include_partials_3.addWidget(box_include_partials_3)
         bg_box.addLayout(hbox_lay_include_partials_3)
-
 
         hbox_lay_keep_partials_4 =  QHBoxLayout()
         label_keep_partials_4 = QLabel("    keep_partials")
@@ -91,10 +90,10 @@ class inner_widg( QWidget):
         box_keep_partials_4.tmp_lst.append("False")
         for lst_itm in box_keep_partials_4.tmp_lst:
             box_keep_partials_4.addItem(lst_itm)
+        box_keep_partials_4.setCurrentIndex(1)
         box_keep_partials_4.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_keep_partials_4.addWidget(box_keep_partials_4)
         bg_box.addLayout(hbox_lay_keep_partials_4)
-
 
         hbox_lay_min_isigi_5 =  QHBoxLayout()
         label_min_isigi_5 = QLabel("    min_isigi")
@@ -109,7 +108,6 @@ class inner_widg( QWidget):
         hbox_lay_min_isigi_5.addWidget(box_min_isigi_5)
         bg_box.addLayout(hbox_lay_min_isigi_5)
 
-
         hbox_lay_hklout_6 =  QHBoxLayout()
         label_hklout_6 = QLabel("    hklout")
         label_hklout_6.setPalette(palette_object)
@@ -121,7 +119,6 @@ class inner_widg( QWidget):
         box_hklout_6.textChanged.connect(self.spnbox_changed)
         hbox_lay_hklout_6.addWidget(box_hklout_6)
         bg_box.addLayout(hbox_lay_hklout_6)
-
 
         label_7 = QLabel("nxs")
         label_7.setPalette(palette_scope)
@@ -140,7 +137,6 @@ class inner_widg( QWidget):
         hbox_lay_hklout_8.addWidget(box_hklout_8)
         bg_box.addLayout(hbox_lay_hklout_8)
 
-
         label_9 = QLabel("mosflm")
         label_9.setPalette(palette_scope)
         label_9.setFont(QFont("Monospace"))
@@ -157,7 +153,6 @@ class inner_widg( QWidget):
         box_directory_10.textChanged.connect(self.spnbox_changed)
         hbox_lay_directory_10.addWidget(box_directory_10)
         bg_box.addLayout(hbox_lay_directory_10)
-
 
         label_11 = QLabel("xds")
         label_11.setPalette(palette_scope)
@@ -176,7 +171,6 @@ class inner_widg( QWidget):
         hbox_lay_directory_12.addWidget(box_directory_12)
         bg_box.addLayout(hbox_lay_directory_12)
 
-
         label_13 = QLabel("output")
         label_13.setPalette(palette_scope)
         label_13.setFont(QFont("Monospace"))
@@ -194,7 +188,6 @@ class inner_widg( QWidget):
         hbox_lay_log_14.addWidget(box_log_14)
         bg_box.addLayout(hbox_lay_log_14)
 
-
         hbox_lay_debug_log_15 =  QHBoxLayout()
         label_debug_log_15 = QLabel("    debug_log")
         label_debug_log_15.setPalette(palette_object)
@@ -206,7 +199,6 @@ class inner_widg( QWidget):
         box_debug_log_15.textChanged.connect(self.spnbox_changed)
         hbox_lay_debug_log_15.addWidget(box_debug_log_15)
         bg_box.addLayout(hbox_lay_debug_log_15)
-
 
  
         self.setLayout(bg_box)

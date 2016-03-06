@@ -33,7 +33,6 @@ class inner_widg( QWidget):
         hbox_lay_experiments_1.addWidget(box_experiments_1)
         bg_box.addLayout(hbox_lay_experiments_1)
 
-
         hbox_lay_reflections_2 =  QHBoxLayout()
         label_reflections_2 = QLabel("    reflections")
         label_reflections_2.setPalette(palette_object)
@@ -45,7 +44,6 @@ class inner_widg( QWidget):
         box_reflections_2.textChanged.connect(self.spnbox_changed)
         hbox_lay_reflections_2.addWidget(box_reflections_2)
         bg_box.addLayout(hbox_lay_reflections_2)
-
 
         hbox_lay_matches_3 =  QHBoxLayout()
         label_matches_3 = QLabel("    matches")
@@ -59,7 +57,6 @@ class inner_widg( QWidget):
         hbox_lay_matches_3.addWidget(box_matches_3)
         bg_box.addLayout(hbox_lay_matches_3)
 
-
         hbox_lay_centroids_4 =  QHBoxLayout()
         label_centroids_4 = QLabel("    centroids")
         label_centroids_4.setPalette(palette_object)
@@ -71,7 +68,6 @@ class inner_widg( QWidget):
         box_centroids_4.textChanged.connect(self.spnbox_changed)
         hbox_lay_centroids_4.addWidget(box_centroids_4)
         bg_box.addLayout(hbox_lay_centroids_4)
-
 
         hbox_lay_parameter_table_5 =  QHBoxLayout()
         label_parameter_table_5 = QLabel("    parameter_table")
@@ -85,7 +81,6 @@ class inner_widg( QWidget):
         hbox_lay_parameter_table_5.addWidget(box_parameter_table_5)
         bg_box.addLayout(hbox_lay_parameter_table_5)
 
-
         hbox_lay_log_6 =  QHBoxLayout()
         label_log_6 = QLabel("    log")
         label_log_6.setPalette(palette_object)
@@ -98,7 +93,6 @@ class inner_widg( QWidget):
         hbox_lay_log_6.addWidget(box_log_6)
         bg_box.addLayout(hbox_lay_log_6)
 
-
         hbox_lay_debug_log_7 =  QHBoxLayout()
         label_debug_log_7 = QLabel("    debug_log")
         label_debug_log_7.setPalette(palette_object)
@@ -110,7 +104,6 @@ class inner_widg( QWidget):
         box_debug_log_7.textChanged.connect(self.spnbox_changed)
         hbox_lay_debug_log_7.addWidget(box_debug_log_7)
         bg_box.addLayout(hbox_lay_debug_log_7)
-
 
         label_8 = QLabel("    correlation_plot")
         label_8.setPalette(palette_scope)
@@ -129,7 +122,6 @@ class inner_widg( QWidget):
         hbox_lay_filename_9.addWidget(box_filename_9)
         bg_box.addLayout(hbox_lay_filename_9)
 
-
         hbox_lay_save_matrix_10 =  QHBoxLayout()
         label_save_matrix_10 = QLabel("        save_matrix")
         label_save_matrix_10.setPalette(palette_object)
@@ -143,10 +135,10 @@ class inner_widg( QWidget):
         box_save_matrix_10.tmp_lst.append("False")
         for lst_itm in box_save_matrix_10.tmp_lst:
             box_save_matrix_10.addItem(lst_itm)
+        box_save_matrix_10.setCurrentIndex(1)
         box_save_matrix_10.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_save_matrix_10.addWidget(box_save_matrix_10)
         bg_box.addLayout(hbox_lay_save_matrix_10)
-
 
         hbox_lay_col_select_11 =  QHBoxLayout()
         label_col_select_11 = QLabel("        col_select")
@@ -161,7 +153,6 @@ class inner_widg( QWidget):
         bg_box.addLayout(hbox_lay_col_select_11)
 
 
-
         hbox_lay_history_13 =  QHBoxLayout()
         label_history_13 = QLabel("    history")
         label_history_13.setPalette(palette_object)
@@ -173,7 +164,6 @@ class inner_widg( QWidget):
         box_history_13.textChanged.connect(self.spnbox_changed)
         hbox_lay_history_13.addWidget(box_history_13)
         bg_box.addLayout(hbox_lay_history_13)
-
 
         label_14 = QLabel("refinement")
         label_14.setPalette(palette_scope)
@@ -198,7 +188,6 @@ class inner_widg( QWidget):
         hbox_lay_nproc_16.addWidget(box_nproc_16)
         bg_box.addLayout(hbox_lay_nproc_16)
 
-
         hbox_lay_verbosity_17 =  QHBoxLayout()
         label_verbosity_17 = QLabel("    verbosity")
         label_verbosity_17.setPalette(palette_object)
@@ -211,7 +200,6 @@ class inner_widg( QWidget):
         box_verbosity_17.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_17.addWidget(box_verbosity_17)
         bg_box.addLayout(hbox_lay_verbosity_17)
-
 
         label_18 = QLabel("    parameterisation")
         label_18.setPalette(palette_scope)
@@ -236,7 +224,6 @@ class inner_widg( QWidget):
         hbox_lay_min_nref_per_parameter_20.addWidget(box_min_nref_per_parameter_20)
         bg_box.addLayout(hbox_lay_min_nref_per_parameter_20)
 
-
         hbox_lay_action_21 =  QHBoxLayout()
         label_action_21 = QLabel("            action")
         label_action_21.setPalette(palette_object)
@@ -255,7 +242,6 @@ class inner_widg( QWidget):
         box_action_21.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_action_21.addWidget(box_action_21)
         bg_box.addLayout(hbox_lay_action_21)
-
 
         label_22 = QLabel("        beam")
         label_22.setPalette(palette_scope)
@@ -283,7 +269,6 @@ class inner_widg( QWidget):
         bg_box.addLayout(hbox_lay_fix_23)
 
 
-
         label_25 = QLabel("        crystal")
         label_25.setPalette(palette_scope)
         label_25.setFont(QFont("Monospace"))
@@ -307,7 +292,6 @@ class inner_widg( QWidget):
         box_fix_26.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_fix_26.addWidget(box_fix_26)
         bg_box.addLayout(hbox_lay_fix_26)
-
 
         label_27 = QLabel("            unit_cell")
         label_27.setPalette(palette_scope)
@@ -435,7 +419,6 @@ class inner_widg( QWidget):
         hbox_lay_id_33.addWidget(box_id_33)
         bg_box.addLayout(hbox_lay_id_33)
 
-
         label_34 = QLabel("                    tie_to_group")
         label_34.setPalette(palette_scope)
         label_34.setFont(QFont("Monospace"))
@@ -461,7 +444,6 @@ class inner_widg( QWidget):
 
 
 
-
         label_38 = QLabel("            orientation")
         label_38.setPalette(palette_scope)
         label_38.setFont(QFont("Monospace"))
@@ -481,10 +463,10 @@ class inner_widg( QWidget):
         box_scan_varying_40.tmp_lst.append("False")
         for lst_itm in box_scan_varying_40.tmp_lst:
             box_scan_varying_40.addItem(lst_itm)
+        box_scan_varying_40.setCurrentIndex(1)
         box_scan_varying_40.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying_40.addWidget(box_scan_varying_40)
         bg_box.addLayout(hbox_lay_scan_varying_40)
-
 
         hbox_lay_num_intervals_41 =  QHBoxLayout()
         label_num_intervals_41 = QLabel("            num_intervals")
@@ -504,7 +486,6 @@ class inner_widg( QWidget):
         hbox_lay_num_intervals_41.addWidget(box_num_intervals_41)
         bg_box.addLayout(hbox_lay_num_intervals_41)
 
-
         hbox_lay_interval_width_degrees_42 =  QHBoxLayout()
         label_interval_width_degrees_42 = QLabel("            interval_width_degrees")
         label_interval_width_degrees_42.setPalette(palette_object)
@@ -518,7 +499,6 @@ class inner_widg( QWidget):
         hbox_lay_interval_width_degrees_42.addWidget(box_interval_width_degrees_42)
         bg_box.addLayout(hbox_lay_interval_width_degrees_42)
 
-
         hbox_lay_absolute_num_intervals_43 =  QHBoxLayout()
         label_absolute_num_intervals_43 = QLabel("            absolute_num_intervals")
         label_absolute_num_intervals_43.setPalette(palette_object)
@@ -531,7 +511,6 @@ class inner_widg( QWidget):
         box_absolute_num_intervals_43.valueChanged.connect(self.spnbox_changed)
         hbox_lay_absolute_num_intervals_43.addWidget(box_absolute_num_intervals_43)
         bg_box.addLayout(hbox_lay_absolute_num_intervals_43)
-
 
         hbox_lay_UB_model_per_44 =  QHBoxLayout()
         label_UB_model_per_44 = QLabel("            UB_model_per")
@@ -551,7 +530,6 @@ class inner_widg( QWidget):
         box_UB_model_per_44.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_UB_model_per_44.addWidget(box_UB_model_per_44)
         bg_box.addLayout(hbox_lay_UB_model_per_44)
-
 
         label_45 = QLabel("        detector")
         label_45.setPalette(palette_scope)
@@ -578,7 +556,6 @@ class inner_widg( QWidget):
         hbox_lay_panels_46.addWidget(box_panels_46)
         bg_box.addLayout(hbox_lay_panels_46)
 
-
         hbox_lay_hierarchy_level_47 =  QHBoxLayout()
         label_hierarchy_level_47 = QLabel("            hierarchy_level")
         label_hierarchy_level_47.setPalette(palette_object)
@@ -591,7 +568,6 @@ class inner_widg( QWidget):
         box_hierarchy_level_47.valueChanged.connect(self.spnbox_changed)
         hbox_lay_hierarchy_level_47.addWidget(box_hierarchy_level_47)
         bg_box.addLayout(hbox_lay_hierarchy_level_47)
-
 
         hbox_lay_fix_48 =  QHBoxLayout()
         label_fix_48 = QLabel("            fix")
@@ -613,7 +589,6 @@ class inner_widg( QWidget):
         bg_box.addLayout(hbox_lay_fix_48)
 
 
-
         hbox_lay_sparse_50 =  QHBoxLayout()
         label_sparse_50 = QLabel("        sparse")
         label_sparse_50.setPalette(palette_object)
@@ -631,7 +606,6 @@ class inner_widg( QWidget):
         hbox_lay_sparse_50.addWidget(box_sparse_50)
         bg_box.addLayout(hbox_lay_sparse_50)
 
-
         hbox_lay_treat_single_image_as_still_51 =  QHBoxLayout()
         label_treat_single_image_as_still_51 = QLabel("        treat_single_image_as_still")
         label_treat_single_image_as_still_51.setPalette(palette_object)
@@ -645,10 +619,10 @@ class inner_widg( QWidget):
         box_treat_single_image_as_still_51.tmp_lst.append("False")
         for lst_itm in box_treat_single_image_as_still_51.tmp_lst:
             box_treat_single_image_as_still_51.addItem(lst_itm)
+        box_treat_single_image_as_still_51.setCurrentIndex(1)
         box_treat_single_image_as_still_51.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_treat_single_image_as_still_51.addWidget(box_treat_single_image_as_still_51)
         bg_box.addLayout(hbox_lay_treat_single_image_as_still_51)
-
 
         label_52 = QLabel("    refinery")
         label_52.setPalette(palette_scope)
@@ -675,7 +649,6 @@ class inner_widg( QWidget):
         hbox_lay_engine_53.addWidget(box_engine_53)
         bg_box.addLayout(hbox_lay_engine_53)
 
-
         hbox_lay_track_step_54 =  QHBoxLayout()
         label_track_step_54 = QLabel("        track_step")
         label_track_step_54.setPalette(palette_object)
@@ -689,10 +662,10 @@ class inner_widg( QWidget):
         box_track_step_54.tmp_lst.append("False")
         for lst_itm in box_track_step_54.tmp_lst:
             box_track_step_54.addItem(lst_itm)
+        box_track_step_54.setCurrentIndex(1)
         box_track_step_54.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_step_54.addWidget(box_track_step_54)
         bg_box.addLayout(hbox_lay_track_step_54)
-
 
         hbox_lay_track_gradient_55 =  QHBoxLayout()
         label_track_gradient_55 = QLabel("        track_gradient")
@@ -707,10 +680,10 @@ class inner_widg( QWidget):
         box_track_gradient_55.tmp_lst.append("False")
         for lst_itm in box_track_gradient_55.tmp_lst:
             box_track_gradient_55.addItem(lst_itm)
+        box_track_gradient_55.setCurrentIndex(1)
         box_track_gradient_55.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_gradient_55.addWidget(box_track_gradient_55)
         bg_box.addLayout(hbox_lay_track_gradient_55)
-
 
         hbox_lay_track_parameter_correlation_56 =  QHBoxLayout()
         label_track_parameter_correlation_56 = QLabel("        track_parameter_correlation")
@@ -725,10 +698,10 @@ class inner_widg( QWidget):
         box_track_parameter_correlation_56.tmp_lst.append("False")
         for lst_itm in box_track_parameter_correlation_56.tmp_lst:
             box_track_parameter_correlation_56.addItem(lst_itm)
+        box_track_parameter_correlation_56.setCurrentIndex(1)
         box_track_parameter_correlation_56.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_parameter_correlation_56.addWidget(box_track_parameter_correlation_56)
         bg_box.addLayout(hbox_lay_track_parameter_correlation_56)
-
 
         hbox_lay_track_out_of_sample_rmsd_57 =  QHBoxLayout()
         label_track_out_of_sample_rmsd_57 = QLabel("        track_out_of_sample_rmsd")
@@ -743,10 +716,10 @@ class inner_widg( QWidget):
         box_track_out_of_sample_rmsd_57.tmp_lst.append("False")
         for lst_itm in box_track_out_of_sample_rmsd_57.tmp_lst:
             box_track_out_of_sample_rmsd_57.addItem(lst_itm)
+        box_track_out_of_sample_rmsd_57.setCurrentIndex(1)
         box_track_out_of_sample_rmsd_57.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_out_of_sample_rmsd_57.addWidget(box_track_out_of_sample_rmsd_57)
         bg_box.addLayout(hbox_lay_track_out_of_sample_rmsd_57)
-
 
 
         hbox_lay_max_iterations_59 =  QHBoxLayout()
@@ -760,7 +733,6 @@ class inner_widg( QWidget):
         box_max_iterations_59.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_iterations_59.addWidget(box_max_iterations_59)
         bg_box.addLayout(hbox_lay_max_iterations_59)
-
 
         label_60 = QLabel("    target")
         label_60.setPalette(palette_scope)
@@ -785,7 +757,6 @@ class inner_widg( QWidget):
         hbox_lay_rmsd_cutoff_61.addWidget(box_rmsd_cutoff_61)
         bg_box.addLayout(hbox_lay_rmsd_cutoff_61)
 
-
         hbox_lay_bin_size_fraction_62 =  QHBoxLayout()
         label_bin_size_fraction_62 = QLabel("        bin_size_fraction")
         label_bin_size_fraction_62.setPalette(palette_object)
@@ -798,7 +769,6 @@ class inner_widg( QWidget):
         box_bin_size_fraction_62.valueChanged.connect(self.spnbox_changed)
         hbox_lay_bin_size_fraction_62.addWidget(box_bin_size_fraction_62)
         bg_box.addLayout(hbox_lay_bin_size_fraction_62)
-
 
         hbox_lay_absolute_cutoffs_63_0 =  QHBoxLayout()
         label_absolute_cutoffs_63_0 = QLabel("        absolute_cutoffs[1]")
@@ -826,13 +796,10 @@ class inner_widg( QWidget):
         #box_absolute_cutoffs_63_2.valueChanged.connect(self.spnbox_changed)
         hbox_lay_absolute_cutoffs_63_0.addWidget(box_absolute_cutoffs_63_0)
         bg_box.addLayout(hbox_lay_absolute_cutoffs_63_0)
-
         hbox_lay_absolute_cutoffs_63_1.addWidget(box_absolute_cutoffs_63_1)
         bg_box.addLayout(hbox_lay_absolute_cutoffs_63_1)
-
         hbox_lay_absolute_cutoffs_63_2.addWidget(box_absolute_cutoffs_63_2)
         bg_box.addLayout(hbox_lay_absolute_cutoffs_63_2)
-
 
         hbox_lay_gradient_calculation_blocksize_64 =  QHBoxLayout()
         label_gradient_calculation_blocksize_64 = QLabel("        gradient_calculation_blocksize")
@@ -845,7 +812,6 @@ class inner_widg( QWidget):
         box_gradient_calculation_blocksize_64.valueChanged.connect(self.spnbox_changed)
         hbox_lay_gradient_calculation_blocksize_64.addWidget(box_gradient_calculation_blocksize_64)
         bg_box.addLayout(hbox_lay_gradient_calculation_blocksize_64)
-
 
         label_65 = QLabel("    reflections")
         label_65.setPalette(palette_scope)
@@ -865,7 +831,6 @@ class inner_widg( QWidget):
         hbox_lay_reflections_per_degree_66.addWidget(box_reflections_per_degree_66)
         bg_box.addLayout(hbox_lay_reflections_per_degree_66)
 
-
         hbox_lay_minimum_sample_size_67 =  QHBoxLayout()
         label_minimum_sample_size_67 = QLabel("        minimum_sample_size")
         label_minimum_sample_size_67.setPalette(palette_object)
@@ -879,7 +844,6 @@ class inner_widg( QWidget):
         hbox_lay_minimum_sample_size_67.addWidget(box_minimum_sample_size_67)
         bg_box.addLayout(hbox_lay_minimum_sample_size_67)
 
-
         hbox_lay_maximum_sample_size_68 =  QHBoxLayout()
         label_maximum_sample_size_68 = QLabel("        maximum_sample_size")
         label_maximum_sample_size_68.setPalette(palette_object)
@@ -891,7 +855,6 @@ class inner_widg( QWidget):
         box_maximum_sample_size_68.valueChanged.connect(self.spnbox_changed)
         hbox_lay_maximum_sample_size_68.addWidget(box_maximum_sample_size_68)
         bg_box.addLayout(hbox_lay_maximum_sample_size_68)
-
 
         hbox_lay_use_all_reflections_69 =  QHBoxLayout()
         label_use_all_reflections_69 = QLabel("        use_all_reflections")
@@ -906,10 +869,10 @@ class inner_widg( QWidget):
         box_use_all_reflections_69.tmp_lst.append("False")
         for lst_itm in box_use_all_reflections_69.tmp_lst:
             box_use_all_reflections_69.addItem(lst_itm)
+        box_use_all_reflections_69.setCurrentIndex(1)
         box_use_all_reflections_69.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_use_all_reflections_69.addWidget(box_use_all_reflections_69)
         bg_box.addLayout(hbox_lay_use_all_reflections_69)
-
 
         hbox_lay_random_seed_70 =  QHBoxLayout()
         label_random_seed_70 = QLabel("        random_seed")
@@ -924,7 +887,6 @@ class inner_widg( QWidget):
         hbox_lay_random_seed_70.addWidget(box_random_seed_70)
         bg_box.addLayout(hbox_lay_random_seed_70)
 
-
         hbox_lay_close_to_spindle_cutoff_71 =  QHBoxLayout()
         label_close_to_spindle_cutoff_71 = QLabel("        close_to_spindle_cutoff")
         label_close_to_spindle_cutoff_71.setPalette(palette_object)
@@ -938,7 +900,6 @@ class inner_widg( QWidget):
         hbox_lay_close_to_spindle_cutoff_71.addWidget(box_close_to_spindle_cutoff_71)
         bg_box.addLayout(hbox_lay_close_to_spindle_cutoff_71)
 
-
         hbox_lay_block_width_72 =  QHBoxLayout()
         label_block_width_72 = QLabel("        block_width")
         label_block_width_72.setPalette(palette_object)
@@ -951,7 +912,6 @@ class inner_widg( QWidget):
         box_block_width_72.valueChanged.connect(self.spnbox_changed)
         hbox_lay_block_width_72.addWidget(box_block_width_72)
         bg_box.addLayout(hbox_lay_block_width_72)
-
 
         label_73 = QLabel("        weighting_strategy")
         label_73.setPalette(palette_scope)
@@ -977,7 +937,6 @@ class inner_widg( QWidget):
         hbox_lay_override_74.addWidget(box_override_74)
         bg_box.addLayout(hbox_lay_override_74)
 
-
         hbox_lay_delpsi_constant_75 =  QHBoxLayout()
         label_delpsi_constant_75 = QLabel("            delpsi_constant")
         label_delpsi_constant_75.setPalette(palette_object)
@@ -990,7 +949,6 @@ class inner_widg( QWidget):
         box_delpsi_constant_75.valueChanged.connect(self.spnbox_changed)
         hbox_lay_delpsi_constant_75.addWidget(box_delpsi_constant_75)
         bg_box.addLayout(hbox_lay_delpsi_constant_75)
-
 
         hbox_lay_constants_76_0 =  QHBoxLayout()
         label_constants_76_0 = QLabel("            constants[1]")
@@ -1018,13 +976,10 @@ class inner_widg( QWidget):
         #box_constants_76_2.valueChanged.connect(self.spnbox_changed)
         hbox_lay_constants_76_0.addWidget(box_constants_76_0)
         bg_box.addLayout(hbox_lay_constants_76_0)
-
         hbox_lay_constants_76_1.addWidget(box_constants_76_1)
         bg_box.addLayout(hbox_lay_constants_76_1)
-
         hbox_lay_constants_76_2.addWidget(box_constants_76_2)
         bg_box.addLayout(hbox_lay_constants_76_2)
-
 
         label_77 = QLabel("        outlier")
         label_77.setPalette(palette_scope)
@@ -1052,7 +1007,6 @@ class inner_widg( QWidget):
         hbox_lay_algorithm_78.addWidget(box_algorithm_78)
         bg_box.addLayout(hbox_lay_algorithm_78)
 
-
         hbox_lay_minimum_number_of_reflections_79 =  QHBoxLayout()
         label_minimum_number_of_reflections_79 = QLabel("            minimum_number_of_reflections")
         label_minimum_number_of_reflections_79.setPalette(palette_object)
@@ -1065,7 +1019,6 @@ class inner_widg( QWidget):
         box_minimum_number_of_reflections_79.valueChanged.connect(self.spnbox_changed)
         hbox_lay_minimum_number_of_reflections_79.addWidget(box_minimum_number_of_reflections_79)
         bg_box.addLayout(hbox_lay_minimum_number_of_reflections_79)
-
 
         hbox_lay_separate_experiments_80 =  QHBoxLayout()
         label_separate_experiments_80 = QLabel("            separate_experiments")
@@ -1084,7 +1037,6 @@ class inner_widg( QWidget):
         hbox_lay_separate_experiments_80.addWidget(box_separate_experiments_80)
         bg_box.addLayout(hbox_lay_separate_experiments_80)
 
-
         hbox_lay_separate_panels_81 =  QHBoxLayout()
         label_separate_panels_81 = QLabel("            separate_panels")
         label_separate_panels_81.setPalette(palette_object)
@@ -1101,7 +1053,6 @@ class inner_widg( QWidget):
         box_separate_panels_81.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_separate_panels_81.addWidget(box_separate_panels_81)
         bg_box.addLayout(hbox_lay_separate_panels_81)
-
 
         label_82 = QLabel("            tukey")
         label_82.setPalette(palette_scope)
@@ -1121,7 +1072,6 @@ class inner_widg( QWidget):
         hbox_lay_iqr_multiplier_83.addWidget(box_iqr_multiplier_83)
         bg_box.addLayout(hbox_lay_iqr_multiplier_83)
 
-
         label_84 = QLabel("            mcd")
         label_84.setPalette(palette_scope)
         label_84.setFont(QFont("Monospace"))
@@ -1140,7 +1090,6 @@ class inner_widg( QWidget):
         hbox_lay_alpha_85.addWidget(box_alpha_85)
         bg_box.addLayout(hbox_lay_alpha_85)
 
-
         hbox_lay_max_n_groups_86 =  QHBoxLayout()
         label_max_n_groups_86 = QLabel("                max_n_groups")
         label_max_n_groups_86.setPalette(palette_object)
@@ -1153,7 +1102,6 @@ class inner_widg( QWidget):
         box_max_n_groups_86.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_n_groups_86.addWidget(box_max_n_groups_86)
         bg_box.addLayout(hbox_lay_max_n_groups_86)
-
 
         hbox_lay_min_group_size_87 =  QHBoxLayout()
         label_min_group_size_87 = QLabel("                min_group_size")
@@ -1168,7 +1116,6 @@ class inner_widg( QWidget):
         hbox_lay_min_group_size_87.addWidget(box_min_group_size_87)
         bg_box.addLayout(hbox_lay_min_group_size_87)
 
-
         hbox_lay_n_trials_88 =  QHBoxLayout()
         label_n_trials_88 = QLabel("                n_trials")
         label_n_trials_88.setPalette(palette_object)
@@ -1181,7 +1128,6 @@ class inner_widg( QWidget):
         box_n_trials_88.valueChanged.connect(self.spnbox_changed)
         hbox_lay_n_trials_88.addWidget(box_n_trials_88)
         bg_box.addLayout(hbox_lay_n_trials_88)
-
 
         hbox_lay_k1_89 =  QHBoxLayout()
         label_k1_89 = QLabel("                k1")
@@ -1196,7 +1142,6 @@ class inner_widg( QWidget):
         hbox_lay_k1_89.addWidget(box_k1_89)
         bg_box.addLayout(hbox_lay_k1_89)
 
-
         hbox_lay_k2_90 =  QHBoxLayout()
         label_k2_90 = QLabel("                k2")
         label_k2_90.setPalette(palette_object)
@@ -1209,7 +1154,6 @@ class inner_widg( QWidget):
         box_k2_90.valueChanged.connect(self.spnbox_changed)
         hbox_lay_k2_90.addWidget(box_k2_90)
         bg_box.addLayout(hbox_lay_k2_90)
-
 
         hbox_lay_k3_91 =  QHBoxLayout()
         label_k3_91 = QLabel("                k3")
@@ -1224,7 +1168,6 @@ class inner_widg( QWidget):
         hbox_lay_k3_91.addWidget(box_k3_91)
         bg_box.addLayout(hbox_lay_k3_91)
 
-
         hbox_lay_threshold_probability_92 =  QHBoxLayout()
         label_threshold_probability_92 = QLabel("                threshold_probability")
         label_threshold_probability_92.setPalette(palette_object)
@@ -1237,7 +1180,6 @@ class inner_widg( QWidget):
         box_threshold_probability_92.valueChanged.connect(self.spnbox_changed)
         hbox_lay_threshold_probability_92.addWidget(box_threshold_probability_92)
         bg_box.addLayout(hbox_lay_threshold_probability_92)
-
 
         label_93 = QLabel("            sauter_poon")
         label_93.setPalette(palette_scope)
@@ -1262,10 +1204,8 @@ class inner_widg( QWidget):
         #box_px_sz_94_1.valueChanged.connect(self.spnbox_changed)
         hbox_lay_px_sz_94_0.addWidget(box_px_sz_94_0)
         bg_box.addLayout(hbox_lay_px_sz_94_0)
-
         hbox_lay_px_sz_94_1.addWidget(box_px_sz_94_1)
         bg_box.addLayout(hbox_lay_px_sz_94_1)
-
 
         hbox_lay_verbose_95 =  QHBoxLayout()
         label_verbose_95 = QLabel("                verbose")
@@ -1280,10 +1220,10 @@ class inner_widg( QWidget):
         box_verbose_95.tmp_lst.append("False")
         for lst_itm in box_verbose_95.tmp_lst:
             box_verbose_95.addItem(lst_itm)
+        box_verbose_95.setCurrentIndex(1)
         box_verbose_95.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_verbose_95.addWidget(box_verbose_95)
         bg_box.addLayout(hbox_lay_verbose_95)
-
 
         hbox_lay_pdf_96 =  QHBoxLayout()
         label_pdf_96 = QLabel("                pdf")
@@ -1296,7 +1236,6 @@ class inner_widg( QWidget):
         box_pdf_96.textChanged.connect(self.spnbox_changed)
         hbox_lay_pdf_96.addWidget(box_pdf_96)
         bg_box.addLayout(hbox_lay_pdf_96)
-
 
  
         self.setLayout(bg_box)

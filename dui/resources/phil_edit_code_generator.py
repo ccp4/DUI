@@ -305,13 +305,8 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     src_code_aut.append("")
                     my_str = "        " + box_name + " = QComboBox()"
                     src_code_aut.append(my_str)
-
-
                     my_str = "        " + box_name + ".local_path = \"" + str(obj.full_path()) +"\""
                     src_code_aut.append(my_str)
-
-
-
                     my_str = "        " + box_name + ".tmp_lst=[]"
                     src_code_aut.append(my_str)
                     my_str = "        " + box_name + ".tmp_lst.append(\"True\")"
@@ -322,8 +317,12 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     src_code_aut.append(my_str)
                     my_str = "            " + box_name + ".addItem(lst_itm)"
                     src_code_aut.append(my_str)
-                    my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
 
+                    if( str(obj.extract()) == "False" ):
+                        my_str = "        " + box_name + ".setCurrentIndex(" + str(1) + ")"
+                        src_code_aut.append(my_str)
+
+                    my_str = "        " + box_name + ".currentIndexChanged.connect(self.combobox_changed)"
                     src_code_aut.append(my_str)
 
 
@@ -442,7 +441,6 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                     src_code_aut.append(my_str)
                     my_str = "        bg_box.addLayout(" + h_box_name + ")"
                     src_code_aut.append(my_str)
-                    src_code_aut.append("")
 
                 else:
                     for indx in range(obj.type.size_max):
@@ -450,7 +448,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                         src_code_aut.append(my_str)
                         my_str = "        bg_box.addLayout(" + h_box_name_lst[indx] + ")"
                         src_code_aut.append(my_str)
-                        src_code_aut.append("")
+
         src_code_aut.append("")
 
     s_code = gen_code(qt_tool)

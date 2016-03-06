@@ -34,7 +34,6 @@ class inner_widg( QWidget):
         hbox_lay_nproc_1.addWidget(box_nproc_1)
         bg_box.addLayout(hbox_lay_nproc_1)
 
-
         hbox_lay_discover_better_experimental_model_2 =  QHBoxLayout()
         label_discover_better_experimental_model_2 = QLabel("    discover_better_experimental_model")
         label_discover_better_experimental_model_2.setPalette(palette_object)
@@ -48,10 +47,10 @@ class inner_widg( QWidget):
         box_discover_better_experimental_model_2.tmp_lst.append("False")
         for lst_itm in box_discover_better_experimental_model_2.tmp_lst:
             box_discover_better_experimental_model_2.addItem(lst_itm)
+        box_discover_better_experimental_model_2.setCurrentIndex(1)
         box_discover_better_experimental_model_2.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_discover_better_experimental_model_2.addWidget(box_discover_better_experimental_model_2)
         bg_box.addLayout(hbox_lay_discover_better_experimental_model_2)
-
 
         hbox_lay_mm_search_scope_3 =  QHBoxLayout()
         label_mm_search_scope_3 = QLabel("    mm_search_scope")
@@ -66,7 +65,6 @@ class inner_widg( QWidget):
         hbox_lay_mm_search_scope_3.addWidget(box_mm_search_scope_3)
         bg_box.addLayout(hbox_lay_mm_search_scope_3)
 
-
         hbox_lay_wide_search_binning_4 =  QHBoxLayout()
         label_wide_search_binning_4 = QLabel("    wide_search_binning")
         label_wide_search_binning_4.setPalette(palette_object)
@@ -79,7 +77,6 @@ class inner_widg( QWidget):
         box_wide_search_binning_4.valueChanged.connect(self.spnbox_changed)
         hbox_lay_wide_search_binning_4.addWidget(box_wide_search_binning_4)
         bg_box.addLayout(hbox_lay_wide_search_binning_4)
-
 
         hbox_lay_min_cell_5 =  QHBoxLayout()
         label_min_cell_5 = QLabel("    min_cell")
@@ -94,7 +91,6 @@ class inner_widg( QWidget):
         hbox_lay_min_cell_5.addWidget(box_min_cell_5)
         bg_box.addLayout(hbox_lay_min_cell_5)
 
-
         hbox_lay_max_cell_6 =  QHBoxLayout()
         label_max_cell_6 = QLabel("    max_cell")
         label_max_cell_6.setPalette(palette_object)
@@ -106,7 +102,6 @@ class inner_widg( QWidget):
         box_max_cell_6.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_cell_6.addWidget(box_max_cell_6)
         bg_box.addLayout(hbox_lay_max_cell_6)
-
 
         hbox_lay_max_cell_multiplier_7 =  QHBoxLayout()
         label_max_cell_multiplier_7 = QLabel("    max_cell_multiplier")
@@ -121,7 +116,6 @@ class inner_widg( QWidget):
         hbox_lay_max_cell_multiplier_7.addWidget(box_max_cell_multiplier_7)
         bg_box.addLayout(hbox_lay_max_cell_multiplier_7)
 
-
         hbox_lay_max_cell_step_size_8 =  QHBoxLayout()
         label_max_cell_step_size_8 = QLabel("    max_cell_step_size")
         label_max_cell_step_size_8.setPalette(palette_object)
@@ -135,7 +129,6 @@ class inner_widg( QWidget):
         hbox_lay_max_cell_step_size_8.addWidget(box_max_cell_step_size_8)
         bg_box.addLayout(hbox_lay_max_cell_step_size_8)
 
-
         hbox_lay_nearest_neighbor_percentile_9 =  QHBoxLayout()
         label_nearest_neighbor_percentile_9 = QLabel("    nearest_neighbor_percentile")
         label_nearest_neighbor_percentile_9.setPalette(palette_object)
@@ -148,7 +141,6 @@ class inner_widg( QWidget):
         box_nearest_neighbor_percentile_9.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nearest_neighbor_percentile_9.addWidget(box_nearest_neighbor_percentile_9)
         bg_box.addLayout(hbox_lay_nearest_neighbor_percentile_9)
-
 
         hbox_lay_filter_ice_10 =  QHBoxLayout()
         label_filter_ice_10 = QLabel("    filter_ice")
@@ -166,7 +158,6 @@ class inner_widg( QWidget):
         box_filter_ice_10.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_filter_ice_10.addWidget(box_filter_ice_10)
         bg_box.addLayout(hbox_lay_filter_ice_10)
-
 
         label_11 = QLabel("    fft3d")
         label_11.setPalette(palette_scope)
@@ -191,7 +182,6 @@ class inner_widg( QWidget):
         hbox_lay_peak_search_12.addWidget(box_peak_search_12)
         bg_box.addLayout(hbox_lay_peak_search_12)
 
-
         hbox_lay_peak_volume_cutoff_13 =  QHBoxLayout()
         label_peak_volume_cutoff_13 = QLabel("        peak_volume_cutoff")
         label_peak_volume_cutoff_13.setPalette(palette_object)
@@ -204,7 +194,6 @@ class inner_widg( QWidget):
         box_peak_volume_cutoff_13.valueChanged.connect(self.spnbox_changed)
         hbox_lay_peak_volume_cutoff_13.addWidget(box_peak_volume_cutoff_13)
         bg_box.addLayout(hbox_lay_peak_volume_cutoff_13)
-
 
         label_14 = QLabel("        reciprocal_space_grid")
         label_14.setPalette(palette_scope)
@@ -224,7 +213,6 @@ class inner_widg( QWidget):
         hbox_lay_n_points_15.addWidget(box_n_points_15)
         bg_box.addLayout(hbox_lay_n_points_15)
 
-
         hbox_lay_d_min_16 =  QHBoxLayout()
         label_d_min_16 = QLabel("            d_min")
         label_d_min_16.setPalette(palette_object)
@@ -236,7 +224,6 @@ class inner_widg( QWidget):
         box_d_min_16.valueChanged.connect(self.spnbox_changed)
         hbox_lay_d_min_16.addWidget(box_d_min_16)
         bg_box.addLayout(hbox_lay_d_min_16)
-
 
         hbox_lay_sigma_phi_deg_17 =  QHBoxLayout()
         label_sigma_phi_deg_17 = QLabel("    sigma_phi_deg")
@@ -250,7 +237,6 @@ class inner_widg( QWidget):
         hbox_lay_sigma_phi_deg_17.addWidget(box_sigma_phi_deg_17)
         bg_box.addLayout(hbox_lay_sigma_phi_deg_17)
 
-
         hbox_lay_b_iso_18 =  QHBoxLayout()
         label_b_iso_18 = QLabel("    b_iso")
         label_b_iso_18.setPalette(palette_object)
@@ -262,7 +248,6 @@ class inner_widg( QWidget):
         box_b_iso_18.valueChanged.connect(self.spnbox_changed)
         hbox_lay_b_iso_18.addWidget(box_b_iso_18)
         bg_box.addLayout(hbox_lay_b_iso_18)
-
 
         hbox_lay_rmsd_cutoff_19 =  QHBoxLayout()
         label_rmsd_cutoff_19 = QLabel("    rmsd_cutoff")
@@ -276,7 +261,6 @@ class inner_widg( QWidget):
         box_rmsd_cutoff_19.valueChanged.connect(self.spnbox_changed)
         hbox_lay_rmsd_cutoff_19.addWidget(box_rmsd_cutoff_19)
         bg_box.addLayout(hbox_lay_rmsd_cutoff_19)
-
 
         hbox_lay_scan_range_20_0 =  QHBoxLayout()
         label_scan_range_20_0 = QLabel("    scan_range[1]")
@@ -296,10 +280,8 @@ class inner_widg( QWidget):
         #box_scan_range_20_1.valueChanged.connect(self.spnbox_changed)
         hbox_lay_scan_range_20_0.addWidget(box_scan_range_20_0)
         bg_box.addLayout(hbox_lay_scan_range_20_0)
-
         hbox_lay_scan_range_20_1.addWidget(box_scan_range_20_1)
         bg_box.addLayout(hbox_lay_scan_range_20_1)
-
 
         label_21 = QLabel("    known_symmetry")
         label_21.setPalette(palette_scope)
@@ -321,7 +303,6 @@ class inner_widg( QWidget):
         hbox_lay_relative_length_tolerance_24.addWidget(box_relative_length_tolerance_24)
         bg_box.addLayout(hbox_lay_relative_length_tolerance_24)
 
-
         hbox_lay_absolute_angle_tolerance_25 =  QHBoxLayout()
         label_absolute_angle_tolerance_25 = QLabel("        absolute_angle_tolerance")
         label_absolute_angle_tolerance_25.setPalette(palette_object)
@@ -335,7 +316,6 @@ class inner_widg( QWidget):
         hbox_lay_absolute_angle_tolerance_25.addWidget(box_absolute_angle_tolerance_25)
         bg_box.addLayout(hbox_lay_absolute_angle_tolerance_25)
 
-
         hbox_lay_max_delta_26 =  QHBoxLayout()
         label_max_delta_26 = QLabel("        max_delta")
         label_max_delta_26.setPalette(palette_object)
@@ -348,7 +328,6 @@ class inner_widg( QWidget):
         box_max_delta_26.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_delta_26.addWidget(box_max_delta_26)
         bg_box.addLayout(hbox_lay_max_delta_26)
-
 
         label_27 = QLabel("    basis_vector_combinations")
         label_27.setPalette(palette_scope)
@@ -368,7 +347,6 @@ class inner_widg( QWidget):
         hbox_lay_max_try_28.addWidget(box_max_try_28)
         bg_box.addLayout(hbox_lay_max_try_28)
 
-
         hbox_lay_sys_absent_threshold_29 =  QHBoxLayout()
         label_sys_absent_threshold_29 = QLabel("        sys_absent_threshold")
         label_sys_absent_threshold_29.setPalette(palette_object)
@@ -381,7 +359,6 @@ class inner_widg( QWidget):
         box_sys_absent_threshold_29.valueChanged.connect(self.spnbox_changed)
         hbox_lay_sys_absent_threshold_29.addWidget(box_sys_absent_threshold_29)
         bg_box.addLayout(hbox_lay_sys_absent_threshold_29)
-
 
         hbox_lay_solution_scorer_30 =  QHBoxLayout()
         label_solution_scorer_30 = QLabel("        solution_scorer")
@@ -400,7 +377,6 @@ class inner_widg( QWidget):
         box_solution_scorer_30.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_solution_scorer_30.addWidget(box_solution_scorer_30)
         bg_box.addLayout(hbox_lay_solution_scorer_30)
-
 
         label_31 = QLabel("        filter")
         label_31.setPalette(palette_scope)
@@ -424,7 +400,6 @@ class inner_widg( QWidget):
         hbox_lay_check_doubled_cell_32.addWidget(box_check_doubled_cell_32)
         bg_box.addLayout(hbox_lay_check_doubled_cell_32)
 
-
         hbox_lay_likelihood_cutoff_33 =  QHBoxLayout()
         label_likelihood_cutoff_33 = QLabel("            likelihood_cutoff")
         label_likelihood_cutoff_33.setPalette(palette_object)
@@ -437,7 +412,6 @@ class inner_widg( QWidget):
         box_likelihood_cutoff_33.valueChanged.connect(self.spnbox_changed)
         hbox_lay_likelihood_cutoff_33.addWidget(box_likelihood_cutoff_33)
         bg_box.addLayout(hbox_lay_likelihood_cutoff_33)
-
 
         hbox_lay_volume_cutoff_34 =  QHBoxLayout()
         label_volume_cutoff_34 = QLabel("            volume_cutoff")
@@ -452,7 +426,6 @@ class inner_widg( QWidget):
         hbox_lay_volume_cutoff_34.addWidget(box_volume_cutoff_34)
         bg_box.addLayout(hbox_lay_volume_cutoff_34)
 
-
         hbox_lay_n_indexed_cutoff_35 =  QHBoxLayout()
         label_n_indexed_cutoff_35 = QLabel("            n_indexed_cutoff")
         label_n_indexed_cutoff_35.setPalette(palette_object)
@@ -465,7 +438,6 @@ class inner_widg( QWidget):
         box_n_indexed_cutoff_35.valueChanged.connect(self.spnbox_changed)
         hbox_lay_n_indexed_cutoff_35.addWidget(box_n_indexed_cutoff_35)
         bg_box.addLayout(hbox_lay_n_indexed_cutoff_35)
-
 
         label_36 = QLabel("        weighted")
         label_36.setPalette(palette_scope)
@@ -485,7 +457,6 @@ class inner_widg( QWidget):
         hbox_lay_power_37.addWidget(box_power_37)
         bg_box.addLayout(hbox_lay_power_37)
 
-
         hbox_lay_volume_weight_38 =  QHBoxLayout()
         label_volume_weight_38 = QLabel("            volume_weight")
         label_volume_weight_38.setPalette(palette_object)
@@ -498,7 +469,6 @@ class inner_widg( QWidget):
         box_volume_weight_38.valueChanged.connect(self.spnbox_changed)
         hbox_lay_volume_weight_38.addWidget(box_volume_weight_38)
         bg_box.addLayout(hbox_lay_volume_weight_38)
-
 
         hbox_lay_n_indexed_weight_39 =  QHBoxLayout()
         label_n_indexed_weight_39 = QLabel("            n_indexed_weight")
@@ -513,7 +483,6 @@ class inner_widg( QWidget):
         hbox_lay_n_indexed_weight_39.addWidget(box_n_indexed_weight_39)
         bg_box.addLayout(hbox_lay_n_indexed_weight_39)
 
-
         hbox_lay_rmsd_weight_40 =  QHBoxLayout()
         label_rmsd_weight_40 = QLabel("            rmsd_weight")
         label_rmsd_weight_40.setPalette(palette_object)
@@ -526,7 +495,6 @@ class inner_widg( QWidget):
         box_rmsd_weight_40.valueChanged.connect(self.spnbox_changed)
         hbox_lay_rmsd_weight_40.addWidget(box_rmsd_weight_40)
         bg_box.addLayout(hbox_lay_rmsd_weight_40)
-
 
         label_41 = QLabel("    index_assignment")
         label_41.setPalette(palette_scope)
@@ -551,7 +519,6 @@ class inner_widg( QWidget):
         hbox_lay_method_42.addWidget(box_method_42)
         bg_box.addLayout(hbox_lay_method_42)
 
-
         label_43 = QLabel("        simple")
         label_43.setPalette(palette_scope)
         label_43.setFont(QFont("Monospace"))
@@ -569,7 +536,6 @@ class inner_widg( QWidget):
         box_hkl_tolerance_44.valueChanged.connect(self.spnbox_changed)
         hbox_lay_hkl_tolerance_44.addWidget(box_hkl_tolerance_44)
         bg_box.addLayout(hbox_lay_hkl_tolerance_44)
-
 
         label_45 = QLabel("        local")
         label_45.setPalette(palette_scope)
@@ -589,7 +555,6 @@ class inner_widg( QWidget):
         hbox_lay_epsilon_46.addWidget(box_epsilon_46)
         bg_box.addLayout(hbox_lay_epsilon_46)
 
-
         hbox_lay_delta_47 =  QHBoxLayout()
         label_delta_47 = QLabel("            delta")
         label_delta_47.setPalette(palette_object)
@@ -602,7 +567,6 @@ class inner_widg( QWidget):
         box_delta_47.valueChanged.connect(self.spnbox_changed)
         hbox_lay_delta_47.addWidget(box_delta_47)
         bg_box.addLayout(hbox_lay_delta_47)
-
 
         hbox_lay_l_min_48 =  QHBoxLayout()
         label_l_min_48 = QLabel("            l_min")
@@ -617,7 +581,6 @@ class inner_widg( QWidget):
         hbox_lay_l_min_48.addWidget(box_l_min_48)
         bg_box.addLayout(hbox_lay_l_min_48)
 
-
         hbox_lay_nearest_neighbours_49 =  QHBoxLayout()
         label_nearest_neighbours_49 = QLabel("            nearest_neighbours")
         label_nearest_neighbours_49.setPalette(palette_object)
@@ -630,7 +593,6 @@ class inner_widg( QWidget):
         box_nearest_neighbours_49.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nearest_neighbours_49.addWidget(box_nearest_neighbours_49)
         bg_box.addLayout(hbox_lay_nearest_neighbours_49)
-
 
         hbox_lay_optimise_initial_basis_vectors_50 =  QHBoxLayout()
         label_optimise_initial_basis_vectors_50 = QLabel("    optimise_initial_basis_vectors")
@@ -645,10 +607,10 @@ class inner_widg( QWidget):
         box_optimise_initial_basis_vectors_50.tmp_lst.append("False")
         for lst_itm in box_optimise_initial_basis_vectors_50.tmp_lst:
             box_optimise_initial_basis_vectors_50.addItem(lst_itm)
+        box_optimise_initial_basis_vectors_50.setCurrentIndex(1)
         box_optimise_initial_basis_vectors_50.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_optimise_initial_basis_vectors_50.addWidget(box_optimise_initial_basis_vectors_50)
         bg_box.addLayout(hbox_lay_optimise_initial_basis_vectors_50)
-
 
         hbox_lay_debug_51 =  QHBoxLayout()
         label_debug_51 = QLabel("    debug")
@@ -663,10 +625,10 @@ class inner_widg( QWidget):
         box_debug_51.tmp_lst.append("False")
         for lst_itm in box_debug_51.tmp_lst:
             box_debug_51.addItem(lst_itm)
+        box_debug_51.setCurrentIndex(1)
         box_debug_51.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_debug_51.addWidget(box_debug_51)
         bg_box.addLayout(hbox_lay_debug_51)
-
 
         hbox_lay_debug_plots_52 =  QHBoxLayout()
         label_debug_plots_52 = QLabel("    debug_plots")
@@ -681,10 +643,10 @@ class inner_widg( QWidget):
         box_debug_plots_52.tmp_lst.append("False")
         for lst_itm in box_debug_plots_52.tmp_lst:
             box_debug_plots_52.addItem(lst_itm)
+        box_debug_plots_52.setCurrentIndex(1)
         box_debug_plots_52.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_debug_plots_52.addWidget(box_debug_plots_52)
         bg_box.addLayout(hbox_lay_debug_plots_52)
-
 
         hbox_lay_combine_scans_53 =  QHBoxLayout()
         label_combine_scans_53 = QLabel("    combine_scans")
@@ -699,10 +661,10 @@ class inner_widg( QWidget):
         box_combine_scans_53.tmp_lst.append("False")
         for lst_itm in box_combine_scans_53.tmp_lst:
             box_combine_scans_53.addItem(lst_itm)
+        box_combine_scans_53.setCurrentIndex(1)
         box_combine_scans_53.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_combine_scans_53.addWidget(box_combine_scans_53)
         bg_box.addLayout(hbox_lay_combine_scans_53)
-
 
         label_54 = QLabel("    refinement_protocol")
         label_54.setPalette(palette_scope)
@@ -722,7 +684,6 @@ class inner_widg( QWidget):
         hbox_lay_n_macro_cycles_55.addWidget(box_n_macro_cycles_55)
         bg_box.addLayout(hbox_lay_n_macro_cycles_55)
 
-
         hbox_lay_d_min_step_56 =  QHBoxLayout()
         label_d_min_step_56 = QLabel("        d_min_step")
         label_d_min_step_56.setPalette(palette_object)
@@ -734,7 +695,6 @@ class inner_widg( QWidget):
         box_d_min_step_56.valueChanged.connect(self.spnbox_changed)
         hbox_lay_d_min_step_56.addWidget(box_d_min_step_56)
         bg_box.addLayout(hbox_lay_d_min_step_56)
-
 
         hbox_lay_d_min_start_57 =  QHBoxLayout()
         label_d_min_start_57 = QLabel("        d_min_start")
@@ -748,7 +708,6 @@ class inner_widg( QWidget):
         hbox_lay_d_min_start_57.addWidget(box_d_min_start_57)
         bg_box.addLayout(hbox_lay_d_min_start_57)
 
-
         hbox_lay_d_min_final_58 =  QHBoxLayout()
         label_d_min_final_58 = QLabel("        d_min_final")
         label_d_min_final_58.setPalette(palette_object)
@@ -760,7 +719,6 @@ class inner_widg( QWidget):
         box_d_min_final_58.valueChanged.connect(self.spnbox_changed)
         hbox_lay_d_min_final_58.addWidget(box_d_min_final_58)
         bg_box.addLayout(hbox_lay_d_min_final_58)
-
 
         hbox_lay_verbosity_59 =  QHBoxLayout()
         label_verbosity_59 = QLabel("        verbosity")
@@ -775,7 +733,6 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_59.addWidget(box_verbosity_59)
         bg_box.addLayout(hbox_lay_verbosity_59)
 
-
         hbox_lay_disable_unit_cell_volume_sanity_check_60 =  QHBoxLayout()
         label_disable_unit_cell_volume_sanity_check_60 = QLabel("        disable_unit_cell_volume_sanity_check")
         label_disable_unit_cell_volume_sanity_check_60.setPalette(palette_object)
@@ -789,10 +746,10 @@ class inner_widg( QWidget):
         box_disable_unit_cell_volume_sanity_check_60.tmp_lst.append("False")
         for lst_itm in box_disable_unit_cell_volume_sanity_check_60.tmp_lst:
             box_disable_unit_cell_volume_sanity_check_60.addItem(lst_itm)
+        box_disable_unit_cell_volume_sanity_check_60.setCurrentIndex(1)
         box_disable_unit_cell_volume_sanity_check_60.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_disable_unit_cell_volume_sanity_check_60.addWidget(box_disable_unit_cell_volume_sanity_check_60)
         bg_box.addLayout(hbox_lay_disable_unit_cell_volume_sanity_check_60)
-
 
         label_61 = QLabel("        outlier_rejection")
         label_61.setPalette(palette_scope)
@@ -811,7 +768,6 @@ class inner_widg( QWidget):
         hbox_lay_maximum_spot_error_62.addWidget(box_maximum_spot_error_62)
         bg_box.addLayout(hbox_lay_maximum_spot_error_62)
 
-
         hbox_lay_maximum_phi_error_63 =  QHBoxLayout()
         label_maximum_phi_error_63 = QLabel("            maximum_phi_error")
         label_maximum_phi_error_63.setPalette(palette_object)
@@ -823,7 +779,6 @@ class inner_widg( QWidget):
         box_maximum_phi_error_63.valueChanged.connect(self.spnbox_changed)
         hbox_lay_maximum_phi_error_63.addWidget(box_maximum_phi_error_63)
         bg_box.addLayout(hbox_lay_maximum_phi_error_63)
-
 
         hbox_lay_method_64 =  QHBoxLayout()
         label_method_64 = QLabel("    method")
@@ -844,7 +799,6 @@ class inner_widg( QWidget):
         hbox_lay_method_64.addWidget(box_method_64)
         bg_box.addLayout(hbox_lay_method_64)
 
-
         label_65 = QLabel("    multiple_lattice_search")
         label_65.setPalette(palette_scope)
         label_65.setFont(QFont("Monospace"))
@@ -863,10 +817,10 @@ class inner_widg( QWidget):
         box_cluster_analysis_search_66.tmp_lst.append("False")
         for lst_itm in box_cluster_analysis_search_66.tmp_lst:
             box_cluster_analysis_search_66.addItem(lst_itm)
+        box_cluster_analysis_search_66.setCurrentIndex(1)
         box_cluster_analysis_search_66.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_cluster_analysis_search_66.addWidget(box_cluster_analysis_search_66)
         bg_box.addLayout(hbox_lay_cluster_analysis_search_66)
-
 
         hbox_lay_recycle_unindexed_reflections_cutoff_67 =  QHBoxLayout()
         label_recycle_unindexed_reflections_cutoff_67 = QLabel("        recycle_unindexed_reflections_cutoff")
@@ -881,7 +835,6 @@ class inner_widg( QWidget):
         hbox_lay_recycle_unindexed_reflections_cutoff_67.addWidget(box_recycle_unindexed_reflections_cutoff_67)
         bg_box.addLayout(hbox_lay_recycle_unindexed_reflections_cutoff_67)
 
-
         hbox_lay_minimum_angular_separation_68 =  QHBoxLayout()
         label_minimum_angular_separation_68 = QLabel("        minimum_angular_separation")
         label_minimum_angular_separation_68.setPalette(palette_object)
@@ -895,7 +848,6 @@ class inner_widg( QWidget):
         hbox_lay_minimum_angular_separation_68.addWidget(box_minimum_angular_separation_68)
         bg_box.addLayout(hbox_lay_minimum_angular_separation_68)
 
-
         hbox_lay_max_lattices_69 =  QHBoxLayout()
         label_max_lattices_69 = QLabel("        max_lattices")
         label_max_lattices_69.setPalette(palette_object)
@@ -908,7 +860,6 @@ class inner_widg( QWidget):
         box_max_lattices_69.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_lattices_69.addWidget(box_max_lattices_69)
         bg_box.addLayout(hbox_lay_max_lattices_69)
-
 
         label_70 = QLabel("        cluster_analysis")
         label_70.setPalette(palette_scope)
@@ -932,7 +883,6 @@ class inner_widg( QWidget):
         box_method_71.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_method_71.addWidget(box_method_71)
         bg_box.addLayout(hbox_lay_method_71)
-
 
         label_72 = QLabel("            hcluster")
         label_72.setPalette(palette_scope)
@@ -961,7 +911,6 @@ class inner_widg( QWidget):
         hbox_lay_method_74.addWidget(box_method_74)
         bg_box.addLayout(hbox_lay_method_74)
 
-
         hbox_lay_metric_75 =  QHBoxLayout()
         label_metric_75 = QLabel("                    metric")
         label_metric_75.setPalette(palette_object)
@@ -979,7 +928,6 @@ class inner_widg( QWidget):
         hbox_lay_metric_75.addWidget(box_metric_75)
         bg_box.addLayout(hbox_lay_metric_75)
 
-
         hbox_lay_cutoff_76 =  QHBoxLayout()
         label_cutoff_76 = QLabel("                cutoff")
         label_cutoff_76.setPalette(palette_object)
@@ -992,7 +940,6 @@ class inner_widg( QWidget):
         box_cutoff_76.valueChanged.connect(self.spnbox_changed)
         hbox_lay_cutoff_76.addWidget(box_cutoff_76)
         bg_box.addLayout(hbox_lay_cutoff_76)
-
 
         hbox_lay_cutoff_criterion_77 =  QHBoxLayout()
         label_cutoff_criterion_77 = QLabel("                cutoff_criterion")
@@ -1012,7 +959,6 @@ class inner_widg( QWidget):
         hbox_lay_cutoff_criterion_77.addWidget(box_cutoff_criterion_77)
         bg_box.addLayout(hbox_lay_cutoff_criterion_77)
 
-
         label_78 = QLabel("            dbscan")
         label_78.setPalette(palette_scope)
         label_78.setFont(QFont("Monospace"))
@@ -1031,7 +977,6 @@ class inner_widg( QWidget):
         hbox_lay_eps_79.addWidget(box_eps_79)
         bg_box.addLayout(hbox_lay_eps_79)
 
-
         hbox_lay_min_samples_80 =  QHBoxLayout()
         label_min_samples_80 = QLabel("                min_samples")
         label_min_samples_80.setPalette(palette_object)
@@ -1044,7 +989,6 @@ class inner_widg( QWidget):
         box_min_samples_80.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_samples_80.addWidget(box_min_samples_80)
         bg_box.addLayout(hbox_lay_min_samples_80)
-
 
         hbox_lay_min_cluster_size_81 =  QHBoxLayout()
         label_min_cluster_size_81 = QLabel("            min_cluster_size")
@@ -1059,7 +1003,6 @@ class inner_widg( QWidget):
         hbox_lay_min_cluster_size_81.addWidget(box_min_cluster_size_81)
         bg_box.addLayout(hbox_lay_min_cluster_size_81)
 
-
         hbox_lay_intersection_union_ratio_cutoff_82 =  QHBoxLayout()
         label_intersection_union_ratio_cutoff_82 = QLabel("            intersection_union_ratio_cutoff")
         label_intersection_union_ratio_cutoff_82.setPalette(palette_object)
@@ -1072,7 +1015,6 @@ class inner_widg( QWidget):
         box_intersection_union_ratio_cutoff_82.valueChanged.connect(self.spnbox_changed)
         hbox_lay_intersection_union_ratio_cutoff_82.addWidget(box_intersection_union_ratio_cutoff_82)
         bg_box.addLayout(hbox_lay_intersection_union_ratio_cutoff_82)
-
 
         label_83 = QLabel("    real_space_grid_search")
         label_83.setPalette(palette_scope)
@@ -1091,7 +1033,6 @@ class inner_widg( QWidget):
         box_characteristic_grid_84.valueChanged.connect(self.spnbox_changed)
         hbox_lay_characteristic_grid_84.addWidget(box_characteristic_grid_84)
         bg_box.addLayout(hbox_lay_characteristic_grid_84)
-
 
         label_85 = QLabel("refinement")
         label_85.setPalette(palette_scope)
@@ -1116,7 +1057,6 @@ class inner_widg( QWidget):
         hbox_lay_nproc_87.addWidget(box_nproc_87)
         bg_box.addLayout(hbox_lay_nproc_87)
 
-
         hbox_lay_verbosity_88 =  QHBoxLayout()
         label_verbosity_88 = QLabel("    verbosity")
         label_verbosity_88.setPalette(palette_object)
@@ -1129,7 +1069,6 @@ class inner_widg( QWidget):
         box_verbosity_88.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_88.addWidget(box_verbosity_88)
         bg_box.addLayout(hbox_lay_verbosity_88)
-
 
         label_89 = QLabel("    parameterisation")
         label_89.setPalette(palette_scope)
@@ -1154,7 +1093,6 @@ class inner_widg( QWidget):
         hbox_lay_min_nref_per_parameter_91.addWidget(box_min_nref_per_parameter_91)
         bg_box.addLayout(hbox_lay_min_nref_per_parameter_91)
 
-
         hbox_lay_action_92 =  QHBoxLayout()
         label_action_92 = QLabel("            action")
         label_action_92.setPalette(palette_object)
@@ -1173,7 +1111,6 @@ class inner_widg( QWidget):
         box_action_92.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_action_92.addWidget(box_action_92)
         bg_box.addLayout(hbox_lay_action_92)
-
 
         label_93 = QLabel("        beam")
         label_93.setPalette(palette_scope)
@@ -1201,7 +1138,6 @@ class inner_widg( QWidget):
         bg_box.addLayout(hbox_lay_fix_94)
 
 
-
         label_96 = QLabel("        crystal")
         label_96.setPalette(palette_scope)
         label_96.setFont(QFont("Monospace"))
@@ -1225,7 +1161,6 @@ class inner_widg( QWidget):
         box_fix_97.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_fix_97.addWidget(box_fix_97)
         bg_box.addLayout(hbox_lay_fix_97)
-
 
         label_98 = QLabel("            unit_cell")
         label_98.setPalette(palette_scope)
@@ -1353,7 +1288,6 @@ class inner_widg( QWidget):
         hbox_lay_id_104.addWidget(box_id_104)
         bg_box.addLayout(hbox_lay_id_104)
 
-
         label_105 = QLabel("                    tie_to_group")
         label_105.setPalette(palette_scope)
         label_105.setFont(QFont("Monospace"))
@@ -1379,7 +1313,6 @@ class inner_widg( QWidget):
 
 
 
-
         label_109 = QLabel("            orientation")
         label_109.setPalette(palette_scope)
         label_109.setFont(QFont("Monospace"))
@@ -1399,10 +1332,10 @@ class inner_widg( QWidget):
         box_scan_varying_111.tmp_lst.append("False")
         for lst_itm in box_scan_varying_111.tmp_lst:
             box_scan_varying_111.addItem(lst_itm)
+        box_scan_varying_111.setCurrentIndex(1)
         box_scan_varying_111.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying_111.addWidget(box_scan_varying_111)
         bg_box.addLayout(hbox_lay_scan_varying_111)
-
 
         hbox_lay_num_intervals_112 =  QHBoxLayout()
         label_num_intervals_112 = QLabel("            num_intervals")
@@ -1422,7 +1355,6 @@ class inner_widg( QWidget):
         hbox_lay_num_intervals_112.addWidget(box_num_intervals_112)
         bg_box.addLayout(hbox_lay_num_intervals_112)
 
-
         hbox_lay_interval_width_degrees_113 =  QHBoxLayout()
         label_interval_width_degrees_113 = QLabel("            interval_width_degrees")
         label_interval_width_degrees_113.setPalette(palette_object)
@@ -1436,7 +1368,6 @@ class inner_widg( QWidget):
         hbox_lay_interval_width_degrees_113.addWidget(box_interval_width_degrees_113)
         bg_box.addLayout(hbox_lay_interval_width_degrees_113)
 
-
         hbox_lay_absolute_num_intervals_114 =  QHBoxLayout()
         label_absolute_num_intervals_114 = QLabel("            absolute_num_intervals")
         label_absolute_num_intervals_114.setPalette(palette_object)
@@ -1449,7 +1380,6 @@ class inner_widg( QWidget):
         box_absolute_num_intervals_114.valueChanged.connect(self.spnbox_changed)
         hbox_lay_absolute_num_intervals_114.addWidget(box_absolute_num_intervals_114)
         bg_box.addLayout(hbox_lay_absolute_num_intervals_114)
-
 
         hbox_lay_UB_model_per_115 =  QHBoxLayout()
         label_UB_model_per_115 = QLabel("            UB_model_per")
@@ -1469,7 +1399,6 @@ class inner_widg( QWidget):
         box_UB_model_per_115.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_UB_model_per_115.addWidget(box_UB_model_per_115)
         bg_box.addLayout(hbox_lay_UB_model_per_115)
-
 
         label_116 = QLabel("        detector")
         label_116.setPalette(palette_scope)
@@ -1496,7 +1425,6 @@ class inner_widg( QWidget):
         hbox_lay_panels_117.addWidget(box_panels_117)
         bg_box.addLayout(hbox_lay_panels_117)
 
-
         hbox_lay_hierarchy_level_118 =  QHBoxLayout()
         label_hierarchy_level_118 = QLabel("            hierarchy_level")
         label_hierarchy_level_118.setPalette(palette_object)
@@ -1509,7 +1437,6 @@ class inner_widg( QWidget):
         box_hierarchy_level_118.valueChanged.connect(self.spnbox_changed)
         hbox_lay_hierarchy_level_118.addWidget(box_hierarchy_level_118)
         bg_box.addLayout(hbox_lay_hierarchy_level_118)
-
 
         hbox_lay_fix_119 =  QHBoxLayout()
         label_fix_119 = QLabel("            fix")
@@ -1531,7 +1458,6 @@ class inner_widg( QWidget):
         bg_box.addLayout(hbox_lay_fix_119)
 
 
-
         hbox_lay_sparse_121 =  QHBoxLayout()
         label_sparse_121 = QLabel("        sparse")
         label_sparse_121.setPalette(palette_object)
@@ -1549,7 +1475,6 @@ class inner_widg( QWidget):
         hbox_lay_sparse_121.addWidget(box_sparse_121)
         bg_box.addLayout(hbox_lay_sparse_121)
 
-
         hbox_lay_treat_single_image_as_still_122 =  QHBoxLayout()
         label_treat_single_image_as_still_122 = QLabel("        treat_single_image_as_still")
         label_treat_single_image_as_still_122.setPalette(palette_object)
@@ -1563,10 +1488,10 @@ class inner_widg( QWidget):
         box_treat_single_image_as_still_122.tmp_lst.append("False")
         for lst_itm in box_treat_single_image_as_still_122.tmp_lst:
             box_treat_single_image_as_still_122.addItem(lst_itm)
+        box_treat_single_image_as_still_122.setCurrentIndex(1)
         box_treat_single_image_as_still_122.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_treat_single_image_as_still_122.addWidget(box_treat_single_image_as_still_122)
         bg_box.addLayout(hbox_lay_treat_single_image_as_still_122)
-
 
         label_123 = QLabel("    refinery")
         label_123.setPalette(palette_scope)
@@ -1593,7 +1518,6 @@ class inner_widg( QWidget):
         hbox_lay_engine_124.addWidget(box_engine_124)
         bg_box.addLayout(hbox_lay_engine_124)
 
-
         hbox_lay_track_step_125 =  QHBoxLayout()
         label_track_step_125 = QLabel("        track_step")
         label_track_step_125.setPalette(palette_object)
@@ -1607,10 +1531,10 @@ class inner_widg( QWidget):
         box_track_step_125.tmp_lst.append("False")
         for lst_itm in box_track_step_125.tmp_lst:
             box_track_step_125.addItem(lst_itm)
+        box_track_step_125.setCurrentIndex(1)
         box_track_step_125.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_step_125.addWidget(box_track_step_125)
         bg_box.addLayout(hbox_lay_track_step_125)
-
 
         hbox_lay_track_gradient_126 =  QHBoxLayout()
         label_track_gradient_126 = QLabel("        track_gradient")
@@ -1625,10 +1549,10 @@ class inner_widg( QWidget):
         box_track_gradient_126.tmp_lst.append("False")
         for lst_itm in box_track_gradient_126.tmp_lst:
             box_track_gradient_126.addItem(lst_itm)
+        box_track_gradient_126.setCurrentIndex(1)
         box_track_gradient_126.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_gradient_126.addWidget(box_track_gradient_126)
         bg_box.addLayout(hbox_lay_track_gradient_126)
-
 
         hbox_lay_track_parameter_correlation_127 =  QHBoxLayout()
         label_track_parameter_correlation_127 = QLabel("        track_parameter_correlation")
@@ -1643,10 +1567,10 @@ class inner_widg( QWidget):
         box_track_parameter_correlation_127.tmp_lst.append("False")
         for lst_itm in box_track_parameter_correlation_127.tmp_lst:
             box_track_parameter_correlation_127.addItem(lst_itm)
+        box_track_parameter_correlation_127.setCurrentIndex(1)
         box_track_parameter_correlation_127.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_parameter_correlation_127.addWidget(box_track_parameter_correlation_127)
         bg_box.addLayout(hbox_lay_track_parameter_correlation_127)
-
 
         hbox_lay_track_out_of_sample_rmsd_128 =  QHBoxLayout()
         label_track_out_of_sample_rmsd_128 = QLabel("        track_out_of_sample_rmsd")
@@ -1661,10 +1585,10 @@ class inner_widg( QWidget):
         box_track_out_of_sample_rmsd_128.tmp_lst.append("False")
         for lst_itm in box_track_out_of_sample_rmsd_128.tmp_lst:
             box_track_out_of_sample_rmsd_128.addItem(lst_itm)
+        box_track_out_of_sample_rmsd_128.setCurrentIndex(1)
         box_track_out_of_sample_rmsd_128.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_track_out_of_sample_rmsd_128.addWidget(box_track_out_of_sample_rmsd_128)
         bg_box.addLayout(hbox_lay_track_out_of_sample_rmsd_128)
-
 
 
         hbox_lay_max_iterations_130 =  QHBoxLayout()
@@ -1678,7 +1602,6 @@ class inner_widg( QWidget):
         box_max_iterations_130.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_iterations_130.addWidget(box_max_iterations_130)
         bg_box.addLayout(hbox_lay_max_iterations_130)
-
 
         label_131 = QLabel("    target")
         label_131.setPalette(palette_scope)
@@ -1703,7 +1626,6 @@ class inner_widg( QWidget):
         hbox_lay_rmsd_cutoff_132.addWidget(box_rmsd_cutoff_132)
         bg_box.addLayout(hbox_lay_rmsd_cutoff_132)
 
-
         hbox_lay_bin_size_fraction_133 =  QHBoxLayout()
         label_bin_size_fraction_133 = QLabel("        bin_size_fraction")
         label_bin_size_fraction_133.setPalette(palette_object)
@@ -1716,7 +1638,6 @@ class inner_widg( QWidget):
         box_bin_size_fraction_133.valueChanged.connect(self.spnbox_changed)
         hbox_lay_bin_size_fraction_133.addWidget(box_bin_size_fraction_133)
         bg_box.addLayout(hbox_lay_bin_size_fraction_133)
-
 
         hbox_lay_absolute_cutoffs_134_0 =  QHBoxLayout()
         label_absolute_cutoffs_134_0 = QLabel("        absolute_cutoffs[1]")
@@ -1744,13 +1665,10 @@ class inner_widg( QWidget):
         #box_absolute_cutoffs_134_2.valueChanged.connect(self.spnbox_changed)
         hbox_lay_absolute_cutoffs_134_0.addWidget(box_absolute_cutoffs_134_0)
         bg_box.addLayout(hbox_lay_absolute_cutoffs_134_0)
-
         hbox_lay_absolute_cutoffs_134_1.addWidget(box_absolute_cutoffs_134_1)
         bg_box.addLayout(hbox_lay_absolute_cutoffs_134_1)
-
         hbox_lay_absolute_cutoffs_134_2.addWidget(box_absolute_cutoffs_134_2)
         bg_box.addLayout(hbox_lay_absolute_cutoffs_134_2)
-
 
         hbox_lay_gradient_calculation_blocksize_135 =  QHBoxLayout()
         label_gradient_calculation_blocksize_135 = QLabel("        gradient_calculation_blocksize")
@@ -1763,7 +1681,6 @@ class inner_widg( QWidget):
         box_gradient_calculation_blocksize_135.valueChanged.connect(self.spnbox_changed)
         hbox_lay_gradient_calculation_blocksize_135.addWidget(box_gradient_calculation_blocksize_135)
         bg_box.addLayout(hbox_lay_gradient_calculation_blocksize_135)
-
 
         label_136 = QLabel("    reflections")
         label_136.setPalette(palette_scope)
@@ -1783,7 +1700,6 @@ class inner_widg( QWidget):
         hbox_lay_reflections_per_degree_137.addWidget(box_reflections_per_degree_137)
         bg_box.addLayout(hbox_lay_reflections_per_degree_137)
 
-
         hbox_lay_minimum_sample_size_138 =  QHBoxLayout()
         label_minimum_sample_size_138 = QLabel("        minimum_sample_size")
         label_minimum_sample_size_138.setPalette(palette_object)
@@ -1797,7 +1713,6 @@ class inner_widg( QWidget):
         hbox_lay_minimum_sample_size_138.addWidget(box_minimum_sample_size_138)
         bg_box.addLayout(hbox_lay_minimum_sample_size_138)
 
-
         hbox_lay_maximum_sample_size_139 =  QHBoxLayout()
         label_maximum_sample_size_139 = QLabel("        maximum_sample_size")
         label_maximum_sample_size_139.setPalette(palette_object)
@@ -1809,7 +1724,6 @@ class inner_widg( QWidget):
         box_maximum_sample_size_139.valueChanged.connect(self.spnbox_changed)
         hbox_lay_maximum_sample_size_139.addWidget(box_maximum_sample_size_139)
         bg_box.addLayout(hbox_lay_maximum_sample_size_139)
-
 
         hbox_lay_use_all_reflections_140 =  QHBoxLayout()
         label_use_all_reflections_140 = QLabel("        use_all_reflections")
@@ -1824,10 +1738,10 @@ class inner_widg( QWidget):
         box_use_all_reflections_140.tmp_lst.append("False")
         for lst_itm in box_use_all_reflections_140.tmp_lst:
             box_use_all_reflections_140.addItem(lst_itm)
+        box_use_all_reflections_140.setCurrentIndex(1)
         box_use_all_reflections_140.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_use_all_reflections_140.addWidget(box_use_all_reflections_140)
         bg_box.addLayout(hbox_lay_use_all_reflections_140)
-
 
         hbox_lay_random_seed_141 =  QHBoxLayout()
         label_random_seed_141 = QLabel("        random_seed")
@@ -1842,7 +1756,6 @@ class inner_widg( QWidget):
         hbox_lay_random_seed_141.addWidget(box_random_seed_141)
         bg_box.addLayout(hbox_lay_random_seed_141)
 
-
         hbox_lay_close_to_spindle_cutoff_142 =  QHBoxLayout()
         label_close_to_spindle_cutoff_142 = QLabel("        close_to_spindle_cutoff")
         label_close_to_spindle_cutoff_142.setPalette(palette_object)
@@ -1856,7 +1769,6 @@ class inner_widg( QWidget):
         hbox_lay_close_to_spindle_cutoff_142.addWidget(box_close_to_spindle_cutoff_142)
         bg_box.addLayout(hbox_lay_close_to_spindle_cutoff_142)
 
-
         hbox_lay_block_width_143 =  QHBoxLayout()
         label_block_width_143 = QLabel("        block_width")
         label_block_width_143.setPalette(palette_object)
@@ -1869,7 +1781,6 @@ class inner_widg( QWidget):
         box_block_width_143.valueChanged.connect(self.spnbox_changed)
         hbox_lay_block_width_143.addWidget(box_block_width_143)
         bg_box.addLayout(hbox_lay_block_width_143)
-
 
         label_144 = QLabel("        weighting_strategy")
         label_144.setPalette(palette_scope)
@@ -1895,7 +1806,6 @@ class inner_widg( QWidget):
         hbox_lay_override_145.addWidget(box_override_145)
         bg_box.addLayout(hbox_lay_override_145)
 
-
         hbox_lay_delpsi_constant_146 =  QHBoxLayout()
         label_delpsi_constant_146 = QLabel("            delpsi_constant")
         label_delpsi_constant_146.setPalette(palette_object)
@@ -1908,7 +1818,6 @@ class inner_widg( QWidget):
         box_delpsi_constant_146.valueChanged.connect(self.spnbox_changed)
         hbox_lay_delpsi_constant_146.addWidget(box_delpsi_constant_146)
         bg_box.addLayout(hbox_lay_delpsi_constant_146)
-
 
         hbox_lay_constants_147_0 =  QHBoxLayout()
         label_constants_147_0 = QLabel("            constants[1]")
@@ -1936,13 +1845,10 @@ class inner_widg( QWidget):
         #box_constants_147_2.valueChanged.connect(self.spnbox_changed)
         hbox_lay_constants_147_0.addWidget(box_constants_147_0)
         bg_box.addLayout(hbox_lay_constants_147_0)
-
         hbox_lay_constants_147_1.addWidget(box_constants_147_1)
         bg_box.addLayout(hbox_lay_constants_147_1)
-
         hbox_lay_constants_147_2.addWidget(box_constants_147_2)
         bg_box.addLayout(hbox_lay_constants_147_2)
-
 
         label_148 = QLabel("        outlier")
         label_148.setPalette(palette_scope)
@@ -1970,7 +1876,6 @@ class inner_widg( QWidget):
         hbox_lay_algorithm_149.addWidget(box_algorithm_149)
         bg_box.addLayout(hbox_lay_algorithm_149)
 
-
         hbox_lay_minimum_number_of_reflections_150 =  QHBoxLayout()
         label_minimum_number_of_reflections_150 = QLabel("            minimum_number_of_reflections")
         label_minimum_number_of_reflections_150.setPalette(palette_object)
@@ -1983,7 +1888,6 @@ class inner_widg( QWidget):
         box_minimum_number_of_reflections_150.valueChanged.connect(self.spnbox_changed)
         hbox_lay_minimum_number_of_reflections_150.addWidget(box_minimum_number_of_reflections_150)
         bg_box.addLayout(hbox_lay_minimum_number_of_reflections_150)
-
 
         hbox_lay_separate_experiments_151 =  QHBoxLayout()
         label_separate_experiments_151 = QLabel("            separate_experiments")
@@ -2002,7 +1906,6 @@ class inner_widg( QWidget):
         hbox_lay_separate_experiments_151.addWidget(box_separate_experiments_151)
         bg_box.addLayout(hbox_lay_separate_experiments_151)
 
-
         hbox_lay_separate_panels_152 =  QHBoxLayout()
         label_separate_panels_152 = QLabel("            separate_panels")
         label_separate_panels_152.setPalette(palette_object)
@@ -2019,7 +1922,6 @@ class inner_widg( QWidget):
         box_separate_panels_152.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_separate_panels_152.addWidget(box_separate_panels_152)
         bg_box.addLayout(hbox_lay_separate_panels_152)
-
 
         label_153 = QLabel("            tukey")
         label_153.setPalette(palette_scope)
@@ -2039,7 +1941,6 @@ class inner_widg( QWidget):
         hbox_lay_iqr_multiplier_154.addWidget(box_iqr_multiplier_154)
         bg_box.addLayout(hbox_lay_iqr_multiplier_154)
 
-
         label_155 = QLabel("            mcd")
         label_155.setPalette(palette_scope)
         label_155.setFont(QFont("Monospace"))
@@ -2058,7 +1959,6 @@ class inner_widg( QWidget):
         hbox_lay_alpha_156.addWidget(box_alpha_156)
         bg_box.addLayout(hbox_lay_alpha_156)
 
-
         hbox_lay_max_n_groups_157 =  QHBoxLayout()
         label_max_n_groups_157 = QLabel("                max_n_groups")
         label_max_n_groups_157.setPalette(palette_object)
@@ -2071,7 +1971,6 @@ class inner_widg( QWidget):
         box_max_n_groups_157.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_n_groups_157.addWidget(box_max_n_groups_157)
         bg_box.addLayout(hbox_lay_max_n_groups_157)
-
 
         hbox_lay_min_group_size_158 =  QHBoxLayout()
         label_min_group_size_158 = QLabel("                min_group_size")
@@ -2086,7 +1985,6 @@ class inner_widg( QWidget):
         hbox_lay_min_group_size_158.addWidget(box_min_group_size_158)
         bg_box.addLayout(hbox_lay_min_group_size_158)
 
-
         hbox_lay_n_trials_159 =  QHBoxLayout()
         label_n_trials_159 = QLabel("                n_trials")
         label_n_trials_159.setPalette(palette_object)
@@ -2099,7 +1997,6 @@ class inner_widg( QWidget):
         box_n_trials_159.valueChanged.connect(self.spnbox_changed)
         hbox_lay_n_trials_159.addWidget(box_n_trials_159)
         bg_box.addLayout(hbox_lay_n_trials_159)
-
 
         hbox_lay_k1_160 =  QHBoxLayout()
         label_k1_160 = QLabel("                k1")
@@ -2114,7 +2011,6 @@ class inner_widg( QWidget):
         hbox_lay_k1_160.addWidget(box_k1_160)
         bg_box.addLayout(hbox_lay_k1_160)
 
-
         hbox_lay_k2_161 =  QHBoxLayout()
         label_k2_161 = QLabel("                k2")
         label_k2_161.setPalette(palette_object)
@@ -2127,7 +2023,6 @@ class inner_widg( QWidget):
         box_k2_161.valueChanged.connect(self.spnbox_changed)
         hbox_lay_k2_161.addWidget(box_k2_161)
         bg_box.addLayout(hbox_lay_k2_161)
-
 
         hbox_lay_k3_162 =  QHBoxLayout()
         label_k3_162 = QLabel("                k3")
@@ -2142,7 +2037,6 @@ class inner_widg( QWidget):
         hbox_lay_k3_162.addWidget(box_k3_162)
         bg_box.addLayout(hbox_lay_k3_162)
 
-
         hbox_lay_threshold_probability_163 =  QHBoxLayout()
         label_threshold_probability_163 = QLabel("                threshold_probability")
         label_threshold_probability_163.setPalette(palette_object)
@@ -2155,7 +2049,6 @@ class inner_widg( QWidget):
         box_threshold_probability_163.valueChanged.connect(self.spnbox_changed)
         hbox_lay_threshold_probability_163.addWidget(box_threshold_probability_163)
         bg_box.addLayout(hbox_lay_threshold_probability_163)
-
 
         label_164 = QLabel("            sauter_poon")
         label_164.setPalette(palette_scope)
@@ -2180,10 +2073,8 @@ class inner_widg( QWidget):
         #box_px_sz_165_1.valueChanged.connect(self.spnbox_changed)
         hbox_lay_px_sz_165_0.addWidget(box_px_sz_165_0)
         bg_box.addLayout(hbox_lay_px_sz_165_0)
-
         hbox_lay_px_sz_165_1.addWidget(box_px_sz_165_1)
         bg_box.addLayout(hbox_lay_px_sz_165_1)
-
 
         hbox_lay_verbose_166 =  QHBoxLayout()
         label_verbose_166 = QLabel("                verbose")
@@ -2198,10 +2089,10 @@ class inner_widg( QWidget):
         box_verbose_166.tmp_lst.append("False")
         for lst_itm in box_verbose_166.tmp_lst:
             box_verbose_166.addItem(lst_itm)
+        box_verbose_166.setCurrentIndex(1)
         box_verbose_166.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_verbose_166.addWidget(box_verbose_166)
         bg_box.addLayout(hbox_lay_verbose_166)
-
 
         hbox_lay_pdf_167 =  QHBoxLayout()
         label_pdf_167 = QLabel("                pdf")
@@ -2214,7 +2105,6 @@ class inner_widg( QWidget):
         box_pdf_167.textChanged.connect(self.spnbox_changed)
         hbox_lay_pdf_167.addWidget(box_pdf_167)
         bg_box.addLayout(hbox_lay_pdf_167)
-
 
         label_168 = QLabel("output")
         label_168.setPalette(palette_scope)
@@ -2236,7 +2126,6 @@ class inner_widg( QWidget):
         hbox_lay_log_172.addWidget(box_log_172)
         bg_box.addLayout(hbox_lay_log_172)
 
-
         hbox_lay_debug_log_173 =  QHBoxLayout()
         label_debug_log_173 = QLabel("    debug_log")
         label_debug_log_173.setPalette(palette_object)
@@ -2248,7 +2137,6 @@ class inner_widg( QWidget):
         box_debug_log_173.textChanged.connect(self.spnbox_changed)
         hbox_lay_debug_log_173.addWidget(box_debug_log_173)
         bg_box.addLayout(hbox_lay_debug_log_173)
-
 
         hbox_lay_verbosity_174 =  QHBoxLayout()
         label_verbosity_174 = QLabel("verbosity")
@@ -2262,7 +2150,6 @@ class inner_widg( QWidget):
         box_verbosity_174.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_174.addWidget(box_verbosity_174)
         bg_box.addLayout(hbox_lay_verbosity_174)
-
 
  
         self.setLayout(bg_box)
