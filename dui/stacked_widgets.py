@@ -470,7 +470,7 @@ class RefineParameterWidget(GenericParameterWidget):
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         param_widg = ParamMainWidget(self.super_parent)
-        default_tab = IndexSimplerParamTab(self.super_parent)
+        default_tab = RefineSimplerParamTab(self.super_parent)
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
@@ -580,12 +580,34 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
         box_hklout_6 = QtGui.QLineEdit()
         box_hklout_6.local_path = "mtz.hklout"
         #box_hklout_6.textChanged.connect(self.spnbox_changed)
+
         hbox_lay_hklout_6.addWidget(box_hklout_6)
         bg_box = QtGui.QVBoxLayout()
         bg_box.addLayout(hbox_lay_hklout_6)
+
+        PrFit_lay_out =  QtGui.QHBoxLayout()
+        label_PrFit = QtGui.QLabel("integration.profile.fitting")
+        PrFit_lay_out.addWidget(label_PrFit)
+        PrFit_comb_bx = QtGui.QComboBox()
+        PrFit_comb_bx.local_path = "integration.profile.fitting"
+        PrFit_comb_bx.tmp_lst=[]
+        PrFit_comb_bx.tmp_lst.append("True")
+        PrFit_comb_bx.tmp_lst.append("False")
+
+        for lst_itm in PrFit_comb_bx.tmp_lst:
+            PrFit_comb_bx.addItem(lst_itm)
+        #PrFit_comb_bx.currentIndexChanged.connect(self.combobox_changed)
+        PrFit_lay_out.addWidget(PrFit_comb_bx)
+
+
+
+        bg_box.addLayout(PrFit_lay_out)
+
         bg_box.addStretch()
 
         self.setLayout(bg_box)
+
+
 
 
 
@@ -623,49 +645,6 @@ class ExportParameterWidget(GenericParameterWidget):
         And aimless.dat contains:
         HKLIN unscaled.mtz
         HKLOUT scaled.mtz
-
-
         '''
 
 
-class MainWindow(QtGui.QMainWindow):
-  '''
-  This Main window widget is here just for debugging purpose,
-  the Dials GUI will continue working if this class and the
-  next __main__ code is removed
-  '''
-
-  def __init__(self, parent=None):
-
-    # Call the parent constructor
-    super(MainWindow, self).__init__(parent)
-
-    # Create the parameter window widget
-    params = FindspotsParameterWidget(self)
-    #params = IndexParameterWidget()
-    #params = RefineParameterWidget()
-    #params = IntegrateParameterWidget()
-    #params = ExportParameterWidget()
-
-    # Create the window layout
-    layout = QtGui.QVBoxLayout()
-    layout.addWidget(params)
-
-    # Setup the window contents
-    window = QtGui.QWidget()
-    window.setLayout(layout)
-    self.setCentralWidget(window)
-
-if __name__ == '__main__':
-  import sys
-
-  # Create the application
-  app = QtGui.QApplication(sys.argv)
-
-  # Create the main window
-  window = MainWindow()
-  window.resize(800, 600)
-  window.show()
-
-  # Execute the application
-  sys.exit(app.exec_())
