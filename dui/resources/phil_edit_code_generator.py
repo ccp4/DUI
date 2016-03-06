@@ -485,6 +485,6 @@ if( __name__ == "__main__"):
         lst_obj = tree_2_lineal(phl_obj[0].objects)
         phil_list_2_disc(lst_obj(), phl_obj[1], qt_tool)
 
-        print phl_obj[0].show()
+        #print phl_obj[0].show()
 
 
