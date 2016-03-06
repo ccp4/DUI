@@ -3,7 +3,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
 
-
 class inner_widg( QWidget):
     item_changed = pyqtSignal()
     def __init__(self, parent = None):
@@ -533,7 +532,7 @@ class inner_widg( QWidget):
         hbox_lay_global_threshold_44.addWidget(box_global_threshold_44)
         bg_box.addLayout(hbox_lay_global_threshold_44)
 
- 
+
         self.setLayout(bg_box)
         self.show()
 
