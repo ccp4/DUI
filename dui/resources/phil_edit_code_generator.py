@@ -352,10 +352,10 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
                     src_code_aut.append(my_str)
 
-            TODO_connect_this = '''
 
             elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
 
+                debug_code = '''
                 print "\n\n"
                 print "str(obj.type)=", str(obj.type)
                 print "str(obj.type.phil_type)=", str(obj.type.phil_type)
@@ -363,6 +363,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                 print "\n obj.type.size_max =", obj.type.size_max
                 print "\n obj.type.size_min =", obj.type.size_min
                 print "\n\n"
+                '''
 
 
                 if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
@@ -407,13 +408,14 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
 
                 else:
-
+                    debug_code = '''
                     print
                     print "_______ << WARNING  obj.type.phil_type not previewed"
                     print "full_path =", obj.full_path()
                     print "obj.type.phil_type =", obj.type.phil_type
                     print "obj.type =", obj.type
                     print
+                    '''
 
                     something_else = True
 
@@ -429,7 +431,6 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
 
                 something_else = True
-            '''
 
 
             if( something_else == False ):
