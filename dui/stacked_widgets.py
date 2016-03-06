@@ -585,23 +585,11 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
         bg_box = QtGui.QVBoxLayout()
         bg_box.addLayout(hbox_lay_hklout_6)
 
-        PrFit_lay_out =  QtGui.QHBoxLayout()
-        label_PrFit = QtGui.QLabel("integration.profile.fitting")
-        PrFit_lay_out.addWidget(label_PrFit)
-        PrFit_comb_bx = QtGui.QComboBox()
-        PrFit_comb_bx.local_path = "integration.profile.fitting"
-        PrFit_comb_bx.tmp_lst=[]
-        PrFit_comb_bx.tmp_lst.append("True")
-        PrFit_comb_bx.tmp_lst.append("False")
+        run_pointless_check = QtGui.QCheckBox("Run Pointless")
+        bg_box.addWidget(run_pointless_check)
 
-        for lst_itm in PrFit_comb_bx.tmp_lst:
-            PrFit_comb_bx.addItem(lst_itm)
-        #PrFit_comb_bx.currentIndexChanged.connect(self.combobox_changed)
-        PrFit_lay_out.addWidget(PrFit_comb_bx)
-
-
-
-        bg_box.addLayout(PrFit_lay_out)
+        run_aimless_check = QtGui.QCheckBox("Run Aimless")
+        bg_box.addWidget(run_aimless_check)
 
         bg_box.addStretch()
 
@@ -645,6 +633,12 @@ class ExportParameterWidget(GenericParameterWidget):
         And aimless.dat contains:
         HKLIN unscaled.mtz
         HKLOUT scaled.mtz
+
+        compatible with DUI
+        HKLIN unscaled.mtz
+        HKLOUT scaled.mtz
+
+        HKLIN hklout.mtz
+        HKLOUT unscaled.mtz
+
         '''
-
-
