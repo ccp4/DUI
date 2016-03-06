@@ -176,6 +176,7 @@ class inner_widg( QWidget):
         hbox_lay_nproc_16.addWidget(label_nproc_16)
 
         box_nproc_16 = QSpinBox()
+        box_nproc_16.setValue(1)
         box_nproc_16.local_path = "refinement.mp.nproc"
         box_nproc_16.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc_16.addWidget(box_nproc_16)
@@ -188,6 +189,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_17.addWidget(label_verbosity_17)
 
         box_verbosity_17 = QSpinBox()
+        box_verbosity_17.setValue(1)
         box_verbosity_17.local_path = "refinement.verbosity"
         box_verbosity_17.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_17.addWidget(box_verbosity_17)
@@ -208,6 +210,7 @@ class inner_widg( QWidget):
         hbox_lay_min_nref_per_parameter_20.addWidget(label_min_nref_per_parameter_20)
 
         box_min_nref_per_parameter_20 = QSpinBox()
+        box_min_nref_per_parameter_20.setValue(5)
         box_min_nref_per_parameter_20.local_path = "refinement.parameterisation.auto_reduction.min_nref_per_parameter"
         box_min_nref_per_parameter_20.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_nref_per_parameter_20.addWidget(box_min_nref_per_parameter_20)
@@ -462,6 +465,7 @@ class inner_widg( QWidget):
         hbox_lay_interval_width_degrees_42.addWidget(label_interval_width_degrees_42)
 
         box_interval_width_degrees_42 = QDoubleSpinBox()
+        box_interval_width_degrees_42.setValue(36.0)
         box_interval_width_degrees_42.local_path = "refinement.parameterisation.crystal.interval_width_degrees"
         box_interval_width_degrees_42.valueChanged.connect(self.spnbox_changed)
         hbox_lay_interval_width_degrees_42.addWidget(box_interval_width_degrees_42)
@@ -474,6 +478,7 @@ class inner_widg( QWidget):
         hbox_lay_absolute_num_intervals_43.addWidget(label_absolute_num_intervals_43)
 
         box_absolute_num_intervals_43 = QSpinBox()
+        box_absolute_num_intervals_43.setValue(5)
         box_absolute_num_intervals_43.local_path = "refinement.parameterisation.crystal.absolute_num_intervals"
         box_absolute_num_intervals_43.valueChanged.connect(self.spnbox_changed)
         hbox_lay_absolute_num_intervals_43.addWidget(box_absolute_num_intervals_43)
@@ -527,6 +532,7 @@ class inner_widg( QWidget):
         hbox_lay_hierarchy_level_47.addWidget(label_hierarchy_level_47)
 
         box_hierarchy_level_47 = QSpinBox()
+        box_hierarchy_level_47.setValue(0)
         box_hierarchy_level_47.local_path = "refinement.parameterisation.detector.hierarchy_level"
         box_hierarchy_level_47.valueChanged.connect(self.spnbox_changed)
         hbox_lay_hierarchy_level_47.addWidget(box_hierarchy_level_47)
@@ -715,6 +721,7 @@ class inner_widg( QWidget):
         hbox_lay_bin_size_fraction_62.addWidget(label_bin_size_fraction_62)
 
         box_bin_size_fraction_62 = QDoubleSpinBox()
+        box_bin_size_fraction_62.setValue(0.2)
         box_bin_size_fraction_62.local_path = "refinement.target.bin_size_fraction"
         box_bin_size_fraction_62.valueChanged.connect(self.spnbox_changed)
         hbox_lay_bin_size_fraction_62.addWidget(box_bin_size_fraction_62)
@@ -776,6 +783,7 @@ class inner_widg( QWidget):
         hbox_lay_reflections_per_degree_66.addWidget(label_reflections_per_degree_66)
 
         box_reflections_per_degree_66 = QDoubleSpinBox()
+        box_reflections_per_degree_66.setValue(100.0)
         box_reflections_per_degree_66.local_path = "refinement.reflections.reflections_per_degree"
         box_reflections_per_degree_66.valueChanged.connect(self.spnbox_changed)
         hbox_lay_reflections_per_degree_66.addWidget(box_reflections_per_degree_66)
@@ -788,6 +796,7 @@ class inner_widg( QWidget):
         hbox_lay_minimum_sample_size_67.addWidget(label_minimum_sample_size_67)
 
         box_minimum_sample_size_67 = QSpinBox()
+        box_minimum_sample_size_67.setValue(1000)
         box_minimum_sample_size_67.local_path = "refinement.reflections.minimum_sample_size"
         box_minimum_sample_size_67.valueChanged.connect(self.spnbox_changed)
         hbox_lay_minimum_sample_size_67.addWidget(box_minimum_sample_size_67)
@@ -829,6 +838,7 @@ class inner_widg( QWidget):
         hbox_lay_random_seed_70.addWidget(label_random_seed_70)
 
         box_random_seed_70 = QSpinBox()
+        box_random_seed_70.setValue(42)
         box_random_seed_70.local_path = "refinement.reflections.random_seed"
         box_random_seed_70.valueChanged.connect(self.spnbox_changed)
         hbox_lay_random_seed_70.addWidget(box_random_seed_70)
@@ -841,6 +851,7 @@ class inner_widg( QWidget):
         hbox_lay_close_to_spindle_cutoff_71.addWidget(label_close_to_spindle_cutoff_71)
 
         box_close_to_spindle_cutoff_71 = QDoubleSpinBox()
+        box_close_to_spindle_cutoff_71.setValue(0.02)
         box_close_to_spindle_cutoff_71.local_path = "refinement.reflections.close_to_spindle_cutoff"
         box_close_to_spindle_cutoff_71.valueChanged.connect(self.spnbox_changed)
         hbox_lay_close_to_spindle_cutoff_71.addWidget(box_close_to_spindle_cutoff_71)
@@ -853,6 +864,7 @@ class inner_widg( QWidget):
         hbox_lay_block_width_72.addWidget(label_block_width_72)
 
         box_block_width_72 = QDoubleSpinBox()
+        box_block_width_72.setValue(1.0)
         box_block_width_72.local_path = "refinement.reflections.block_width"
         box_block_width_72.valueChanged.connect(self.spnbox_changed)
         hbox_lay_block_width_72.addWidget(box_block_width_72)
@@ -887,6 +899,7 @@ class inner_widg( QWidget):
         hbox_lay_delpsi_constant_75.addWidget(label_delpsi_constant_75)
 
         box_delpsi_constant_75 = QDoubleSpinBox()
+        box_delpsi_constant_75.setValue(10000.0)
         box_delpsi_constant_75.local_path = "refinement.reflections.weighting_strategy.delpsi_constant"
         box_delpsi_constant_75.valueChanged.connect(self.spnbox_changed)
         hbox_lay_delpsi_constant_75.addWidget(box_delpsi_constant_75)
@@ -956,6 +969,7 @@ class inner_widg( QWidget):
         hbox_lay_minimum_number_of_reflections_79.addWidget(label_minimum_number_of_reflections_79)
 
         box_minimum_number_of_reflections_79 = QSpinBox()
+        box_minimum_number_of_reflections_79.setValue(20)
         box_minimum_number_of_reflections_79.local_path = "refinement.reflections.outlier.minimum_number_of_reflections"
         box_minimum_number_of_reflections_79.valueChanged.connect(self.spnbox_changed)
         hbox_lay_minimum_number_of_reflections_79.addWidget(box_minimum_number_of_reflections_79)
@@ -1006,6 +1020,7 @@ class inner_widg( QWidget):
         hbox_lay_iqr_multiplier_83.addWidget(label_iqr_multiplier_83)
 
         box_iqr_multiplier_83 = QDoubleSpinBox()
+        box_iqr_multiplier_83.setValue(1.5)
         box_iqr_multiplier_83.local_path = "refinement.reflections.outlier.tukey.iqr_multiplier"
         box_iqr_multiplier_83.valueChanged.connect(self.spnbox_changed)
         hbox_lay_iqr_multiplier_83.addWidget(box_iqr_multiplier_83)
@@ -1022,6 +1037,7 @@ class inner_widg( QWidget):
         hbox_lay_alpha_85.addWidget(label_alpha_85)
 
         box_alpha_85 = QDoubleSpinBox()
+        box_alpha_85.setValue(0.5)
         box_alpha_85.local_path = "refinement.reflections.outlier.mcd.alpha"
         box_alpha_85.valueChanged.connect(self.spnbox_changed)
         hbox_lay_alpha_85.addWidget(box_alpha_85)
@@ -1034,6 +1050,7 @@ class inner_widg( QWidget):
         hbox_lay_max_n_groups_86.addWidget(label_max_n_groups_86)
 
         box_max_n_groups_86 = QSpinBox()
+        box_max_n_groups_86.setValue(5)
         box_max_n_groups_86.local_path = "refinement.reflections.outlier.mcd.max_n_groups"
         box_max_n_groups_86.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_n_groups_86.addWidget(box_max_n_groups_86)
@@ -1046,6 +1063,7 @@ class inner_widg( QWidget):
         hbox_lay_min_group_size_87.addWidget(label_min_group_size_87)
 
         box_min_group_size_87 = QSpinBox()
+        box_min_group_size_87.setValue(300)
         box_min_group_size_87.local_path = "refinement.reflections.outlier.mcd.min_group_size"
         box_min_group_size_87.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_group_size_87.addWidget(box_min_group_size_87)
@@ -1058,6 +1076,7 @@ class inner_widg( QWidget):
         hbox_lay_n_trials_88.addWidget(label_n_trials_88)
 
         box_n_trials_88 = QSpinBox()
+        box_n_trials_88.setValue(500)
         box_n_trials_88.local_path = "refinement.reflections.outlier.mcd.n_trials"
         box_n_trials_88.valueChanged.connect(self.spnbox_changed)
         hbox_lay_n_trials_88.addWidget(box_n_trials_88)
@@ -1070,6 +1089,7 @@ class inner_widg( QWidget):
         hbox_lay_k1_89.addWidget(label_k1_89)
 
         box_k1_89 = QSpinBox()
+        box_k1_89.setValue(2)
         box_k1_89.local_path = "refinement.reflections.outlier.mcd.k1"
         box_k1_89.valueChanged.connect(self.spnbox_changed)
         hbox_lay_k1_89.addWidget(box_k1_89)
@@ -1082,6 +1102,7 @@ class inner_widg( QWidget):
         hbox_lay_k2_90.addWidget(label_k2_90)
 
         box_k2_90 = QSpinBox()
+        box_k2_90.setValue(2)
         box_k2_90.local_path = "refinement.reflections.outlier.mcd.k2"
         box_k2_90.valueChanged.connect(self.spnbox_changed)
         hbox_lay_k2_90.addWidget(box_k2_90)
@@ -1094,6 +1115,7 @@ class inner_widg( QWidget):
         hbox_lay_k3_91.addWidget(label_k3_91)
 
         box_k3_91 = QSpinBox()
+        box_k3_91.setValue(100)
         box_k3_91.local_path = "refinement.reflections.outlier.mcd.k3"
         box_k3_91.valueChanged.connect(self.spnbox_changed)
         hbox_lay_k3_91.addWidget(box_k3_91)
@@ -1106,6 +1128,7 @@ class inner_widg( QWidget):
         hbox_lay_threshold_probability_92.addWidget(label_threshold_probability_92)
 
         box_threshold_probability_92 = QDoubleSpinBox()
+        box_threshold_probability_92.setValue(0.975)
         box_threshold_probability_92.local_path = "refinement.reflections.outlier.mcd.threshold_probability"
         box_threshold_probability_92.valueChanged.connect(self.spnbox_changed)
         hbox_lay_threshold_probability_92.addWidget(box_threshold_probability_92)

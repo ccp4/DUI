@@ -174,14 +174,28 @@ class tree_2_lineal(object):
         for single_obj in phl_obj:
             if( single_obj.is_definition):
                 self.lst_obj.append(single_obj)
-                # tmp exercise
+                tmp_exercise = '''
+                if( single_obj.name == "threshold_probability" ):
+                    print "single_obj.name = threshold_probability"
+                    tst_var = single_obj.extract()
+                    print "single_obj.extract() = ", tst_var
+                    tst_var_01 = float(tst_var)
+                    print "type(tst_var_01) =", type(tst_var_01)
+                    print "tst_var_01 =", tst_var_01
+                    print "full_path =", single_obj.full_path()
 
-                if( str( single_obj.full_path()) == "output.shoeboxes" ):
-                    print "dir(single_obj) =", dir(single_obj)
 
-                    
+
+                    print "\n"
+
+                #print "single_obj.name =", single_obj.name
+                #print "single_obj.extract() =", single_obj.extract()
+
+
+                #print "\n"
 
                 # end tmp
+                '''
             elif( single_obj.is_scope ):
                 #print "scope.name = ", single_obj.name
                 scope_info = ScopeData()
@@ -265,6 +279,16 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
                     my_str = "        " + box_name + widget_type_str
                     src_code_aut.append(my_str)
+
+                    if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
+                        print "str(obj.extract()) =", str(obj.extract())
+                        print "type(obj.extract()) =", type(obj.extract())
+                        if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
+                            print "TODO fix the libtbx.AutoType in double Phil parameter"
+
+                        else:
+                            my_str = "        " + box_name + ".setValue(" + str(obj.extract()) +")"
+                            src_code_aut.append(my_str)
 
                     my_str = "        " + box_name + ".local_path = \"" + str(obj.full_path()) +"\""
                     src_code_aut.append(my_str)
@@ -423,7 +447,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                         src_code_aut.append("")
 
     s_code = gen_code(qt_tool)
-    #s_code.write_file(src_code_aut, file_name)
+    s_code.write_file(src_code_aut, file_name)
 
 
 if( __name__ == "__main__"):

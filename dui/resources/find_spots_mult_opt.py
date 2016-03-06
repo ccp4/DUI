@@ -3,6 +3,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
 
+
 class inner_widg( QWidget):
     item_changed = pyqtSignal()
     def __init__(self, parent = None):
@@ -108,6 +109,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_7.addWidget(label_verbosity_7)
 
         box_verbosity_7 = QSpinBox()
+        box_verbosity_7.setValue(1)
         box_verbosity_7.local_path = "verbosity"
         box_verbosity_7.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_7.addWidget(box_verbosity_7)
@@ -239,6 +241,7 @@ class inner_widg( QWidget):
         hbox_lay_max_separation_16.addWidget(label_max_separation_16)
 
         box_max_separation_16 = QDoubleSpinBox()
+        box_max_separation_16.setValue(2.0)
         box_max_separation_16.local_path = "spotfinder.filter.max_separation"
         box_max_separation_16.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_separation_16.addWidget(box_max_separation_16)
@@ -275,6 +278,7 @@ class inner_widg( QWidget):
         hbox_lay_max_strong_pixel_fraction_19.addWidget(label_max_strong_pixel_fraction_19)
 
         box_max_strong_pixel_fraction_19 = QDoubleSpinBox()
+        box_max_strong_pixel_fraction_19.setValue(0.25)
         box_max_strong_pixel_fraction_19.local_path = "spotfinder.filter.max_strong_pixel_fraction"
         box_max_strong_pixel_fraction_19.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_strong_pixel_fraction_19.addWidget(box_max_strong_pixel_fraction_19)
@@ -308,6 +312,7 @@ class inner_widg( QWidget):
         hbox_lay_background_size_22.addWidget(label_background_size_22)
 
         box_background_size_22 = QSpinBox()
+        box_background_size_22.setValue(2)
         box_background_size_22.local_path = "spotfinder.filter.background_gradient.background_size"
         box_background_size_22.valueChanged.connect(self.spnbox_changed)
         hbox_lay_background_size_22.addWidget(box_background_size_22)
@@ -320,6 +325,7 @@ class inner_widg( QWidget):
         hbox_lay_gradient_cutoff_23.addWidget(label_gradient_cutoff_23)
 
         box_gradient_cutoff_23 = QDoubleSpinBox()
+        box_gradient_cutoff_23.setValue(4.0)
         box_gradient_cutoff_23.local_path = "spotfinder.filter.background_gradient.gradient_cutoff"
         box_gradient_cutoff_23.valueChanged.connect(self.spnbox_changed)
         hbox_lay_gradient_cutoff_23.addWidget(box_gradient_cutoff_23)
@@ -374,6 +380,7 @@ class inner_widg( QWidget):
         hbox_lay_width_30.addWidget(label_width_30)
 
         box_width_30 = QDoubleSpinBox()
+        box_width_30.setValue(0.06)
         box_width_30.local_path = "spotfinder.filter.ice_rings.width"
         box_width_30.valueChanged.connect(self.spnbox_changed)
         hbox_lay_width_30.addWidget(box_width_30)
@@ -409,6 +416,7 @@ class inner_widg( QWidget):
         hbox_lay_nproc_34.addWidget(label_nproc_34)
 
         box_nproc_34 = QSpinBox()
+        box_nproc_34.setValue(1)
         box_nproc_34.local_path = "spotfinder.mp.nproc"
         box_nproc_34.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc_34.addWidget(box_nproc_34)
@@ -421,6 +429,7 @@ class inner_widg( QWidget):
         hbox_lay_chunksize_35.addWidget(label_chunksize_35)
 
         box_chunksize_35 = QSpinBox()
+        box_chunksize_35.setValue(20)
         box_chunksize_35.local_path = "spotfinder.mp.chunksize"
         box_chunksize_35.valueChanged.connect(self.spnbox_changed)
         hbox_lay_chunksize_35.addWidget(box_chunksize_35)
@@ -491,6 +500,7 @@ class inner_widg( QWidget):
         hbox_lay_sigma_background_41.addWidget(label_sigma_background_41)
 
         box_sigma_background_41 = QDoubleSpinBox()
+        box_sigma_background_41.setValue(6.0)
         box_sigma_background_41.local_path = "spotfinder.threshold.xds.sigma_background"
         box_sigma_background_41.valueChanged.connect(self.spnbox_changed)
         hbox_lay_sigma_background_41.addWidget(box_sigma_background_41)
@@ -503,6 +513,7 @@ class inner_widg( QWidget):
         hbox_lay_sigma_strong_42.addWidget(label_sigma_strong_42)
 
         box_sigma_strong_42 = QDoubleSpinBox()
+        box_sigma_strong_42.setValue(3.0)
         box_sigma_strong_42.local_path = "spotfinder.threshold.xds.sigma_strong"
         box_sigma_strong_42.valueChanged.connect(self.spnbox_changed)
         hbox_lay_sigma_strong_42.addWidget(box_sigma_strong_42)
@@ -515,6 +526,7 @@ class inner_widg( QWidget):
         hbox_lay_min_local_43.addWidget(label_min_local_43)
 
         box_min_local_43 = QSpinBox()
+        box_min_local_43.setValue(2)
         box_min_local_43.local_path = "spotfinder.threshold.xds.min_local"
         box_min_local_43.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_local_43.addWidget(box_min_local_43)
@@ -527,12 +539,13 @@ class inner_widg( QWidget):
         hbox_lay_global_threshold_44.addWidget(label_global_threshold_44)
 
         box_global_threshold_44 = QDoubleSpinBox()
+        box_global_threshold_44.setValue(0.0)
         box_global_threshold_44.local_path = "spotfinder.threshold.xds.global_threshold"
         box_global_threshold_44.valueChanged.connect(self.spnbox_changed)
         hbox_lay_global_threshold_44.addWidget(box_global_threshold_44)
         bg_box.addLayout(hbox_lay_global_threshold_44)
 
-
+ 
         self.setLayout(bg_box)
         self.show()
 

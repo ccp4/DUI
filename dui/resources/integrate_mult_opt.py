@@ -125,6 +125,7 @@ class inner_widg( QWidget):
         hbox_lay_reflections_per_degree_9.addWidget(label_reflections_per_degree_9)
 
         box_reflections_per_degree_9 = QDoubleSpinBox()
+        box_reflections_per_degree_9.setValue(50.0)
         box_reflections_per_degree_9.local_path = "sampling.reflections_per_degree"
         box_reflections_per_degree_9.valueChanged.connect(self.spnbox_changed)
         hbox_lay_reflections_per_degree_9.addWidget(box_reflections_per_degree_9)
@@ -137,6 +138,7 @@ class inner_widg( QWidget):
         hbox_lay_minimum_sample_size_10.addWidget(label_minimum_sample_size_10)
 
         box_minimum_sample_size_10 = QSpinBox()
+        box_minimum_sample_size_10.setValue(1000)
         box_minimum_sample_size_10.local_path = "sampling.minimum_sample_size"
         box_minimum_sample_size_10.valueChanged.connect(self.spnbox_changed)
         hbox_lay_minimum_sample_size_10.addWidget(box_minimum_sample_size_10)
@@ -178,6 +180,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_13.addWidget(label_verbosity_13)
 
         box_verbosity_13 = QSpinBox()
+        box_verbosity_13.setValue(1)
         box_verbosity_13.local_path = "verbosity"
         box_verbosity_13.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_13.addWidget(box_verbosity_13)
@@ -217,6 +220,7 @@ class inner_widg( QWidget):
         hbox_lay_nproc_17.addWidget(label_nproc_17)
 
         box_nproc_17 = QSpinBox()
+        box_nproc_17.setValue(1)
         box_nproc_17.local_path = "integration.mp.nproc"
         box_nproc_17.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc_17.addWidget(box_nproc_17)
@@ -229,6 +233,7 @@ class inner_widg( QWidget):
         hbox_lay_nthreads_18.addWidget(label_nthreads_18)
 
         box_nthreads_18 = QSpinBox()
+        box_nthreads_18.setValue(1)
         box_nthreads_18.local_path = "integration.mp.nthreads"
         box_nthreads_18.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nthreads_18.addWidget(box_nthreads_18)
@@ -291,6 +296,7 @@ class inner_widg( QWidget):
         hbox_lay_threshold_24.addWidget(label_threshold_24)
 
         box_threshold_24 = QDoubleSpinBox()
+        box_threshold_24.setValue(0.99)
         box_threshold_24.local_path = "integration.block.threshold"
         box_threshold_24.valueChanged.connect(self.spnbox_changed)
         hbox_lay_threshold_24.addWidget(box_threshold_24)
@@ -320,6 +326,7 @@ class inner_widg( QWidget):
         hbox_lay_max_memory_usage_26.addWidget(label_max_memory_usage_26)
 
         box_max_memory_usage_26 = QDoubleSpinBox()
+        box_max_memory_usage_26.setValue(0.75)
         box_max_memory_usage_26.local_path = "integration.block.max_memory_usage"
         box_max_memory_usage_26.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_memory_usage_26.addWidget(box_max_memory_usage_26)
@@ -471,6 +478,7 @@ class inner_widg( QWidget):
         hbox_lay_number_of_partitions_39.addWidget(label_number_of_partitions_39)
 
         box_number_of_partitions_39 = QSpinBox()
+        box_number_of_partitions_39.setValue(1)
         box_number_of_partitions_39.local_path = "integration.profile.validation.number_of_partitions"
         box_number_of_partitions_39.valueChanged.connect(self.spnbox_changed)
         hbox_lay_number_of_partitions_39.addWidget(box_number_of_partitions_39)
@@ -483,6 +491,7 @@ class inner_widg( QWidget):
         hbox_lay_min_partition_size_40.addWidget(label_min_partition_size_40)
 
         box_min_partition_size_40 = QSpinBox()
+        box_min_partition_size_40.setValue(100)
         box_min_partition_size_40.local_path = "integration.profile.validation.min_partition_size"
         box_min_partition_size_40.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_partition_size_40.addWidget(box_min_partition_size_40)
@@ -499,6 +508,7 @@ class inner_widg( QWidget):
         hbox_lay_min_zeta_42.addWidget(label_min_zeta_42)
 
         box_min_zeta_42 = QDoubleSpinBox()
+        box_min_zeta_42.setValue(0.05)
         box_min_zeta_42.local_path = "integration.filter.min_zeta"
         box_min_zeta_42.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_zeta_42.addWidget(box_min_zeta_42)
@@ -511,6 +521,7 @@ class inner_widg( QWidget):
         hbox_lay_max_shoebox_overlap_43.addWidget(label_max_shoebox_overlap_43)
 
         box_max_shoebox_overlap_43 = QDoubleSpinBox()
+        box_max_shoebox_overlap_43.setValue(1.0)
         box_max_shoebox_overlap_43.local_path = "integration.filter.max_shoebox_overlap"
         box_max_shoebox_overlap_43.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_shoebox_overlap_43.addWidget(box_max_shoebox_overlap_43)
@@ -531,6 +542,7 @@ class inner_widg( QWidget):
         hbox_lay_d_min_48.addWidget(label_d_min_48)
 
         box_d_min_48 = QDoubleSpinBox()
+        box_d_min_48.setValue(1.0)
         box_d_min_48.local_path = "integration.filter.powder.water_ice.d_min"
         box_d_min_48.valueChanged.connect(self.spnbox_changed)
         hbox_lay_d_min_48.addWidget(box_d_min_48)
@@ -543,6 +555,7 @@ class inner_widg( QWidget):
         hbox_lay_width_49.addWidget(label_width_49)
 
         box_width_49 = QDoubleSpinBox()
+        box_width_49.setValue(0.06)
         box_width_49.local_path = "integration.filter.powder.water_ice.width"
         box_width_49.valueChanged.connect(self.spnbox_changed)
         hbox_lay_width_49.addWidget(box_width_49)
@@ -628,6 +641,7 @@ class inner_widg( QWidget):
         hbox_lay_lower_57.addWidget(label_lower_57)
 
         box_lower_57 = QDoubleSpinBox()
+        box_lower_57.setValue(3.0)
         box_lower_57.local_path = "integration.background.simple.outlier.nsigma.lower"
         box_lower_57.valueChanged.connect(self.spnbox_changed)
         hbox_lay_lower_57.addWidget(box_lower_57)
@@ -640,6 +654,7 @@ class inner_widg( QWidget):
         hbox_lay_upper_58.addWidget(label_upper_58)
 
         box_upper_58 = QDoubleSpinBox()
+        box_upper_58.setValue(3.0)
         box_upper_58.local_path = "integration.background.simple.outlier.nsigma.upper"
         box_upper_58.valueChanged.connect(self.spnbox_changed)
         hbox_lay_upper_58.addWidget(box_upper_58)
@@ -656,6 +671,7 @@ class inner_widg( QWidget):
         hbox_lay_lower_60.addWidget(label_lower_60)
 
         box_lower_60 = QDoubleSpinBox()
+        box_lower_60.setValue(0.01)
         box_lower_60.local_path = "integration.background.simple.outlier.truncated.lower"
         box_lower_60.valueChanged.connect(self.spnbox_changed)
         hbox_lay_lower_60.addWidget(box_lower_60)
@@ -668,6 +684,7 @@ class inner_widg( QWidget):
         hbox_lay_upper_61.addWidget(label_upper_61)
 
         box_upper_61 = QDoubleSpinBox()
+        box_upper_61.setValue(0.01)
         box_upper_61.local_path = "integration.background.simple.outlier.truncated.upper"
         box_upper_61.valueChanged.connect(self.spnbox_changed)
         hbox_lay_upper_61.addWidget(box_upper_61)
@@ -684,6 +701,7 @@ class inner_widg( QWidget):
         hbox_lay_min_pixels_63.addWidget(label_min_pixels_63)
 
         box_min_pixels_63 = QSpinBox()
+        box_min_pixels_63.setValue(10)
         box_min_pixels_63.local_path = "integration.background.simple.outlier.normal.min_pixels"
         box_min_pixels_63.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_pixels_63.addWidget(box_min_pixels_63)
@@ -700,6 +718,7 @@ class inner_widg( QWidget):
         hbox_lay_fraction_65.addWidget(label_fraction_65)
 
         box_fraction_65 = QDoubleSpinBox()
+        box_fraction_65.setValue(1.0)
         box_fraction_65.local_path = "integration.background.simple.outlier.mosflm.fraction"
         box_fraction_65.valueChanged.connect(self.spnbox_changed)
         hbox_lay_fraction_65.addWidget(box_fraction_65)
@@ -712,6 +731,7 @@ class inner_widg( QWidget):
         hbox_lay_n_sigma_66.addWidget(label_n_sigma_66)
 
         box_n_sigma_66 = QDoubleSpinBox()
+        box_n_sigma_66.setValue(4.0)
         box_n_sigma_66.local_path = "integration.background.simple.outlier.mosflm.n_sigma"
         box_n_sigma_66.valueChanged.connect(self.spnbox_changed)
         hbox_lay_n_sigma_66.addWidget(box_n_sigma_66)
@@ -728,6 +748,7 @@ class inner_widg( QWidget):
         hbox_lay_lower_68.addWidget(label_lower_68)
 
         box_lower_68 = QDoubleSpinBox()
+        box_lower_68.setValue(1.5)
         box_lower_68.local_path = "integration.background.simple.outlier.tukey.lower"
         box_lower_68.valueChanged.connect(self.spnbox_changed)
         hbox_lay_lower_68.addWidget(box_lower_68)
@@ -740,6 +761,7 @@ class inner_widg( QWidget):
         hbox_lay_upper_69.addWidget(label_upper_69)
 
         box_upper_69 = QDoubleSpinBox()
+        box_upper_69.setValue(1.5)
         box_upper_69.local_path = "integration.background.simple.outlier.tukey.upper"
         box_upper_69.valueChanged.connect(self.spnbox_changed)
         hbox_lay_upper_69.addWidget(box_upper_69)
@@ -783,6 +805,7 @@ class inner_widg( QWidget):
         hbox_lay_tuning_constant_74.addWidget(label_tuning_constant_74)
 
         box_tuning_constant_74 = QDoubleSpinBox()
+        box_tuning_constant_74.setValue(1.345)
         box_tuning_constant_74.local_path = "integration.background.glm.robust.tuning_constant"
         box_tuning_constant_74.valueChanged.connect(self.spnbox_changed)
         hbox_lay_tuning_constant_74.addWidget(box_tuning_constant_74)
@@ -883,6 +906,7 @@ class inner_widg( QWidget):
         hbox_lay_min_spots_84.addWidget(label_min_spots_84)
 
         box_min_spots_84 = QSpinBox()
+        box_min_spots_84.setValue(100)
         box_min_spots_84.local_path = "profile.gaussian_rs.min_spots"
         box_min_spots_84.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_spots_84.addWidget(box_min_spots_84)
@@ -899,6 +923,7 @@ class inner_widg( QWidget):
         hbox_lay_min_zeta_86.addWidget(label_min_zeta_86)
 
         box_min_zeta_86 = QDoubleSpinBox()
+        box_min_zeta_86.setValue(0.05)
         box_min_zeta_86.local_path = "profile.gaussian_rs.filter.min_zeta"
         box_min_zeta_86.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_zeta_86.addWidget(box_min_zeta_86)
@@ -915,6 +940,7 @@ class inner_widg( QWidget):
         hbox_lay_scan_step_88.addWidget(label_scan_step_88)
 
         box_scan_step_88 = QDoubleSpinBox()
+        box_scan_step_88.setValue(5.0)
         box_scan_step_88.local_path = "profile.gaussian_rs.fitting.scan_step"
         box_scan_step_88.valueChanged.connect(self.spnbox_changed)
         hbox_lay_scan_step_88.addWidget(box_scan_step_88)
@@ -927,6 +953,7 @@ class inner_widg( QWidget):
         hbox_lay_grid_size_89.addWidget(label_grid_size_89)
 
         box_grid_size_89 = QSpinBox()
+        box_grid_size_89.setValue(5)
         box_grid_size_89.local_path = "profile.gaussian_rs.fitting.grid_size"
         box_grid_size_89.valueChanged.connect(self.spnbox_changed)
         hbox_lay_grid_size_89.addWidget(box_grid_size_89)
@@ -939,6 +966,7 @@ class inner_widg( QWidget):
         hbox_lay_threshold_90.addWidget(label_threshold_90)
 
         box_threshold_90 = QDoubleSpinBox()
+        box_threshold_90.setValue(0.02)
         box_threshold_90.local_path = "profile.gaussian_rs.fitting.threshold"
         box_threshold_90.valueChanged.connect(self.spnbox_changed)
         hbox_lay_threshold_90.addWidget(box_threshold_90)
@@ -1014,6 +1042,7 @@ class inner_widg( QWidget):
         hbox_lay_margin_96.addWidget(label_margin_96)
 
         box_margin_96 = QSpinBox()
+        box_margin_96.setValue(1)
         box_margin_96.local_path = "prediction.margin"
         box_margin_96.valueChanged.connect(self.spnbox_changed)
         hbox_lay_margin_96.addWidget(box_margin_96)

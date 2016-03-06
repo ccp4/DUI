@@ -53,7 +53,7 @@ def deep_in_rec(phl_obj):
       print "\n\n___________________________________________________________"
       print "single_obj.name =", single_obj.name
       print "single_obj.extract =", local_val
-      print "type(single_obj.extract) =", type(single_obj.extract)
+      print "type(single_obj.extract) =", type(single_obj.extract())
       print "type(local_val) =", type(local_val)
       print "single_obj.as_str()", single_obj.as_str()
       #print "type(local_type) =", type(local_val)

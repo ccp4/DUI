@@ -97,6 +97,7 @@ class inner_widg( QWidget):
         hbox_lay_min_isigi_5.addWidget(label_min_isigi_5)
 
         box_min_isigi_5 = QDoubleSpinBox()
+        box_min_isigi_5.setValue(-5.0)
         box_min_isigi_5.local_path = "mtz.min_isigi"
         box_min_isigi_5.valueChanged.connect(self.spnbox_changed)
         hbox_lay_min_isigi_5.addWidget(box_min_isigi_5)
