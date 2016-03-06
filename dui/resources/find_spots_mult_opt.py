@@ -152,71 +152,11 @@ class inner_widg( QWidget):
         hbox_lay_write_hot_mask_11.addWidget(box_write_hot_mask_11)
         bg_box.addLayout(hbox_lay_write_hot_mask_11)
 
-        hbox_lay_scan_range_12_0 =  QHBoxLayout()
-        label_scan_range_12_0 = QLabel("    scan_range[1]")
-        label_scan_range_12_0.setPalette(palette_object)
-        label_scan_range_12_0.setFont(QFont("Monospace"))
-        hbox_lay_scan_range_12_0.addWidget(label_scan_range_12_0)
-        box_scan_range_12_0 = QSpinBox()
-        box_scan_range_12_0.local_path = "spotfinder.scan_range"
-        #box_scan_range_12_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_scan_range_12_1 =  QHBoxLayout()
-        label_scan_range_12_1 = QLabel("    scan_range[2]")
-        label_scan_range_12_1.setPalette(palette_object)
-        label_scan_range_12_1.setFont(QFont("Monospace"))
-        hbox_lay_scan_range_12_1.addWidget(label_scan_range_12_1)
-        box_scan_range_12_1 = QSpinBox()
-        box_scan_range_12_1.local_path = "spotfinder.scan_range"
-        #box_scan_range_12_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_scan_range_12_0.addWidget(box_scan_range_12_0)
-        bg_box.addLayout(hbox_lay_scan_range_12_0)
+        hbox_lay_write_hot_mask_11.addWidget(box_write_hot_mask_11)
+        bg_box.addLayout(hbox_lay_write_hot_mask_11)
 
-        hbox_lay_scan_range_12_1.addWidget(box_scan_range_12_1)
-        bg_box.addLayout(hbox_lay_scan_range_12_1)
-
-        hbox_lay_region_of_interest_13_0 =  QHBoxLayout()
-        label_region_of_interest_13_0 = QLabel("    region_of_interest[1]")
-        label_region_of_interest_13_0.setPalette(palette_object)
-        label_region_of_interest_13_0.setFont(QFont("Monospace"))
-        hbox_lay_region_of_interest_13_0.addWidget(label_region_of_interest_13_0)
-        box_region_of_interest_13_0 = QSpinBox()
-        box_region_of_interest_13_0.local_path = "spotfinder.region_of_interest"
-        #box_region_of_interest_13_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_region_of_interest_13_1 =  QHBoxLayout()
-        label_region_of_interest_13_1 = QLabel("    region_of_interest[2]")
-        label_region_of_interest_13_1.setPalette(palette_object)
-        label_region_of_interest_13_1.setFont(QFont("Monospace"))
-        hbox_lay_region_of_interest_13_1.addWidget(label_region_of_interest_13_1)
-        box_region_of_interest_13_1 = QSpinBox()
-        box_region_of_interest_13_1.local_path = "spotfinder.region_of_interest"
-        #box_region_of_interest_13_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_region_of_interest_13_2 =  QHBoxLayout()
-        label_region_of_interest_13_2 = QLabel("    region_of_interest[3]")
-        label_region_of_interest_13_2.setPalette(palette_object)
-        label_region_of_interest_13_2.setFont(QFont("Monospace"))
-        hbox_lay_region_of_interest_13_2.addWidget(label_region_of_interest_13_2)
-        box_region_of_interest_13_2 = QSpinBox()
-        box_region_of_interest_13_2.local_path = "spotfinder.region_of_interest"
-        #box_region_of_interest_13_2.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_region_of_interest_13_3 =  QHBoxLayout()
-        label_region_of_interest_13_3 = QLabel("    region_of_interest[4]")
-        label_region_of_interest_13_3.setPalette(palette_object)
-        label_region_of_interest_13_3.setFont(QFont("Monospace"))
-        hbox_lay_region_of_interest_13_3.addWidget(label_region_of_interest_13_3)
-        box_region_of_interest_13_3 = QSpinBox()
-        box_region_of_interest_13_3.local_path = "spotfinder.region_of_interest"
-        #box_region_of_interest_13_3.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_region_of_interest_13_0.addWidget(box_region_of_interest_13_0)
-        bg_box.addLayout(hbox_lay_region_of_interest_13_0)
-
-        hbox_lay_region_of_interest_13_1.addWidget(box_region_of_interest_13_1)
-        bg_box.addLayout(hbox_lay_region_of_interest_13_1)
-
-        hbox_lay_region_of_interest_13_2.addWidget(box_region_of_interest_13_2)
-        bg_box.addLayout(hbox_lay_region_of_interest_13_2)
-
-        hbox_lay_region_of_interest_13_3.addWidget(box_region_of_interest_13_3)
-        bg_box.addLayout(hbox_lay_region_of_interest_13_3)
+        hbox_lay_write_hot_mask_11.addWidget(box_write_hot_mask_11)
+        bg_box.addLayout(hbox_lay_write_hot_mask_11)
 
         label_14 = QLabel("    filter")
         label_14.setPalette(palette_scope)
@@ -373,6 +313,12 @@ class inner_widg( QWidget):
         hbox_lay_filter_27.addWidget(box_filter_27)
         bg_box.addLayout(hbox_lay_filter_27)
 
+        hbox_lay_filter_27.addWidget(box_filter_27)
+        bg_box.addLayout(hbox_lay_filter_27)
+
+        hbox_lay_filter_27.addWidget(box_filter_27)
+        bg_box.addLayout(hbox_lay_filter_27)
+
         hbox_lay_width_30 =  QHBoxLayout()
         label_width_30 = QLabel("            width")
         label_width_30.setPalette(palette_object)
@@ -383,6 +329,9 @@ class inner_widg( QWidget):
         box_width_30.setValue(0.06)
         box_width_30.local_path = "spotfinder.filter.ice_rings.width"
         box_width_30.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_width_30.addWidget(box_width_30)
+        bg_box.addLayout(hbox_lay_width_30)
+
         hbox_lay_width_30.addWidget(box_width_30)
         bg_box.addLayout(hbox_lay_width_30)
 
@@ -471,27 +420,8 @@ class inner_widg( QWidget):
         hbox_lay_gain_39.addWidget(box_gain_39)
         bg_box.addLayout(hbox_lay_gain_39)
 
-        hbox_lay_kernel_size_40_0 =  QHBoxLayout()
-        label_kernel_size_40_0 = QLabel("            kernel_size[1]")
-        label_kernel_size_40_0.setPalette(palette_object)
-        label_kernel_size_40_0.setFont(QFont("Monospace"))
-        hbox_lay_kernel_size_40_0.addWidget(label_kernel_size_40_0)
-        box_kernel_size_40_0 = QSpinBox()
-        box_kernel_size_40_0.local_path = "spotfinder.threshold.xds.kernel_size"
-        #box_kernel_size_40_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_kernel_size_40_1 =  QHBoxLayout()
-        label_kernel_size_40_1 = QLabel("            kernel_size[2]")
-        label_kernel_size_40_1.setPalette(palette_object)
-        label_kernel_size_40_1.setFont(QFont("Monospace"))
-        hbox_lay_kernel_size_40_1.addWidget(label_kernel_size_40_1)
-        box_kernel_size_40_1 = QSpinBox()
-        box_kernel_size_40_1.local_path = "spotfinder.threshold.xds.kernel_size"
-        #box_kernel_size_40_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_kernel_size_40_0.addWidget(box_kernel_size_40_0)
-        bg_box.addLayout(hbox_lay_kernel_size_40_0)
-
-        hbox_lay_kernel_size_40_1.addWidget(box_kernel_size_40_1)
-        bg_box.addLayout(hbox_lay_kernel_size_40_1)
+        hbox_lay_gain_39.addWidget(box_gain_39)
+        bg_box.addLayout(hbox_lay_gain_39)
 
         hbox_lay_sigma_background_41 =  QHBoxLayout()
         label_sigma_background_41 = QLabel("            sigma_background")

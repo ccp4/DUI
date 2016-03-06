@@ -92,27 +92,8 @@ class inner_widg( QWidget):
         hbox_lay_report_6.addWidget(box_report_6)
         bg_box.addLayout(hbox_lay_report_6)
 
-        hbox_lay_scan_range_7_0 =  QHBoxLayout()
-        label_scan_range_7_0 = QLabel("scan_range[1]")
-        label_scan_range_7_0.setPalette(palette_object)
-        label_scan_range_7_0.setFont(QFont("Monospace"))
-        hbox_lay_scan_range_7_0.addWidget(label_scan_range_7_0)
-        box_scan_range_7_0 = QSpinBox()
-        box_scan_range_7_0.local_path = "scan_range"
-        #box_scan_range_7_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_scan_range_7_1 =  QHBoxLayout()
-        label_scan_range_7_1 = QLabel("scan_range[2]")
-        label_scan_range_7_1.setPalette(palette_object)
-        label_scan_range_7_1.setFont(QFont("Monospace"))
-        hbox_lay_scan_range_7_1.addWidget(label_scan_range_7_1)
-        box_scan_range_7_1 = QSpinBox()
-        box_scan_range_7_1.local_path = "scan_range"
-        #box_scan_range_7_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_scan_range_7_0.addWidget(box_scan_range_7_0)
-        bg_box.addLayout(hbox_lay_scan_range_7_0)
-
-        hbox_lay_scan_range_7_1.addWidget(box_scan_range_7_1)
-        bg_box.addLayout(hbox_lay_scan_range_7_1)
+        hbox_lay_report_6.addWidget(box_report_6)
+        bg_box.addLayout(hbox_lay_report_6)
 
         label_8 = QLabel("sampling")
         label_8.setPalette(palette_scope)
@@ -408,6 +389,9 @@ class inner_widg( QWidget):
         hbox_lay_separate_files_32.addWidget(box_separate_files_32)
         bg_box.addLayout(hbox_lay_separate_files_32)
 
+        hbox_lay_separate_files_32.addWidget(box_separate_files_32)
+        bg_box.addLayout(hbox_lay_separate_files_32)
+
         hbox_lay_split_experiments_34 =  QHBoxLayout()
         label_split_experiments_34 = QLabel("        split_experiments")
         label_split_experiments_34.setPalette(palette_object)
@@ -535,6 +519,12 @@ class inner_widg( QWidget):
         label_45.setPalette(palette_scope)
         label_45.setFont(QFont("Monospace"))
         bg_box.addWidget(label_45)
+        hbox_lay_max_shoebox_overlap_43.addWidget(box_max_shoebox_overlap_43)
+        bg_box.addLayout(hbox_lay_max_shoebox_overlap_43)
+
+        hbox_lay_max_shoebox_overlap_43.addWidget(box_max_shoebox_overlap_43)
+        bg_box.addLayout(hbox_lay_max_shoebox_overlap_43)
+
         hbox_lay_d_min_48 =  QHBoxLayout()
         label_d_min_48 = QLabel("                d_min")
         label_d_min_48.setPalette(palette_object)
