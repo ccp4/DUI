@@ -351,37 +351,16 @@ class ExportParameterWidget(GenericParameterWidget):
 
         self.cmd_lin_extra = ["pointless < pointless.dat | tee pointless.log",
                               "aimless < aimless.dat | tee aimless.log"]
-        To_run_pointless_n_aimless__simplest_case = '''
-
-        pointless < pointless.dat | tee pointless.log
-        aimless < aimless.dat | tee aimless.log
-
-        where pointless.dat contains:
-        HKLIN integrated.mtz
-        HKLOUT unscaled.mtz
-
-        And aimless.dat contains:
-        HKLIN unscaled.mtz
-        HKLOUT scaled.mtz
-
-        compatible with DUI
-        HKLIN unscaled.mtz
-        HKLOUT scaled.mtz
-
-        HKLIN hklout.mtz
-        HKLOUT unscaled.mtz
-
-        '''
 
     def run_extra_code(self):
 
-        print "preparing pointless.dat"
+        #preparing pointless.dat
         p_file = open("pointless.dat", "w")
         p_file.write("HKLIN hklout.mtz\n")
         p_file.write("HKLOUT unscaled.mtz\n")
         p_file.close()
 
-        print "preparing aimless.dat"
+        #preparing aimless.dat
         a_file = open("aimless.dat", "w")
         a_file.write("HKLIN unscaled.mtz\n")
         a_file.write("HKLOUT scaled.mtz\n")
