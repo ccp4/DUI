@@ -53,7 +53,7 @@ import subprocess
 import sys
 import os
 
-from cli_interactions import TextBrows, MyQProcess
+from cli_interactions import TextBrows, MyQProcess, CmdLine
 
 class MyMainDialog(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -106,7 +106,8 @@ class MyMainDialog(QtGui.QMainWindow):
 
         exec_layout = QtGui.QHBoxLayout()
 
-        self.gui_line_edit =  QtGui.QLineEdit(self)
+        #self.gui_line_edit =  QtGui.QLineEdit(self)
+        self.gui_line_edit = CmdLine()
         exec_layout.addWidget(self.gui_line_edit)
 
         exec_layout.addWidget(self.Go_button)
@@ -148,7 +149,8 @@ class MyMainDialog(QtGui.QMainWindow):
                 my_cli_string += ( " " + str(local_pname[0]) +
                                    "=" + str(local_pname[1]) )
 
-            self.gui_line_edit.setText(my_cli_string)
+            #self.gui_line_edit.setText(my_cli_string)
+            self.gui_line_edit.set_text(my_cli_string)
 
     def changePage(self, current, previous):
         if not current:
@@ -159,7 +161,8 @@ class MyMainDialog(QtGui.QMainWindow):
         self.cli_str = self.widget_list[idx].cmd_lin_default
 
         try:
-            self.gui_line_edit.setText(str(self.cli_str))
+            #self.gui_line_edit.setText(str(self.cli_str))
+            self.gui_line_edit.set_text(str(self.cli_str))
         except:
             pass
         self.param_changed_lst = []
@@ -176,12 +179,16 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def onGoBtn(self, event = None):
         if( self.qProcess.run_stat == False ):
-            self.shell_str_to_run = str(self.gui_line_edit.text())
+            self.shell_str_to_run = str(self.gui_line_edit.get_text())
+            #self.shell_str_to_run = str(self.gui_line_edit.text())
 
             print "CLI to Run =", self.shell_str_to_run
 
             self.qProcess.start(self.shell_str_to_run)
-            self.gui_line_edit.setText(str("Running >> {" + self.shell_str_to_run + " }" ))
+            #self.gui_line_edit.setText(str("Running >> {" + self.shell_str_to_run + " }" ))
+            self.gui_line_edit.set_text(str("Running >> {" + self.shell_str_to_run + " }" ))
+
+
 
     def on_started(self):
         tmp_txt = "\n" + " Starting " + self.go_underline
@@ -198,7 +205,8 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def on_finished(self):
         self.Go_button.setText(self.default_go_label)
-        self.gui_line_edit.setText(str(""))
+        #self.gui_line_edit.setText(str(""))
+        self.gui_line_edit.set_text(str(""))
 
         print "Done CLI"
         idx = self.pagesWidget.currentIndex()

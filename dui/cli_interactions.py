@@ -75,6 +75,27 @@ class MyQProcess(QtCore.QProcess):
         self.my_timer.stop()
         self.run_stat = False
 
+
+class CmdLine(QtGui.QTextBrowser):
+
+    '''
+    This class emulates QtGui.QLineEdit but with several lines
+    here will be contained the commands that DUI will run
+    '''
+
+    def __init__(self):
+        super(CmdLine, self).__init__()
+        print "\n\n CmdLine(ready) \n\n "
+
+    def set_text(self, lin_str):
+        self.clear()
+        self.append(lin_str)
+        self.current_line = lin_str
+
+    def get_text(self):
+        return self.current_line
+
+
 class TextBrows(QtGui.QTextBrowser):
     def __init__(self):
         super(TextBrows, self).__init__()

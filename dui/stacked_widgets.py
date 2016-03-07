@@ -180,8 +180,8 @@ class ImportPage(QtGui.QWidget):
             print "Failed to pick dir"
             self.cmd_lin_default = " "
 
-        self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
-
+        #self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
+        self.super_parent.gui_line_edit.set_text(self.cmd_lin_default)
 
     def change_w_dir(self, event = None):
         dir_name = str(QtGui.QFileDialog.getExistingDirectory(self, "Change Working Dir"))
