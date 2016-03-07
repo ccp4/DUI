@@ -119,6 +119,7 @@ class ImportPage(QtGui.QWidget):
         mainLayout.addWidget(import_path_group)
         mainLayout.addWidget(w_dir_group)
 
+
         imageLabel = QtGui.QLabel()
         dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_scaled.png"
         #dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo.png"

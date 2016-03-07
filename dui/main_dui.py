@@ -92,6 +92,7 @@ class MyMainDialog(QtGui.QMainWindow):
         self.go_underline = "\n_________________\n"
 
         self.Go_button = QtGui.QPushButton(self.default_go_label)
+        self.Go_button.setSizePolicy( QtGui.QSizePolicy.Maximum , QtGui.QSizePolicy.Maximum )
         pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
         pop_but = QtGui.QPushButton(" \n    show image viewer")
         self.createIcons()
