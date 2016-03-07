@@ -177,6 +177,17 @@ class HtmlTab( QtGui.QWidget):
         hbox.addWidget(self.web)
 
 
+        '''
+
+        new dials.report option: output.external_dependencies=remote (default) or local or embed
+        local will point to location in current dials installation; embed will embed (unsurprisingly)
+         but inflates the file sizes somewhat
+        welcome testing
+        local and embed should work without internet
+
+        '''
+
+
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()

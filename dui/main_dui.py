@@ -204,7 +204,12 @@ class MyMainDialog(QtGui.QMainWindow):
         idx = self.pagesWidget.currentIndex()
 
         if( idx != 0 ):
-            self.widget_list[idx].analyse_out_img.update_me()
+            try:
+
+                self.widget_list[idx].run_extra_code()
+                self.widget_list[idx].analyse_out_img.update_me()
+            except:
+                print "WARNING  >>> got stuck in latest step after running CLI"
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):
