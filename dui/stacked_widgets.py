@@ -49,13 +49,14 @@ else:
 
 import os
 
-from cli_interactions import ImgTab, TextBrows, HtmlTab
-
 from simpler_param_stacked_widgets import FindspotsSimplerParameterTab, \
                                           IndexSimplerParamTab,         \
                                           RefineSimplerParamTab,        \
                                           IntegrateSimplerParamTab,     \
                                           ExportSimplerParameterWidget
+
+from cli_interactions import ImgTab, TextBrows, HtmlTab
+from subprocess import call as shell_func
 
 class ImportPage(QtGui.QWidget):
 
@@ -231,11 +232,14 @@ class GenericParameterWidget(QtGui.QWidget):
         mainLayout.addWidget(rtabWidget)
         self.setLayout(mainLayout)
 
+        self.cmd_lin_extra = None
+
     def run_extra_code(self):
-        print "running extra code\n\n to run", self.cmd_lin_extra, "\n\n"
-
-
-
+        if( self.cmd_lin_extra != None ):
+            print "running extra code form GenericParameterWidget\n\n to run:\n\n"
+            print self.cmd_lin_extra, "\n\n"
+        else:
+            print "No cmd_lin_extra to run"
 
 
 class FindspotsParameterWidget(GenericParameterWidget):
@@ -255,6 +259,8 @@ class FindspotsParameterWidget(GenericParameterWidget):
 
         self.cmd_lin_extra = "test cmd_lin_extra"
 
+    def run_extra_code(self):
+        print "running extra code form FindspotsParameterWidget\n\n to run:\n\n", self.cmd_lin_extra, "\n\n"
 
 
 
@@ -279,7 +285,6 @@ class IndexParameterWidget(GenericParameterWidget):
         self.logo_path = my_dui_path + "/../dui/resources/index.png"
 
 
-
 class RefineParameterWidget(GenericParameterWidget):
     '''
     The duty of this widget is to contain 2 tabs with the 2
@@ -299,7 +304,6 @@ class RefineParameterWidget(GenericParameterWidget):
         self.button_label = "Refine"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
-
 
 
 
@@ -325,10 +329,6 @@ class IntegrateParameterWidget(GenericParameterWidget):
         self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
 
 
-
-
-
-
 class ExportParameterWidget(GenericParameterWidget):
     '''
     This widget like the import one has no multiple tabs, but it does have
@@ -344,13 +344,13 @@ class ExportParameterWidget(GenericParameterWidget):
         default_tab = ExportSimplerParameterWidget(self.super_parent)
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
-
-
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
         self.button_label = "Export mtz"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/export.png"
 
+        self.cmd_lin_extra = ["pointless < pointless.dat | tee pointless.log",
+                              "aimless < aimless.dat | tee aimless.log"]
         To_run_pointless_n_aimless__simplest_case = '''
 
         pointless < pointless.dat | tee pointless.log
@@ -372,3 +372,28 @@ class ExportParameterWidget(GenericParameterWidget):
         HKLOUT unscaled.mtz
 
         '''
+
+    def run_extra_code(self):
+
+        print "preparing pointless.dat"
+        p_file = open("pointless.dat", "w")
+        p_file.write("HKLIN hklout.mtz\n")
+        p_file.write("HKLOUT unscaled.mtz\n")
+        p_file.close()
+
+        print "preparing aimless.dat"
+        a_file = open("aimless.dat", "w")
+        a_file.write("HKLIN unscaled.mtz\n")
+        a_file.write("HKLOUT scaled.mtz\n")
+        a_file.close()
+
+        try:
+            print "Running pointless and aimless"
+
+            my_cmd = "pointless < pointless.dat | tee pointless.log"
+            shell_func(self.cmd_lin_extra[0], shell=True)
+            shell_func(self.cmd_lin_extra[1], shell=True)
+
+        except:
+            print "WARNING something went wrong attempting to run pointless and/or aimless"
+
