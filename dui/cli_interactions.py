@@ -85,7 +85,7 @@ class CmdLine(QtGui.QTextBrowser):
 
     def __init__(self):
         super(CmdLine, self).__init__()
-        print "\n\n CmdLine(ready) 1 \n\n "
+        print "\n\n CmdLine(ready) \n\n "
 
         # QtGui.QSizePolicy.Fixed
         self.setSizePolicy( QtGui.QSizePolicy.Minimum , QtGui.QSizePolicy.Maximum )

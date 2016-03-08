@@ -110,8 +110,6 @@ class ImportPage(QtGui.QWidget):
         w_dir_layout.addWidget(w_dir_button)
         w_dir_group.setLayout(w_dir_layout)
 
-        #self.log_json_txt = QtGui.QTextBrowser()
-        #self.log_json_txt.setTextColor(QtGui.QColor("black"))
 
         self.auto_next_check = QtGui.QCheckBox("Enable auto-Next Feature")
         self.auto_next_check.stateChanged.connect(self.changed_auto_next)
@@ -121,7 +119,9 @@ class ImportPage(QtGui.QWidget):
 
 
         imageLabel = QtGui.QLabel()
-        dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_scaled.png"
+        #dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_scaled.png"
+        dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_smaller_centred.png"
+
         #dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo.png"
         image = QtGui.QImage(dials_logo_path)
         imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
@@ -129,7 +129,6 @@ class ImportPage(QtGui.QWidget):
         #imageLabel.setScaledContents(True)
 
 
-        #mainLayout.addWidget(self.log_json_txt)
         #mainLayout.addStretch(1)
         mainLayout.addWidget(self.auto_next_check)
 
