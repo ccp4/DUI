@@ -289,7 +289,7 @@ class IndexParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
-        self.button_label = "Index"
+        self.button_label = "   Index"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/index.png"
         self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
@@ -310,7 +310,7 @@ class RefineParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
-        self.button_label = "Refine"
+        self.button_label = "   Refine"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
         self.cmd_lin_extra = "dials.analyse_output output.directory=refine_output refined.pickle"

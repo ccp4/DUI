@@ -207,7 +207,9 @@ class MyMainDialog(QtGui.QMainWindow):
         self.Go_button.setText(tmp_txt)
 
     def on_finished(self):
-        self.Go_button.setText(self.default_go_label)
+
+        self.Go_button.setText("Updating")
+
         #self.gui_line_edit.setText(str(""))
         self.gui_line_edit.set_text(str(""))
 
@@ -221,6 +223,7 @@ class MyMainDialog(QtGui.QMainWindow):
 
             except:
                 print "WARNING  >>> got stuck in latest step after running CLI"
+        self.Go_button.setText(self.default_go_label)
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):
