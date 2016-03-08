@@ -85,7 +85,7 @@ class ImportPage(QtGui.QWidget):
 
         self.super_parent.w_dir = os.getcwd()
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
-        self.button_label = "Import"
+        self.button_label = "        Import      "
 
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/import.png"
@@ -262,7 +262,7 @@ class FindspotsParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
-        self.button_label = "Find Spots"
+        self.button_label = "      Find Spots    "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
 
@@ -289,7 +289,7 @@ class IndexParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
-        self.button_label = "   Index"
+        self.button_label = "        Index       "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/index.png"
         self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
@@ -310,7 +310,7 @@ class RefineParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
-        self.button_label = "   Refine"
+        self.button_label = "        Refine      "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
         self.cmd_lin_extra = "dials.analyse_output output.directory=refine_output refined.pickle"
@@ -333,7 +333,7 @@ class IntegrateParameterWidget(GenericParameterWidget):
 
 
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
-        self.button_label = "Integrate"
+        self.button_label = "       Integrate    "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
         self.cmd_lin_extra = "dials.analyse_output output.directory=integrate_output integrated.pickle"
@@ -354,7 +354,7 @@ class ExportParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
 
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
-        self.button_label = "Export mtz"
+        self.button_label = "      Export mtz    "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/export.png"
 

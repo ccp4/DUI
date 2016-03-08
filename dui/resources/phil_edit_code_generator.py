@@ -68,7 +68,7 @@ class gen_code(object):
         self.src_code_1.append("        super(inner_widg, self).__init__(parent)")
         self.src_code_1.append("        self.super_parent = parent # reference across the hole GUI to MyMainDialog")
         self.src_code_1.append("        palette_scope = QPalette()")
-        self.src_code_1.append("        palette_scope.setColor(QPalette.Foreground, QColor(75, 75, 75, 255))")
+        self.src_code_1.append("        palette_scope.setColor(QPalette.Foreground, QColor(45, 45, 45, 255))")
         self.src_code_1.append("        palette_object = QPalette()")
         self.src_code_1.append("        palette_object.setColor(QPalette.Foreground,Qt.black)")
         self.src_code_1.append("        bg_box =  QVBoxLayout(self)")
@@ -230,7 +230,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
             src_code_aut.append(my_str)
             my_str = "        label_" + str(nm) + ".setPalette(palette_scope)"
             src_code_aut.append(my_str)
-            my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\"))"
+            my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", 10, QFont.Bold))"
             #my_str = "        label_" + str(nm) + ".setFont(QFont(\"Monospace\", "
             #my_str += f_siz + ", QFont.Bold))"
             src_code_aut.append(my_str)
@@ -255,7 +255,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
                 src_code_aut.append(my_str)
                 my_str = "        " + label_name + ".setPalette(palette_object)"
                 src_code_aut.append(my_str)
-                my_str = "        " + label_name + ".setFont(QFont(\"Monospace\"))"
+                my_str = "        " + label_name + ".setFont(QFont(\"Monospace\", 10))"
                 #my_str = "        " + label_name + ".setFont(QFont(\"Monospace\","
                 #my_str += f_siz + ", QFont.Bold))"
                 src_code_aut.append(my_str)
@@ -393,7 +393,7 @@ def phil_list_2_disc(lst_obj, file_name, qt_tool = "PyQt4"):
 
                         my_str = "        " + label_name_lst[indx] + ".setPalette(palette_object)"
                         src_code_aut.append(my_str)
-                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\"))"
+                        my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\", 10))"
                         #my_str = "        " + label_name_lst[indx] + ".setFont(QFont(\"Monospace\","
                         #my_str += f_siz + ", QFont.Bold))"
                         src_code_aut.append(my_str)

@@ -10,7 +10,7 @@ class inner_widg( QWidget):
         super(inner_widg, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         palette_scope = QPalette()
-        palette_scope.setColor(QPalette.Foreground, QColor(75, 75, 75, 255))
+        palette_scope.setColor(QPalette.Foreground, QColor(45, 45, 45, 255))
         palette_object = QPalette()
         palette_object.setColor(QPalette.Foreground,Qt.black)
         bg_box =  QVBoxLayout(self)
@@ -18,13 +18,13 @@ class inner_widg( QWidget):
 
         label_0 = QLabel("output")
         label_0.setPalette(palette_scope)
-        label_0.setFont(QFont("Monospace"))
+        label_0.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_0)
 
         hbox_lay_experiments_1 =  QHBoxLayout()
         label_experiments_1 = QLabel("    experiments")
         label_experiments_1.setPalette(palette_object)
-        label_experiments_1.setFont(QFont("Monospace"))
+        label_experiments_1.setFont(QFont("Monospace", 10))
         hbox_lay_experiments_1.addWidget(label_experiments_1)
 
         box_experiments_1 = QLineEdit()
@@ -36,7 +36,7 @@ class inner_widg( QWidget):
         hbox_lay_reflections_2 =  QHBoxLayout()
         label_reflections_2 = QLabel("    reflections")
         label_reflections_2.setPalette(palette_object)
-        label_reflections_2.setFont(QFont("Monospace"))
+        label_reflections_2.setFont(QFont("Monospace", 10))
         hbox_lay_reflections_2.addWidget(label_reflections_2)
 
         box_reflections_2 = QLineEdit()
@@ -48,7 +48,7 @@ class inner_widg( QWidget):
         hbox_lay_phil_3 =  QHBoxLayout()
         label_phil_3 = QLabel("    phil")
         label_phil_3.setPalette(palette_object)
-        label_phil_3.setFont(QFont("Monospace"))
+        label_phil_3.setFont(QFont("Monospace", 10))
         hbox_lay_phil_3.addWidget(label_phil_3)
 
         box_phil_3 = QLineEdit()
@@ -60,7 +60,7 @@ class inner_widg( QWidget):
         hbox_lay_log_4 =  QHBoxLayout()
         label_log_4 = QLabel("    log")
         label_log_4.setPalette(palette_object)
-        label_log_4.setFont(QFont("Monospace"))
+        label_log_4.setFont(QFont("Monospace", 10))
         hbox_lay_log_4.addWidget(label_log_4)
 
         box_log_4 = QLineEdit()
@@ -72,7 +72,7 @@ class inner_widg( QWidget):
         hbox_lay_debug_log_5 =  QHBoxLayout()
         label_debug_log_5 = QLabel("    debug_log")
         label_debug_log_5.setPalette(palette_object)
-        label_debug_log_5.setFont(QFont("Monospace"))
+        label_debug_log_5.setFont(QFont("Monospace", 10))
         hbox_lay_debug_log_5.addWidget(label_debug_log_5)
 
         box_debug_log_5 = QLineEdit()
@@ -84,7 +84,7 @@ class inner_widg( QWidget):
         hbox_lay_report_6 =  QHBoxLayout()
         label_report_6 = QLabel("    report")
         label_report_6.setPalette(palette_object)
-        label_report_6.setFont(QFont("Monospace"))
+        label_report_6.setFont(QFont("Monospace", 10))
         hbox_lay_report_6.addWidget(label_report_6)
 
         box_report_6 = QLineEdit()
@@ -96,7 +96,7 @@ class inner_widg( QWidget):
         hbox_lay_include_bad_reference_7 =  QHBoxLayout()
         label_include_bad_reference_7 = QLabel("    include_bad_reference")
         label_include_bad_reference_7.setPalette(palette_object)
-        label_include_bad_reference_7.setFont(QFont("Monospace"))
+        label_include_bad_reference_7.setFont(QFont("Monospace", 10))
         hbox_lay_include_bad_reference_7.addWidget(label_include_bad_reference_7)
 
         box_include_bad_reference_7 = QComboBox()
@@ -114,7 +114,7 @@ class inner_widg( QWidget):
         hbox_lay_scan_range_8_0 =  QHBoxLayout()
         label_scan_range_8_0 = QLabel("scan_range[1]")
         label_scan_range_8_0.setPalette(palette_object)
-        label_scan_range_8_0.setFont(QFont("Monospace"))
+        label_scan_range_8_0.setFont(QFont("Monospace", 10))
         hbox_lay_scan_range_8_0.addWidget(label_scan_range_8_0)
         box_scan_range_8_0 = QSpinBox()
         box_scan_range_8_0.local_path = "scan_range"
@@ -122,7 +122,7 @@ class inner_widg( QWidget):
         hbox_lay_scan_range_8_1 =  QHBoxLayout()
         label_scan_range_8_1 = QLabel("scan_range[2]")
         label_scan_range_8_1.setPalette(palette_object)
-        label_scan_range_8_1.setFont(QFont("Monospace"))
+        label_scan_range_8_1.setFont(QFont("Monospace", 10))
         hbox_lay_scan_range_8_1.addWidget(label_scan_range_8_1)
         box_scan_range_8_1 = QSpinBox()
         box_scan_range_8_1.local_path = "scan_range"
@@ -134,13 +134,13 @@ class inner_widg( QWidget):
 
         label_9 = QLabel("sampling")
         label_9.setPalette(palette_scope)
-        label_9.setFont(QFont("Monospace"))
+        label_9.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_9)
 
         hbox_lay_reflections_per_degree_10 =  QHBoxLayout()
         label_reflections_per_degree_10 = QLabel("    reflections_per_degree")
         label_reflections_per_degree_10.setPalette(palette_object)
-        label_reflections_per_degree_10.setFont(QFont("Monospace"))
+        label_reflections_per_degree_10.setFont(QFont("Monospace", 10))
         hbox_lay_reflections_per_degree_10.addWidget(label_reflections_per_degree_10)
 
         box_reflections_per_degree_10 = QDoubleSpinBox()
@@ -153,7 +153,7 @@ class inner_widg( QWidget):
         hbox_lay_minimum_sample_size_11 =  QHBoxLayout()
         label_minimum_sample_size_11 = QLabel("    minimum_sample_size")
         label_minimum_sample_size_11.setPalette(palette_object)
-        label_minimum_sample_size_11.setFont(QFont("Monospace"))
+        label_minimum_sample_size_11.setFont(QFont("Monospace", 10))
         hbox_lay_minimum_sample_size_11.addWidget(label_minimum_sample_size_11)
 
         box_minimum_sample_size_11 = QSpinBox()
@@ -166,7 +166,7 @@ class inner_widg( QWidget):
         hbox_lay_maximum_sample_size_12 =  QHBoxLayout()
         label_maximum_sample_size_12 = QLabel("    maximum_sample_size")
         label_maximum_sample_size_12.setPalette(palette_object)
-        label_maximum_sample_size_12.setFont(QFont("Monospace"))
+        label_maximum_sample_size_12.setFont(QFont("Monospace", 10))
         hbox_lay_maximum_sample_size_12.addWidget(label_maximum_sample_size_12)
 
         box_maximum_sample_size_12 = QSpinBox()
@@ -178,7 +178,7 @@ class inner_widg( QWidget):
         hbox_lay_integrate_all_reflections_13 =  QHBoxLayout()
         label_integrate_all_reflections_13 = QLabel("    integrate_all_reflections")
         label_integrate_all_reflections_13.setPalette(palette_object)
-        label_integrate_all_reflections_13.setFont(QFont("Monospace"))
+        label_integrate_all_reflections_13.setFont(QFont("Monospace", 10))
         hbox_lay_integrate_all_reflections_13.addWidget(label_integrate_all_reflections_13)
 
         box_integrate_all_reflections_13 = QComboBox()
@@ -195,7 +195,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_14 =  QHBoxLayout()
         label_verbosity_14 = QLabel("verbosity")
         label_verbosity_14.setPalette(palette_object)
-        label_verbosity_14.setFont(QFont("Monospace"))
+        label_verbosity_14.setFont(QFont("Monospace", 10))
         hbox_lay_verbosity_14.addWidget(label_verbosity_14)
 
         box_verbosity_14 = QSpinBox()
@@ -207,18 +207,18 @@ class inner_widg( QWidget):
 
         label_15 = QLabel("integration")
         label_15.setPalette(palette_scope)
-        label_15.setFont(QFont("Monospace"))
+        label_15.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_15)
 
         label_16 = QLabel("    mp")
         label_16.setPalette(palette_scope)
-        label_16.setFont(QFont("Monospace"))
+        label_16.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_16)
 
         hbox_lay_method_17 =  QHBoxLayout()
         label_method_17 = QLabel("        method")
         label_method_17.setPalette(palette_object)
-        label_method_17.setFont(QFont("Monospace"))
+        label_method_17.setFont(QFont("Monospace", 10))
         hbox_lay_method_17.addWidget(label_method_17)
 
         box_method_17 = QComboBox()
@@ -238,7 +238,7 @@ class inner_widg( QWidget):
         hbox_lay_nproc_18 =  QHBoxLayout()
         label_nproc_18 = QLabel("        nproc")
         label_nproc_18.setPalette(palette_object)
-        label_nproc_18.setFont(QFont("Monospace"))
+        label_nproc_18.setFont(QFont("Monospace", 10))
         hbox_lay_nproc_18.addWidget(label_nproc_18)
 
         box_nproc_18 = QSpinBox()
@@ -251,7 +251,7 @@ class inner_widg( QWidget):
         hbox_lay_nthreads_19 =  QHBoxLayout()
         label_nthreads_19 = QLabel("        nthreads")
         label_nthreads_19.setPalette(palette_object)
-        label_nthreads_19.setFont(QFont("Monospace"))
+        label_nthreads_19.setFont(QFont("Monospace", 10))
         hbox_lay_nthreads_19.addWidget(label_nthreads_19)
 
         box_nthreads_19 = QSpinBox()
@@ -263,13 +263,13 @@ class inner_widg( QWidget):
 
         label_20 = QLabel("    lookup")
         label_20.setPalette(palette_scope)
-        label_20.setFont(QFont("Monospace"))
+        label_20.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_20)
 
         hbox_lay_mask_21 =  QHBoxLayout()
         label_mask_21 = QLabel("        mask")
         label_mask_21.setPalette(palette_object)
-        label_mask_21.setFont(QFont("Monospace"))
+        label_mask_21.setFont(QFont("Monospace", 10))
         hbox_lay_mask_21.addWidget(label_mask_21)
 
         box_mask_21 = QLineEdit()
@@ -280,13 +280,13 @@ class inner_widg( QWidget):
 
         label_22 = QLabel("    block")
         label_22.setPalette(palette_scope)
-        label_22.setFont(QFont("Monospace"))
+        label_22.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_22)
 
         hbox_lay_size_23 =  QHBoxLayout()
         label_size_23 = QLabel("        size")
         label_size_23.setPalette(palette_object)
-        label_size_23.setFont(QFont("Monospace"))
+        label_size_23.setFont(QFont("Monospace", 10))
         hbox_lay_size_23.addWidget(label_size_23)
 
         box_size_23 = QDoubleSpinBox()
@@ -298,7 +298,7 @@ class inner_widg( QWidget):
         hbox_lay_units_24 =  QHBoxLayout()
         label_units_24 = QLabel("        units")
         label_units_24.setPalette(palette_object)
-        label_units_24.setFont(QFont("Monospace"))
+        label_units_24.setFont(QFont("Monospace", 10))
         hbox_lay_units_24.addWidget(label_units_24)
 
         box_units_24 = QComboBox()
@@ -317,7 +317,7 @@ class inner_widg( QWidget):
         hbox_lay_threshold_25 =  QHBoxLayout()
         label_threshold_25 = QLabel("        threshold")
         label_threshold_25.setPalette(palette_object)
-        label_threshold_25.setFont(QFont("Monospace"))
+        label_threshold_25.setFont(QFont("Monospace", 10))
         hbox_lay_threshold_25.addWidget(label_threshold_25)
 
         box_threshold_25 = QDoubleSpinBox()
@@ -330,7 +330,7 @@ class inner_widg( QWidget):
         hbox_lay_force_26 =  QHBoxLayout()
         label_force_26 = QLabel("        force")
         label_force_26.setPalette(palette_object)
-        label_force_26.setFont(QFont("Monospace"))
+        label_force_26.setFont(QFont("Monospace", 10))
         hbox_lay_force_26.addWidget(label_force_26)
 
         box_force_26 = QComboBox()
@@ -348,7 +348,7 @@ class inner_widg( QWidget):
         hbox_lay_max_memory_usage_27 =  QHBoxLayout()
         label_max_memory_usage_27 = QLabel("        max_memory_usage")
         label_max_memory_usage_27.setPalette(palette_object)
-        label_max_memory_usage_27.setFont(QFont("Monospace"))
+        label_max_memory_usage_27.setFont(QFont("Monospace", 10))
         hbox_lay_max_memory_usage_27.addWidget(label_max_memory_usage_27)
 
         box_max_memory_usage_27 = QDoubleSpinBox()
@@ -360,18 +360,18 @@ class inner_widg( QWidget):
 
         label_28 = QLabel("    debug")
         label_28.setPalette(palette_scope)
-        label_28.setFont(QFont("Monospace"))
+        label_28.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_28)
 
         label_29 = QLabel("        reference")
         label_29.setPalette(palette_scope)
-        label_29.setFont(QFont("Monospace"))
+        label_29.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_29)
 
         hbox_lay_output_30 =  QHBoxLayout()
         label_output_30 = QLabel("            output")
         label_output_30.setPalette(palette_object)
-        label_output_30.setFont(QFont("Monospace"))
+        label_output_30.setFont(QFont("Monospace", 10))
         hbox_lay_output_30.addWidget(label_output_30)
 
         box_output_30 = QComboBox()
@@ -389,7 +389,7 @@ class inner_widg( QWidget):
         hbox_lay_during_31 =  QHBoxLayout()
         label_during_31 = QLabel("        during")
         label_during_31.setPalette(palette_object)
-        label_during_31.setFont(QFont("Monospace"))
+        label_during_31.setFont(QFont("Monospace", 10))
         hbox_lay_during_31.addWidget(label_during_31)
 
         box_during_31 = QComboBox()
@@ -407,7 +407,7 @@ class inner_widg( QWidget):
         hbox_lay_output_32 =  QHBoxLayout()
         label_output_32 = QLabel("        output")
         label_output_32.setPalette(palette_object)
-        label_output_32.setFont(QFont("Monospace"))
+        label_output_32.setFont(QFont("Monospace", 10))
         hbox_lay_output_32.addWidget(label_output_32)
 
         box_output_32 = QComboBox()
@@ -425,7 +425,7 @@ class inner_widg( QWidget):
         hbox_lay_separate_files_33 =  QHBoxLayout()
         label_separate_files_33 = QLabel("        separate_files")
         label_separate_files_33.setPalette(palette_object)
-        label_separate_files_33.setFont(QFont("Monospace"))
+        label_separate_files_33.setFont(QFont("Monospace", 10))
         hbox_lay_separate_files_33.addWidget(label_separate_files_33)
 
         box_separate_files_33 = QComboBox()
@@ -443,7 +443,7 @@ class inner_widg( QWidget):
         hbox_lay_split_experiments_35 =  QHBoxLayout()
         label_split_experiments_35 = QLabel("        split_experiments")
         label_split_experiments_35.setPalette(palette_object)
-        label_split_experiments_35.setFont(QFont("Monospace"))
+        label_split_experiments_35.setFont(QFont("Monospace", 10))
         hbox_lay_split_experiments_35.addWidget(label_split_experiments_35)
 
         box_split_experiments_35 = QComboBox()
@@ -460,7 +460,7 @@ class inner_widg( QWidget):
         hbox_lay_integrator_36 =  QHBoxLayout()
         label_integrator_36 = QLabel("    integrator")
         label_integrator_36.setPalette(palette_object)
-        label_integrator_36.setFont(QFont("Monospace"))
+        label_integrator_36.setFont(QFont("Monospace", 10))
         hbox_lay_integrator_36.addWidget(label_integrator_36)
 
         box_integrator_36 = QComboBox()
@@ -481,13 +481,13 @@ class inner_widg( QWidget):
 
         label_37 = QLabel("    profile")
         label_37.setPalette(palette_scope)
-        label_37.setFont(QFont("Monospace"))
+        label_37.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_37)
 
         hbox_lay_fitting_38 =  QHBoxLayout()
         label_fitting_38 = QLabel("        fitting")
         label_fitting_38.setPalette(palette_object)
-        label_fitting_38.setFont(QFont("Monospace"))
+        label_fitting_38.setFont(QFont("Monospace", 10))
         hbox_lay_fitting_38.addWidget(label_fitting_38)
 
         box_fitting_38 = QComboBox()
@@ -503,13 +503,13 @@ class inner_widg( QWidget):
 
         label_39 = QLabel("        validation")
         label_39.setPalette(palette_scope)
-        label_39.setFont(QFont("Monospace"))
+        label_39.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_39)
 
         hbox_lay_number_of_partitions_40 =  QHBoxLayout()
         label_number_of_partitions_40 = QLabel("            number_of_partitions")
         label_number_of_partitions_40.setPalette(palette_object)
-        label_number_of_partitions_40.setFont(QFont("Monospace"))
+        label_number_of_partitions_40.setFont(QFont("Monospace", 10))
         hbox_lay_number_of_partitions_40.addWidget(label_number_of_partitions_40)
 
         box_number_of_partitions_40 = QSpinBox()
@@ -522,7 +522,7 @@ class inner_widg( QWidget):
         hbox_lay_min_partition_size_41 =  QHBoxLayout()
         label_min_partition_size_41 = QLabel("            min_partition_size")
         label_min_partition_size_41.setPalette(palette_object)
-        label_min_partition_size_41.setFont(QFont("Monospace"))
+        label_min_partition_size_41.setFont(QFont("Monospace", 10))
         hbox_lay_min_partition_size_41.addWidget(label_min_partition_size_41)
 
         box_min_partition_size_41 = QSpinBox()
@@ -534,13 +534,13 @@ class inner_widg( QWidget):
 
         label_42 = QLabel("    filter")
         label_42.setPalette(palette_scope)
-        label_42.setFont(QFont("Monospace"))
+        label_42.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_42)
 
         hbox_lay_min_zeta_43 =  QHBoxLayout()
         label_min_zeta_43 = QLabel("        min_zeta")
         label_min_zeta_43.setPalette(palette_object)
-        label_min_zeta_43.setFont(QFont("Monospace"))
+        label_min_zeta_43.setFont(QFont("Monospace", 10))
         hbox_lay_min_zeta_43.addWidget(label_min_zeta_43)
 
         box_min_zeta_43 = QDoubleSpinBox()
@@ -553,7 +553,7 @@ class inner_widg( QWidget):
         hbox_lay_max_shoebox_overlap_44 =  QHBoxLayout()
         label_max_shoebox_overlap_44 = QLabel("        max_shoebox_overlap")
         label_max_shoebox_overlap_44.setPalette(palette_object)
-        label_max_shoebox_overlap_44.setFont(QFont("Monospace"))
+        label_max_shoebox_overlap_44.setFont(QFont("Monospace", 10))
         hbox_lay_max_shoebox_overlap_44.addWidget(label_max_shoebox_overlap_44)
 
         box_max_shoebox_overlap_44 = QDoubleSpinBox()
@@ -565,12 +565,12 @@ class inner_widg( QWidget):
 
         label_45 = QLabel("        powder")
         label_45.setPalette(palette_scope)
-        label_45.setFont(QFont("Monospace"))
+        label_45.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_45)
 
         label_46 = QLabel("            water_ice")
         label_46.setPalette(palette_scope)
-        label_46.setFont(QFont("Monospace"))
+        label_46.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_46)
 
 
@@ -578,7 +578,7 @@ class inner_widg( QWidget):
         hbox_lay_d_min_49 =  QHBoxLayout()
         label_d_min_49 = QLabel("                d_min")
         label_d_min_49.setPalette(palette_object)
-        label_d_min_49.setFont(QFont("Monospace"))
+        label_d_min_49.setFont(QFont("Monospace", 10))
         hbox_lay_d_min_49.addWidget(label_d_min_49)
 
         box_d_min_49 = QDoubleSpinBox()
@@ -591,7 +591,7 @@ class inner_widg( QWidget):
         hbox_lay_width_50 =  QHBoxLayout()
         label_width_50 = QLabel("                width")
         label_width_50.setPalette(palette_object)
-        label_width_50.setFont(QFont("Monospace"))
+        label_width_50.setFont(QFont("Monospace", 10))
         hbox_lay_width_50.addWidget(label_width_50)
 
         box_width_50 = QDoubleSpinBox()
@@ -604,7 +604,7 @@ class inner_widg( QWidget):
         hbox_lay_apply_51 =  QHBoxLayout()
         label_apply_51 = QLabel("            apply")
         label_apply_51.setPalette(palette_object)
-        label_apply_51.setFont(QFont("Monospace"))
+        label_apply_51.setFont(QFont("Monospace", 10))
         hbox_lay_apply_51.addWidget(label_apply_51)
 
         box_apply_51 = QComboBox()
@@ -621,13 +621,13 @@ class inner_widg( QWidget):
 
         label_52 = QLabel("    background")
         label_52.setPalette(palette_scope)
-        label_52.setFont(QFont("Monospace"))
+        label_52.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_52)
 
         hbox_lay_algorithm_53 =  QHBoxLayout()
         label_algorithm_53 = QLabel("        algorithm")
         label_algorithm_53.setPalette(palette_object)
-        label_algorithm_53.setFont(QFont("Monospace"))
+        label_algorithm_53.setFont(QFont("Monospace", 10))
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
         box_algorithm_53 = QComboBox()
@@ -646,18 +646,18 @@ class inner_widg( QWidget):
 
         label_54 = QLabel("        simple")
         label_54.setPalette(palette_scope)
-        label_54.setFont(QFont("Monospace"))
+        label_54.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_54)
 
         label_55 = QLabel("            outlier")
         label_55.setPalette(palette_scope)
-        label_55.setFont(QFont("Monospace"))
+        label_55.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_55)
 
         hbox_lay_algorithm_56 =  QHBoxLayout()
         label_algorithm_56 = QLabel("                algorithm")
         label_algorithm_56.setPalette(palette_object)
-        label_algorithm_56.setFont(QFont("Monospace"))
+        label_algorithm_56.setFont(QFont("Monospace", 10))
         hbox_lay_algorithm_56.addWidget(label_algorithm_56)
 
         box_algorithm_56 = QComboBox()
@@ -678,13 +678,13 @@ class inner_widg( QWidget):
 
         label_57 = QLabel("                nsigma")
         label_57.setPalette(palette_scope)
-        label_57.setFont(QFont("Monospace"))
+        label_57.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_57)
 
         hbox_lay_lower_58 =  QHBoxLayout()
         label_lower_58 = QLabel("                    lower")
         label_lower_58.setPalette(palette_object)
-        label_lower_58.setFont(QFont("Monospace"))
+        label_lower_58.setFont(QFont("Monospace", 10))
         hbox_lay_lower_58.addWidget(label_lower_58)
 
         box_lower_58 = QDoubleSpinBox()
@@ -697,7 +697,7 @@ class inner_widg( QWidget):
         hbox_lay_upper_59 =  QHBoxLayout()
         label_upper_59 = QLabel("                    upper")
         label_upper_59.setPalette(palette_object)
-        label_upper_59.setFont(QFont("Monospace"))
+        label_upper_59.setFont(QFont("Monospace", 10))
         hbox_lay_upper_59.addWidget(label_upper_59)
 
         box_upper_59 = QDoubleSpinBox()
@@ -709,13 +709,13 @@ class inner_widg( QWidget):
 
         label_60 = QLabel("                truncated")
         label_60.setPalette(palette_scope)
-        label_60.setFont(QFont("Monospace"))
+        label_60.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_60)
 
         hbox_lay_lower_61 =  QHBoxLayout()
         label_lower_61 = QLabel("                    lower")
         label_lower_61.setPalette(palette_object)
-        label_lower_61.setFont(QFont("Monospace"))
+        label_lower_61.setFont(QFont("Monospace", 10))
         hbox_lay_lower_61.addWidget(label_lower_61)
 
         box_lower_61 = QDoubleSpinBox()
@@ -728,7 +728,7 @@ class inner_widg( QWidget):
         hbox_lay_upper_62 =  QHBoxLayout()
         label_upper_62 = QLabel("                    upper")
         label_upper_62.setPalette(palette_object)
-        label_upper_62.setFont(QFont("Monospace"))
+        label_upper_62.setFont(QFont("Monospace", 10))
         hbox_lay_upper_62.addWidget(label_upper_62)
 
         box_upper_62 = QDoubleSpinBox()
@@ -740,13 +740,13 @@ class inner_widg( QWidget):
 
         label_63 = QLabel("                normal")
         label_63.setPalette(palette_scope)
-        label_63.setFont(QFont("Monospace"))
+        label_63.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_63)
 
         hbox_lay_min_pixels_64 =  QHBoxLayout()
         label_min_pixels_64 = QLabel("                    min_pixels")
         label_min_pixels_64.setPalette(palette_object)
-        label_min_pixels_64.setFont(QFont("Monospace"))
+        label_min_pixels_64.setFont(QFont("Monospace", 10))
         hbox_lay_min_pixels_64.addWidget(label_min_pixels_64)
 
         box_min_pixels_64 = QSpinBox()
@@ -758,13 +758,13 @@ class inner_widg( QWidget):
 
         label_65 = QLabel("                mosflm")
         label_65.setPalette(palette_scope)
-        label_65.setFont(QFont("Monospace"))
+        label_65.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_65)
 
         hbox_lay_fraction_66 =  QHBoxLayout()
         label_fraction_66 = QLabel("                    fraction")
         label_fraction_66.setPalette(palette_object)
-        label_fraction_66.setFont(QFont("Monospace"))
+        label_fraction_66.setFont(QFont("Monospace", 10))
         hbox_lay_fraction_66.addWidget(label_fraction_66)
 
         box_fraction_66 = QDoubleSpinBox()
@@ -777,7 +777,7 @@ class inner_widg( QWidget):
         hbox_lay_n_sigma_67 =  QHBoxLayout()
         label_n_sigma_67 = QLabel("                    n_sigma")
         label_n_sigma_67.setPalette(palette_object)
-        label_n_sigma_67.setFont(QFont("Monospace"))
+        label_n_sigma_67.setFont(QFont("Monospace", 10))
         hbox_lay_n_sigma_67.addWidget(label_n_sigma_67)
 
         box_n_sigma_67 = QDoubleSpinBox()
@@ -789,13 +789,13 @@ class inner_widg( QWidget):
 
         label_68 = QLabel("                tukey")
         label_68.setPalette(palette_scope)
-        label_68.setFont(QFont("Monospace"))
+        label_68.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_68)
 
         hbox_lay_lower_69 =  QHBoxLayout()
         label_lower_69 = QLabel("                    lower")
         label_lower_69.setPalette(palette_object)
-        label_lower_69.setFont(QFont("Monospace"))
+        label_lower_69.setFont(QFont("Monospace", 10))
         hbox_lay_lower_69.addWidget(label_lower_69)
 
         box_lower_69 = QDoubleSpinBox()
@@ -808,7 +808,7 @@ class inner_widg( QWidget):
         hbox_lay_upper_70 =  QHBoxLayout()
         label_upper_70 = QLabel("                    upper")
         label_upper_70.setPalette(palette_object)
-        label_upper_70.setFont(QFont("Monospace"))
+        label_upper_70.setFont(QFont("Monospace", 10))
         hbox_lay_upper_70.addWidget(label_upper_70)
 
         box_upper_70 = QDoubleSpinBox()
@@ -820,13 +820,13 @@ class inner_widg( QWidget):
 
         label_71 = QLabel("            model")
         label_71.setPalette(palette_scope)
-        label_71.setFont(QFont("Monospace"))
+        label_71.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_71)
 
         hbox_lay_algorithm_72 =  QHBoxLayout()
         label_algorithm_72 = QLabel("                algorithm")
         label_algorithm_72.setPalette(palette_object)
-        label_algorithm_72.setFont(QFont("Monospace"))
+        label_algorithm_72.setFont(QFont("Monospace", 10))
         hbox_lay_algorithm_72.addWidget(label_algorithm_72)
 
         box_algorithm_72 = QComboBox()
@@ -845,18 +845,18 @@ class inner_widg( QWidget):
 
         label_73 = QLabel("        glm")
         label_73.setPalette(palette_scope)
-        label_73.setFont(QFont("Monospace"))
+        label_73.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_73)
 
         label_74 = QLabel("            robust")
         label_74.setPalette(palette_scope)
-        label_74.setFont(QFont("Monospace"))
+        label_74.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_74)
 
         hbox_lay_tuning_constant_75 =  QHBoxLayout()
         label_tuning_constant_75 = QLabel("                tuning_constant")
         label_tuning_constant_75.setPalette(palette_object)
-        label_tuning_constant_75.setFont(QFont("Monospace"))
+        label_tuning_constant_75.setFont(QFont("Monospace", 10))
         hbox_lay_tuning_constant_75.addWidget(label_tuning_constant_75)
 
         box_tuning_constant_75 = QDoubleSpinBox()
@@ -868,13 +868,13 @@ class inner_widg( QWidget):
 
         label_76 = QLabel("            model")
         label_76.setPalette(palette_scope)
-        label_76.setFont(QFont("Monospace"))
+        label_76.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_76)
 
         hbox_lay_algorithm_77 =  QHBoxLayout()
         label_algorithm_77 = QLabel("                algorithm")
         label_algorithm_77.setPalette(palette_object)
-        label_algorithm_77.setFont(QFont("Monospace"))
+        label_algorithm_77.setFont(QFont("Monospace", 10))
         hbox_lay_algorithm_77.addWidget(label_algorithm_77)
 
         box_algorithm_77 = QComboBox()
@@ -893,18 +893,18 @@ class inner_widg( QWidget):
 
         label_78 = QLabel("        const_d")
         label_78.setPalette(palette_scope)
-        label_78.setFont(QFont("Monospace"))
+        label_78.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_78)
 
         label_79 = QLabel("    centroid")
         label_79.setPalette(palette_scope)
-        label_79.setFont(QFont("Monospace"))
+        label_79.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_79)
 
         hbox_lay_algorithm_80 =  QHBoxLayout()
         label_algorithm_80 = QLabel("        algorithm")
         label_algorithm_80.setPalette(palette_object)
-        label_algorithm_80.setFont(QFont("Monospace"))
+        label_algorithm_80.setFont(QFont("Monospace", 10))
         hbox_lay_algorithm_80.addWidget(label_algorithm_80)
 
         box_algorithm_80 = QComboBox()
@@ -920,13 +920,13 @@ class inner_widg( QWidget):
 
         label_81 = QLabel("profile")
         label_81.setPalette(palette_scope)
-        label_81.setFont(QFont("Monospace"))
+        label_81.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_81)
 
         hbox_lay_algorithm_82 =  QHBoxLayout()
         label_algorithm_82 = QLabel("    algorithm")
         label_algorithm_82.setPalette(palette_object)
-        label_algorithm_82.setFont(QFont("Monospace"))
+        label_algorithm_82.setFont(QFont("Monospace", 10))
         hbox_lay_algorithm_82.addWidget(label_algorithm_82)
 
         box_algorithm_82 = QComboBox()
@@ -942,13 +942,13 @@ class inner_widg( QWidget):
 
         label_83 = QLabel("    gaussian_rs")
         label_83.setPalette(palette_scope)
-        label_83.setFont(QFont("Monospace"))
+        label_83.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_83)
 
         hbox_lay_scan_varying_84 =  QHBoxLayout()
         label_scan_varying_84 = QLabel("        scan_varying")
         label_scan_varying_84.setPalette(palette_object)
-        label_scan_varying_84.setFont(QFont("Monospace"))
+        label_scan_varying_84.setFont(QFont("Monospace", 10))
         hbox_lay_scan_varying_84.addWidget(label_scan_varying_84)
 
         box_scan_varying_84 = QComboBox()
@@ -965,13 +965,13 @@ class inner_widg( QWidget):
 
         label_85 = QLabel("        min_spots")
         label_85.setPalette(palette_scope)
-        label_85.setFont(QFont("Monospace"))
+        label_85.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_85)
 
         hbox_lay_overall_86 =  QHBoxLayout()
         label_overall_86 = QLabel("            overall")
         label_overall_86.setPalette(palette_object)
-        label_overall_86.setFont(QFont("Monospace"))
+        label_overall_86.setFont(QFont("Monospace", 10))
         hbox_lay_overall_86.addWidget(label_overall_86)
 
         box_overall_86 = QSpinBox()
@@ -984,7 +984,7 @@ class inner_widg( QWidget):
         hbox_lay_per_degree_87 =  QHBoxLayout()
         label_per_degree_87 = QLabel("            per_degree")
         label_per_degree_87.setPalette(palette_object)
-        label_per_degree_87.setFont(QFont("Monospace"))
+        label_per_degree_87.setFont(QFont("Monospace", 10))
         hbox_lay_per_degree_87.addWidget(label_per_degree_87)
 
         box_per_degree_87 = QSpinBox()
@@ -996,13 +996,13 @@ class inner_widg( QWidget):
 
         label_88 = QLabel("        filter")
         label_88.setPalette(palette_scope)
-        label_88.setFont(QFont("Monospace"))
+        label_88.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_88)
 
         hbox_lay_min_zeta_89 =  QHBoxLayout()
         label_min_zeta_89 = QLabel("            min_zeta")
         label_min_zeta_89.setPalette(palette_object)
-        label_min_zeta_89.setFont(QFont("Monospace"))
+        label_min_zeta_89.setFont(QFont("Monospace", 10))
         hbox_lay_min_zeta_89.addWidget(label_min_zeta_89)
 
         box_min_zeta_89 = QDoubleSpinBox()
@@ -1014,13 +1014,13 @@ class inner_widg( QWidget):
 
         label_90 = QLabel("        fitting")
         label_90.setPalette(palette_scope)
-        label_90.setFont(QFont("Monospace"))
+        label_90.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_90)
 
         hbox_lay_scan_step_91 =  QHBoxLayout()
         label_scan_step_91 = QLabel("            scan_step")
         label_scan_step_91.setPalette(palette_object)
-        label_scan_step_91.setFont(QFont("Monospace"))
+        label_scan_step_91.setFont(QFont("Monospace", 10))
         hbox_lay_scan_step_91.addWidget(label_scan_step_91)
 
         box_scan_step_91 = QDoubleSpinBox()
@@ -1033,7 +1033,7 @@ class inner_widg( QWidget):
         hbox_lay_grid_size_92 =  QHBoxLayout()
         label_grid_size_92 = QLabel("            grid_size")
         label_grid_size_92.setPalette(palette_object)
-        label_grid_size_92.setFont(QFont("Monospace"))
+        label_grid_size_92.setFont(QFont("Monospace", 10))
         hbox_lay_grid_size_92.addWidget(label_grid_size_92)
 
         box_grid_size_92 = QSpinBox()
@@ -1046,7 +1046,7 @@ class inner_widg( QWidget):
         hbox_lay_threshold_93 =  QHBoxLayout()
         label_threshold_93 = QLabel("            threshold")
         label_threshold_93.setPalette(palette_object)
-        label_threshold_93.setFont(QFont("Monospace"))
+        label_threshold_93.setFont(QFont("Monospace", 10))
         hbox_lay_threshold_93.addWidget(label_threshold_93)
 
         box_threshold_93 = QDoubleSpinBox()
@@ -1059,7 +1059,7 @@ class inner_widg( QWidget):
         hbox_lay_grid_method_94 =  QHBoxLayout()
         label_grid_method_94 = QLabel("            grid_method")
         label_grid_method_94.setPalette(palette_object)
-        label_grid_method_94.setFont(QFont("Monospace"))
+        label_grid_method_94.setFont(QFont("Monospace", 10))
         hbox_lay_grid_method_94.addWidget(label_grid_method_94)
 
         box_grid_method_94 = QComboBox()
@@ -1078,7 +1078,7 @@ class inner_widg( QWidget):
         hbox_lay_fit_method_95 =  QHBoxLayout()
         label_fit_method_95 = QLabel("            fit_method")
         label_fit_method_95.setPalette(palette_object)
-        label_fit_method_95.setFont(QFont("Monospace"))
+        label_fit_method_95.setFont(QFont("Monospace", 10))
         hbox_lay_fit_method_95.addWidget(label_fit_method_95)
 
         box_fit_method_95 = QComboBox()
@@ -1095,13 +1095,13 @@ class inner_widg( QWidget):
 
         label_96 = QLabel("prediction")
         label_96.setPalette(palette_scope)
-        label_96.setFont(QFont("Monospace"))
+        label_96.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_96)
 
         hbox_lay_d_min_97 =  QHBoxLayout()
         label_d_min_97 = QLabel("    d_min")
         label_d_min_97.setPalette(palette_object)
-        label_d_min_97.setFont(QFont("Monospace"))
+        label_d_min_97.setFont(QFont("Monospace", 10))
         hbox_lay_d_min_97.addWidget(label_d_min_97)
 
         box_d_min_97 = QDoubleSpinBox()
@@ -1113,7 +1113,7 @@ class inner_widg( QWidget):
         hbox_lay_d_max_98 =  QHBoxLayout()
         label_d_max_98 = QLabel("    d_max")
         label_d_max_98.setPalette(palette_object)
-        label_d_max_98.setFont(QFont("Monospace"))
+        label_d_max_98.setFont(QFont("Monospace", 10))
         hbox_lay_d_max_98.addWidget(label_d_max_98)
 
         box_d_max_98 = QDoubleSpinBox()
@@ -1125,7 +1125,7 @@ class inner_widg( QWidget):
         hbox_lay_margin_99 =  QHBoxLayout()
         label_margin_99 = QLabel("    margin")
         label_margin_99.setPalette(palette_object)
-        label_margin_99.setFont(QFont("Monospace"))
+        label_margin_99.setFont(QFont("Monospace", 10))
         hbox_lay_margin_99.addWidget(label_margin_99)
 
         box_margin_99 = QSpinBox()
@@ -1138,7 +1138,7 @@ class inner_widg( QWidget):
         hbox_lay_force_static_100 =  QHBoxLayout()
         label_force_static_100 = QLabel("    force_static")
         label_force_static_100.setPalette(palette_object)
-        label_force_static_100.setFont(QFont("Monospace"))
+        label_force_static_100.setFont(QFont("Monospace", 10))
         hbox_lay_force_static_100.addWidget(label_force_static_100)
 
         box_force_static_100 = QComboBox()
