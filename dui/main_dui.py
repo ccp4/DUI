@@ -88,10 +88,12 @@ class MyMainDialog(QtGui.QMainWindow):
         for widg in self.widget_list:
             self.pagesWidget.addWidget(widg)
 
-        self.default_go_label = " \n\n                      Go \n\n"
-        self.go_underline = "\n_________________\n"
+        self.go_underline = "\n           "
+        self.default_go_label = " \n Go" + self.go_underline
 
         self.Go_button = QtGui.QPushButton(self.default_go_label)
+        self.Go_button.setFont(QtGui.QFont("Monospace", 14, QtGui.QFont.Bold))
+
         self.Go_button.setSizePolicy( QtGui.QSizePolicy.Maximum , QtGui.QSizePolicy.Maximum )
         pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
         pop_but = QtGui.QPushButton(" \n    show image viewer")
