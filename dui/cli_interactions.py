@@ -167,15 +167,6 @@ class ImgTab(QtGui.QScrollArea):
     def update_me(self, lst_img = None):
         print "update_me(self)"
 
-        try:
-            print "Running output generator"
-            my_cmd = "dials.analyse_output output.directory=spot_find_output strong.pickle"
-            shell_func(my_cmd, shell=True)
-
-        except:
-            print "WARNING something went wrong with the output generator"
-
-
         self.imageWidg = ImgWidg(self.super_parent, lst_img)
         self.setWidget(self.imageWidg)
         self.show()

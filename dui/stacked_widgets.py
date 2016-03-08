@@ -237,8 +237,17 @@ class GenericParameterWidget(QtGui.QWidget):
 
     def run_extra_code(self):
         if( self.cmd_lin_extra != None ):
-            print "running extra code form GenericParameterWidget\n\n to run:\n\n"
-            print self.cmd_lin_extra, "\n\n"
+
+            try:
+
+                my_cmd = self.cmd_lin_extra
+                shell_func(my_cmd, shell=True)
+
+            except:
+                print "WARNING something went wrong with the output generator"
+
+                print "running extra code form GenericParameterWidget\n to run:\n"
+                print self.cmd_lin_extra, "\n"
         else:
             print "No cmd_lin_extra to run"
 
@@ -258,7 +267,7 @@ class FindspotsParameterWidget(GenericParameterWidget):
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
 
-        self.cmd_lin_extra = "test cmd_lin_extra"
+        self.cmd_lin_extra = "dials.analyse_output output.directory=spot_find_output strong.pickle"
 
     def run_extra_code(self):
         print "running extra code form FindspotsParameterWidget\n\n to run:\n\n", self.cmd_lin_extra, "\n\n"
@@ -284,7 +293,7 @@ class IndexParameterWidget(GenericParameterWidget):
         self.button_label = "Index"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/index.png"
-
+        self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
 
 class RefineParameterWidget(GenericParameterWidget):
     '''
@@ -305,7 +314,7 @@ class RefineParameterWidget(GenericParameterWidget):
         self.button_label = "Refine"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
-
+        self.cmd_lin_extra = "dials.analyse_output output.directory=refine_output refined.pickle"
 
 
 class IntegrateParameterWidget(GenericParameterWidget):
@@ -328,7 +337,7 @@ class IntegrateParameterWidget(GenericParameterWidget):
         self.button_label = "Integrate"
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
-
+        self.cmd_lin_extra = "dials.analyse_output output.directory=integrate_output integrated.pickle"
 
 class ExportParameterWidget(GenericParameterWidget):
     '''
