@@ -172,37 +172,51 @@ class ImgTab(QtGui.QScrollArea):
         self.show()
 
 
-class HtmlTab( QtGui.QWidget):
+
+
+
+
+class HtmlWidg( QtGui.QWidget):
 
     def __init__(self):
-        super(HtmlTab, self).__init__()
+        super(HtmlWidg, self).__init__()
 
         hbox =  QtGui.QHBoxLayout()
 
 
         self.web = QtWebKit.QWebView()
-        my_dui_path = os.environ["DUI_PATH"]
-        print "my_dui_path =", my_dui_path
-        tmp_path = my_dui_path[0:len(my_dui_path) - 12]
-        print "tmp_path =", tmp_path
-        self.html_path = tmp_path + "/dui/xia2-report.html"
-        print "self.html_path =", self.html_path
+        #my_dui_path = os.environ["DUI_PATH"]
+        #print "my_dui_path =", my_dui_path
+        #tmp_path = my_dui_path[0:len(my_dui_path) - 12]
+        #print "tmp_path =", tmp_path
+        #self.html_path = tmp_path + "/dui/xia2-report.html"
+        #print "self.html_path =", self.html_path
         #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+
+        self.html_path = "file:///home/lui/dui_testind_w_imgs/only_10_img/running/dials-report.html"
+
         self.web.load(QtCore.QUrl(self.html_path))
         hbox.addWidget(self.web)
 
-
-        '''
-
-        new dials.report option: output.external_dependencies=remote (default) or local or embed
-        local will point to location in current dials installation; embed will embed (unsurprisingly)
-         but inflates the file sizes somewhat
-        welcome testing
-        local and embed should work without internet
-
-        '''
-
-
         self.setLayout(hbox)
-        self.setWindowTitle('Shell dialog')
+        #self.setWindowTitle('Shell dialog')
         self.show()
+
+
+class HtmlTab( QtGui.QScrollArea ):
+    def __init__(self, parent = None, lst_img = None):
+        super(HtmlTab, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        #self.html_widg = ImgWidg(self.super_parent, lst_img)
+        self.html_widg = HtmlWidg()
+        self.setWidget(self.html_widg)
+        self.show()
+
+    def update_me(self, lst_img = None):
+        print "update_me(self)"
+
+        #self.html_widg = ImgWidg(self.super_parent, lst_img)
+        self.html_widg = HtmlWidg()
+        self.setWidget(self.html_widg)
+        self.show()
+

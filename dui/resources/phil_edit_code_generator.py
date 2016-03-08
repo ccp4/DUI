@@ -68,7 +68,7 @@ class gen_code(object):
         self.src_code_1.append("        super(inner_widg, self).__init__(parent)")
         self.src_code_1.append("        self.super_parent = parent # reference across the hole GUI to MyMainDialog")
         self.src_code_1.append("        palette_scope = QPalette()")
-        self.src_code_1.append("        palette_scope.setColor(QPalette.Foreground, QColor(45, 45, 45, 255))")
+        self.src_code_1.append("        palette_scope.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))")
         self.src_code_1.append("        palette_object = QPalette()")
         self.src_code_1.append("        palette_object.setColor(QPalette.Foreground,Qt.black)")
         self.src_code_1.append("        bg_box =  QVBoxLayout(self)")

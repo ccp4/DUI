@@ -219,8 +219,8 @@ class MyMainDialog(QtGui.QMainWindow):
         if( idx != 0 ):
             try:
                 self.widget_list[idx].run_extra_code()
-                self.widget_list[idx].analyse_out_img.update_me()
-
+                #self.widget_list[idx].analyse_out_img.update_me()
+                self.widget_list[idx].report_out_widg.update_me()
             except:
                 print "WARNING  >>> got stuck in latest step after running CLI"
         self.Go_button.setText(self.default_go_label)

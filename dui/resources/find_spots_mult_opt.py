@@ -10,7 +10,7 @@ class inner_widg( QWidget):
         super(inner_widg, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         palette_scope = QPalette()
-        palette_scope.setColor(QPalette.Foreground, QColor(45, 45, 45, 255))
+        palette_scope.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
         palette_object = QPalette()
         palette_object.setColor(QPalette.Foreground,Qt.black)
         bg_box =  QVBoxLayout(self)

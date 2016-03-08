@@ -265,8 +265,8 @@ class FindspotsParameterWidget(GenericParameterWidget):
         self.button_label = "    Find Spots   "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
-
-        self.cmd_lin_extra = "dials.analyse_output output.directory=spot_find_output strong.pickle"
+        self.cmd_lin_extra = "dials.report output.external_dependencies=local strong.pickle"
+        #self.cmd_lin_extra = "dials.analyse_output output.directory=spot_find_output strong.pickle"
 
     def run_extra_code(self):
         print "running extra code form FindspotsParameterWidget\n\n to run:\n\n", self.cmd_lin_extra, "\n\n"
@@ -292,7 +292,10 @@ class IndexParameterWidget(GenericParameterWidget):
         self.button_label = "        Index       "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/index.png"
-        self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
+
+        self.cmd_lin_extra = "dials.report output.external_dependencies=local indexed.pickle"
+
+        #self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
 
 class RefineParameterWidget(GenericParameterWidget):
     '''
@@ -313,7 +316,10 @@ class RefineParameterWidget(GenericParameterWidget):
         self.button_label = "        Refine      "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
-        self.cmd_lin_extra = "dials.analyse_output output.directory=refine_output refined.pickle"
+
+        self.cmd_lin_extra = "dials.report output.external_dependencies=local refined.pickle"
+
+        #self.cmd_lin_extra = "dials.analyse_output output.directory=refine_output refined.pickle"
 
 
 class IntegrateParameterWidget(GenericParameterWidget):
@@ -336,7 +342,10 @@ class IntegrateParameterWidget(GenericParameterWidget):
         self.button_label = "     Integrate    "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
-        self.cmd_lin_extra = "dials.analyse_output output.directory=integrate_output integrated.pickle"
+
+        self.cmd_lin_extra = "dials.report output.external_dependencies=local integrated.pickle"
+
+        #self.cmd_lin_extra = "dials.analyse_output output.directory=integrate_output integrated.pickle"
 
 class ExportParameterWidget(GenericParameterWidget):
     '''
