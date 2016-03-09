@@ -178,22 +178,15 @@ class ImgTab(QtGui.QScrollArea):
 
 class HtmlWidg( QtGui.QWidget):
 
-    def __init__(self):
+    def __init__(self, parent = None):
         super(HtmlWidg, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         self.hbox =  QtGui.QHBoxLayout()
-
-
         self.web = QtWebKit.QWebView()
-        #my_dui_path = os.environ["DUI_PATH"]
-        #print "my_dui_path =", my_dui_path
-        #tmp_path = my_dui_path[0:len(my_dui_path) - 12]
-        #print "tmp_path =", tmp_path
-        #self.html_path = tmp_path + "/dui/xia2-report.html"
-        #print "self.html_path =", self.html_path
-        #self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
 
-        self.html_path = "file:///home/lui/dui_testind_w_imgs/only_10_img/running/dials-report.html"
+        my_path = self.super_parent.w_dir
+        self.html_path = "file://" + my_path + "/dials-report.html"
 
         self.web.load(QtCore.QUrl(self.html_path))
         self.hbox.addWidget(self.web)
@@ -202,16 +195,16 @@ class HtmlWidg( QtGui.QWidget):
         self.show()
 
 class HtmlTab( QtGui.QWidget ):
-    def __init__(self, parent = None, lst_img = None):
+    def __init__(self, parent = None):
         super(HtmlTab, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
 
 
-    def update_me(self, lst_img = None):
+    def update_me(self):
         print "\n updating HTML \n"
         self.my_box =  QtGui.QHBoxLayout()
-        self.html_widg = HtmlWidg()
+        self.html_widg = HtmlWidg(self.super_parent)
         self.my_box.addWidget(self.html_widg)
         self.setLayout(self.my_box)
         self.show()

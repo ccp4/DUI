@@ -220,7 +220,7 @@ class GenericParameterWidget(QtGui.QWidget):
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
-        self.report_out_widg = HtmlTab()
+        self.report_out_widg = HtmlTab(self.super_parent)
         self.analyse_out_img = ImgTab(self.super_parent)
 
         rtabWidget.addTab(self.multi_line_txt, "Shell Log")
@@ -260,8 +260,10 @@ splitter.addWidget(textedit)
         if( self.cmd_lin_extra != None ):
 
             try:
-
                 my_cmd = self.cmd_lin_extra
+
+                print "\n running ", my_cmd, "\n"
+
                 shell_func(my_cmd, shell=True)
 
             except:
@@ -289,10 +291,6 @@ class FindspotsParameterWidget(GenericParameterWidget):
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
         self.cmd_lin_extra = "dials.report output.external_dependencies=local strong.pickle"
         #self.cmd_lin_extra = "dials.analyse_output output.directory=spot_find_output strong.pickle"
-
-    def run_extra_code(self):
-        print "running extra code form FindspotsParameterWidget\n\n to run:\n\n", self.cmd_lin_extra, "\n\n"
-
 
 
 class IndexParameterWidget(GenericParameterWidget):
