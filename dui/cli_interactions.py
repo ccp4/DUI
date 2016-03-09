@@ -181,7 +181,7 @@ class HtmlWidg( QtGui.QWidget):
     def __init__(self):
         super(HtmlWidg, self).__init__()
 
-        hbox =  QtGui.QHBoxLayout()
+        self.hbox =  QtGui.QHBoxLayout()
 
 
         self.web = QtWebKit.QWebView()
@@ -196,27 +196,25 @@ class HtmlWidg( QtGui.QWidget):
         self.html_path = "file:///home/lui/dui_testind_w_imgs/only_10_img/running/dials-report.html"
 
         self.web.load(QtCore.QUrl(self.html_path))
-        hbox.addWidget(self.web)
+        self.hbox.addWidget(self.web)
 
-        self.setLayout(hbox)
-        #self.setWindowTitle('Shell dialog')
+        self.setLayout(self.hbox)
         self.show()
 
-
-class HtmlTab( QtGui.QScrollArea ):
+class HtmlTab( QtGui.QWidget ):
     def __init__(self, parent = None, lst_img = None):
         super(HtmlTab, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        #self.html_widg = ImgWidg(self.super_parent, lst_img)
-        self.html_widg = HtmlWidg()
-        self.setWidget(self.html_widg)
-        self.show()
+
+
 
     def update_me(self, lst_img = None):
-        print "update_me(self)"
-
-        #self.html_widg = ImgWidg(self.super_parent, lst_img)
+        print "\n updating HTML \n"
+        self.my_box =  QtGui.QHBoxLayout()
         self.html_widg = HtmlWidg()
-        self.setWidget(self.html_widg)
+        self.my_box.addWidget(self.html_widg)
+        self.setLayout(self.my_box)
         self.show()
+        print "\n Done updating HTML \n"
+
 

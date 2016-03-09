@@ -227,10 +227,32 @@ class GenericParameterWidget(QtGui.QWidget):
         rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
+        '''
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(ltabWidget)
         mainLayout.addWidget(rtabWidget)
+
+
         self.setLayout(mainLayout)
+        '''
+
+        splitter_layout = QtGui.QSplitter()
+        splitter_layout.addWidget(ltabWidget)
+        splitter_layout.addWidget(rtabWidget)
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(splitter_layout)
+        self.setLayout(mainLayout)
+
+
+        '''
+splitter =  QSplitter(parent)
+listview =  QListView()
+treeview =  QTreeView()
+textedit =  QTextEdit()
+splitter.addWidget(listview)
+splitter.addWidget(treeview)
+splitter.addWidget(textedit)
+        '''
 
         self.cmd_lin_extra = None
 
