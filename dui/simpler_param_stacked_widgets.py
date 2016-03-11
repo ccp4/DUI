@@ -130,17 +130,17 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         self.setLayout(localLayout)
 
 
-
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
         print value
-        print "local_path =",
         str_path = str(sender.local_path)
-        self.super_parent.update_lin_txt(str_path, str_value)
-        self.super_parent.update_lin_txt(sender.local_path, value)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
+        #self.super_parent.update_lin_txt(sender.local_path, value)
 
 
+    def update_a_param(self):
+        print "from update_a_param"
 
 
 class IndexSimplerParamTab(QtGui.QWidget):
@@ -203,10 +203,9 @@ class IndexSimplerParamTab(QtGui.QWidget):
         print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
         print str_value
-        print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.super_parent.update_lin_txt(str_path, str_value)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
 
 
 
@@ -247,10 +246,9 @@ class RefineSimplerParamTab(QtGui.QWidget):
         print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
         print str_value
-        print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.super_parent.update_lin_txt(str_path, str_value)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
 
 
 class IntegrateSimplerParamTab(QtGui.QWidget):
@@ -306,10 +304,9 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
         print str_value
-        print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.super_parent.update_lin_txt(str_path, str_value)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
 
 
 

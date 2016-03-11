@@ -135,7 +135,7 @@ class MyMainDialog(QtGui.QMainWindow):
             print "Failed to create MyQProcess()"
 
 
-    def update_lin_txt(self, param_name = None, param_value = None):
+    def update_lin_txt(self, param_name = None, param_value = None, from_simple = None):
         if(param_name != None):
             found_param = False
             for local_pname in self.param_changed_lst:
@@ -151,6 +151,13 @@ class MyMainDialog(QtGui.QMainWindow):
             for local_pname in self.param_changed_lst:
                 my_cli_string += ( " " + str(local_pname[0]) +
                                    "=" + str(local_pname[1]) )
+
+
+            if( from_simple != None ):
+                idx = self.pagesWidget.currentIndex()
+                self.widget_list[idx].update_parms(from_simple)
+            else:
+                print "I don t know where the signal came from"
 
             #self.gui_line_edit.setText(my_cli_string)
             self.gui_line_edit.set_text(my_cli_string)

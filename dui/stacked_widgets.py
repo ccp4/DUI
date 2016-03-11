@@ -211,12 +211,12 @@ class GenericParameterWidget(QtGui.QWidget):
         ltabWidget = QtGui.QTabWidget()
 
         if( simpler_par_widget != None ):
-            default_tab = simpler_par_widget
-            ltabWidget.addTab(default_tab, "Simple")
+            self.simple_par_tab = simpler_par_widget
+            ltabWidget.addTab(self.simple_par_tab, "Simple")
 
         if( advanced_par_widget != None ):
-            param_widg = advanced_par_widget
-            ltabWidget.addTab(param_widg, "Advanced")
+            self.advance_par_tab = advanced_par_widget
+            ltabWidget.addTab(self.advance_par_tab, "Advanced")
 
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
@@ -227,50 +227,35 @@ class GenericParameterWidget(QtGui.QWidget):
         rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
-        '''
-        mainLayout = QtGui.QHBoxLayout()
-        mainLayout.addWidget(ltabWidget)
-        mainLayout.addWidget(rtabWidget)
-
-
-        self.setLayout(mainLayout)
-        '''
-
         splitter_layout = QtGui.QSplitter()
         splitter_layout.addWidget(ltabWidget)
         splitter_layout.addWidget(rtabWidget)
         mainLayout = QtGui.QHBoxLayout()
         mainLayout.addWidget(splitter_layout)
         self.setLayout(mainLayout)
-
-
-        '''
-splitter =  QSplitter(parent)
-listview =  QListView()
-treeview =  QTreeView()
-textedit =  QTextEdit()
-splitter.addWidget(listview)
-splitter.addWidget(treeview)
-splitter.addWidget(textedit)
-        '''
-
         self.cmd_lin_extra = None
+
+    def update_parms(self, from_simple):
+        if( from_simple == True ):
+            self.simple_par_tab.update_a_param()
+        else:
+            self.advance_par_tab.update_a_param()
+
+
 
     def run_extra_code(self):
         if( self.cmd_lin_extra != None ):
 
             try:
                 my_cmd = self.cmd_lin_extra
-
                 print "\n running ", my_cmd, "\n"
-
                 shell_func(my_cmd, shell=True)
 
             except:
                 print "WARNING something went wrong with the output generator"
-
                 print "running extra code form GenericParameterWidget\n to run:\n"
                 print self.cmd_lin_extra, "\n"
+
         else:
             print "No cmd_lin_extra to run"
 
@@ -281,9 +266,10 @@ class FindspotsParameterWidget(GenericParameterWidget):
         super(FindspotsParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        param_widg = ParamMainWidget(self.super_parent)
-        default_tab = FindspotsSimplerParameterTab(self.super_parent)
-        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
+        self.advance_par_tab = ParamMainWidget(self.super_parent)
+        self.simple_par_tab = FindspotsSimplerParameterTab(self.super_parent)
+        self.add_tabs(simpler_par_widget = self.simple_par_tab,
+                      advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
         self.button_label = "    Find Spots   "
@@ -304,9 +290,10 @@ class IndexParameterWidget(GenericParameterWidget):
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        param_widg = ParamMainWidget(self.super_parent)
-        default_tab = IndexSimplerParamTab(self.super_parent)
-        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
+        self.advance_par_tab = ParamMainWidget(self.super_parent)
+        self.simple_par_tab = IndexSimplerParamTab(self.super_parent)
+        self.add_tabs(simpler_par_widget = self.simple_par_tab,
+                      advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
         self.button_label = "        Index       "
@@ -328,9 +315,10 @@ class RefineParameterWidget(GenericParameterWidget):
         super(RefineParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        param_widg = ParamMainWidget(self.super_parent)
-        default_tab = RefineSimplerParamTab(self.super_parent)
-        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
+        self.advance_par_tab = ParamMainWidget(self.super_parent)
+        self.simple_par_tab = RefineSimplerParamTab(self.super_parent)
+        self.add_tabs(simpler_par_widget = self.simple_par_tab,
+                      advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
         self.button_label = "        Refine      "
@@ -353,9 +341,10 @@ class IntegrateParameterWidget(GenericParameterWidget):
         super(IntegrateParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        param_widg = ParamMainWidget(self.super_parent)
-        default_tab = IntegrateSimplerParamTab(self.super_parent)
-        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
+        self.advance_par_tab = ParamMainWidget(self.super_parent)
+        self.simple_par_tab = IntegrateSimplerParamTab(self.super_parent)
+        self.add_tabs(simpler_par_widget = self.simple_par_tab,
+                      advanced_par_widget = self.advance_par_tab)
 
 
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
@@ -378,9 +367,10 @@ class ExportParameterWidget(GenericParameterWidget):
         super(ExportParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        param_widg = ParamMainWidget(self.super_parent)
-        default_tab = ExportSimplerParameterWidget(self.super_parent)
-        self.add_tabs(simpler_par_widget = default_tab, advanced_par_widget = param_widg)
+        self.advance_par_tab = ParamMainWidget(self.super_parent)
+        self.simple_par_tab = ExportSimplerParameterWidget(self.super_parent)
+        self.add_tabs(simpler_par_widget = self.simple_par_tab,
+                      advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
         self.button_label = "    Export mtz   "

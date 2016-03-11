@@ -166,7 +166,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_16.addWidget(label_verbosity_16)
 
         box_verbosity_16 = QSpinBox()
-        box_verbosity_16.setValue(1)
+        box_verbosity_16.setValue(0)
         box_verbosity_16.local_path = "refinement.verbosity"
         box_verbosity_16.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_16.addWidget(box_verbosity_16)
@@ -1287,10 +1287,8 @@ class inner_widg( QWidget):
         print "spnbox_changed to:",
         str_value = str(value)
         print value
-        print "local_path =",
         str_path = str(sender.local_path)
-        self.super_parent.update_lin_txt(str_path, str_value)
-        self.super_parent.update_lin_txt(sender.local_path, value)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
 
 
     def combobox_changed(self, value):
@@ -1298,10 +1296,9 @@ class inner_widg( QWidget):
         print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
         print str_value
-        print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.super_parent.update_lin_txt(str_path, str_value)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
 
 
 class ParamMainWidget( QWidget):
