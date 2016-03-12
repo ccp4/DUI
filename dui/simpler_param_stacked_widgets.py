@@ -330,7 +330,7 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
 
         box_hklout_6 = QtGui.QLineEdit()
         box_hklout_6.local_path = "mtz.hklout"
-        #box_hklout_6.textChanged.connect(self.spnbox_changed)
+        box_hklout_6.textChanged.connect(self.spnbox_changed)
 
         hbox_lay_hklout_6.addWidget(box_hklout_6)
         bg_box = QtGui.QVBoxLayout()
@@ -343,6 +343,16 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
         bg_box.addWidget(run_aimless_check)
 
         bg_box.addStretch()
-
         self.setLayout(bg_box)
+
+
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        print "sender =", sender
+        print "spnbox_changed to:",
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
+
 

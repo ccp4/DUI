@@ -109,7 +109,6 @@ class MyMainDialog(QtGui.QMainWindow):
 
         exec_layout = QtGui.QHBoxLayout()
 
-        #self.gui_line_edit =  QtGui.QLineEdit(self)
         self.gui_line_edit = CmdLine()
         exec_layout.addWidget(self.gui_line_edit)
 
@@ -148,18 +147,20 @@ class MyMainDialog(QtGui.QMainWindow):
 
             my_cli_string = self.cli_str
 
+
             for local_pname in self.param_changed_lst:
                 my_cli_string += ( " " + str(local_pname[0]) +
                                    "=" + str(local_pname[1]) )
 
 
+            '''
             if( from_simple != None ):
                 idx = self.pagesWidget.currentIndex()
                 self.widget_list[idx].update_parms(from_simple)
             else:
                 print "I don t know where the signal came from"
+            '''
 
-            #self.gui_line_edit.setText(my_cli_string)
             self.gui_line_edit.set_text(my_cli_string)
 
     def changePage(self, current, previous):
@@ -171,7 +172,6 @@ class MyMainDialog(QtGui.QMainWindow):
         self.cli_str = self.widget_list[idx].cmd_lin_default
 
         try:
-            #self.gui_line_edit.setText(str(self.cli_str))
             self.gui_line_edit.set_text(str(self.cli_str))
         except:
             pass
@@ -190,12 +190,10 @@ class MyMainDialog(QtGui.QMainWindow):
     def onGoBtn(self, event = None):
         if( self.qProcess.run_stat == False ):
             self.shell_str_to_run = str(self.gui_line_edit.get_text())
-            #self.shell_str_to_run = str(self.gui_line_edit.text())
 
             print "CLI to Run =", self.shell_str_to_run
 
             self.qProcess.start(self.shell_str_to_run)
-            #self.gui_line_edit.setText(str("Running >> {" + self.shell_str_to_run + " }" ))
             self.gui_line_edit.set_text(str("Running >> {" + self.shell_str_to_run + " }" ))
 
 
@@ -204,7 +202,6 @@ class MyMainDialog(QtGui.QMainWindow):
         tmp_txt = "\n" + " Starting " + self.go_underline
         self.Go_button.setText(tmp_txt)
         str_to_print = str("\nRunning >> { " + self.shell_str_to_run + " }" )
-        #self.multi_line_txt.append_green(str_to_print)
 
         idx = self.pagesWidget.currentIndex()
         self.widget_list[idx].multi_line_txt.append_green(str_to_print)
@@ -216,8 +213,6 @@ class MyMainDialog(QtGui.QMainWindow):
     def on_finished(self):
 
         self.Go_button.setText("Updating")
-
-        #self.gui_line_edit.setText(str(""))
         self.gui_line_edit.set_text(str(""))
 
         print "Done CLI"
@@ -234,14 +229,12 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):
-            #self.multi_line_txt.append_black(line_out)
             idx = self.pagesWidget.currentIndex()
             self.widget_list[idx].multi_line_txt.append_black(line_out)
 
         else:
             print "Error detected"
             err_line = "ERROR: { \n" + line_out + " } "
-            #self.multi_line_txt.append_red(err_line)
             idx = self.pagesWidget.currentIndex()
             self.widget_list[idx].multi_line_txt.append_red(err_line)
 
