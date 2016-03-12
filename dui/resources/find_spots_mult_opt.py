@@ -560,28 +560,28 @@ class inner_widg( QWidget):
         hbox_lay_global_threshold_44.addWidget(box_global_threshold_44)
         bg_box.addLayout(hbox_lay_global_threshold_44)
 
-
+ 
         self.setLayout(bg_box)
         self.show()
 
 
     def spnbox_changed(self, value):
         sender = self.sender()
-        #print "sender =", sender
-        #print "spnbox_changed to:",
+        print "sender =", sender
+        print "spnbox_changed to:",
         str_value = str(value)
-        #print value
+        print value
         str_path = str(sender.local_path)
         self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
 
 
     def combobox_changed(self, value):
         sender = self.sender()
-        #print "combobox_changed to: ",
+        print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
-        #print str_value
+        print str_value
         str_path = str(sender.local_path)
-        #print str_path
+        print str_path
         self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
 
 

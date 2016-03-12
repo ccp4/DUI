@@ -134,7 +134,9 @@ class MyMainDialog(QtGui.QMainWindow):
             print "Failed to create MyQProcess()"
 
 
-    def update_lin_txt(self, param_name = None, param_value = None, from_simple = None):
+    def update_lin_txt(self, param_name = None, param_value = None,
+                       from_simple = None, new_line = None):
+
         if(param_name != None):
             found_param = False
             for local_pname in self.param_changed_lst:
@@ -161,7 +163,10 @@ class MyMainDialog(QtGui.QMainWindow):
                 print "I don t know where the signal came from"
             '''
 
-            self.gui_line_edit.set_text(my_cli_string)
+        elif( new_line != None ):
+            my_cli_string = new_line
+
+        self.gui_line_edit.set_text(my_cli_string)
 
     def changePage(self, current, previous):
         if not current:
@@ -188,13 +193,21 @@ class MyMainDialog(QtGui.QMainWindow):
         self.contentsWidget.currentItemChanged.connect(self.changePage)
 
     def onGoBtn(self, event = None):
-        if( self.qProcess.run_stat == False ):
+        print "\n from onGoBtn: event =", event, "\n"
+        if( event == False ):
+            idx = self.pagesWidget.currentIndex()
+            self.widget_list[idx].second_go_flag = True
+
+        if( self.qProcess.run_stat == False):
             self.shell_str_to_run = str(self.gui_line_edit.get_text())
 
             print "CLI to Run =", self.shell_str_to_run
 
             self.qProcess.start(self.shell_str_to_run)
             self.gui_line_edit.set_text(str("Running >> {" + self.shell_str_to_run + " }" ))
+
+        else:
+            print "self.qProcess.run_stat != False"
 
 
 
@@ -226,6 +239,7 @@ class MyMainDialog(QtGui.QMainWindow):
             except:
                 print "WARNING  >>> got stuck in latest step after running CLI"
         self.Go_button.setText(self.default_go_label)
+
 
     def append_line(self, line_out, err_out = False):
         if( not err_out ):

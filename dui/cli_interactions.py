@@ -71,9 +71,10 @@ class MyQProcess(QtCore.QProcess):
         self.super_parent.append_line(line_string, err_out = True)
 
     def local_finished(self):
+        self.run_stat = False
         self.super_parent.on_finished()
         self.my_timer.stop()
-        self.run_stat = False
+
 
 
 class CmdLine(QtGui.QTextBrowser):

@@ -205,6 +205,7 @@ class GenericParameterWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         super(GenericParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.second_go_flag = True # flag to decide if should run go a second time
 
     def add_tabs(self, simpler_par_widget = None, advanced_par_widget = None):
 
@@ -244,6 +245,7 @@ class GenericParameterWidget(QtGui.QWidget):
 
 
     def run_extra_code(self):
+        '''
         if( self.cmd_lin_extra != None ):
 
             try:
@@ -258,13 +260,19 @@ class GenericParameterWidget(QtGui.QWidget):
 
         else:
             print "No cmd_lin_extra to run"
+        '''
+        if( self.second_go_flag == True ):
+            self.super_parent.update_lin_txt(new_line = "test_wait_dummy.sh" )
+            self.super_parent.onGoBtn(event = True)
+            self.second_go_flag = False
 
 
 class FindspotsParameterWidget(GenericParameterWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent = None):
         from resources.find_spots_mult_opt import ParamMainWidget
         super(FindspotsParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.second_go_flag = True # flag to decide if should run go a second time
 
         self.advance_par_tab = ParamMainWidget(self.super_parent)
         self.simple_par_tab = FindspotsSimplerParameterTab(self.super_parent)
@@ -289,6 +297,7 @@ class IndexParameterWidget(GenericParameterWidget):
         from resources.index_mult_opt import ParamMainWidget
         super(IndexParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.second_go_flag = True # flag to decide if should run go a second time
 
         self.advance_par_tab = ParamMainWidget(self.super_parent)
         self.simple_par_tab = IndexSimplerParamTab(self.super_parent)
@@ -314,6 +323,7 @@ class RefineParameterWidget(GenericParameterWidget):
         from resources.refine_mult_opt import ParamMainWidget
         super(RefineParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.second_go_flag = True # flag to decide if should run go a second time
 
         self.advance_par_tab = ParamMainWidget(self.super_parent)
         self.simple_par_tab = RefineSimplerParamTab(self.super_parent)
@@ -340,6 +350,7 @@ class IntegrateParameterWidget(GenericParameterWidget):
         from resources.integrate_mult_opt import ParamMainWidget
         super(IntegrateParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.second_go_flag = True # flag to decide if should run go a second time
 
         self.advance_par_tab = ParamMainWidget(self.super_parent)
         self.simple_par_tab = IntegrateSimplerParamTab(self.super_parent)
@@ -366,6 +377,7 @@ class ExportParameterWidget(GenericParameterWidget):
         from resources.export_mult_opt import ParamMainWidget
         super(ExportParameterWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.second_go_flag = True # flag to decide if should run go a second time
 
         self.advance_par_tab = ParamMainWidget(self.super_parent)
         self.simple_par_tab = ExportSimplerParameterWidget(self.super_parent)
