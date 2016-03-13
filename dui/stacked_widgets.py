@@ -386,6 +386,32 @@ class ExportParameterWidget(GenericParameterWidget):
 
     def run_extra_code(self):
 
+        if( self.second_go_flag == True and self.cmd_lin_extra != None ):
+            try:
+                p_file = open("pointless.dat", "w")
+                p_file.write("HKLIN hklout.mtz\n")
+                p_file.write("HKLOUT unscaled.mtz\n")
+                p_file.close()
+
+                my_cmd = "pointless < pointless.dat | tee pointless.log"
+                shell_func(my_cmd, shell=True)
+
+                a_file = open("aimless.dat", "w")
+                a_file.write("HKLIN unscaled.mtz\n")
+                a_file.write("HKLOUT scaled.mtz\n")
+                a_file.close()
+
+                my_cmd = "aimless < aimless.dat | tee aimless.log"
+                shell_func(my_cmd, shell=True)
+
+            except:
+                print "WARNING something went wrong attempting to run pointless and/or aimless"
+
+        self.second_go_flag = False
+
+
+
+        to_try_to_fix_after_the_meeting = '''
 
         if( self.second_go_flag == True and self.cmd_lin_extra != None ):
 
@@ -401,7 +427,7 @@ class ExportParameterWidget(GenericParameterWidget):
             self.super_parent.onGoBtn(event = True)
             self.second_go_flag = False
 
-            second_step = '''
+
 
             self.super_parent.onGoBtn(event = False)
             self.second_go_flag = "next"
@@ -418,38 +444,13 @@ class ExportParameterWidget(GenericParameterWidget):
             self.super_parent.update_lin_txt(new_line = "aimless < aimless.dat" )
             self.super_parent.onGoBtn(event = True)
             self.second_go_flag = False
-            '''
-
-
-
 
         else:
             print "Hi after running pointless and aimless"
-
-
-        old_stable_way = '''
-        #preparing pointless.dat
-        p_file = open("pointless.dat", "w")
-        p_file.write("HKLIN hklout.mtz\n")
-        p_file.write("HKLOUT unscaled.mtz\n")
-        p_file.close()
-
-        #preparing aimless.dat
-        a_file = open("aimless.dat", "w")
-        a_file.write("HKLIN unscaled.mtz\n")
-        a_file.write("HKLOUT scaled.mtz\n")
-        a_file.close()
-
-        try:
-            print "Running pointless and aimless"
-
-            my_cmd = "pointless < pointless.dat | tee pointless.log"
-            shell_func(self.cmd_lin_extra[0], shell=True)
-            shell_func(self.cmd_lin_extra[1], shell=True)
-
-        except:
-            print "WARNING something went wrong attempting to run pointless and/or aimless"
         '''
+
+
+
 
 
 
