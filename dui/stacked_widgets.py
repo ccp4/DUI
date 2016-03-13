@@ -245,26 +245,18 @@ class GenericParameterWidget(QtGui.QWidget):
 
 
     def run_extra_code(self):
-        '''
-        if( self.cmd_lin_extra != None ):
 
-            try:
-                my_cmd = self.cmd_lin_extra
-                print "\n running ", my_cmd, "\n"
-                shell_func(my_cmd, shell=True)
-
-            except:
-                print "WARNING something went wrong with the output generator"
-                print "running extra code form GenericParameterWidget\n to run:\n"
-                print self.cmd_lin_extra, "\n"
-
-        else:
-            print "No cmd_lin_extra to run"
-        '''
-        if( self.second_go_flag == True ):
-            self.super_parent.update_lin_txt(new_line = "test_wait_dummy.sh" )
+        if( self.second_go_flag == True and self.cmd_lin_extra != None ):
+            my_cmd = self.cmd_lin_extra
+            print "\n running ", my_cmd, "\n"
+            self.super_parent.update_lin_txt(new_line = my_cmd )
             self.super_parent.onGoBtn(event = True)
             self.second_go_flag = False
+
+        else:
+            print "Not compatible cmd_lin_extra to run"
+
+
 
 
 class FindspotsParameterWidget(GenericParameterWidget):
@@ -394,6 +386,48 @@ class ExportParameterWidget(GenericParameterWidget):
 
     def run_extra_code(self):
 
+
+        if( self.second_go_flag == True and self.cmd_lin_extra != None ):
+
+            #preparing pointless.dat
+            p_file = open("pointless.dat", "w")
+            p_file.write("HKLIN hklout.mtz\n")
+            p_file.write("HKLOUT unscaled.mtz\n")
+            p_file.close()
+
+            #running pointless from within the GUI
+            pointless_cmd = "pointless HKLIN hklout.mtz HKLOUT unscaled.mtz"
+            self.super_parent.update_lin_txt(new_line = pointless_cmd )
+            self.super_parent.onGoBtn(event = True)
+            self.second_go_flag = False
+
+            second_step = '''
+
+            self.super_parent.onGoBtn(event = False)
+            self.second_go_flag = "next"
+
+        elif( self.second_go_flag == "next" ):
+
+            #preparing aimless.dat
+            a_file = open("aimless.dat", "w")
+            a_file.write("HKLIN unscaled.mtz\n")
+            a_file.write("HKLOUT scaled.mtz\n")
+            a_file.close()
+
+            #running aimless from within the GUI
+            self.super_parent.update_lin_txt(new_line = "aimless < aimless.dat" )
+            self.super_parent.onGoBtn(event = True)
+            self.second_go_flag = False
+            '''
+
+
+
+
+        else:
+            print "Hi after running pointless and aimless"
+
+
+        old_stable_way = '''
         #preparing pointless.dat
         p_file = open("pointless.dat", "w")
         p_file.write("HKLIN hklout.mtz\n")
@@ -415,4 +449,8 @@ class ExportParameterWidget(GenericParameterWidget):
 
         except:
             print "WARNING something went wrong attempting to run pointless and/or aimless"
+        '''
+
+
+
 

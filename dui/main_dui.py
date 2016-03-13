@@ -157,8 +157,8 @@ class MyMainDialog(QtGui.QMainWindow):
 
             '''
             if( from_simple != None ):
-                idx = self.pagesWidget.currentIndex()
-                self.widget_list[idx].update_parms(from_simple)
+                self.curr_indx = self.pagesWidget.currentIndex()
+                self.widget_list[self.curr_indx].update_parms(from_simple)
             else:
                 print "I don t know where the signal came from"
             '''
@@ -169,18 +169,20 @@ class MyMainDialog(QtGui.QMainWindow):
         self.gui_line_edit.set_text(my_cli_string)
 
     def changePage(self, current, previous):
+
         if not current:
             current = previous
         self.pagesWidget.setCurrentIndex(self.contentsWidget.row(current))
-
-        idx = self.pagesWidget.currentIndex()
-        self.cli_str = self.widget_list[idx].cmd_lin_default
+        self.curr_indx = self.pagesWidget.currentIndex()
+        self.cli_str = self.widget_list[self.curr_indx].cmd_lin_default
 
         try:
             self.gui_line_edit.set_text(str(self.cli_str))
         except:
             pass
         self.param_changed_lst = []
+
+
 
     def createIcons(self):
         for widget in self.widget_list:
@@ -194,9 +196,12 @@ class MyMainDialog(QtGui.QMainWindow):
 
     def onGoBtn(self, event = None):
         print "\n from onGoBtn: event =", event, "\n"
+
+
         if( event == False ):
-            idx = self.pagesWidget.currentIndex()
-            self.widget_list[idx].second_go_flag = True
+            self.curr_indx = self.pagesWidget.currentIndex()
+            self.widget_list[self.curr_indx].second_go_flag = True
+
 
         if( self.qProcess.run_stat == False):
             self.shell_str_to_run = str(self.gui_line_edit.get_text())
@@ -216,8 +221,8 @@ class MyMainDialog(QtGui.QMainWindow):
         self.Go_button.setText(tmp_txt)
         str_to_print = str("\nRunning >> { " + self.shell_str_to_run + " }" )
 
-        idx = self.pagesWidget.currentIndex()
-        self.widget_list[idx].multi_line_txt.append_green(str_to_print)
+        self.curr_indx = self.pagesWidget.currentIndex()
+        self.widget_list[self.curr_indx].multi_line_txt.append_green(str_to_print)
 
     def update_go_txt(self, txt_str):
         tmp_txt = "\n" + txt_str + self.go_underline
@@ -229,28 +234,27 @@ class MyMainDialog(QtGui.QMainWindow):
         self.gui_line_edit.set_text(str(""))
 
         print "Done CLI"
-        idx = self.pagesWidget.currentIndex()
+        self.curr_indx = self.pagesWidget.currentIndex()
 
-        if( idx != 0 ):
+        if( self.curr_indx != 0 ):
             try:
-                self.widget_list[idx].run_extra_code()
-                #self.widget_list[idx].analyse_out_img.update_me()
-                self.widget_list[idx].report_out_widg.update_me()
+                self.widget_list[self.curr_indx].run_extra_code()
+                #self.widget_list[self.curr_indx].analyse_out_img.update_me()
+                self.widget_list[self.curr_indx].report_out_widg.update_me()
             except:
                 print "WARNING  >>> got stuck in latest step after running CLI"
         self.Go_button.setText(self.default_go_label)
 
 
     def append_line(self, line_out, err_out = False):
+        self.curr_indx = self.pagesWidget.currentIndex()
         if( not err_out ):
-            idx = self.pagesWidget.currentIndex()
-            self.widget_list[idx].multi_line_txt.append_black(line_out)
+            self.widget_list[self.curr_indx].multi_line_txt.append_black(line_out)
 
         else:
             print "Error detected"
             err_line = "ERROR: { \n" + line_out + " } "
-            idx = self.pagesWidget.currentIndex()
-            self.widget_list[idx].multi_line_txt.append_red(err_line)
+            self.widget_list[self.curr_indx].multi_line_txt.append_red(err_line)
 
 
     def onImgViewBtn(self):
