@@ -252,9 +252,10 @@ class GenericParameterWidget(QtGui.QWidget):
             self.super_parent.update_lin_txt(new_line = my_cmd )
             self.super_parent.onGoBtn(event = True)
             self.second_go_flag = False
+            return False
 
         else:
-            print "Not compatible cmd_lin_extra to run"
+            return True
 
 
 
@@ -448,6 +449,9 @@ class ExportParameterWidget(GenericParameterWidget):
         else:
             print "Hi after running pointless and aimless"
         '''
+
+        #flag to tell the caller (main_dui) if HTML view should be updated
+        return False
 
 
 

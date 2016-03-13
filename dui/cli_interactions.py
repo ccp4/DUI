@@ -135,6 +135,7 @@ class ImgWidg(QtGui.QWidget):
     def __init__(self, parent = None, img_path_lst = None):
         super(ImgWidg, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        to_reconsider_later = '''
         bg_box =  QtGui.QHBoxLayout(self)
         img_path = self.super_parent.w_dir + "/spot_find_output/analysis/strong/" + "spots_per_image.png"
 
@@ -153,6 +154,8 @@ class ImgWidg(QtGui.QWidget):
             bg_box.addWidget(imageLabel)
 
         self.setLayout(bg_box)
+        '''
+
         self.show()
 
 
@@ -188,6 +191,8 @@ class HtmlWidg( QtGui.QWidget):
 
         my_path = self.super_parent.w_dir
         self.html_path = "file://" + my_path + "/dials-report.html"
+
+        print "\n\n loading HTML \n\n"
 
         self.web.load(QtCore.QUrl(self.html_path))
         self.hbox.addWidget(self.web)

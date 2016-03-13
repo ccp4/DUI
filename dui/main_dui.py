@@ -95,14 +95,13 @@ class MyMainDialog(QtGui.QMainWindow):
         self.Go_button.setFont(QtGui.QFont("Monospace", 14, QtGui.QFont.Bold))
 
         self.Go_button.setSizePolicy( QtGui.QSizePolicy.Maximum , QtGui.QSizePolicy.Maximum )
-        pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
-        pop_but = QtGui.QPushButton(" \n    show image viewer")
+
         self.createIcons()
         self.contentsWidget.setCurrentRow(0)
 
         self.Go_button.clicked.connect(self.onGoBtn)
-        pop_but.clicked.connect(self.onImgViewBtn)
-        pop_ref_view_but.clicked.connect(self.onRefViewBtn)
+
+
         horizontalLayout = QtGui.QHBoxLayout()
         horizontalLayout.addWidget(self.contentsWidget)
         horizontalLayout.addWidget(self.pagesWidget, 1)
@@ -149,13 +148,11 @@ class MyMainDialog(QtGui.QMainWindow):
 
             my_cli_string = self.cli_str
 
-
             for local_pname in self.param_changed_lst:
                 my_cli_string += ( " " + str(local_pname[0]) +
                                    "=" + str(local_pname[1]) )
 
-
-            '''
+            first_attempt_to_connect_simple_with_advances_parameters = '''
             if( from_simple != None ):
                 self.curr_indx = self.pagesWidget.currentIndex()
                 self.widget_list[self.curr_indx].update_parms(from_simple)
@@ -241,9 +238,10 @@ class MyMainDialog(QtGui.QMainWindow):
 
         if( self.rung_indx != 0 ):
             try:
-                self.widget_list[self.rung_indx].run_extra_code()
-                #self.widget_list[self.rung_indx].analyse_out_img.update_me()
-                self.widget_list[self.rung_indx].report_out_widg.update_me()
+                do_update = self.widget_list[self.rung_indx].run_extra_code()
+                if( do_update == True ):
+                    #self.widget_list[self.rung_indx].analyse_out_img.update_me()
+                    self.widget_list[self.rung_indx].report_out_widg.update_me()
             except:
                 print "WARNING  >>> got stuck in latest step after running CLI"
         self.Go_button.setText(self.default_go_label)
@@ -259,12 +257,20 @@ class MyMainDialog(QtGui.QMainWindow):
             err_line = "ERROR: { \n" + line_out + " } "
             self.widget_list[self.rung_indx].multi_line_txt.append_red(err_line)
 
+    related_to_external_visualizations = '''
+    def __init__(....):
+        pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
+        pop_but = QtGui.QPushButton(" \n    show image viewer")
+        pop_but.clicked.connect(self.onImgViewBtn)
+        pop_ref_view_but.clicked.connect(self.onRefViewBtn)
+
 
     def onImgViewBtn(self):
         subprocess.call("dials.image_viewer datablock.json &", shell=True)
 
     def onRefViewBtn(self):
         subprocess.call("dials.reflection_viewer strong.pickle &", shell=True)
+    '''
 
 
 if __name__ == '__main__':
