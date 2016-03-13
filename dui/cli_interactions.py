@@ -182,38 +182,49 @@ class ImgTab(QtGui.QScrollArea):
 
 class HtmlWidg( QtGui.QWidget):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None, Data_Show = None):
         super(HtmlWidg, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        self.hbox =  QtGui.QHBoxLayout()
-        self.web = QtWebKit.QWebView()
+        if( Data_Show == True ):
 
-        my_path = self.super_parent.w_dir
-        self.html_path = "file://" + my_path + "/dials-report.html"
+            self.hbox =  QtGui.QHBoxLayout()
+            self.web = QtWebKit.QWebView()
 
-        print "\n\n loading HTML \n\n"
+            my_path = self.super_parent.w_dir
+            self.html_path = "file://" + my_path + "/dials-report.html"
 
-        self.web.load(QtCore.QUrl(self.html_path))
-        self.hbox.addWidget(self.web)
+            print "\n loading HTML"
 
-        self.setLayout(self.hbox)
+            self.web.load(QtCore.QUrl(self.html_path))
+            self.hbox.addWidget(self.web)
+            self.setLayout(self.hbox)
+
+        else:
+            print "\n Created empty HTML View"
+
         self.show()
 
 class HtmlTab( QtGui.QWidget ):
     def __init__(self, parent = None):
+
         super(HtmlTab, self).__init__()
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-
-
-    def update_me(self):
-        print "\n updating HTML \n"
+        print "\n creating HTML"
         self.my_box =  QtGui.QHBoxLayout()
-        self.html_widg = HtmlWidg(self.super_parent)
+        self.html_widg = HtmlWidg(parent = self.super_parent, Data_Show = False)
         self.my_box.addWidget(self.html_widg)
         self.setLayout(self.my_box)
         self.show()
-        print "\n Done updating HTML \n"
+        print "\n Done creating HTML "
+
+
+    def update_me(self):
+        print "\n updating HTML"
+        self.my_box.removeWidget(self.html_widg)
+        self.html_widg = HtmlWidg(self.super_parent, Data_Show = True)
+        self.my_box.addWidget(self.html_widg)
+        print "\n Done updating HTML"
 
 
