@@ -392,32 +392,35 @@ class ExportParameterWidget(GenericParameterWidget):
             print "self.simple_par_tab.run_pointless_check.checkState() =", \
                    self.simple_par_tab.run_pointless_check.checkState()
 
-            tmp_disable = '''
+            print "self.simple_par_tab.run_aimless_check.checkState() =", \
+                   self.simple_par_tab.run_aimless_check.checkState()
 
-            try:
-                p_file = open("pointless.dat", "w")
-                p_file.write("HKLIN hklout.mtz\n")
-                p_file.write("HKLOUT unscaled.mtz\n")
-                p_file.close()
+            if( self.simple_par_tab.run_pointless_check.checkState() == 2 ):
+                try:
+                    p_file = open("pointless.dat", "w")
+                    p_file.write("HKLIN hklout.mtz\n")
+                    p_file.write("HKLOUT unscaled.mtz\n")
+                    p_file.close()
 
-                my_cmd = "pointless < pointless.dat | tee pointless.log"
-                shell_func(my_cmd, shell=True)
+                    my_cmd = "pointless < pointless.dat | tee pointless.log"
+                    shell_func(my_cmd, shell=True)
 
-            except:
-                print "WARNING something went wrong attempting to run pointless"
+                except:
+                    print "WARNING something went wrong attempting to run pointless"
 
-            try:
-                a_file = open("aimless.dat", "w")
-                a_file.write("HKLIN unscaled.mtz\n")
-                a_file.write("HKLOUT scaled.mtz\n")
-                a_file.close()
+            if( self.simple_par_tab.run_aimless_check.checkState() == 2 ):
+                try:
+                    a_file = open("aimless.dat", "w")
+                    a_file.write("HKLIN unscaled.mtz\n")
+                    a_file.write("HKLOUT scaled.mtz\n")
+                    a_file.close()
 
-                my_cmd = "aimless < aimless.dat | tee aimless.log"
-                shell_func(my_cmd, shell=True)
+                    my_cmd = "aimless < aimless.dat | tee aimless.log"
+                    shell_func(my_cmd, shell=True)
 
-            except:
-                print "WARNING something went wrong attempting to run aimless"
-            '''
+                except:
+                    print "WARNING something went wrong attempting to run aimless"
+
 
         self.second_go_flag = False
 

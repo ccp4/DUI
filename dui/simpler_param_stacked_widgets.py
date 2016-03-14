@@ -379,8 +379,8 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
         self.run_pointless_check = QtGui.QCheckBox("Run Pointless")
         bg_box.addWidget(self.run_pointless_check)
 
-        run_aimless_check = QtGui.QCheckBox("Run Aimless")
-        bg_box.addWidget(run_aimless_check)
+        self.run_aimless_check = QtGui.QCheckBox("Run Aimless")
+        bg_box.addWidget(self.run_aimless_check)
 
         bg_box.addStretch()
         self.setLayout(bg_box)
