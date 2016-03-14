@@ -127,6 +127,24 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
         xds_global_threshold_hb.addWidget(xds_global_threshold_label)
         xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
         localLayout.addLayout(xds_global_threshold_hb)
+
+
+
+
+        hbox_lay_nproc =  QtGui.QHBoxLayout()
+        label_nproc = QtGui.QLabel("spotfinder.mp.nproc")
+        #label_nproc.setPalette(palette_object)
+        #label_nproc.setFont(QtGui.QFont("Monospace", 10))
+        hbox_lay_nproc.addWidget(label_nproc)
+
+        box_nproc = QtGui.QSpinBox()
+        box_nproc.setValue(1)
+        box_nproc.local_path = "spotfinder.mp.nproc"
+        box_nproc.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_nproc.addWidget(box_nproc)
+        localLayout.addLayout(hbox_lay_nproc)
+
+
         localLayout.addStretch(1)
 
         self.setLayout(localLayout)
@@ -297,6 +315,19 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
+
+        hbox_lay_nproc =  QtGui.QHBoxLayout()
+        label_nproc = QtGui.QLabel("integration.mp.nproc")
+        #label_nproc.setFont(QtGui.QFont("Monospace", 10))
+        hbox_lay_nproc.addWidget(label_nproc)
+
+        box_nproc = QtGui.QSpinBox()
+        box_nproc.setValue(1)
+        box_nproc.local_path = "integration.mp.nproc"
+        box_nproc.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_nproc.addWidget(box_nproc)
+        localLayout.addLayout(hbox_lay_nproc)
+
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
@@ -311,6 +342,13 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
 
 
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
+        self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
+        #self.super_parent.update_lin_txt(sender.local_path, value)
 
 class ExportSimplerParameterWidget(QtGui.QWidget):
     '''
@@ -338,8 +376,8 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
         bg_box = QtGui.QVBoxLayout()
         bg_box.addLayout(hbox_lay_hklout_6)
 
-        run_pointless_check = QtGui.QCheckBox("Run Pointless")
-        bg_box.addWidget(run_pointless_check)
+        self.run_pointless_check = QtGui.QCheckBox("Run Pointless")
+        bg_box.addWidget(self.run_pointless_check)
 
         run_aimless_check = QtGui.QCheckBox("Run Aimless")
         bg_box.addWidget(run_aimless_check)

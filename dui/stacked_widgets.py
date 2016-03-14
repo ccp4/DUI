@@ -388,6 +388,12 @@ class ExportParameterWidget(GenericParameterWidget):
     def run_extra_code(self):
 
         if( self.second_go_flag == True and self.cmd_lin_extra != None ):
+
+            print "self.simple_par_tab.run_pointless_check.checkState() =", \
+                   self.simple_par_tab.run_pointless_check.checkState()
+
+            tmp_disable = '''
+
             try:
                 p_file = open("pointless.dat", "w")
                 p_file.write("HKLIN hklout.mtz\n")
@@ -397,6 +403,10 @@ class ExportParameterWidget(GenericParameterWidget):
                 my_cmd = "pointless < pointless.dat | tee pointless.log"
                 shell_func(my_cmd, shell=True)
 
+            except:
+                print "WARNING something went wrong attempting to run pointless"
+
+            try:
                 a_file = open("aimless.dat", "w")
                 a_file.write("HKLIN unscaled.mtz\n")
                 a_file.write("HKLOUT scaled.mtz\n")
@@ -406,7 +416,8 @@ class ExportParameterWidget(GenericParameterWidget):
                 shell_func(my_cmd, shell=True)
 
             except:
-                print "WARNING something went wrong attempting to run pointless and/or aimless"
+                print "WARNING something went wrong attempting to run aimless"
+            '''
 
         self.second_go_flag = False
 
