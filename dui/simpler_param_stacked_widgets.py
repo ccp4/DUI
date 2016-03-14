@@ -81,11 +81,13 @@ class FindspotsSimplerParameterTab(QtGui.QWidget):
 
         xds_sigma_background_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_background")
         xds_sigma_background_spn_bx = QtGui.QDoubleSpinBox()
+        xds_sigma_background_spn_bx.setValue(6.0)
         xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.xds.sigma_background"
         xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         xds_sigma_strong_label = QtGui.QLabel("spotfinder.threshold.xds.sigma_strong")
         xds_sigma_strong_spn_bx = QtGui.QDoubleSpinBox()
+        xds_sigma_strong_spn_bx.setValue(3.0)
         xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.xds.sigma_strong"
         xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
 
