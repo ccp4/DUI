@@ -131,54 +131,6 @@ class TextBrows(QtGui.QTextBrowser):
 
 
 
-class ImgWidg(QtGui.QWidget):
-    def __init__(self, parent = None, img_path_lst = None):
-        super(ImgWidg, self).__init__()
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        to_reconsider_later = '''
-        bg_box =  QtGui.QHBoxLayout(self)
-        img_path = self.super_parent.w_dir + "/spot_find_output/analysis/strong/" + "spots_per_image.png"
-
-        #/home/lui/dui_testind_w_imgs/only_10_img/New_04/analysis/strong
-
-        #img_path = "/home/lui/dui_code/lui_testing/PyQt4_toys/img_layouts/" + "centroid_diff_x.png"
-        img_path_lst = [img_path]
-        print "img_path_lst[0] =", img_path_lst[0]
-
-        for single_img_path in img_path_lst:
-
-            imageLabel = QtGui.QLabel()
-            image = QtGui.QImage(single_img_path)
-            imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
-
-            bg_box.addWidget(imageLabel)
-
-        self.setLayout(bg_box)
-        '''
-
-        self.show()
-
-
-class ImgTab(QtGui.QScrollArea):
-
-    def __init__(self, parent = None, lst_img = None):
-        super(ImgTab, self).__init__()
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.imageWidg = ImgWidg(self.super_parent, lst_img)
-        self.setWidget(self.imageWidg)
-        self.show()
-
-    def update_me(self, lst_img = None):
-        print "update_me(self)"
-
-        self.imageWidg = ImgWidg(self.super_parent, lst_img)
-        self.setWidget(self.imageWidg)
-        self.show()
-
-
-
-
-
 
 class HtmlWidg( QtGui.QWidget):
 
@@ -228,3 +180,82 @@ class HtmlTab( QtGui.QWidget ):
         print "\n Done updating HTML"
 
 
+class ImgTab(QtGui.QScrollArea):
+
+    def __init__(self, parent = None, lst_img = None):
+        super(ImgTab, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+
+        pop_ref_view_but = QtGui.QPushButton(" \n    show reciprocal lattice viewer")
+        pop_img_view_but = QtGui.QPushButton(" \n    show image viewer")
+
+        self.my_box =  QtGui.QVBoxLayout()
+        self.my_box.addWidget(pop_ref_view_but)
+        self.my_box.addWidget(pop_img_view_but)
+
+        pop_ref_view_but.clicked.connect(self.onRefViewBtn)
+        pop_img_view_but.clicked.connect(self.onImgViewBtn)
+
+        self.setLayout(self.my_box)
+        self.show()
+
+    def onImgViewBtn(self):
+        shell_func("dials.image_viewer datablock.json &", shell=True)
+
+    def onRefViewBtn(self):
+
+        shell_func("dials.reciprocal_lattice_viewer experiments.json indexed.pickle &", shell=True)
+        shell_func("dials.reciprocal_lattice_viewer datablock.json strong.pickle &", shell=True)
+
+
+
+
+
+old_deprecated = '''
+
+
+class ImgWidg(QtGui.QWidget):
+    def __init__(self, parent = None, img_path_lst = None):
+        super(ImgWidg, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+
+        bg_box =  QtGui.QHBoxLayout(self)
+        img_path = self.super_parent.w_dir + "/spot_find_output/analysis/strong/" + "spots_per_image.png"
+
+        #/home/lui/dui_testind_w_imgs/only_10_img/New_04/analysis/strong
+
+        #img_path = "/home/lui/dui_code/lui_testing/PyQt4_toys/img_layouts/" + "centroid_diff_x.png"
+        img_path_lst = [img_path]
+        print "img_path_lst[0] =", img_path_lst[0]
+
+        for single_img_path in img_path_lst:
+
+            imageLabel = QtGui.QLabel()
+            image = QtGui.QImage(single_img_path)
+            imageLabel.setPixmap(QtGui.QPixmap.fromImage(image))
+
+            bg_box.addWidget(imageLabel)
+
+        self.setLayout(bg_box)
+
+
+        self.show()
+
+
+class ImgTab(QtGui.QScrollArea):
+
+    def __init__(self, parent = None, lst_img = None):
+        super(ImgTab, self).__init__()
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.imageWidg = ImgWidg(self.super_parent, lst_img)
+        self.setWidget(self.imageWidg)
+        self.show()
+
+    def update_me(self, lst_img = None):
+        print "update_me(self)"
+
+        self.imageWidg = ImgWidg(self.super_parent, lst_img)
+        self.setWidget(self.imageWidg)
+        self.show()
+
+'''

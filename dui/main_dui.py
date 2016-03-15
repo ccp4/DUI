@@ -257,21 +257,6 @@ class MyMainDialog(QtGui.QMainWindow):
             err_line = "ERROR: { \n" + line_out + " } "
             self.widget_list[self.rung_indx].multi_line_txt.append_red(err_line)
 
-    related_to_external_visualizations = '''
-    def __init__(....):
-        pop_ref_view_but = QtGui.QPushButton(" \n    show reflection viewer")
-        pop_but = QtGui.QPushButton(" \n    show image viewer")
-        pop_but.clicked.connect(self.onImgViewBtn)
-        pop_ref_view_but.clicked.connect(self.onRefViewBtn)
-
-
-    def onImgViewBtn(self):
-        subprocess.call("dials.image_viewer datablock.json &", shell=True)
-
-    def onRefViewBtn(self):
-        subprocess.call("dials.reflection_viewer strong.pickle &", shell=True)
-    '''
-
 
 if __name__ == '__main__':
 
