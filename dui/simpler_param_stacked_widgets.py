@@ -201,7 +201,7 @@ class IndexSimplerParamTab(QtGui.QWidget):
         box_method_62 = QtGui.QComboBox()
         box_method_62.tmp_lst=[]
         box_method_62.local_path = "indexing.method"
-        box_method_62.tmp_lst.append("*fft3d")
+        box_method_62.tmp_lst.append("fft3d")
         box_method_62.tmp_lst.append("fft1d")
         box_method_62.tmp_lst.append("real_space_grid_search")
         for lst_itm in box_method_62.tmp_lst:
@@ -310,10 +310,11 @@ class IntegrateSimplerParamTab(QtGui.QWidget):
         box_algorithm_53.tmp_lst=[]
         box_algorithm_53.tmp_lst.append("simple")
         box_algorithm_53.tmp_lst.append("null")
-        box_algorithm_53.tmp_lst.append("*glm")
+        box_algorithm_53.tmp_lst.append("glm")
         box_algorithm_53.tmp_lst.append("const_d")
         for lst_itm in box_algorithm_53.tmp_lst:
             box_algorithm_53.addItem(lst_itm)
+        box_algorithm_53.setCurrentIndex(2)
         box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
@@ -366,11 +367,11 @@ class ExportSimplerParameterWidget(QtGui.QWidget):
 
         hbox_lay_hklout_6 = QtGui.QHBoxLayout()
         label_hklout_6 = QtGui.QLabel("    hklout")
-
         label_hklout_6.setFont(QtGui.QFont("Monospace"))
         hbox_lay_hklout_6.addWidget(label_hklout_6)
 
         box_hklout_6 = QtGui.QLineEdit()
+        box_hklout_6.setText("hklout.mtz")
         box_hklout_6.local_path = "mtz.hklout"
         box_hklout_6.textChanged.connect(self.spnbox_changed)
 
