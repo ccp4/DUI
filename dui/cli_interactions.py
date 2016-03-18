@@ -205,7 +205,7 @@ class ImgTab(QtGui.QScrollArea):
     def onRefViewBtn(self):
 
         shell_func("dials.reciprocal_lattice_viewer experiments.json indexed.pickle &", shell=True)
-        shell_func("dials.reciprocal_lattice_viewer datablock.json strong.pickle &", shell=True)
+        #shell_func("dials.reciprocal_lattice_viewer datablock.json strong.pickle &", shell=True)
 
 
 
