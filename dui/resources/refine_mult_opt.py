@@ -166,7 +166,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_16.addWidget(label_verbosity_16)
 
         box_verbosity_16 = QSpinBox()
-        box_verbosity_16.setValue(1)
+        box_verbosity_16.setValue(0)
         box_verbosity_16.local_path = "refinement.verbosity"
         box_verbosity_16.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_16.addWidget(box_verbosity_16)

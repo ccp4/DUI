@@ -1,10 +1,12 @@
 import socket
 
+n_connections = 15
+
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.bind(('localhost', 8089))
-serversocket.listen(15) # become a server socket, maximum 5 connections
+serversocket.listen(n_connections) # become a server socket, maximum 15 connections
 buf = ""
-while True:
+for i in xrange(n_connections):
     connection, address = serversocket.accept()
     buf = connection.recv(64)
     if len(buf) > 0:
@@ -15,6 +17,6 @@ while True:
     else:
         print "len(buf) <= 0"
 
-    print "after IF"
+    print "\n connection num ", i
 
 

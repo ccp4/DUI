@@ -198,7 +198,8 @@ class MyMainDialog(QtGui.QMainWindow):
         print "\n from onGoBtn: event =", event, "\n"
 
 
-        if( event == False ):
+        if( event != True ):
+            print "\n onGoBtn \n", "event =", event
             self.curr_indx = self.pagesWidget.currentIndex()
             self.rung_indx = self.curr_indx
             self.widget_list[self.rung_indx].second_go_flag = True

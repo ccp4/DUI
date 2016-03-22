@@ -1119,7 +1119,7 @@ class inner_widg( QWidget):
         hbox_lay_verbosity_92.addWidget(label_verbosity_92)
 
         box_verbosity_92 = QSpinBox()
-        box_verbosity_92.setValue(1)
+        box_verbosity_92.setValue(0)
         box_verbosity_92.local_path = "refinement.verbosity"
         box_verbosity_92.valueChanged.connect(self.spnbox_changed)
         hbox_lay_verbosity_92.addWidget(box_verbosity_92)
