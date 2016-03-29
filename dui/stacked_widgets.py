@@ -224,7 +224,7 @@ class GenericParameterWidget(QtGui.QWidget):
         self.report_out_widg = HtmlTab(self.super_parent)
         self.analyse_out_img = ImgTab(self.super_parent)
 
-        rtabWidget.addTab(self.multi_line_txt, "Shell Log")
+        rtabWidget.addTab(self.multi_line_txt, "Log")
         rtabWidget.addTab(self.report_out_widg, "HTML output")
         rtabWidget.addTab(self.analyse_out_img, "Graphic Reports")
 
