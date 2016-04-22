@@ -1,0 +1,14 @@
+#input {
+   width: 440px;
+   font-size: 18px;
+   border-style: solid;
+   border-style: black;
+   border-width: 1px;
+}
+
+#output {
+   width: 440px;
+   height: 300px;
+   font-size: 16px;
+   overflow-y: scroll;
+}

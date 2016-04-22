@@ -23,11 +23,11 @@ void main() {
     print('Connection to server lost...');
   });
 
-  /*
+
   input.onChange.listen((Event e){
     ws.send(input.value.trim());
     input.value = "";
   });
-  */
+
 
 }
