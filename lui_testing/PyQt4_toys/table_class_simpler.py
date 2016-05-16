@@ -3,17 +3,12 @@
 from PySide import QtCore, QtGui, QtSql
 #from PyQt4 import QtCore, QtGui, QtSql
 
-class MyModel(QtSql.QSqlTableModel):
-    def __init__(self, parent):
-        super(MyModel, self).__init__()
-        print "Hi there"
-
 
 if __name__ == '__main__':
 
     import sys
     app = QtGui.QApplication(sys.argv)
-    model = MyModel(app)
+    model = QtSql.QSqlTableModel()
 
     view = QtGui.QTableView()
     view.setModel(model)
