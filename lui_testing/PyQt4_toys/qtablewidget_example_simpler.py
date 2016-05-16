@@ -13,7 +13,7 @@ class MyWindow(QWidget):
         self.setWindowTitle("Click on column title to sort")
         table_model = MyTableModel(self, data_list, header)
         table_view = QTableView()
-        table_view.setFont('Courier New')
+        #table_view.setFont('Courier New')
         table_view.setModel(table_model)
         table_view.resizeColumnsToContents()
         # enable sorting
