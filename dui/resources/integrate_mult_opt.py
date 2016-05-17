@@ -690,7 +690,7 @@ class inner_widg( QWidget):
         box_algorithm_57.tmp_lst.append("tukey")
         for lst_itm in box_algorithm_57.tmp_lst:
             box_algorithm_57.addItem(lst_itm)
-        box_algorithm_57.setCurrentIndex(0)
+        box_algorithm_57.setCurrentIndex(1)
         box_algorithm_57.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_algorithm_57.addWidget(box_algorithm_57)
         bg_box.addLayout(hbox_lay_algorithm_57)
