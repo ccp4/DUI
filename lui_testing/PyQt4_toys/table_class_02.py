@@ -43,19 +43,30 @@ class MyTable(QtGui.QTableWidget):
     def __init__(self, parent=None):
         super(MyTable, self).__init__(parent)
 
-        self.setRowCount(10)
-        self.setColumnCount(5)
-        self.setItem(2, 3, QtGui.QTableWidgetItem("Hi there"))
+    def setContent(self, data_content):
+        n_row = len(data_content)
+        print "n_row =", n_row
+        n_col = len(data_content[0])
+        print "n_col =", n_col
+        self.setRowCount(n_row)
+        self.setColumnCount(n_col)
 
+        #self.setItem(2, 3, QtGui.QTableWidgetItem("Hi there"))
 
+        for row, row_cont in enumerate(data_content):
+            for col, col_cont in enumerate(row_cont):
+                self.setItem(col, row, QtGui.QTableWidgetItem(col_cont))
 
 class MainWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         super(MainWidget, self).__init__(parent)
 
+    def dataIn(self, my_data_lst):
+
         localLayout = QtGui.QVBoxLayout()
 
         tableWidget = MyTable()
+        tableWidget.setContent(my_data_lst)
 
         localLayout.addWidget( tableWidget  )
 
@@ -68,7 +79,8 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
 
     dat = MyData()
-    print "dat =", dat
 
     widg = MainWidget()
+    widg.dataIn(dat)
+
     sys.exit(app.exec_())
