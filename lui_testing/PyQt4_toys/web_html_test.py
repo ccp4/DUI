@@ -10,7 +10,7 @@ app = QApplication(sys.argv)
 web = QWebView()
 #web.load(QUrl("http://google.co.uk"))
 
-web.load(QUrl("file:///home/lui/dui_code/xia2-report.html"))
+web.load(QUrl("file:///home/luiso/dui/dui_test/test_nproc_eq_8/dials-report.html"))
 web.show()
 
 sys.exit(app.exec_())

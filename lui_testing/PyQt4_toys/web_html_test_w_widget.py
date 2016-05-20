@@ -45,7 +45,7 @@ class MainWidget( QtGui.QWidget):
 
 
         self.web = QtWebKit.QWebView()
-        self.web.load(QtCore.QUrl("file:///home/lui/dui_code/trunk/dui/xia2-report.html"))
+        self.web.load(QtCore.QUrl("file:///home/luiso/dui/dui_test/test_nproc_eq_8/dials-report.html"))
 
 
         hbox =  QtGui.QHBoxLayout()

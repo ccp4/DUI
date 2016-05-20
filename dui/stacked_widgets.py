@@ -85,7 +85,7 @@ class ImportPage(QtGui.QWidget):
 
         self.super_parent.w_dir = os.getcwd()
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
-        self.button_label = "       Import      "
+        self.button_label = "   Import      "
 
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/import.png"
@@ -273,7 +273,7 @@ class FindspotsParameterWidget(GenericParameterWidget):
                       advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.find_spots datablock.json"
-        self.button_label = "    Find Spots   "
+        self.button_label = "Find Spots   "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/find_spots.png"
         self.cmd_lin_extra = "dials.report output.external_dependencies=local strong.pickle"
@@ -298,13 +298,37 @@ class IndexParameterWidget(GenericParameterWidget):
                       advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.index datablock.json strong.pickle"
-        self.button_label = "        Index       "
+        self.button_label = "    Index       "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/index.png"
 
         self.cmd_lin_extra = "dials.report output.external_dependencies=local indexed.pickle"
 
         #self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
+
+
+
+
+class ReIndexWidget(QtGui.QWidget):
+
+    #TODO review if my_dui_path var can be used more globally
+
+    def __init__(self, parent=None):
+        super(ReIndexWidget, self).__init__(parent)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+
+        self.cmd_lin_default = "dials.refine_bravais_settings experiments.json indexed.pickle"
+        self.button_label = "    ReIndex  "
+        my_dui_path = os.environ["DUI_PATH"]
+        self.logo_path = my_dui_path + "/../dui/resources/refine.png"
+
+
+        big_layout = QtGui.QHBoxLayout()
+
+        self.multi_line_txt = TextBrows()
+        big_layout.addWidget(self.multi_line_txt)
+        self.setLayout(big_layout)
+
 
 class RefineParameterWidget(GenericParameterWidget):
     '''
@@ -324,7 +348,7 @@ class RefineParameterWidget(GenericParameterWidget):
                       advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
-        self.button_label = "        Refine      "
+        self.button_label = "    Refine      "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
 
@@ -352,7 +376,7 @@ class IntegrateParameterWidget(GenericParameterWidget):
 
 
         self.cmd_lin_default = "dials.integrate refined_experiments.json refined.pickle"
-        self.button_label = "     Integrate    "
+        self.button_label = " Integrate    "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/integrate.png"
 
@@ -378,7 +402,7 @@ class ExportParameterWidget(GenericParameterWidget):
                       advanced_par_widget = self.advance_par_tab)
 
         self.cmd_lin_default = "dials.export integrated.pickle refined_experiments.json"
-        self.button_label = "    Export mtz   "
+        self.button_label = "Export mtz   "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/export.png"
 

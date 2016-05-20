@@ -45,8 +45,9 @@ except ImportError, e:
   pass
 '''
 from stacked_widgets import ImportPage, FindspotsParameterWidget,\
-                            IndexParameterWidget, RefineParameterWidget,\
-                            IntegrateParameterWidget, ExportParameterWidget, \
+                            IndexParameterWidget, ReIndexWidget, \
+                            RefineParameterWidget, IntegrateParameterWidget,\
+                            ExportParameterWidget, \
                             QtCore, QtGui, QtWebKit
 
 import subprocess
@@ -79,9 +80,13 @@ class MyMainDialog(QtGui.QMainWindow):
         self.widget_list.append(ImportPage(self))
         self.widget_list.append(FindspotsParameterWidget(self))
         self.widget_list.append(IndexParameterWidget(self))
+
+        self.widget_list.append(ReIndexWidget(self))
+
         self.widget_list.append(RefineParameterWidget(self))
         self.widget_list.append(IntegrateParameterWidget(self))
         self.widget_list.append(ExportParameterWidget(self))
+
 
         #self.pagesWidget.setMaximumWidth(650)
 
