@@ -52,15 +52,15 @@ def get_lst_output_ln():
 
 
 
-class TextBrows(QtGui.QTextBrowser):
+class TextLine(QtGui.QTextBrowser):
     def __init__(self, to_print = None):
-        super(TextBrows, self).__init__()
+        super(TextLine, self).__init__()
         self.setCurrentFont(QtGui.QFont("Monospace"))
         self.setTextColor(QtGui.QColor("black"))
         for lines in to_print:
             self.append(lines)
 
-class build_table(object):
+class BuildTable(object):
     def __init__(self, my_data_lst):
 
         div_n_1 = False
@@ -94,16 +94,16 @@ class build_table(object):
         return self.data
 
 
-class MainWidget(QtGui.QWidget):
+class TableSelectWidget(QtGui.QWidget):
     def __init__(self, parent=None):
-        super(MainWidget, self).__init__(parent)
+        super(TableSelectWidget, self).__init__(parent)
 
     def dataIn(self, my_data_lst):
-        data = build_table(my_data_lst)
-        data = data.get_table()
-        localLayout = QtGui.QVBoxLayout()
+        data_table = BuildTable(my_data_lst)
+        data_table = data_table.get_table()
 
-        tableWidget = TextBrows(data)
+        localLayout = QtGui.QVBoxLayout()
+        tableWidget = TextLine(data_table)
         localLayout.addWidget( tableWidget  )
 
         self.setLayout(localLayout)
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
     dat = get_lst_output_ln()
 
-    widg = MainWidget()
+    widg = TableSelectWidget()
     widg.dataIn(dat)
 
     sys.exit(app.exec_())
