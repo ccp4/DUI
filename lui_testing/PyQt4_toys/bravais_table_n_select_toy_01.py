@@ -121,7 +121,8 @@ class TableSelectWidget(QtGui.QWidget):
 
         for line_wgt in data_table.multline_opt:
             single_line_layout = QtGui.QHBoxLayout()
-            single_line_layout.addWidget(QtGui.QPushButton("click"))
+            select_button = QtGui.QPushButton("Select")
+            single_line_layout.addWidget(select_button)
             tableWidget = TextLine(line_wgt)
             single_line_layout.addWidget(tableWidget)
             table_line_layout.addLayout(single_line_layout)
