@@ -57,25 +57,17 @@ class TextBrows(QtGui.QTextBrowser):
         super(TextBrows, self).__init__()
         self.setCurrentFont(QtGui.QFont("Monospace"))
         self.setTextColor(QtGui.QColor("black"))
-        self.append(to_print[0])
+        for lines in to_print:
+            self.append(lines)
 
-
-
-
-class MainWidget(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(MainWidget, self).__init__(parent)
-
-    def dataIn(self, my_data_lst):
-
-        localLayout = QtGui.QVBoxLayout()
+class build_table(object):
+    def __init__(self, my_data_lst):
 
         div_n_1 = False
         div_n_2 = False
         div_n_3 = False
 
         for ln in my_data_lst:
-
             if( ln[0:5] == "-----" ):
                 if( div_n_1 == False ):
                     div_n_1 = True
@@ -86,6 +78,7 @@ class MainWidget(QtGui.QWidget):
                 elif( div_n_3 == False ):
                     div_n_3 = True
                     print "end of MyTable"
+
                 else:
                     print "ERROR to many dividers"
 
@@ -95,8 +88,22 @@ class MainWidget(QtGui.QWidget):
             elif( div_n_2 == True and div_n_3 == False and ln[0:5] != "-----" ):
                 print "Line to eDD =", ln
 
+        self.data = my_data_lst
 
-        tableWidget = TextBrows(my_data_lst)
+    def get_table(self):
+        return self.data
+
+
+class MainWidget(QtGui.QWidget):
+    def __init__(self, parent=None):
+        super(MainWidget, self).__init__(parent)
+
+    def dataIn(self, my_data_lst):
+        data = build_table(my_data_lst)
+        data = data.get_table()
+        localLayout = QtGui.QVBoxLayout()
+
+        tableWidget = TextBrows(data)
         localLayout.addWidget( tableWidget  )
 
         self.setLayout(localLayout)
