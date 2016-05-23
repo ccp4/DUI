@@ -94,7 +94,7 @@ class BuildTable(object):
                 label = ln
 
             elif( div_n_2 == True and div_n_3 == False and ln[0:5] != "-----" ):
-                print "Line to eDD =", ln
+                #print "Line to eDD =", ln
                 opt_lst.append(ln)
 
 
@@ -116,13 +116,13 @@ class TableSelectWidget(QtGui.QWidget):
         data_table = BuildTable(my_data_lst)
         data_table = data_table.get_table()
 
-        localLayout = QtGui.QVBoxLayout()
+        table_line_layout = QtGui.QVBoxLayout()
 
         for line_wgt in data_table.multline_opt:
             tableWidget = TextLine(line_wgt)
-            localLayout.addWidget( tableWidget  )
+            table_line_layout.addWidget( tableWidget  )
 
-        self.setLayout(localLayout)
+        self.setLayout(table_line_layout)
         self.show()
 
 if __name__ == '__main__':
