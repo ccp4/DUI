@@ -20,6 +20,7 @@ def get_list(data):
 
     for item in data['2']:
         print "item =", item
+        print "item() =", item()
 
 '''
 
