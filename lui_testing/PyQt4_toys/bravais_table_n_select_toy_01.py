@@ -6,7 +6,6 @@ from PyQt4 import QtCore, QtGui
 to_test = '''
 PySide.QtGui.QTableView.selectRow(row)
 PySide.QtGui.QTableView.setHorizontalHeader(header)
-
 '''
 
 def get_lst_output_ln():
@@ -56,10 +55,7 @@ def get_lst_output_ln():
 class TextLine(QtGui.QLineEdit):
     def __init__(self, my_content = None):
         super(TextLine, self).__init__()
-
-        #self.setCurrentFont(QtGui.QFont("Monospace"))
-        #self.setTextColor(QtGui.QColor("black"))
-
+        self.setReadOnly(True)
         self.setText(my_content)
 
 class GenericData(object):
@@ -97,9 +93,6 @@ class BuildTable(object):
                 #print "Line to eDD =", ln
                 opt_lst.append(ln)
 
-
-
-
         self.data = GenericData()
         self.data.label = label
         self.data.multline_opt = opt_lst
@@ -118,17 +111,31 @@ class TableSelectWidget(QtGui.QWidget):
 
         table_line_layout = QtGui.QVBoxLayout()
 
-
-        for line_wgt in data_table.multline_opt:
+        self.line_txt_lst = []
+        for i, line_wgt in enumerate(data_table.multline_opt):
             single_line_layout = QtGui.QHBoxLayout()
+            line_txt = TextLine(line_wgt)
+            self.line_txt_lst.append(line_txt)
+            single_line_layout.addWidget(line_txt)
             select_button = QtGui.QPushButton("Select")
             single_line_layout.addWidget(select_button)
-            tableWidget = TextLine(line_wgt)
-            single_line_layout.addWidget(tableWidget)
             table_line_layout.addLayout(single_line_layout)
+            select_button.opt_num = i
+            select_button.clicked.connect(self.click_select)
 
         self.setLayout(table_line_layout)
         self.show()
+
+    def click_select(self, event):
+        my_sender = self.sender()
+        self.user_opt = my_sender.opt_num
+        print "opt_num =", self.user_opt
+
+        for line_txt in self.line_txt_lst:
+            line_txt.deselect()
+
+        self.line_txt_lst[self.user_opt].setSelection(1,260)
+
 
 if __name__ == '__main__':
 
