@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from PySide import QtCore, QtGui
-#from PyQt4 import QtCore, QtGui
+#from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 to_test = '''
 PySide.QtGui.QTableView.selectRow(row)

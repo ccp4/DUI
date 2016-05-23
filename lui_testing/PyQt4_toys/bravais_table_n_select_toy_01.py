@@ -52,13 +52,18 @@ def get_lst_output_ln():
 
 
 
-class TextLine(QtGui.QTextBrowser):
-    def __init__(self, to_print = None):
+
+class TextLine(QtGui.QLineEdit):
+    def __init__(self, my_content = None):
         super(TextLine, self).__init__()
-        self.setCurrentFont(QtGui.QFont("Monospace"))
-        self.setTextColor(QtGui.QColor("black"))
-        for lines in to_print:
-            self.append(lines)
+
+        #self.setCurrentFont(QtGui.QFont("Monospace"))
+        #self.setTextColor(QtGui.QColor("black"))
+
+        self.setText(my_content)
+
+class GenericData(object):
+    pass
 
 class BuildTable(object):
     def __init__(self, my_data_lst):
@@ -66,6 +71,8 @@ class BuildTable(object):
         div_n_1 = False
         div_n_2 = False
         div_n_3 = False
+
+        opt_lst = []
 
         for ln in my_data_lst:
             if( ln[0:5] == "-----" ):
@@ -84,11 +91,18 @@ class BuildTable(object):
 
             if( div_n_1 == True and div_n_2 == False and ln[0:5] != "-----" ):
                 print "Label =", ln
+                label = ln
 
             elif( div_n_2 == True and div_n_3 == False and ln[0:5] != "-----" ):
                 print "Line to eDD =", ln
+                opt_lst.append(ln)
 
-        self.data = my_data_lst
+
+
+
+        self.data = GenericData()
+        self.data.label = label
+        self.data.multline_opt = opt_lst
 
     def get_table(self):
         return self.data
@@ -103,8 +117,10 @@ class TableSelectWidget(QtGui.QWidget):
         data_table = data_table.get_table()
 
         localLayout = QtGui.QVBoxLayout()
-        tableWidget = TextLine(data_table)
-        localLayout.addWidget( tableWidget  )
+
+        for line_wgt in data_table.multline_opt:
+            tableWidget = TextLine(line_wgt)
+            localLayout.addWidget( tableWidget  )
 
         self.setLayout(localLayout)
         self.show()
