@@ -354,16 +354,17 @@ def get_lst_output_ln():
     return lst_ln
 
 
-
-
 class TextLine(QtGui.QLineEdit):
     def __init__(self, my_content = None):
         super(TextLine, self).__init__()
         self.setReadOnly(True)
         self.setText(my_content)
         self.setFont(QtGui.QFont("Monospace"))
+
+
 class GenericData(object):
     pass
+
 
 class BuildTable(object):
     def __init__(self, my_data_lst):
@@ -471,27 +472,22 @@ class ReIndexWidget(QtGui.QWidget):
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
 
 
-
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
 
-
-        dat = get_lst_output_ln()
-        reindex_tab = TableSelectWidget()
-        reindex_tab.dataIn(dat)
+        self.reindex_tab = TableSelectWidget()
 
         rtabWidget.addTab(self.multi_line_txt, "Log")
-        rtabWidget.addTab(reindex_tab, "Reindex ")
-
+        rtabWidget.addTab(self.reindex_tab, "Reindex ")
 
         big_layout = QtGui.QHBoxLayout()
-        '''
-        self.multi_line_txt = TextBrows()
-        big_layout.addWidget(self.multi_line_txt)
-        '''
+
         big_layout.addWidget(rtabWidget)
         self.setLayout(big_layout)
 
+    def run_extra_code(self):
+        dat = get_lst_output_ln()
+        self.reindex_tab.dataIn(dat)
 
 class RefineParameterWidget(GenericParameterWidget):
     '''
