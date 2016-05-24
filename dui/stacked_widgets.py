@@ -419,11 +419,17 @@ class TableSelectWidget(QtGui.QWidget):
         for line_txt in self.line_txt_lst:
             line_txt.deselect()
 
-        self.line_txt_lst[self.user_opt].setSelection(1,260)
+        self.line_txt_lst[self.user_opt].setSelection(1,180)
 
-        bas_op = str(self.line_txt_lst[self.user_opt].text())
-        print "bas_op =", bas_op
-        str_to_run = "dials.reindex indexed.pickle change_of_basis_op=a,b,c"
+        full_lin = str(self.line_txt_lst[self.user_opt].text())
+        for i_spc in xrange(len(full_lin)-2, 1, -1):
+
+            if( full_lin[i_spc:i_spc + 1] == " " ):
+                bas_op_str = full_lin[i_spc + 1:len(full_lin)]
+                break
+
+
+        str_to_run = "dials.reindex indexed.pickle change_of_basis_op=" + bas_op_str
         self.super_parent.gui_line_edit.set_text(str(str_to_run))
 
 
