@@ -389,6 +389,7 @@ class BuildTable(object):
 class TableSelectWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         super(TableSelectWidget, self).__init__(parent)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
     def dataIn(self, my_data_lst):
         data_table = BuildTable(my_data_lst)
@@ -427,10 +428,10 @@ class TableSelectWidget(QtGui.QWidget):
 
         self.line_txt_lst[self.user_opt].setSelection(1,260)
 
-
-
-
-
+        bas_op = str(self.line_txt_lst[self.user_opt].text())
+        print "bas_op =", bas_op
+        str_to_run = "dials.reindex indexed.pickle change_of_basis_op=a,b,c"
+        self.super_parent.gui_line_edit.set_text(str(str_to_run))
 
 
 '''
@@ -455,10 +456,10 @@ class ReIndexWidget(QtGui.QWidget):
         rtabWidget = QtGui.QTabWidget()
         self.multi_line_txt = TextBrows()
 
-        self.reindex_tab = TableSelectWidget()
+        self.reindex_tab = TableSelectWidget(self.super_parent)
 
-        rtabWidget.addTab(self.multi_line_txt, "Log")
         rtabWidget.addTab(self.reindex_tab, "Reindex ")
+        rtabWidget.addTab(self.multi_line_txt, "Log")
 
         big_layout = QtGui.QHBoxLayout()
 
@@ -466,8 +467,6 @@ class ReIndexWidget(QtGui.QWidget):
         self.setLayout(big_layout)
 
     def run_extra_code(self):
-
-
 
         dat = get_lst_output_ln(self.multi_line_txt)
         self.reindex_tab.dataIn(dat)
@@ -489,7 +488,7 @@ class RefineParameterWidget(GenericParameterWidget):
         self.add_tabs(simpler_par_widget = self.simple_par_tab,
                       advanced_par_widget = self.advance_par_tab)
 
-        self.cmd_lin_default = "dials.refine experiments.json indexed.pickle"
+        self.cmd_lin_default = "dials.refine experiments.json reindexed_reflections.pickle"
         self.button_label = "    Refine      "
         my_dui_path = os.environ["DUI_PATH"]
         self.logo_path = my_dui_path + "/../dui/resources/refine.png"
