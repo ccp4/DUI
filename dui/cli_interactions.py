@@ -128,7 +128,7 @@ class TextBrows(QtGui.QTextBrowser):
     def append_green(self, to_print):
         self.set_green_font()
         self.append(to_print)
-        #self.content_lst = []
+        self.content_lst = []
 
     def append_red(self, to_print):
         self.set_red_font()
