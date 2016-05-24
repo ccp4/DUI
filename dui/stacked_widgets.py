@@ -243,7 +243,6 @@ class GenericParameterWidget(QtGui.QWidget):
             self.advance_par_tab.update_a_param()
 
 
-
     def run_extra_code(self):
 
         if( self.second_go_flag == True and self.cmd_lin_extra != None ):
@@ -256,8 +255,6 @@ class GenericParameterWidget(QtGui.QWidget):
 
         else:
             return True
-
-
 
 
 class FindspotsParameterWidget(GenericParameterWidget):
@@ -306,11 +303,6 @@ class IndexParameterWidget(GenericParameterWidget):
 
         #self.cmd_lin_extra = "dials.analyse_output output.directory=index_output indexed.pickle"
 
-'''
-inserting example to be cut START _________________________________________________________
-'''
-
-
 
 def get_lst_output_ln(txt_brows):
     lst_ln_raw = txt_brows.get_full_output_lst()
@@ -326,10 +318,11 @@ def get_lst_output_ln(txt_brows):
                 zero_pos = xpos
                 lst_ln.append(str_to_add)
 
-
+    debug_log = '''
     for lin in lst_ln:
         print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         print lin
+    '''
 
     return lst_ln
 
@@ -371,11 +364,11 @@ class BuildTable(object):
                     print "ERROR to many dividers"
 
             if( div_n_1 == True and div_n_2 == False and ln[1:6] != "-----" ):
-                print "Label =", ln
+                #print "Label =", ln
                 label = ln
 
             elif( div_n_2 == True and div_n_3 == False and ln[1:6] != "-----" ):
-                print "Line to eDD =", ln
+                print "Line to eDD =<<<", ln, ">>>"
                 opt_lst.append(ln)
 
         self.data = GenericData()
