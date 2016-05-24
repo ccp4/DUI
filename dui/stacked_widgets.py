@@ -449,7 +449,7 @@ class ReIndexWidget(QtGui.QWidget):
         self.cmd_lin_default = "dials.refine_bravais_settings experiments.json indexed.pickle"
         self.button_label = "    ReIndex  "
         my_dui_path = os.environ["DUI_PATH"]
-        self.logo_path = my_dui_path + "/../dui/resources/refine.png"
+        self.logo_path = my_dui_path + "/../dui/resources/reindex.png"
 
 
         rtabWidget = QtGui.QTabWidget()
