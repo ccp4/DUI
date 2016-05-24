@@ -57,7 +57,7 @@ class TextLine(QtGui.QLineEdit):
         super(TextLine, self).__init__()
         self.setReadOnly(True)
         self.setText(my_content)
-
+        self.setFont(QtGui.QFont("Monospace"))
 class GenericData(object):
     pass
 
@@ -111,6 +111,12 @@ class TableSelectWidget(QtGui.QWidget):
 
         table_line_layout = QtGui.QVBoxLayout()
 
+        label_str = data_table.label
+        top_label = QtGui.QLabel(label_str)
+        top_label.setFont(QtGui.QFont("Monospace"))
+
+        table_line_layout.addWidget(top_label)
+
         self.line_txt_lst = []
         for i, line_wgt in enumerate(data_table.multline_opt):
             single_line_layout = QtGui.QHBoxLayout()
@@ -126,7 +132,7 @@ class TableSelectWidget(QtGui.QWidget):
         self.setLayout(table_line_layout)
         self.show()
 
-    def click_select(self, event):
+    def click_select(self):
         my_sender = self.sender()
         self.user_opt = my_sender.opt_num
         print "opt_num =", self.user_opt
