@@ -105,6 +105,8 @@ class TextBrows(QtGui.QTextBrowser):
         super(TextBrows, self).__init__()
         self.set_black_font()
 
+        self.content_lst = []
+
     def set_black_font(self):
         self.setCurrentFont(QtGui.QFont("Monospace"))
         self.setTextColor(QtGui.QColor("black"))
@@ -121,13 +123,19 @@ class TextBrows(QtGui.QTextBrowser):
         self.set_black_font()
         self.append(to_print)
 
+        self.content_lst.append(to_print)
+
     def append_green(self, to_print):
         self.set_green_font()
         self.append(to_print)
+        #self.content_lst = []
 
     def append_red(self, to_print):
         self.set_red_font()
         self.append(to_print)
+
+    def get_full_output_lst(self):
+        return self.content_lst
 
 
 
