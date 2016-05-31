@@ -4,8 +4,6 @@ from PySide.QtGui import QImage, QImageReader, QLabel, QPixmap, QApplication
 im = Image.open("centroid_diff_x.png")
 
 data = im.convert('RGBA').tostring()
-#data = im.convert("RGBA").tostring("raw", "RGBA")
-
 
 app = QApplication([])
 
