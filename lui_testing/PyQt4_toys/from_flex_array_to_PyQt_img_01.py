@@ -14,9 +14,13 @@ def wx_img_w_cpp(show_nums = True):
     flex_data_in = flex.double(flex.grid(n_row, n_col),15)
     flex_mask_in = flex.double(flex.grid(n_row, n_col),0)
 
-    err_code = wx_bmp_arr.set_min_max(14.0, 16.0)
+    for col in xrange(n_col):
+        for row in xrange(n_row):
+            flex_data_in[row, col] = col + row
 
-    palette = "black2white"
+    err_code = wx_bmp_arr.set_min_max(0.0, 28.0)
+
+    palette = "hot ascend"
 
     if palette == "black2white":
         palette_num = 1
@@ -41,20 +45,9 @@ def wx_img_w_cpp(show_nums = True):
     return img_array
 
 
-height = 300
-width = 400
-
 #building array
-'''
-arr_i = np.zeros([height, width, 4], dtype=np.uint8)
-arr_i[20:100, 40:200,0] = 255
-arr_i[30:150, 80:250,1] = 255
-arr_i[40:200, 120:300,2] = 255
-'''
 arr_i = wx_img_w_cpp()
 
-
-#arr_i = wx_img_w_cpp()
 #converting to QImage
 print "before QImage generator"
 q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
