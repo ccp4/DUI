@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 from PIL import ImageOps
-from PySide.QtGui import QImage, QImageReader, QLabel, QPixmap, QApplication
+from PySide.QtGui import QImage, QLabel, QPixmap, QApplication
 
 #building array
 arr_i = np.zeros(400 * 400 * 3).reshape(400, 400, 3)
@@ -10,9 +10,22 @@ arr_i[30:150, 50:250,1] = 255
 arr_i[40:200, 60:300,2] = 255
 
 #converting to QImage
+
+tmp_off = '''
+img_arr_dir = arr_i[:,:,:]
+img_arr_dir[:,:,2] = arr_i[:,:,0]
+img_arr_dir[:,:,1] = arr_i[:,:,1]
+img_arr_dir[:,:,0] = arr_i[:,:,2]
+img = Image.fromarray(np.uint8(img_arr_dir))
+
+'''
+
 img = Image.fromarray(np.uint8(arr_i))
 data = img.convert('RGBA').tostring()
 q_img = QImage(data, img.size[0], img.size[1], QImage.Format_ARGB32)
+#q_img = QImage(data, img.size[0], img.size[1], QImage.Format_RGB888)
+
+
 
 #building app with IMG
 app = QApplication([])
