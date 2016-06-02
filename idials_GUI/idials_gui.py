@@ -28,8 +28,12 @@ class MainWidget( QWidget):
                     "import",
                     "find_spots",
                     "index",
-                    "refine"
-                    ]
+                    "refine_bravais_settings",
+                    "reindex",
+                    "refine",
+                    "integrate",
+                    "export"
+                   ]
 
 
     def __init__(self):
@@ -66,24 +70,65 @@ class MainWidget( QWidget):
         if( cmd_to_run == "import" ):
             self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
 
-        self.controller.run()
+        self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+
+        history = self.controller.get_history()
+        history_lines = history.split("\n")
+
+        lst_hist_cmd = []
+        lst_exec_stat = []
+        lst_line_number = []
+        for single_line in history_lines:
+            print ">>>", single_line, "<<<"
+
+            lst_data = single_line.split(" ")
+            if( len(lst_data) >=3 ):
+                print "Data =>>>",
+                for dt_prn in lst_data:
+                    print dt_prn, ">>>",
+
+                print "<<<end line"
+
+                line_number = int(lst_data[0])
+                exec_stats = lst_data[1]
+                if( lst_data[len(lst_data) - 1] == "(current)" ):
+                    current_line = line_number
+                    line_command = lst_data[len(lst_data) - 2]
+                else:
+                    line_command = lst_data[len(lst_data) - 1]
+
+                lst_line_number.append(line_number)
+                lst_hist_cmd.append(line_command)
+                lst_exec_stat.append(exec_stats)
+
+        print "________________________________________ List:"
+
+        for n in xrange(len(lst_line_number)):
+            print "[", n, "]: ", lst_line_number[n], " >> ", lst_hist_cmd[n], " >> ", lst_exec_stat[n]
+
+
+        print "len(history) =", len(history)
+        print "history =", history
 
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
         self.lst_exe_pos += 1
-        '''
-        if( self.lst_exe_pos > len(self.lst_commands - 1) ):
-            self.lst_exe_pos = len(self.lst_commands - 1)
-        '''
+
+        if( self.lst_exe_pos > len(self.lst_commands) - 1 ):
+            self.lst_exe_pos = len(self.lst_commands) - 1
+
+        print "self.lst_exe_pos =", self.lst_exe_pos
 
     def prv_clicked(self):
         print "prv_clicked(self)"
         self.lst_exe_pos -= 1
-        '''
+
         if( self.lst_exe_pos < 0 ):
             self.lst_exe_pos = 0
-        '''
+
+        print "self.lst_exe_pos =", self.lst_exe_pos
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
