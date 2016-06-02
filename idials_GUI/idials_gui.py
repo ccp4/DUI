@@ -68,11 +68,15 @@ class MainWidget( QWidget):
         self.controller.set_mode(cmd_to_run)
 
         if( cmd_to_run == "import" ):
-            self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
+            #self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
+            self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
         history = self.controller.get_history()
+
+        print "history =", history
+
         history_lines = history.split("\n")
 
         lst_hist_cmd = []
@@ -80,7 +84,7 @@ class MainWidget( QWidget):
         lst_line_number = []
         for single_line in history_lines:
             print ">>>", single_line, "<<<"
-
+            single_line = single_line.lstrip()
             lst_data = single_line.split(" ")
             if( len(lst_data) >=3 ):
                 print "Data =>>>",
@@ -91,6 +95,7 @@ class MainWidget( QWidget):
 
                 line_number = int(lst_data[0])
                 exec_stats = lst_data[1]
+                print "lst_data[len(lst_data) - 1] =", lst_data[len(lst_data) - 1]
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     current_line = line_number
                     line_command = lst_data[len(lst_data) - 2]
@@ -107,8 +112,6 @@ class MainWidget( QWidget):
             print "[", n, "]: ", lst_line_number[n], " >> ", lst_hist_cmd[n], " >> ", lst_exec_stat[n]
 
 
-        print "len(history) =", len(history)
-        print "history =", history
 
 
     def nxt_clicked(self):
