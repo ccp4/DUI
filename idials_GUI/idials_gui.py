@@ -73,44 +73,7 @@ class MainWidget( QWidget):
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
-        history = self.controller.get_history()
-
-        print "history =", history
-
-        history_lines = history.split("\n")
-
-        lst_hist_cmd = []
-        lst_exec_stat = []
-        lst_line_number = []
-        for single_line in history_lines:
-            print ">>>", single_line, "<<<"
-            single_line = single_line.lstrip()
-            lst_data = single_line.split(" ")
-            if( len(lst_data) >=3 ):
-                print "Data =>>>",
-                for dt_prn in lst_data:
-                    print dt_prn, ">>>",
-
-                print "<<<end line"
-
-                line_number = int(lst_data[0])
-                exec_stats = lst_data[1]
-                print "lst_data[len(lst_data) - 1] =", lst_data[len(lst_data) - 1]
-                if( lst_data[len(lst_data) - 1] == "(current)" ):
-                    current_line = line_number
-                    line_command = lst_data[len(lst_data) - 2]
-                else:
-                    line_command = lst_data[len(lst_data) - 1]
-
-                lst_line_number.append(line_number)
-                lst_hist_cmd.append(line_command)
-                lst_exec_stat.append(exec_stats)
-
-        print "________________________________________ List:"
-
-        for n in xrange(len(lst_line_number)):
-            print "[", n, "]: ", lst_line_number[n], " >> ", lst_hist_cmd[n], " >> ", lst_exec_stat[n]
-
+        self._update_after_run()
 
 
 
@@ -125,12 +88,71 @@ class MainWidget( QWidget):
 
     def prv_clicked(self):
         print "prv_clicked(self)"
+
+
+        cmd_to_run = "goto"
+        self.controller.set_mode(cmd_to_run)
+        self.controller.set_parameters(str(self.curr_lin), short_syntax=True)
+        self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+
+        self._update_after_run()
+
+        old_way = '''
         self.lst_exe_pos -= 1
 
         if( self.lst_exe_pos < 0 ):
             self.lst_exe_pos = 0
 
         print "self.lst_exe_pos =", self.lst_exe_pos
+        '''
+
+
+
+
+    def _update_after_run(self):
+
+        history = self.controller.get_history()
+        print "history =", history
+        history_lines = history.split("\n")
+
+        lst_line_number = []
+        lst_hist_cmd = []
+        lst_exec_stat = []
+        for single_line in history_lines:
+            print ">>>", single_line, "<<<"
+            single_line = single_line.lstrip()
+            lst_data = single_line.split(" ")
+            if( len(lst_data) >=3 ):
+                tmp_log = '''
+                print "Data =>>>",
+                for dt_prn in lst_data:
+                    print dt_prn, ">>>",
+
+                print "<<<end line"
+                '''
+
+                line_number = int(lst_data[0])
+                exec_stats = lst_data[1]
+                #print "lst_data[len(lst_data) - 1] =", lst_data[len(lst_data) - 1]
+
+                if( lst_data[len(lst_data) - 1] == "(current)" ):
+                    self.curr_lin = line_number
+                    line_command = lst_data[len(lst_data) - 2]
+
+                else:
+                    line_command = lst_data[len(lst_data) - 1]
+
+                lst_line_number.append(line_number)
+                lst_hist_cmd.append(line_command)
+                lst_exec_stat.append(exec_stats)
+
+        print "________________________________________ List:"
+
+        for n in xrange(len(lst_line_number)):
+            print "[", n, "]: ", lst_line_number[n], " >> ", lst_hist_cmd[n], " >> ", lst_exec_stat[n]
+
+        print "current line =", self.curr_lin
+
 
 
 if __name__ == '__main__':
