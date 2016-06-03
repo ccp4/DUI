@@ -68,8 +68,8 @@ class MainWidget( QWidget):
         self.controller.set_mode(cmd_to_run)
 
         if( cmd_to_run == "import" ):
-            #self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
-            self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
+            self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
+            #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
@@ -89,12 +89,7 @@ class MainWidget( QWidget):
     def prv_clicked(self):
         print "prv_clicked(self)"
 
-
-        cmd_to_run = "goto"
-        self.controller.set_mode(cmd_to_run)
-        self.controller.set_parameters(str(self.curr_lin), short_syntax=True)
-        self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-
+        self.controller.goto(self.curr_lin - 1)
         self._update_after_run()
 
         old_way = '''
@@ -105,8 +100,6 @@ class MainWidget( QWidget):
 
         print "self.lst_exe_pos =", self.lst_exe_pos
         '''
-
-
 
 
     def _update_after_run(self):
