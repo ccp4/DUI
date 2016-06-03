@@ -41,7 +41,7 @@ class MainWidget( QWidget):
 
         self.lst_exe_pos = 0
         self.controller = Controller(".")
-
+        self.next_cmd = "import"
 
         self.btn_prv =  QPushButton('\n  Prev \n', self)
         self.btn_prv.clicked.connect(self.prv_clicked)
@@ -64,16 +64,29 @@ class MainWidget( QWidget):
 
     def go_clicked(self):
         print "go_clicked(self)"
-        cmd_to_run = self.lst_commands[self.lst_exe_pos]
-        self.controller.set_mode(cmd_to_run)
 
-        if( cmd_to_run == "import" ):
+        self.controller.set_mode(self.next_cmd)
+
+        if( self.controller.get_mode() == "import" ):
             self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
         self._update_after_run()
+
+        last_mod = self.controller.get_mode()
+        print "last_mod =", last_mod
+
+        for pos, cmd in enumerate(self.lst_commands):
+            print "pos =", pos, "  cmd =", cmd
+            if( cmd == last_mod ):
+                self.next_cmd = self.lst_commands[pos + 1]
+
+        if( self.next_cmd == None ):
+            self.next_cmd = "import"
+
+        self.controller.set_mode(self.next_cmd)
 
 
 
@@ -144,8 +157,9 @@ class MainWidget( QWidget):
         for n in xrange(len(lst_line_number)):
             print "[", n, "]: ", lst_line_number[n], " >> ", lst_hist_cmd[n], " >> ", lst_exec_stat[n]
 
+        print "controller.get_current() =", self.controller.get_current()
         print "current line =", self.curr_lin
-
+        print "controller.get_mode() =", self.controller.get_mode()
 
 
 if __name__ == '__main__':
