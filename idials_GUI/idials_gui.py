@@ -89,7 +89,8 @@ class MainWidget( QWidget):
 
     def prv_clicked(self):
         print "prv_clicked(self)"
-        self.controller.goto(self.curr_lin - 1)
+        print "self.curr_lin =", self.curr_lin
+        self.controller.goto(self.lst_line_number[self.curr_lin - 2])
 
         self._update_after_run()
         self.nxt_cmd()
@@ -102,10 +103,6 @@ class MainWidget( QWidget):
             if( cmd == last_mod ):
                 self.next_cmd = self.lst_commands[pos + 1]
 
-        leftover = '''
-        if( self.next_cmd == None ):
-            self.next_cmd = "import"
-        '''
 
         self.controller.set_mode(self.next_cmd)
         print "Next to RUN:", self.controller.get_mode()
@@ -121,7 +118,7 @@ class MainWidget( QWidget):
         self.lst_hist_cmd = []
         self.lst_exec_stat = []
 
-        for single_line in history_lines:
+        for lst_num, single_line in enumerate(history_lines):
             print ">>>", single_line, "<<<"
             single_line = single_line.lstrip()
             lst_data = single_line.split(" ")
@@ -131,7 +128,7 @@ class MainWidget( QWidget):
                 #print "lst_data[len(lst_data) - 1] =", lst_data[len(lst_data) - 1]
 
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
-                    self.curr_lin = line_number
+                    self.curr_lin = lst_num
                     line_command = lst_data[len(lst_data) - 2]
                     self.line_part = line_command.lstrip("+").lstrip("-")
 
