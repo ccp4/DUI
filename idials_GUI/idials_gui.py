@@ -73,22 +73,8 @@ class MainWidget( QWidget):
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
+        self.nxt_cmd()
         self._update_after_run()
-
-        last_mod = self.controller.get_mode()
-        print "last_mod =", last_mod
-
-        for pos, cmd in enumerate(self.lst_commands):
-            print "pos =", pos, "  cmd =", cmd
-            if( cmd == last_mod ):
-                self.next_cmd = self.lst_commands[pos + 1]
-
-        if( self.next_cmd == None ):
-            self.next_cmd = "import"
-
-        self.controller.set_mode(self.next_cmd)
-
-
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
@@ -101,18 +87,24 @@ class MainWidget( QWidget):
 
     def prv_clicked(self):
         print "prv_clicked(self)"
-
         self.controller.goto(self.curr_lin - 1)
+        self.nxt_cmd()
         self._update_after_run()
 
-        old_way = '''
-        self.lst_exe_pos -= 1
+    def nxt_cmd(self):
+        last_mod = self.controller.get_mode()
+        print "last_mod =", last_mod
+        for pos, cmd in enumerate(self.lst_commands):
+            if( cmd == last_mod ):
+                self.next_cmd = self.lst_commands[pos + 1]
 
-        if( self.lst_exe_pos < 0 ):
-            self.lst_exe_pos = 0
-
-        print "self.lst_exe_pos =", self.lst_exe_pos
+        leftover = '''
+        if( self.next_cmd == None ):
+            self.next_cmd = "import"
         '''
+
+        self.controller.set_mode(self.next_cmd)
+        print "Next to RUN:", self.controller.get_mode()
 
 
     def _update_after_run(self):
@@ -129,14 +121,6 @@ class MainWidget( QWidget):
             single_line = single_line.lstrip()
             lst_data = single_line.split(" ")
             if( len(lst_data) >=3 ):
-                tmp_log = '''
-                print "Data =>>>",
-                for dt_prn in lst_data:
-                    print dt_prn, ">>>",
-
-                print "<<<end line"
-                '''
-
                 line_number = int(lst_data[0])
                 exec_stats = lst_data[1]
                 #print "lst_data[len(lst_data) - 1] =", lst_data[len(lst_data) - 1]
@@ -155,7 +139,8 @@ class MainWidget( QWidget):
         print "________________________________________ List:"
 
         for n in xrange(len(lst_line_number)):
-            print "[", n, "]: ", lst_line_number[n], " >> ", lst_hist_cmd[n], " >> ", lst_exec_stat[n]
+            print "[", n, "]: ", lst_line_number[n], " >> ", \
+                  lst_hist_cmd[n], " >> ", lst_exec_stat[n]
 
         print "controller.get_current() =", self.controller.get_current()
         print "current line =", self.curr_lin
