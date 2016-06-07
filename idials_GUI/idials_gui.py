@@ -36,6 +36,7 @@ class MainWidget( QWidget):
                    ]
 
 
+
     def __init__(self):
         super(MainWidget, self).__init__()
 
@@ -72,9 +73,10 @@ class MainWidget( QWidget):
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-
-        self.nxt_cmd()
         self._update_after_run()
+        self.nxt_cmd()
+
+        print "<<<================================= Ready:"
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
@@ -88,12 +90,14 @@ class MainWidget( QWidget):
     def prv_clicked(self):
         print "prv_clicked(self)"
         self.controller.goto(self.curr_lin - 1)
-        self.nxt_cmd()
+
         self._update_after_run()
+        self.nxt_cmd()
 
     def nxt_cmd(self):
-        last_mod = self.controller.get_mode()
-        print "last_mod =", last_mod
+        last_mod = self.line_part
+
+        print "last_mod =<<<", last_mod, ">>>"
         for pos, cmd in enumerate(self.lst_commands):
             if( cmd == last_mod ):
                 self.next_cmd = self.lst_commands[pos + 1]
@@ -113,9 +117,10 @@ class MainWidget( QWidget):
         print "history =", history
         history_lines = history.split("\n")
 
-        lst_line_number = []
-        lst_hist_cmd = []
-        lst_exec_stat = []
+        self.lst_line_number = []
+        self.lst_hist_cmd = []
+        self.lst_exec_stat = []
+
         for single_line in history_lines:
             print ">>>", single_line, "<<<"
             single_line = single_line.lstrip()
@@ -128,23 +133,27 @@ class MainWidget( QWidget):
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = line_number
                     line_command = lst_data[len(lst_data) - 2]
+                    self.line_part = line_command.lstrip("+").lstrip("-")
 
                 else:
                     line_command = lst_data[len(lst_data) - 1]
 
-                lst_line_number.append(line_number)
-                lst_hist_cmd.append(line_command)
-                lst_exec_stat.append(exec_stats)
+
+                self.lst_line_number.append(line_number)
+                self.lst_hist_cmd.append(line_command)
+                self.lst_exec_stat.append(exec_stats)
 
         print "________________________________________ List:"
 
-        for n in xrange(len(lst_line_number)):
-            print "[", n, "]: ", lst_line_number[n], " >> ", \
-                  lst_hist_cmd[n], " >> ", lst_exec_stat[n]
+        for n in xrange(len(self.lst_line_number)):
+            print "[", n, "]: ", self.lst_line_number[n], " >> ", \
+                  self.lst_hist_cmd[n], " >> ", self.lst_exec_stat[n]
 
         print "controller.get_current() =", self.controller.get_current()
         print "current line =", self.curr_lin
         print "controller.get_mode() =", self.controller.get_mode()
+
+
 
 
 if __name__ == '__main__':
