@@ -40,7 +40,6 @@ class MainWidget( QWidget):
     def __init__(self):
         super(MainWidget, self).__init__()
 
-        self.lst_exe_pos = 0
         self.controller = Controller(".")
         self.next_cmd = "import"
 
@@ -80,12 +79,11 @@ class MainWidget( QWidget):
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
-        self.lst_exe_pos += 1
 
-        if( self.lst_exe_pos > len(self.lst_commands) - 1 ):
-            self.lst_exe_pos = len(self.lst_commands) - 1
+        self.controller.goto(self.lst_line_number[self.curr_lin])
 
-        print "self.lst_exe_pos =", self.lst_exe_pos
+        self._update_after_run()
+        self.nxt_cmd()
 
     def prv_clicked(self):
         print "prv_clicked(self)"
