@@ -621,7 +621,6 @@ class inner_widg( QWidget):
         hbox_lay_chunksize_45.addWidget(label_chunksize_45)
 
         box_chunksize_45 = QSpinBox()
-        box_chunksize_45.setValue(20)
         box_chunksize_45.local_path = "spotfinder.mp.chunksize"
         box_chunksize_45.valueChanged.connect(self.spnbox_changed)
         hbox_lay_chunksize_45.addWidget(box_chunksize_45)

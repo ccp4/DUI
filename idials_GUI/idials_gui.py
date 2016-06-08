@@ -75,12 +75,12 @@ class MainWidget( QWidget):
         self._update_after_run()
         self.nxt_cmd()
 
-        print "<<<================================= Ready:"
-
     def nxt_clicked(self):
         print "nxt_clicked(self)"
 
         self.controller.goto(self.lst_line_number[self.curr_lin])
+
+        print "...current.mode =", self.controller.get_current().name
 
         self._update_after_run()
         self.nxt_cmd()
@@ -89,6 +89,8 @@ class MainWidget( QWidget):
         print "prv_clicked(self)"
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin - 2])
+
+        print "...current.mode =", self.controller.get_current().name
 
         self._update_after_run()
         self.nxt_cmd()
@@ -105,6 +107,8 @@ class MainWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
         print "Next to RUN:", self.controller.get_mode()
 
+        print
+        print "<<<================================= Ready:"
 
     def _update_after_run(self):
 
@@ -140,15 +144,15 @@ class MainWidget( QWidget):
 
         print "________________________________________ List:"
 
+        print_log = '''
         for n in xrange(len(self.lst_line_number)):
             print "[", n, "]: ", self.lst_line_number[n], " >> ", \
                   self.lst_hist_cmd[n], " >> ", self.lst_exec_stat[n]
+        '''
 
         print "controller.get_current() =", self.controller.get_current()
         print "current line =", self.curr_lin
         print "controller.get_mode() =", self.controller.get_mode()
-
-
 
 
 if __name__ == '__main__':
