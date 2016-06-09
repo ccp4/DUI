@@ -96,17 +96,15 @@ class MainWidget( QWidget):
         self.nxt_cmd()
 
     def nxt_cmd(self):
-        last_mod = self.line_part
+        last_mod = self.controller.get_current().name
 
         print "last_mod =<<<", last_mod, ">>>"
         for pos, cmd in enumerate(self.lst_commands):
             if( cmd == last_mod ):
                 self.next_cmd = self.lst_commands[pos + 1]
 
-
         self.controller.set_mode(self.next_cmd)
         print "Next to RUN:", self.controller.get_mode()
-
         print
         print "<<<================================= Ready:"
 
@@ -114,45 +112,17 @@ class MainWidget( QWidget):
 
         history = self.controller.get_history()
         print "history =", history
-        history_lines = history.split("\n")
+        self.history_lines = history.split("\n")
 
         self.lst_line_number = []
-        self.lst_hist_cmd = []
-        self.lst_exec_stat = []
-
-        for lst_num, single_line in enumerate(history_lines):
-            print ">>>", single_line, "<<<"
+        for lst_num, single_line in enumerate(self.history_lines):
             single_line = single_line.lstrip()
             lst_data = single_line.split(" ")
             if( len(lst_data) >=3 ):
                 line_number = int(lst_data[0])
-                exec_stats = lst_data[1]
-                #print "lst_data[len(lst_data) - 1] =", lst_data[len(lst_data) - 1]
-
+                self.lst_line_number.append(line_number)
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = lst_num
-                    line_command = lst_data[len(lst_data) - 2]
-                    self.line_part = line_command.lstrip("+").lstrip("-")
-
-                else:
-                    line_command = lst_data[len(lst_data) - 1]
-
-
-                self.lst_line_number.append(line_number)
-                self.lst_hist_cmd.append(line_command)
-                self.lst_exec_stat.append(exec_stats)
-
-        print "________________________________________ List:"
-
-        print_log = '''
-        for n in xrange(len(self.lst_line_number)):
-            print "[", n, "]: ", self.lst_line_number[n], " >> ", \
-                  self.lst_hist_cmd[n], " >> ", self.lst_exec_stat[n]
-        '''
-
-        print "controller.get_current() =", self.controller.get_current()
-        print "current line =", self.curr_lin
-        print "controller.get_mode() =", self.controller.get_mode()
 
 
 if __name__ == '__main__':
