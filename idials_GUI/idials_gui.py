@@ -72,8 +72,8 @@ class MainWidget( QWidget):
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        self._update_after_run()
-        self.nxt_cmd()
+        self._update_n_next()
+
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
@@ -82,8 +82,7 @@ class MainWidget( QWidget):
 
         print "...current.mode =", self.controller.get_current().name
 
-        self._update_after_run()
-        self.nxt_cmd()
+        self._update_n_next()
 
     def prv_clicked(self):
         print "prv_clicked(self)"
@@ -92,38 +91,33 @@ class MainWidget( QWidget):
 
         print "...current.mode =", self.controller.get_current().name
 
-        self._update_after_run()
-        self.nxt_cmd()
+        self._update_n_next()
 
-    def nxt_cmd(self):
-        last_mod = self.controller.get_current().name
 
-        print "last_mod =<<<", last_mod, ">>>"
-        for pos, cmd in enumerate(self.lst_commands):
-            if( cmd == last_mod ):
-                self.next_cmd = self.lst_commands[pos + 1]
-
-        self.controller.set_mode(self.next_cmd)
-        print "Next to RUN:", self.controller.get_mode()
-        print
-        print "<<<================================= Ready:"
-
-    def _update_after_run(self):
+    def _update_n_next(self):
 
         history = self.controller.get_history()
         print "history =", history
-        self.history_lines = history.split("\n")
-
         self.lst_line_number = []
-        for lst_num, single_line in enumerate(self.history_lines):
-            single_line = single_line.lstrip()
-            lst_data = single_line.split(" ")
+        for lst_num, single_line in enumerate(history.split("\n")):
+            lst_data = single_line.lstrip().split(" ")
             if( len(lst_data) >=3 ):
                 line_number = int(lst_data[0])
                 self.lst_line_number.append(line_number)
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = lst_num
 
+        last_mod = self.controller.get_current().name
+        print "last_mod =<<<", last_mod, ">>>"
+        for pos, cmd in enumerate(self.lst_commands):
+            if( cmd == last_mod ):
+                self.next_cmd = self.lst_commands[pos + 1]
+
+        self.controller.set_mode(self.next_cmd)
+
+        print "Next to RUN:", self.controller.get_mode()
+        print
+        print "<<<================================= Ready:"
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
