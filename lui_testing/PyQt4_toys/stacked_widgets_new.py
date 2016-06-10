@@ -27,15 +27,20 @@ class MainWidget( QWidget):
     def __init__(self):
         super(MainWidget, self).__init__()
 
-        self.btn_nxt =  QPushButton('\n  Next \n', self)
-        #self.btn_nxt.clicked.connect(self.nxt_clicked)
-
-        hbox =  QHBoxLayout()
-        hbox.addWidget(self.btn_nxt)
+        self.btn_lst = []
+        hbox =  QVBoxLayout()
+        for step_name in self.lst_commands:
+            new_btn = QPushButton(step_name, self)
+            new_btn.clicked.connect(self.btn_clicked)
+            hbox.addWidget(new_btn)
+            self.btn_lst.append(new_btn)
 
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
+
+    def btn_clicked(self):
+        print "btn_clicked"
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
