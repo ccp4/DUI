@@ -11,18 +11,28 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
 #'''
+def get_my_step_lst():
+    return [
+            "import",
+            "find_spots",
+            "index",
+            "refine",
+            "integrate",
+           ]
 
-class MainWidget( QWidget):
-    lst_commands = [
-                    "import",
-                    "find_spots",
-                    "index",
-                    "refine_bravais_settings",
-                    "reindex",
-                    "refine",
-                    "integrate",
-                    "export"
-                   ]
+class ParamWidget(QWidget):
+    lst_commands = get_my_step_lst()
+    def __init__(self):
+        super(ParamWidget, self).__init__()
+        hbox =  QVBoxLayout()
+        for step_name in self.lst_commands:
+            hbox.addWidget(QLabel(step_name))
+
+        self.setLayout(hbox)
+        self.show()
+
+class MainWidget(QWidget):
+    lst_commands = get_my_step_lst()
 
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -34,6 +44,9 @@ class MainWidget( QWidget):
             new_btn.clicked.connect(self.btn_clicked)
             hbox.addWidget(new_btn)
             self.btn_lst.append(new_btn)
+
+        pw = ParamWidget()
+        hbox.addWidget(pw)
 
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
