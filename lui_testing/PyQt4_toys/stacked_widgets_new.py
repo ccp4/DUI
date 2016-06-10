@@ -21,14 +21,12 @@ def get_my_step_lst():
            ]
 
 class ParamWidget(QWidget):
-    lst_commands = get_my_step_lst()
-    def __init__(self):
+    def __init__(self, label_str):
         super(ParamWidget, self).__init__()
-        hbox =  QVBoxLayout()
-        for step_name in self.lst_commands:
-            hbox.addWidget(QLabel(step_name))
+        v_left_box =  QVBoxLayout()
+        v_left_box.addWidget(QLabel(label_str))
 
-        self.setLayout(hbox)
+        self.setLayout(v_left_box)
         self.show()
 
 class MainWidget(QWidget):
@@ -38,17 +36,40 @@ class MainWidget(QWidget):
         super(MainWidget, self).__init__()
 
         self.btn_lst = []
-        hbox =  QVBoxLayout()
+        v_left_box =  QVBoxLayout()
         for step_name in self.lst_commands:
             new_btn = QPushButton(step_name, self)
             new_btn.clicked.connect(self.btn_clicked)
-            hbox.addWidget(new_btn)
+            v_left_box.addWidget(new_btn)
             self.btn_lst.append(new_btn)
 
-        pw = ParamWidget()
-        hbox.addWidget(pw)
+        stackedWidget =  QStackedWidget()
 
-        self.setLayout(hbox)
+        for step_name in self.lst_commands:
+            param_widg = ParamWidget(step_name)
+            stackedWidget.addWidget(param_widg)
+
+        bing_h_box = QHBoxLayout()
+        bing_h_box.addLayout(v_left_box)
+        bing_h_box.addWidget(stackedWidget)
+
+
+        '''
+        firstPageWidget =  QWidget()
+        secondPageWidget =  QWidget()
+        thirdPageWidget =  QWidget()
+
+        stackedWidget =  QStackedWidget()
+        stackedWidget.addWidget(firstPageWidget)
+        stackedWidget.addWidget(secondPageWidget)
+        stackedWidget.addWidget(thirdPageWidget)
+
+        layout =  QVBoxLayout()
+        layout.addWidget(stackedWidget)
+        setLayout(layout)
+        '''
+
+        self.setLayout(bing_h_box)
         self.setWindowTitle('Shell dialog')
         self.show()
 
