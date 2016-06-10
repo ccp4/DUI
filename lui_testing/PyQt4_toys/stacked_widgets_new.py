@@ -53,22 +53,6 @@ class MainWidget(QWidget):
         bing_h_box.addLayout(v_left_box)
         bing_h_box.addWidget(stackedWidget)
 
-
-        '''
-        firstPageWidget =  QWidget()
-        secondPageWidget =  QWidget()
-        thirdPageWidget =  QWidget()
-
-        stackedWidget =  QStackedWidget()
-        stackedWidget.addWidget(firstPageWidget)
-        stackedWidget.addWidget(secondPageWidget)
-        stackedWidget.addWidget(thirdPageWidget)
-
-        layout =  QVBoxLayout()
-        layout.addWidget(stackedWidget)
-        setLayout(layout)
-        '''
-
         self.setLayout(bing_h_box)
         self.setWindowTitle('Shell dialog')
         self.show()
