@@ -58,6 +58,7 @@ class MainWidget(QWidget):
         self.show()
 
     def btn_clicked(self):
+        #TODO make sure the GUI know the clicked button
         print "btn_clicked"
 
 if __name__ == '__main__':
