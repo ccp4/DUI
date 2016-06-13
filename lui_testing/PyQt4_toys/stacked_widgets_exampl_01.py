@@ -27,7 +27,6 @@ class ParamWidget(QWidget):
         v_left_box.addWidget(QLabel(label_str))
 
         self.setLayout(v_left_box)
-        self.show()
 
 class MainWidget(QWidget):
     def __init__(self):
