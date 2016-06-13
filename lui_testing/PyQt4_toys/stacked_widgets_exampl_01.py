@@ -1,12 +1,12 @@
 import sys
 
-PyQt4_ver = '''
+#PyQt4_ver = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
 #'''
 
-#PySide_ver = '''
+PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
@@ -30,36 +30,31 @@ class ParamWidget(QWidget):
         self.show()
 
 class MainWidget(QWidget):
-    lst_commands = get_my_step_lst()
-
     def __init__(self):
         super(MainWidget, self).__init__()
 
-        self.btn_lst = []
         v_left_box =  QVBoxLayout()
-        for step_name in self.lst_commands:
+        self.step_param_widg =  QStackedWidget()
+
+        for step_name in get_my_step_lst():
             new_btn = QPushButton(step_name, self)
+            new_btn.par_wig = ParamWidget(step_name)
             new_btn.clicked.connect(self.btn_clicked)
             v_left_box.addWidget(new_btn)
-            self.btn_lst.append(new_btn)
 
-        stackedWidget =  QStackedWidget()
+            self.step_param_widg.addWidget(new_btn.par_wig)
 
-        for step_name in self.lst_commands:
-            param_widg = ParamWidget(step_name)
-            stackedWidget.addWidget(param_widg)
+        multi_step_hbox = QHBoxLayout()
+        multi_step_hbox.addLayout(v_left_box)
+        multi_step_hbox.addWidget(self.step_param_widg)
 
-        bing_h_box = QHBoxLayout()
-        bing_h_box.addLayout(v_left_box)
-        bing_h_box.addWidget(stackedWidget)
-
-        self.setLayout(bing_h_box)
+        self.setLayout(multi_step_hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
 
     def btn_clicked(self):
-        #TODO make sure the GUI know the clicked button
-        print "btn_clicked"
+        my_sender = self.sender()
+        self.step_param_widg.setCurrentWidget(my_sender.par_wig)
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
