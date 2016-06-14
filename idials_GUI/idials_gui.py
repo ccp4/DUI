@@ -96,8 +96,8 @@ class MainWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
 
         if( self.controller.get_mode() == "import" ):
-            self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
-            #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
+            #self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
+            self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
         #self._update_tree()
@@ -124,12 +124,18 @@ class MainWidget( QWidget):
             if( cmd == mod_now ):
                 prev_mod = self.lst_commands[pos - 1]
         print "mode to search = ", prev_mod
+
         while True:
             self.controller.goto(self.lst_line_number[self.curr_lin - 2])
             up_mod = self.controller.get_current().name
+            print "up_mod =", up_mod
+            #self._update_tree()
             if( up_mod == prev_mod ):
-                self.next_cmd = prev_mod
-                exit
+                for pos, cmd in enumerate(self.lst_commands):
+                    if( cmd == up_mod ):
+                        self.next_cmd = self.lst_commands[pos + 1]
+                break
+
         self.controller.set_mode(self.next_cmd)
         self._update_tree()
 
