@@ -45,7 +45,7 @@ class MainWidget( QWidget):
 
         hbox =  QHBoxLayout()
 
-        self.btn_up =  QPushButton('\n  Up \n', self)
+        self.btn_up =  QPushButton('\n    Up  \n', self)
         self.btn_up.clicked.connect(self.up_clicked)
         hbox.addWidget(self.btn_up)
 
@@ -53,13 +53,15 @@ class MainWidget( QWidget):
         self.btn_prv.clicked.connect(self.prv_clicked)
         hbox.addWidget(self.btn_prv)
 
-        self.btn_go =  QPushButton('\n    Go  \n', self)
+        self.btn_go =  QPushButton('\n    Go/Next  \n', self)
         self.btn_go.clicked.connect(self.go_clicked)
         hbox.addWidget(self.btn_go)
 
+        tmp_off = '''
         self.btn_nxt =  QPushButton('\n  Next \n', self)
         self.btn_nxt.clicked.connect(self.nxt_clicked)
         hbox.addWidget(self.btn_nxt)
+        '''
 
         self.btn_dwn =  QPushButton('\n  Down \n', self)
         self.btn_dwn.clicked.connect(self.dwn_clicked)
@@ -75,7 +77,8 @@ class MainWidget( QWidget):
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin - 2])
         print "...current.mode =", self.controller.get_current().name
-        self._update_tree()
+        #self._update_tree()
+        self.nxt_clicked()
 
 
     def dwn_clicked(self):
@@ -83,7 +86,8 @@ class MainWidget( QWidget):
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
-        self._update_tree()
+        #self._update_tree()
+        self.nxt_clicked()
 
 
     def go_clicked(self):
@@ -96,8 +100,8 @@ class MainWidget( QWidget):
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        self._update_tree()
-
+        #self._update_tree()
+        self.nxt_clicked()
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
@@ -113,6 +117,21 @@ class MainWidget( QWidget):
 
     def prv_clicked(self):
         print "prv_clicked(self)"
+
+
+        mod_now = self.controller.get_current().name
+        for pos, cmd in enumerate(self.lst_commands):
+            if( cmd == mod_now ):
+                prev_mod = self.lst_commands[pos - 1]
+        print "mode to search = ", prev_mod
+        while True:
+            self.controller.goto(self.lst_line_number[self.curr_lin - 2])
+            up_mod = self.controller.get_current().name
+            if( up_mod == prev_mod ):
+                self.next_cmd = prev_mod
+                exit
+        self.controller.set_mode(self.next_cmd)
+        self._update_tree()
 
 
     def _update_tree(self):
