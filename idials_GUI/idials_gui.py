@@ -123,13 +123,14 @@ class MainWidget( QWidget):
         for pos, cmd in enumerate(self.lst_commands):
             if( cmd == mod_now ):
                 prev_mod = self.lst_commands[pos - 1]
+
         print "mode to search = ", prev_mod
 
         while True:
             self.controller.goto(self.lst_line_number[self.curr_lin - 2])
             up_mod = self.controller.get_current().name
             print "up_mod =", up_mod
-            #self._update_tree()
+            self._update_tree()
             if( up_mod == prev_mod ):
                 for pos, cmd in enumerate(self.lst_commands):
                     if( cmd == up_mod ):
