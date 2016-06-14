@@ -43,28 +43,28 @@ class MainWidget( QWidget):
         self.controller = Controller(".")
         self.next_cmd = "import"
 
-        self.btn_prv =  QPushButton('\n  Prev \n', self)
-        self.btn_prv.clicked.connect(self.prv_clicked)
-
-        self.btn_go =  QPushButton('\n    Go  \n', self)
-        self.btn_go.clicked.connect(self.go_clicked)
-
-        self.btn_nxt =  QPushButton('\n  Next \n', self)
-        self.btn_nxt.clicked.connect(self.nxt_clicked)
-
+        hbox =  QHBoxLayout()
 
         self.btn_up =  QPushButton('\n  Up \n', self)
         self.btn_up.clicked.connect(self.up_clicked)
+        hbox.addWidget(self.btn_up)
+
+        self.btn_prv =  QPushButton('\n  Prev \n', self)
+        self.btn_prv.clicked.connect(self.prv_clicked)
+        hbox.addWidget(self.btn_prv)
+
+        self.btn_go =  QPushButton('\n    Go  \n', self)
+        self.btn_go.clicked.connect(self.go_clicked)
+        hbox.addWidget(self.btn_go)
+
+        self.btn_nxt =  QPushButton('\n  Next \n', self)
+        self.btn_nxt.clicked.connect(self.nxt_clicked)
+        hbox.addWidget(self.btn_nxt)
 
         self.btn_dwn =  QPushButton('\n  Down \n', self)
         self.btn_dwn.clicked.connect(self.dwn_clicked)
-        hbox =  QHBoxLayout()
-
-        hbox.addWidget(self.btn_up)
-        hbox.addWidget(self.btn_prv)
-        hbox.addWidget(self.btn_go)
-        hbox.addWidget(self.btn_nxt)
         hbox.addWidget(self.btn_dwn)
+
 
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
@@ -72,7 +72,6 @@ class MainWidget( QWidget):
 
     def up_clicked(self):
         print "up_clicked"
-
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin - 2])
         print "...current.mode =", self.controller.get_current().name
@@ -81,7 +80,7 @@ class MainWidget( QWidget):
 
     def dwn_clicked(self):
         print "dw_clicked"
-
+        print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
         self._update_tree()
