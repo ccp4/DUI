@@ -76,7 +76,7 @@ class MainWidget( QWidget):
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin - 2])
         print "...current.mode =", self.controller.get_current().name
-        self._update_n_next()
+        self._update_tree()
 
 
     def dwn_clicked(self):
@@ -84,7 +84,7 @@ class MainWidget( QWidget):
 
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
-        self._update_n_next()
+        self._update_tree()
 
 
     def go_clicked(self):
@@ -97,17 +97,26 @@ class MainWidget( QWidget):
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        self._update_n_next()
+        self._update_tree()
 
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
 
+        last_mod = self.controller.get_current().name
+        print "last_mod =<<<", last_mod, ">>>"
+        for pos, cmd in enumerate(self.lst_commands):
+            if( cmd == last_mod ):
+                self.next_cmd = self.lst_commands[pos + 1]
+
+        self.controller.set_mode(self.next_cmd)
+        self._update_tree()
+
     def prv_clicked(self):
         print "prv_clicked(self)"
 
 
-    def _update_n_next(self):
+    def _update_tree(self):
 
         history = self.controller.get_history()
         print "history =", history
@@ -120,17 +129,10 @@ class MainWidget( QWidget):
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = lst_num
 
-        last_mod = self.controller.get_current().name
-        print "last_mod =<<<", last_mod, ">>>"
-        for pos, cmd in enumerate(self.lst_commands):
-            if( cmd == last_mod ):
-                self.next_cmd = self.lst_commands[pos + 1]
-
-        self.controller.set_mode(self.next_cmd)
-
         print "Next to RUN:", self.controller.get_mode()
         print
         print "<<<================================= Ready:"
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
