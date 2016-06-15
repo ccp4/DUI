@@ -20,6 +20,8 @@ def get_my_step_lst():
             "integrate",
            ]
 
+from find_spots_mult_opt import inner_widg as fnd_ops
+
 class ParamWidget(QWidget):
     def __init__(self, label_str):
         super(ParamWidget, self).__init__()
@@ -37,7 +39,11 @@ class MainWidget(QWidget):
 
         for step_name in get_my_step_lst():
             new_btn = QPushButton(step_name, self)
-            new_btn.par_wig = ParamWidget(step_name)
+            if( step_name != "find_spots" ):
+                new_btn.par_wig = ParamWidget(step_name)
+            else:
+                new_btn.par_wig = fnd_ops()
+
             new_btn.clicked.connect(self.btn_clicked)
             v_left_box.addWidget(new_btn)
 
