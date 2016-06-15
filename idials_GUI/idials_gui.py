@@ -66,15 +66,14 @@ class MainWidget( QWidget):
         '''
         big_vbox.addLayout(midl_hbox)
 
-
         self.btn_dwn =  QPushButton('\n  Down \n', self)
         self.btn_dwn.clicked.connect(self.dwn_clicked)
         big_vbox.addWidget(self.btn_dwn)
 
-
         self.setLayout(big_vbox)
         self.setWindowTitle('Shell dialog')
         self.show()
+
 
     def up_clicked(self):
         print "up_clicked"
@@ -83,14 +82,12 @@ class MainWidget( QWidget):
         print "...current.mode =", self.controller.get_current().name
         self.nxt_clicked()
 
-
     def dwn_clicked(self):
         print "dw_clicked"
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
         self.nxt_clicked()
-
 
     def go_clicked(self):
         print "go_clicked(self)"
