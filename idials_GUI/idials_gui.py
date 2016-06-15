@@ -81,7 +81,6 @@ class MainWidget( QWidget):
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin - 2])
         print "...current.mode =", self.controller.get_current().name
-        #self._update_tree()
         self.nxt_clicked()
 
 
@@ -90,7 +89,6 @@ class MainWidget( QWidget):
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
-        #self._update_tree()
         self.nxt_clicked()
 
 
@@ -105,14 +103,11 @@ class MainWidget( QWidget):
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        #self._update_tree()
         self.nxt_clicked()
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
-
         last_mod = self.controller.get_current().name
-        #print "last_mod =<<<", last_mod, ">>>"
         for pos, cmd in enumerate(self.lst_commands):
             if( cmd == last_mod ):
                 self.next_cmd = self.lst_commands[pos + 1]
@@ -127,8 +122,6 @@ class MainWidget( QWidget):
         for pos, cmd in enumerate(self.lst_commands):
             if( cmd == mod_now ):
                 prev_mod = self.lst_commands[pos - 1]
-
-        #print "mode to search = ", prev_mod
 
         tmp_curr_lin = self.curr_lin
         while True:
@@ -166,12 +159,8 @@ class MainWidget( QWidget):
                 usr_cmd = uncut_str[3:]
                 self.lst_usr_cmd.append(usr_cmd)
 
-        '''
-        print "lst_usr_cmd ="
-        print self.lst_usr_cmd
-        '''
         print
-        print "<<<========== Ready to run:", self.controller.get_mode()
+        print " Ready to run >>", self.controller.get_mode()
 
 
 if __name__ == '__main__':
