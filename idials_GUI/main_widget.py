@@ -43,7 +43,9 @@ class MainWidget(QWidget):
         my_lst = StepList()
         label_lst, widg_lst, icon_lst = my_lst()
         for pos, step_data in enumerate(label_lst):
-            new_btn = QPushButton(step_data, self)
+            #new_btn = QToolButton(step_data, self)
+            new_btn = QToolButton(self)
+            #new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(40,40))
             new_btn.par_wig = widg_lst[pos]
