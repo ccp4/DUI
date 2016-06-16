@@ -11,16 +11,32 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
 #'''
-def get_my_step_lst():
-    return [
+from find_spots_mult_opt import ParamMainWidget as fnd_ops
+from index_mult_opt import ParamMainWidget as idx_ops
+from refine_mult_opt import ParamMainWidget as ref_ops
+from integrate_mult_opt import ParamMainWidget as int_ops
+
+class StepList(object):
+    lst_lablel = [
             "import",
             "find_spots",
             "index",
             "refine",
             "integrate",
-           ]
+            ]
 
-from find_spots_mult_opt import inner_widg as fnd_ops
+    def __init__(self):
+        self.lst_widg  = [
+              None,
+              fnd_ops(),
+              idx_ops(),
+              ref_ops(),
+              int_ops(),
+              ]
+
+    def __call__(self):
+        return self.lst_lablel, self.lst_widg
+
 
 class ParamWidget(QWidget):
     def __init__(self, label_str):
@@ -36,13 +52,14 @@ class MainWidget(QWidget):
 
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
-
-        for step_name in get_my_step_lst():
-            new_btn = QPushButton(step_name, self)
-            if( step_name != "find_spots" ):
-                new_btn.par_wig = ParamWidget(step_name)
+        my_lst = StepList()
+        label_lst, widg_lst = my_lst()
+        for pos, step_data in enumerate(label_lst):
+            new_btn = QPushButton(step_data, self)
+            if( widg_lst[pos] == None ):
+                new_btn.par_wig = ParamWidget(step_data)
             else:
-                new_btn.par_wig = fnd_ops()
+                new_btn.par_wig = widg_lst[pos]
 
             new_btn.clicked.connect(self.btn_clicked)
             v_left_box.addWidget(new_btn)
