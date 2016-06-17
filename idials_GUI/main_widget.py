@@ -9,34 +9,13 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
 #'''
-from find_spots_mult_opt import ParamMainWidget as fnd_ops
-from index_mult_opt import ParamMainWidget as idx_ops
-from refine_mult_opt import ParamMainWidget as ref_ops
-from integrate_mult_opt import ParamMainWidget as int_ops
-from import_mult_opt import ParamWidget as imp_ops
 
-class StepList(object):
-    lst_lablel = ["import", "find_spots", "index", "refine", "integrate",]
-
-    def __init__(self):
-        self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), ref_ops(), int_ops(),]
-        self.lst_icons = [QIcon("resources/import.png"),
-                          QIcon("resources/find_spots.png"),
-                          QIcon("resources/index.png"),
-                          QIcon("resources/refine.png"),
-                          QIcon("resources/integrate.png"),
-                          ]
-    def __call__(self):
-        return self.lst_lablel, self.lst_widg, self.lst_icons
+from custom_widgets import StepList
 
 class MainWidget(QWidget):
 
-
-
     def __init__(self):
         super(MainWidget, self).__init__()
-
-
 
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
@@ -47,7 +26,7 @@ class MainWidget(QWidget):
             new_btn = QToolButton(self)
             #new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
-            new_btn.setIconSize(QSize(40,40))
+            new_btn.setIconSize(QSize(70,70))
             new_btn.par_wig = widg_lst[pos]
             new_btn.clicked.connect(self.btn_clicked)
             v_left_box.addWidget(new_btn)
