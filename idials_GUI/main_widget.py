@@ -22,20 +22,18 @@ class MainWidget(QMainWindow):
         my_lst = StepList()
         label_lst, widg_lst, icon_lst = my_lst()
 
-        #My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
 
         for pos, step_data in enumerate(label_lst):
-
             new_btn = QToolButton(self)
             new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
-            new_btn.setIconSize(QSize(70,70))
+            new_btn.setIconSize(QSize(90,90))
             new_btn.par_wig = widg_lst[pos]
             new_btn.setToolButtonStyle(My_style)
-
             new_btn.clicked.connect(self.btn_clicked)
+
             v_left_box.addWidget(new_btn)
             self.step_param_widg.addWidget(new_btn.par_wig)
 
