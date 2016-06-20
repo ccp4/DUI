@@ -17,6 +17,8 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
 
+        left_widget = QWidget()
+
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList()
@@ -37,8 +39,11 @@ class MainWidget(QMainWindow):
             v_left_box.addWidget(new_btn)
             self.step_param_widg.addWidget(new_btn.par_wig)
 
+        left_widget.setLayout(v_left_box)
+
+
         multi_step_hbox = QHBoxLayout()
-        multi_step_hbox.addLayout(v_left_box)
+        multi_step_hbox.addWidget(left_widget)
         multi_step_hbox.addWidget(self.step_param_widg)
 
         main_widget = QWidget()
