@@ -22,7 +22,6 @@ class Example(QtGui.QMainWindow):
         exitAction = QtGui.QAction(QtGui.QIcon('tux_n_chrome.png'), 'Exit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.triggered.connect(self.close)
-
         self.toolbar = self.addToolBar('Exit')
         self.toolbar.addAction(exitAction)
 

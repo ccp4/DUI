@@ -12,8 +12,7 @@ print "using PySide"
 
 from custom_widgets import StepList
 
-
-class MainWidget(QWidget):
+class MainWidget(QMainWindow):
 
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -22,12 +21,13 @@ class MainWidget(QWidget):
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList()
         label_lst, widg_lst, icon_lst = my_lst()
-        for pos, step_data in enumerate(label_lst):
-            #new_btn = QToolButton(step_data, self)
-            new_btn = QToolButton(self)
-            My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-            new_btn.setToolButtonStyle(My_style)
 
+        #My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.setWindowTitle('DUI / idials')
+
+        for pos, step_data in enumerate(label_lst):
+
+            new_btn = QToolButton(self)
             new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(70,70))
@@ -39,8 +39,13 @@ class MainWidget(QWidget):
         multi_step_hbox = QHBoxLayout()
         multi_step_hbox.addLayout(v_left_box)
         multi_step_hbox.addWidget(self.step_param_widg)
-        self.setLayout(multi_step_hbox)
-        self.setWindowTitle('Shell dialog')
+
+        main_widget = QWidget()
+        main_widget.setLayout(multi_step_hbox)
+        self.resize(1200, 900)
+        self.setCentralWidget(main_widget)
+        #self.setToolButtonStyle(My_style)
+
         self.show()
 
     def btn_clicked(self):
