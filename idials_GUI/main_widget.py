@@ -12,6 +12,7 @@ print "using PySide"
 
 from custom_widgets import StepList
 
+
 class MainWidget(QWidget):
 
     def __init__(self):
@@ -24,7 +25,10 @@ class MainWidget(QWidget):
         for pos, step_data in enumerate(label_lst):
             #new_btn = QToolButton(step_data, self)
             new_btn = QToolButton(self)
-            #new_btn.setText(step_data)
+            My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            new_btn.setToolButtonStyle(My_style)
+
+            new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(70,70))
             new_btn.par_wig = widg_lst[pos]
@@ -47,4 +51,6 @@ if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = MainWidget()
     sys.exit(app.exec_())
+
+
 
