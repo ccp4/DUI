@@ -143,10 +143,24 @@ class MainWidget( QWidget):
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = lst_num
 
+        self._update_single_path()
         print "self.curr_lin =", self.curr_lin
         print
         print " Ready to run >>", self.controller.get_mode()
 
+
+    def _update_single_path(self):
+        print "single_path = ?"
+
+        current = self.controller.get_current()
+
+        while True:
+            previous = current.parent
+            print "idx =", previous.index
+
+            if previous.index <= 0:
+                break
+            current = previous
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
