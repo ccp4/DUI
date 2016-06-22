@@ -133,26 +133,17 @@ class MainWidget( QWidget):
         print "previous.index =", previous.index
 
         self.lst_line_number = []
-        self.lst_usr_cmd = []
 
         for lst_num, single_line in enumerate(history.split("\n")):
             lst_data = single_line.lstrip().split(" ")
-
-            #print "lst_data =", lst_data
 
             if( len(lst_data) >=3 ):
                 line_number = int(lst_data[0])
                 self.lst_line_number.append(line_number)
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = lst_num
-                    uncut_str = lst_data[len(lst_data) - 2]
 
-                else:
-                    uncut_str = lst_data[len(lst_data) - 1]
-
-                usr_cmd = uncut_str[3:]
-                self.lst_usr_cmd.append(usr_cmd)
-
+        print "self.curr_lin =", self.curr_lin
         print
         print " Ready to run >>", self.controller.get_mode()
 
