@@ -55,15 +55,15 @@ class MainWidget( QWidget):
         self.btn_prv.clicked.connect(self.prv_clicked)
         midl_hbox.addWidget(self.btn_prv)
 
-        self.btn_go =  QPushButton('\n    Go/Next  \n', self)
+        self.btn_go =  QPushButton('\n    Go  \n', self)
         self.btn_go.clicked.connect(self.go_clicked)
         midl_hbox.addWidget(self.btn_go)
 
-        tmp_off = '''
+
         self.btn_nxt =  QPushButton('\n  Next \n', self)
         self.btn_nxt.clicked.connect(self.nxt_clicked)
         midl_hbox.addWidget(self.btn_nxt)
-        '''
+
         big_vbox.addLayout(midl_hbox)
 
         self.btn_dwn =  QPushButton('\n  Down \n', self)
@@ -150,17 +150,16 @@ class MainWidget( QWidget):
 
 
     def _update_single_path(self):
-        print "single_path = ?"
 
         current = self.controller.get_current()
 
-        while True:
+        lst_path = [current.index]
+        while current.index > 0:
             previous = current.parent
-            print "idx =", previous.index
-
-            if previous.index <= 0:
-                break
+            lst_path.insert(0,previous.index)
             current = previous
+
+        print "single_path =", lst_path
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
