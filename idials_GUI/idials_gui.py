@@ -80,14 +80,14 @@ class MainWidget( QWidget):
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin - 2])
         print "...current.mode =", self.controller.get_current().name
-        self.nxt_clicked()
+        self._update_tree()
 
     def dwn_clicked(self):
         print "dw_clicked"
         print "self.curr_lin =", self.curr_lin
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
-        self.nxt_clicked()
+        self._update_tree()
 
     def go_clicked(self):
         print "go_clicked(self)"
@@ -100,7 +100,7 @@ class MainWidget( QWidget):
             #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        self.nxt_clicked()
+        self._update_tree()
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
@@ -119,7 +119,7 @@ class MainWidget( QWidget):
         previous = current.parent
 
         self.controller.goto(previous.index)
-        self.nxt_clicked()
+        self._update_tree()
 
 
     def _update_tree(self):
