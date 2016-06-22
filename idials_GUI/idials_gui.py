@@ -134,8 +134,13 @@ class MainWidget( QWidget):
 
         history = self.controller.get_history()
         print "history =", history
-        self.lst_line_number = []
 
+        current = self.controller.get_current()
+        previous = current.parent
+        print "current.index =", current.index
+        print "previous.index =", previous.index
+
+        self.lst_line_number = []
         self.lst_usr_cmd = []
 
         for lst_num, single_line in enumerate(history.split("\n")):
