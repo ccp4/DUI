@@ -115,18 +115,10 @@ class MainWidget( QWidget):
     def prv_clicked(self):
         print "prv_clicked(self)"
 
-        mod_now = self.controller.get_current().name
-        for pos, cmd in enumerate(self.lst_commands):
-            if( cmd == mod_now ):
-                prev_mod = self.lst_commands[pos - 1]
+        current = self.controller.get_current()
+        previous = current.parent
 
-        tmp_curr_lin = self.curr_lin
-        while True:
-            tmp_curr_lin -= 1
-            if( self.lst_usr_cmd[tmp_curr_lin] == prev_mod ):
-                self.controller.goto(self.lst_line_number[tmp_curr_lin])
-                break
-
+        self.controller.goto(previous.index)
         self.nxt_clicked()
 
 
