@@ -26,6 +26,8 @@ class MainWidget(QMainWindow):
         My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
 
+        self.btn_lst = []
+
         for pos, step_data in enumerate(label_lst):
             new_btn = QToolButton(self)
             new_btn.setText(step_data)
@@ -38,12 +40,15 @@ class MainWidget(QMainWindow):
             v_left_box.addWidget(new_btn)
             self.step_param_widg.addWidget(new_btn.par_wig)
 
+            self.btn_lst.append(new_btn)
+
         left_widget.setLayout(v_left_box)
 
         left_widget.setAutoFillBackground(True)
         widg_palette = left_widget.palette()
         widg_palette.setColor(left_widget.backgroundRole(), Qt.white)
         left_widget.setPalette(widg_palette)
+        self._refrech_btn_look()
 
         multi_step_hbox = QHBoxLayout()
         multi_step_hbox.addWidget(left_widget)
@@ -59,6 +64,12 @@ class MainWidget(QMainWindow):
     def btn_clicked(self):
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.par_wig)
+        self._refrech_btn_look()
+        my_sender.setStyleSheet("background-color: blue")
+
+    def _refrech_btn_look(self):
+        for btn in self.btn_lst:
+            btn.setStyleSheet("background-color: gray")
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
