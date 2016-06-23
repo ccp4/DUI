@@ -12,16 +12,14 @@ print "using PySide"
 from custom_widgets import StepList
 
 class MainWidget(QMainWindow):
-
     def __init__(self):
         super(MainWidget, self).__init__()
 
         left_widget = QWidget()
+        #left_widget.setStyleSheet("background-color: solid gray")
         left_widget.setStyleSheet("background-color: lightgray")
-
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
-
         my_lst = StepList()
         label_lst, widg_lst, icon_lst = my_lst()
 
@@ -41,7 +39,6 @@ class MainWidget(QMainWindow):
 
             v_left_box.addWidget(new_btn)
             self.step_param_widg.addWidget(new_btn.par_wig)
-
             self.btn_lst.append(new_btn)
 
         left_widget.setLayout(v_left_box)
@@ -66,7 +63,6 @@ class MainWidget(QMainWindow):
 
     def _refrech_btn_look(self):
         for btn in self.btn_lst:
-            #btn.setStyleSheet("background-color: solid gray")
             btn.setStyleSheet("background-color: lightgray")
 
 if __name__ == '__main__':
