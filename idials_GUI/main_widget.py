@@ -17,9 +17,11 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
 
         left_widget = QWidget()
+        left_widget.setStyleSheet("background-color: lightgray")
 
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
+
         my_lst = StepList()
         label_lst, widg_lst, icon_lst = my_lst()
 
@@ -43,11 +45,6 @@ class MainWidget(QMainWindow):
             self.btn_lst.append(new_btn)
 
         left_widget.setLayout(v_left_box)
-
-        left_widget.setAutoFillBackground(True)
-        widg_palette = left_widget.palette()
-        widg_palette.setColor(left_widget.backgroundRole(), Qt.white)
-        left_widget.setPalette(widg_palette)
         self._refrech_btn_look()
 
         multi_step_hbox = QHBoxLayout()
