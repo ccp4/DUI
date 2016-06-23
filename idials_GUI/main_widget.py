@@ -9,7 +9,6 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
 #'''
-
 from custom_widgets import StepList
 
 class MainWidget(QMainWindow):
@@ -18,8 +17,6 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
 
         left_widget = QWidget()
-
-
 
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
@@ -44,9 +41,9 @@ class MainWidget(QMainWindow):
         left_widget.setLayout(v_left_box)
 
         left_widget.setAutoFillBackground(True)
-        p = left_widget.palette()
-        p.setColor(left_widget.backgroundRole(), Qt.white)
-        left_widget.setPalette(p)
+        widg_palette = left_widget.palette()
+        widg_palette.setColor(left_widget.backgroundRole(), Qt.white)
+        left_widget.setPalette(widg_palette)
 
         multi_step_hbox = QHBoxLayout()
         multi_step_hbox.addWidget(left_widget)
