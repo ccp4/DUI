@@ -55,7 +55,7 @@ class MainWidget( QWidget):
         self.btn_prv.clicked.connect(self.prv_clicked)
         midl_hbox.addWidget(self.btn_prv)
 
-        self.btn_go =  QPushButton('\n    Go  \n', self)
+        self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.go_clicked)
         midl_hbox.addWidget(self.btn_go)
 
@@ -153,13 +153,29 @@ class MainWidget( QWidget):
 
         current = self.controller.get_current()
 
-        lst_path = [current.index]
+        lst_path_idx = [current.index]
+        lst_path_cmd = [current.name]
+
         while current.index > 0:
             previous = current.parent
-            lst_path.insert(0,previous.index)
+
+            lst_path_idx.insert(0, previous.index)
+            lst_path_cmd.insert(0, previous.name)
+
             current = previous
 
-        print "single_path =", lst_path
+        print "single_path(idx) =", lst_path_idx
+        print "single_path(cmd) =", lst_path_cmd
+
+        dir_previous = '''
+        ['__class__', '__delattr__', '__dict__', '__doc__', '__format__',
+        '__getattribute__', '__hash__', '__init__', '__iter__', '__module__',
+        '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__',
+        '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'applied',
+        'as_dict', 'children', 'description', 'from_dict', 'index', 'name',
+        'parent', 'success', 'workspace']
+        '''
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
