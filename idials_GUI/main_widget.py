@@ -65,11 +65,11 @@ class MainWidget(QMainWindow):
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.par_wig)
         self._refrech_btn_look()
-        my_sender.setStyleSheet("background-color: blue")
+        my_sender.setStyleSheet("background-color: gray")
 
     def _refrech_btn_look(self):
         for btn in self.btn_lst:
-            btn.setStyleSheet("background-color: gray")
+            btn.setStyleSheet("background-color: solid gray")
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
