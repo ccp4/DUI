@@ -143,15 +143,23 @@ class MainWidget( QWidget):
                 if( lst_data[len(lst_data) - 1] == "(current)" ):
                     self.curr_lin = lst_num
 
-        self._update_single_path()
+        self._update_gui_tree()
         print "self.curr_lin =", self.curr_lin
         print
         print " Ready to run >>", self.controller.get_mode()
 
 
-    def _update_single_path(self):
+    def _update_gui_tree(self):
 
         current = self.controller.get_current()
+
+        print "current.children =", current.children
+        print "current.parent =", current.parent
+
+        print "______________________________________________________ children Lst ="
+        for single_child in current.children:
+            print "single_child.index, single_child.name =", single_child.index, single_child.name
+        print "______________________________________________________ end children Lst"
 
         lst_path_idx = [current.index]
         lst_path_cmd = [current.name]
@@ -167,14 +175,7 @@ class MainWidget( QWidget):
         print "single_path(idx) =", lst_path_idx
         print "single_path(cmd) =", lst_path_cmd
 
-        dir_previous = '''
-        ['__class__', '__delattr__', '__dict__', '__doc__', '__format__',
-        '__getattribute__', '__hash__', '__init__', '__iter__', '__module__',
-        '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__',
-        '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'applied',
-        'as_dict', 'children', 'description', 'from_dict', 'index', 'name',
-        'parent', 'success', 'workspace']
-        '''
+
 
 
 if __name__ == '__main__':
