@@ -31,7 +31,9 @@ for num, elem_num in enumerate(lst_nums):
     item.appendRow(tst_new_item_01)
     model.appendRow(item)
 
+
 tree.setModel(model)
+tree.expandAll()
 tree.show()
 
 
