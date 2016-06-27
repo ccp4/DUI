@@ -25,17 +25,6 @@ print "using PySide"
 
 
 
-
-def do_recursive(root_node):
-    #print "outside inner loop"
-    print "in index #", root_node.index
-    for child_node in root_node.children:
-        print "child_node.index =", child_node.index
-
-    for child_node in root_node.children:
-        do_recursive(child_node)
-
-
 class TreeNavWidget(QTreeView):
 
     def __init__(self):
@@ -48,9 +37,23 @@ class TreeNavWidget(QTreeView):
         self.setModel(self.model)
         self.expandAll()
 
-    def update_me(self):
-        print "updating"
+    def update_me(self, root_node):
 
+        print "in index #", root_node.index
+        for child_node in root_node.children:
+            print "child_node.index =", child_node.index
+
+        for child_node in root_node.children:
+            self.update_me(child_node)
+
+
+        model = QStandardItemModel(self)
+
+        item = QStandardItem("another dummy element")
+        model.appendRow(item)
+
+        self.setModel(model)
+        self.expandAll()
 
 
 class MainWidget( QWidget):
@@ -209,8 +212,9 @@ class MainWidget( QWidget):
         print "single_path(idx) =", lst_path_idx
         print "single_path(cmd) =", lst_path_cmd
 
-        do_recursive(current)
-        self.tree_nav.update_me()
+        print "__________________________________________________________<<< update_me start"
+        self.tree_nav.update_me(current)
+        print "__________________________________________________________<<< update_me end"
 
 
 
