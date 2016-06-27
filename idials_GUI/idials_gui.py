@@ -23,6 +23,19 @@ from PySide.QtCore import *
 print "using PySide"
 #'''
 
+
+
+
+def do_recursive(root_node):
+    #print "outside inner loop"
+    print "in index #", root_node.index
+    for child_node in root_node.children:
+        print "child_node.index =", child_node.index
+
+    for child_node in root_node.children:
+        do_recursive(child_node)
+
+
 class MainWidget( QWidget):
     lst_commands = [
                     "import",
@@ -174,6 +187,8 @@ class MainWidget( QWidget):
 
         print "single_path(idx) =", lst_path_idx
         print "single_path(cmd) =", lst_path_cmd
+
+        do_recursive(current)
 
 
 
