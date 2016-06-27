@@ -36,6 +36,23 @@ def do_recursive(root_node):
         do_recursive(child_node)
 
 
+class TreeNavWidget(QTreeView):
+
+    def __init__(self):
+        super(TreeNavWidget, self).__init__()
+        self.model = QStandardItemModel(self)
+
+        item = QStandardItem("dummy element")
+        self.model.appendRow(item)
+
+        self.setModel(self.model)
+        self.expandAll()
+
+    def update_me(self):
+        print "updating"
+
+
+
 class MainWidget( QWidget):
     lst_commands = [
                     "import",
@@ -57,6 +74,10 @@ class MainWidget( QWidget):
         self.next_cmd = "import"
 
         big_vbox =  QVBoxLayout()
+
+        self.tree_nav = TreeNavWidget()
+
+        big_vbox.addWidget(self.tree_nav)
 
         self.btn_up =  QPushButton('\n    Up  \n', self)
         self.btn_up.clicked.connect(self.up_clicked)
@@ -189,6 +210,7 @@ class MainWidget( QWidget):
         print "single_path(cmd) =", lst_path_cmd
 
         do_recursive(current)
+        self.tree_nav.update_me()
 
 
 
