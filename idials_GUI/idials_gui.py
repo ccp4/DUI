@@ -194,14 +194,6 @@ class MainWidget( QWidget):
 
         current = self.controller.get_current()
 
-        print "current.children =", current.children
-        print "current.parent =", current.parent
-
-        print "______________________________________________________ children Lst ="
-        for single_child in current.children:
-            print "single_child.index, single_child.name =", single_child.index, single_child.name
-        print "______________________________________________________ end children Lst"
-
         lst_path_idx = [current.index]
         lst_path_cmd = [current.name]
 
