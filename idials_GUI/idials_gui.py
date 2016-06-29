@@ -31,11 +31,12 @@ class TreeNavWidget(QTreeView):
         super(TreeNavWidget, self).__init__()
         self.model = QStandardItemModel(self)
 
-        item = QStandardItem("dummy element")
-        self.model.appendRow(item)
+        tmp_item = QStandardItem("dummy element")
+        self.model.appendRow(tmp_item)
 
         self.setModel(self.model)
         self.expandAll()
+        self.clicked.connect(self.item_clicked)
 
     def update_me(self, root_node):
         self.tmp_model = QStandardItemModel(self)
@@ -51,13 +52,21 @@ class TreeNavWidget(QTreeView):
 
         for child_node in root_node.children:
             new_item = QStandardItem(str(child_node.name))
+            new_item.idx = child_node.index
             self.recursive_node(child_node, new_item)
             item_in.appendRow(new_item)
+
 
     def update_model_tree(self):
 
         self.setModel(self.tmp_model)
         self.expandAll()
+
+    def item_clicked(self):
+
+        print "item_clicked"
+        print "self.sender() =", self.sender()
+
 
 
 class MainWidget( QWidget):
