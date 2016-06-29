@@ -24,10 +24,10 @@ print "using PySide"
 #'''
 
 class TreeNavWidget(QTreeView):
-
+    #TODO >> try: QTreeWidget
     def __init__(self):
         super(TreeNavWidget, self).__init__()
-        self.clicked.connect(self.item_clicked)
+        #self.clicked.connect(self.item_clicked)
 
     def update_me(self, root_node):
         self.tmp_model = QStandardItemModel(self)
@@ -37,6 +37,11 @@ class TreeNavWidget(QTreeView):
         self.tmp_model.setHorizontalHeaderLabels(["History Tree"])
         self.setModel(self.tmp_model)
         self.expandAll()
+
+        #treeView = QTreeView(self)
+        #treeView.setModel(myStandardItemModel)
+        self.clicked[QModelIndex].connect(self.item_clicked)
+
 
 
     def recursive_node(self, root_node, item_in):
@@ -54,16 +59,19 @@ class TreeNavWidget(QTreeView):
             item_in.appendRow(new_item)
 
 
-    def item_clicked(self):
-
+    def item_clicked(self, index):
+        '''
         print "item_clicked"
         print "self.sender() =", self.sender()
         print "dir(self.tmp_model.childEvent) =", dir(self.tmp_model.childEvent)
 
         print "self.senderSignalIndex() =", self.senderSignalIndex()
         print "self.tmp_model.index =", self.tmp_model.index
+        '''
 
+        item = self.tmp_model.itemFromIndex(index)
 
+        print "item.idx =", item.idx
 
 class MainWidget( QWidget):
     lst_commands = [
