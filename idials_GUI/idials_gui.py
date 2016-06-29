@@ -37,10 +37,31 @@ class TreeNavWidget(QTreeView):
         self.setModel(self.model)
         self.expandAll()
         self.clicked.connect(self.item_clicked)
+        #print "self.model Dr =", dir(self.model)
+        #self.model.itemChanged.connect(self.item_clicked)
 
     def update_me(self, root_node):
         self.tmp_model = QStandardItemModel(self)
         self.main_item = QStandardItem("1")
+
+        dir_main_item = '''
+        ['ItemType', 'Type', 'UserType', '__class__', '__delattr__', '__dict__', '__doc__', '__eq__',
+        '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__',
+        '__lshift__', '__lt__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__',
+        '__rlshift__', '__rrshift__', '__rshift__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',
+        'accessibleDescription', 'accessibleText', 'appendColumn', 'appendRow', 'appendRows', 'background',
+        'checkState', 'child', 'clone', 'column', 'columnCount', 'data', 'emitDataChanged', 'flags', 'font',
+        'foreground', 'hasChildren', 'icon', 'index', 'insertColumn', 'insertColumns', 'insertRow',
+        'insertRows', 'isCheckable', 'isDragEnabled', 'isDropEnabled', 'isEditable', 'isEnabled',
+        'isSelectable', 'isTristate', 'model', 'parent', 'read', 'removeColumn', 'removeColumns',
+        'removeRow', 'removeRows', 'row', 'rowCount', 'setAccessibleDescription', 'setAccessibleText',
+        'setBackground', 'setCheckState', 'setCheckable', 'setChild', 'setColumnCount', 'setData',
+        'setDragEnabled', 'setDropEnabled', 'setEditable', 'setEnabled', 'setFlags', 'setFont',
+        'setForeground', 'setIcon', 'setRowCount', 'setSelectable', 'setSizeHint', 'setStatusTip',
+        'setText', 'setTextAlignment', 'setToolTip', 'setTristate', 'setWhatsThis', 'sizeHint', 'sortChildren',
+        'statusTip', 'takeChild', 'takeColumn', 'takeRow', 'text', 'textAlignment', 'toolTip', 'type', 'whatsThis',
+        'write']'''
+
 
         self.recursive_node(root_node, self.main_item)
 
@@ -52,7 +73,13 @@ class TreeNavWidget(QTreeView):
 
         for child_node in root_node.children:
             new_item = QStandardItem(str(child_node.name))
-            new_item.idx = child_node.index
+
+            new_item.idx = child_node.index  # testing
+            new_item.setSelectable(True)     # testing
+
+            new_item.setEditable(False)      # not letting the user edit it
+
+
             self.recursive_node(child_node, new_item)
             item_in.appendRow(new_item)
 
@@ -65,8 +92,41 @@ class TreeNavWidget(QTreeView):
     def item_clicked(self):
 
         print "item_clicked"
-        print "self.sender() =", self.sender()
+        #print "self.sender() =", self.sender()
+        #print "dir(self.model.childEvent) =", dir(self.model.childEvent)
 
+        print "self.senderSignalIndex() =", self.senderSignalIndex()
+        #print "self.model.index ="
+
+        dir_model_ = '''
+        self.model Dr = ['__class__', '__delattr__', '__dict__', '__doc__', '__format__',
+        '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__',
+        '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'appendColumn',
+        'appendRow', 'beginInsertColumns', 'beginInsertRows', 'beginMoveColumns', 'beginMoveRows',
+        'beginRemoveColumns', 'beginRemoveRows', 'beginResetModel', 'blockSignals', 'buddy',
+        'canFetchMore', 'changePersistentIndex', 'changePersistentIndexList', 'childEvent',
+        'children', 'clear', 'columnCount', 'columnsAboutToBeInserted', 'columnsAboutToBeMoved',
+        'columnsAboutToBeRemoved', 'columnsInserted', 'columnsMoved', 'columnsRemoved', 'connect',
+        'connectNotify', 'createIndex', 'customEvent', 'data', 'dataChanged', 'decodeData', 'deleteLater',
+        'destroyed', 'disconnect', 'disconnectNotify', 'dropMimeData', 'dumpObjectInfo', 'dumpObjectTree',
+        'dynamicPropertyNames', 'emit', 'encodeData', 'endInsertColumns', 'endInsertRows', 'endMoveColumns',
+        'endMoveRows', 'endRemoveColumns', 'endRemoveRows', 'endResetModel', 'event', 'eventFilter', 'fetchMore',
+        'findChild', 'findChildren', 'findItems', 'flags', 'hasChildren', 'hasIndex', 'headerData', 'headerDataChanged',
+        'horizontalHeaderItem', 'index', 'indexFromItem', 'inherits', 'insertColumn', 'insertColumns', 'insertRow',
+        'insertRows', 'installEventFilter', 'invisibleRootItem', 'isWidgetType', 'item', 'itemChanged', 'itemData',
+        'itemFromIndex', 'itemPrototype', 'killTimer', 'layoutAboutToBeChanged', 'layoutChanged', 'match',
+        'metaObject', 'mimeData', 'mimeTypes', 'modelAboutToBeReset', 'modelReset', 'moveToThread',
+        'objectName', 'parent', 'persistentIndexList', 'property', 'receivers', 'registerUserData',
+        'removeColumn', 'removeColumns', 'removeEventFilter', 'removeRow', 'removeRows', 'reset',
+        'resetInternalData', 'revert', 'roleNames', 'rowCount', 'rowsAboutToBeInserted', 'rowsAboutToBeMoved',
+        'rowsAboutToBeRemoved', 'rowsInserted', 'rowsMoved', 'rowsRemoved', 'sender', 'senderSignalIndex',
+        'setColumnCount', 'setData', 'setHeaderData', 'setHorizontalHeaderItem', 'setHorizontalHeaderLabels',
+        'setItem', 'setItemData', 'setItemPrototype', 'setObjectName', 'setParent', 'setProperty', 'setRoleNames',
+        'setRowCount', 'setSortRole', 'setSupportedDragActions', 'setVerticalHeaderItem', 'setVerticalHeaderLabels',
+        'sibling', 'signalsBlocked', 'sort', 'sortRole', 'span', 'startTimer', 'staticMetaObject', 'submit',
+        'supportedDragActions', 'supportedDropActions', 'takeColumn', 'takeHorizontalHeaderItem', 'takeItem',
+        'takeRow', 'takeVerticalHeaderItem', 'thread', 'timerEvent', 'tr', 'trUtf8', 'verticalHeaderItem']
+        '''
 
 
 class MainWidget( QWidget):
