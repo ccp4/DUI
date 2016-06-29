@@ -39,7 +39,10 @@ class TreeNavWidget(QTreeView):
             new_item = QStandardItem(str(child_node.name))
             new_item.idx = child_node.index
 
-            if new_item.idx in self.lst_idx:
+            if new_item.idx == self.lst_idx[-1]:
+                new_item.setBackground(Qt.blue)
+                new_item.setForeground(Qt.white)
+            elif new_item.idx in self.lst_idx:
                 new_item.setBackground(Qt.cyan)
 
             #new_item.setSelectable(True)    # testing
