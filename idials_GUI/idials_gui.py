@@ -17,7 +17,7 @@ class TreeNavWidget(QTreeView):
     #TODO >> try: QTreeWidget
     def __init__(self):
         super(TreeNavWidget, self).__init__()
-        #self.clicked.connect(self.item_clicked)
+        self.clicked[QModelIndex].connect(self.item_clicked)
 
     def update_me(self, root_node):
         self.tmp_model = QStandardItemModel(self)
@@ -28,7 +28,6 @@ class TreeNavWidget(QTreeView):
         self.setModel(self.tmp_model)
         self.expandAll()
 
-        self.clicked[QModelIndex].connect(self.item_clicked)
 
 
     def recursive_node(self, root_node, item_in):
@@ -37,7 +36,7 @@ class TreeNavWidget(QTreeView):
             new_item = QStandardItem(str(child_node.name))
 
             new_item.idx = child_node.index  # testing
-            new_item.setSelectable(True)     # testing
+            #new_item.setSelectable(True)     # testing
 
             new_item.setEditable(False)      # not letting the user edit it
 
