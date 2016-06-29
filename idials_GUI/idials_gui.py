@@ -31,7 +31,10 @@ class TreeNavWidget(QTreeView):
 
     def update_me(self, root_node):
         self.tmp_model = QStandardItemModel(self)
+
         self.recursive_node(root_node, self.tmp_model)
+
+        self.tmp_model.setHorizontalHeaderLabels(["History Tree"])
         self.setModel(self.tmp_model)
         self.expandAll()
 
@@ -54,11 +57,11 @@ class TreeNavWidget(QTreeView):
     def item_clicked(self):
 
         print "item_clicked"
-        #print "self.sender() =", self.sender()
-        #print "dir(self.model.childEvent) =", dir(self.model.childEvent)
+        print "self.sender() =", self.sender()
+        print "dir(self.tmp_model.childEvent) =", dir(self.tmp_model.childEvent)
 
         print "self.senderSignalIndex() =", self.senderSignalIndex()
-        #print "self.model.index ="
+        print "self.tmp_model.index =", self.tmp_model.index
 
 
 
