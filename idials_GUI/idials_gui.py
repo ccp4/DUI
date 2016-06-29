@@ -15,7 +15,8 @@ print "using PySide"
 
 class TreeNavWidget(QTreeView):
     #TODO >> try: QTreeWidget
-    def __init__(self):
+    def __init__(self, parent = None):
+        self.super_parent = parent
         super(TreeNavWidget, self).__init__()
         self.clicked[QModelIndex].connect(self.item_clicked)
 
@@ -54,6 +55,7 @@ class TreeNavWidget(QTreeView):
         item = self.tmp_model.itemFromIndex(it_index)
 
         print "item.idx =", item.idx
+        self.super_parent.goto(item.idx)
 
 class MainWidget( QWidget):
     lst_commands = [
@@ -67,8 +69,6 @@ class MainWidget( QWidget):
                     "export"
                    ]
 
-
-
     def __init__(self):
         super(MainWidget, self).__init__()
 
@@ -77,13 +77,15 @@ class MainWidget( QWidget):
 
         big_vbox =  QVBoxLayout()
 
-        self.tree_nav = TreeNavWidget()
+        self.tree_nav = TreeNavWidget(self)
 
         big_vbox.addWidget(self.tree_nav)
 
+        '''
         self.btn_up =  QPushButton('\n    Up  \n', self)
         self.btn_up.clicked.connect(self.up_clicked)
         big_vbox.addWidget(self.btn_up)
+        '''
 
         midl_hbox =  QHBoxLayout()
 
@@ -102,15 +104,17 @@ class MainWidget( QWidget):
 
         big_vbox.addLayout(midl_hbox)
 
+        '''
         self.btn_dwn =  QPushButton('\n  Down \n', self)
         self.btn_dwn.clicked.connect(self.dwn_clicked)
         big_vbox.addWidget(self.btn_dwn)
+        '''
 
         self.setLayout(big_vbox)
         self.setWindowTitle('Shell dialog')
         self.show()
 
-
+        '''
     def up_clicked(self):
         print "up_clicked"
         print "self.curr_lin =", self.curr_lin
@@ -124,6 +128,13 @@ class MainWidget( QWidget):
         self.controller.goto(self.lst_line_number[self.curr_lin])
         print "...current.mode =", self.controller.get_current().name
         self._update_tree()
+        '''
+    def goto(self, idx):
+        print "goto: ", idx
+        self.controller.goto(idx)
+        print "...current.mode =", self.controller.get_current().name
+        self._update_tree()
+
 
     def go_clicked(self):
         print "go_clicked(self)"
