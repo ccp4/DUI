@@ -11,13 +11,13 @@ controller.set_mode("find_spots")
 controller.run()
 '''
 
-PyQt4_ver = '''
+#PyQt4_ver = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
 #'''
 
-#PySide_ver = '''
+PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
@@ -38,10 +38,7 @@ class TreeNavWidget(QTreeView):
         self.setModel(self.tmp_model)
         self.expandAll()
 
-        #treeView = QTreeView(self)
-        #treeView.setModel(myStandardItemModel)
         self.clicked[QModelIndex].connect(self.item_clicked)
-
 
 
     def recursive_node(self, root_node, item_in):
@@ -59,17 +56,13 @@ class TreeNavWidget(QTreeView):
             item_in.appendRow(new_item)
 
 
-    def item_clicked(self, index):
+    def item_clicked(self, it_index):
+        print "item_clicked"
         '''
         print "item_clicked"
-        print "self.sender() =", self.sender()
-        print "dir(self.tmp_model.childEvent) =", dir(self.tmp_model.childEvent)
-
         print "self.senderSignalIndex() =", self.senderSignalIndex()
-        print "self.tmp_model.index =", self.tmp_model.index
         '''
-
-        item = self.tmp_model.itemFromIndex(index)
+        item = self.tmp_model.itemFromIndex(it_index)
 
         print "item.idx =", item.idx
 
