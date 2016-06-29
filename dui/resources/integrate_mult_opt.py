@@ -686,7 +686,7 @@ class inner_widg( QWidget):
         box_algorithm_57.tmp_lst.append("nsigma")
         box_algorithm_57.tmp_lst.append("truncated")
         box_algorithm_57.tmp_lst.append("normal")
-        box_algorithm_57.tmp_lst.append("mosflm")
+        box_algorithm_57.tmp_lst.append("plane")
         box_algorithm_57.tmp_lst.append("tukey")
         for lst_itm in box_algorithm_57.tmp_lst:
             box_algorithm_57.addItem(lst_itm)
@@ -775,7 +775,7 @@ class inner_widg( QWidget):
         hbox_lay_min_pixels_65.addWidget(box_min_pixels_65)
         bg_box.addLayout(hbox_lay_min_pixels_65)
 
-        label_66 = QLabel("                mosflm")
+        label_66 = QLabel("                plane")
         label_66.setPalette(palette_scope)
         label_66.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_66)
@@ -788,7 +788,7 @@ class inner_widg( QWidget):
 
         box_fraction_67 = QDoubleSpinBox()
         box_fraction_67.setValue(1.0)
-        box_fraction_67.local_path = "integration.background.simple.outlier.mosflm.fraction"
+        box_fraction_67.local_path = "integration.background.simple.outlier.plane.fraction"
         box_fraction_67.valueChanged.connect(self.spnbox_changed)
         hbox_lay_fraction_67.addWidget(box_fraction_67)
         bg_box.addLayout(hbox_lay_fraction_67)
@@ -801,7 +801,7 @@ class inner_widg( QWidget):
 
         box_n_sigma_68 = QDoubleSpinBox()
         box_n_sigma_68.setValue(4.0)
-        box_n_sigma_68.local_path = "integration.background.simple.outlier.mosflm.n_sigma"
+        box_n_sigma_68.local_path = "integration.background.simple.outlier.plane.n_sigma"
         box_n_sigma_68.valueChanged.connect(self.spnbox_changed)
         hbox_lay_n_sigma_68.addWidget(box_n_sigma_68)
         bg_box.addLayout(hbox_lay_n_sigma_68)

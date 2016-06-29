@@ -47,12 +47,12 @@ class TreeNavWidget(QTreeView):
         self.update_model_tree()
 
 
-    def recursive_node(self, root_node, my_item):
+    def recursive_node(self, root_node, item_in):
 
         for child_node in root_node.children:
-            item = QStandardItem(str(child_node.name))
-            self.recursive_node(child_node, item)
-            my_item.appendRow(item)
+            new_item = QStandardItem(str(child_node.name))
+            self.recursive_node(child_node, new_item)
+            item_in.appendRow(new_item)
 
     def update_model_tree(self):
 
