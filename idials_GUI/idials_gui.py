@@ -45,7 +45,6 @@ class TreeNavWidget(QTreeView):
             elif new_item.idx in self.lst_idx:
                 new_item.setBackground(Qt.cyan)
 
-            #new_item.setSelectable(True)    # testing
             new_item.setEditable(False)      # not letting the user edit it
 
             self.recursive_node(child_node, new_item)
@@ -92,7 +91,6 @@ class MainWidget( QWidget):
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.go_clicked)
         midl_hbox.addWidget(self.btn_go)
-
 
         self.btn_nxt =  QPushButton('\n  Next \n', self)
         self.btn_nxt.clicked.connect(self.nxt_clicked)
@@ -150,30 +148,6 @@ class MainWidget( QWidget):
         print "history =", history
 
         current = self.controller.get_current()
-        previous = current.parent
-        print "current.index =", current.index
-        print "previous.index =", previous.index
-
-        self.lst_line_number = []
-
-        for lst_num, single_line in enumerate(history.split("\n")):
-            lst_data = single_line.lstrip().split(" ")
-
-            if( len(lst_data) >=3 ):
-                line_number = int(lst_data[0])
-                self.lst_line_number.append(line_number)
-                if( lst_data[len(lst_data) - 1] == "(current)" ):
-                    self.curr_lin = lst_num
-
-        self._update_gui_tree()
-        print "self.curr_lin =", self.curr_lin
-        print
-        print " Ready to run >>", self.controller.get_mode()
-
-
-    def _update_gui_tree(self):
-
-        current = self.controller.get_current()
 
         lst_path_idx = [current.index]
         lst_path_cmd = [current.name]
@@ -188,8 +162,8 @@ class MainWidget( QWidget):
 
         self.tree_nav.update_me(current, lst_path_idx)
 
-
-
+        print
+        print " Ready to run >>", self.controller.get_mode()
 
 
 if __name__ == '__main__':
