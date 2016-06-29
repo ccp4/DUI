@@ -1,16 +1,6 @@
 from dials.util.idials import Controller
 import sys
 
-linear_example_from_JMP = '''
-controller = Controller(".")
-controller.set_mode("import")
-controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
-controller.run()
-
-controller.set_mode("find_spots")
-controller.run()
-'''
-
 #PyQt4_ver = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
