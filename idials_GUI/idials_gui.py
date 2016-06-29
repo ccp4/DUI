@@ -81,12 +81,6 @@ class MainWidget( QWidget):
 
         big_vbox.addWidget(self.tree_nav)
 
-        '''
-        self.btn_up =  QPushButton('\n    Up  \n', self)
-        self.btn_up.clicked.connect(self.up_clicked)
-        big_vbox.addWidget(self.btn_up)
-        '''
-
         midl_hbox =  QHBoxLayout()
 
         self.btn_prv =  QPushButton('\n  Prev \n', self)
@@ -104,31 +98,10 @@ class MainWidget( QWidget):
 
         big_vbox.addLayout(midl_hbox)
 
-        '''
-        self.btn_dwn =  QPushButton('\n  Down \n', self)
-        self.btn_dwn.clicked.connect(self.dwn_clicked)
-        big_vbox.addWidget(self.btn_dwn)
-        '''
-
         self.setLayout(big_vbox)
         self.setWindowTitle('Shell dialog')
         self.show()
 
-        '''
-    def up_clicked(self):
-        print "up_clicked"
-        print "self.curr_lin =", self.curr_lin
-        self.controller.goto(self.lst_line_number[self.curr_lin - 2])
-        print "...current.mode =", self.controller.get_current().name
-        self._update_tree()
-
-    def dwn_clicked(self):
-        print "dw_clicked"
-        print "self.curr_lin =", self.curr_lin
-        self.controller.goto(self.lst_line_number[self.curr_lin])
-        print "...current.mode =", self.controller.get_current().name
-        self._update_tree()
-        '''
     def goto(self, idx):
         print "goto: ", idx
         self.controller.goto(idx)
