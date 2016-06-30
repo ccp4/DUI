@@ -120,10 +120,31 @@ class MainWidget( QWidget):
         self.setWindowTitle('Shell dialog')
         self.show()
 
+
+
+    def _set_current_mode(self):
+
+        print "...current.mode =", self.controller.get_current().name
+        self.next_cmd = self.controller.get_current().name
+        self.controller.set_mode(self.next_cmd)
+
+
     def goto(self, idx):
         print "goto: ", idx
+
         self.controller.goto(idx)
-        print "...current.mode =", self.controller.get_current().name
+        self._set_current_mode()
+        self._update_tree()
+
+
+    def prv_clicked(self):
+        print "prv_clicked(self)"
+
+        current = self.controller.get_current()
+        previous = current.parent
+
+        self.controller.goto(previous.index)
+        self._set_current_mode()
         self._update_tree()
 
 
@@ -140,6 +161,7 @@ class MainWidget( QWidget):
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
         self._update_tree()
 
+
     def nxt_clicked(self):
         print "nxt_clicked(self)"
         last_mod = self.controller.get_current().name
@@ -149,16 +171,6 @@ class MainWidget( QWidget):
 
         self.controller.set_mode(self.next_cmd)
         self._update_tree()
-
-    def prv_clicked(self):
-        print "prv_clicked(self)"
-
-        current = self.controller.get_current()
-        previous = current.parent
-
-        self.controller.goto(previous.index)
-        self._update_tree()
-
 
     def _update_tree(self):
 
