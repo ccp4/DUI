@@ -37,13 +37,26 @@ class TreeNavWidget(QTreeView):
 
         for child_node in root_node.children:
             new_item = QStandardItem(str(child_node.name))
-            new_item.idx = child_node.index
 
-            if new_item.idx == self.lst_idx[-1]:
+            new_item.idials_node = child_node
+
+            new_item.idx = child_node.index
+            new_item.success = child_node.success
+
+            if new_item.idials_node.index == self.lst_idx[-1]:
                 new_item.setBackground(Qt.blue)
                 new_item.setForeground(Qt.white)
-            elif new_item.idx in self.lst_idx:
-                new_item.setBackground(Qt.cyan)
+            elif new_item.idials_node.index in self.lst_idx:
+                new_item.setBackground(Qt.white)
+                new_item.setForeground(Qt.blue)
+            elif new_item.idials_node.success == True:
+                new_item.setBackground(Qt.white)
+                new_item.setForeground(Qt.black)
+            else:
+                new_item.setBackground(Qt.white)
+                new_item.setForeground(Qt.gray)
+
+
 
             new_item.setEditable(False)      # not letting the user edit it
 
@@ -54,9 +67,14 @@ class TreeNavWidget(QTreeView):
     def item_clicked(self, it_index):
         print "item_clicked"
         item = self.tmp_model.itemFromIndex(it_index)
-        print "item.idx =", item.idx
-        self.super_parent.goto(item.idx)
-        print "Tst"
+
+
+        if item.idials_node.success == True:
+            print "item.idials_node.index =", item.idials_node.index
+            self.super_parent.goto(item.idials_node.index)
+        else:
+            print "cannot jump to failed step"
+            self.super_parent.goto(item.idials_node.parent.index)
 
 class MainWidget( QWidget):
     lst_commands = [
@@ -89,7 +107,7 @@ class MainWidget( QWidget):
         midl_hbox.addWidget(self.btn_prv)
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
-        self.btn_go.clicked.connect(self.go_clicked)
+        self.btn_go.clicked.connect(self.run_clicked)
         midl_hbox.addWidget(self.btn_go)
 
         self.btn_nxt =  QPushButton('\n  Next \n', self)
@@ -109,8 +127,8 @@ class MainWidget( QWidget):
         self._update_tree()
 
 
-    def go_clicked(self):
-        print "go_clicked(self)"
+    def run_clicked(self):
+        print "run_clicked(self)"
         print "Running ", self.next_cmd
 
         self.controller.set_mode(self.next_cmd)
@@ -148,6 +166,16 @@ class MainWidget( QWidget):
         print "history =", history
 
         current = self.controller.get_current()
+        dir_current = '''
+        ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__',
+        '__hash__', '__init__', '__iter__', '__module__', '__new__', '__reduce__',
+        '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',
+        '__weakref__', 'applied', 'as_dict', 'children', 'description', 'directory', 'experiments',
+        'from_dict', 'index', 'name', 'output', 'parameters', 'parent', 'reflections', 'report',
+        'success', 'workspace']
+        '''
+        #print "dir(current) =", dir(current)
+        print "current.success =", current.success
 
         lst_path_idx = [current.index]
         lst_path_cmd = [current.name]
