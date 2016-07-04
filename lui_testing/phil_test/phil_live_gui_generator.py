@@ -103,10 +103,10 @@ class inner_widg( QWidget):
     def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
         super(inner_widg, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.palette_scope = QPalette()
-        self.palette_scope.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
-        self.palette_object = QPalette()
-        self.palette_object.setColor(QPalette.Foreground,Qt.black)
+        self.plt_scp = QPalette()
+        self.plt_scp.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
+        self.plt_obj = QPalette()
+        self.plt_obj.setColor(QPalette.Foreground,Qt.black)
         self.bg_box = QVBoxLayout(self)
 
         self.phil_list2gui(lst_obj, qt_tool)
@@ -124,9 +124,151 @@ class inner_widg( QWidget):
 
             if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
                 lst_widg[nm] = QLabel(" " * int(obj.indent * 4) + str(obj.name))
-                lst_widg[nm].setPalette(self.palette_scope)
+                lst_widg[nm].setPalette(self.plt_scp)
                 lst_widg[nm].setFont(QFont("Monospace", 10, QFont.Bold))
                 self.bg_box.addWidget(lst_widg[nm])
+
+
+
+
+
+            else:
+                multiple_index = False
+                if(obj.type.phil_type == 'float' or
+                   obj.type.phil_type == 'int'   or
+                   obj.type.phil_type == 'str'   or
+                   obj.type.phil_type == 'bool'  or
+                   obj.type.phil_type == 'choice' ):
+
+                    tmp_h_box = QHBoxLayout()
+
+                    indent = str(obj.full_path()).count('.')
+                    tmp_label  = QLabel(" " * indent * 4 + str(obj.name))
+                    tmp_label.setPalette(self.plt_obj)
+                    tmp_label.setFont(QFont("Monospace", 10))
+
+                    tmp_h_box.addWidget(tmp_label)
+
+                    something_else = False
+                    if(obj.type.phil_type == 'float' or
+                       obj.type.phil_type == 'int'   or
+                       obj.type.phil_type == 'str'     ):
+
+                        if( obj.type.phil_type == 'float' ):
+                            lst_widg[nm] = QDoubleSpinBox()
+
+                        elif( obj.type.phil_type == 'int' ):
+                            lst_widg[nm] = QSpinBox()
+
+                        elif( obj.type.phil_type == 'str' ):
+                            lst_widg[nm] = QLineEdit()
+
+                        if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
+
+                            if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
+                                print "TODO fix the libtbx.AutoType in double Phil parameter"
+
+                            else:
+                                lst_widg[nm].setValue(obj.extract())
+
+                        lst_widg[nm].local_path = str(obj.full_path())
+
+                        if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
+                            lst_widg[nm].valueChanged.connect(self.spnbox_changed)
+                        else:
+                            lst_widg[nm].textChanged.connect(self.spnbox_changed)
+
+                    elif( obj.type.phil_type == 'bool' ):
+
+                        lst_widg[nm] = QComboBox()
+
+                        lst_widg[nm].local_path = str(obj.full_path())
+                        lst_widg[nm].tmp_lst=[]
+                        lst_widg[nm].tmp_lst.append("True")
+                        lst_widg[nm].tmp_lst.append("False")
+
+                        for lst_itm in lst_widg[nm].tmp_lst:
+                            lst_widg[nm].addItem(lst_itm)
+
+                        if( str(obj.extract()) == "False" ):
+                            lst_widg[nm].setCurrentIndex(1)
+
+                        lst_widg[nm].currentIndexChanged.connect(self.combobox_changed)
+
+                    elif( obj.type.phil_type == 'choice' ):
+
+                        lst_widg[nm] = QComboBox()
+                        lst_widg[nm].local_path = str(obj.full_path())
+                        lst_widg[nm].tmp_lst=[]
+                        pos = 0
+                        for num, opt in enumerate(obj.words):
+                            opt = str(opt)
+                            if( opt[0] == "*" ):
+                                opt = opt[1:]
+                                pos = num
+
+                            lst_widg[nm].tmp_lst.append(opt)
+
+                        for lst_itm in lst_widg[nm].tmp_lst:
+                            lst_widg[nm].addItem(lst_itm)
+
+                        lst_widg[nm].setCurrentIndex(pos)
+                        lst_widg[nm].currentIndexChanged.connect(self.combobox_changed)
+
+                elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
+
+                    if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
+                        obj.type.size_max == obj.type.size_min and obj.type.size_max != None ):
+                        tmp_h_box_lst = []
+                        tmp_label_lst = []
+                        multi_widg_lst = []
+                        indent = str(obj.full_path()).count('.')
+
+                        for indx in range(obj.type.size_max):
+                            #tmp_h_box_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
+                            tmp_h_box_lst.append(QHBoxLayout())
+
+                            tmp_label_lst.append(QLabel(" " * indent * 4 + str(obj.name) + "[" + str(indx + 1) + "]"))
+                            tmp_label_lst[indx].setPalette(self.plt_obj)
+                            tmp_label_lst[indx].setFont(QFont("Monospace", 10))
+
+                            tmp_h_box_lst[indx].addWidget(tmp_label_lst[indx])
+
+                            if(obj.type.phil_type == 'ints'):
+                                new_widg = QSpinBox()
+
+                            elif( obj.type.phil_type == 'floats' ):
+                                new_widg = QDoubleSpinBox()
+
+                            multi_widg_lst.append(new_widg)
+                            multi_widg_lst[indx].local_path = str(obj.full_path())
+                            multi_widg_lst[indx].valueChanged.connect(self.spnbox_changed)
+
+                        multiple_index = True
+
+                    else:
+                        something_else = True
+
+                else:
+
+                    print
+                    print "_____________________ << WARNING find something ELSE"
+                    print "_____________________ << full_path =", obj.full_path()
+                    print "_____________________ << obj.type.phil_type =", obj.type.phil_type
+                    print "_____________________ << obj.type =", obj.type
+                    print
+                    something_else = True
+
+                if( something_else == False ):
+                    if(multiple_index == False):
+                        tmp_h_box.addWidget(lst_widg[nm])
+                        self.bg_box.addLayout(tmp_h_box)
+                    else:
+                        for indx in range(obj.type.size_max):
+                            tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
+                            self.bg_box.addLayout(tmp_h_box_lst[indx])
+
+
 
 
 
@@ -175,7 +317,7 @@ if __name__ == '__main__':
     print "using ", gui_lib.pyhon_binding
     qt_tool = gui_lib.pyhon_binding
     '''
-    #TODO uncomment previous code
+    #TODO uncomment previous code and make it work
     qt_tool = "PyQt4"
 
 
