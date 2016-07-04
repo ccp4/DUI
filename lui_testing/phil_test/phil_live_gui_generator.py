@@ -100,18 +100,35 @@ class tree_2_lineal(object):
 
 class inner_widg( QWidget):
     item_changed = pyqtSignal()
-    def __init__(self, parent = None):
+    def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
         super(inner_widg, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        palette_scope = QPalette()
-        palette_scope.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
-        palette_object = QPalette()
-        palette_object.setColor(QPalette.Foreground,Qt.black)
-        bg_box =  QVBoxLayout(self)
+        self.palette_scope = QPalette()
+        self.palette_scope.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
+        self.palette_object = QPalette()
+        self.palette_object.setColor(QPalette.Foreground,Qt.black)
+        self.bg_box = QVBoxLayout(self)
 
+        self.phil_list2gui(lst_obj, qt_tool)
 
-        self.setLayout(bg_box)
+        self.setLayout(self.bg_box)
         self.show()
+
+        print "Done 02"
+
+
+    def phil_list2gui(self, lst_obj, qt_tool):
+
+        lst_widg = lst_obj
+        for nm, obj in enumerate(lst_obj):
+
+            if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
+                lst_widg[nm] = QLabel(" " * int(obj.indent * 4) + str(obj.name))
+                lst_widg[nm].setPalette(self.palette_scope)
+                lst_widg[nm].setFont(QFont("Monospace", 10, QFont.Bold))
+                self.bg_box.addWidget(lst_widg[nm])
+
+
 
     def spnbox_changed(self, value):
         sender = self.sender()
@@ -135,10 +152,10 @@ class inner_widg( QWidget):
         self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
 
 class ParamMainWidget( QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
         super(ParamMainWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.scrollable_widget = inner_widg(self.super_parent)
+        self.scrollable_widget = inner_widg( lst_obj, qt_tool, parent = self.super_parent)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
         hbox =  QHBoxLayout()
@@ -166,34 +183,29 @@ if __name__ == '__main__':
     lst_phl_obj = []
 
     from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
-    lst_phl_obj.append([phil_scope_find_spots, "find_spots_mult_opt"])
-    tmp_off = '''
+    lst_phl_obj.append(phil_scope_find_spots)
     from dials.command_line.index import phil_scope as phil_scope_index
-    lst_phl_obj.append([phil_scope_index, "index_mult_opt"])
+    lst_phl_obj.append(phil_scope_index)
     from dials.command_line.refine import phil_scope as phil_scope_refine
-    lst_phl_obj.append([phil_scope_refine, "refine_mult_opt"])
+    lst_phl_obj.append(phil_scope_refine)
     from dials.command_line.integrate import phil_scope as phil_scope_integrate
-    lst_phl_obj.append([phil_scope_integrate, "integrate_mult_opt"])
+    lst_phl_obj.append(phil_scope_integrate)
 
     try:
         from dials.command_line.export import phil_scope as phil_scope_export
     except:
         from dials.command_line.export_mtz import phil_scope as phil_scope_export
 
-    lst_phl_obj.append([phil_scope_export, "export_mult_opt"])
-    '''
+    lst_phl_obj.append(phil_scope_export)
 
 
-    for phl_obj in lst_phl_obj:
-        lst_obj = tree_2_lineal(phl_obj[0].objects)
-        '''
-        phil_list_2_disc(lst_obj(), phl_obj[1], qt_tool)
-        #print phl_obj[0].show()
-        '''
 
+    lst_pos = 0
+
+    lst_phl_obj[lst_pos]= tree_2_lineal(lst_phl_obj[lst_pos].objects)
 
     app =  QApplication(sys.argv)
-    ex = ParamMainWidget()
+    ex = ParamMainWidget(lst_phl_obj[lst_pos](), qt_tool)
     sys.exit(app.exec_())
 
 
