@@ -128,10 +128,6 @@ class inner_widg( QWidget):
                 lst_widg[nm].setFont(QFont("Monospace", 10, QFont.Bold))
                 self.bg_box.addWidget(lst_widg[nm])
 
-
-
-
-
             else:
                 multiple_index = False
                 if(obj.type.phil_type == 'float' or
@@ -225,14 +221,18 @@ class inner_widg( QWidget):
                         indent = str(obj.full_path()).count('.')
 
                         for indx in range(obj.type.size_max):
-                            #tmp_h_box_str = "hbox_lay_" + str(obj.name) + "_" + str(nm) + "_" + str(indx)
-                            tmp_h_box_lst.append(QHBoxLayout())
 
-                            tmp_label_lst.append(QLabel(" " * indent * 4 + str(obj.name) + "[" + str(indx + 1) + "]"))
-                            tmp_label_lst[indx].setPalette(self.plt_obj)
-                            tmp_label_lst[indx].setFont(QFont("Monospace", 10))
+                            new_labl = QLabel(" " * indent * 4 + str(obj.name)
+                                              + "[" + str(indx + 1) + "]")
 
-                            tmp_h_box_lst[indx].addWidget(tmp_label_lst[indx])
+                            new_labl.setPalette(self.plt_obj)
+                            new_labl.setFont(QFont("Monospace", 10))
+                            tmp_label_lst.append(new_labl)
+
+
+                            new_hbox = QHBoxLayout()
+                            new_hbox.addWidget(tmp_label_lst[indx])
+                            tmp_h_box_lst.append(new_hbox)
 
                             if(obj.type.phil_type == 'ints'):
                                 new_widg = QSpinBox()
@@ -240,9 +240,9 @@ class inner_widg( QWidget):
                             elif( obj.type.phil_type == 'floats' ):
                                 new_widg = QDoubleSpinBox()
 
+                            new_widg.local_path = str(obj.full_path())
+                            new_widg.valueChanged.connect(self.spnbox_changed)
                             multi_widg_lst.append(new_widg)
-                            multi_widg_lst[indx].local_path = str(obj.full_path())
-                            multi_widg_lst[indx].valueChanged.connect(self.spnbox_changed)
 
                         multiple_index = True
 
@@ -263,14 +263,11 @@ class inner_widg( QWidget):
                     if(multiple_index == False):
                         tmp_h_box.addWidget(lst_widg[nm])
                         self.bg_box.addLayout(tmp_h_box)
+
                     else:
                         for indx in range(obj.type.size_max):
                             tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
                             self.bg_box.addLayout(tmp_h_box_lst[indx])
-
-
-
-
 
     def spnbox_changed(self, value):
         sender = self.sender()
@@ -321,7 +318,6 @@ if __name__ == '__main__':
     qt_tool = "PyQt4"
 
 
-
     lst_phl_obj = []
 
     from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
@@ -340,16 +336,11 @@ if __name__ == '__main__':
 
     lst_phl_obj.append(phil_scope_export)
 
-
-
-    lst_pos = 0
+    lst_pos = 3
 
     lst_phl_obj[lst_pos]= tree_2_lineal(lst_phl_obj[lst_pos].objects)
 
     app =  QApplication(sys.argv)
     ex = ParamMainWidget(lst_phl_obj[lst_pos](), qt_tool)
     sys.exit(app.exec_())
-
-
-
 
