@@ -1,16 +1,59 @@
 
-from phil_live_gui_generator import tmp_main
+from phil_live_gui_generator import inner_widg, tree_2_lineal
+import sys
+
+
+'''
+from python_qt_bind import GuiBinding
+gui_lib = GuiBinding()
+print "using ", gui_lib.pyhon_binding
+qt_tool = gui_lib.pyhon_binding
+'''
+#TODO uncomment previous code and make it work
+qt_tool = "PyQt4"
+
+
+if( qt_tool == "PyQt4" ):
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "using PyQt4"
+
+else:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    pyqtSignal = Signal
+    print "using PySide"
+
+
+class ParamMainWidget( QWidget):
+    def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
+        super(ParamMainWidget, self).__init__(parent)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.scrollable_widget = inner_widg( lst_obj, qt_tool, parent = self.super_parent)
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(self.scrollable_widget)
+        hbox =  QHBoxLayout()
+        hbox.addWidget(scrollArea)
+        self.setLayout(hbox)
+        self.setWindowTitle('Phil dialog')
+        self.show()
+
+
+
+def tmp_main(phl_obj):
+
+    lst_obj = tree_2_lineal(phl_obj.objects)
+    multipl_phil_lst = lst_obj()
+
+    app =  QApplication(sys.argv)
+    ex = ParamMainWidget(multipl_phil_lst, qt_tool)
+
+    sys.exit(app.exec_())
+
+
 
 if __name__ == '__main__':
 
-    '''
-    from python_qt_bind import GuiBinding
-    gui_lib = GuiBinding()
-    print "using ", gui_lib.pyhon_binding
-    qt_tool = gui_lib.pyhon_binding
-    '''
-    #TODO uncomment previous code and make it work
-    qt_tool = "PyQt4"
 
 
     lst_phl_obj = []
@@ -33,3 +76,5 @@ if __name__ == '__main__':
 
     lst_pos = 3
     tmp_main(lst_phl_obj[lst_pos])
+
+

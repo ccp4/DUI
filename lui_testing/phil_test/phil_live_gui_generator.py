@@ -293,30 +293,3 @@ class inner_widg( QWidget):
         print str_path
         self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
 
-class ParamMainWidget( QWidget):
-    def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
-        super(ParamMainWidget, self).__init__(parent)
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.scrollable_widget = inner_widg( lst_obj, qt_tool, parent = self.super_parent)
-        scrollArea = QScrollArea()
-        scrollArea.setWidget(self.scrollable_widget)
-        hbox =  QHBoxLayout()
-        hbox.addWidget(scrollArea)
-        self.setLayout(hbox)
-        self.setWindowTitle('Phil dialog')
-        self.show()
-
-    def to_be_caled_from_son_widg(self):
-        print "from parent parent_widget"
-
-
-
-def tmp_main(phl_obj):
-
-    lst_obj = tree_2_lineal(phl_obj.objects)
-    multipl_phil_widg = lst_obj()
-
-    app =  QApplication(sys.argv)
-    ex = ParamMainWidget(multipl_phil_widg, qt_tool)
-
-    sys.exit(app.exec_())
