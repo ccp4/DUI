@@ -26,10 +26,10 @@ else:
 
 
 class ParamMainWidget( QWidget):
-    def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
+    def __init__(self, lst_obj, parent = None):
         super(ParamMainWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.scrollable_widget = inner_widg( lst_obj, qt_tool, parent = self.super_parent)
+        self.scrollable_widget = inner_widg( lst_obj, parent = self.super_parent)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
         hbox =  QHBoxLayout()
@@ -46,15 +46,12 @@ def tmp_main(phl_obj):
     multipl_phil_lst = lst_obj()
 
     app =  QApplication(sys.argv)
-    ex = ParamMainWidget(multipl_phil_lst, qt_tool)
+    ex = ParamMainWidget(multipl_phil_lst)
 
     sys.exit(app.exec_())
 
 
-
 if __name__ == '__main__':
-
-
 
     lst_phl_obj = []
 

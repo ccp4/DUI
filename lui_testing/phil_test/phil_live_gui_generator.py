@@ -38,7 +38,7 @@ except ImportError, e:
 qt_tool = "PyQt4"
 
 #self.src_code_1 = []
-import sys
+#import sys
 
 if( qt_tool == "PyQt4" ):
     from PyQt4.QtGui import *
@@ -101,7 +101,7 @@ class tree_2_lineal(object):
 
 class inner_widg( QWidget):
     item_changed = pyqtSignal()
-    def __init__(self, lst_obj, qt_tool = "PyQt4", parent = None):
+    def __init__(self, lst_obj, parent = None):
         super(inner_widg, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.plt_scp = QPalette()
@@ -110,13 +110,13 @@ class inner_widg( QWidget):
         self.plt_obj.setColor(QPalette.Foreground,Qt.black)
         self.bg_box = QVBoxLayout(self)
 
-        self.phil_list2gui(lst_obj, qt_tool)
+        self.phil_list2gui(lst_obj)
 
         self.setLayout(self.bg_box)
         self.show()
 
 
-    def phil_list2gui(self, lst_obj, qt_tool):
+    def phil_list2gui(self, lst_obj):
 
         lst_widg = lst_obj
 
