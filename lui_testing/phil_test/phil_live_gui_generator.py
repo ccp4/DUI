@@ -99,10 +99,10 @@ class tree_2_lineal(object):
                 print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
 
 
-class inner_widg( QWidget):
+class PhilWidget( QWidget):
     item_changed = pyqtSignal()
-    def __init__(self, lst_obj, parent = None):
-        super(inner_widg, self).__init__(parent)
+    def __init__(self, phl_obj, parent = None):
+        super(PhilWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.plt_scp = QPalette()
         self.plt_scp.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
@@ -110,7 +110,10 @@ class inner_widg( QWidget):
         self.plt_obj.setColor(QPalette.Foreground,Qt.black)
         self.bg_box = QVBoxLayout(self)
 
-        self.phil_list2gui(lst_obj)
+        lst_obj = tree_2_lineal(phl_obj.objects)
+        multipl_phil_lst = lst_obj()
+
+        self.phil_list2gui(multipl_phil_lst)
 
         self.setLayout(self.bg_box)
         self.show()

@@ -1,5 +1,5 @@
 
-from phil_live_gui_generator import inner_widg, tree_2_lineal
+from phil_live_gui_generator import PhilWidget
 import sys
 
 
@@ -26,10 +26,10 @@ else:
 
 
 class ParamMainWidget( QWidget):
-    def __init__(self, lst_obj, parent = None):
+    def __init__(self, phl_obj, parent = None):
         super(ParamMainWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.scrollable_widget = inner_widg( lst_obj, parent = self.super_parent)
+        self.scrollable_widget = PhilWidget( phl_obj, parent = self.super_parent)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
         hbox =  QHBoxLayout()
@@ -37,18 +37,6 @@ class ParamMainWidget( QWidget):
         self.setLayout(hbox)
         self.setWindowTitle('Phil dialog')
         self.show()
-
-
-
-def tmp_main(phl_obj):
-
-    lst_obj = tree_2_lineal(phl_obj.objects)
-    multipl_phil_lst = lst_obj()
-
-    app =  QApplication(sys.argv)
-    ex = ParamMainWidget(multipl_phil_lst)
-
-    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
@@ -71,7 +59,10 @@ if __name__ == '__main__':
 
     lst_phl_obj.append(phil_scope_export)
 
-    lst_pos = 3
-    tmp_main(lst_phl_obj[lst_pos])
+    lst_pos = 0
+    phl_obj = lst_phl_obj[lst_pos]
 
+    app =  QApplication(sys.argv)
+    ex = ParamMainWidget(phl_obj)
 
+    sys.exit(app.exec_())
