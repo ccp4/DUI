@@ -65,7 +65,7 @@ class tree_2_lineal(object):
     '''
     Recursively navigates the Phil objects in a way that the final
     self.lst_obj is a lineal list without ramifications, this final list
-    will be used by phil_list_2_disc() to generate runnable code
+    will be used later to generate a dynamic GUI
     '''
 
     def __init__(self, phl_obj):
@@ -78,7 +78,7 @@ class tree_2_lineal(object):
     def deep_in_rec(self, phl_obj):
 
         for single_obj in phl_obj:
-            if( single_obj.is_definition):
+            if( single_obj.is_definition ):
                 self.lst_obj.append(single_obj)
 
             elif( single_obj.is_scope ):
@@ -86,6 +86,7 @@ class tree_2_lineal(object):
                 scope_info = ScopeData()
                 scope_info.name = str(single_obj.name)
                 scope_info.f_path = str(single_obj.full_path())
+                scope_info.soy_scope = True
 
                 #print "scope_info.f_path =", scope_info.f_path
                 scope_info.indent = scope_info.f_path.count('.')
@@ -114,15 +115,14 @@ class inner_widg( QWidget):
         self.setLayout(self.bg_box)
         self.show()
 
-        print "Done 02"
-
 
     def phil_list2gui(self, lst_obj, qt_tool):
 
         lst_widg = lst_obj
+
         for nm, obj in enumerate(lst_obj):
 
-            if( str(type(obj)) == "<class '__main__.ScopeData'>" ):
+            if( str(type(obj))[-11:-2] == "ScopeData"):
                 lst_widg[nm] = QLabel(" " * int(obj.indent * 4) + str(obj.name))
                 lst_widg[nm].setPalette(self.plt_scp)
                 lst_widg[nm].setFont(QFont("Monospace", 10, QFont.Bold))
@@ -130,6 +130,9 @@ class inner_widg( QWidget):
 
             else:
                 multiple_index = False
+
+                #print "dir(obj) =", dir(obj)
+
                 if(obj.type.phil_type == 'float' or
                    obj.type.phil_type == 'int'   or
                    obj.type.phil_type == 'str'   or
@@ -306,41 +309,14 @@ class ParamMainWidget( QWidget):
     def to_be_caled_from_son_widg(self):
         print "from parent parent_widget"
 
-if __name__ == '__main__':
-
-    '''
-    from python_qt_bind import GuiBinding
-    gui_lib = GuiBinding()
-    print "using ", gui_lib.pyhon_binding
-    qt_tool = gui_lib.pyhon_binding
-    '''
-    #TODO uncomment previous code and make it work
-    qt_tool = "PyQt4"
 
 
-    lst_phl_obj = []
+def tmp_main(phl_obj):
 
-    from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
-    lst_phl_obj.append(phil_scope_find_spots)
-    from dials.command_line.index import phil_scope as phil_scope_index
-    lst_phl_obj.append(phil_scope_index)
-    from dials.command_line.refine import phil_scope as phil_scope_refine
-    lst_phl_obj.append(phil_scope_refine)
-    from dials.command_line.integrate import phil_scope as phil_scope_integrate
-    lst_phl_obj.append(phil_scope_integrate)
-
-    try:
-        from dials.command_line.export import phil_scope as phil_scope_export
-    except:
-        from dials.command_line.export_mtz import phil_scope as phil_scope_export
-
-    lst_phl_obj.append(phil_scope_export)
-
-    lst_pos = 3
-
-    lst_phl_obj[lst_pos]= tree_2_lineal(lst_phl_obj[lst_pos].objects)
+    lst_obj = tree_2_lineal(phl_obj.objects)
+    multipl_phil_widg = lst_obj()
 
     app =  QApplication(sys.argv)
-    ex = ParamMainWidget(lst_phl_obj[lst_pos](), qt_tool)
-    sys.exit(app.exec_())
+    ex = ParamMainWidget(multipl_phil_widg, qt_tool)
 
+    sys.exit(app.exec_())
