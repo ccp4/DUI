@@ -283,8 +283,10 @@ class PhilWidget( QWidget):
         print value
         print "local_path =",
         str_path = str(sender.local_path)
-        self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
-        self.super_parent.update_lin_txt(sender.local_path, value)
+        print "local_path =", str_path
+
+        self.super_parent.update_lin_txt(str_path, str_value)
+        #self.super_parent.update_lin_txt(sender.local_path, value)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -294,5 +296,5 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.super_parent.update_lin_txt(str_path, str_value, from_simple = False)
+        self.super_parent.update_lin_txt(str_path, str_value)
 

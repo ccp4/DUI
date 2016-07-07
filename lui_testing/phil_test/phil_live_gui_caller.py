@@ -26,10 +26,10 @@ else:
 
 
 class ParamMainWidget( QWidget):
-    def __init__(self, phl_obj, parent = None):
-        super(ParamMainWidget, self).__init__(parent)
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        self.scrollable_widget = PhilWidget( phl_obj, parent = self.super_parent)
+    def __init__(self, phl_obj):
+        super(ParamMainWidget, self).__init__()
+        #self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
         hbox =  QHBoxLayout()
@@ -38,6 +38,8 @@ class ParamMainWidget( QWidget):
         self.setWindowTitle('Phil dialog')
         self.show()
 
+    def update_lin_txt(self, str_path, str_value):
+        print "running {", str_path, "=", str_value,"}"
 
 if __name__ == '__main__':
 
@@ -59,10 +61,7 @@ if __name__ == '__main__':
 
     lst_phl_obj.append(phil_scope_export)
 
-    lst_pos = 0
-    phl_obj = lst_phl_obj[lst_pos]
-
     app =  QApplication(sys.argv)
-    ex = ParamMainWidget(phl_obj)
+    ex = ParamMainWidget(lst_phl_obj[0])
 
     sys.exit(app.exec_())
