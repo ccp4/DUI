@@ -1,34 +1,16 @@
-#!/usr/bin/env python
-#
-# image_viewer.py
-#
-#  Copyright (C) 2013 Diamond Light Source
-#
-#  Exercise starting from Richard Gildea's image_viewer.py command line
-#
-
-from __future__ import division
-from dials.array_family import flex # import dependency
-
+import sys
+from dxtbx.datablock import DataBlockFactory
+from data_2_img import wx_img_w_cpp
+from dials.array_family import flex
+from PyQt4.QtGui import QImage, QLabel, QPixmap, QApplication
+import numpy as np
 
 if __name__ == '__main__':
 
-    from dials.util.options import OptionParser
-    from dials.util.options import flatten_datablocks
-    import libtbx.load_env
+    json_name = str(sys.argv[1])
+    print "json_name =", json_name
 
-    usage_message = """
-     %s datablock.json [reflections.pickle]
-     """ %libtbx.env.dispatcher_name
-    parser = OptionParser(usage=usage_message,
-                          read_datablocks=True,
-                          read_datablocks_from_images=True)
-
-    params, options = parser.parse_args(show_diff_phil=True)
-
-    datablocks = flatten_datablocks(params.input.datablock)
-
-    print "Hi tst"
+    datablocks = DataBlockFactory.from_json_file(json_name)
 
     if len(datablocks) > 0:
         assert(len(datablocks) == 1)
@@ -39,37 +21,12 @@ if __name__ == '__main__':
     else:
         raise RuntimeError("No imageset could be constructed")
 
-
-    '''
-    from dials.util.spotfinder_wrap import spot_wrapper
-
-    wrapper = spot_wrapper(params)
-    #wrapper.display(imagesets=imagesets, crystals = None)
-
-    img_n5 = wrapper.load_image(5) # wrong way
-
-    print dir(wrapper)
-    '''
     print "len(imagesets) =", len(imagesets)
     print "type(imagesets) =", type(imagesets)
 
     first_data = imagesets[0]
 
     print "type(first_data) =", type(first_data)
-    dir_first_data = '''
-    '__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__',
-    '__getattribute__', '__getitem__', '__hash__', '__init__', '__iter__',
-    '__len__', '__module__', '__new__', '__reduce__', '__reduce_ex__',
-    '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',
-    '__weakref__', '_beam', '_detector', '_get_data_range', '_goniometer',
-    '_image_index', '_indices', '_models', '_reader', '_scan', '_to_array_all',
-    '_to_array_w_range', '_truncate_range', 'complete_set', 'external_lookup',
-    'get_array_range', 'get_beam', 'get_corrected_data', 'get_detector',
-    'get_detectorbase', 'get_gain', 'get_goniometer', 'get_image_identifier',
-    'get_image_models', 'get_image_size', 'get_mask', 'get_path', 'get_pedestal',
-    'get_raw_data', 'get_scan', 'get_template', 'image_cache', 'indices',
-    'is_valid', 'paths', 'reader', 'set_beam', 'set_detector', 'set_goniometer',
-    'set_scan', 'to_array']'''
 
     #type(first_data) = <class 'dxtbx.imageset.ImageSweep'>
 
@@ -77,3 +34,36 @@ if __name__ == '__main__':
     my_array = first_data.to_array()
     print "Done to_array()"
     print "type(my_array) =", type(my_array)
+
+
+    my_array_double = my_array.as_double()
+    print "dir(my_array) =", dir(my_array)
+    print "type(my_array_double) =", type(my_array_double)
+    print "type(my_array) =", type(my_array)
+
+
+    flex_2d_data = flex.double(flex.grid(500, 250),0)
+    flex_2d_mask = flex.double(flex.grid(500, 250),0)
+
+    print "type(flex_2d_data) =", type(flex_2d_data)
+    print "type(flex_2d_mask) =", type(flex_2d_mask)
+
+    flex_2d_data = my_array_double[:,:,0]
+
+    arr_i = wx_img_w_cpp(flex_2d_data, flex_2d_mask)
+
+    #converting to QImage
+    print "before QImage generator"
+    q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
+                   np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
+    print "after QImage generator"
+
+    #building app with IMG
+    app = QApplication([])
+    pix = QPixmap.fromImage(q_img)
+    lbl = QLabel()
+    lbl.setPixmap(pix)
+    lbl.show()
+
+    app.exec_()
+
