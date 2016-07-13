@@ -35,20 +35,12 @@ if __name__ == '__main__':
     print "Done to_array()"
     print "type(my_array) =", type(my_array)
 
-
     my_array_double = my_array.as_double()
-    print "dir(my_array) =", dir(my_array)
-    print "type(my_array_double) =", type(my_array_double)
-    print "type(my_array) =", type(my_array)
 
+    flex_2d_mask = flex.double(flex.grid(500, 500),0)
 
-    flex_2d_data = flex.double(flex.grid(500, 250),0)
-    flex_2d_mask = flex.double(flex.grid(500, 250),0)
-
-    print "type(flex_2d_data) =", type(flex_2d_data)
-    print "type(flex_2d_mask) =", type(flex_2d_mask)
-
-    flex_2d_data = my_array_double[:,:,0]
+    flex_2d_data = my_array_double[1:2, 0:500, 0:500]
+    flex_2d_data.reshape(flex.grid(500, 500))
 
     arr_i = wx_img_w_cpp(flex_2d_data, flex_2d_mask)
 

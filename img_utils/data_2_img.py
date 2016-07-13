@@ -24,7 +24,7 @@ def wx_img_w_cpp(flex_data_in, flex_mask_in, show_nums = False):
 
     wx_bmp_arr = rgb_img() # If you can call this from outside the loop it will go faster
 
-    err_code = wx_bmp_arr.set_min_max(0.0, 1500.0)
+    err_code = wx_bmp_arr.set_min_max(0.0, 20.0)
 
     palette = "hot ascend"
 

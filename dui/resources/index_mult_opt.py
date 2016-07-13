@@ -1274,1383 +1274,1161 @@ class inner_widg( QWidget):
         hbox_lay_action_106.addWidget(box_action_106)
         bg_box.addLayout(hbox_lay_action_106)
 
-        hbox_lay_scan_varying_107 =  QHBoxLayout()
-        label_scan_varying_107 = QLabel("        scan_varying")
-        label_scan_varying_107.setPalette(palette_object)
-        label_scan_varying_107.setFont(QFont("Monospace", 10))
-        hbox_lay_scan_varying_107.addWidget(label_scan_varying_107)
+        label_107 = QLabel("        beam")
+        label_107.setPalette(palette_scope)
+        label_107.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_107)
 
-        box_scan_varying_107 = QComboBox()
-        box_scan_varying_107.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying_107.tmp_lst=[]
-        box_scan_varying_107.tmp_lst.append("True")
-        box_scan_varying_107.tmp_lst.append("False")
-        for lst_itm in box_scan_varying_107.tmp_lst:
-            box_scan_varying_107.addItem(lst_itm)
-        box_scan_varying_107.setCurrentIndex(1)
-        box_scan_varying_107.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying_107.addWidget(box_scan_varying_107)
-        bg_box.addLayout(hbox_lay_scan_varying_107)
+        hbox_lay_fix_108 =  QHBoxLayout()
+        label_fix_108 = QLabel("            fix")
+        label_fix_108.setPalette(palette_object)
+        label_fix_108.setFont(QFont("Monospace", 10))
+        hbox_lay_fix_108.addWidget(label_fix_108)
 
-        hbox_lay_compose_model_per_108 =  QHBoxLayout()
-        label_compose_model_per_108 = QLabel("        compose_model_per")
-        label_compose_model_per_108.setPalette(palette_object)
-        label_compose_model_per_108.setFont(QFont("Monospace", 10))
-        hbox_lay_compose_model_per_108.addWidget(label_compose_model_per_108)
-
-        box_compose_model_per_108 = QComboBox()
-        box_compose_model_per_108.local_path = "refinement.parameterisation.compose_model_per"
-        box_compose_model_per_108.tmp_lst=[]
-        box_compose_model_per_108.tmp_lst.append("reflection")
-        box_compose_model_per_108.tmp_lst.append("image")
-        box_compose_model_per_108.tmp_lst.append("block")
-        for lst_itm in box_compose_model_per_108.tmp_lst:
-            box_compose_model_per_108.addItem(lst_itm)
-        box_compose_model_per_108.setCurrentIndex(2)
-        box_compose_model_per_108.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_compose_model_per_108.addWidget(box_compose_model_per_108)
-        bg_box.addLayout(hbox_lay_compose_model_per_108)
-
-        label_109 = QLabel("        beam")
-        label_109.setPalette(palette_scope)
-        label_109.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_109)
-
-        hbox_lay_fix_110 =  QHBoxLayout()
-        label_fix_110 = QLabel("            fix")
-        label_fix_110.setPalette(palette_object)
-        label_fix_110.setFont(QFont("Monospace", 10))
-        hbox_lay_fix_110.addWidget(label_fix_110)
-
-        box_fix_110 = QComboBox()
-        box_fix_110.local_path = "refinement.parameterisation.beam.fix"
-        box_fix_110.tmp_lst=[]
-        box_fix_110.tmp_lst.append("all")
-        box_fix_110.tmp_lst.append("in_spindle_plane")
-        box_fix_110.tmp_lst.append("out_spindle_plane")
-        box_fix_110.tmp_lst.append("wavelength")
-        for lst_itm in box_fix_110.tmp_lst:
-            box_fix_110.addItem(lst_itm)
-        box_fix_110.setCurrentIndex(3)
-        box_fix_110.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_fix_110.addWidget(box_fix_110)
-        bg_box.addLayout(hbox_lay_fix_110)
+        box_fix_108 = QComboBox()
+        box_fix_108.local_path = "refinement.parameterisation.beam.fix"
+        box_fix_108.tmp_lst=[]
+        box_fix_108.tmp_lst.append("all")
+        box_fix_108.tmp_lst.append("in_spindle_plane")
+        box_fix_108.tmp_lst.append("out_spindle_plane")
+        box_fix_108.tmp_lst.append("wavelength")
+        for lst_itm in box_fix_108.tmp_lst:
+            box_fix_108.addItem(lst_itm)
+        box_fix_108.setCurrentIndex(3)
+        box_fix_108.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_fix_108.addWidget(box_fix_108)
+        bg_box.addLayout(hbox_lay_fix_108)
 
 
-        hbox_lay_force_static_112 =  QHBoxLayout()
-        label_force_static_112 = QLabel("            force_static")
-        label_force_static_112.setPalette(palette_object)
-        label_force_static_112.setFont(QFont("Monospace", 10))
-        hbox_lay_force_static_112.addWidget(label_force_static_112)
+        label_110 = QLabel("        crystal")
+        label_110.setPalette(palette_scope)
+        label_110.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_110)
 
-        box_force_static_112 = QComboBox()
-        box_force_static_112.local_path = "refinement.parameterisation.beam.force_static"
-        box_force_static_112.tmp_lst=[]
-        box_force_static_112.tmp_lst.append("True")
-        box_force_static_112.tmp_lst.append("False")
-        for lst_itm in box_force_static_112.tmp_lst:
-            box_force_static_112.addItem(lst_itm)
-        box_force_static_112.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_force_static_112.addWidget(box_force_static_112)
-        bg_box.addLayout(hbox_lay_force_static_112)
+        hbox_lay_fix_111 =  QHBoxLayout()
+        label_fix_111 = QLabel("            fix")
+        label_fix_111.setPalette(palette_object)
+        label_fix_111.setFont(QFont("Monospace", 10))
+        hbox_lay_fix_111.addWidget(label_fix_111)
 
-        label_113 = QLabel("            smoother")
-        label_113.setPalette(palette_scope)
-        label_113.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_113)
+        box_fix_111 = QComboBox()
+        box_fix_111.local_path = "refinement.parameterisation.crystal.fix"
+        box_fix_111.tmp_lst=[]
+        box_fix_111.tmp_lst.append("all")
+        box_fix_111.tmp_lst.append("cell")
+        box_fix_111.tmp_lst.append("orientation")
+        for lst_itm in box_fix_111.tmp_lst:
+            box_fix_111.addItem(lst_itm)
+        box_fix_111.setCurrentIndex(0)
+        box_fix_111.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_fix_111.addWidget(box_fix_111)
+        bg_box.addLayout(hbox_lay_fix_111)
 
-        hbox_lay_num_intervals_114 =  QHBoxLayout()
-        label_num_intervals_114 = QLabel("                num_intervals")
-        label_num_intervals_114.setPalette(palette_object)
-        label_num_intervals_114.setFont(QFont("Monospace", 10))
-        hbox_lay_num_intervals_114.addWidget(label_num_intervals_114)
-
-        box_num_intervals_114 = QComboBox()
-        box_num_intervals_114.local_path = "refinement.parameterisation.beam.smoother.num_intervals"
-        box_num_intervals_114.tmp_lst=[]
-        box_num_intervals_114.tmp_lst.append("fixed_width")
-        box_num_intervals_114.tmp_lst.append("absolute")
-        for lst_itm in box_num_intervals_114.tmp_lst:
-            box_num_intervals_114.addItem(lst_itm)
-        box_num_intervals_114.setCurrentIndex(0)
-        box_num_intervals_114.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_num_intervals_114.addWidget(box_num_intervals_114)
-        bg_box.addLayout(hbox_lay_num_intervals_114)
-
-        hbox_lay_interval_width_degrees_115 =  QHBoxLayout()
-        label_interval_width_degrees_115 = QLabel("                interval_width_degrees")
-        label_interval_width_degrees_115.setPalette(palette_object)
-        label_interval_width_degrees_115.setFont(QFont("Monospace", 10))
-        hbox_lay_interval_width_degrees_115.addWidget(label_interval_width_degrees_115)
-
-        box_interval_width_degrees_115 = QDoubleSpinBox()
-        box_interval_width_degrees_115.setValue(36.0)
-        box_interval_width_degrees_115.local_path = "refinement.parameterisation.beam.smoother.interval_width_degrees"
-        box_interval_width_degrees_115.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_interval_width_degrees_115.addWidget(box_interval_width_degrees_115)
-        bg_box.addLayout(hbox_lay_interval_width_degrees_115)
-
-        hbox_lay_absolute_num_intervals_116 =  QHBoxLayout()
-        label_absolute_num_intervals_116 = QLabel("                absolute_num_intervals")
-        label_absolute_num_intervals_116.setPalette(palette_object)
-        label_absolute_num_intervals_116.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_num_intervals_116.addWidget(label_absolute_num_intervals_116)
-
-        box_absolute_num_intervals_116 = QSpinBox()
-        box_absolute_num_intervals_116.setValue(5)
-        box_absolute_num_intervals_116.local_path = "refinement.parameterisation.beam.smoother.absolute_num_intervals"
-        box_absolute_num_intervals_116.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_num_intervals_116.addWidget(box_absolute_num_intervals_116)
-        bg_box.addLayout(hbox_lay_absolute_num_intervals_116)
-
-        label_117 = QLabel("        crystal")
-        label_117.setPalette(palette_scope)
-        label_117.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_117)
-
-        hbox_lay_fix_118 =  QHBoxLayout()
-        label_fix_118 = QLabel("            fix")
-        label_fix_118.setPalette(palette_object)
-        label_fix_118.setFont(QFont("Monospace", 10))
-        hbox_lay_fix_118.addWidget(label_fix_118)
-
-        box_fix_118 = QComboBox()
-        box_fix_118.local_path = "refinement.parameterisation.crystal.fix"
-        box_fix_118.tmp_lst=[]
-        box_fix_118.tmp_lst.append("all")
-        box_fix_118.tmp_lst.append("cell")
-        box_fix_118.tmp_lst.append("orientation")
-        for lst_itm in box_fix_118.tmp_lst:
-            box_fix_118.addItem(lst_itm)
-        box_fix_118.setCurrentIndex(0)
-        box_fix_118.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_fix_118.addWidget(box_fix_118)
-        bg_box.addLayout(hbox_lay_fix_118)
-
-        label_119 = QLabel("            unit_cell")
-        label_119.setPalette(palette_scope)
-        label_119.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_119)
+        label_112 = QLabel("            unit_cell")
+        label_112.setPalette(palette_scope)
+        label_112.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_112)
 
 
-        label_121 = QLabel("                restraints")
-        label_121.setPalette(palette_scope)
-        label_121.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_121)
+        label_114 = QLabel("                restraints")
+        label_114.setPalette(palette_scope)
+        label_114.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_114)
 
-        label_122 = QLabel("                    tie_to_target")
-        label_122.setPalette(palette_scope)
-        label_122.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_122)
+        label_115 = QLabel("                    tie_to_target")
+        label_115.setPalette(palette_scope)
+        label_115.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_115)
 
-        hbox_lay_values_123_0 =  QHBoxLayout()
-        label_values_123_0 = QLabel("                        values[1]")
-        label_values_123_0.setPalette(palette_object)
-        label_values_123_0.setFont(QFont("Monospace", 10))
-        hbox_lay_values_123_0.addWidget(label_values_123_0)
-        box_values_123_0 = QDoubleSpinBox()
-        box_values_123_0.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
-        #box_values_123_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_values_123_1 =  QHBoxLayout()
-        label_values_123_1 = QLabel("                        values[2]")
-        label_values_123_1.setPalette(palette_object)
-        label_values_123_1.setFont(QFont("Monospace", 10))
-        hbox_lay_values_123_1.addWidget(label_values_123_1)
-        box_values_123_1 = QDoubleSpinBox()
-        box_values_123_1.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
-        #box_values_123_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_values_123_2 =  QHBoxLayout()
-        label_values_123_2 = QLabel("                        values[3]")
-        label_values_123_2.setPalette(palette_object)
-        label_values_123_2.setFont(QFont("Monospace", 10))
-        hbox_lay_values_123_2.addWidget(label_values_123_2)
-        box_values_123_2 = QDoubleSpinBox()
-        box_values_123_2.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
-        #box_values_123_2.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_values_123_3 =  QHBoxLayout()
-        label_values_123_3 = QLabel("                        values[4]")
-        label_values_123_3.setPalette(palette_object)
-        label_values_123_3.setFont(QFont("Monospace", 10))
-        hbox_lay_values_123_3.addWidget(label_values_123_3)
-        box_values_123_3 = QDoubleSpinBox()
-        box_values_123_3.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
-        #box_values_123_3.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_values_123_4 =  QHBoxLayout()
-        label_values_123_4 = QLabel("                        values[5]")
-        label_values_123_4.setPalette(palette_object)
-        label_values_123_4.setFont(QFont("Monospace", 10))
-        hbox_lay_values_123_4.addWidget(label_values_123_4)
-        box_values_123_4 = QDoubleSpinBox()
-        box_values_123_4.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
-        #box_values_123_4.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_values_123_5 =  QHBoxLayout()
-        label_values_123_5 = QLabel("                        values[6]")
-        label_values_123_5.setPalette(palette_object)
-        label_values_123_5.setFont(QFont("Monospace", 10))
-        hbox_lay_values_123_5.addWidget(label_values_123_5)
-        box_values_123_5 = QDoubleSpinBox()
-        box_values_123_5.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
-        #box_values_123_5.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_values_116_0 =  QHBoxLayout()
+        label_values_116_0 = QLabel("                        values[1]")
+        label_values_116_0.setPalette(palette_object)
+        label_values_116_0.setFont(QFont("Monospace", 10))
+        hbox_lay_values_116_0.addWidget(label_values_116_0)
+        box_values_116_0 = QDoubleSpinBox()
+        box_values_116_0.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
+        #box_values_116_0.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_values_116_1 =  QHBoxLayout()
+        label_values_116_1 = QLabel("                        values[2]")
+        label_values_116_1.setPalette(palette_object)
+        label_values_116_1.setFont(QFont("Monospace", 10))
+        hbox_lay_values_116_1.addWidget(label_values_116_1)
+        box_values_116_1 = QDoubleSpinBox()
+        box_values_116_1.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
+        #box_values_116_1.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_values_116_2 =  QHBoxLayout()
+        label_values_116_2 = QLabel("                        values[3]")
+        label_values_116_2.setPalette(palette_object)
+        label_values_116_2.setFont(QFont("Monospace", 10))
+        hbox_lay_values_116_2.addWidget(label_values_116_2)
+        box_values_116_2 = QDoubleSpinBox()
+        box_values_116_2.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
+        #box_values_116_2.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_values_116_3 =  QHBoxLayout()
+        label_values_116_3 = QLabel("                        values[4]")
+        label_values_116_3.setPalette(palette_object)
+        label_values_116_3.setFont(QFont("Monospace", 10))
+        hbox_lay_values_116_3.addWidget(label_values_116_3)
+        box_values_116_3 = QDoubleSpinBox()
+        box_values_116_3.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
+        #box_values_116_3.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_values_116_4 =  QHBoxLayout()
+        label_values_116_4 = QLabel("                        values[5]")
+        label_values_116_4.setPalette(palette_object)
+        label_values_116_4.setFont(QFont("Monospace", 10))
+        hbox_lay_values_116_4.addWidget(label_values_116_4)
+        box_values_116_4 = QDoubleSpinBox()
+        box_values_116_4.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
+        #box_values_116_4.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_values_116_5 =  QHBoxLayout()
+        label_values_116_5 = QLabel("                        values[6]")
+        label_values_116_5.setPalette(palette_object)
+        label_values_116_5.setFont(QFont("Monospace", 10))
+        hbox_lay_values_116_5.addWidget(label_values_116_5)
+        box_values_116_5 = QDoubleSpinBox()
+        box_values_116_5.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.values"
+        #box_values_116_5.valueChanged.connect(self.spnbox_changed)
 
-        hbox_lay_sigmas_124_0 =  QHBoxLayout()
-        label_sigmas_124_0 = QLabel("                        sigmas[1]")
-        label_sigmas_124_0.setPalette(palette_object)
-        label_sigmas_124_0.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_124_0.addWidget(label_sigmas_124_0)
-        box_sigmas_124_0 = QDoubleSpinBox()
-        box_sigmas_124_0.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
-        #box_sigmas_124_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_124_1 =  QHBoxLayout()
-        label_sigmas_124_1 = QLabel("                        sigmas[2]")
-        label_sigmas_124_1.setPalette(palette_object)
-        label_sigmas_124_1.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_124_1.addWidget(label_sigmas_124_1)
-        box_sigmas_124_1 = QDoubleSpinBox()
-        box_sigmas_124_1.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
-        #box_sigmas_124_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_124_2 =  QHBoxLayout()
-        label_sigmas_124_2 = QLabel("                        sigmas[3]")
-        label_sigmas_124_2.setPalette(palette_object)
-        label_sigmas_124_2.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_124_2.addWidget(label_sigmas_124_2)
-        box_sigmas_124_2 = QDoubleSpinBox()
-        box_sigmas_124_2.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
-        #box_sigmas_124_2.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_124_3 =  QHBoxLayout()
-        label_sigmas_124_3 = QLabel("                        sigmas[4]")
-        label_sigmas_124_3.setPalette(palette_object)
-        label_sigmas_124_3.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_124_3.addWidget(label_sigmas_124_3)
-        box_sigmas_124_3 = QDoubleSpinBox()
-        box_sigmas_124_3.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
-        #box_sigmas_124_3.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_124_4 =  QHBoxLayout()
-        label_sigmas_124_4 = QLabel("                        sigmas[5]")
-        label_sigmas_124_4.setPalette(palette_object)
-        label_sigmas_124_4.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_124_4.addWidget(label_sigmas_124_4)
-        box_sigmas_124_4 = QDoubleSpinBox()
-        box_sigmas_124_4.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
-        #box_sigmas_124_4.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_124_5 =  QHBoxLayout()
-        label_sigmas_124_5 = QLabel("                        sigmas[6]")
-        label_sigmas_124_5.setPalette(palette_object)
-        label_sigmas_124_5.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_124_5.addWidget(label_sigmas_124_5)
-        box_sigmas_124_5 = QDoubleSpinBox()
-        box_sigmas_124_5.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
-        #box_sigmas_124_5.valueChanged.connect(self.spnbox_changed)
-
-
-        hbox_lay_apply_to_all_126 =  QHBoxLayout()
-        label_apply_to_all_126 = QLabel("                        apply_to_all")
-        label_apply_to_all_126.setPalette(palette_object)
-        label_apply_to_all_126.setFont(QFont("Monospace", 10))
-        hbox_lay_apply_to_all_126.addWidget(label_apply_to_all_126)
-
-        box_apply_to_all_126 = QComboBox()
-        box_apply_to_all_126.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.apply_to_all"
-        box_apply_to_all_126.tmp_lst=[]
-        box_apply_to_all_126.tmp_lst.append("True")
-        box_apply_to_all_126.tmp_lst.append("False")
-        for lst_itm in box_apply_to_all_126.tmp_lst:
-            box_apply_to_all_126.addItem(lst_itm)
-        box_apply_to_all_126.setCurrentIndex(1)
-        box_apply_to_all_126.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_apply_to_all_126.addWidget(box_apply_to_all_126)
-        bg_box.addLayout(hbox_lay_apply_to_all_126)
-
-        label_127 = QLabel("                    tie_to_group")
-        label_127.setPalette(palette_scope)
-        label_127.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_127)
-
-        hbox_lay_target_128 =  QHBoxLayout()
-        label_target_128 = QLabel("                        target")
-        label_target_128.setPalette(palette_object)
-        label_target_128.setFont(QFont("Monospace", 10))
-        hbox_lay_target_128.addWidget(label_target_128)
-
-        box_target_128 = QComboBox()
-        box_target_128.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.target"
-        box_target_128.tmp_lst=[]
-        box_target_128.tmp_lst.append("mean")
-        box_target_128.tmp_lst.append("low_memory_mean")
-        box_target_128.tmp_lst.append("median")
-        for lst_itm in box_target_128.tmp_lst:
-            box_target_128.addItem(lst_itm)
-        box_target_128.setCurrentIndex(0)
-        box_target_128.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_target_128.addWidget(box_target_128)
-        bg_box.addLayout(hbox_lay_target_128)
-
-        hbox_lay_sigmas_129_0 =  QHBoxLayout()
-        label_sigmas_129_0 = QLabel("                        sigmas[1]")
-        label_sigmas_129_0.setPalette(palette_object)
-        label_sigmas_129_0.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_129_0.addWidget(label_sigmas_129_0)
-        box_sigmas_129_0 = QDoubleSpinBox()
-        box_sigmas_129_0.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
-        #box_sigmas_129_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_129_1 =  QHBoxLayout()
-        label_sigmas_129_1 = QLabel("                        sigmas[2]")
-        label_sigmas_129_1.setPalette(palette_object)
-        label_sigmas_129_1.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_129_1.addWidget(label_sigmas_129_1)
-        box_sigmas_129_1 = QDoubleSpinBox()
-        box_sigmas_129_1.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
-        #box_sigmas_129_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_129_2 =  QHBoxLayout()
-        label_sigmas_129_2 = QLabel("                        sigmas[3]")
-        label_sigmas_129_2.setPalette(palette_object)
-        label_sigmas_129_2.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_129_2.addWidget(label_sigmas_129_2)
-        box_sigmas_129_2 = QDoubleSpinBox()
-        box_sigmas_129_2.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
-        #box_sigmas_129_2.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_129_3 =  QHBoxLayout()
-        label_sigmas_129_3 = QLabel("                        sigmas[4]")
-        label_sigmas_129_3.setPalette(palette_object)
-        label_sigmas_129_3.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_129_3.addWidget(label_sigmas_129_3)
-        box_sigmas_129_3 = QDoubleSpinBox()
-        box_sigmas_129_3.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
-        #box_sigmas_129_3.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_129_4 =  QHBoxLayout()
-        label_sigmas_129_4 = QLabel("                        sigmas[5]")
-        label_sigmas_129_4.setPalette(palette_object)
-        label_sigmas_129_4.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_129_4.addWidget(label_sigmas_129_4)
-        box_sigmas_129_4 = QDoubleSpinBox()
-        box_sigmas_129_4.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
-        #box_sigmas_129_4.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_129_5 =  QHBoxLayout()
-        label_sigmas_129_5 = QLabel("                        sigmas[6]")
-        label_sigmas_129_5.setPalette(palette_object)
-        label_sigmas_129_5.setFont(QFont("Monospace", 10))
-        hbox_lay_sigmas_129_5.addWidget(label_sigmas_129_5)
-        box_sigmas_129_5 = QDoubleSpinBox()
-        box_sigmas_129_5.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
-        #box_sigmas_129_5.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_sigmas_129_0.addWidget(box_sigmas_129_0)
-        bg_box.addLayout(hbox_lay_sigmas_129_0)
-        hbox_lay_sigmas_129_1.addWidget(box_sigmas_129_1)
-        bg_box.addLayout(hbox_lay_sigmas_129_1)
-        hbox_lay_sigmas_129_2.addWidget(box_sigmas_129_2)
-        bg_box.addLayout(hbox_lay_sigmas_129_2)
-        hbox_lay_sigmas_129_3.addWidget(box_sigmas_129_3)
-        bg_box.addLayout(hbox_lay_sigmas_129_3)
-        hbox_lay_sigmas_129_4.addWidget(box_sigmas_129_4)
-        bg_box.addLayout(hbox_lay_sigmas_129_4)
-        hbox_lay_sigmas_129_5.addWidget(box_sigmas_129_5)
-        bg_box.addLayout(hbox_lay_sigmas_129_5)
+        hbox_lay_sigmas_117_0 =  QHBoxLayout()
+        label_sigmas_117_0 = QLabel("                        sigmas[1]")
+        label_sigmas_117_0.setPalette(palette_object)
+        label_sigmas_117_0.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_117_0.addWidget(label_sigmas_117_0)
+        box_sigmas_117_0 = QDoubleSpinBox()
+        box_sigmas_117_0.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
+        #box_sigmas_117_0.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_117_1 =  QHBoxLayout()
+        label_sigmas_117_1 = QLabel("                        sigmas[2]")
+        label_sigmas_117_1.setPalette(palette_object)
+        label_sigmas_117_1.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_117_1.addWidget(label_sigmas_117_1)
+        box_sigmas_117_1 = QDoubleSpinBox()
+        box_sigmas_117_1.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
+        #box_sigmas_117_1.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_117_2 =  QHBoxLayout()
+        label_sigmas_117_2 = QLabel("                        sigmas[3]")
+        label_sigmas_117_2.setPalette(palette_object)
+        label_sigmas_117_2.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_117_2.addWidget(label_sigmas_117_2)
+        box_sigmas_117_2 = QDoubleSpinBox()
+        box_sigmas_117_2.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
+        #box_sigmas_117_2.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_117_3 =  QHBoxLayout()
+        label_sigmas_117_3 = QLabel("                        sigmas[4]")
+        label_sigmas_117_3.setPalette(palette_object)
+        label_sigmas_117_3.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_117_3.addWidget(label_sigmas_117_3)
+        box_sigmas_117_3 = QDoubleSpinBox()
+        box_sigmas_117_3.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
+        #box_sigmas_117_3.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_117_4 =  QHBoxLayout()
+        label_sigmas_117_4 = QLabel("                        sigmas[5]")
+        label_sigmas_117_4.setPalette(palette_object)
+        label_sigmas_117_4.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_117_4.addWidget(label_sigmas_117_4)
+        box_sigmas_117_4 = QDoubleSpinBox()
+        box_sigmas_117_4.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
+        #box_sigmas_117_4.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_117_5 =  QHBoxLayout()
+        label_sigmas_117_5 = QLabel("                        sigmas[6]")
+        label_sigmas_117_5.setPalette(palette_object)
+        label_sigmas_117_5.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_117_5.addWidget(label_sigmas_117_5)
+        box_sigmas_117_5 = QDoubleSpinBox()
+        box_sigmas_117_5.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.sigmas"
+        #box_sigmas_117_5.valueChanged.connect(self.spnbox_changed)
 
 
-        hbox_lay_apply_to_all_131 =  QHBoxLayout()
-        label_apply_to_all_131 = QLabel("                        apply_to_all")
-        label_apply_to_all_131.setPalette(palette_object)
-        label_apply_to_all_131.setFont(QFont("Monospace", 10))
-        hbox_lay_apply_to_all_131.addWidget(label_apply_to_all_131)
+        hbox_lay_apply_to_all_119 =  QHBoxLayout()
+        label_apply_to_all_119 = QLabel("                        apply_to_all")
+        label_apply_to_all_119.setPalette(palette_object)
+        label_apply_to_all_119.setFont(QFont("Monospace", 10))
+        hbox_lay_apply_to_all_119.addWidget(label_apply_to_all_119)
 
-        box_apply_to_all_131 = QComboBox()
-        box_apply_to_all_131.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.apply_to_all"
-        box_apply_to_all_131.tmp_lst=[]
-        box_apply_to_all_131.tmp_lst.append("True")
-        box_apply_to_all_131.tmp_lst.append("False")
-        for lst_itm in box_apply_to_all_131.tmp_lst:
-            box_apply_to_all_131.addItem(lst_itm)
-        box_apply_to_all_131.setCurrentIndex(1)
-        box_apply_to_all_131.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_apply_to_all_131.addWidget(box_apply_to_all_131)
-        bg_box.addLayout(hbox_lay_apply_to_all_131)
+        box_apply_to_all_119 = QComboBox()
+        box_apply_to_all_119.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_target.apply_to_all"
+        box_apply_to_all_119.tmp_lst=[]
+        box_apply_to_all_119.tmp_lst.append("True")
+        box_apply_to_all_119.tmp_lst.append("False")
+        for lst_itm in box_apply_to_all_119.tmp_lst:
+            box_apply_to_all_119.addItem(lst_itm)
+        box_apply_to_all_119.setCurrentIndex(1)
+        box_apply_to_all_119.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_apply_to_all_119.addWidget(box_apply_to_all_119)
+        bg_box.addLayout(hbox_lay_apply_to_all_119)
 
-        hbox_lay_force_static_132 =  QHBoxLayout()
-        label_force_static_132 = QLabel("                force_static")
-        label_force_static_132.setPalette(palette_object)
-        label_force_static_132.setFont(QFont("Monospace", 10))
-        hbox_lay_force_static_132.addWidget(label_force_static_132)
+        label_120 = QLabel("                    tie_to_group")
+        label_120.setPalette(palette_scope)
+        label_120.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_120)
 
-        box_force_static_132 = QComboBox()
-        box_force_static_132.local_path = "refinement.parameterisation.crystal.unit_cell.force_static"
-        box_force_static_132.tmp_lst=[]
-        box_force_static_132.tmp_lst.append("True")
-        box_force_static_132.tmp_lst.append("False")
-        for lst_itm in box_force_static_132.tmp_lst:
-            box_force_static_132.addItem(lst_itm)
-        box_force_static_132.setCurrentIndex(1)
-        box_force_static_132.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_force_static_132.addWidget(box_force_static_132)
-        bg_box.addLayout(hbox_lay_force_static_132)
+        hbox_lay_target_121 =  QHBoxLayout()
+        label_target_121 = QLabel("                        target")
+        label_target_121.setPalette(palette_object)
+        label_target_121.setFont(QFont("Monospace", 10))
+        hbox_lay_target_121.addWidget(label_target_121)
 
-        label_133 = QLabel("                smoother")
-        label_133.setPalette(palette_scope)
-        label_133.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_133)
+        box_target_121 = QComboBox()
+        box_target_121.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.target"
+        box_target_121.tmp_lst=[]
+        box_target_121.tmp_lst.append("mean")
+        box_target_121.tmp_lst.append("low_memory_mean")
+        box_target_121.tmp_lst.append("median")
+        for lst_itm in box_target_121.tmp_lst:
+            box_target_121.addItem(lst_itm)
+        box_target_121.setCurrentIndex(0)
+        box_target_121.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_target_121.addWidget(box_target_121)
+        bg_box.addLayout(hbox_lay_target_121)
 
-        hbox_lay_num_intervals_134 =  QHBoxLayout()
-        label_num_intervals_134 = QLabel("                    num_intervals")
-        label_num_intervals_134.setPalette(palette_object)
-        label_num_intervals_134.setFont(QFont("Monospace", 10))
-        hbox_lay_num_intervals_134.addWidget(label_num_intervals_134)
+        hbox_lay_sigmas_122_0 =  QHBoxLayout()
+        label_sigmas_122_0 = QLabel("                        sigmas[1]")
+        label_sigmas_122_0.setPalette(palette_object)
+        label_sigmas_122_0.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_122_0.addWidget(label_sigmas_122_0)
+        box_sigmas_122_0 = QDoubleSpinBox()
+        box_sigmas_122_0.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
+        #box_sigmas_122_0.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_122_1 =  QHBoxLayout()
+        label_sigmas_122_1 = QLabel("                        sigmas[2]")
+        label_sigmas_122_1.setPalette(palette_object)
+        label_sigmas_122_1.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_122_1.addWidget(label_sigmas_122_1)
+        box_sigmas_122_1 = QDoubleSpinBox()
+        box_sigmas_122_1.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
+        #box_sigmas_122_1.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_122_2 =  QHBoxLayout()
+        label_sigmas_122_2 = QLabel("                        sigmas[3]")
+        label_sigmas_122_2.setPalette(palette_object)
+        label_sigmas_122_2.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_122_2.addWidget(label_sigmas_122_2)
+        box_sigmas_122_2 = QDoubleSpinBox()
+        box_sigmas_122_2.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
+        #box_sigmas_122_2.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_122_3 =  QHBoxLayout()
+        label_sigmas_122_3 = QLabel("                        sigmas[4]")
+        label_sigmas_122_3.setPalette(palette_object)
+        label_sigmas_122_3.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_122_3.addWidget(label_sigmas_122_3)
+        box_sigmas_122_3 = QDoubleSpinBox()
+        box_sigmas_122_3.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
+        #box_sigmas_122_3.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_122_4 =  QHBoxLayout()
+        label_sigmas_122_4 = QLabel("                        sigmas[5]")
+        label_sigmas_122_4.setPalette(palette_object)
+        label_sigmas_122_4.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_122_4.addWidget(label_sigmas_122_4)
+        box_sigmas_122_4 = QDoubleSpinBox()
+        box_sigmas_122_4.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
+        #box_sigmas_122_4.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_122_5 =  QHBoxLayout()
+        label_sigmas_122_5 = QLabel("                        sigmas[6]")
+        label_sigmas_122_5.setPalette(palette_object)
+        label_sigmas_122_5.setFont(QFont("Monospace", 10))
+        hbox_lay_sigmas_122_5.addWidget(label_sigmas_122_5)
+        box_sigmas_122_5 = QDoubleSpinBox()
+        box_sigmas_122_5.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.sigmas"
+        #box_sigmas_122_5.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_sigmas_122_0.addWidget(box_sigmas_122_0)
+        bg_box.addLayout(hbox_lay_sigmas_122_0)
+        hbox_lay_sigmas_122_1.addWidget(box_sigmas_122_1)
+        bg_box.addLayout(hbox_lay_sigmas_122_1)
+        hbox_lay_sigmas_122_2.addWidget(box_sigmas_122_2)
+        bg_box.addLayout(hbox_lay_sigmas_122_2)
+        hbox_lay_sigmas_122_3.addWidget(box_sigmas_122_3)
+        bg_box.addLayout(hbox_lay_sigmas_122_3)
+        hbox_lay_sigmas_122_4.addWidget(box_sigmas_122_4)
+        bg_box.addLayout(hbox_lay_sigmas_122_4)
+        hbox_lay_sigmas_122_5.addWidget(box_sigmas_122_5)
+        bg_box.addLayout(hbox_lay_sigmas_122_5)
 
-        box_num_intervals_134 = QComboBox()
-        box_num_intervals_134.local_path = "refinement.parameterisation.crystal.unit_cell.smoother.num_intervals"
-        box_num_intervals_134.tmp_lst=[]
-        box_num_intervals_134.tmp_lst.append("fixed_width")
-        box_num_intervals_134.tmp_lst.append("absolute")
-        for lst_itm in box_num_intervals_134.tmp_lst:
-            box_num_intervals_134.addItem(lst_itm)
-        box_num_intervals_134.setCurrentIndex(0)
-        box_num_intervals_134.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_num_intervals_134.addWidget(box_num_intervals_134)
-        bg_box.addLayout(hbox_lay_num_intervals_134)
 
-        hbox_lay_interval_width_degrees_135 =  QHBoxLayout()
-        label_interval_width_degrees_135 = QLabel("                    interval_width_degrees")
-        label_interval_width_degrees_135.setPalette(palette_object)
-        label_interval_width_degrees_135.setFont(QFont("Monospace", 10))
-        hbox_lay_interval_width_degrees_135.addWidget(label_interval_width_degrees_135)
+        hbox_lay_apply_to_all_124 =  QHBoxLayout()
+        label_apply_to_all_124 = QLabel("                        apply_to_all")
+        label_apply_to_all_124.setPalette(palette_object)
+        label_apply_to_all_124.setFont(QFont("Monospace", 10))
+        hbox_lay_apply_to_all_124.addWidget(label_apply_to_all_124)
 
-        box_interval_width_degrees_135 = QDoubleSpinBox()
-        box_interval_width_degrees_135.setValue(36.0)
-        box_interval_width_degrees_135.local_path = "refinement.parameterisation.crystal.unit_cell.smoother.interval_width_degrees"
-        box_interval_width_degrees_135.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_interval_width_degrees_135.addWidget(box_interval_width_degrees_135)
-        bg_box.addLayout(hbox_lay_interval_width_degrees_135)
+        box_apply_to_all_124 = QComboBox()
+        box_apply_to_all_124.local_path = "refinement.parameterisation.crystal.unit_cell.restraints.tie_to_group.apply_to_all"
+        box_apply_to_all_124.tmp_lst=[]
+        box_apply_to_all_124.tmp_lst.append("True")
+        box_apply_to_all_124.tmp_lst.append("False")
+        for lst_itm in box_apply_to_all_124.tmp_lst:
+            box_apply_to_all_124.addItem(lst_itm)
+        box_apply_to_all_124.setCurrentIndex(1)
+        box_apply_to_all_124.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_apply_to_all_124.addWidget(box_apply_to_all_124)
+        bg_box.addLayout(hbox_lay_apply_to_all_124)
 
-        hbox_lay_absolute_num_intervals_136 =  QHBoxLayout()
-        label_absolute_num_intervals_136 = QLabel("                    absolute_num_intervals")
-        label_absolute_num_intervals_136.setPalette(palette_object)
-        label_absolute_num_intervals_136.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_num_intervals_136.addWidget(label_absolute_num_intervals_136)
-
-        box_absolute_num_intervals_136 = QSpinBox()
-        box_absolute_num_intervals_136.setValue(5)
-        box_absolute_num_intervals_136.local_path = "refinement.parameterisation.crystal.unit_cell.smoother.absolute_num_intervals"
-        box_absolute_num_intervals_136.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_num_intervals_136.addWidget(box_absolute_num_intervals_136)
-        bg_box.addLayout(hbox_lay_absolute_num_intervals_136)
-
-        label_137 = QLabel("            orientation")
-        label_137.setPalette(palette_scope)
-        label_137.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_137)
+        label_125 = QLabel("            orientation")
+        label_125.setPalette(palette_scope)
+        label_125.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_125)
 
 
-        hbox_lay_force_static_139 =  QHBoxLayout()
-        label_force_static_139 = QLabel("                force_static")
-        label_force_static_139.setPalette(palette_object)
-        label_force_static_139.setFont(QFont("Monospace", 10))
-        hbox_lay_force_static_139.addWidget(label_force_static_139)
+        hbox_lay_scan_varying_127 =  QHBoxLayout()
+        label_scan_varying_127 = QLabel("            scan_varying")
+        label_scan_varying_127.setPalette(palette_object)
+        label_scan_varying_127.setFont(QFont("Monospace", 10))
+        hbox_lay_scan_varying_127.addWidget(label_scan_varying_127)
 
-        box_force_static_139 = QComboBox()
-        box_force_static_139.local_path = "refinement.parameterisation.crystal.orientation.force_static"
-        box_force_static_139.tmp_lst=[]
-        box_force_static_139.tmp_lst.append("True")
-        box_force_static_139.tmp_lst.append("False")
-        for lst_itm in box_force_static_139.tmp_lst:
-            box_force_static_139.addItem(lst_itm)
-        box_force_static_139.setCurrentIndex(1)
-        box_force_static_139.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_force_static_139.addWidget(box_force_static_139)
-        bg_box.addLayout(hbox_lay_force_static_139)
+        box_scan_varying_127 = QComboBox()
+        box_scan_varying_127.local_path = "refinement.parameterisation.crystal.scan_varying"
+        box_scan_varying_127.tmp_lst=[]
+        box_scan_varying_127.tmp_lst.append("True")
+        box_scan_varying_127.tmp_lst.append("False")
+        for lst_itm in box_scan_varying_127.tmp_lst:
+            box_scan_varying_127.addItem(lst_itm)
+        box_scan_varying_127.setCurrentIndex(1)
+        box_scan_varying_127.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying_127.addWidget(box_scan_varying_127)
+        bg_box.addLayout(hbox_lay_scan_varying_127)
 
-        label_140 = QLabel("                smoother")
+        hbox_lay_num_intervals_128 =  QHBoxLayout()
+        label_num_intervals_128 = QLabel("            num_intervals")
+        label_num_intervals_128.setPalette(palette_object)
+        label_num_intervals_128.setFont(QFont("Monospace", 10))
+        hbox_lay_num_intervals_128.addWidget(label_num_intervals_128)
+
+        box_num_intervals_128 = QComboBox()
+        box_num_intervals_128.local_path = "refinement.parameterisation.crystal.num_intervals"
+        box_num_intervals_128.tmp_lst=[]
+        box_num_intervals_128.tmp_lst.append("fixed_width")
+        box_num_intervals_128.tmp_lst.append("absolute")
+        for lst_itm in box_num_intervals_128.tmp_lst:
+            box_num_intervals_128.addItem(lst_itm)
+        box_num_intervals_128.setCurrentIndex(0)
+        box_num_intervals_128.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_num_intervals_128.addWidget(box_num_intervals_128)
+        bg_box.addLayout(hbox_lay_num_intervals_128)
+
+        hbox_lay_interval_width_degrees_129 =  QHBoxLayout()
+        label_interval_width_degrees_129 = QLabel("            interval_width_degrees")
+        label_interval_width_degrees_129.setPalette(palette_object)
+        label_interval_width_degrees_129.setFont(QFont("Monospace", 10))
+        hbox_lay_interval_width_degrees_129.addWidget(label_interval_width_degrees_129)
+
+        box_interval_width_degrees_129 = QDoubleSpinBox()
+        box_interval_width_degrees_129.setValue(36.0)
+        box_interval_width_degrees_129.local_path = "refinement.parameterisation.crystal.interval_width_degrees"
+        box_interval_width_degrees_129.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_interval_width_degrees_129.addWidget(box_interval_width_degrees_129)
+        bg_box.addLayout(hbox_lay_interval_width_degrees_129)
+
+        hbox_lay_absolute_num_intervals_130 =  QHBoxLayout()
+        label_absolute_num_intervals_130 = QLabel("            absolute_num_intervals")
+        label_absolute_num_intervals_130.setPalette(palette_object)
+        label_absolute_num_intervals_130.setFont(QFont("Monospace", 10))
+        hbox_lay_absolute_num_intervals_130.addWidget(label_absolute_num_intervals_130)
+
+        box_absolute_num_intervals_130 = QSpinBox()
+        box_absolute_num_intervals_130.setValue(5)
+        box_absolute_num_intervals_130.local_path = "refinement.parameterisation.crystal.absolute_num_intervals"
+        box_absolute_num_intervals_130.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_absolute_num_intervals_130.addWidget(box_absolute_num_intervals_130)
+        bg_box.addLayout(hbox_lay_absolute_num_intervals_130)
+
+        hbox_lay_UB_model_per_131 =  QHBoxLayout()
+        label_UB_model_per_131 = QLabel("            UB_model_per")
+        label_UB_model_per_131.setPalette(palette_object)
+        label_UB_model_per_131.setFont(QFont("Monospace", 10))
+        hbox_lay_UB_model_per_131.addWidget(label_UB_model_per_131)
+
+        box_UB_model_per_131 = QComboBox()
+        box_UB_model_per_131.local_path = "refinement.parameterisation.crystal.UB_model_per"
+        box_UB_model_per_131.tmp_lst=[]
+        box_UB_model_per_131.tmp_lst.append("reflection")
+        box_UB_model_per_131.tmp_lst.append("image")
+        box_UB_model_per_131.tmp_lst.append("block")
+        for lst_itm in box_UB_model_per_131.tmp_lst:
+            box_UB_model_per_131.addItem(lst_itm)
+        box_UB_model_per_131.setCurrentIndex(2)
+        box_UB_model_per_131.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_UB_model_per_131.addWidget(box_UB_model_per_131)
+        bg_box.addLayout(hbox_lay_UB_model_per_131)
+
+        label_132 = QLabel("        detector")
+        label_132.setPalette(palette_scope)
+        label_132.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_132)
+
+        hbox_lay_panels_133 =  QHBoxLayout()
+        label_panels_133 = QLabel("            panels")
+        label_panels_133.setPalette(palette_object)
+        label_panels_133.setFont(QFont("Monospace", 10))
+        hbox_lay_panels_133.addWidget(label_panels_133)
+
+        box_panels_133 = QComboBox()
+        box_panels_133.local_path = "refinement.parameterisation.detector.panels"
+        box_panels_133.tmp_lst=[]
+        box_panels_133.tmp_lst.append("automatic")
+        box_panels_133.tmp_lst.append("single")
+        box_panels_133.tmp_lst.append("multiple")
+        box_panels_133.tmp_lst.append("hierarchical")
+        for lst_itm in box_panels_133.tmp_lst:
+            box_panels_133.addItem(lst_itm)
+        box_panels_133.setCurrentIndex(0)
+        box_panels_133.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_panels_133.addWidget(box_panels_133)
+        bg_box.addLayout(hbox_lay_panels_133)
+
+        hbox_lay_hierarchy_level_134 =  QHBoxLayout()
+        label_hierarchy_level_134 = QLabel("            hierarchy_level")
+        label_hierarchy_level_134.setPalette(palette_object)
+        label_hierarchy_level_134.setFont(QFont("Monospace", 10))
+        hbox_lay_hierarchy_level_134.addWidget(label_hierarchy_level_134)
+
+        box_hierarchy_level_134 = QSpinBox()
+        box_hierarchy_level_134.setValue(0)
+        box_hierarchy_level_134.local_path = "refinement.parameterisation.detector.hierarchy_level"
+        box_hierarchy_level_134.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_hierarchy_level_134.addWidget(box_hierarchy_level_134)
+        bg_box.addLayout(hbox_lay_hierarchy_level_134)
+
+        hbox_lay_fix_135 =  QHBoxLayout()
+        label_fix_135 = QLabel("            fix")
+        label_fix_135.setPalette(palette_object)
+        label_fix_135.setFont(QFont("Monospace", 10))
+        hbox_lay_fix_135.addWidget(label_fix_135)
+
+        box_fix_135 = QComboBox()
+        box_fix_135.local_path = "refinement.parameterisation.detector.fix"
+        box_fix_135.tmp_lst=[]
+        box_fix_135.tmp_lst.append("all")
+        box_fix_135.tmp_lst.append("position")
+        box_fix_135.tmp_lst.append("orientation")
+        for lst_itm in box_fix_135.tmp_lst:
+            box_fix_135.addItem(lst_itm)
+        box_fix_135.setCurrentIndex(0)
+        box_fix_135.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_fix_135.addWidget(box_fix_135)
+        bg_box.addLayout(hbox_lay_fix_135)
+
+
+        hbox_lay_sparse_137 =  QHBoxLayout()
+        label_sparse_137 = QLabel("        sparse")
+        label_sparse_137.setPalette(palette_object)
+        label_sparse_137.setFont(QFont("Monospace", 10))
+        hbox_lay_sparse_137.addWidget(label_sparse_137)
+
+        box_sparse_137 = QComboBox()
+        box_sparse_137.local_path = "refinement.parameterisation.sparse"
+        box_sparse_137.tmp_lst=[]
+        box_sparse_137.tmp_lst.append("True")
+        box_sparse_137.tmp_lst.append("False")
+        for lst_itm in box_sparse_137.tmp_lst:
+            box_sparse_137.addItem(lst_itm)
+        box_sparse_137.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_sparse_137.addWidget(box_sparse_137)
+        bg_box.addLayout(hbox_lay_sparse_137)
+
+        hbox_lay_treat_single_image_as_still_138 =  QHBoxLayout()
+        label_treat_single_image_as_still_138 = QLabel("        treat_single_image_as_still")
+        label_treat_single_image_as_still_138.setPalette(palette_object)
+        label_treat_single_image_as_still_138.setFont(QFont("Monospace", 10))
+        hbox_lay_treat_single_image_as_still_138.addWidget(label_treat_single_image_as_still_138)
+
+        box_treat_single_image_as_still_138 = QComboBox()
+        box_treat_single_image_as_still_138.local_path = "refinement.parameterisation.treat_single_image_as_still"
+        box_treat_single_image_as_still_138.tmp_lst=[]
+        box_treat_single_image_as_still_138.tmp_lst.append("True")
+        box_treat_single_image_as_still_138.tmp_lst.append("False")
+        for lst_itm in box_treat_single_image_as_still_138.tmp_lst:
+            box_treat_single_image_as_still_138.addItem(lst_itm)
+        box_treat_single_image_as_still_138.setCurrentIndex(1)
+        box_treat_single_image_as_still_138.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_treat_single_image_as_still_138.addWidget(box_treat_single_image_as_still_138)
+        bg_box.addLayout(hbox_lay_treat_single_image_as_still_138)
+
+        hbox_lay_spherical_relp_model_139 =  QHBoxLayout()
+        label_spherical_relp_model_139 = QLabel("        spherical_relp_model")
+        label_spherical_relp_model_139.setPalette(palette_object)
+        label_spherical_relp_model_139.setFont(QFont("Monospace", 10))
+        hbox_lay_spherical_relp_model_139.addWidget(label_spherical_relp_model_139)
+
+        box_spherical_relp_model_139 = QComboBox()
+        box_spherical_relp_model_139.local_path = "refinement.parameterisation.spherical_relp_model"
+        box_spherical_relp_model_139.tmp_lst=[]
+        box_spherical_relp_model_139.tmp_lst.append("True")
+        box_spherical_relp_model_139.tmp_lst.append("False")
+        for lst_itm in box_spherical_relp_model_139.tmp_lst:
+            box_spherical_relp_model_139.addItem(lst_itm)
+        box_spherical_relp_model_139.setCurrentIndex(1)
+        box_spherical_relp_model_139.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_spherical_relp_model_139.addWidget(box_spherical_relp_model_139)
+        bg_box.addLayout(hbox_lay_spherical_relp_model_139)
+
+        label_140 = QLabel("    refinery")
         label_140.setPalette(palette_scope)
         label_140.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_140)
 
-        hbox_lay_num_intervals_141 =  QHBoxLayout()
-        label_num_intervals_141 = QLabel("                    num_intervals")
-        label_num_intervals_141.setPalette(palette_object)
-        label_num_intervals_141.setFont(QFont("Monospace", 10))
-        hbox_lay_num_intervals_141.addWidget(label_num_intervals_141)
-
-        box_num_intervals_141 = QComboBox()
-        box_num_intervals_141.local_path = "refinement.parameterisation.crystal.orientation.smoother.num_intervals"
-        box_num_intervals_141.tmp_lst=[]
-        box_num_intervals_141.tmp_lst.append("fixed_width")
-        box_num_intervals_141.tmp_lst.append("absolute")
-        for lst_itm in box_num_intervals_141.tmp_lst:
-            box_num_intervals_141.addItem(lst_itm)
-        box_num_intervals_141.setCurrentIndex(0)
-        box_num_intervals_141.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_num_intervals_141.addWidget(box_num_intervals_141)
-        bg_box.addLayout(hbox_lay_num_intervals_141)
-
-        hbox_lay_interval_width_degrees_142 =  QHBoxLayout()
-        label_interval_width_degrees_142 = QLabel("                    interval_width_degrees")
-        label_interval_width_degrees_142.setPalette(palette_object)
-        label_interval_width_degrees_142.setFont(QFont("Monospace", 10))
-        hbox_lay_interval_width_degrees_142.addWidget(label_interval_width_degrees_142)
-
-        box_interval_width_degrees_142 = QDoubleSpinBox()
-        box_interval_width_degrees_142.setValue(36.0)
-        box_interval_width_degrees_142.local_path = "refinement.parameterisation.crystal.orientation.smoother.interval_width_degrees"
-        box_interval_width_degrees_142.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_interval_width_degrees_142.addWidget(box_interval_width_degrees_142)
-        bg_box.addLayout(hbox_lay_interval_width_degrees_142)
-
-        hbox_lay_absolute_num_intervals_143 =  QHBoxLayout()
-        label_absolute_num_intervals_143 = QLabel("                    absolute_num_intervals")
-        label_absolute_num_intervals_143.setPalette(palette_object)
-        label_absolute_num_intervals_143.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_num_intervals_143.addWidget(label_absolute_num_intervals_143)
-
-        box_absolute_num_intervals_143 = QSpinBox()
-        box_absolute_num_intervals_143.setValue(5)
-        box_absolute_num_intervals_143.local_path = "refinement.parameterisation.crystal.orientation.smoother.absolute_num_intervals"
-        box_absolute_num_intervals_143.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_num_intervals_143.addWidget(box_absolute_num_intervals_143)
-        bg_box.addLayout(hbox_lay_absolute_num_intervals_143)
-
-        label_144 = QLabel("        detector")
-        label_144.setPalette(palette_scope)
-        label_144.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_144)
-
-        hbox_lay_panels_145 =  QHBoxLayout()
-        label_panels_145 = QLabel("            panels")
-        label_panels_145.setPalette(palette_object)
-        label_panels_145.setFont(QFont("Monospace", 10))
-        hbox_lay_panels_145.addWidget(label_panels_145)
-
-        box_panels_145 = QComboBox()
-        box_panels_145.local_path = "refinement.parameterisation.detector.panels"
-        box_panels_145.tmp_lst=[]
-        box_panels_145.tmp_lst.append("automatic")
-        box_panels_145.tmp_lst.append("single")
-        box_panels_145.tmp_lst.append("multiple")
-        box_panels_145.tmp_lst.append("hierarchical")
-        for lst_itm in box_panels_145.tmp_lst:
-            box_panels_145.addItem(lst_itm)
-        box_panels_145.setCurrentIndex(0)
-        box_panels_145.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_panels_145.addWidget(box_panels_145)
-        bg_box.addLayout(hbox_lay_panels_145)
-
-        hbox_lay_hierarchy_level_146 =  QHBoxLayout()
-        label_hierarchy_level_146 = QLabel("            hierarchy_level")
-        label_hierarchy_level_146.setPalette(palette_object)
-        label_hierarchy_level_146.setFont(QFont("Monospace", 10))
-        hbox_lay_hierarchy_level_146.addWidget(label_hierarchy_level_146)
-
-        box_hierarchy_level_146 = QSpinBox()
-        box_hierarchy_level_146.setValue(0)
-        box_hierarchy_level_146.local_path = "refinement.parameterisation.detector.hierarchy_level"
-        box_hierarchy_level_146.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_hierarchy_level_146.addWidget(box_hierarchy_level_146)
-        bg_box.addLayout(hbox_lay_hierarchy_level_146)
-
-        hbox_lay_fix_147 =  QHBoxLayout()
-        label_fix_147 = QLabel("            fix")
-        label_fix_147.setPalette(palette_object)
-        label_fix_147.setFont(QFont("Monospace", 10))
-        hbox_lay_fix_147.addWidget(label_fix_147)
-
-        box_fix_147 = QComboBox()
-        box_fix_147.local_path = "refinement.parameterisation.detector.fix"
-        box_fix_147.tmp_lst=[]
-        box_fix_147.tmp_lst.append("all")
-        box_fix_147.tmp_lst.append("position")
-        box_fix_147.tmp_lst.append("orientation")
-        for lst_itm in box_fix_147.tmp_lst:
-            box_fix_147.addItem(lst_itm)
-        box_fix_147.setCurrentIndex(0)
-        box_fix_147.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_fix_147.addWidget(box_fix_147)
-        bg_box.addLayout(hbox_lay_fix_147)
-
-
-        hbox_lay_force_static_149 =  QHBoxLayout()
-        label_force_static_149 = QLabel("            force_static")
-        label_force_static_149.setPalette(palette_object)
-        label_force_static_149.setFont(QFont("Monospace", 10))
-        hbox_lay_force_static_149.addWidget(label_force_static_149)
-
-        box_force_static_149 = QComboBox()
-        box_force_static_149.local_path = "refinement.parameterisation.detector.force_static"
-        box_force_static_149.tmp_lst=[]
-        box_force_static_149.tmp_lst.append("True")
-        box_force_static_149.tmp_lst.append("False")
-        for lst_itm in box_force_static_149.tmp_lst:
-            box_force_static_149.addItem(lst_itm)
-        box_force_static_149.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_force_static_149.addWidget(box_force_static_149)
-        bg_box.addLayout(hbox_lay_force_static_149)
-
-        label_150 = QLabel("            smoother")
-        label_150.setPalette(palette_scope)
-        label_150.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_150)
-
-        hbox_lay_num_intervals_151 =  QHBoxLayout()
-        label_num_intervals_151 = QLabel("                num_intervals")
-        label_num_intervals_151.setPalette(palette_object)
-        label_num_intervals_151.setFont(QFont("Monospace", 10))
-        hbox_lay_num_intervals_151.addWidget(label_num_intervals_151)
-
-        box_num_intervals_151 = QComboBox()
-        box_num_intervals_151.local_path = "refinement.parameterisation.detector.smoother.num_intervals"
-        box_num_intervals_151.tmp_lst=[]
-        box_num_intervals_151.tmp_lst.append("fixed_width")
-        box_num_intervals_151.tmp_lst.append("absolute")
-        for lst_itm in box_num_intervals_151.tmp_lst:
-            box_num_intervals_151.addItem(lst_itm)
-        box_num_intervals_151.setCurrentIndex(0)
-        box_num_intervals_151.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_num_intervals_151.addWidget(box_num_intervals_151)
-        bg_box.addLayout(hbox_lay_num_intervals_151)
-
-        hbox_lay_interval_width_degrees_152 =  QHBoxLayout()
-        label_interval_width_degrees_152 = QLabel("                interval_width_degrees")
-        label_interval_width_degrees_152.setPalette(palette_object)
-        label_interval_width_degrees_152.setFont(QFont("Monospace", 10))
-        hbox_lay_interval_width_degrees_152.addWidget(label_interval_width_degrees_152)
-
-        box_interval_width_degrees_152 = QDoubleSpinBox()
-        box_interval_width_degrees_152.setValue(36.0)
-        box_interval_width_degrees_152.local_path = "refinement.parameterisation.detector.smoother.interval_width_degrees"
-        box_interval_width_degrees_152.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_interval_width_degrees_152.addWidget(box_interval_width_degrees_152)
-        bg_box.addLayout(hbox_lay_interval_width_degrees_152)
-
-        hbox_lay_absolute_num_intervals_153 =  QHBoxLayout()
-        label_absolute_num_intervals_153 = QLabel("                absolute_num_intervals")
-        label_absolute_num_intervals_153.setPalette(palette_object)
-        label_absolute_num_intervals_153.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_num_intervals_153.addWidget(label_absolute_num_intervals_153)
-
-        box_absolute_num_intervals_153 = QSpinBox()
-        box_absolute_num_intervals_153.setValue(5)
-        box_absolute_num_intervals_153.local_path = "refinement.parameterisation.detector.smoother.absolute_num_intervals"
-        box_absolute_num_intervals_153.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_num_intervals_153.addWidget(box_absolute_num_intervals_153)
-        bg_box.addLayout(hbox_lay_absolute_num_intervals_153)
-
-        hbox_lay_sparse_154 =  QHBoxLayout()
-        label_sparse_154 = QLabel("        sparse")
-        label_sparse_154.setPalette(palette_object)
-        label_sparse_154.setFont(QFont("Monospace", 10))
-        hbox_lay_sparse_154.addWidget(label_sparse_154)
-
-        box_sparse_154 = QComboBox()
-        box_sparse_154.local_path = "refinement.parameterisation.sparse"
-        box_sparse_154.tmp_lst=[]
-        box_sparse_154.tmp_lst.append("True")
-        box_sparse_154.tmp_lst.append("False")
-        for lst_itm in box_sparse_154.tmp_lst:
-            box_sparse_154.addItem(lst_itm)
-        box_sparse_154.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_sparse_154.addWidget(box_sparse_154)
-        bg_box.addLayout(hbox_lay_sparse_154)
-
-        hbox_lay_treat_single_image_as_still_155 =  QHBoxLayout()
-        label_treat_single_image_as_still_155 = QLabel("        treat_single_image_as_still")
-        label_treat_single_image_as_still_155.setPalette(palette_object)
-        label_treat_single_image_as_still_155.setFont(QFont("Monospace", 10))
-        hbox_lay_treat_single_image_as_still_155.addWidget(label_treat_single_image_as_still_155)
-
-        box_treat_single_image_as_still_155 = QComboBox()
-        box_treat_single_image_as_still_155.local_path = "refinement.parameterisation.treat_single_image_as_still"
-        box_treat_single_image_as_still_155.tmp_lst=[]
-        box_treat_single_image_as_still_155.tmp_lst.append("True")
-        box_treat_single_image_as_still_155.tmp_lst.append("False")
-        for lst_itm in box_treat_single_image_as_still_155.tmp_lst:
-            box_treat_single_image_as_still_155.addItem(lst_itm)
-        box_treat_single_image_as_still_155.setCurrentIndex(1)
-        box_treat_single_image_as_still_155.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_treat_single_image_as_still_155.addWidget(box_treat_single_image_as_still_155)
-        bg_box.addLayout(hbox_lay_treat_single_image_as_still_155)
-
-        hbox_lay_spherical_relp_model_156 =  QHBoxLayout()
-        label_spherical_relp_model_156 = QLabel("        spherical_relp_model")
-        label_spherical_relp_model_156.setPalette(palette_object)
-        label_spherical_relp_model_156.setFont(QFont("Monospace", 10))
-        hbox_lay_spherical_relp_model_156.addWidget(label_spherical_relp_model_156)
-
-        box_spherical_relp_model_156 = QComboBox()
-        box_spherical_relp_model_156.local_path = "refinement.parameterisation.spherical_relp_model"
-        box_spherical_relp_model_156.tmp_lst=[]
-        box_spherical_relp_model_156.tmp_lst.append("True")
-        box_spherical_relp_model_156.tmp_lst.append("False")
-        for lst_itm in box_spherical_relp_model_156.tmp_lst:
-            box_spherical_relp_model_156.addItem(lst_itm)
-        box_spherical_relp_model_156.setCurrentIndex(1)
-        box_spherical_relp_model_156.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_spherical_relp_model_156.addWidget(box_spherical_relp_model_156)
-        bg_box.addLayout(hbox_lay_spherical_relp_model_156)
-
-        label_157 = QLabel("    refinery")
-        label_157.setPalette(palette_scope)
-        label_157.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_157)
-
-        hbox_lay_engine_158 =  QHBoxLayout()
-        label_engine_158 = QLabel("        engine")
-        label_engine_158.setPalette(palette_object)
-        label_engine_158.setFont(QFont("Monospace", 10))
-        hbox_lay_engine_158.addWidget(label_engine_158)
-
-        box_engine_158 = QComboBox()
-        box_engine_158.local_path = "refinement.refinery.engine"
-        box_engine_158.tmp_lst=[]
-        box_engine_158.tmp_lst.append("SimpleLBFGS")
-        box_engine_158.tmp_lst.append("LBFGScurvs")
-        box_engine_158.tmp_lst.append("GaussNewton")
-        box_engine_158.tmp_lst.append("LevMar")
-        box_engine_158.tmp_lst.append("SparseLevMar")
-        for lst_itm in box_engine_158.tmp_lst:
-            box_engine_158.addItem(lst_itm)
-        box_engine_158.setCurrentIndex(3)
-        box_engine_158.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_engine_158.addWidget(box_engine_158)
-        bg_box.addLayout(hbox_lay_engine_158)
-
-        hbox_lay_track_step_159 =  QHBoxLayout()
-        label_track_step_159 = QLabel("        track_step")
-        label_track_step_159.setPalette(palette_object)
-        label_track_step_159.setFont(QFont("Monospace", 10))
-        hbox_lay_track_step_159.addWidget(label_track_step_159)
-
-        box_track_step_159 = QComboBox()
-        box_track_step_159.local_path = "refinement.refinery.track_step"
-        box_track_step_159.tmp_lst=[]
-        box_track_step_159.tmp_lst.append("True")
-        box_track_step_159.tmp_lst.append("False")
-        for lst_itm in box_track_step_159.tmp_lst:
-            box_track_step_159.addItem(lst_itm)
-        box_track_step_159.setCurrentIndex(1)
-        box_track_step_159.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_track_step_159.addWidget(box_track_step_159)
-        bg_box.addLayout(hbox_lay_track_step_159)
-
-        hbox_lay_track_gradient_160 =  QHBoxLayout()
-        label_track_gradient_160 = QLabel("        track_gradient")
-        label_track_gradient_160.setPalette(palette_object)
-        label_track_gradient_160.setFont(QFont("Monospace", 10))
-        hbox_lay_track_gradient_160.addWidget(label_track_gradient_160)
-
-        box_track_gradient_160 = QComboBox()
-        box_track_gradient_160.local_path = "refinement.refinery.track_gradient"
-        box_track_gradient_160.tmp_lst=[]
-        box_track_gradient_160.tmp_lst.append("True")
-        box_track_gradient_160.tmp_lst.append("False")
-        for lst_itm in box_track_gradient_160.tmp_lst:
-            box_track_gradient_160.addItem(lst_itm)
-        box_track_gradient_160.setCurrentIndex(1)
-        box_track_gradient_160.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_track_gradient_160.addWidget(box_track_gradient_160)
-        bg_box.addLayout(hbox_lay_track_gradient_160)
-
-        hbox_lay_track_parameter_correlation_161 =  QHBoxLayout()
-        label_track_parameter_correlation_161 = QLabel("        track_parameter_correlation")
-        label_track_parameter_correlation_161.setPalette(palette_object)
-        label_track_parameter_correlation_161.setFont(QFont("Monospace", 10))
-        hbox_lay_track_parameter_correlation_161.addWidget(label_track_parameter_correlation_161)
-
-        box_track_parameter_correlation_161 = QComboBox()
-        box_track_parameter_correlation_161.local_path = "refinement.refinery.track_parameter_correlation"
-        box_track_parameter_correlation_161.tmp_lst=[]
-        box_track_parameter_correlation_161.tmp_lst.append("True")
-        box_track_parameter_correlation_161.tmp_lst.append("False")
-        for lst_itm in box_track_parameter_correlation_161.tmp_lst:
-            box_track_parameter_correlation_161.addItem(lst_itm)
-        box_track_parameter_correlation_161.setCurrentIndex(1)
-        box_track_parameter_correlation_161.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_track_parameter_correlation_161.addWidget(box_track_parameter_correlation_161)
-        bg_box.addLayout(hbox_lay_track_parameter_correlation_161)
-
-        hbox_lay_track_out_of_sample_rmsd_162 =  QHBoxLayout()
-        label_track_out_of_sample_rmsd_162 = QLabel("        track_out_of_sample_rmsd")
-        label_track_out_of_sample_rmsd_162.setPalette(palette_object)
-        label_track_out_of_sample_rmsd_162.setFont(QFont("Monospace", 10))
-        hbox_lay_track_out_of_sample_rmsd_162.addWidget(label_track_out_of_sample_rmsd_162)
-
-        box_track_out_of_sample_rmsd_162 = QComboBox()
-        box_track_out_of_sample_rmsd_162.local_path = "refinement.refinery.track_out_of_sample_rmsd"
-        box_track_out_of_sample_rmsd_162.tmp_lst=[]
-        box_track_out_of_sample_rmsd_162.tmp_lst.append("True")
-        box_track_out_of_sample_rmsd_162.tmp_lst.append("False")
-        for lst_itm in box_track_out_of_sample_rmsd_162.tmp_lst:
-            box_track_out_of_sample_rmsd_162.addItem(lst_itm)
-        box_track_out_of_sample_rmsd_162.setCurrentIndex(1)
-        box_track_out_of_sample_rmsd_162.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_track_out_of_sample_rmsd_162.addWidget(box_track_out_of_sample_rmsd_162)
-        bg_box.addLayout(hbox_lay_track_out_of_sample_rmsd_162)
-
-
-        hbox_lay_max_iterations_164 =  QHBoxLayout()
-        label_max_iterations_164 = QLabel("        max_iterations")
-        label_max_iterations_164.setPalette(palette_object)
-        label_max_iterations_164.setFont(QFont("Monospace", 10))
-        hbox_lay_max_iterations_164.addWidget(label_max_iterations_164)
-
-        box_max_iterations_164 = QSpinBox()
-        box_max_iterations_164.local_path = "refinement.refinery.max_iterations"
-        box_max_iterations_164.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_max_iterations_164.addWidget(box_max_iterations_164)
-        bg_box.addLayout(hbox_lay_max_iterations_164)
-
-        label_165 = QLabel("    target")
-        label_165.setPalette(palette_scope)
-        label_165.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_165)
-
-        hbox_lay_rmsd_cutoff_166 =  QHBoxLayout()
-        label_rmsd_cutoff_166 = QLabel("        rmsd_cutoff")
-        label_rmsd_cutoff_166.setPalette(palette_object)
-        label_rmsd_cutoff_166.setFont(QFont("Monospace", 10))
-        hbox_lay_rmsd_cutoff_166.addWidget(label_rmsd_cutoff_166)
-
-        box_rmsd_cutoff_166 = QComboBox()
-        box_rmsd_cutoff_166.local_path = "refinement.target.rmsd_cutoff"
-        box_rmsd_cutoff_166.tmp_lst=[]
-        box_rmsd_cutoff_166.tmp_lst.append("fraction_of_bin_size")
-        box_rmsd_cutoff_166.tmp_lst.append("absolute")
-        for lst_itm in box_rmsd_cutoff_166.tmp_lst:
-            box_rmsd_cutoff_166.addItem(lst_itm)
-        box_rmsd_cutoff_166.setCurrentIndex(0)
-        box_rmsd_cutoff_166.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_rmsd_cutoff_166.addWidget(box_rmsd_cutoff_166)
-        bg_box.addLayout(hbox_lay_rmsd_cutoff_166)
-
-        hbox_lay_bin_size_fraction_167 =  QHBoxLayout()
-        label_bin_size_fraction_167 = QLabel("        bin_size_fraction")
-        label_bin_size_fraction_167.setPalette(palette_object)
-        label_bin_size_fraction_167.setFont(QFont("Monospace", 10))
-        hbox_lay_bin_size_fraction_167.addWidget(label_bin_size_fraction_167)
-
-        box_bin_size_fraction_167 = QDoubleSpinBox()
-        box_bin_size_fraction_167.setValue(0.0)
-        box_bin_size_fraction_167.local_path = "refinement.target.bin_size_fraction"
-        box_bin_size_fraction_167.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_bin_size_fraction_167.addWidget(box_bin_size_fraction_167)
-        bg_box.addLayout(hbox_lay_bin_size_fraction_167)
-
-        hbox_lay_absolute_cutoffs_168_0 =  QHBoxLayout()
-        label_absolute_cutoffs_168_0 = QLabel("        absolute_cutoffs[1]")
-        label_absolute_cutoffs_168_0.setPalette(palette_object)
-        label_absolute_cutoffs_168_0.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_cutoffs_168_0.addWidget(label_absolute_cutoffs_168_0)
-        box_absolute_cutoffs_168_0 = QDoubleSpinBox()
-        box_absolute_cutoffs_168_0.local_path = "refinement.target.absolute_cutoffs"
-        #box_absolute_cutoffs_168_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_cutoffs_168_1 =  QHBoxLayout()
-        label_absolute_cutoffs_168_1 = QLabel("        absolute_cutoffs[2]")
-        label_absolute_cutoffs_168_1.setPalette(palette_object)
-        label_absolute_cutoffs_168_1.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_cutoffs_168_1.addWidget(label_absolute_cutoffs_168_1)
-        box_absolute_cutoffs_168_1 = QDoubleSpinBox()
-        box_absolute_cutoffs_168_1.local_path = "refinement.target.absolute_cutoffs"
-        #box_absolute_cutoffs_168_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_cutoffs_168_2 =  QHBoxLayout()
-        label_absolute_cutoffs_168_2 = QLabel("        absolute_cutoffs[3]")
-        label_absolute_cutoffs_168_2.setPalette(palette_object)
-        label_absolute_cutoffs_168_2.setFont(QFont("Monospace", 10))
-        hbox_lay_absolute_cutoffs_168_2.addWidget(label_absolute_cutoffs_168_2)
-        box_absolute_cutoffs_168_2 = QDoubleSpinBox()
-        box_absolute_cutoffs_168_2.local_path = "refinement.target.absolute_cutoffs"
-        #box_absolute_cutoffs_168_2.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_absolute_cutoffs_168_0.addWidget(box_absolute_cutoffs_168_0)
-        bg_box.addLayout(hbox_lay_absolute_cutoffs_168_0)
-        hbox_lay_absolute_cutoffs_168_1.addWidget(box_absolute_cutoffs_168_1)
-        bg_box.addLayout(hbox_lay_absolute_cutoffs_168_1)
-        hbox_lay_absolute_cutoffs_168_2.addWidget(box_absolute_cutoffs_168_2)
-        bg_box.addLayout(hbox_lay_absolute_cutoffs_168_2)
-
-        hbox_lay_gradient_calculation_blocksize_169 =  QHBoxLayout()
-        label_gradient_calculation_blocksize_169 = QLabel("        gradient_calculation_blocksize")
-        label_gradient_calculation_blocksize_169.setPalette(palette_object)
-        label_gradient_calculation_blocksize_169.setFont(QFont("Monospace", 10))
-        hbox_lay_gradient_calculation_blocksize_169.addWidget(label_gradient_calculation_blocksize_169)
-
-        box_gradient_calculation_blocksize_169 = QSpinBox()
-        box_gradient_calculation_blocksize_169.local_path = "refinement.target.gradient_calculation_blocksize"
-        box_gradient_calculation_blocksize_169.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_gradient_calculation_blocksize_169.addWidget(box_gradient_calculation_blocksize_169)
-        bg_box.addLayout(hbox_lay_gradient_calculation_blocksize_169)
-
-        label_170 = QLabel("    reflections")
-        label_170.setPalette(palette_scope)
-        label_170.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_170)
-
-        hbox_lay_reflections_per_degree_171 =  QHBoxLayout()
-        label_reflections_per_degree_171 = QLabel("        reflections_per_degree")
-        label_reflections_per_degree_171.setPalette(palette_object)
-        label_reflections_per_degree_171.setFont(QFont("Monospace", 10))
-        hbox_lay_reflections_per_degree_171.addWidget(label_reflections_per_degree_171)
-
-        box_reflections_per_degree_171 = QDoubleSpinBox()
-        box_reflections_per_degree_171.setValue(100.0)
-        box_reflections_per_degree_171.local_path = "refinement.reflections.reflections_per_degree"
-        box_reflections_per_degree_171.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_reflections_per_degree_171.addWidget(box_reflections_per_degree_171)
-        bg_box.addLayout(hbox_lay_reflections_per_degree_171)
-
-        hbox_lay_minimum_sample_size_172 =  QHBoxLayout()
-        label_minimum_sample_size_172 = QLabel("        minimum_sample_size")
-        label_minimum_sample_size_172.setPalette(palette_object)
-        label_minimum_sample_size_172.setFont(QFont("Monospace", 10))
-        hbox_lay_minimum_sample_size_172.addWidget(label_minimum_sample_size_172)
-
-        box_minimum_sample_size_172 = QSpinBox()
-        box_minimum_sample_size_172.setValue(1000)
-        box_minimum_sample_size_172.local_path = "refinement.reflections.minimum_sample_size"
-        box_minimum_sample_size_172.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_minimum_sample_size_172.addWidget(box_minimum_sample_size_172)
-        bg_box.addLayout(hbox_lay_minimum_sample_size_172)
-
-        hbox_lay_maximum_sample_size_173 =  QHBoxLayout()
-        label_maximum_sample_size_173 = QLabel("        maximum_sample_size")
-        label_maximum_sample_size_173.setPalette(palette_object)
-        label_maximum_sample_size_173.setFont(QFont("Monospace", 10))
-        hbox_lay_maximum_sample_size_173.addWidget(label_maximum_sample_size_173)
-
-        box_maximum_sample_size_173 = QSpinBox()
-        box_maximum_sample_size_173.local_path = "refinement.reflections.maximum_sample_size"
-        box_maximum_sample_size_173.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_maximum_sample_size_173.addWidget(box_maximum_sample_size_173)
-        bg_box.addLayout(hbox_lay_maximum_sample_size_173)
-
-        hbox_lay_random_seed_174 =  QHBoxLayout()
-        label_random_seed_174 = QLabel("        random_seed")
-        label_random_seed_174.setPalette(palette_object)
-        label_random_seed_174.setFont(QFont("Monospace", 10))
-        hbox_lay_random_seed_174.addWidget(label_random_seed_174)
-
-        box_random_seed_174 = QSpinBox()
-        box_random_seed_174.setValue(42)
-        box_random_seed_174.local_path = "refinement.reflections.random_seed"
-        box_random_seed_174.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_random_seed_174.addWidget(box_random_seed_174)
-        bg_box.addLayout(hbox_lay_random_seed_174)
-
-        hbox_lay_close_to_spindle_cutoff_175 =  QHBoxLayout()
-        label_close_to_spindle_cutoff_175 = QLabel("        close_to_spindle_cutoff")
-        label_close_to_spindle_cutoff_175.setPalette(palette_object)
-        label_close_to_spindle_cutoff_175.setFont(QFont("Monospace", 10))
-        hbox_lay_close_to_spindle_cutoff_175.addWidget(label_close_to_spindle_cutoff_175)
-
-        box_close_to_spindle_cutoff_175 = QDoubleSpinBox()
-        box_close_to_spindle_cutoff_175.setValue(0.02)
-        box_close_to_spindle_cutoff_175.local_path = "refinement.reflections.close_to_spindle_cutoff"
-        box_close_to_spindle_cutoff_175.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_close_to_spindle_cutoff_175.addWidget(box_close_to_spindle_cutoff_175)
-        bg_box.addLayout(hbox_lay_close_to_spindle_cutoff_175)
-
-        hbox_lay_block_width_176 =  QHBoxLayout()
-        label_block_width_176 = QLabel("        block_width")
-        label_block_width_176.setPalette(palette_object)
-        label_block_width_176.setFont(QFont("Monospace", 10))
-        hbox_lay_block_width_176.addWidget(label_block_width_176)
-
-        box_block_width_176 = QDoubleSpinBox()
-        box_block_width_176.setValue(1.0)
-        box_block_width_176.local_path = "refinement.reflections.block_width"
-        box_block_width_176.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_block_width_176.addWidget(box_block_width_176)
-        bg_box.addLayout(hbox_lay_block_width_176)
-
-        label_177 = QLabel("        weighting_strategy")
-        label_177.setPalette(palette_scope)
-        label_177.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_177)
-
-        hbox_lay_override_178 =  QHBoxLayout()
-        label_override_178 = QLabel("            override")
-        label_override_178.setPalette(palette_object)
-        label_override_178.setFont(QFont("Monospace", 10))
-        hbox_lay_override_178.addWidget(label_override_178)
-
-        box_override_178 = QComboBox()
-        box_override_178.local_path = "refinement.reflections.weighting_strategy.override"
-        box_override_178.tmp_lst=[]
-        box_override_178.tmp_lst.append("statistical")
-        box_override_178.tmp_lst.append("stills")
-        box_override_178.tmp_lst.append("constant")
-        for lst_itm in box_override_178.tmp_lst:
-            box_override_178.addItem(lst_itm)
-        box_override_178.setCurrentIndex(0)
-        box_override_178.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_override_178.addWidget(box_override_178)
-        bg_box.addLayout(hbox_lay_override_178)
-
-        hbox_lay_delpsi_constant_179 =  QHBoxLayout()
-        label_delpsi_constant_179 = QLabel("            delpsi_constant")
-        label_delpsi_constant_179.setPalette(palette_object)
-        label_delpsi_constant_179.setFont(QFont("Monospace", 10))
-        hbox_lay_delpsi_constant_179.addWidget(label_delpsi_constant_179)
-
-        box_delpsi_constant_179 = QDoubleSpinBox()
-        box_delpsi_constant_179.setValue(1000000.0)
-        box_delpsi_constant_179.local_path = "refinement.reflections.weighting_strategy.delpsi_constant"
-        box_delpsi_constant_179.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_delpsi_constant_179.addWidget(box_delpsi_constant_179)
-        bg_box.addLayout(hbox_lay_delpsi_constant_179)
-
-        hbox_lay_constants_180_0 =  QHBoxLayout()
-        label_constants_180_0 = QLabel("            constants[1]")
-        label_constants_180_0.setPalette(palette_object)
-        label_constants_180_0.setFont(QFont("Monospace", 10))
-        hbox_lay_constants_180_0.addWidget(label_constants_180_0)
-        box_constants_180_0 = QDoubleSpinBox()
-        box_constants_180_0.local_path = "refinement.reflections.weighting_strategy.constants"
-        #box_constants_180_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_constants_180_1 =  QHBoxLayout()
-        label_constants_180_1 = QLabel("            constants[2]")
-        label_constants_180_1.setPalette(palette_object)
-        label_constants_180_1.setFont(QFont("Monospace", 10))
-        hbox_lay_constants_180_1.addWidget(label_constants_180_1)
-        box_constants_180_1 = QDoubleSpinBox()
-        box_constants_180_1.local_path = "refinement.reflections.weighting_strategy.constants"
-        #box_constants_180_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_constants_180_2 =  QHBoxLayout()
-        label_constants_180_2 = QLabel("            constants[3]")
-        label_constants_180_2.setPalette(palette_object)
-        label_constants_180_2.setFont(QFont("Monospace", 10))
-        hbox_lay_constants_180_2.addWidget(label_constants_180_2)
-        box_constants_180_2 = QDoubleSpinBox()
-        box_constants_180_2.local_path = "refinement.reflections.weighting_strategy.constants"
-        #box_constants_180_2.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_constants_180_0.addWidget(box_constants_180_0)
-        bg_box.addLayout(hbox_lay_constants_180_0)
-        hbox_lay_constants_180_1.addWidget(box_constants_180_1)
-        bg_box.addLayout(hbox_lay_constants_180_1)
-        hbox_lay_constants_180_2.addWidget(box_constants_180_2)
-        bg_box.addLayout(hbox_lay_constants_180_2)
-
-        label_181 = QLabel("        outlier")
-        label_181.setPalette(palette_scope)
-        label_181.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_181)
-
-        hbox_lay_algorithm_182 =  QHBoxLayout()
-        label_algorithm_182 = QLabel("            algorithm")
-        label_algorithm_182.setPalette(palette_object)
-        label_algorithm_182.setFont(QFont("Monospace", 10))
-        hbox_lay_algorithm_182.addWidget(label_algorithm_182)
-
-        box_algorithm_182 = QComboBox()
-        box_algorithm_182.local_path = "refinement.reflections.outlier.algorithm"
-        box_algorithm_182.tmp_lst=[]
-        box_algorithm_182.tmp_lst.append("null")
-        box_algorithm_182.tmp_lst.append("auto")
-        box_algorithm_182.tmp_lst.append("mcd")
-        box_algorithm_182.tmp_lst.append("tukey")
-        box_algorithm_182.tmp_lst.append("sauter_poon")
-        for lst_itm in box_algorithm_182.tmp_lst:
-            box_algorithm_182.addItem(lst_itm)
-        box_algorithm_182.setCurrentIndex(1)
-        box_algorithm_182.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_algorithm_182.addWidget(box_algorithm_182)
-        bg_box.addLayout(hbox_lay_algorithm_182)
-
-        hbox_lay_minimum_number_of_reflections_183 =  QHBoxLayout()
-        label_minimum_number_of_reflections_183 = QLabel("            minimum_number_of_reflections")
-        label_minimum_number_of_reflections_183.setPalette(palette_object)
-        label_minimum_number_of_reflections_183.setFont(QFont("Monospace", 10))
-        hbox_lay_minimum_number_of_reflections_183.addWidget(label_minimum_number_of_reflections_183)
-
-        box_minimum_number_of_reflections_183 = QSpinBox()
-        box_minimum_number_of_reflections_183.setValue(20)
-        box_minimum_number_of_reflections_183.local_path = "refinement.reflections.outlier.minimum_number_of_reflections"
-        box_minimum_number_of_reflections_183.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_minimum_number_of_reflections_183.addWidget(box_minimum_number_of_reflections_183)
-        bg_box.addLayout(hbox_lay_minimum_number_of_reflections_183)
-
-        hbox_lay_separate_experiments_184 =  QHBoxLayout()
-        label_separate_experiments_184 = QLabel("            separate_experiments")
-        label_separate_experiments_184.setPalette(palette_object)
-        label_separate_experiments_184.setFont(QFont("Monospace", 10))
-        hbox_lay_separate_experiments_184.addWidget(label_separate_experiments_184)
-
-        box_separate_experiments_184 = QComboBox()
-        box_separate_experiments_184.local_path = "refinement.reflections.outlier.separate_experiments"
-        box_separate_experiments_184.tmp_lst=[]
-        box_separate_experiments_184.tmp_lst.append("True")
-        box_separate_experiments_184.tmp_lst.append("False")
-        for lst_itm in box_separate_experiments_184.tmp_lst:
-            box_separate_experiments_184.addItem(lst_itm)
-        box_separate_experiments_184.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_separate_experiments_184.addWidget(box_separate_experiments_184)
-        bg_box.addLayout(hbox_lay_separate_experiments_184)
-
-        hbox_lay_separate_panels_185 =  QHBoxLayout()
-        label_separate_panels_185 = QLabel("            separate_panels")
-        label_separate_panels_185.setPalette(palette_object)
-        label_separate_panels_185.setFont(QFont("Monospace", 10))
-        hbox_lay_separate_panels_185.addWidget(label_separate_panels_185)
-
-        box_separate_panels_185 = QComboBox()
-        box_separate_panels_185.local_path = "refinement.reflections.outlier.separate_panels"
-        box_separate_panels_185.tmp_lst=[]
-        box_separate_panels_185.tmp_lst.append("True")
-        box_separate_panels_185.tmp_lst.append("False")
-        for lst_itm in box_separate_panels_185.tmp_lst:
-            box_separate_panels_185.addItem(lst_itm)
-        box_separate_panels_185.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_separate_panels_185.addWidget(box_separate_panels_185)
-        bg_box.addLayout(hbox_lay_separate_panels_185)
-
-        hbox_lay_separate_blocks_186 =  QHBoxLayout()
-        label_separate_blocks_186 = QLabel("            separate_blocks")
-        label_separate_blocks_186.setPalette(palette_object)
-        label_separate_blocks_186.setFont(QFont("Monospace", 10))
-        hbox_lay_separate_blocks_186.addWidget(label_separate_blocks_186)
-
-        box_separate_blocks_186 = QComboBox()
-        box_separate_blocks_186.local_path = "refinement.reflections.outlier.separate_blocks"
-        box_separate_blocks_186.tmp_lst=[]
-        box_separate_blocks_186.tmp_lst.append("True")
-        box_separate_blocks_186.tmp_lst.append("False")
-        for lst_itm in box_separate_blocks_186.tmp_lst:
-            box_separate_blocks_186.addItem(lst_itm)
-        box_separate_blocks_186.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_separate_blocks_186.addWidget(box_separate_blocks_186)
-        bg_box.addLayout(hbox_lay_separate_blocks_186)
-
-        hbox_lay_block_width_187 =  QHBoxLayout()
-        label_block_width_187 = QLabel("            block_width")
-        label_block_width_187.setPalette(palette_object)
-        label_block_width_187.setFont(QFont("Monospace", 10))
-        hbox_lay_block_width_187.addWidget(label_block_width_187)
-
-        box_block_width_187 = QDoubleSpinBox()
-        box_block_width_187.setValue(18.0)
-        box_block_width_187.local_path = "refinement.reflections.outlier.block_width"
-        box_block_width_187.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_block_width_187.addWidget(box_block_width_187)
-        bg_box.addLayout(hbox_lay_block_width_187)
-
-        label_188 = QLabel("            tukey")
-        label_188.setPalette(palette_scope)
-        label_188.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_188)
-
-        hbox_lay_iqr_multiplier_189 =  QHBoxLayout()
-        label_iqr_multiplier_189 = QLabel("                iqr_multiplier")
-        label_iqr_multiplier_189.setPalette(palette_object)
-        label_iqr_multiplier_189.setFont(QFont("Monospace", 10))
-        hbox_lay_iqr_multiplier_189.addWidget(label_iqr_multiplier_189)
-
-        box_iqr_multiplier_189 = QDoubleSpinBox()
-        box_iqr_multiplier_189.setValue(1.5)
-        box_iqr_multiplier_189.local_path = "refinement.reflections.outlier.tukey.iqr_multiplier"
-        box_iqr_multiplier_189.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_iqr_multiplier_189.addWidget(box_iqr_multiplier_189)
-        bg_box.addLayout(hbox_lay_iqr_multiplier_189)
-
-        label_190 = QLabel("            mcd")
-        label_190.setPalette(palette_scope)
-        label_190.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_190)
-
-        hbox_lay_alpha_191 =  QHBoxLayout()
-        label_alpha_191 = QLabel("                alpha")
-        label_alpha_191.setPalette(palette_object)
-        label_alpha_191.setFont(QFont("Monospace", 10))
-        hbox_lay_alpha_191.addWidget(label_alpha_191)
-
-        box_alpha_191 = QDoubleSpinBox()
-        box_alpha_191.setValue(0.5)
-        box_alpha_191.local_path = "refinement.reflections.outlier.mcd.alpha"
-        box_alpha_191.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_alpha_191.addWidget(box_alpha_191)
-        bg_box.addLayout(hbox_lay_alpha_191)
-
-        hbox_lay_max_n_groups_192 =  QHBoxLayout()
-        label_max_n_groups_192 = QLabel("                max_n_groups")
-        label_max_n_groups_192.setPalette(palette_object)
-        label_max_n_groups_192.setFont(QFont("Monospace", 10))
-        hbox_lay_max_n_groups_192.addWidget(label_max_n_groups_192)
-
-        box_max_n_groups_192 = QSpinBox()
-        box_max_n_groups_192.setValue(5)
-        box_max_n_groups_192.local_path = "refinement.reflections.outlier.mcd.max_n_groups"
-        box_max_n_groups_192.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_max_n_groups_192.addWidget(box_max_n_groups_192)
-        bg_box.addLayout(hbox_lay_max_n_groups_192)
-
-        hbox_lay_min_group_size_193 =  QHBoxLayout()
-        label_min_group_size_193 = QLabel("                min_group_size")
-        label_min_group_size_193.setPalette(palette_object)
-        label_min_group_size_193.setFont(QFont("Monospace", 10))
-        hbox_lay_min_group_size_193.addWidget(label_min_group_size_193)
-
-        box_min_group_size_193 = QSpinBox()
-        box_min_group_size_193.setValue(300)
-        box_min_group_size_193.local_path = "refinement.reflections.outlier.mcd.min_group_size"
-        box_min_group_size_193.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_min_group_size_193.addWidget(box_min_group_size_193)
-        bg_box.addLayout(hbox_lay_min_group_size_193)
-
-        hbox_lay_n_trials_194 =  QHBoxLayout()
-        label_n_trials_194 = QLabel("                n_trials")
-        label_n_trials_194.setPalette(palette_object)
-        label_n_trials_194.setFont(QFont("Monospace", 10))
-        hbox_lay_n_trials_194.addWidget(label_n_trials_194)
-
-        box_n_trials_194 = QSpinBox()
-        box_n_trials_194.setValue(500)
-        box_n_trials_194.local_path = "refinement.reflections.outlier.mcd.n_trials"
-        box_n_trials_194.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_n_trials_194.addWidget(box_n_trials_194)
-        bg_box.addLayout(hbox_lay_n_trials_194)
-
-        hbox_lay_k1_195 =  QHBoxLayout()
-        label_k1_195 = QLabel("                k1")
-        label_k1_195.setPalette(palette_object)
-        label_k1_195.setFont(QFont("Monospace", 10))
-        hbox_lay_k1_195.addWidget(label_k1_195)
-
-        box_k1_195 = QSpinBox()
-        box_k1_195.setValue(2)
-        box_k1_195.local_path = "refinement.reflections.outlier.mcd.k1"
-        box_k1_195.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_k1_195.addWidget(box_k1_195)
-        bg_box.addLayout(hbox_lay_k1_195)
-
-        hbox_lay_k2_196 =  QHBoxLayout()
-        label_k2_196 = QLabel("                k2")
-        label_k2_196.setPalette(palette_object)
-        label_k2_196.setFont(QFont("Monospace", 10))
-        hbox_lay_k2_196.addWidget(label_k2_196)
-
-        box_k2_196 = QSpinBox()
-        box_k2_196.setValue(2)
-        box_k2_196.local_path = "refinement.reflections.outlier.mcd.k2"
-        box_k2_196.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_k2_196.addWidget(box_k2_196)
-        bg_box.addLayout(hbox_lay_k2_196)
-
-        hbox_lay_k3_197 =  QHBoxLayout()
-        label_k3_197 = QLabel("                k3")
-        label_k3_197.setPalette(palette_object)
-        label_k3_197.setFont(QFont("Monospace", 10))
-        hbox_lay_k3_197.addWidget(label_k3_197)
-
-        box_k3_197 = QSpinBox()
-        box_k3_197.setValue(100)
-        box_k3_197.local_path = "refinement.reflections.outlier.mcd.k3"
-        box_k3_197.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_k3_197.addWidget(box_k3_197)
-        bg_box.addLayout(hbox_lay_k3_197)
-
-        hbox_lay_threshold_probability_198 =  QHBoxLayout()
-        label_threshold_probability_198 = QLabel("                threshold_probability")
-        label_threshold_probability_198.setPalette(palette_object)
-        label_threshold_probability_198.setFont(QFont("Monospace", 10))
-        hbox_lay_threshold_probability_198.addWidget(label_threshold_probability_198)
-
-        box_threshold_probability_198 = QDoubleSpinBox()
-        box_threshold_probability_198.setValue(0.975)
-        box_threshold_probability_198.local_path = "refinement.reflections.outlier.mcd.threshold_probability"
-        box_threshold_probability_198.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_threshold_probability_198.addWidget(box_threshold_probability_198)
-        bg_box.addLayout(hbox_lay_threshold_probability_198)
-
-        label_199 = QLabel("            sauter_poon")
-        label_199.setPalette(palette_scope)
-        label_199.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_199)
-
-        hbox_lay_px_sz_200_0 =  QHBoxLayout()
-        label_px_sz_200_0 = QLabel("                px_sz[1]")
-        label_px_sz_200_0.setPalette(palette_object)
-        label_px_sz_200_0.setFont(QFont("Monospace", 10))
-        hbox_lay_px_sz_200_0.addWidget(label_px_sz_200_0)
-        box_px_sz_200_0 = QDoubleSpinBox()
-        box_px_sz_200_0.local_path = "refinement.reflections.outlier.sauter_poon.px_sz"
-        #box_px_sz_200_0.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_px_sz_200_1 =  QHBoxLayout()
-        label_px_sz_200_1 = QLabel("                px_sz[2]")
-        label_px_sz_200_1.setPalette(palette_object)
-        label_px_sz_200_1.setFont(QFont("Monospace", 10))
-        hbox_lay_px_sz_200_1.addWidget(label_px_sz_200_1)
-        box_px_sz_200_1 = QDoubleSpinBox()
-        box_px_sz_200_1.local_path = "refinement.reflections.outlier.sauter_poon.px_sz"
-        #box_px_sz_200_1.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_px_sz_200_0.addWidget(box_px_sz_200_0)
-        bg_box.addLayout(hbox_lay_px_sz_200_0)
-        hbox_lay_px_sz_200_1.addWidget(box_px_sz_200_1)
-        bg_box.addLayout(hbox_lay_px_sz_200_1)
-
-        hbox_lay_verbose_201 =  QHBoxLayout()
-        label_verbose_201 = QLabel("                verbose")
-        label_verbose_201.setPalette(palette_object)
-        label_verbose_201.setFont(QFont("Monospace", 10))
-        hbox_lay_verbose_201.addWidget(label_verbose_201)
-
-        box_verbose_201 = QComboBox()
-        box_verbose_201.local_path = "refinement.reflections.outlier.sauter_poon.verbose"
-        box_verbose_201.tmp_lst=[]
-        box_verbose_201.tmp_lst.append("True")
-        box_verbose_201.tmp_lst.append("False")
-        for lst_itm in box_verbose_201.tmp_lst:
-            box_verbose_201.addItem(lst_itm)
-        box_verbose_201.setCurrentIndex(1)
-        box_verbose_201.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_verbose_201.addWidget(box_verbose_201)
-        bg_box.addLayout(hbox_lay_verbose_201)
-
-        hbox_lay_pdf_202 =  QHBoxLayout()
-        label_pdf_202 = QLabel("                pdf")
-        label_pdf_202.setPalette(palette_object)
-        label_pdf_202.setFont(QFont("Monospace", 10))
-        hbox_lay_pdf_202.addWidget(label_pdf_202)
-
-        box_pdf_202 = QLineEdit()
-        box_pdf_202.local_path = "refinement.reflections.outlier.sauter_poon.pdf"
-        box_pdf_202.textChanged.connect(self.spnbox_changed)
-        hbox_lay_pdf_202.addWidget(box_pdf_202)
-        bg_box.addLayout(hbox_lay_pdf_202)
-
-        label_203 = QLabel("output")
-        label_203.setPalette(palette_scope)
-        label_203.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_203)
-
-
-
-
-        hbox_lay_log_207 =  QHBoxLayout()
-        label_log_207 = QLabel("    log")
-        label_log_207.setPalette(palette_object)
-        label_log_207.setFont(QFont("Monospace", 10))
-        hbox_lay_log_207.addWidget(label_log_207)
-
-        box_log_207 = QLineEdit()
-        box_log_207.local_path = "output.log"
-        box_log_207.textChanged.connect(self.spnbox_changed)
-        hbox_lay_log_207.addWidget(box_log_207)
-        bg_box.addLayout(hbox_lay_log_207)
-
-        hbox_lay_debug_log_208 =  QHBoxLayout()
-        label_debug_log_208 = QLabel("    debug_log")
-        label_debug_log_208.setPalette(palette_object)
-        label_debug_log_208.setFont(QFont("Monospace", 10))
-        hbox_lay_debug_log_208.addWidget(label_debug_log_208)
-
-        box_debug_log_208 = QLineEdit()
-        box_debug_log_208.local_path = "output.debug_log"
-        box_debug_log_208.textChanged.connect(self.spnbox_changed)
-        hbox_lay_debug_log_208.addWidget(box_debug_log_208)
-        bg_box.addLayout(hbox_lay_debug_log_208)
-
-        hbox_lay_verbosity_209 =  QHBoxLayout()
-        label_verbosity_209 = QLabel("verbosity")
-        label_verbosity_209.setPalette(palette_object)
-        label_verbosity_209.setFont(QFont("Monospace", 10))
-        hbox_lay_verbosity_209.addWidget(label_verbosity_209)
-
-        box_verbosity_209 = QSpinBox()
-        box_verbosity_209.setValue(1)
-        box_verbosity_209.local_path = "verbosity"
-        box_verbosity_209.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_verbosity_209.addWidget(box_verbosity_209)
-        bg_box.addLayout(hbox_lay_verbosity_209)
+        hbox_lay_engine_141 =  QHBoxLayout()
+        label_engine_141 = QLabel("        engine")
+        label_engine_141.setPalette(palette_object)
+        label_engine_141.setFont(QFont("Monospace", 10))
+        hbox_lay_engine_141.addWidget(label_engine_141)
+
+        box_engine_141 = QComboBox()
+        box_engine_141.local_path = "refinement.refinery.engine"
+        box_engine_141.tmp_lst=[]
+        box_engine_141.tmp_lst.append("SimpleLBFGS")
+        box_engine_141.tmp_lst.append("LBFGScurvs")
+        box_engine_141.tmp_lst.append("GaussNewton")
+        box_engine_141.tmp_lst.append("LevMar")
+        box_engine_141.tmp_lst.append("SparseLevMar")
+        for lst_itm in box_engine_141.tmp_lst:
+            box_engine_141.addItem(lst_itm)
+        box_engine_141.setCurrentIndex(3)
+        box_engine_141.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_engine_141.addWidget(box_engine_141)
+        bg_box.addLayout(hbox_lay_engine_141)
+
+        hbox_lay_track_step_142 =  QHBoxLayout()
+        label_track_step_142 = QLabel("        track_step")
+        label_track_step_142.setPalette(palette_object)
+        label_track_step_142.setFont(QFont("Monospace", 10))
+        hbox_lay_track_step_142.addWidget(label_track_step_142)
+
+        box_track_step_142 = QComboBox()
+        box_track_step_142.local_path = "refinement.refinery.track_step"
+        box_track_step_142.tmp_lst=[]
+        box_track_step_142.tmp_lst.append("True")
+        box_track_step_142.tmp_lst.append("False")
+        for lst_itm in box_track_step_142.tmp_lst:
+            box_track_step_142.addItem(lst_itm)
+        box_track_step_142.setCurrentIndex(1)
+        box_track_step_142.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_track_step_142.addWidget(box_track_step_142)
+        bg_box.addLayout(hbox_lay_track_step_142)
+
+        hbox_lay_track_gradient_143 =  QHBoxLayout()
+        label_track_gradient_143 = QLabel("        track_gradient")
+        label_track_gradient_143.setPalette(palette_object)
+        label_track_gradient_143.setFont(QFont("Monospace", 10))
+        hbox_lay_track_gradient_143.addWidget(label_track_gradient_143)
+
+        box_track_gradient_143 = QComboBox()
+        box_track_gradient_143.local_path = "refinement.refinery.track_gradient"
+        box_track_gradient_143.tmp_lst=[]
+        box_track_gradient_143.tmp_lst.append("True")
+        box_track_gradient_143.tmp_lst.append("False")
+        for lst_itm in box_track_gradient_143.tmp_lst:
+            box_track_gradient_143.addItem(lst_itm)
+        box_track_gradient_143.setCurrentIndex(1)
+        box_track_gradient_143.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_track_gradient_143.addWidget(box_track_gradient_143)
+        bg_box.addLayout(hbox_lay_track_gradient_143)
+
+        hbox_lay_track_parameter_correlation_144 =  QHBoxLayout()
+        label_track_parameter_correlation_144 = QLabel("        track_parameter_correlation")
+        label_track_parameter_correlation_144.setPalette(palette_object)
+        label_track_parameter_correlation_144.setFont(QFont("Monospace", 10))
+        hbox_lay_track_parameter_correlation_144.addWidget(label_track_parameter_correlation_144)
+
+        box_track_parameter_correlation_144 = QComboBox()
+        box_track_parameter_correlation_144.local_path = "refinement.refinery.track_parameter_correlation"
+        box_track_parameter_correlation_144.tmp_lst=[]
+        box_track_parameter_correlation_144.tmp_lst.append("True")
+        box_track_parameter_correlation_144.tmp_lst.append("False")
+        for lst_itm in box_track_parameter_correlation_144.tmp_lst:
+            box_track_parameter_correlation_144.addItem(lst_itm)
+        box_track_parameter_correlation_144.setCurrentIndex(1)
+        box_track_parameter_correlation_144.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_track_parameter_correlation_144.addWidget(box_track_parameter_correlation_144)
+        bg_box.addLayout(hbox_lay_track_parameter_correlation_144)
+
+        hbox_lay_track_out_of_sample_rmsd_145 =  QHBoxLayout()
+        label_track_out_of_sample_rmsd_145 = QLabel("        track_out_of_sample_rmsd")
+        label_track_out_of_sample_rmsd_145.setPalette(palette_object)
+        label_track_out_of_sample_rmsd_145.setFont(QFont("Monospace", 10))
+        hbox_lay_track_out_of_sample_rmsd_145.addWidget(label_track_out_of_sample_rmsd_145)
+
+        box_track_out_of_sample_rmsd_145 = QComboBox()
+        box_track_out_of_sample_rmsd_145.local_path = "refinement.refinery.track_out_of_sample_rmsd"
+        box_track_out_of_sample_rmsd_145.tmp_lst=[]
+        box_track_out_of_sample_rmsd_145.tmp_lst.append("True")
+        box_track_out_of_sample_rmsd_145.tmp_lst.append("False")
+        for lst_itm in box_track_out_of_sample_rmsd_145.tmp_lst:
+            box_track_out_of_sample_rmsd_145.addItem(lst_itm)
+        box_track_out_of_sample_rmsd_145.setCurrentIndex(1)
+        box_track_out_of_sample_rmsd_145.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_track_out_of_sample_rmsd_145.addWidget(box_track_out_of_sample_rmsd_145)
+        bg_box.addLayout(hbox_lay_track_out_of_sample_rmsd_145)
+
+
+        hbox_lay_max_iterations_147 =  QHBoxLayout()
+        label_max_iterations_147 = QLabel("        max_iterations")
+        label_max_iterations_147.setPalette(palette_object)
+        label_max_iterations_147.setFont(QFont("Monospace", 10))
+        hbox_lay_max_iterations_147.addWidget(label_max_iterations_147)
+
+        box_max_iterations_147 = QSpinBox()
+        box_max_iterations_147.local_path = "refinement.refinery.max_iterations"
+        box_max_iterations_147.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_max_iterations_147.addWidget(box_max_iterations_147)
+        bg_box.addLayout(hbox_lay_max_iterations_147)
+
+        label_148 = QLabel("    target")
+        label_148.setPalette(palette_scope)
+        label_148.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_148)
+
+        hbox_lay_rmsd_cutoff_149 =  QHBoxLayout()
+        label_rmsd_cutoff_149 = QLabel("        rmsd_cutoff")
+        label_rmsd_cutoff_149.setPalette(palette_object)
+        label_rmsd_cutoff_149.setFont(QFont("Monospace", 10))
+        hbox_lay_rmsd_cutoff_149.addWidget(label_rmsd_cutoff_149)
+
+        box_rmsd_cutoff_149 = QComboBox()
+        box_rmsd_cutoff_149.local_path = "refinement.target.rmsd_cutoff"
+        box_rmsd_cutoff_149.tmp_lst=[]
+        box_rmsd_cutoff_149.tmp_lst.append("fraction_of_bin_size")
+        box_rmsd_cutoff_149.tmp_lst.append("absolute")
+        for lst_itm in box_rmsd_cutoff_149.tmp_lst:
+            box_rmsd_cutoff_149.addItem(lst_itm)
+        box_rmsd_cutoff_149.setCurrentIndex(0)
+        box_rmsd_cutoff_149.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_rmsd_cutoff_149.addWidget(box_rmsd_cutoff_149)
+        bg_box.addLayout(hbox_lay_rmsd_cutoff_149)
+
+        hbox_lay_bin_size_fraction_150 =  QHBoxLayout()
+        label_bin_size_fraction_150 = QLabel("        bin_size_fraction")
+        label_bin_size_fraction_150.setPalette(palette_object)
+        label_bin_size_fraction_150.setFont(QFont("Monospace", 10))
+        hbox_lay_bin_size_fraction_150.addWidget(label_bin_size_fraction_150)
+
+        box_bin_size_fraction_150 = QDoubleSpinBox()
+        box_bin_size_fraction_150.setValue(0.2)
+        box_bin_size_fraction_150.local_path = "refinement.target.bin_size_fraction"
+        box_bin_size_fraction_150.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_bin_size_fraction_150.addWidget(box_bin_size_fraction_150)
+        bg_box.addLayout(hbox_lay_bin_size_fraction_150)
+
+        hbox_lay_absolute_cutoffs_151_0 =  QHBoxLayout()
+        label_absolute_cutoffs_151_0 = QLabel("        absolute_cutoffs[1]")
+        label_absolute_cutoffs_151_0.setPalette(palette_object)
+        label_absolute_cutoffs_151_0.setFont(QFont("Monospace", 10))
+        hbox_lay_absolute_cutoffs_151_0.addWidget(label_absolute_cutoffs_151_0)
+        box_absolute_cutoffs_151_0 = QDoubleSpinBox()
+        box_absolute_cutoffs_151_0.local_path = "refinement.target.absolute_cutoffs"
+        #box_absolute_cutoffs_151_0.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_absolute_cutoffs_151_1 =  QHBoxLayout()
+        label_absolute_cutoffs_151_1 = QLabel("        absolute_cutoffs[2]")
+        label_absolute_cutoffs_151_1.setPalette(palette_object)
+        label_absolute_cutoffs_151_1.setFont(QFont("Monospace", 10))
+        hbox_lay_absolute_cutoffs_151_1.addWidget(label_absolute_cutoffs_151_1)
+        box_absolute_cutoffs_151_1 = QDoubleSpinBox()
+        box_absolute_cutoffs_151_1.local_path = "refinement.target.absolute_cutoffs"
+        #box_absolute_cutoffs_151_1.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_absolute_cutoffs_151_2 =  QHBoxLayout()
+        label_absolute_cutoffs_151_2 = QLabel("        absolute_cutoffs[3]")
+        label_absolute_cutoffs_151_2.setPalette(palette_object)
+        label_absolute_cutoffs_151_2.setFont(QFont("Monospace", 10))
+        hbox_lay_absolute_cutoffs_151_2.addWidget(label_absolute_cutoffs_151_2)
+        box_absolute_cutoffs_151_2 = QDoubleSpinBox()
+        box_absolute_cutoffs_151_2.local_path = "refinement.target.absolute_cutoffs"
+        #box_absolute_cutoffs_151_2.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_absolute_cutoffs_151_0.addWidget(box_absolute_cutoffs_151_0)
+        bg_box.addLayout(hbox_lay_absolute_cutoffs_151_0)
+        hbox_lay_absolute_cutoffs_151_1.addWidget(box_absolute_cutoffs_151_1)
+        bg_box.addLayout(hbox_lay_absolute_cutoffs_151_1)
+        hbox_lay_absolute_cutoffs_151_2.addWidget(box_absolute_cutoffs_151_2)
+        bg_box.addLayout(hbox_lay_absolute_cutoffs_151_2)
+
+        hbox_lay_gradient_calculation_blocksize_152 =  QHBoxLayout()
+        label_gradient_calculation_blocksize_152 = QLabel("        gradient_calculation_blocksize")
+        label_gradient_calculation_blocksize_152.setPalette(palette_object)
+        label_gradient_calculation_blocksize_152.setFont(QFont("Monospace", 10))
+        hbox_lay_gradient_calculation_blocksize_152.addWidget(label_gradient_calculation_blocksize_152)
+
+        box_gradient_calculation_blocksize_152 = QSpinBox()
+        box_gradient_calculation_blocksize_152.local_path = "refinement.target.gradient_calculation_blocksize"
+        box_gradient_calculation_blocksize_152.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_gradient_calculation_blocksize_152.addWidget(box_gradient_calculation_blocksize_152)
+        bg_box.addLayout(hbox_lay_gradient_calculation_blocksize_152)
+
+        label_153 = QLabel("    reflections")
+        label_153.setPalette(palette_scope)
+        label_153.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_153)
+
+        hbox_lay_reflections_per_degree_154 =  QHBoxLayout()
+        label_reflections_per_degree_154 = QLabel("        reflections_per_degree")
+        label_reflections_per_degree_154.setPalette(palette_object)
+        label_reflections_per_degree_154.setFont(QFont("Monospace", 10))
+        hbox_lay_reflections_per_degree_154.addWidget(label_reflections_per_degree_154)
+
+        box_reflections_per_degree_154 = QDoubleSpinBox()
+        box_reflections_per_degree_154.setValue(100.0)
+        box_reflections_per_degree_154.local_path = "refinement.reflections.reflections_per_degree"
+        box_reflections_per_degree_154.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_reflections_per_degree_154.addWidget(box_reflections_per_degree_154)
+        bg_box.addLayout(hbox_lay_reflections_per_degree_154)
+
+        hbox_lay_minimum_sample_size_155 =  QHBoxLayout()
+        label_minimum_sample_size_155 = QLabel("        minimum_sample_size")
+        label_minimum_sample_size_155.setPalette(palette_object)
+        label_minimum_sample_size_155.setFont(QFont("Monospace", 10))
+        hbox_lay_minimum_sample_size_155.addWidget(label_minimum_sample_size_155)
+
+        box_minimum_sample_size_155 = QSpinBox()
+        box_minimum_sample_size_155.setValue(1000)
+        box_minimum_sample_size_155.local_path = "refinement.reflections.minimum_sample_size"
+        box_minimum_sample_size_155.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_minimum_sample_size_155.addWidget(box_minimum_sample_size_155)
+        bg_box.addLayout(hbox_lay_minimum_sample_size_155)
+
+        hbox_lay_maximum_sample_size_156 =  QHBoxLayout()
+        label_maximum_sample_size_156 = QLabel("        maximum_sample_size")
+        label_maximum_sample_size_156.setPalette(palette_object)
+        label_maximum_sample_size_156.setFont(QFont("Monospace", 10))
+        hbox_lay_maximum_sample_size_156.addWidget(label_maximum_sample_size_156)
+
+        box_maximum_sample_size_156 = QSpinBox()
+        box_maximum_sample_size_156.local_path = "refinement.reflections.maximum_sample_size"
+        box_maximum_sample_size_156.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_maximum_sample_size_156.addWidget(box_maximum_sample_size_156)
+        bg_box.addLayout(hbox_lay_maximum_sample_size_156)
+
+        hbox_lay_random_seed_157 =  QHBoxLayout()
+        label_random_seed_157 = QLabel("        random_seed")
+        label_random_seed_157.setPalette(palette_object)
+        label_random_seed_157.setFont(QFont("Monospace", 10))
+        hbox_lay_random_seed_157.addWidget(label_random_seed_157)
+
+        box_random_seed_157 = QSpinBox()
+        box_random_seed_157.setValue(42)
+        box_random_seed_157.local_path = "refinement.reflections.random_seed"
+        box_random_seed_157.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_random_seed_157.addWidget(box_random_seed_157)
+        bg_box.addLayout(hbox_lay_random_seed_157)
+
+        hbox_lay_close_to_spindle_cutoff_158 =  QHBoxLayout()
+        label_close_to_spindle_cutoff_158 = QLabel("        close_to_spindle_cutoff")
+        label_close_to_spindle_cutoff_158.setPalette(palette_object)
+        label_close_to_spindle_cutoff_158.setFont(QFont("Monospace", 10))
+        hbox_lay_close_to_spindle_cutoff_158.addWidget(label_close_to_spindle_cutoff_158)
+
+        box_close_to_spindle_cutoff_158 = QDoubleSpinBox()
+        box_close_to_spindle_cutoff_158.setValue(0.02)
+        box_close_to_spindle_cutoff_158.local_path = "refinement.reflections.close_to_spindle_cutoff"
+        box_close_to_spindle_cutoff_158.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_close_to_spindle_cutoff_158.addWidget(box_close_to_spindle_cutoff_158)
+        bg_box.addLayout(hbox_lay_close_to_spindle_cutoff_158)
+
+        hbox_lay_block_width_159 =  QHBoxLayout()
+        label_block_width_159 = QLabel("        block_width")
+        label_block_width_159.setPalette(palette_object)
+        label_block_width_159.setFont(QFont("Monospace", 10))
+        hbox_lay_block_width_159.addWidget(label_block_width_159)
+
+        box_block_width_159 = QDoubleSpinBox()
+        box_block_width_159.setValue(1.0)
+        box_block_width_159.local_path = "refinement.reflections.block_width"
+        box_block_width_159.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_block_width_159.addWidget(box_block_width_159)
+        bg_box.addLayout(hbox_lay_block_width_159)
+
+        label_160 = QLabel("        weighting_strategy")
+        label_160.setPalette(palette_scope)
+        label_160.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_160)
+
+        hbox_lay_override_161 =  QHBoxLayout()
+        label_override_161 = QLabel("            override")
+        label_override_161.setPalette(palette_object)
+        label_override_161.setFont(QFont("Monospace", 10))
+        hbox_lay_override_161.addWidget(label_override_161)
+
+        box_override_161 = QComboBox()
+        box_override_161.local_path = "refinement.reflections.weighting_strategy.override"
+        box_override_161.tmp_lst=[]
+        box_override_161.tmp_lst.append("statistical")
+        box_override_161.tmp_lst.append("stills")
+        box_override_161.tmp_lst.append("constant")
+        for lst_itm in box_override_161.tmp_lst:
+            box_override_161.addItem(lst_itm)
+        box_override_161.setCurrentIndex(0)
+        box_override_161.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_override_161.addWidget(box_override_161)
+        bg_box.addLayout(hbox_lay_override_161)
+
+        hbox_lay_delpsi_constant_162 =  QHBoxLayout()
+        label_delpsi_constant_162 = QLabel("            delpsi_constant")
+        label_delpsi_constant_162.setPalette(palette_object)
+        label_delpsi_constant_162.setFont(QFont("Monospace", 10))
+        hbox_lay_delpsi_constant_162.addWidget(label_delpsi_constant_162)
+
+        box_delpsi_constant_162 = QDoubleSpinBox()
+        box_delpsi_constant_162.setValue(1000000.0)
+        box_delpsi_constant_162.local_path = "refinement.reflections.weighting_strategy.delpsi_constant"
+        box_delpsi_constant_162.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_delpsi_constant_162.addWidget(box_delpsi_constant_162)
+        bg_box.addLayout(hbox_lay_delpsi_constant_162)
+
+        hbox_lay_constants_163_0 =  QHBoxLayout()
+        label_constants_163_0 = QLabel("            constants[1]")
+        label_constants_163_0.setPalette(palette_object)
+        label_constants_163_0.setFont(QFont("Monospace", 10))
+        hbox_lay_constants_163_0.addWidget(label_constants_163_0)
+        box_constants_163_0 = QDoubleSpinBox()
+        box_constants_163_0.local_path = "refinement.reflections.weighting_strategy.constants"
+        #box_constants_163_0.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_constants_163_1 =  QHBoxLayout()
+        label_constants_163_1 = QLabel("            constants[2]")
+        label_constants_163_1.setPalette(palette_object)
+        label_constants_163_1.setFont(QFont("Monospace", 10))
+        hbox_lay_constants_163_1.addWidget(label_constants_163_1)
+        box_constants_163_1 = QDoubleSpinBox()
+        box_constants_163_1.local_path = "refinement.reflections.weighting_strategy.constants"
+        #box_constants_163_1.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_constants_163_2 =  QHBoxLayout()
+        label_constants_163_2 = QLabel("            constants[3]")
+        label_constants_163_2.setPalette(palette_object)
+        label_constants_163_2.setFont(QFont("Monospace", 10))
+        hbox_lay_constants_163_2.addWidget(label_constants_163_2)
+        box_constants_163_2 = QDoubleSpinBox()
+        box_constants_163_2.local_path = "refinement.reflections.weighting_strategy.constants"
+        #box_constants_163_2.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_constants_163_0.addWidget(box_constants_163_0)
+        bg_box.addLayout(hbox_lay_constants_163_0)
+        hbox_lay_constants_163_1.addWidget(box_constants_163_1)
+        bg_box.addLayout(hbox_lay_constants_163_1)
+        hbox_lay_constants_163_2.addWidget(box_constants_163_2)
+        bg_box.addLayout(hbox_lay_constants_163_2)
+
+        label_164 = QLabel("        outlier")
+        label_164.setPalette(palette_scope)
+        label_164.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_164)
+
+        hbox_lay_algorithm_165 =  QHBoxLayout()
+        label_algorithm_165 = QLabel("            algorithm")
+        label_algorithm_165.setPalette(palette_object)
+        label_algorithm_165.setFont(QFont("Monospace", 10))
+        hbox_lay_algorithm_165.addWidget(label_algorithm_165)
+
+        box_algorithm_165 = QComboBox()
+        box_algorithm_165.local_path = "refinement.reflections.outlier.algorithm"
+        box_algorithm_165.tmp_lst=[]
+        box_algorithm_165.tmp_lst.append("null")
+        box_algorithm_165.tmp_lst.append("auto")
+        box_algorithm_165.tmp_lst.append("mcd")
+        box_algorithm_165.tmp_lst.append("tukey")
+        box_algorithm_165.tmp_lst.append("sauter_poon")
+        for lst_itm in box_algorithm_165.tmp_lst:
+            box_algorithm_165.addItem(lst_itm)
+        box_algorithm_165.setCurrentIndex(1)
+        box_algorithm_165.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_algorithm_165.addWidget(box_algorithm_165)
+        bg_box.addLayout(hbox_lay_algorithm_165)
+
+        hbox_lay_minimum_number_of_reflections_166 =  QHBoxLayout()
+        label_minimum_number_of_reflections_166 = QLabel("            minimum_number_of_reflections")
+        label_minimum_number_of_reflections_166.setPalette(palette_object)
+        label_minimum_number_of_reflections_166.setFont(QFont("Monospace", 10))
+        hbox_lay_minimum_number_of_reflections_166.addWidget(label_minimum_number_of_reflections_166)
+
+        box_minimum_number_of_reflections_166 = QSpinBox()
+        box_minimum_number_of_reflections_166.setValue(20)
+        box_minimum_number_of_reflections_166.local_path = "refinement.reflections.outlier.minimum_number_of_reflections"
+        box_minimum_number_of_reflections_166.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_minimum_number_of_reflections_166.addWidget(box_minimum_number_of_reflections_166)
+        bg_box.addLayout(hbox_lay_minimum_number_of_reflections_166)
+
+        hbox_lay_separate_experiments_167 =  QHBoxLayout()
+        label_separate_experiments_167 = QLabel("            separate_experiments")
+        label_separate_experiments_167.setPalette(palette_object)
+        label_separate_experiments_167.setFont(QFont("Monospace", 10))
+        hbox_lay_separate_experiments_167.addWidget(label_separate_experiments_167)
+
+        box_separate_experiments_167 = QComboBox()
+        box_separate_experiments_167.local_path = "refinement.reflections.outlier.separate_experiments"
+        box_separate_experiments_167.tmp_lst=[]
+        box_separate_experiments_167.tmp_lst.append("True")
+        box_separate_experiments_167.tmp_lst.append("False")
+        for lst_itm in box_separate_experiments_167.tmp_lst:
+            box_separate_experiments_167.addItem(lst_itm)
+        box_separate_experiments_167.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_separate_experiments_167.addWidget(box_separate_experiments_167)
+        bg_box.addLayout(hbox_lay_separate_experiments_167)
+
+        hbox_lay_separate_panels_168 =  QHBoxLayout()
+        label_separate_panels_168 = QLabel("            separate_panels")
+        label_separate_panels_168.setPalette(palette_object)
+        label_separate_panels_168.setFont(QFont("Monospace", 10))
+        hbox_lay_separate_panels_168.addWidget(label_separate_panels_168)
+
+        box_separate_panels_168 = QComboBox()
+        box_separate_panels_168.local_path = "refinement.reflections.outlier.separate_panels"
+        box_separate_panels_168.tmp_lst=[]
+        box_separate_panels_168.tmp_lst.append("True")
+        box_separate_panels_168.tmp_lst.append("False")
+        for lst_itm in box_separate_panels_168.tmp_lst:
+            box_separate_panels_168.addItem(lst_itm)
+        box_separate_panels_168.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_separate_panels_168.addWidget(box_separate_panels_168)
+        bg_box.addLayout(hbox_lay_separate_panels_168)
+
+        hbox_lay_separate_blocks_169 =  QHBoxLayout()
+        label_separate_blocks_169 = QLabel("            separate_blocks")
+        label_separate_blocks_169.setPalette(palette_object)
+        label_separate_blocks_169.setFont(QFont("Monospace", 10))
+        hbox_lay_separate_blocks_169.addWidget(label_separate_blocks_169)
+
+        box_separate_blocks_169 = QComboBox()
+        box_separate_blocks_169.local_path = "refinement.reflections.outlier.separate_blocks"
+        box_separate_blocks_169.tmp_lst=[]
+        box_separate_blocks_169.tmp_lst.append("True")
+        box_separate_blocks_169.tmp_lst.append("False")
+        for lst_itm in box_separate_blocks_169.tmp_lst:
+            box_separate_blocks_169.addItem(lst_itm)
+        box_separate_blocks_169.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_separate_blocks_169.addWidget(box_separate_blocks_169)
+        bg_box.addLayout(hbox_lay_separate_blocks_169)
+
+        hbox_lay_block_width_170 =  QHBoxLayout()
+        label_block_width_170 = QLabel("            block_width")
+        label_block_width_170.setPalette(palette_object)
+        label_block_width_170.setFont(QFont("Monospace", 10))
+        hbox_lay_block_width_170.addWidget(label_block_width_170)
+
+        box_block_width_170 = QDoubleSpinBox()
+        box_block_width_170.setValue(18.0)
+        box_block_width_170.local_path = "refinement.reflections.outlier.block_width"
+        box_block_width_170.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_block_width_170.addWidget(box_block_width_170)
+        bg_box.addLayout(hbox_lay_block_width_170)
+
+        label_171 = QLabel("            tukey")
+        label_171.setPalette(palette_scope)
+        label_171.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_171)
+
+        hbox_lay_iqr_multiplier_172 =  QHBoxLayout()
+        label_iqr_multiplier_172 = QLabel("                iqr_multiplier")
+        label_iqr_multiplier_172.setPalette(palette_object)
+        label_iqr_multiplier_172.setFont(QFont("Monospace", 10))
+        hbox_lay_iqr_multiplier_172.addWidget(label_iqr_multiplier_172)
+
+        box_iqr_multiplier_172 = QDoubleSpinBox()
+        box_iqr_multiplier_172.setValue(1.5)
+        box_iqr_multiplier_172.local_path = "refinement.reflections.outlier.tukey.iqr_multiplier"
+        box_iqr_multiplier_172.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_iqr_multiplier_172.addWidget(box_iqr_multiplier_172)
+        bg_box.addLayout(hbox_lay_iqr_multiplier_172)
+
+        label_173 = QLabel("            mcd")
+        label_173.setPalette(palette_scope)
+        label_173.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_173)
+
+        hbox_lay_alpha_174 =  QHBoxLayout()
+        label_alpha_174 = QLabel("                alpha")
+        label_alpha_174.setPalette(palette_object)
+        label_alpha_174.setFont(QFont("Monospace", 10))
+        hbox_lay_alpha_174.addWidget(label_alpha_174)
+
+        box_alpha_174 = QDoubleSpinBox()
+        box_alpha_174.setValue(0.5)
+        box_alpha_174.local_path = "refinement.reflections.outlier.mcd.alpha"
+        box_alpha_174.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_alpha_174.addWidget(box_alpha_174)
+        bg_box.addLayout(hbox_lay_alpha_174)
+
+        hbox_lay_max_n_groups_175 =  QHBoxLayout()
+        label_max_n_groups_175 = QLabel("                max_n_groups")
+        label_max_n_groups_175.setPalette(palette_object)
+        label_max_n_groups_175.setFont(QFont("Monospace", 10))
+        hbox_lay_max_n_groups_175.addWidget(label_max_n_groups_175)
+
+        box_max_n_groups_175 = QSpinBox()
+        box_max_n_groups_175.setValue(5)
+        box_max_n_groups_175.local_path = "refinement.reflections.outlier.mcd.max_n_groups"
+        box_max_n_groups_175.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_max_n_groups_175.addWidget(box_max_n_groups_175)
+        bg_box.addLayout(hbox_lay_max_n_groups_175)
+
+        hbox_lay_min_group_size_176 =  QHBoxLayout()
+        label_min_group_size_176 = QLabel("                min_group_size")
+        label_min_group_size_176.setPalette(palette_object)
+        label_min_group_size_176.setFont(QFont("Monospace", 10))
+        hbox_lay_min_group_size_176.addWidget(label_min_group_size_176)
+
+        box_min_group_size_176 = QSpinBox()
+        box_min_group_size_176.setValue(300)
+        box_min_group_size_176.local_path = "refinement.reflections.outlier.mcd.min_group_size"
+        box_min_group_size_176.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_min_group_size_176.addWidget(box_min_group_size_176)
+        bg_box.addLayout(hbox_lay_min_group_size_176)
+
+        hbox_lay_n_trials_177 =  QHBoxLayout()
+        label_n_trials_177 = QLabel("                n_trials")
+        label_n_trials_177.setPalette(palette_object)
+        label_n_trials_177.setFont(QFont("Monospace", 10))
+        hbox_lay_n_trials_177.addWidget(label_n_trials_177)
+
+        box_n_trials_177 = QSpinBox()
+        box_n_trials_177.setValue(500)
+        box_n_trials_177.local_path = "refinement.reflections.outlier.mcd.n_trials"
+        box_n_trials_177.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_n_trials_177.addWidget(box_n_trials_177)
+        bg_box.addLayout(hbox_lay_n_trials_177)
+
+        hbox_lay_k1_178 =  QHBoxLayout()
+        label_k1_178 = QLabel("                k1")
+        label_k1_178.setPalette(palette_object)
+        label_k1_178.setFont(QFont("Monospace", 10))
+        hbox_lay_k1_178.addWidget(label_k1_178)
+
+        box_k1_178 = QSpinBox()
+        box_k1_178.setValue(2)
+        box_k1_178.local_path = "refinement.reflections.outlier.mcd.k1"
+        box_k1_178.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_k1_178.addWidget(box_k1_178)
+        bg_box.addLayout(hbox_lay_k1_178)
+
+        hbox_lay_k2_179 =  QHBoxLayout()
+        label_k2_179 = QLabel("                k2")
+        label_k2_179.setPalette(palette_object)
+        label_k2_179.setFont(QFont("Monospace", 10))
+        hbox_lay_k2_179.addWidget(label_k2_179)
+
+        box_k2_179 = QSpinBox()
+        box_k2_179.setValue(2)
+        box_k2_179.local_path = "refinement.reflections.outlier.mcd.k2"
+        box_k2_179.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_k2_179.addWidget(box_k2_179)
+        bg_box.addLayout(hbox_lay_k2_179)
+
+        hbox_lay_k3_180 =  QHBoxLayout()
+        label_k3_180 = QLabel("                k3")
+        label_k3_180.setPalette(palette_object)
+        label_k3_180.setFont(QFont("Monospace", 10))
+        hbox_lay_k3_180.addWidget(label_k3_180)
+
+        box_k3_180 = QSpinBox()
+        box_k3_180.setValue(100)
+        box_k3_180.local_path = "refinement.reflections.outlier.mcd.k3"
+        box_k3_180.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_k3_180.addWidget(box_k3_180)
+        bg_box.addLayout(hbox_lay_k3_180)
+
+        hbox_lay_threshold_probability_181 =  QHBoxLayout()
+        label_threshold_probability_181 = QLabel("                threshold_probability")
+        label_threshold_probability_181.setPalette(palette_object)
+        label_threshold_probability_181.setFont(QFont("Monospace", 10))
+        hbox_lay_threshold_probability_181.addWidget(label_threshold_probability_181)
+
+        box_threshold_probability_181 = QDoubleSpinBox()
+        box_threshold_probability_181.setValue(0.975)
+        box_threshold_probability_181.local_path = "refinement.reflections.outlier.mcd.threshold_probability"
+        box_threshold_probability_181.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_threshold_probability_181.addWidget(box_threshold_probability_181)
+        bg_box.addLayout(hbox_lay_threshold_probability_181)
+
+        label_182 = QLabel("            sauter_poon")
+        label_182.setPalette(palette_scope)
+        label_182.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_182)
+
+        hbox_lay_px_sz_183_0 =  QHBoxLayout()
+        label_px_sz_183_0 = QLabel("                px_sz[1]")
+        label_px_sz_183_0.setPalette(palette_object)
+        label_px_sz_183_0.setFont(QFont("Monospace", 10))
+        hbox_lay_px_sz_183_0.addWidget(label_px_sz_183_0)
+        box_px_sz_183_0 = QDoubleSpinBox()
+        box_px_sz_183_0.local_path = "refinement.reflections.outlier.sauter_poon.px_sz"
+        #box_px_sz_183_0.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_px_sz_183_1 =  QHBoxLayout()
+        label_px_sz_183_1 = QLabel("                px_sz[2]")
+        label_px_sz_183_1.setPalette(palette_object)
+        label_px_sz_183_1.setFont(QFont("Monospace", 10))
+        hbox_lay_px_sz_183_1.addWidget(label_px_sz_183_1)
+        box_px_sz_183_1 = QDoubleSpinBox()
+        box_px_sz_183_1.local_path = "refinement.reflections.outlier.sauter_poon.px_sz"
+        #box_px_sz_183_1.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_px_sz_183_0.addWidget(box_px_sz_183_0)
+        bg_box.addLayout(hbox_lay_px_sz_183_0)
+        hbox_lay_px_sz_183_1.addWidget(box_px_sz_183_1)
+        bg_box.addLayout(hbox_lay_px_sz_183_1)
+
+        hbox_lay_verbose_184 =  QHBoxLayout()
+        label_verbose_184 = QLabel("                verbose")
+        label_verbose_184.setPalette(palette_object)
+        label_verbose_184.setFont(QFont("Monospace", 10))
+        hbox_lay_verbose_184.addWidget(label_verbose_184)
+
+        box_verbose_184 = QComboBox()
+        box_verbose_184.local_path = "refinement.reflections.outlier.sauter_poon.verbose"
+        box_verbose_184.tmp_lst=[]
+        box_verbose_184.tmp_lst.append("True")
+        box_verbose_184.tmp_lst.append("False")
+        for lst_itm in box_verbose_184.tmp_lst:
+            box_verbose_184.addItem(lst_itm)
+        box_verbose_184.setCurrentIndex(1)
+        box_verbose_184.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_verbose_184.addWidget(box_verbose_184)
+        bg_box.addLayout(hbox_lay_verbose_184)
+
+        hbox_lay_pdf_185 =  QHBoxLayout()
+        label_pdf_185 = QLabel("                pdf")
+        label_pdf_185.setPalette(palette_object)
+        label_pdf_185.setFont(QFont("Monospace", 10))
+        hbox_lay_pdf_185.addWidget(label_pdf_185)
+
+        box_pdf_185 = QLineEdit()
+        box_pdf_185.local_path = "refinement.reflections.outlier.sauter_poon.pdf"
+        box_pdf_185.textChanged.connect(self.spnbox_changed)
+        hbox_lay_pdf_185.addWidget(box_pdf_185)
+        bg_box.addLayout(hbox_lay_pdf_185)
+
+        label_186 = QLabel("output")
+        label_186.setPalette(palette_scope)
+        label_186.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_186)
+
+
+
+
+        hbox_lay_log_190 =  QHBoxLayout()
+        label_log_190 = QLabel("    log")
+        label_log_190.setPalette(palette_object)
+        label_log_190.setFont(QFont("Monospace", 10))
+        hbox_lay_log_190.addWidget(label_log_190)
+
+        box_log_190 = QLineEdit()
+        box_log_190.local_path = "output.log"
+        box_log_190.textChanged.connect(self.spnbox_changed)
+        hbox_lay_log_190.addWidget(box_log_190)
+        bg_box.addLayout(hbox_lay_log_190)
+
+        hbox_lay_debug_log_191 =  QHBoxLayout()
+        label_debug_log_191 = QLabel("    debug_log")
+        label_debug_log_191.setPalette(palette_object)
+        label_debug_log_191.setFont(QFont("Monospace", 10))
+        hbox_lay_debug_log_191.addWidget(label_debug_log_191)
+
+        box_debug_log_191 = QLineEdit()
+        box_debug_log_191.local_path = "output.debug_log"
+        box_debug_log_191.textChanged.connect(self.spnbox_changed)
+        hbox_lay_debug_log_191.addWidget(box_debug_log_191)
+        bg_box.addLayout(hbox_lay_debug_log_191)
+
+        hbox_lay_verbosity_192 =  QHBoxLayout()
+        label_verbosity_192 = QLabel("verbosity")
+        label_verbosity_192.setPalette(palette_object)
+        label_verbosity_192.setFont(QFont("Monospace", 10))
+        hbox_lay_verbosity_192.addWidget(label_verbosity_192)
+
+        box_verbosity_192 = QSpinBox()
+        box_verbosity_192.setValue(1)
+        box_verbosity_192.local_path = "verbosity"
+        box_verbosity_192.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_verbosity_192.addWidget(box_verbosity_192)
+        bg_box.addLayout(hbox_lay_verbosity_192)
 
  
         self.setLayout(bg_box)
