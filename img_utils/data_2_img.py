@@ -10,13 +10,10 @@ def gen_flex_arr(n_col = 800, n_row = 700):
     flex_data_out = flex.double(flex.grid(n_row, n_col),15)
     flex_mask_out = flex.double(flex.grid(n_row, n_col),0)
 
-    print "looping START"
-
     for col in xrange(n_col):
         for row in xrange(n_row):
             flex_data_out[row, col] = col + row
 
-    print "looping END"
 
     return flex_data_out, flex_mask_out
 
@@ -27,8 +24,9 @@ class img_w_cpp(object):
     def __call__(self, flex_data_in, flex_mask_in, show_nums = False):
 
         err_code = self.wx_bmp_arr.set_min_max(-3.0, 20.0)
+        #err_code = self.wx_bmp_arr.set_min_max(0.0, 1500.0)
 
-        palette = "hot ascend"
+        palette = "hot descend"
         if palette == "black2white":
             palette_num = 1
         elif palette == "white2black":

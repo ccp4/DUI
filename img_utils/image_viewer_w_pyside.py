@@ -37,10 +37,10 @@ if __name__ == '__main__':
 
     my_array_double = my_array.as_double()
 
-    flex_2d_mask = flex.double(flex.grid(800, 500),0)
+    flex_2d_mask = flex.double(flex.grid(800, 900),0)
 
-    flex_2d_data = my_array_double[1:2, 0:800, 0:500]
-    flex_2d_data.reshape(flex.grid(800, 500))
+    flex_2d_data = my_array_double[1:2, 0:800, 0:900]
+    flex_2d_data.reshape(flex.grid(800, 900))
 
     arr_i = img_w_cpp()
     arr_i = arr_i(flex_2d_data, flex_2d_mask)
