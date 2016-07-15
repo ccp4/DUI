@@ -29,6 +29,7 @@ class inner_widg( QWidget):
         box_format_0.tmp_lst.append("nxs")
         box_format_0.tmp_lst.append("mosflm")
         box_format_0.tmp_lst.append("xds")
+        box_format_0.tmp_lst.append("best")
         for lst_itm in box_format_0.tmp_lst:
             box_format_0.addItem(lst_itm)
         box_format_0.setCurrentIndex(0)
@@ -126,97 +127,61 @@ class inner_widg( QWidget):
         hbox_lay_force_static_model_6.addWidget(box_force_static_model_6)
         bg_box.addLayout(hbox_lay_force_static_model_6)
 
-        hbox_lay_hklout_7 =  QHBoxLayout()
-        label_hklout_7 = QLabel("    hklout")
-        label_hklout_7.setPalette(palette_object)
-        label_hklout_7.setFont(QFont("Monospace", 10))
-        hbox_lay_hklout_7.addWidget(label_hklout_7)
-
-        box_hklout_7 = QLineEdit()
-        box_hklout_7.local_path = "mtz.hklout"
-        box_hklout_7.textChanged.connect(self.spnbox_changed)
-        hbox_lay_hklout_7.addWidget(box_hklout_7)
-        bg_box.addLayout(hbox_lay_hklout_7)
 
         label_8 = QLabel("nxs")
         label_8.setPalette(palette_scope)
         label_8.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_8)
 
-        hbox_lay_hklout_9 =  QHBoxLayout()
-        label_hklout_9 = QLabel("    hklout")
-        label_hklout_9.setPalette(palette_object)
-        label_hklout_9.setFont(QFont("Monospace", 10))
-        hbox_lay_hklout_9.addWidget(label_hklout_9)
-
-        box_hklout_9 = QLineEdit()
-        box_hklout_9.local_path = "nxs.hklout"
-        box_hklout_9.textChanged.connect(self.spnbox_changed)
-        hbox_lay_hklout_9.addWidget(box_hklout_9)
-        bg_box.addLayout(hbox_lay_hklout_9)
 
         label_10 = QLabel("mosflm")
         label_10.setPalette(palette_scope)
         label_10.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_10)
 
-        hbox_lay_directory_11 =  QHBoxLayout()
-        label_directory_11 = QLabel("    directory")
-        label_directory_11.setPalette(palette_object)
-        label_directory_11.setFont(QFont("Monospace", 10))
-        hbox_lay_directory_11.addWidget(label_directory_11)
-
-        box_directory_11 = QLineEdit()
-        box_directory_11.local_path = "mosflm.directory"
-        box_directory_11.textChanged.connect(self.spnbox_changed)
-        hbox_lay_directory_11.addWidget(box_directory_11)
-        bg_box.addLayout(hbox_lay_directory_11)
 
         label_12 = QLabel("xds")
         label_12.setPalette(palette_scope)
         label_12.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_12)
 
-        hbox_lay_directory_13 =  QHBoxLayout()
-        label_directory_13 = QLabel("    directory")
-        label_directory_13.setPalette(palette_object)
-        label_directory_13.setFont(QFont("Monospace", 10))
-        hbox_lay_directory_13.addWidget(label_directory_13)
 
-        box_directory_13 = QLineEdit()
-        box_directory_13.local_path = "xds.directory"
-        box_directory_13.textChanged.connect(self.spnbox_changed)
-        hbox_lay_directory_13.addWidget(box_directory_13)
-        bg_box.addLayout(hbox_lay_directory_13)
-
-        label_14 = QLabel("output")
+        label_14 = QLabel("best")
         label_14.setPalette(palette_scope)
         label_14.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_14)
 
-        hbox_lay_log_15 =  QHBoxLayout()
-        label_log_15 = QLabel("    log")
-        label_log_15.setPalette(palette_object)
-        label_log_15.setFont(QFont("Monospace", 10))
-        hbox_lay_log_15.addWidget(label_log_15)
+        hbox_lay_prefix_15 =  QHBoxLayout()
+        label_prefix_15 = QLabel("    prefix")
+        label_prefix_15.setPalette(palette_object)
+        label_prefix_15.setFont(QFont("Monospace", 10))
+        hbox_lay_prefix_15.addWidget(label_prefix_15)
 
-        box_log_15 = QLineEdit()
-        box_log_15.local_path = "output.log"
-        box_log_15.textChanged.connect(self.spnbox_changed)
-        hbox_lay_log_15.addWidget(box_log_15)
-        bg_box.addLayout(hbox_lay_log_15)
+        box_prefix_15 = QLineEdit()
+        box_prefix_15.local_path = "best.prefix"
+        box_prefix_15.textChanged.connect(self.spnbox_changed)
+        hbox_lay_prefix_15.addWidget(box_prefix_15)
+        bg_box.addLayout(hbox_lay_prefix_15)
 
-        hbox_lay_debug_log_16 =  QHBoxLayout()
-        label_debug_log_16 = QLabel("    debug_log")
-        label_debug_log_16.setPalette(palette_object)
-        label_debug_log_16.setFont(QFont("Monospace", 10))
-        hbox_lay_debug_log_16.addWidget(label_debug_log_16)
+        hbox_lay_n_bins_16 =  QHBoxLayout()
+        label_n_bins_16 = QLabel("    n_bins")
+        label_n_bins_16.setPalette(palette_object)
+        label_n_bins_16.setFont(QFont("Monospace", 10))
+        hbox_lay_n_bins_16.addWidget(label_n_bins_16)
 
-        box_debug_log_16 = QLineEdit()
-        box_debug_log_16.local_path = "output.debug_log"
-        box_debug_log_16.textChanged.connect(self.spnbox_changed)
-        hbox_lay_debug_log_16.addWidget(box_debug_log_16)
-        bg_box.addLayout(hbox_lay_debug_log_16)
+        box_n_bins_16 = QSpinBox()
+        box_n_bins_16.setValue(100)
+        box_n_bins_16.local_path = "best.n_bins"
+        box_n_bins_16.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_n_bins_16.addWidget(box_n_bins_16)
+        bg_box.addLayout(hbox_lay_n_bins_16)
+
+        label_17 = QLabel("output")
+        label_17.setPalette(palette_scope)
+        label_17.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_17)
+
+
 
  
         self.setLayout(bg_box)

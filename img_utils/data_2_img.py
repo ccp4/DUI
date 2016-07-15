@@ -26,7 +26,7 @@ class img_w_cpp(object):
         err_code = self.wx_bmp_arr.set_min_max(-3.0, 20.0)
         #err_code = self.wx_bmp_arr.set_min_max(0.0, 1500.0)
 
-        palette = "hot descend"
+        palette = "black2white"
         if palette == "black2white":
             palette_num = 1
         elif palette == "white2black":
