@@ -2,8 +2,30 @@ import sys
 from dxtbx.datablock import DataBlockFactory
 from data_2_img import img_w_cpp
 from dials.array_family import flex
-from PyQt4.QtGui import QImage, QLabel, QPixmap, QApplication
+
+from PySide.QtGui import *
+from PySide.QtCore import *
+
 import numpy as np
+class MyImgWin(QWidget):
+
+    def __init__(self, q_img = None):
+        super(MyImgWin, self).__init__()
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Image inside scrollable')
+        self.show()
+
+        pix = QPixmap.fromImage(q_img)
+        imageLabel = QLabel()
+        imageLabel.setPixmap(pix)
+
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(imageLabel)
+
+        main_box = QHBoxLayout()
+        main_box.addWidget(scrollArea)
+        self.setLayout(main_box)
+
 
 if __name__ == '__main__':
 
@@ -53,10 +75,12 @@ if __name__ == '__main__':
 
     #building app with IMG
     app = QApplication([])
-    pix = QPixmap.fromImage(q_img)
-    lbl = QLabel()
-    lbl.setPixmap(pix)
-    lbl.show()
+
+    ex = MyImgWin(q_img)
+    sys.exit(app.exec_())
+
 
     app.exec_()
+
+
 
