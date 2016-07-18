@@ -50,8 +50,6 @@ class img_w_cpp(object):
         img_array[:,:,1:2] = np_img_array[:,:,1:2]
         img_array[:,:,2:3] = np_img_array[:,:,0:1]
 
-
-
         print "end of np generator"
 
         return img_array

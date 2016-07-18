@@ -23,7 +23,20 @@ class MyImgWin(QWidget):
         scrollArea.setWidget(imageLabel)
 
         main_box = QHBoxLayout()
+
+        multi_control_box = QVBoxLayout()
+
+
+        label_tst = QLabel(" <<< Test >>>")
+        multi_control_box.addWidget(label_tst)
+
+        label_tst1 = QLabel(" <<< Test 01 >>>")
+        multi_control_box.addWidget(label_tst1)
+
+        main_box.addLayout(multi_control_box)
+
         main_box.addWidget(scrollArea)
+
         self.setLayout(main_box)
 
 
