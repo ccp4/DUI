@@ -26,16 +26,14 @@ class MyImgWin(QWidget):
 
         multi_control_box = QVBoxLayout()
 
+        label_test = QLabel(" <<< Test 01 >>>")
+        multi_control_box.addWidget(label_test)
 
-
-
-
-        label_tst = QSlider()
-        label_tst.sliderMoved.connect(self.onSliderMove)
-        multi_control_box.addWidget(label_tst)
-
-        label_tst1 = QLabel(" <<< Test 01 >>>")
-        multi_control_box.addWidget(label_tst1)
+        real_time_slider = QSlider()
+        real_time_slider.setRange(0, 9)
+        real_time_slider.setOrientation(Qt.Horizontal)
+        real_time_slider.sliderMoved.connect(self.onSliderMove)
+        multi_control_box.addWidget(real_time_slider)
 
         main_box.addLayout(multi_control_box)
 
