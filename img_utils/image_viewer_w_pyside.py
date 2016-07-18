@@ -27,7 +27,11 @@ class MyImgWin(QWidget):
         multi_control_box = QVBoxLayout()
 
 
-        label_tst = QLabel(" <<< Test >>>")
+
+
+
+        label_tst = QSlider()
+        label_tst.sliderMoved.connect(self.onSliderMove)
         multi_control_box.addWidget(label_tst)
 
         label_tst1 = QLabel(" <<< Test 01 >>>")
@@ -38,6 +42,10 @@ class MyImgWin(QWidget):
         main_box.addWidget(scrollArea)
 
         self.setLayout(main_box)
+
+    def onSliderMove(self, position = None):
+        print "position =", position
+        print "onSliderMove"
 
 
 if __name__ == '__main__':
