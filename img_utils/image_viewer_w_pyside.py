@@ -19,16 +19,21 @@ class MyDynamicLabel(QLabel):
 
 class MyImgWin(QWidget):
 
-    def __init__(self, arr_i = None):
+    def __init__(self, my_array_double = None):
         super(MyImgWin, self).__init__()
 
 
-        #converting to QImage
-        print "before QImage generator"
+        flex_2d_mask = flex.double(flex.grid(800, 900),0)
+
+        flex_2d_data = my_array_double[1:2, 0:800, 0:900]
+        flex_2d_data.reshape(flex.grid(800, 900))
+
+        arr_i = img_w_cpp()
+        arr_i = arr_i(flex_2d_data, flex_2d_mask)
+
+
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
-        print "after QImage generator"
-
 
         imageLabel = MyDynamicLabel(q_img)
 
@@ -96,19 +101,8 @@ if __name__ == '__main__':
 
     my_array_double = my_array.as_double()
 
-    flex_2d_mask = flex.double(flex.grid(800, 900),0)
 
-    flex_2d_data = my_array_double[1:2, 0:800, 0:900]
-    flex_2d_data.reshape(flex.grid(800, 900))
-
-    arr_i = img_w_cpp()
-    arr_i = arr_i(flex_2d_data, flex_2d_mask)
-
-    ##
-
-
-
-    ex = MyImgWin(arr_i)
+    ex = MyImgWin(my_array_double)
     sys.exit(app.exec_())
 
 
