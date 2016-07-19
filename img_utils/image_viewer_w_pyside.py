@@ -22,23 +22,10 @@ class MyImgWin(QWidget):
     def __init__(self, my_array_double = None):
         super(MyImgWin, self).__init__()
 
-
-        flex_2d_mask = flex.double(flex.grid(800, 900),0)
-
-        flex_2d_data = my_array_double[1:2, 0:800, 0:900]
-        flex_2d_data.reshape(flex.grid(800, 900))
-
-        arr_i = img_w_cpp()
-        arr_i = arr_i(flex_2d_data, flex_2d_mask)
-
-
-        q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
-                       np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
-
-        imageLabel = MyDynamicLabel(q_img)
+        self.set_my_img(1)
 
         scrollArea = QScrollArea()
-        scrollArea.setWidget(imageLabel)
+        scrollArea.setWidget(self.imageLabel)
 
         main_box = QHBoxLayout()
 
@@ -61,6 +48,23 @@ class MyImgWin(QWidget):
         self.setWindowTitle('Image inside scrollable')
         self.show()
         self.setLayout(main_box)
+
+    def set_my_img(self, img_slice = 1):
+
+        flex_2d_mask = flex.double(flex.grid(800, 900),0)
+
+        flex_2d_data = my_array_double[img_slice:img_slice + 1, 0:800, 0:900]
+        flex_2d_data.reshape(flex.grid(800, 900))
+
+        arr_i = img_w_cpp()
+        arr_i = arr_i(flex_2d_data, flex_2d_mask)
+
+        q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
+                       np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
+
+        self.imageLabel = MyDynamicLabel(q_img)
+
+
 
     def onSliderMove(self, position = None):
         print "position =", position
