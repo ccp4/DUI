@@ -11,9 +11,8 @@ import numpy as np
 class MyDynamicLabel(QLabel):
     def __init__(self):
         super(MyDynamicLabel, self).__init__()
-        print "From MyDynamicLabel"
 
-    def __call__(self, q_img = None):
+    def set_img_pix(self, q_img = None):
         pix = QPixmap.fromImage(q_img)
         self.setPixmap(pix)
 
@@ -33,7 +32,7 @@ class MyImgWin(QWidget):
 
         scrollArea.setWidget(self.imageLabel)
 
-        main_box = QHBoxLayout()
+        main_box = QVBoxLayout()
         multi_control_box = QVBoxLayout()
 
         label_test = QLabel(" <<< Test 01 >>>")
@@ -61,13 +60,12 @@ class MyImgWin(QWidget):
         flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:800, 0:900]
         flex_2d_data.reshape(flex.grid(800, 900))
 
-
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask)
 
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
-        self.imageLabel(q_img)
+        self.imageLabel.set_img_pix(q_img)
 
 
     def onSliderMove(self, position = None):
