@@ -22,20 +22,15 @@ class MyImgWin(QWidget):
         super(MyImgWin, self).__init__()
 
         self.block_3d_flex = my_array_double
-
         self.arr_img = img_w_cpp()
-
         self.imageLabel = MyDynamicLabel()
-        scrollArea = QScrollArea()
 
         self.set_my_img(1)
-
-        scrollArea.setWidget(self.imageLabel)
 
         main_box = QVBoxLayout()
         multi_control_box = QVBoxLayout()
 
-        label_test = QLabel(" <<< Test 01 >>>")
+        label_test = QLabel(" <<< IMG Num >>>")
         multi_control_box.addWidget(label_test)
 
         real_time_slider = QSlider()
@@ -46,10 +41,8 @@ class MyImgWin(QWidget):
 
         main_box.addLayout(multi_control_box)
 
-        main_box.addWidget(scrollArea)
-
-        self.setGeometry(300, 300, 250, 150)
-        self.setWindowTitle('Image inside scrollable')
+        main_box.addWidget(self.imageLabel)
+        self.setWindowTitle('Image view test')
         self.show()
         self.setLayout(main_box)
 
