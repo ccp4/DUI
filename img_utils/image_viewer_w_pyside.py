@@ -5,17 +5,39 @@ from dials.array_family import flex
 
 from PySide.QtGui import *
 from PySide.QtCore import *
+from PySide.QtOpenGL import QGLWidget
 
 import numpy as np
 
-class MyDynamicLabel(QLabel):
+#class ImgPainter(QWidget):
+
+class ImgPainter(QGLWidget):
+
     def __init__(self):
-        super(MyDynamicLabel, self).__init__()
+        super(ImgPainter, self).__init__()
+        self.pix = None
 
     def set_img_pix(self, q_img = None):
-        pix = QPixmap.fromImage(q_img)
+        self.pix = QPixmap.fromImage(q_img)
+        self.paintEvent(None)
+        '''
         self.setPixmap(pix)
         self.repaint()
+        '''
+
+    def paintEvent(self, event):
+
+        if( self.pix == None ):
+            return
+        else:
+
+            img_paint = QPainter()
+            img_paint.begin(self)
+
+            img_paint.drawPixmap(1, 1, self.pix)
+
+            img_paint.end()
+
 
 class MyImgWin(QWidget):
 
@@ -24,7 +46,7 @@ class MyImgWin(QWidget):
 
         self.block_3d_flex = my_array_double
         self.arr_img = img_w_cpp()
-        self.imageLabel = MyDynamicLabel()
+        self.imageLabel = ImgPainter()
 
         self.set_my_img(1)
 
