@@ -16,10 +16,16 @@ class AnalogClock(QtGui.QWidget):
     def paintEvent(self, event):
 
 
-        p = QtGui.QPainter()
-        p.begin(self)
-        p.drawLine(1,1,500,500)
-        p.end()
+        img_paint = QtGui.QPainter()
+        img_paint.begin(self)
+
+        img = QtGui.QImage("tux_n_chrome.png")
+        Pmap = QtGui.QPixmap.fromImage(img)
+
+        img_paint.drawPixmap(1, 1, Pmap)
+
+
+        img_paint.end()
 
 
 
