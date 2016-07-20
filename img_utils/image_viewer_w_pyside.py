@@ -15,6 +15,7 @@ class MyDynamicLabel(QLabel):
     def set_img_pix(self, q_img = None):
         pix = QPixmap.fromImage(q_img)
         self.setPixmap(pix)
+        self.repaint()
 
 class MyImgWin(QWidget):
 
@@ -66,8 +67,6 @@ class MyImgWin(QWidget):
         print "onSliderMove"
 
         self.set_my_img(img_slice = position)
-
-        self.imageLabel.repaint()
         self.update()
 
 
