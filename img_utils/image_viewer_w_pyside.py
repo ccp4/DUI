@@ -25,9 +25,12 @@ class MyImgWin(QWidget):
         self.block_3d_flex = my_array_double
 
         self.arr_img = img_w_cpp()
+
+        self.imageLabel = MyDynamicLabel()
+        scrollArea = QScrollArea()
+
         self.set_my_img(1)
 
-        scrollArea = QScrollArea()
         scrollArea.setWidget(self.imageLabel)
 
         main_box = QHBoxLayout()
@@ -51,7 +54,7 @@ class MyImgWin(QWidget):
         self.show()
         self.setLayout(main_box)
 
-    def set_my_img(self, img_slice = 1, new_img = False):
+    def set_my_img(self, img_slice = 1):
 
         flex_2d_mask = flex.double(flex.grid(800, 900),0)
 
@@ -63,8 +66,6 @@ class MyImgWin(QWidget):
 
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
-        if new_img == False:
-            self.imageLabel = MyDynamicLabel()
 
         self.imageLabel(q_img)
 
@@ -73,7 +74,7 @@ class MyImgWin(QWidget):
         print "position =", position
         print "onSliderMove"
 
-        self.set_my_img(img_slice = position, new_img = True)
+        self.set_my_img(img_slice = position)
 
         self.imageLabel.repaint()
         self.update()
