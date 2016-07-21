@@ -14,7 +14,7 @@ class ImgPainter(QGLWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
-        self.setFixedSize(950, 850)
+        self.setFixedSize(2550, 2400)
         self.pix = None
 
     def set_img_pix(self, q_img = None):
@@ -26,11 +26,16 @@ class ImgPainter(QGLWidget):
         if( self.pix == None ):
             return
         else:
-
             img_paint = QPainter()
             img_paint.begin(self)
             img_paint.drawPixmap(1, 1, self.pix)
             img_paint.end()
+
+
+class ScrollableImg(QScrollArea):
+    def __init__(self, parent = None):
+        super(ScrollableImg, self).__init__()
+        self.setWidget(parent)
 
 
 class MyImgWin(QWidget):
@@ -46,35 +51,31 @@ class MyImgWin(QWidget):
         self.new_img()
 
         main_box = QVBoxLayout()
-        multi_control_box = QVBoxLayout()
 
         label_img_num = QLabel(" <<< IMG Num >>>")
-        multi_control_box.addWidget(label_img_num)
+        main_box.addWidget(label_img_num)
 
         img_num_slider = QSlider()
         img_num_slider.setRange(0, 8)
         img_num_slider.setOrientation(Qt.Horizontal)
         img_num_slider.sliderMoved.connect(self.onImgSliderMove)
-        multi_control_box.addWidget(img_num_slider)
+        main_box.addWidget(img_num_slider)
 
 
         label_imax = QLabel(" <<< I Max >>>")
-        multi_control_box.addWidget(label_imax)
+        main_box.addWidget(label_imax)
 
         imax_slider = QSlider()
         imax_slider.setRange(0, 1000)
         imax_slider.setOrientation(Qt.Horizontal)
         imax_slider.sliderMoved.connect(self.onMaxiSliderMove)
-        multi_control_box.addWidget(imax_slider)
+        main_box.addWidget(imax_slider)
 
 
-        main_box.addLayout(multi_control_box)
-        main_box.addWidget(self.img_painter)
-
+        scrollArea = ScrollableImg(self.img_painter)
+        main_box.addWidget(scrollArea)
 
         self.setLayout(main_box)
-
-        self.setGeometry(300, 300, 1200, 950)
         self.setWindowTitle('Image view test')
         self.show()
 
@@ -84,11 +85,11 @@ class MyImgWin(QWidget):
 
     def set_my_img(self):
 
-        flex_2d_mask = flex.double(flex.grid(800, 900),0)
+        flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
         img_slice = self.img_pos
 
-        flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 400:1200, 300:1200]
-        flex_2d_data.reshape(flex.grid(800, 900))
+        flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:2500, 0:2400]
+        flex_2d_data.reshape(flex.grid(2500, 2400))
 
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = self.imax)
 
