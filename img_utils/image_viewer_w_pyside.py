@@ -6,24 +6,20 @@ from dials.array_family import flex
 from PySide.QtGui import *
 from PySide.QtCore import *
 from PySide.QtOpenGL import QGLWidget
+from OpenGL import GL
 
 import numpy as np
-
-#class ImgPainter(QWidget):
 
 class ImgPainter(QGLWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
+        self.setFixedSize(950, 850)
         self.pix = None
 
     def set_img_pix(self, q_img = None):
         self.pix = QPixmap.fromImage(q_img)
         self.paintEvent(None)
-        '''
-        self.setPixmap(pix)
-        self.repaint()
-        '''
 
     def paintEvent(self, event):
 
@@ -33,9 +29,7 @@ class ImgPainter(QGLWidget):
 
             img_paint = QPainter()
             img_paint.begin(self)
-
             img_paint.drawPixmap(1, 1, self.pix)
-
             img_paint.end()
 
 
@@ -46,7 +40,7 @@ class MyImgWin(QWidget):
 
         self.block_3d_flex = my_array_double
         self.arr_img = img_w_cpp()
-        self.imageLabel = ImgPainter()
+        self.img_painter = ImgPainter()
 
         self.set_my_img(1)
 
@@ -63,17 +57,20 @@ class MyImgWin(QWidget):
         multi_control_box.addWidget(real_time_slider)
 
         main_box.addLayout(multi_control_box)
+        main_box.addWidget(self.img_painter)
 
-        main_box.addWidget(self.imageLabel)
+
+        self.setLayout(main_box)
+
+        self.setGeometry(300, 300, 1200, 950)
         self.setWindowTitle('Image view test')
         self.show()
-        self.setLayout(main_box)
 
     def set_my_img(self, img_slice = 1):
 
         flex_2d_mask = flex.double(flex.grid(800, 900),0)
 
-        flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:800, 0:900]
+        flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 400:1200, 300:1200]
         flex_2d_data.reshape(flex.grid(800, 900))
 
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask)
@@ -81,7 +78,7 @@ class MyImgWin(QWidget):
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
-        self.imageLabel.set_img_pix(q_img)
+        self.img_painter.set_img_pix(q_img)
 
 
     def onSliderMove(self, position = None):
@@ -90,7 +87,6 @@ class MyImgWin(QWidget):
 
         self.set_my_img(img_slice = position)
         self.update()
-
 
 
 if __name__ == '__main__':
@@ -126,7 +122,6 @@ if __name__ == '__main__':
     print "type(my_array) =", type(my_array)
 
     my_array_double = my_array.as_double()
-
 
     ex = MyImgWin(my_array_double)
     sys.exit(app.exec_())
