@@ -43,7 +43,7 @@ class MyImgWin(QWidget):
         self.img_painter = ImgPainter()
         self.img_pos = 0
         self.imax = 30
-        self.set_my_img(1)
+        self.new_img()
 
         main_box = QVBoxLayout()
         multi_control_box = QVBoxLayout()
@@ -78,14 +78,19 @@ class MyImgWin(QWidget):
         self.setWindowTitle('Image view test')
         self.show()
 
-    def set_my_img(self, img_slice = 1, i_min = -3.0, i_max = 20.0):
+    def new_img(self):
+        self.set_my_img()
+        self.update()
+
+    def set_my_img(self):
 
         flex_2d_mask = flex.double(flex.grid(800, 900),0)
+        img_slice = self.img_pos
 
         flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 400:1200, 300:1200]
         flex_2d_data.reshape(flex.grid(800, 900))
 
-        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = i_min,i_max = i_max)
+        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = self.imax)
 
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
@@ -95,15 +100,11 @@ class MyImgWin(QWidget):
 
     def onImgSliderMove(self, position = None):
         self.img_pos = position
-        self.set_my_img(img_slice = self.img_pos, i_min = -3.0, i_max = self.imax)
-        self.update()
-
+        self.new_img()
 
     def onMaxiSliderMove(self, position = None):
         self.imax = position
-        self.set_my_img(img_slice = self.img_pos, i_min = -3.0, i_max = self.imax)
-        self.update()
-
+        self.new_img()
 
 
 if __name__ == '__main__':
