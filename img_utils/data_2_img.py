@@ -21,9 +21,9 @@ class img_w_cpp(object):
     def __init__(self):
         self.wx_bmp_arr = rgb_img()
 
-    def __call__(self, flex_data_in, flex_mask_in, show_nums = False):
+    def __call__(self, flex_data_in, flex_mask_in, show_nums = False, i_min = -3.0, i_max = 20.0):
 
-        err_code = self.wx_bmp_arr.set_min_max(-3.0, 20.0)
+        err_code = self.wx_bmp_arr.set_min_max(i_min, i_max)
         #err_code = self.wx_bmp_arr.set_min_max(0.0, 1500.0)
 
         palette = "hot ascend"
