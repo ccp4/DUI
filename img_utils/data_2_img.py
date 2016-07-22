@@ -1,5 +1,7 @@
 import numpy as np
 
+from time import time as tm_now
+
 #from PySide.QtGui import QImage, QLabel, QPixmap, QApplication
 from PyQt4.QtGui import QImage, QLabel, QPixmap, QApplication
 from dials_viewer_ext import rgb_img
@@ -36,7 +38,11 @@ class img_w_cpp(object):
         else: # assuming "hot descend"
             palette_num = 4
         print "before c++"
+
+        tm_start = tm_now()
         img_array_tmp = self.wx_bmp_arr.gen_bmp(flex_data_in, flex_mask_in, show_nums, palette_num)
+        print "dif_time(C++ bmp gen) =", tm_now() - tm_start
+
         print "after c++"
         np_img_array = img_array_tmp.as_numpy_array()
 

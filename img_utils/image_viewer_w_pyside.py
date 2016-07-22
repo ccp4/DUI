@@ -10,10 +10,10 @@ from OpenGL import GL
 
 import numpy as np
 
+from time import time as tm_now
 
 
-
-class ImgPainter(QGLWidget):
+class ImgPainter(QWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
@@ -22,14 +22,16 @@ class ImgPainter(QGLWidget):
 
     def set_img_pix(self, q_img = None):
 
-        print "type(self.parent) =", type(self.parent)
         self.pix = QPixmap.fromImage(q_img)
 
+        # the next two choices need to be taken depending on the
+        # rendering back end
+
         # Use paintEvent when [self] inherits from QGLWidget
-        self.paintEvent(None)
+        #self.paintEvent(None)
 
         #Use "update" when [self] inherits from QWidget
-        #self.update()
+        self.update()
 
 
 
@@ -98,18 +100,29 @@ class MyImgWin(QWidget):
 
     def set_my_img(self):
 
+        tm_start = tm_now()
+
         flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
         img_slice = self.img_pos
 
         flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:2500, 0:2400]
         flex_2d_data.reshape(flex.grid(2500, 2400))
+        print "dif_time(array managing) =", tm_now() - tm_start
 
+        tm_start = tm_now()
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = self.imax)
+        print "dif_time(bmp code w c++ & np) =", tm_now() - tm_start
 
+        tm_start = tm_now()
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
+        print "dif_time(np2qimg ) =", tm_now() - tm_start
 
+
+        tm_start = tm_now()
         self.img_painter.set_img_pix(q_img)
+        print "dif_time[set_img_pix(q_img)] =", tm_now() - tm_start
+
 
     def onImgSliderMove(self, position = None):
         self.img_pos = position
