@@ -10,6 +10,9 @@ from OpenGL import GL
 
 import numpy as np
 
+
+
+
 class ImgPainter(QGLWidget):
 
     def __init__(self):
@@ -18,17 +21,28 @@ class ImgPainter(QGLWidget):
         self.pix = None
 
     def set_img_pix(self, q_img = None):
+
+        print "type(self.parent) =", type(self.parent)
         self.pix = QPixmap.fromImage(q_img)
+
+        # Use paintEvent when [self] inherits from QGLWidget
         self.paintEvent(None)
+
+        #Use "update" when [self] inherits from QWidget
+        #self.update()
+
+
 
     def paintEvent(self, event):
 
         if( self.pix == None ):
+            print "self.pix = None"
             return
+
         else:
             img_paint = QPainter()
             img_paint.begin(self)
-            img_paint.drawPixmap(1, 1, self.pix)
+            img_paint.drawPixmap(0, 0, self.pix)
             img_paint.end()
 
 
@@ -71,7 +85,6 @@ class MyImgWin(QWidget):
         imax_slider.sliderMoved.connect(self.onMaxiSliderMove)
         main_box.addWidget(imax_slider)
 
-
         scrollArea = ScrollableImg(self.img_painter)
         main_box.addWidget(scrollArea)
 
@@ -97,7 +110,6 @@ class MyImgWin(QWidget):
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
         self.img_painter.set_img_pix(q_img)
-
 
     def onImgSliderMove(self, position = None):
         self.img_pos = position
