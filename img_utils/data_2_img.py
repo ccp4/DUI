@@ -44,6 +44,9 @@ class img_w_cpp(object):
         print "dif_time(C++ bmp gen) =", tm_now() - tm_start
 
         print "after c++"
+
+        tm_start = tm_now()
+
         np_img_array = img_array_tmp.as_numpy_array()
 
         height = np.size(np_img_array[:, 0:1, 0:1])
@@ -55,6 +58,8 @@ class img_w_cpp(object):
         img_array[:,:,0:1] = np_img_array[:,:,2:3]
         img_array[:,:,1:2] = np_img_array[:,:,1:2]
         img_array[:,:,2:3] = np_img_array[:,:,0:1]
+
+        print "dif_time(np and flex handling) =", tm_now() - tm_start
 
         print "end of np generator"
 
