@@ -6,7 +6,7 @@ to allow easy data inspection (but note that PySide unfortunately does not
 call the Qt event loop while the interactive prompt is running, in this case
 it is necessary to call QApplication.exec_() to make the windows appear).
 """
-
+import PySide
 import numpy as np
 import pyqtgraph as pg
 
