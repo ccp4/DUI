@@ -1089,23 +1089,22 @@ class inner_widg( QWidget):
         hbox_lay_ewald_proximity_resolution_cutoff_89.addWidget(box_ewald_proximity_resolution_cutoff_89)
         bg_box.addLayout(hbox_lay_ewald_proximity_resolution_cutoff_89)
 
-        hbox_lay_index_only_90 =  QHBoxLayout()
-        label_index_only_90 = QLabel("        index_only")
-        label_index_only_90.setPalette(palette_object)
-        label_index_only_90.setFont(QFont("Monospace", 10))
-        hbox_lay_index_only_90.addWidget(label_index_only_90)
+        hbox_lay_refine_all_candidates_90 =  QHBoxLayout()
+        label_refine_all_candidates_90 = QLabel("        refine_all_candidates")
+        label_refine_all_candidates_90.setPalette(palette_object)
+        label_refine_all_candidates_90.setFont(QFont("Monospace", 10))
+        hbox_lay_refine_all_candidates_90.addWidget(label_refine_all_candidates_90)
 
-        box_index_only_90 = QComboBox()
-        box_index_only_90.local_path = "indexing.stills.index_only"
-        box_index_only_90.tmp_lst=[]
-        box_index_only_90.tmp_lst.append("True")
-        box_index_only_90.tmp_lst.append("False")
-        for lst_itm in box_index_only_90.tmp_lst:
-            box_index_only_90.addItem(lst_itm)
-        box_index_only_90.setCurrentIndex(1)
-        box_index_only_90.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_index_only_90.addWidget(box_index_only_90)
-        bg_box.addLayout(hbox_lay_index_only_90)
+        box_refine_all_candidates_90 = QComboBox()
+        box_refine_all_candidates_90.local_path = "indexing.stills.refine_all_candidates"
+        box_refine_all_candidates_90.tmp_lst=[]
+        box_refine_all_candidates_90.tmp_lst.append("True")
+        box_refine_all_candidates_90.tmp_lst.append("False")
+        for lst_itm in box_refine_all_candidates_90.tmp_lst:
+            box_refine_all_candidates_90.addItem(lst_itm)
+        box_refine_all_candidates_90.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_refine_all_candidates_90.addWidget(box_refine_all_candidates_90)
+        bg_box.addLayout(hbox_lay_refine_all_candidates_90)
 
         hbox_lay_rmsd_min_px_91 =  QHBoxLayout()
         label_rmsd_min_px_91 = QLabel("        rmsd_min_px")
