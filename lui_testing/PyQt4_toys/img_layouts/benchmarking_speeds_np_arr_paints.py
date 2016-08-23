@@ -1,6 +1,11 @@
 from PySide import QtCore, QtGui
 import numpy as np
+from dxtbx.datablock import DataBlockFactory
+from dials.array_family import flex
+import sys
 
+sys.path.append("../../..")
+from img_utils.data_2_img import img_w_cpp
 
 def get_3d_flex_array():
     json_file_path = str("../../dummy_unversioned_data/datablock.json")
@@ -34,24 +39,21 @@ class MyScroll(QtGui.QScrollArea):
         super(MyScroll, self).__init__()
 
         self.imageLabel = QtGui.QLabel()
-        '''
-        width = 200
-        height = 200
-        data = np.random.randint(0,256,size=(width,height,3)).astype(np.uint8)
-
-        img = QtGui.QImage(width, height, QtGui.QImage.Format_RGB32)
-        for x in xrange(width):
-            for y in xrange(height):
-                img.setPixel(x, y, QtGui.QColor(*data[x][y]).rgb())
-
-        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(img))
-        '''
+        self.arr_data = get_3d_flex_array()
         self.setWidget(self.imageLabel)
         self.show()
-
+        self.arr_img = img_w_cpp()
 
     def update_me(self):
         print "update_me(self)"
+
+        flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
+        img_slice = 0
+        flex_2d_data = self.arr_data[img_slice:img_slice + 1, 0:2500, 0:2400]
+        flex_2d_data.reshape(flex.grid(2500, 2400))
+
+        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
+
 
         self.setWidget(self.imageLabel)
         self.show()
