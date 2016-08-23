@@ -30,9 +30,9 @@ def img_arr_n_cpp(show_nums = True):
         palette_num = 3
     else: # assuming "hot descend"
         palette_num = 4
-    print "before c++"
+
     img_array_tmp = bmp_np_arr.gen_bmp(flex_data_in, flex_mask_in, show_nums, palette_num)
-    print "after c++"
+
     np_img_array = img_array_tmp.as_numpy_array()
 
     height = np.size(np_img_array[:, 0:1, 0:1])
