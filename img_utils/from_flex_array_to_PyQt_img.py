@@ -10,7 +10,7 @@ def img_arr_n_cpp(show_nums = True):
     n_col = 20
     n_row = 10
 
-    wx_bmp_arr = rgb_img()
+    bmp_np_arr = rgb_img()
     flex_data_in = flex.double(flex.grid(n_row, n_col),15)
     flex_mask_in = flex.double(flex.grid(n_row, n_col),0)
 
@@ -18,7 +18,7 @@ def img_arr_n_cpp(show_nums = True):
         for row in xrange(n_row):
             flex_data_in[row, col] = col + row
 
-    err_code = wx_bmp_arr.set_min_max(0.0, 28.0)
+    err_code = bmp_np_arr.set_min_max(0.0, 28.0)
 
     palette = "hot ascend"
 
@@ -31,7 +31,7 @@ def img_arr_n_cpp(show_nums = True):
     else: # assuming "hot descend"
         palette_num = 4
     print "before c++"
-    img_array_tmp = wx_bmp_arr.gen_bmp(flex_data_in, flex_mask_in, show_nums, palette_num)
+    img_array_tmp = bmp_np_arr.gen_bmp(flex_data_in, flex_mask_in, show_nums, palette_num)
     print "after c++"
     np_img_array = img_array_tmp.as_numpy_array()
 
