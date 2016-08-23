@@ -5,7 +5,7 @@ from PyQt4.QtGui import QImage, QLabel, QPixmap, QApplication
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
-def wx_img_w_cpp(show_nums = True):
+def img_arr_n_cpp(show_nums = True):
 
     n_col = 20
     n_row = 10
@@ -53,7 +53,7 @@ def wx_img_w_cpp(show_nums = True):
 
 
 #building array
-arr_i = wx_img_w_cpp()
+arr_i = img_arr_n_cpp()
 
 #converting to QImage
 print "before QImage generator"

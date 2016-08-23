@@ -37,13 +37,13 @@ class img_w_cpp(object):
             palette_num = 3
         else: # assuming "hot descend"
             palette_num = 4
-        print "before c++"
+        print "before c++ 01\n"
 
         tm_start = tm_now()
         img_array_tmp = self.wx_bmp_arr.gen_bmp(flex_data_in, flex_mask_in, show_nums, palette_num)
         print "dif_time(C++ bmp gen) =", tm_now() - tm_start
 
-        print "after c++"
+        print "\nafter c++ 02"
 
         tm_start = tm_now()
 
