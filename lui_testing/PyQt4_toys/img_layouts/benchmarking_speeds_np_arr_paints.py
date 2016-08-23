@@ -37,8 +37,9 @@ class MyScroll(QtGui.QScrollArea):
 
     def __init__(self, parent = None):
         super(MyScroll, self).__init__()
-
+        img = QtGui.QImage(2500, 2400, QtGui.QImage.Format_RGB32)
         self.imageLabel = QtGui.QLabel()
+        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(img))
         self.arr_data = get_3d_flex_array()
         self.setWidget(self.imageLabel)
         self.show()
@@ -53,12 +54,13 @@ class MyScroll(QtGui.QScrollArea):
         flex_2d_data.reshape(flex.grid(2500, 2400))
 
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
+        q_img = QtGui.QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
+                       np.size(arr_i[:, 0:1, 0:1]), QtGui.QImage.Format_RGB32)
 
-
+        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(q_img))
         self.setWidget(self.imageLabel)
+
         self.show()
-
-
 class ImgTab(QtGui.QWidget):
 
     def __init__(self, parent = None):
