@@ -30,6 +30,8 @@ def get_3d_flex_array():
     print "type(my_array) =", type(my_array)
     my_array_double = my_array.as_double()
 
+    print "my_array_double.all() =", my_array_double.all()
+
     return my_array_double
 
 
@@ -44,23 +46,27 @@ class MyScroll(QtGui.QScrollArea):
         self.setWidget(self.imageLabel)
         self.show()
         self.arr_img = img_w_cpp()
+        self.slice_pos = 0
 
     def update_me(self):
-        print "update_me(self)"
+
+        print "_____________________________________________________________ self.slice_pos =", self.slice_pos
 
         flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
-        img_slice = 0
-        flex_2d_data = self.arr_data[img_slice:img_slice + 1, 0:2500, 0:2400]
+        flex_2d_data = self.arr_data[self.slice_pos:self.slice_pos + 1, 0:2500, 0:2400]
         flex_2d_data.reshape(flex.grid(2500, 2400))
-
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
         q_img = QtGui.QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QtGui.QImage.Format_RGB32)
 
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(q_img))
         self.setWidget(self.imageLabel)
-
         self.show()
+
+        self.slice_pos += 1
+        if self.slice_pos >= self.arr_data.all()[0] :
+            self.slice_pos = 0
+
 class ImgTab(QtGui.QWidget):
 
     def __init__(self, parent = None):
@@ -76,10 +82,15 @@ class ImgTab(QtGui.QWidget):
 
         self.setLayout(main_box)
         self.show()
+        self.update()
 
     def B_go_clicked(self):
         print "B_go_clicked(self)"
-        self.scrollArea.update_me()
+
+        timer = QtCore.QTimer(self)
+        timer.timeout.connect(self.scrollArea.update_me)
+        timer.start(1)
+
 
 if __name__ == '__main__':
 
