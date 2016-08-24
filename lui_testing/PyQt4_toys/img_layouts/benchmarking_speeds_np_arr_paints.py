@@ -71,8 +71,8 @@ class MyScroll(QtGui.QScrollArea):
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(q_img))
         self.setWidget(self.imageLabel)
 
-        #self.update()
-        self.show()
+        self.update()
+        #self.show()
 
         print "_____________________________________________________________ self.slice_pos =", self.slice_pos
         dif_time = time_now() - self.my_time
