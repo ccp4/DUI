@@ -3,6 +3,7 @@ import numpy as np
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 import sys
+from time import time as time_now
 
 sys.path.append("../../..")
 from img_utils.data_2_img import img_w_cpp
@@ -37,12 +38,21 @@ def get_3d_flex_array():
 
 class MyScroll(QtGui.QScrollArea):
 
+    my_time = time_now()
+
     def __init__(self, parent = None):
         super(MyScroll, self).__init__()
-        img = QtGui.QImage(2500, 2400, QtGui.QImage.Format_RGB32)
+
         self.imageLabel = QtGui.QLabel()
+        img = QtGui.QImage(2527, 2463, QtGui.QImage.Format_RGB32)
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(img))
         self.arr_data = get_3d_flex_array()
+
+        self.img_w = self.arr_data.all()[1]
+        self.img_h = self.arr_data.all()[2]
+
+        print "self.img_w, self.img_h =", self.img_w, self.img_h
+
         self.setWidget(self.imageLabel)
         self.show()
         self.arr_img = img_w_cpp()
@@ -50,18 +60,25 @@ class MyScroll(QtGui.QScrollArea):
 
     def update_me(self):
 
-        print "_____________________________________________________________ self.slice_pos =", self.slice_pos
 
-        flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
-        flex_2d_data = self.arr_data[self.slice_pos:self.slice_pos + 1, 0:2500, 0:2400]
-        flex_2d_data.reshape(flex.grid(2500, 2400))
+        flex_2d_mask = flex.double(flex.grid(self.img_w, self.img_h),0)
+        flex_2d_data = self.arr_data[self.slice_pos:self.slice_pos + 1, 0:self.img_w, 0:self.img_h]
+        flex_2d_data.reshape(flex.grid(self.img_w, self.img_h))
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
         q_img = QtGui.QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QtGui.QImage.Format_RGB32)
 
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(q_img))
         self.setWidget(self.imageLabel)
+
+        #self.update()
         self.show()
+
+        print "_____________________________________________________________ self.slice_pos =", self.slice_pos
+        dif_time = time_now() - self.my_time
+        self.my_time = time_now()
+        print "_____________________________________________________________ time spent =", dif_time
+
 
         self.slice_pos += 1
         if self.slice_pos >= self.arr_data.all()[0] :
