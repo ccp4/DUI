@@ -44,7 +44,9 @@ class MyScroll(QtGui.QScrollArea):
         super(MyScroll, self).__init__()
 
         self.imageLabel = QtGui.QLabel()
-        img = QtGui.QImage(2527, 2463, QtGui.QImage.Format_RGB32)
+        #img = QtGui.QImage(2527, 2463, QtGui.QImage.Format_RGB32)
+        img = QtGui.QImage(252, 246, QtGui.QImage.Format_RGB32)
+
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(img))
         self.arr_data = get_3d_flex_array()
 
@@ -58,8 +60,9 @@ class MyScroll(QtGui.QScrollArea):
         self.arr_img = img_w_cpp()
         self.slice_pos = 0
 
-    def update_me(self):
+        self.setWidgetResizable(True)
 
+    def update_me(self):
 
         flex_2d_mask = flex.double(flex.grid(self.img_w, self.img_h),0)
         flex_2d_data = self.arr_data[self.slice_pos:self.slice_pos + 1, 0:self.img_w, 0:self.img_h]
