@@ -44,7 +44,6 @@ class MyScroll(QtGui.QScrollArea):
         super(MyScroll, self).__init__()
 
         self.imageLabel = QtGui.QLabel()
-
         tmp_img = QtGui.QImage("../../../dui/resources/DIALS_Logo_scaled.png")
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(tmp_img))
 
@@ -72,7 +71,6 @@ class MyScroll(QtGui.QScrollArea):
 
         self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(q_img))
         self.setWidget(self.imageLabel)
-
         self.update()
         #self.show()
 
