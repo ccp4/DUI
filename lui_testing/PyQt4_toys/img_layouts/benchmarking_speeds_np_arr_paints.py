@@ -74,10 +74,10 @@ class MyScroll(QtGui.QScrollArea):
         self.update()
         #self.show()
 
-        print "_____________________________________________________________ self.slice_pos =", self.slice_pos
+        print "self.slice_pos =", self.slice_pos
         dif_time = time_now() - self.my_time
         self.my_time = time_now()
-        print "_____________________________________________________________ time spent =", dif_time
+        print "time spent =", dif_time
 
 
         self.slice_pos += 1

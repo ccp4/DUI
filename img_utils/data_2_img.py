@@ -37,15 +37,8 @@ class img_w_cpp(object):
             palette_num = 3
         else: # assuming "hot descend"
             palette_num = 4
-        print "before c++ 01\n"
 
-        tm_start = tm_now()
         img_array_tmp = self.wx_bmp_arr.gen_bmp(flex_data_in, flex_mask_in, show_nums, palette_num)
-        print "dif_time(C++ bmp gen) =", tm_now() - tm_start
-
-        print "\nafter c++ 02"
-
-        tm_start = tm_now()
 
         np_img_array = img_array_tmp.as_numpy_array()
 
@@ -59,11 +52,8 @@ class img_w_cpp(object):
         img_array[:,:,1:2] = np_img_array[:,:,1:2]
         img_array[:,:,2:3] = np_img_array[:,:,0:1]
 
-        print "dif_time(np and flex handling) =", tm_now() - tm_start
-
-        print "end of np generator"
-
         return img_array
+
 
 if __name__ == "__main__":
     print "Hi"
