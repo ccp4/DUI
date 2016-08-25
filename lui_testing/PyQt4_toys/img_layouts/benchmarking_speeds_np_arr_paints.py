@@ -44,14 +44,14 @@ class MyScroll(QtGui.QScrollArea):
         super(MyScroll, self).__init__()
 
         self.imageLabel = QtGui.QLabel()
-        #img = QtGui.QImage(2527, 2463, QtGui.QImage.Format_RGB32)
-        img = QtGui.QImage(252, 246, QtGui.QImage.Format_RGB32)
 
-        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(img))
+        tmp_img = QtGui.QImage("../../../dui/resources/DIALS_Logo_scaled.png")
+        self.imageLabel.setPixmap(QtGui.QPixmap.fromImage(tmp_img))
+
         self.arr_data = get_3d_flex_array()
-
         self.img_w = self.arr_data.all()[1]
         self.img_h = self.arr_data.all()[2]
+        self.flex_2d_mask = flex.double(flex.grid(self.img_w, self.img_h),0)
 
         print "self.img_w, self.img_h =", self.img_w, self.img_h
 
@@ -64,10 +64,9 @@ class MyScroll(QtGui.QScrollArea):
 
     def update_me(self):
 
-        flex_2d_mask = flex.double(flex.grid(self.img_w, self.img_h),0)
         flex_2d_data = self.arr_data[self.slice_pos:self.slice_pos + 1, 0:self.img_w, 0:self.img_h]
         flex_2d_data.reshape(flex.grid(self.img_w, self.img_h))
-        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
+        arr_i = self.arr_img(flex_2d_data, self.flex_2d_mask, i_min = -3.0, i_max = 500)
         q_img = QtGui.QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QtGui.QImage.Format_RGB32)
 
