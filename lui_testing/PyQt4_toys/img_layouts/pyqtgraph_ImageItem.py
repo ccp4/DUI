@@ -46,10 +46,6 @@ def updateData():
     #global img, data, i, updateTime
     global img, arr_data, i, updateTime
 
-
-    ## Display the data
-    #img.setImage(data[i])
-
     all_1 = arr_data.all()[1]
     all_2 = arr_data.all()[2]
     flex_slice_2d = arr_data[i:i+1, 0:all_1, 0:all_2]
@@ -58,7 +54,7 @@ def updateData():
     img_np = np.zeros([all_1, all_2], dtype=np.double)
     img_np[:,:] = np_slice[0:1,:,:]
 
-    img.setImage(img_np)
+    img.setImage(np.transpose(img_np), levels = ( -3 , 500))
 
     i += 1
     if i >= arr_data.all()[0]:
