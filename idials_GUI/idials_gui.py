@@ -76,7 +76,7 @@ class TreeNavWidget(QTreeView):
             print "cannot jump to failed step"
             self.super_parent.goto(item.idials_node.parent.index)
 
-class MainWidget( QWidget):
+class IdialsOuterWidget( QWidget):
     lst_commands = [
                     "import",
                     "find_spots",
@@ -89,7 +89,7 @@ class MainWidget( QWidget):
                    ]
 
     def __init__(self):
-        super(MainWidget, self).__init__()
+        super(IdialsOuterWidget, self).__init__()
 
         self.controller = Controller(".")
         self.next_cmd = "import"
@@ -208,7 +208,7 @@ class MainWidget( QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = MainWidget()
+    ex = IdialsOuterWidget()
     sys.exit(app.exec_())
 
 
