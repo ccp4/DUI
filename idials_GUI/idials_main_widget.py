@@ -44,7 +44,6 @@ class MainWidget(QMainWindow):
 
 
         idials_widget = IdialsOuterWidget()
-        v_left_box.addWidget(idials_widget)
 
         left_widget.setLayout(v_left_box)
         self._refrech_btn_look()
@@ -52,6 +51,7 @@ class MainWidget(QMainWindow):
         multi_step_hbox = QHBoxLayout()
         multi_step_hbox.addWidget(left_widget)
         multi_step_hbox.addWidget(self.step_param_widg)
+        multi_step_hbox.addWidget(idials_widget)
 
         main_widget = QWidget()
         main_widget.setLayout(multi_step_hbox)
