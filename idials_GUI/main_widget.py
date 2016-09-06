@@ -21,7 +21,7 @@ class MainWidget(QMainWindow):
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList()
-        label_lst, widg_lst, icon_lst = my_lst()
+        label_lst, widg_lst, icon_lst, command_lst = my_lst()
 
         My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
