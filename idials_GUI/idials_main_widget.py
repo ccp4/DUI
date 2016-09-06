@@ -22,7 +22,7 @@ class MainWidget(QMainWindow):
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList()
-        label_lst, widg_lst, icon_lst = my_lst()
+        label_lst, widg_lst, icon_lst, command_lst = my_lst()
 
         My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
@@ -35,6 +35,7 @@ class MainWidget(QMainWindow):
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(90,90))
             new_btn.par_wig = widg_lst[pos]
+            new_btn.command = command_lst[pos]
             new_btn.setToolButtonStyle(My_style)
             new_btn.clicked.connect(self.btn_clicked)
 
@@ -43,7 +44,7 @@ class MainWidget(QMainWindow):
             self.btn_lst.append(new_btn)
 
 
-        idials_widget = IdialsOuterWidget()
+        self.idials_widget = IdialsOuterWidget()
 
         left_widget.setLayout(v_left_box)
         self._refrech_btn_look()
@@ -51,7 +52,7 @@ class MainWidget(QMainWindow):
         multi_step_hbox = QHBoxLayout()
         multi_step_hbox.addWidget(left_widget)
         multi_step_hbox.addWidget(self.step_param_widg)
-        multi_step_hbox.addWidget(idials_widget)
+        multi_step_hbox.addWidget(self.idials_widget)
 
         main_widget = QWidget()
         main_widget.setLayout(multi_step_hbox)
@@ -65,6 +66,9 @@ class MainWidget(QMainWindow):
         self.step_param_widg.setCurrentWidget(my_sender.par_wig)
         self._refrech_btn_look()
         my_sender.setStyleSheet("background-color: lightblue")
+
+        self.idials_widget.change_mode(my_sender.command)
+
 
     def _refrech_btn_look(self):
         for btn in self.btn_lst:

@@ -172,6 +172,15 @@ class IdialsOuterWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
         self._update_tree()
 
+
+    def change_mode(self, new_mode):
+        print "change_mode(self)"
+
+        self.next_cmd = new_mode
+        self.controller.set_mode(self.next_cmd)
+        self._update_tree()
+
+
     def _update_tree(self):
 
         history = self.controller.get_history()

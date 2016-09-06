@@ -24,10 +24,26 @@ class imp_ops(QWidget):
 
 
 class StepList(object):
-    lst_lablel = ["import", "find_spots", "index", "refine", "integrate",]
+    lst_lablel = [
+                  "import",
+                  "find spots",
+                  "index",
+                  "refine",
+                  "integrate",
+                  ]
+    lst_commands = [
+                    "import",
+                    "find_spots",
+                    "index",
+                    "refine",
+                    "integrate"
+                   ]
 
     def __init__(self):
         self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), ref_ops(), int_ops(),]
+
+        #TODO make the path of this icons available project wise
+
         self.lst_icons = [QIcon("resources/import.png"),
                           QIcon("resources/find_spots.png"),
                           QIcon("resources/index.png"),
@@ -35,4 +51,4 @@ class StepList(object):
                           QIcon("resources/integrate.png"),
                           ]
     def __call__(self):
-        return self.lst_lablel, self.lst_widg, self.lst_icons
+        return self.lst_lablel, self.lst_widg, self.lst_icons, self.lst_commands
