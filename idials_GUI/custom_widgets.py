@@ -10,11 +10,13 @@ print "using PySide"
 #'''
 import os
 
+#from import_mult_opt import ParamWidget as imp_ops
 from find_spots_mult_opt import ParamMainWidget as fnd_ops
 from index_mult_opt import ParamMainWidget as idx_ops
 from refine_mult_opt import ParamMainWidget as ref_ops
 from integrate_mult_opt import ParamMainWidget as int_ops
-#from import_mult_opt import ParamWidget as imp_ops
+from idials_stacked_widgets import TableSelectWidget
+
 
 class imp_ops(QWidget):
     def __init__(self):
@@ -26,14 +28,14 @@ class imp_ops(QWidget):
 
 class StepList(object):
     lst_lablel = [
-                  "import",
-                  "find spots",
-                  "index",
-                  "refine \n bravais \n settings",
-                  "reindex",
-                  "refine",
-                  "integrate",
-                  "export"
+                  "                 import",
+                  "             find spots",
+                  "                  index",
+                  "refine bravais settings",
+                  "                reindex",
+                  "                 refine",
+                  "              integrate",
+                  "                 export"
                   ]
     lst_commands = [
                     "import",
@@ -48,7 +50,7 @@ class StepList(object):
     line_to_add_in_the_future = '''
     '''
     def __init__(self):
-        self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), ref_ops(), idx_ops(), ref_ops(), int_ops(), imp_ops()]
+        self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), TableSelectWidget(), idx_ops(), ref_ops(), int_ops(), imp_ops()]
 
         idials_path = os.environ["IDIALS_PATH"]
         print "idials_path =", idials_path

@@ -39,9 +39,14 @@ class MainWidget(QMainWindow):
             new_btn.setToolButtonStyle(My_style)
             new_btn.clicked.connect(self.btn_clicked)
 
-            v_left_box.addWidget(new_btn)
-            self.step_param_widg.addWidget(new_btn.par_wig)
+            new_btn.setFont(QFont("Monospace", 10, QFont.Bold))
+
             self.btn_lst.append(new_btn)
+
+        for btn in self.btn_lst:
+            v_left_box.addWidget(btn)
+            self.step_param_widg.addWidget(btn.par_wig)
+
 
 
         self.idials_widget = IdialsOuterWidget()
