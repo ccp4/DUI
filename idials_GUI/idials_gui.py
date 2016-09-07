@@ -96,10 +96,6 @@ class IdialsOuterWidget( QWidget):
 
         big_vbox =  QVBoxLayout()
 
-        self.tree_nav = TreeNavWidget(self)
-
-        big_vbox.addWidget(self.tree_nav)
-
         midl_hbox =  QHBoxLayout()
 
         self.btn_prv =  QPushButton('\n  Prev \n', self)
@@ -116,10 +112,12 @@ class IdialsOuterWidget( QWidget):
 
         big_vbox.addLayout(midl_hbox)
 
+        self.tree_nav = TreeNavWidget(self)
+        big_vbox.addWidget(self.tree_nav)
+
         self.setLayout(big_vbox)
         self.setWindowTitle('Shell dialog')
         self.show()
-
 
 
     def _set_current_mode(self):
@@ -187,15 +185,6 @@ class IdialsOuterWidget( QWidget):
         print "history =", history
 
         current = self.controller.get_current()
-        dir_current = '''
-        ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__',
-        '__hash__', '__init__', '__iter__', '__module__', '__new__', '__reduce__',
-        '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',
-        '__weakref__', 'applied', 'as_dict', 'children', 'description', 'directory', 'experiments',
-        'from_dict', 'index', 'name', 'output', 'parameters', 'parent', 'reflections', 'report',
-        'success', 'workspace']
-        '''
-        #print "dir(current) =", dir(current)
         print "current.success =", current.success
 
         lst_path_idx = [current.index]
