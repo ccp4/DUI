@@ -32,7 +32,8 @@ class StepList(object):
                   "refine \n bravais \n settings",
                   "reindex",
                   "refine",
-                  "integrate"
+                  "integrate",
+                  "export"
                   ]
     lst_commands = [
                     "import",
@@ -41,13 +42,13 @@ class StepList(object):
                     "refine_bravais_settings",
                     "reindex",
                     "refine",
-                    "integrate"
+                    "integrate",
+                    "export"
                    ]
     line_to_add_in_the_future = '''
-                    "export",
     '''
     def __init__(self):
-        self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), ref_ops(), idx_ops(), ref_ops(), int_ops()]
+        self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), ref_ops(), idx_ops(), ref_ops(), int_ops(), imp_ops()]
 
         idials_path = os.environ["IDIALS_PATH"]
         print "idials_path =", idials_path
@@ -61,21 +62,12 @@ class StepList(object):
         lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
         lst_icons_path.append(str(idials_path + "/resources/refine.png"))
         lst_icons_path.append(str(idials_path + "/resources/integrate.png"))
+        lst_icons_path.append(str(idials_path + "/resources/export.png"))
 
         self.lst_icons = []
         for my_icon_path in lst_icons_path:
             self.lst_icons.append(QIcon(my_icon_path))
             print "attempting to append:", my_icon_path
 
-        '''
-        self.lst_icons = [QIcon("/resources/import.png"),
-                          QIcon("/resources/find_spots.png"),
-                          QIcon("/resources/index.png"),
-                          QIcon("/resources/refine_v_sets.png"),
-                          QIcon("/resources/reindex.png"),
-                          QIcon("/resources/refine.png"),
-                          QIcon("/resources/integrate.png")
-                          ]
-        '''
     def __call__(self):
         return self.lst_lablel, self.lst_widg, self.lst_icons, self.lst_commands
