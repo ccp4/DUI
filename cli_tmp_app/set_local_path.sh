@@ -18,3 +18,4 @@ echo "type \"idials_GUI.sh\" (without quotes) to launch iDIALS GUI"
 echo ""
 echo "type \"img_view.sh\" (without quotes) to launch IMG PyQt4 viewer"
 echo "IDIALS_PATH=$IDIALS_PATH"
+cd $DUI_PATH
