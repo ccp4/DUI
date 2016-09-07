@@ -37,6 +37,7 @@ class StepList(object):
                   "              integrate",
                   "                 export"
                   ]
+
     lst_commands = [
                     "import",
                     "find_spots",
@@ -47,10 +48,18 @@ class StepList(object):
                     "integrate",
                     "export"
                    ]
-    line_to_add_in_the_future = '''
-    '''
+
     def __init__(self):
-        self.lst_widg  = [imp_ops(), fnd_ops(), idx_ops(), TableSelectWidget(), idx_ops(), ref_ops(), int_ops(), imp_ops()]
+        self.lst_widg  = [
+                          imp_ops(),
+                          fnd_ops(),
+                          idx_ops(),
+                          TableSelectWidget(),
+                          idx_ops(),
+                          ref_ops(),
+                          int_ops(),
+                          imp_ops()
+                          ]
 
         idials_path = os.environ["IDIALS_PATH"]
         print "idials_path =", idials_path

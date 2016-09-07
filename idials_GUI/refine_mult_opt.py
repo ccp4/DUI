@@ -1341,7 +1341,7 @@ class inner_widg( QWidget):
         hbox_lay_pdf_100.addWidget(box_pdf_100)
         bg_box.addLayout(hbox_lay_pdf_100)
 
- 
+
         self.setLayout(bg_box)
         self.show()
 
@@ -1384,7 +1384,3 @@ class ParamMainWidget( QWidget):
         print "from parent parent_widget"
 
 
-if __name__ == '__main__':
-    app =  QApplication(sys.argv)
-    ex = ParamMainWidget()
-    sys.exit(app.exec_())

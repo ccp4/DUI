@@ -1177,7 +1177,7 @@ class inner_widg( QWidget):
         hbox_lay_force_static_102.addWidget(box_force_static_102)
         bg_box.addLayout(hbox_lay_force_static_102)
 
- 
+
         self.setLayout(bg_box)
         self.show()
 
@@ -1220,7 +1220,3 @@ class ParamMainWidget( QWidget):
         print "from parent parent_widget"
 
 
-if __name__ == '__main__':
-    app =  QApplication(sys.argv)
-    ex = ParamMainWidget()
-    sys.exit(app.exec_())
