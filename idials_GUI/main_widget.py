@@ -1,14 +1,19 @@
 import sys
-#PyQt4_ver = '''
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-print "using PyQt4"
-#'''
-PySide_ver = '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-print "using PySide"
-#'''
+
+from python_qt_bind import GuiBinding
+
+if GuiBinding.pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "   <<<   using PyQt4"
+
+else:
+    #asuming GuiBinding.pyhon_binding == "PySide"
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    print "using PySide"
+
+
 from custom_widgets import StepList
 
 class MainWidget(QMainWindow):
@@ -33,12 +38,15 @@ class MainWidget(QMainWindow):
             new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(90,90))
+            self.step_param_widg.addWidget(widg_lst[pos])
             new_btn.par_wig = widg_lst[pos]
             new_btn.setToolButtonStyle(My_style)
             new_btn.clicked.connect(self.btn_clicked)
 
             v_left_box.addWidget(new_btn)
-            self.step_param_widg.addWidget(new_btn.par_wig)
+
+
+
             self.btn_lst.append(new_btn)
 
         left_widget.setLayout(v_left_box)

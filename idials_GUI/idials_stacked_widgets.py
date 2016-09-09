@@ -41,13 +41,18 @@ gui_lib = GuiBinding()
 print "using ", gui_lib.pyhon_binding
 qt_tool = gui_lib.pyhon_binding
 '''
-qt_tool = "PyQt4"
-
-if( qt_tool == "PyQt4" ):
-    from PyQt4 import QtCore, QtGui, QtWebKit
+from python_qt_bind import GuiBinding
+if GuiBinding.pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "   <<<   using PyQt4"
 
 else:
-    from PySide import QtCore, QtGui, QtWebKit
+    #asuming GuiBinding.pyhon_binding == "PySide"
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    print "using PySide"
+
 
 import os
 '''
@@ -365,11 +370,21 @@ class BuildTable(object):
         return self.data
 
 
+class TableSelectWidget_tmp_dummy(QWidget):
+    def __init__(self, parent=None):
+        super(TableSelectWidget_tmp_dummy, self).__init__(parent)
+        label_str = "Testing"
+        top_label = QLabel(label_str)
+        table_line_layout = QVBoxLayout()
+        table_line_layout.addWidget(top_label)
+        self.setLayout(table_line_layout)
+        print label_str
+        self.show()
+'''
 class TableSelectWidget(QtGui.QWidget):
     def __init__(self, parent=None):
         super(TableSelectWidget, self).__init__(parent)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
-        print "Hi tst"
 
     def dataIn(self, my_data_lst):
         data_table = BuildTable(my_data_lst)
@@ -420,7 +435,7 @@ class TableSelectWidget(QtGui.QWidget):
         self.super_parent.gui_line_edit.set_text(str(str_to_run))
 
 
-'''
+
 
 class ReIndexWidget(QtGui.QWidget):
 

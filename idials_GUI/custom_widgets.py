@@ -1,13 +1,15 @@
-#PyQt4_ver = '''
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-print "using PyQt4"
-#'''
-PySide_ver = '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-print "using PySide"
-#'''
+from python_qt_bind import GuiBinding
+
+if GuiBinding.pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "   <<<   using PyQt4"
+
+else:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    print " <<< using PySide"
+
 import os
 
 #from import_mult_opt import ParamWidget as imp_ops
@@ -15,7 +17,7 @@ from find_spots_mult_opt import ParamMainWidget as fnd_ops
 from index_mult_opt import ParamMainWidget as idx_ops
 from refine_mult_opt import ParamMainWidget as ref_ops
 from integrate_mult_opt import ParamMainWidget as int_ops
-from idials_stacked_widgets import TableSelectWidget
+from idials_stacked_widgets import TableSelectWidget_tmp_dummy
 
 
 class imp_ops(QWidget):
@@ -24,6 +26,7 @@ class imp_ops(QWidget):
         v_left_box =  QVBoxLayout()
         v_left_box.addWidget(QLabel("               Import widget here"))
         self.setLayout(v_left_box)
+        #self.show()
 
 
 class StepList(object):
@@ -54,7 +57,9 @@ class StepList(object):
                           imp_ops(),
                           fnd_ops(),
                           idx_ops(),
-                          TableSelectWidget(),
+
+                          TableSelectWidget_tmp_dummy(),
+
                           idx_ops(),
                           ref_ops(),
                           int_ops(),

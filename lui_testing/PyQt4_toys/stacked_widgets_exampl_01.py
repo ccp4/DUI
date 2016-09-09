@@ -1,12 +1,12 @@
 import sys
 
-#PyQt4_ver = '''
+PyQt4_ver = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
 #'''
 
-PySide_ver = '''
+#PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"

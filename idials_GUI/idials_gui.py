@@ -1,17 +1,18 @@
 from dials.util.idials import Controller
 import sys
 
-#PyQt4_ver = '''
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-print "using PyQt4"
-#'''
+from python_qt_bind import GuiBinding
 
-PySide_ver = '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-print "using PySide"
-#'''
+if GuiBinding.pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "   <<<   using PyQt4"
+
+else:
+    #asuming GuiBinding.pyhon_binding == "PySide"
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    print "using PySide"
 
 class TreeNavWidget(QTreeView):
     #TODO >> try: QTreeWidget
