@@ -10,8 +10,8 @@ print "using ", gui_lib.pyhon_binding
 qt_tool = gui_lib.pyhon_binding
 '''
 #TODO uncomment previous code and make it work
-qt_tool = "PyQt4"
-
+#qt_tool = "PyQt4"
+qt_tool = "PySide"
 
 if( qt_tool == "PyQt4" ):
     from PyQt4.QtGui import *

@@ -12,11 +12,16 @@ else:
 
 import os
 
-from find_spots_mult_opt import ParamMainWidget as fnd_ops
-from index_mult_opt import ParamMainWidget as idx_ops
-from refine_mult_opt import ParamMainWidget as ref_ops
-from integrate_mult_opt import ParamMainWidget as int_ops
-from idials_stacked_widgets import TableSelectWidget_tmp_dummy
+from params_live_gui_generator import PhilWidget
+from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
+from dials.command_line.index import phil_scope as phil_scope_index
+from dials.command_line.refine import phil_scope as phil_scope_refine
+from dials.command_line.integrate import phil_scope as phil_scope_integrate
+
+try:
+    from dials.command_line.export import phil_scope as phil_scope_export
+except:
+    from dials.command_line.export_mtz import phil_scope as phil_scope_export
 
 
 class imp_ops(QWidget):
@@ -30,8 +35,25 @@ class imp_ops(QWidget):
         self.setLayout(v_left_box)
         #self.show()
 
+class ParamMainWidget( QWidget):
+    def __init__(self, phl_obj):
+        super(ParamMainWidget, self).__init__()
+        #self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.scrollable_widget = PhilWidget(phl_obj, parent = self)
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(self.scrollable_widget)
+        hbox =  QHBoxLayout()
+        hbox.addWidget(scrollArea)
+        self.setLayout(hbox)
+        self.show()
+
+    def update_lin_txt(self, str_path, str_value):
+        print "running {", str_path, "=", str_value,"}"
+
 
 class StepList(object):
+
+
     lst_lablel = [
                   "                 import",
                   "             find spots",
@@ -55,34 +77,16 @@ class StepList(object):
                    ]
 
     def __init__(self):
-        #'''
         self.lst_widg  = [
                           imp_ops("                 import"),
-                          imp_ops("             find spots"),
-                          imp_ops("                  index"),
+                          ParamMainWidget(phil_scope_find_spots),
+                          ParamMainWidget(phil_scope_index),
                           imp_ops("refine bravais settings"),
                           imp_ops("                reindex"),
-                          imp_ops("                 refine"),
-                          imp_ops("              integrate"),
-                          imp_ops("                 export")
+                          ParamMainWidget(phil_scope_refine),
+                          ParamMainWidget(phil_scope_integrate),
+                          ParamMainWidget(phil_scope_export)
                          ]
-        #'''
-
-        '''
-        self.lst_widg  = [
-                          imp_ops(),
-                          fnd_ops(),
-                          idx_ops(),
-
-                          TableSelectWidget_tmp_dummy(),
-
-                          idx_ops(),
-                          ref_ops(),
-                          int_ops(),
-                          imp_ops()
-                          ]
-        #'''
-
 
         idials_path = os.environ["IDIALS_PATH"]
         print "idials_path =", idials_path
