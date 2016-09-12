@@ -12,7 +12,6 @@ else:
 
 import os
 
-#from import_mult_opt import ParamWidget as imp_ops
 from find_spots_mult_opt import ParamMainWidget as fnd_ops
 from index_mult_opt import ParamMainWidget as idx_ops
 from refine_mult_opt import ParamMainWidget as ref_ops
@@ -21,10 +20,13 @@ from idials_stacked_widgets import TableSelectWidget_tmp_dummy
 
 
 class imp_ops(QWidget):
-    def __init__(self):
+    def __init__(self, str_label = None):
         super(imp_ops, self).__init__()
         v_left_box =  QVBoxLayout()
-        v_left_box.addWidget(QLabel("               Import widget here"))
+        if( str_label == None ):
+            str_label = "               Import widget here"
+
+        v_left_box.addWidget(QLabel(str_label))
         self.setLayout(v_left_box)
         #self.show()
 
@@ -53,6 +55,20 @@ class StepList(object):
                    ]
 
     def __init__(self):
+        #'''
+        self.lst_widg  = [
+                          imp_ops("                 import"),
+                          imp_ops("             find spots"),
+                          imp_ops("                  index"),
+                          imp_ops("refine bravais settings"),
+                          imp_ops("                reindex"),
+                          imp_ops("                 refine"),
+                          imp_ops("              integrate"),
+                          imp_ops("                 export")
+                         ]
+        #'''
+
+        '''
         self.lst_widg  = [
                           imp_ops(),
                           fnd_ops(),
@@ -65,6 +81,8 @@ class StepList(object):
                           int_ops(),
                           imp_ops()
                           ]
+        #'''
+
 
         idials_path = os.environ["IDIALS_PATH"]
         print "idials_path =", idials_path

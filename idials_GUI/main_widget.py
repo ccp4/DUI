@@ -24,7 +24,7 @@ class MainWidget(QMainWindow):
         #left_widget.setStyleSheet("background-color: solid gray")
         left_widget.setStyleSheet("background-color: lightgray")
         v_left_box =  QVBoxLayout()
-        self.step_param_widg =  QStackedWidget()
+        self.step_param_widg = QStackedWidget()
         my_lst = StepList()
         label_lst, widg_lst, icon_lst, command_lst = my_lst()
 

@@ -1245,6 +1245,7 @@ class inner_widg( QWidget):
         box_override_95.tmp_lst.append("statistical")
         box_override_95.tmp_lst.append("stills")
         box_override_95.tmp_lst.append("constant")
+        box_override_95.tmp_lst.append("external_deltapsi")
         for lst_itm in box_override_95.tmp_lst:
             box_override_95.addItem(lst_itm)
         box_override_95.setCurrentIndex(0)
