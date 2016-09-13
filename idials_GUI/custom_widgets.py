@@ -15,6 +15,9 @@ import os
 from params_live_gui_generator import PhilWidget
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
+
+from dials.command_line.refine_bravais_settings import phil_scope as phil_scope_refine_br_st
+
 from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 
@@ -81,7 +84,7 @@ class StepList(object):
                           imp_ops("                 import"),
                           ParamMainWidget(phil_scope_find_spots),
                           ParamMainWidget(phil_scope_index),
-                          imp_ops("refine bravais settings"),
+                          ParamMainWidget(phil_scope_refine_br_st),
                           imp_ops("                reindex"),
                           ParamMainWidget(phil_scope_refine),
                           ParamMainWidget(phil_scope_integrate),
