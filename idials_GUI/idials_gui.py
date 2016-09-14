@@ -17,7 +17,7 @@ else:
 class TreeNavWidget(QTreeView):
     #TODO >> try: QTreeWidget
     def __init__(self, parent = None):
-        self.super_parent = parent
+        self.my_parent = parent
         super(TreeNavWidget, self).__init__()
         self.clicked[QModelIndex].connect(self.item_clicked)
 
@@ -72,10 +72,10 @@ class TreeNavWidget(QTreeView):
 
         if item.idials_node.success == True:
             print "item.idials_node.index =", item.idials_node.index
-            self.super_parent.goto(item.idials_node.index)
+            self.my_parent.goto(item.idials_node.index)
         else:
             print "cannot jump to failed step"
-            self.super_parent.goto(item.idials_node.parent.index)
+            self.my_parent.goto(item.idials_node.parent.index)
 
 class IdialsOuterWidget( QWidget):
     lst_commands = [
@@ -89,9 +89,9 @@ class IdialsOuterWidget( QWidget):
                     "export"
                    ]
 
-    def __init__(self):
-        super(IdialsOuterWidget, self).__init__()
-
+    def __init__(self, parent = None):
+        super(IdialsOuterWidget, self).__init__(parent)
+        self.my_parent = parent
         self.controller = Controller(".")
         self.next_cmd = "import"
 
@@ -154,8 +154,18 @@ class IdialsOuterWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
 
         if( self.controller.get_mode() == "import" ):
-            self.controller.set_parameters("template=../X4_wide_M1S4_2_####.cbf", short_syntax=True)
-            #self.controller.set_parameters("template=../th_8_2_####.cbf", short_syntax=True)
+
+
+            print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< test"
+
+            dir_path = self.my_parent.widg_lst[0].lin_import_path.text()
+            #tmpl_str = "template=" + dir_path + "/*.cbf"
+            tmpl_str = "template=" + dir_path +"/X4_wide_M1S4_2_####.cbf"
+            print "dir_path =", dir_path
+            print "tmpl_str =", tmpl_str
+            print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< YEEEEEEEEEEEEEEEEEEEEEEEsssss"
+
+            self.controller.set_parameters(tmpl_str, short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
         self._update_tree()

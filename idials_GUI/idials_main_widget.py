@@ -26,7 +26,7 @@ class MainWidget(QMainWindow):
         v_left_box =  QVBoxLayout()
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList()
-        label_lst, widg_lst, icon_lst, command_lst = my_lst()
+        label_lst, self.widg_lst, icon_lst, command_lst = my_lst()
 
         My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
@@ -41,7 +41,7 @@ class MainWidget(QMainWindow):
             new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(90,90))
-            new_btn.par_wig = widg_lst[pos]
+            new_btn.par_wig = self.widg_lst[pos]
             new_btn.command = command_lst[pos]
             new_btn.setToolButtonStyle(My_style)
 
@@ -52,7 +52,7 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        self.idials_widget = IdialsOuterWidget()
+        self.idials_widget = IdialsOuterWidget(self)
 
         left_widget.setLayout(v_left_box)
         self._refrech_btn_look()

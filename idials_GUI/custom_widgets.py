@@ -56,7 +56,7 @@ class ImportPage(QWidget):
         self.lin_import_path =   QLineEdit(self)
         import_path_layout.addWidget(self.lin_import_path)
         import_path_button =  QPushButton(" \n    Find experiment Dir            . \n")
-        #import_path_button.clicked.connect(self.find_my_img_dir)
+        import_path_button.clicked.connect(self.find_my_img_dir)
         import_path_layout.addWidget(import_path_button)
         import_path_group.setLayout(import_path_layout)
 
@@ -98,7 +98,6 @@ class ImportPage(QWidget):
         self.setLayout(big_layout)
         #self.show()
 
-        tmp_disabled = '''
 
     def find_my_img_dir(self, event = None):
         selected_file_path = str( QFileDialog.getOpenFileName(self, "Open IMG Dir"))
@@ -116,16 +115,16 @@ class ImportPage(QWidget):
 
             print "dir_name(final) =", dir_name
             self.lin_import_path.setText(dir_name)
-            self.cmd_lin_default = "dials.import "+ dir_name
+            #self.cmd_lin_default = "dials.import "+ dir_name
             print "CLI =", self.cmd_lin_default
 
         else:
             print "Failed to pick dir"
             self.cmd_lin_default = " "
 
-        #self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
-        self.super_parent.gui_line_edit.set_text(self.cmd_lin_default)
-        '''
+        #self.super_parent.gui_line_edit.set_text(self.cmd_lin_default)
+
+
     def change_w_dir(self, event = None):
         dir_name = str( QFileDialog.getExistingDirectory(self, "Change Working Dir"))
         print "[dir path found] =", dir_name
