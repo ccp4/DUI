@@ -47,7 +47,6 @@ class ImportPage(QWidget):
 
         #self.super_parent.w_dir = os.getcwd()
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
-        self.button_label = "   Import      "
 
         import_path_group =  QGroupBox("Experiment IMG Directory")
         import_path_layout =  QHBoxLayout()
@@ -71,28 +70,19 @@ class ImportPage(QWidget):
         w_dir_group.setLayout(w_dir_layout)
 
 
-        self.auto_next_check =  QCheckBox("Enable auto-Next Feature")
-        #self.auto_next_check.stateChanged.connect(self.changed_auto_next)
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(import_path_group)
         mainLayout.addWidget(w_dir_group)
 
-        '''
-        imageLabel =  QLabel()
-        #dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_scaled.png"
-        dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo_smaller_centred.png"
+        idials_path = os.environ["IDIALS_PATH"]
 
-        #dials_logo_path = my_dui_path + "/../dui/resources/DIALS_Logo.png"
+        imageLabel =  QLabel()
+        dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
+
         image =  QImage(dials_logo_path)
         imageLabel.setPixmap( QPixmap.fromImage(image))
         mainLayout.addWidget(imageLabel)
         #imageLabel.setScaledContents(True)
-        '''
-
-
-        #mainLayout.addStretch(1)
-        mainLayout.addWidget(self.auto_next_check)
-
 
 
         big_layout =  QHBoxLayout()
@@ -107,18 +97,6 @@ class ImportPage(QWidget):
         #self.show()
 
         tmp_disabled = '''
-
-    def changed_auto_next(self):
-        print "changed_auto_next"
-        self.update_auto_next_flag()
-
-    def update_auto_next_flag(self):
-        print "self.auto_next_check.checkState() =", self.auto_next_check.checkState()
-        state = self.auto_next_check.checkState()
-        if( state == 0 ):
-            self.auto_next_flag = "unchecked"
-        else:
-            self.auto_next_flag = "checked"
 
     def find_my_img_dir(self, event = None):
         selected_file_path = str( QFileDialog.getOpenFileName(self, "Open IMG Dir"))
