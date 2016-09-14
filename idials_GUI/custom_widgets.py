@@ -46,6 +46,8 @@ class ImportPage(QWidget):
         #self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         #self.super_parent.w_dir = os.getcwd()
+        self.w_dir = os.getcwd()
+
         self.cmd_lin_default = "dials.import ~/put/your/path/here"
 
         import_path_group =  QGroupBox("Experiment IMG Directory")
@@ -65,7 +67,7 @@ class ImportPage(QWidget):
         #self.w_dir_lin.setText(self.super_parent.w_dir)
         w_dir_layout.addWidget(self.w_dir_lin)
         w_dir_button =  QPushButton(" \n    Change Working Dir    . \n")
-        #w_dir_button.clicked.connect(self.change_w_dir)
+        w_dir_button.clicked.connect(self.change_w_dir)
         w_dir_layout.addWidget(w_dir_button)
         w_dir_group.setLayout(w_dir_layout)
 
@@ -123,22 +125,29 @@ class ImportPage(QWidget):
 
         #self.super_parent.gui_line_edit.setText(self.cmd_lin_default)
         self.super_parent.gui_line_edit.set_text(self.cmd_lin_default)
-
+        '''
     def change_w_dir(self, event = None):
         dir_name = str( QFileDialog.getExistingDirectory(self, "Change Working Dir"))
         print "[dir path found] =", dir_name
 
         if( dir_name ):
+            old_way = '''
             self.super_parent.w_dir = dir_name
             os.chdir(self.super_parent.w_dir)
             self.w_dir_lin.setText(self.super_parent.w_dir)
             print "dir_name(w_dir) =", self.super_parent.w_dir
+            '''
+
+            self.w_dir = dir_name
+            os.chdir(self.w_dir)
+            self.w_dir_lin.setText(self.w_dir)
+            print "dir_name(w_dir) =", self.w_dir
 
         else:
             print "Failed to pick dir"
 
 
-        '''
+
 
 
 
