@@ -1394,7 +1394,6 @@ class inner_widg( QWidget):
         hbox_lay_block_width_104.addWidget(label_block_width_104)
 
         box_block_width_104 = QDoubleSpinBox()
-        box_block_width_104.setValue(18.0)
         box_block_width_104.local_path = "refinement.reflections.outlier.block_width"
         box_block_width_104.valueChanged.connect(self.spnbox_changed)
         hbox_lay_block_width_104.addWidget(box_block_width_104)

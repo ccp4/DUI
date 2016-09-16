@@ -690,6 +690,7 @@ class inner_widg( QWidget):
         box_algorithm_50.local_path = "spotfinder.threshold.algorithm"
         box_algorithm_50.tmp_lst=[]
         box_algorithm_50.tmp_lst.append("xds")
+        box_algorithm_50.tmp_lst.append("helen")
         for lst_itm in box_algorithm_50.tmp_lst:
             box_algorithm_50.addItem(lst_itm)
         box_algorithm_50.setCurrentIndex(0)
@@ -786,6 +787,81 @@ class inner_widg( QWidget):
         box_global_threshold_57.valueChanged.connect(self.spnbox_changed)
         hbox_lay_global_threshold_57.addWidget(box_global_threshold_57)
         bg_box.addLayout(hbox_lay_global_threshold_57)
+
+        label_58 = QLabel("        helen")
+        label_58.setPalette(palette_scope)
+        label_58.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_58)
+
+        hbox_lay_exp_spot_dimension_59 =  QHBoxLayout()
+        label_exp_spot_dimension_59 = QLabel("            exp_spot_dimension")
+        label_exp_spot_dimension_59.setPalette(palette_object)
+        label_exp_spot_dimension_59.setFont(QFont("Monospace", 10))
+        hbox_lay_exp_spot_dimension_59.addWidget(label_exp_spot_dimension_59)
+
+        box_exp_spot_dimension_59 = QSpinBox()
+        box_exp_spot_dimension_59.setValue(3)
+        box_exp_spot_dimension_59.local_path = "spotfinder.threshold.helen.exp_spot_dimension"
+        box_exp_spot_dimension_59.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_exp_spot_dimension_59.addWidget(box_exp_spot_dimension_59)
+        bg_box.addLayout(hbox_lay_exp_spot_dimension_59)
+
+        hbox_lay_global_threshold_60 =  QHBoxLayout()
+        label_global_threshold_60 = QLabel("            global_threshold")
+        label_global_threshold_60.setPalette(palette_object)
+        label_global_threshold_60.setFont(QFont("Monospace", 10))
+        hbox_lay_global_threshold_60.addWidget(label_global_threshold_60)
+
+        box_global_threshold_60 = QDoubleSpinBox()
+        box_global_threshold_60.setValue(100.0)
+        box_global_threshold_60.local_path = "spotfinder.threshold.helen.global_threshold"
+        box_global_threshold_60.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_global_threshold_60.addWidget(box_global_threshold_60)
+        bg_box.addLayout(hbox_lay_global_threshold_60)
+
+        hbox_lay_min_blob_score_61 =  QHBoxLayout()
+        label_min_blob_score_61 = QLabel("            min_blob_score")
+        label_min_blob_score_61.setPalette(palette_object)
+        label_min_blob_score_61.setFont(QFont("Monospace", 10))
+        hbox_lay_min_blob_score_61.addWidget(label_min_blob_score_61)
+
+        box_min_blob_score_61 = QDoubleSpinBox()
+        box_min_blob_score_61.setValue(0.7)
+        box_min_blob_score_61.local_path = "spotfinder.threshold.helen.min_blob_score"
+        box_min_blob_score_61.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_min_blob_score_61.addWidget(box_min_blob_score_61)
+        bg_box.addLayout(hbox_lay_min_blob_score_61)
+
+        hbox_lay_num_passes_62 =  QHBoxLayout()
+        label_num_passes_62 = QLabel("            num_passes")
+        label_num_passes_62.setPalette(palette_object)
+        label_num_passes_62.setFont(QFont("Monospace", 10))
+        hbox_lay_num_passes_62.addWidget(label_num_passes_62)
+
+        box_num_passes_62 = QSpinBox()
+        box_num_passes_62.setValue(0)
+        box_num_passes_62.local_path = "spotfinder.threshold.helen.num_passes"
+        box_num_passes_62.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_num_passes_62.addWidget(box_num_passes_62)
+        bg_box.addLayout(hbox_lay_num_passes_62)
+
+        hbox_lay_debug_63 =  QHBoxLayout()
+        label_debug_63 = QLabel("            debug")
+        label_debug_63.setPalette(palette_object)
+        label_debug_63.setFont(QFont("Monospace", 10))
+        hbox_lay_debug_63.addWidget(label_debug_63)
+
+        box_debug_63 = QComboBox()
+        box_debug_63.local_path = "spotfinder.threshold.helen.debug"
+        box_debug_63.tmp_lst=[]
+        box_debug_63.tmp_lst.append("True")
+        box_debug_63.tmp_lst.append("False")
+        for lst_itm in box_debug_63.tmp_lst:
+            box_debug_63.addItem(lst_itm)
+        box_debug_63.setCurrentIndex(1)
+        box_debug_63.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_debug_63.addWidget(box_debug_63)
+        bg_box.addLayout(hbox_lay_debug_63)
 
  
         self.setLayout(bg_box)

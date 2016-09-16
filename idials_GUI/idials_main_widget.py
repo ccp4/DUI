@@ -59,8 +59,11 @@ class MainWidget(QMainWindow):
 
         multi_step_hbox = QHBoxLayout()
         multi_step_hbox.addWidget(left_widget)
-        multi_step_hbox.addWidget(self.step_param_widg)
         multi_step_hbox.addWidget(self.idials_widget)
+        
+
+        multi_step_hbox.addWidget(self.step_param_widg)
+
 
         main_widget = QWidget()
         main_widget.setLayout(multi_step_hbox)
