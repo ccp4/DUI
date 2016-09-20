@@ -14,7 +14,7 @@ else:
 
 
 from custom_widgets import StepList
-from idials_gui import IdialsOuterWidget
+from idials_gui import IdialsInnerrWidget
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -52,7 +52,7 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        self.idials_widget = IdialsOuterWidget(self)
+        self.idials_widget = IdialsInnerrWidget(self)
 
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
@@ -63,6 +63,13 @@ class MainWidget(QMainWindow):
 
         control_vbox = QVBoxLayout()
         control_vbox.addWidget(buttons_widget)
+
+
+        self.btn_go =  QPushButton('\n   Run  \n', self)
+        self.btn_go.clicked.connect(self.idials_widget.run_clicked)
+        control_vbox.addWidget(self.btn_go)
+
+
         control_vbox.addWidget(self.step_param_widg)
         multi_step_hbox.addLayout(control_vbox)
 
