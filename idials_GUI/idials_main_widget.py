@@ -20,15 +20,15 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
 
-        left_widget = QWidget()
-        #left_widget.setStyleSheet("background-color: solid gray")
-        left_widget.setStyleSheet("background-color: lightgray")
-        v_left_box =  QVBoxLayout()
+        buttons_widget = QWidget()
+        #buttons_widget.setStyleSheet("background-color: solid gray")
+        buttons_widget.setStyleSheet("background-color: lightgray")
+        v_left_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList()
         label_lst, self.widg_lst, icon_lst, command_lst = my_lst()
 
-        My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        #My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
 
         self.btn_lst = []
@@ -38,14 +38,14 @@ class MainWidget(QMainWindow):
             print "pos = ", pos
 
             new_btn = QToolButton(self)
-            new_btn.setText(step_data)
+            #new_btn.setText(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(90,90))
             new_btn.par_wig = self.widg_lst[pos]
             new_btn.command = command_lst[pos]
-            new_btn.setToolButtonStyle(My_style)
+            #new_btn.setToolButtonStyle(My_style)
 
-            new_btn.setFont(QFont("Monospace", 10, QFont.Bold))
+            #new_btn.setFont(QFont("Monospace", 10, QFont.Bold))
             new_btn.clicked.connect(self.btn_clicked)
 
             v_left_box.addWidget(new_btn)
@@ -54,15 +54,17 @@ class MainWidget(QMainWindow):
 
         self.idials_widget = IdialsOuterWidget(self)
 
-        left_widget.setLayout(v_left_box)
+        buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
         multi_step_hbox = QHBoxLayout()
-        multi_step_hbox.addWidget(left_widget)
-        multi_step_hbox.addWidget(self.idials_widget)
-        
 
-        multi_step_hbox.addWidget(self.step_param_widg)
+        multi_step_hbox.addWidget(self.idials_widget)
+
+        control_vbox = QVBoxLayout()
+        control_vbox.addWidget(buttons_widget)
+        control_vbox.addWidget(self.step_param_widg)
+        multi_step_hbox.addLayout(control_vbox)
 
 
         main_widget = QWidget()

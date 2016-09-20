@@ -185,10 +185,10 @@ class StepList(object):
                   "             find spots",
                   "                  index",
                   "refine bravais settings",
-                  "                reindex",
+                  #"                reindex",
                   "                 refine",
-                  "              integrate",
-                  "                 export"
+                  "              integrate"
+                  #,"                 export"
                   ]
 
     lst_commands = [
@@ -196,10 +196,10 @@ class StepList(object):
                     "find_spots",
                     "index",
                     "refine_bravais_settings",
-                    "reindex",
+                    #"reindex",
                     "refine",
-                    "integrate",
-                    "export"
+                    "integrate"
+                    #,"export"
                    ]
 
     def __init__(self):
@@ -208,10 +208,10 @@ class StepList(object):
                           ParamMainWidget(phil_scope_find_spots),
                           ParamMainWidget(phil_scope_index),
                           ParamMainWidget(phil_scope_refine_br_st),
-                          imp_ops("                reindex"),
+                          #imp_ops("                reindex"),
                           ParamMainWidget(phil_scope_refine),
-                          ParamMainWidget(phil_scope_integrate),
-                          ParamMainWidget(phil_scope_export)
+                          ParamMainWidget(phil_scope_integrate)
+                          #,ParamMainWidget(phil_scope_export)
                          ]
 
         idials_path = os.environ["IDIALS_PATH"]
@@ -223,10 +223,10 @@ class StepList(object):
         lst_icons_path.append(str(idials_path + "/resources/find_spots.png"))
         lst_icons_path.append(str(idials_path + "/resources/index.png"))
         lst_icons_path.append(str(idials_path + "/resources/refine_v_sets.png"))
-        lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
+        #lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
         lst_icons_path.append(str(idials_path + "/resources/refine.png"))
         lst_icons_path.append(str(idials_path + "/resources/integrate.png"))
-        lst_icons_path.append(str(idials_path + "/resources/export.png"))
+        #lst_icons_path.append(str(idials_path + "/resources/export.png"))
 
         self.lst_icons = []
         for my_icon_path in lst_icons_path:
