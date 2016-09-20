@@ -77,7 +77,43 @@ class TreeNavWidget(QTreeView):
             print "cannot jump to failed step"
             self.my_parent.goto(item.idials_node.parent.index)
 
+
 class IdialsOuterWidget( QWidget):
+    def __init__(self, parent = None):
+        super(IdialsOuterWidget, self).__init__(parent)
+        self.my_parent = parent
+
+        my_inner_widget = IdialsInnerrWidget(self)
+        vbox =  QVBoxLayout()
+        vbox.addWidget(my_inner_widget)
+
+        big_vbox =  QVBoxLayout()
+
+        midl_hbox =  QHBoxLayout()
+
+        self.btn_prv =  QPushButton('\n  Prev \n', self)
+        self.btn_prv.clicked.connect(my_inner_widget.prv_clicked)
+        midl_hbox.addWidget(self.btn_prv)
+
+
+        self.btn_go =  QPushButton('\n   Run  \n', self)
+        self.btn_go.clicked.connect(my_inner_widget.run_clicked)
+        midl_hbox.addWidget(self.btn_go)
+
+        self.btn_nxt =  QPushButton('\n  Next \n', self)
+        self.btn_nxt.clicked.connect(my_inner_widget.nxt_clicked)
+        midl_hbox.addWidget(self.btn_nxt)
+
+        big_vbox.addLayout(midl_hbox)
+
+        vbox.addLayout(big_vbox)
+
+        self.setLayout(vbox)
+        self.setWindowTitle('iDIALS dialog')
+        self.show()
+
+
+class IdialsInnerrWidget( QWidget):
     lst_commands = [
                     "import",
                     "find_spots",
@@ -90,18 +126,20 @@ class IdialsOuterWidget( QWidget):
                    ]
 
     def __init__(self, parent = None):
-        super(IdialsOuterWidget, self).__init__(parent)
+        super(IdialsInnerrWidget, self).__init__(parent)
         self.my_parent = parent
         self.controller = Controller(".")
         self.next_cmd = "import"
 
         big_vbox =  QVBoxLayout()
 
+        removed = '''
         midl_hbox =  QHBoxLayout()
 
         self.btn_prv =  QPushButton('\n  Prev \n', self)
         self.btn_prv.clicked.connect(self.prv_clicked)
         midl_hbox.addWidget(self.btn_prv)
+
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.run_clicked)
@@ -112,12 +150,12 @@ class IdialsOuterWidget( QWidget):
         midl_hbox.addWidget(self.btn_nxt)
 
         big_vbox.addLayout(midl_hbox)
+        '''
 
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
 
         self.setLayout(big_vbox)
-        self.setWindowTitle('Shell dialog')
         self.show()
 
 
