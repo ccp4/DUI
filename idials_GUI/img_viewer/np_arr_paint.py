@@ -7,11 +7,10 @@ from dials.array_family import flex
 import sys
 from time import time as time_now
 
-sys.path.append("../../..")
-from img_utils.data_2_img import img_w_cpp
+from data_2_img import img_w_cpp
 
 def get_3d_flex_array():
-    json_file_path = str("../../dummy_unversioned_data/datablock.json")
+    json_file_path = str("dials-1/1_import/datablock.json")
     print "json_file_path =", json_file_path
 
     datablocks = DataBlockFactory.from_json_file(json_file_path)
