@@ -44,6 +44,7 @@ class outputs_widget( QWidget):
         #self.super_parent = parent
         my_box = QVBoxLayout()
         vbox = QSplitter()
+        vbox.setOrientation(Qt.Vertical)
         img_view = ImgTab()
         web_view = WebTab()
 
