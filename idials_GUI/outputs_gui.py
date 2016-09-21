@@ -42,8 +42,8 @@ class outputs_widget( QWidget):
     def __init__(self, phl_obj, parent = None):
         super(outputs_widget, self).__init__(parent)
         #self.super_parent = parent
-        vbox = QVBoxLayout()
-
+        #vbox = QVBoxLayout()
+        vbox = QSplitter()
         img_view = ImgTab()
         web_view = WebTab()
         vbox.addWidget(img_view)
