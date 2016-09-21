@@ -15,7 +15,8 @@ else:
 
 from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget
-from  img_viewer.np_arr_paint import ImgTab
+
+from outputs_gui import outputs_widget
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -74,7 +75,8 @@ class MainWidget(QMainWindow):
         control_vbox.addWidget(self.step_param_widg)
         multi_step_hbox.addLayout(control_vbox)
 
-        img_view = ImgTab()
+
+        img_view = outputs_widget(self)
         multi_step_hbox.addWidget(img_view)
 
 
