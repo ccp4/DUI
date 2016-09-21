@@ -18,6 +18,26 @@ from idials_gui import IdialsInnerrWidget
 
 from outputs_gui import outputs_widget
 
+class CentreWidget( QWidget):
+    def __init__(self, parent = None):
+        super(CentreWidget, self).__init__(parent)
+
+    def __call__(self, widget1 = None, widget2 = None, widget3 = None):
+
+        buttons_widget = widget1
+        control_vbox = QVBoxLayout()
+        control_vbox.addWidget(buttons_widget)
+        btn_go = widget2
+        control_vbox.addWidget(btn_go)
+        step_param_widg = widget3
+        control_vbox.addWidget(step_param_widg)
+        self.setLayout(control_vbox)
+        self.show()
+
+
+
+
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -59,31 +79,23 @@ class MainWidget(QMainWindow):
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
-        multi_step_hbox = QHBoxLayout()
+        multi_step_hbox = QSplitter()
 
         multi_step_hbox.addWidget(self.idials_widget)
 
-        control_vbox = QVBoxLayout()
-        control_vbox.addWidget(buttons_widget)
-
-
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.idials_widget.run_clicked)
-        control_vbox.addWidget(self.btn_go)
 
+        centre_widget = CentreWidget(self)
+        centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
 
-        control_vbox.addWidget(self.step_param_widg)
-        multi_step_hbox.addLayout(control_vbox)
-
+        multi_step_hbox.addWidget(centre_widget)
 
         img_view = outputs_widget(self)
         multi_step_hbox.addWidget(img_view)
 
-
-        main_widget = QWidget()
-        main_widget.setLayout(multi_step_hbox)
         self.resize(1200, 900)
-        self.setCentralWidget(main_widget)
+        self.setCentralWidget(multi_step_hbox)
 
         self.show()
 
