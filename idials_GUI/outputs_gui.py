@@ -37,20 +37,37 @@ class WebTab(QWidget):
 
 
 
+class outputs_widget1( QTabWidget):
+    #item_changed = pyqtSignal()
+    def __init__(self, phl_obj, parent = None):
+        super(outputs_widget, self).__init__(parent)
+
+        img_view =  ImgTab()
+        web_view =  WebTab()
+
+        self.addTab(img_view, "IMG View")
+        self.addTab(web_view, "HTML Report")
+
+        self.show()
+
+
 class outputs_widget( QWidget):
+
     #item_changed = pyqtSignal()
     def __init__(self, phl_obj, parent = None):
         super(outputs_widget, self).__init__(parent)
         #self.super_parent = parent
+
         my_box = QVBoxLayout()
-        vbox = QSplitter()
-        vbox.setOrientation(Qt.Vertical)
+        v_splitter = QSplitter()
+
+        v_splitter.setOrientation(Qt.Vertical)
         img_view = ImgTab()
         web_view = WebTab()
 
-        vbox.addWidget(img_view)
-        vbox.addWidget(web_view)
-        my_box.addWidget(vbox)
+        v_splitter.addWidget(img_view)
+        v_splitter.addWidget(web_view)
+        my_box.addWidget(v_splitter)
 
         self.setLayout(my_box)
         self.show()

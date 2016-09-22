@@ -104,8 +104,8 @@ class ImgTab( QWidget):
         hbox.addWidget(btn_play)
         hbox.addWidget(btn_stop)
 
-        main_box.addLayout(hbox)
         main_box.addWidget(self.scrollArea)
+        main_box.addLayout(hbox)
 
         self.setLayout(main_box)
         self.show()
@@ -120,10 +120,8 @@ class ImgTab( QWidget):
 
     def B_stop_clicked(self):
         print "B_stop_clicked(self)"
-
-        #print "dir(self.timer) =", dir(self.timer)
         self.timer.stop()
-        
+
 
 
 if __name__ == '__main__':
