@@ -26,8 +26,8 @@ class CentreWidget( QWidget):
 
         main_box = QVBoxLayout()
 
-        #h_or_v_box = QVBoxLayout()
-        h_or_v_box = QHBoxLayout()
+        h_or_v_box = QVBoxLayout()
+        #h_or_v_box = QHBoxLayout()
 
         h_or_v_box.addWidget(widget_buts)
         h_or_v_box.addWidget(go_btn)
@@ -65,7 +65,7 @@ class MainWidget(QMainWindow):
             #new_btn.setText(step_data)
             new_btn.setToolTip(step_data)
             new_btn.setIcon(icon_lst[pos])
-            new_btn.setIconSize(QSize(90,90))
+            new_btn.setIconSize(QSize(50,50))
             new_btn.par_wig = self.widg_lst[pos]
             new_btn.command = command_lst[pos]
             #new_btn.setToolButtonStyle(My_style)

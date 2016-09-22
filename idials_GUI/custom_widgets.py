@@ -60,6 +60,7 @@ class ImportPage(QWidget):
         import_path_layout.addWidget(import_path_button)
         import_path_group.setLayout(import_path_layout)
 
+        '''
         w_dir_group =  QGroupBox("Working Directory")
         w_dir_layout =  QHBoxLayout()
         self.w_dir_lin =   QLineEdit(self)
@@ -70,11 +71,11 @@ class ImportPage(QWidget):
         w_dir_button.clicked.connect(self.change_w_dir)
         w_dir_layout.addWidget(w_dir_button)
         w_dir_group.setLayout(w_dir_layout)
-
+        '''
 
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(import_path_group)
-        mainLayout.addWidget(w_dir_group)
+        #mainLayout.addWidget(w_dir_group)
 
         idials_path = os.environ["IDIALS_PATH"]
 
