@@ -181,14 +181,14 @@ class StepList(object):
 
 
     lst_lablel = [
-                  "                 import",
-                  "             find spots",
-                  "                  index",
+                  " import",
+                  "find spots",
+                  "index",
                   "refine bravais settings",
-                  #"                reindex",
-                  "                 refine",
-                  "              integrate"
-                  #,"                 export"
+                  #"reindex",
+                  "refine",
+                  "integrate"
+                  #,"export"
                   ]
 
     lst_commands = [

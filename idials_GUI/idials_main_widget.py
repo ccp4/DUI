@@ -61,6 +61,7 @@ class MainWidget(QMainWindow):
 
             new_btn = QToolButton(self)
             #new_btn.setText(step_data)
+            new_btn.setToolTip(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(90,90))
             new_btn.par_wig = self.widg_lst[pos]
