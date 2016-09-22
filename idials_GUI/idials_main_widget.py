@@ -22,16 +22,21 @@ class CentreWidget( QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__(parent)
 
-    def __call__(self, widget1 = None, widget2 = None, widget3 = None):
+    def __call__(self, widget_buts = None, go_btn = None, param_widg = None):
 
-        buttons_widget = widget1
-        control_vbox = QVBoxLayout()
-        control_vbox.addWidget(buttons_widget)
-        btn_go = widget2
-        control_vbox.addWidget(btn_go)
-        step_param_widg = widget3
-        control_vbox.addWidget(step_param_widg)
-        self.setLayout(control_vbox)
+        main_box = QVBoxLayout()
+
+        buttons_widget = widget_buts
+        main_box.addWidget(buttons_widget)
+
+        btn_go = go_btn
+        main_box.addWidget(btn_go)
+
+        step_param_widg = param_widg
+        main_box.addWidget(step_param_widg)
+
+
+        self.setLayout(main_box)
         self.show()
 
 
