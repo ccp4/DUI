@@ -26,21 +26,18 @@ class CentreWidget( QWidget):
 
         main_box = QVBoxLayout()
 
-        buttons_widget = widget_buts
-        main_box.addWidget(buttons_widget)
+        #h_or_v_box = QVBoxLayout()
+        h_or_v_box = QHBoxLayout()
 
-        btn_go = go_btn
-        main_box.addWidget(btn_go)
+        h_or_v_box.addWidget(widget_buts)
+        h_or_v_box.addWidget(go_btn)
+        main_box.addLayout(h_or_v_box)
 
-        step_param_widg = param_widg
-        main_box.addWidget(step_param_widg)
 
+        main_box.addWidget(param_widg)
 
         self.setLayout(main_box)
         self.show()
-
-
-
 
 
 class MainWidget(QMainWindow):

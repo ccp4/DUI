@@ -75,10 +75,10 @@ class MyScroll( QScrollArea):
         self.update()
         #self.show()
 
-        print "self.slice_pos=", self.slice_pos
+        #print "self.slice_pos=", self.slice_pos
         dif_time = time_now() - self.my_time
         self.my_time = time_now()
-        print "time spent=", dif_time
+        #print "time spent=", dif_time
 
 
         self.slice_pos += 1
@@ -92,22 +92,38 @@ class ImgTab( QWidget):
 
         self.scrollArea = MyScroll(self)
         main_box =  QVBoxLayout()
-        self.btn_go =  QPushButton('\n      Go   \n', self)
-        self.btn_go.clicked.connect(self.B_go_clicked)
 
-        main_box.addWidget(self.btn_go)
+        btn_play =  QPushButton('\n   Play Video  \n', self)
+        btn_play.clicked.connect(self.B_play_clicked)
+
+        btn_stop =  QPushButton('\n   Stop Video  \n', self)
+        btn_stop.clicked.connect(self.B_stop_clicked)
+
+        hbox = QHBoxLayout()
+
+        hbox.addWidget(btn_play)
+        hbox.addWidget(btn_stop)
+
+        main_box.addLayout(hbox)
         main_box.addWidget(self.scrollArea)
 
         self.setLayout(main_box)
         self.show()
         self.update()
 
-    def B_go_clicked(self):
-        print "B_go_clicked(self)"
+    def B_play_clicked(self):
+        print "B_play_clicked(self)"
 
-        timer = QTimer(self)
-        timer.timeout.connect(self.scrollArea.update_me)
-        timer.start(1)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.scrollArea.update_me)
+        self.timer.start(1)
+
+    def B_stop_clicked(self):
+        print "B_stop_clicked(self)"
+
+        #print "dir(self.timer) =", dir(self.timer)
+        self.timer.stop()
+        
 
 
 if __name__ == '__main__':
