@@ -34,26 +34,18 @@ try:
 except ImportError, e:
   pass
 
-
-#qt_tool = "PyQt4"
-qt_tool = "PySide"
-
-
-#self.src_code_1 = []
-#import sys
-
-if( qt_tool == "PyQt4" ):
+from python_qt_bind import GuiBinding
+if GuiBinding.pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
-    print "using PyQt4"
+    print "   <<<   using PyQt4"
 
 else:
+    #asuming GuiBinding.pyhon_binding == "PySide"
     from PySide.QtGui import *
     from PySide.QtCore import *
-    pyqtSignal = Signal
     print "using PySide"
-
-
+    pyqtSignal = Signal
 
 
 class ScopeData(object):

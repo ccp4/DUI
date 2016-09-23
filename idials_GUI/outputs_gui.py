@@ -3,16 +3,17 @@ from python_qt_bind import GuiBinding
 if GuiBinding.pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
+    from PyQt4.QtWebKit import *
     print "   <<<   using PyQt4"
 
 else:
     #asuming GuiBinding.pyhon_binding == "PySide"
     from PySide.QtGui import *
     from PySide.QtCore import *
+    from PySide.QtWebKit import *
     print "using PySide"
 
 
-from PySide.QtWebKit import *
 from img_viewer.np_arr_paint import ImgTab
 
 class WebTab(QWidget):

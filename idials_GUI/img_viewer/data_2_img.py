@@ -1,9 +1,19 @@
-import numpy as np
 
+from python_qt_bind import GuiBinding
+if GuiBinding.pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "   <<<   using PyQt4"
+
+else:
+    #asuming GuiBinding.pyhon_binding == "PySide"
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    print "using PySide"
+
+import numpy as np
 from time import time as tm_now
 
-#from PySide.QtGui import QImage, QLabel, QPixmap, QApplication
-from PyQt4.QtGui import QImage, QLabel, QPixmap, QApplication
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
