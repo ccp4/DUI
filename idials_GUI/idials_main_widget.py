@@ -26,8 +26,8 @@ class CentreWidget( QWidget):
 
         main_box = QVBoxLayout()
 
-        h_or_v_box = QVBoxLayout()
-        #h_or_v_box = QHBoxLayout()
+        #h_or_v_box = QVBoxLayout()
+        h_or_v_box = QHBoxLayout()
 
         h_or_v_box.addWidget(widget_buts)
         h_or_v_box.addWidget(go_btn)
