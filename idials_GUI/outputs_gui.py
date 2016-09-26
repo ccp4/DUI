@@ -14,7 +14,8 @@ else:
     print "using PySide"
 
 
-from img_viewer.np_arr_paint import ImgTab
+#from img_viewer.np_arr_paint import ImgTab
+from img_viewer.image_viewer_w_opengl import MyImgWin
 
 class WebTab(QWidget):
 
@@ -63,7 +64,10 @@ class outputs_widget( QWidget):
         v_splitter = QSplitter()
 
         v_splitter.setOrientation(Qt.Vertical)
-        img_view = ImgTab()
+        #img_view = ImgTab()
+        img_view = MyImgWin()
+
+
         web_view = WebTab()
 
         v_splitter.addWidget(img_view)

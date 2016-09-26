@@ -1,4 +1,5 @@
 
+tmp_off = '''
 from python_qt_bind import GuiBinding
 if GuiBinding.pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *
@@ -10,6 +11,12 @@ else:
     from PySide.QtGui import *
     from PySide.QtCore import *
     print "using PySide"
+'''
+
+from PySide.QtGui import *
+from PySide.QtCore import *
+
+
 
 import numpy as np
 from time import time as tm_now

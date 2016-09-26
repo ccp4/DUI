@@ -32,7 +32,7 @@ def get_3d_flex_array():
         print "len(datablocks) > 0"
 
     else:
-        raise RuntimeError("No imageset could be constructed")
+        raise RuntimeError("No imageset could be constructed, len(datablocks) <= 0 ")
 
     print "len(imagesets) =", len(imagesets)
     print "type(imagesets) =", type(imagesets)
@@ -139,6 +139,9 @@ if __name__ == '__main__':
     import sys
     app =  QApplication(sys.argv)
     frame = ImgTab()
+
+    #MyImgWin(QWidget)
+
     sys.exit(app.exec_())
 
 
