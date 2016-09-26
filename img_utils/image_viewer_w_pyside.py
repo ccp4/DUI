@@ -3,9 +3,9 @@ from dxtbx.datablock import DataBlockFactory
 from data_2_img import img_w_cpp
 from dials.array_family import flex
 
-from PySide.QtGui import *
-from PySide.QtCore import *
-from PySide.QtOpenGL import QGLWidget
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+from PyQt4.QtOpenGL import QGLWidget
 from OpenGL import GL
 
 import numpy as np
@@ -33,6 +33,10 @@ class ImgPainter(QWidget):
         #Use "update" when [self] inherits from QWidget
         self.update()
 
+
+
+        #consider self.repaint() for the video thing
+        #self.repaint()
 
 
     def paintEvent(self, event):
@@ -107,19 +111,12 @@ class MyImgWin(QWidget):
 
         flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:2500, 0:2400]
         flex_2d_data.reshape(flex.grid(2500, 2400))
-        print "dif_time(array managing) =", tm_now() - tm_start
 
-        tm_start = tm_now()
         arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = self.imax)
-        print "dif_time(bmp code w c++ & np) =", tm_now() - tm_start
 
-        tm_start = tm_now()
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
-        print "dif_time(np2qimg ) =", tm_now() - tm_start
 
-
-        tm_start = tm_now()
         self.img_painter.set_img_pix(q_img)
         print "dif_time[set_img_pix(q_img)] =", tm_now() - tm_start
 
@@ -164,6 +161,7 @@ if __name__ == '__main__':
     my_array = first_data.to_array()
     print "Done to_array()"
     print "type(my_array) =", type(my_array)
+    print "_____________________________ TST"
 
     my_array_double = my_array.as_double()
 

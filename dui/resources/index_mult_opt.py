@@ -371,7 +371,6 @@ class inner_widg( QWidget):
         hbox_lay_max_try_31.addWidget(label_max_try_31)
 
         box_max_try_31 = QSpinBox()
-        box_max_try_31.setValue(50)
         box_max_try_31.local_path = "indexing.basis_vector_combinations.max_try"
         box_max_try_31.valueChanged.connect(self.spnbox_changed)
         hbox_lay_max_try_31.addWidget(box_max_try_31)
