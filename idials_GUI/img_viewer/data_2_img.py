@@ -1,3 +1,25 @@
+'''
+Tools for converting from flex array to numpy bitmap
+
+Author: Luis Fuentes-Montero (Luiso)
+With strong help from DIALS and CCP4 teams
+
+copyright (c) CCP4 - DLS
+'''
+
+#This program is free software; you can redistribute it and/or
+#modify it under the terms of the GNU General Public License
+#as published by the Free Software Foundation; either version 2
+#of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 tmp_off = '''
 from python_qt_bind import GuiBinding
@@ -16,8 +38,6 @@ else:
 from PySide.QtGui import *
 from PySide.QtCore import *
 
-
-
 import numpy as np
 from time import time as tm_now
 
@@ -33,8 +53,8 @@ def gen_flex_arr(n_col = 800, n_row = 700):
         for row in xrange(n_row):
             flex_data_out[row, col] = col + row
 
-
     return flex_data_out, flex_mask_out
+
 
 class img_w_cpp(object):
     def __init__(self):

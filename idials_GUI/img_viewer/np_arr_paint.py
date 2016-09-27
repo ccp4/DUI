@@ -1,3 +1,27 @@
+'''
+Handling info from DataBlock JSON to image viewer in video mode
+
+Author: Luis Fuentes-Montero (Luiso)
+With strong help from DIALS and CCP4 teams
+
+copyright (c) CCP4 - DLS
+'''
+
+#This program is free software; you can redistribute it and/or
+#modify it under the terms of the GNU General Public License
+#as published by the Free Software Foundation; either version 2
+#of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
 
 from python_qt_bind import GuiBinding
 if GuiBinding.pyhon_binding == "PyQt4":
@@ -16,7 +40,6 @@ from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 import sys
 from time import time as time_now
-
 from data_2_img import img_w_cpp
 
 def get_3d_flex_array():
@@ -41,7 +64,6 @@ def get_3d_flex_array():
     my_array = first_data.to_array()
     print "type(my_array) =", type(my_array)
     my_array_double = my_array.as_double()
-
     print "my_array_double.all() =", my_array_double.all()
 
     return my_array_double
@@ -90,10 +112,10 @@ class MyScroll( QScrollArea):
         self.my_time = time_now()
         #print "time spent=", dif_time
 
-
         self.slice_pos += 1
         if self.slice_pos >= self.arr_data.all()[0] :
             self.slice_pos = 0
+
 
 class ImgTab( QWidget):
 
@@ -133,7 +155,6 @@ class ImgTab( QWidget):
         self.timer.stop()
 
 
-
 if __name__ == '__main__':
 
     import sys
@@ -143,6 +164,4 @@ if __name__ == '__main__':
     #MyImgWin(QWidget)
 
     sys.exit(app.exec_())
-
-
 

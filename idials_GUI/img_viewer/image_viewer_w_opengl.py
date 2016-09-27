@@ -1,3 +1,27 @@
+'''
+Utilities for image viewer with OpenGL and flex arrays
+
+Author: Luis Fuentes-Montero (Luiso)
+With strong help from DIALS and CCP4 teams
+
+copyright (c) CCP4 - DLS
+'''
+
+#This program is free software; you can redistribute it and/or
+#modify it under the terms of the GNU General Public License
+#as published by the Free Software Foundation; either version 2
+#of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
 import sys
 from dxtbx.datablock import DataBlockFactory
 from data_2_img import img_w_cpp
@@ -43,7 +67,6 @@ def get_arr(json_file_path = None):
     return my_array_double
 
 
-
 class ImgPainter(QGLWidget):
 
     def __init__(self):
@@ -65,16 +88,9 @@ class ImgPainter(QGLWidget):
         #Use "update" when [self] inherits from QWidget
         #self.update()
 
-
-
         #in future consider self.repaint() for the video thing
 
-
-
     def paintEvent(self, event):
-
-
-
         if( self.img == None ):
             print "self.img = None"
             return
@@ -82,10 +98,8 @@ class ImgPainter(QGLWidget):
         else:
             img_paint = QPainter()
             img_paint.begin(self)
-            #self.img.fill()
             #img_paint.drawPixmap(0, 0, self.img)
             img_paint.drawImage(0, 0, self.img)
-
             img_paint.end()
 
         seems_to_be_unstable = '''
@@ -106,21 +120,11 @@ class ScrollableImg(QScrollArea):
     def __init__(self, parent = None):
         super(ScrollableImg, self).__init__()
         self.setWidget(parent)
-'''
 
-class ScrollableImg(QScrollArea):
-    def __init__(self, parent = None):
-        super(ScrollableImg, self).__init__()
-        #self.setWidget(parent)
-        main_box = QVBoxLayout()
-        main_box.addWidget(parent)
-        self.setLayout(main_box)
-'''
+
 class MyImgWin(QWidget):
-
     def __init__(self):
         super(MyImgWin, self).__init__()
-
 
         self.block_3d_flex = get_arr()
         self.arr_img = img_w_cpp()
@@ -162,7 +166,6 @@ class MyImgWin(QWidget):
         self.update()
 
     def set_my_img(self):
-
         tm_start = tm_now()
 
         flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
@@ -179,7 +182,6 @@ class MyImgWin(QWidget):
         self.img_painter.set_img_pix(q_img)
         print "dif_time[set_img_pix(q_img)] =", tm_now() - tm_start
 
-
     def onImgSliderMove(self, position = None):
         self.img_pos = position
         self.new_img()
@@ -190,33 +192,8 @@ class MyImgWin(QWidget):
 
 
 if __name__ == '__main__':
-
-    '''
-    json_name = "../../../dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/1_import/datablock.json"
-    print "json_name =", json_name
-
-    datablocks = DataBlockFactory.from_json_file(json_name)
-
-    if len(datablocks) > 0:
-        assert(len(datablocks) == 1)
-        imagesets = datablocks[0].extract_imagesets()
-        crystals = None
-        print "len(datablocks) =", len(datablocks)
-
-    else:
-        raise RuntimeError("No imageset could be constructed")
-
-    first_data = imagesets[0]
-    my_array = first_data.to_array()
-    my_array_double = my_array.as_double()
-    '''
-
-
     app = QApplication(sys.argv)
     diag = MyImgWin()
     sys.exit(app.exec_())
     app.exec_()
-
-
-
 
