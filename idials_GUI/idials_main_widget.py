@@ -70,7 +70,7 @@ class MainWidget(QMainWindow):
         buttons_widget.setStyleSheet("background-color: lightgray")
         v_left_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
-        my_lst = StepList()
+        my_lst = StepList(parent = self)
         label_lst, self.widg_lst, icon_lst, command_lst = my_lst()
 
         #My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)

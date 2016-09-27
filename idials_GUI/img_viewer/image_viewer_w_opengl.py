@@ -22,14 +22,26 @@ copyright (c) CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
+from python_qt_bind import GuiBinding
+if GuiBinding.pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    from PyQt4.QtOpenGL import QGLWidget
+    print "   <<<   using PyQt4"
+
+else:
+    #asuming GuiBinding.pyhon_binding == "PySide"
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    from PySide.QtOpenGL import QGLWidget
+    print "using PySide"
+
 import sys
 from dxtbx.datablock import DataBlockFactory
 from data_2_img import img_w_cpp
 from dials.array_family import flex
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtOpenGL import QGLWidget
+
 from OpenGL import GL
 
 import numpy as np

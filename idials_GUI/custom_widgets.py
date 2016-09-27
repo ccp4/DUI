@@ -65,9 +65,9 @@ class ImportPage(QWidget):
     # FIXME study the file:
     # Dxtbx/sweep_filenames.py
 
-    def __init__(self, parent=None):
-        super(ImportPage, self).__init__(parent)
-        #self.super_parent = parent # reference across the hole GUI to MyMainDialog
+    def __init__(self, parent = None):
+        super(ImportPage, self).__init__(parent = None)
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         #self.super_parent.w_dir = os.getcwd()
         self.w_dir = os.getcwd()
@@ -171,9 +171,7 @@ class ImportPage(QWidget):
             print "Failed to pick dir"
 
 
-
-
-
+'''
 
 class imp_ops(QWidget):
     def __init__(self, str_label = None):
@@ -185,11 +183,12 @@ class imp_ops(QWidget):
         v_left_box.addWidget(QLabel(str_label))
         self.setLayout(v_left_box)
         #self.show()
+'''
 
 class ParamMainWidget( QWidget):
-    def __init__(self, phl_obj):
+    def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()
-        #self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
@@ -199,7 +198,7 @@ class ParamMainWidget( QWidget):
         self.show()
 
     def update_lin_txt(self, str_path, str_value):
-        print "running {", str_path, "=", str_value,"}"
+        print "running command = {", str_path, "=", str_value,"}"
 
 
 class StepList(object):
@@ -227,15 +226,16 @@ class StepList(object):
                     #,"export"
                    ]
 
-    def __init__(self):
+    def __init__(self, parent = None):
+        self.super_parent = parent
         self.lst_widg  = [
-                          ImportPage(),
-                          ParamMainWidget(phil_scope_find_spots),
-                          ParamMainWidget(phil_scope_index),
-                          ParamMainWidget(phil_scope_refine_br_st),
+                          ImportPage(parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_find_spots, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_index, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_refine_br_st, parent = self),
                           #imp_ops("                reindex"),
-                          ParamMainWidget(phil_scope_refine),
-                          ParamMainWidget(phil_scope_integrate)
+                          ParamMainWidget(phl_obj = phil_scope_refine, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_integrate, parent = self)
                           #,ParamMainWidget(phil_scope_export)
                          ]
 
