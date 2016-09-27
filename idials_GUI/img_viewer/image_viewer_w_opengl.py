@@ -44,25 +44,26 @@ def get_arr(json_file_path = None):
 
 
 
-class ImgPainter(QWidget):
+class ImgPainter(QGLWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
         self.setFixedSize(2550, 2400)
-        self.pix = None
+        #self.pix = None
+        self.img = None
 
     def set_img_pix(self, q_img = None):
 
-        self.pix = QPixmap.fromImage(q_img)
-
+        #self.pix = QPixmap.fromImage(q_img)
+        self.img = q_img
         # the next two choices need to be taken depending on the
         # rendering back end
 
         # Use paintEvent when [self] inherits from QGLWidget
-        #self.paintEvent(None)
+        self.paintEvent(None)
 
         #Use "update" when [self] inherits from QWidget
-        self.update()
+        #self.update()
 
 
 
@@ -72,6 +73,22 @@ class ImgPainter(QWidget):
 
     def paintEvent(self, event):
 
+
+
+        if( self.img == None ):
+            print "self.img = None"
+            return
+
+        else:
+            img_paint = QPainter()
+            img_paint.begin(self)
+            #self.img.fill()
+            #img_paint.drawPixmap(0, 0, self.img)
+            img_paint.drawImage(0, 0, self.img)
+
+            img_paint.end()
+
+        seems_to_be_unstable = '''
         if( self.pix == None ):
             print "self.pix = None"
             return
@@ -79,16 +96,26 @@ class ImgPainter(QWidget):
         else:
             img_paint = QPainter()
             img_paint.begin(self)
+            #self.pix.fill()
             img_paint.drawPixmap(0, 0, self.pix)
             img_paint.end()
+        '''
 
 
 class ScrollableImg(QScrollArea):
     def __init__(self, parent = None):
         super(ScrollableImg, self).__init__()
         self.setWidget(parent)
+'''
 
-
+class ScrollableImg(QScrollArea):
+    def __init__(self, parent = None):
+        super(ScrollableImg, self).__init__()
+        #self.setWidget(parent)
+        main_box = QVBoxLayout()
+        main_box.addWidget(parent)
+        self.setLayout(main_box)
+'''
 class MyImgWin(QWidget):
 
     def __init__(self):
