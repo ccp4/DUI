@@ -151,30 +151,11 @@ class IdialsInnerrWidget( QWidget):
 
     def __init__(self, parent = None):
         super(IdialsInnerrWidget, self).__init__(parent)
-        self.my_parent = parent
+        self.super_parent = parent
         self.controller = Controller(".")
         self.next_cmd = "import"
 
         big_vbox =  QVBoxLayout()
-
-        removed = '''
-        midl_hbox =  QHBoxLayout()
-
-        self.btn_prv =  QPushButton('\n  Prev \n', self)
-        self.btn_prv.clicked.connect(self.prv_clicked)
-        midl_hbox.addWidget(self.btn_prv)
-
-
-        self.btn_go =  QPushButton('\n   Run  \n', self)
-        self.btn_go.clicked.connect(self.run_clicked)
-        midl_hbox.addWidget(self.btn_go)
-
-        self.btn_nxt =  QPushButton('\n  Next \n', self)
-        self.btn_nxt.clicked.connect(self.nxt_clicked)
-        midl_hbox.addWidget(self.btn_nxt)
-
-        big_vbox.addLayout(midl_hbox)
-        '''
 
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
@@ -220,7 +201,7 @@ class IdialsInnerrWidget( QWidget):
 
             print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< test"
 
-            dir_path = self.my_parent.widg_lst[0].lin_import_path.text()
+            dir_path = self.super_parent.widg_lst[0].lin_import_path.text()
             #tmpl_str = "template=" + dir_path + "/*.cbf"
             tmpl_str = "template=" + dir_path +"/X4_wide_M1S4_2_####.cbf"
             print "dir_path =", dir_path
