@@ -57,6 +57,9 @@ class WebTab(QWidget):
         self.setWindowTitle('Shell dialog')
         self.show()
 
+    def update_page(self, new_path):
+        print "update_page(", new_path, ")"
+
 
 class outputs_widget( QWidget):
 
@@ -70,11 +73,11 @@ class outputs_widget( QWidget):
 
         v_splitter.setOrientation(Qt.Vertical)
 
-        img_view = MyImgWin()
-        web_view = WebTab()
+        self.img_view = MyImgWin()
+        self.web_view = WebTab()
 
-        v_splitter.addWidget(img_view)
-        v_splitter.addWidget(web_view)
+        v_splitter.addWidget(self.img_view)
+        v_splitter.addWidget(self.web_view)
         my_box.addWidget(v_splitter)
 
         self.setLayout(my_box)

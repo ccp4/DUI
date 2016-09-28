@@ -113,8 +113,8 @@ class MainWidget(QMainWindow):
 
         multi_step_hbox.addWidget(centre_widget)
 
-        img_view = outputs_widget(self)
-        multi_step_hbox.addWidget(img_view)
+        self.output_wg = outputs_widget(self)
+        multi_step_hbox.addWidget(self.output_wg)
 
         self.resize(1200, 900)
         self.setCentralWidget(multi_step_hbox)
@@ -145,7 +145,7 @@ class MainWidget(QMainWindow):
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
-
+        self.output_wg.web_view.update_page(report_path)
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
