@@ -220,6 +220,8 @@ class IdialsInnerrWidget( QWidget):
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
         self._update_tree()
+        #print "dir(self.controller)", dir(self.controller)
+        print "self.controller.get_report()", self.controller.get_report()
 
 
     def nxt_clicked(self):
@@ -264,6 +266,7 @@ class IdialsInnerrWidget( QWidget):
 
         print
         print " Ready to run >>", self.controller.get_mode()
+
 
 
 if __name__ == '__main__':
