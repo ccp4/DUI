@@ -140,11 +140,8 @@ class MainWidget(QMainWindow):
             if( widget_search == cmd_name ):
                 print "Widget in pos:", pos
                 self.step_param_widg.setCurrentWidget(self.widg_lst[pos])
-        self._refrech_btn_look()
-
-        #my_sender.setStyleSheet("background-color: lightblue")
-
-
+                self._refrech_btn_look()
+                self.btn_lst[pos].setStyleSheet("background-color: lightblue")
 
 
 if __name__ == '__main__':
