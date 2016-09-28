@@ -143,6 +143,9 @@ class MainWidget(QMainWindow):
                 self._refrech_btn_look()
                 self.btn_lst[pos].setStyleSheet("background-color: lightblue")
 
+    def update_report(self, report_path):
+        print "\n MainWidget update report with:", report_path
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

@@ -26,6 +26,7 @@ class inner_widg( QWidget):
         box_format_0.local_path = "format"
         box_format_0.tmp_lst=[]
         box_format_0.tmp_lst.append("mtz")
+        box_format_0.tmp_lst.append("hkl")
         box_format_0.tmp_lst.append("nxs")
         box_format_0.tmp_lst.append("mosflm")
         box_format_0.tmp_lst.append("xds")
@@ -128,58 +129,95 @@ class inner_widg( QWidget):
         bg_box.addLayout(hbox_lay_force_static_model_6)
 
 
-        label_8 = QLabel("nxs")
+        label_8 = QLabel("hklf4")
         label_8.setPalette(palette_scope)
         label_8.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_8)
 
 
-        label_10 = QLabel("mosflm")
-        label_10.setPalette(palette_scope)
-        label_10.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_10)
+        hbox_lay_run_10 =  QHBoxLayout()
+        label_run_10 = QLabel("    run")
+        label_run_10.setPalette(palette_object)
+        label_run_10.setFont(QFont("Monospace", 10))
+        hbox_lay_run_10.addWidget(label_run_10)
 
+        box_run_10 = QSpinBox()
+        box_run_10.setValue(0)
+        box_run_10.local_path = "hklf4.run"
+        box_run_10.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_run_10.addWidget(box_run_10)
+        bg_box.addLayout(hbox_lay_run_10)
 
-        label_12 = QLabel("xds")
+        hbox_lay_summation_11 =  QHBoxLayout()
+        label_summation_11 = QLabel("    summation")
+        label_summation_11.setPalette(palette_object)
+        label_summation_11.setFont(QFont("Monospace", 10))
+        hbox_lay_summation_11.addWidget(label_summation_11)
+
+        box_summation_11 = QComboBox()
+        box_summation_11.local_path = "hklf4.summation"
+        box_summation_11.tmp_lst=[]
+        box_summation_11.tmp_lst.append("True")
+        box_summation_11.tmp_lst.append("False")
+        for lst_itm in box_summation_11.tmp_lst:
+            box_summation_11.addItem(lst_itm)
+        box_summation_11.setCurrentIndex(1)
+        box_summation_11.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_summation_11.addWidget(box_summation_11)
+        bg_box.addLayout(hbox_lay_summation_11)
+
+        label_12 = QLabel("nxs")
         label_12.setPalette(palette_scope)
         label_12.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_12)
 
 
-        label_14 = QLabel("best")
+        label_14 = QLabel("mosflm")
         label_14.setPalette(palette_scope)
         label_14.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_14)
 
-        hbox_lay_prefix_15 =  QHBoxLayout()
-        label_prefix_15 = QLabel("    prefix")
-        label_prefix_15.setPalette(palette_object)
-        label_prefix_15.setFont(QFont("Monospace", 10))
-        hbox_lay_prefix_15.addWidget(label_prefix_15)
 
-        box_prefix_15 = QLineEdit()
-        box_prefix_15.local_path = "best.prefix"
-        box_prefix_15.textChanged.connect(self.spnbox_changed)
-        hbox_lay_prefix_15.addWidget(box_prefix_15)
-        bg_box.addLayout(hbox_lay_prefix_15)
+        label_16 = QLabel("xds")
+        label_16.setPalette(palette_scope)
+        label_16.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_16)
 
-        hbox_lay_n_bins_16 =  QHBoxLayout()
-        label_n_bins_16 = QLabel("    n_bins")
-        label_n_bins_16.setPalette(palette_object)
-        label_n_bins_16.setFont(QFont("Monospace", 10))
-        hbox_lay_n_bins_16.addWidget(label_n_bins_16)
 
-        box_n_bins_16 = QSpinBox()
-        box_n_bins_16.setValue(100)
-        box_n_bins_16.local_path = "best.n_bins"
-        box_n_bins_16.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_n_bins_16.addWidget(box_n_bins_16)
-        bg_box.addLayout(hbox_lay_n_bins_16)
+        label_18 = QLabel("best")
+        label_18.setPalette(palette_scope)
+        label_18.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_18)
 
-        label_17 = QLabel("output")
-        label_17.setPalette(palette_scope)
-        label_17.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_17)
+        hbox_lay_prefix_19 =  QHBoxLayout()
+        label_prefix_19 = QLabel("    prefix")
+        label_prefix_19.setPalette(palette_object)
+        label_prefix_19.setFont(QFont("Monospace", 10))
+        hbox_lay_prefix_19.addWidget(label_prefix_19)
+
+        box_prefix_19 = QLineEdit()
+        box_prefix_19.local_path = "best.prefix"
+        box_prefix_19.textChanged.connect(self.spnbox_changed)
+        hbox_lay_prefix_19.addWidget(box_prefix_19)
+        bg_box.addLayout(hbox_lay_prefix_19)
+
+        hbox_lay_n_bins_20 =  QHBoxLayout()
+        label_n_bins_20 = QLabel("    n_bins")
+        label_n_bins_20.setPalette(palette_object)
+        label_n_bins_20.setFont(QFont("Monospace", 10))
+        hbox_lay_n_bins_20.addWidget(label_n_bins_20)
+
+        box_n_bins_20 = QSpinBox()
+        box_n_bins_20.setValue(100)
+        box_n_bins_20.local_path = "best.n_bins"
+        box_n_bins_20.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_n_bins_20.addWidget(box_n_bins_20)
+        bg_box.addLayout(hbox_lay_n_bins_20)
+
+        label_21 = QLabel("output")
+        label_21.setPalette(palette_scope)
+        label_21.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_21)
 
 
 

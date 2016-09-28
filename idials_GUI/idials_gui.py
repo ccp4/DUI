@@ -141,6 +141,9 @@ class IdialsOuterWidget( QWidget):
     def jump(self, cmd_name):
         print "\n MainWidget swishing to", cmd_name, "\n\n"
 
+    def update_report(self, report_path):
+        print "\n MainWidget update report with:", report_path
+
 
 class IdialsInnerrWidget( QWidget):
     lst_commands = [
@@ -222,7 +225,7 @@ class IdialsInnerrWidget( QWidget):
         self._update_tree()
         #print "dir(self.controller)", dir(self.controller)
         print "self.controller.get_report()", self.controller.get_report()
-
+        self.super_parent.update_report(self.controller.get_report())
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
