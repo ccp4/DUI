@@ -138,6 +138,9 @@ class IdialsOuterWidget( QWidget):
         self.setWindowTitle('iDIALS dialog')
         self.show()
 
+    def jump(self, cmd_name):
+        print "\n MainWidget swishing to", cmd_name, "\n\n"
+
 
 class IdialsInnerrWidget( QWidget):
     lst_commands = [

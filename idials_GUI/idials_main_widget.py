@@ -71,7 +71,7 @@ class MainWidget(QMainWindow):
         v_left_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
         my_lst = StepList(parent = self)
-        label_lst, self.widg_lst, icon_lst, command_lst = my_lst()
+        label_lst, self.widg_lst, icon_lst, self.command_lst = my_lst()
 
         #My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setWindowTitle('DUI / idials')
@@ -86,7 +86,7 @@ class MainWidget(QMainWindow):
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(50,50))
             new_btn.par_wig = self.widg_lst[pos]
-            new_btn.command = command_lst[pos]
+            new_btn.command = self.command_lst[pos]
             #new_btn.setToolButtonStyle(My_style)
 
             #new_btn.setFont(QFont("Monospace", 10, QFont.Bold))
@@ -129,14 +129,23 @@ class MainWidget(QMainWindow):
 
         self.idials_widget.change_mode(my_sender.command)
 
-
     def _refrech_btn_look(self):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
 
-
     def jump(self, cmd_name):
         print "\n MainWidget swishing to", cmd_name, "\n\n"
+
+        for pos, widget_search in enumerate(self.command_lst):
+            if( widget_search == cmd_name ):
+                print "Widget in pos:", pos
+                self.step_param_widg.setCurrentWidget(self.widg_lst[pos])
+        self._refrech_btn_look()
+
+        #my_sender.setStyleSheet("background-color: lightblue")
+
+
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
