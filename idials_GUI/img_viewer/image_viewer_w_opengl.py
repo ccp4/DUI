@@ -79,7 +79,7 @@ def get_arr(json_file_path = None):
     return my_array_double
 
 
-class ImgPainter(QGLWidget):
+class ImgPainter(QWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
@@ -95,10 +95,10 @@ class ImgPainter(QGLWidget):
         # rendering back end
 
         # Use paintEvent when [self] inherits from QGLWidget
-        self.paintEvent(None)
+        #self.paintEvent(None)
 
         #Use "update" when [self] inherits from QWidget
-        #self.update()
+        self.update()
 
         #in future consider self.repaint() for the video thing
 
@@ -202,6 +202,7 @@ class MyImgWin(QWidget):
     def onMaxiSliderMove(self, position = None):
         self.imax = position
         self.new_img()
+        print "New Colour Max"
 
 
 if __name__ == '__main__':
