@@ -96,16 +96,18 @@ class TreeNavWidget(QTreeView):
 
         if item.idials_node.success == True:
             print "item.idials_node.index =", item.idials_node.index
-            self.my_parent.goto(item.idials_node.index)
+            index_to_jump = item.idials_node.index
+
         else:
             print "cannot jump to failed step"
-            self.my_parent.goto(item.idials_node.parent.index)
+            index_to_jump = item.idials_node.parent.index
 
+
+        self.my_parent.goto(index_to_jump)
 
 class IdialsOuterWidget( QWidget):
     def __init__(self, parent = None):
         super(IdialsOuterWidget, self).__init__(parent)
-        self.my_parent = parent
 
         my_inner_widget = IdialsInnerrWidget(self)
         vbox =  QVBoxLayout()
@@ -177,6 +179,9 @@ class IdialsInnerrWidget( QWidget):
         self.controller.goto(idx)
         self._set_current_mode()
         self._update_tree()
+
+        #Telling super parent to jump
+        self.super_parent.jump(self.next_cmd)
 
 
     def prv_clicked(self):

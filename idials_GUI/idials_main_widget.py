@@ -134,6 +134,10 @@ class MainWidget(QMainWindow):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
 
+
+    def jump(self, cmd_name):
+        print "\n MainWidget swishing to", cmd_name, "\n\n"
+
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = MainWidget()
