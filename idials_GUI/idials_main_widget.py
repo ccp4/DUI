@@ -133,7 +133,7 @@ class MainWidget(QMainWindow):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
 
-    def jump(self, cmd_name):
+    def jump(self, cmd_name = None, new_url = None):
         print "\n MainWidget swishing to", cmd_name, "\n\n"
 
         for pos, widget_search in enumerate(self.command_lst):
@@ -142,6 +142,9 @@ class MainWidget(QMainWindow):
                 self.step_param_widg.setCurrentWidget(self.widg_lst[pos])
                 self._refrech_btn_look()
                 self.btn_lst[pos].setStyleSheet("background-color: lightblue")
+
+        if new_url != None:
+            self.update_report(new_url)
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path

@@ -48,7 +48,9 @@ class WebTab(QWidget):
 
         self.web =  QWebView()
 
+        #self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
         self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
+
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
 
@@ -59,6 +61,9 @@ class WebTab(QWidget):
 
     def update_page(self, new_path):
         print "update_page(", new_path, ")"
+        new_path = "file://" + new_path
+        print "new_path:", new_path
+        self.web.load(QUrl(new_path))
 
 
 class outputs_widget( QWidget):

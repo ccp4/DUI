@@ -138,7 +138,7 @@ class IdialsOuterWidget( QWidget):
         self.setWindowTitle('iDIALS dialog')
         self.show()
 
-    def jump(self, cmd_name):
+    def jump(self, cmd_name = None, new_url = None):
         print "\n MainWidget swishing to", cmd_name, "\n\n"
 
     def update_report(self, report_path):
@@ -186,9 +186,8 @@ class IdialsInnerrWidget( QWidget):
         self._set_current_mode()
         self._update_tree()
 
-        #Telling super parent to jump
-        self.super_parent.jump(self.next_cmd)
-
+        #Telling super parent to jump and to update URL
+        self.super_parent.jump(self.next_cmd, self.controller.get_report())
 
     def prv_clicked(self):
         print "prv_clicked(self)"
@@ -200,7 +199,6 @@ class IdialsInnerrWidget( QWidget):
         self._set_current_mode()
         self._update_tree()
 
-
     def run_clicked(self):
         print "run_clicked(self)"
         print "Running ", self.next_cmd
@@ -209,15 +207,11 @@ class IdialsInnerrWidget( QWidget):
 
         if( self.controller.get_mode() == "import" ):
 
-
-            print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< test"
-
             dir_path = self.super_parent.widg_lst[0].lin_import_path.text()
             #tmpl_str = "template=" + dir_path + "/*.cbf"
             tmpl_str = "template=" + dir_path +"/X4_wide_M1S4_2_####.cbf"
             print "dir_path =", dir_path
             print "tmpl_str =", tmpl_str
-            print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< YEEEEEEEEEEEEEEEEEEEEEEEsssss"
 
             self.controller.set_parameters(tmpl_str, short_syntax=True)
 
