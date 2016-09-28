@@ -197,6 +197,7 @@ class MyImgWin(QWidget):
     def onImgSliderMove(self, position = None):
         self.img_pos = position
         self.new_img()
+        print "New Img =", self.img_pos
 
     def onMaxiSliderMove(self, position = None):
         self.imax = position
