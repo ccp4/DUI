@@ -21,11 +21,25 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-class GuiBinding(object):
-    '''
-    This is the only variable that needs to be changed if you want
-    the hole GUI to depend on a different Qt binding
-    '''
-    #pyhon_binding = "PySide"
-    pyhon_binding = "PyQt4"
+pyhon_binding = "PyQt4"
+'''
+#This is the only variable that needs to be changed if you want
+#the hole GUI to depend on a different Qt binding
+'''
+
+if pyhon_binding == "PyQt4":
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    from PyQt4.QtWebKit import *
+    from PyQt4.QtOpenGL import QGLWidget
+    print "   <<<   using PyQt4"
+
+else:
+    #asuming GuiBinding.pyhon_binding == "PySide"
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    from PySide.QtWebKit import *
+    from PySide.QtOpenGL import QGLWidget
+    print "using PySide"
+
 

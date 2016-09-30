@@ -21,19 +21,7 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from python_qt_bind import GuiBinding
-if GuiBinding.pyhon_binding == "PyQt4":
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
-    from PyQt4.QtWebKit import *
-    print "   <<<   using PyQt4"
-
-else:
-    #asuming GuiBinding.pyhon_binding == "PySide"
-    from PySide.QtGui import *
-    from PySide.QtCore import *
-    from PySide.QtWebKit import *
-    print "using PySide"
+from python_qt_bind import *
 
 from img_viewer.image_viewer_w_opengl import MyImgWin
 

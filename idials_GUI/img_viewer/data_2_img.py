@@ -21,22 +21,13 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-tmp_off = '''
-from python_qt_bind import GuiBinding
-if GuiBinding.pyhon_binding == "PyQt4":
+try:
+    from python_qt_bind import GuiBinding
+
+except:
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
     print "   <<<   using PyQt4"
-
-else:
-    #asuming GuiBinding.pyhon_binding == "PySide"
-    from PySide.QtGui import *
-    from PySide.QtCore import *
-    print "using PySide"
-'''
-
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
 
 import numpy as np
 from time import time as tm_now

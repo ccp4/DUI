@@ -23,17 +23,7 @@ copyright (c) CCP4 - DLS
 
 
 
-from python_qt_bind import GuiBinding
-if GuiBinding.pyhon_binding == "PyQt4":
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
-    print "   <<<   using PyQt4"
-
-else:
-    #asuming GuiBinding.pyhon_binding == "PySide"
-    from PySide.QtGui import *
-    from PySide.QtCore import *
-    print "using PySide"
+from python_qt_bind import *
 
 import numpy as np
 from dxtbx.datablock import DataBlockFactory

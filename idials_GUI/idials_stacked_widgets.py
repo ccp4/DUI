@@ -33,24 +33,8 @@ try:
 except ImportError, e:
   pass
 
-'''
-from resources.python_qt_bind import GuiBinding
-gui_lib = GuiBinding()
-print "using ", gui_lib.pyhon_binding
-qt_tool = gui_lib.pyhon_binding
-'''
-from python_qt_bind import GuiBinding
-if GuiBinding.pyhon_binding == "PyQt4":
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
-    print "   <<<   using PyQt4"
 
-else:
-    #asuming GuiBinding.pyhon_binding == "PySide"
-    from PySide.QtGui import *
-    from PySide.QtCore import *
-    print "using PySide"
-
+from python_qt_bind import *
 
 import os
 '''
