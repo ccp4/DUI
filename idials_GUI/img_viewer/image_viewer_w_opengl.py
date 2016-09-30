@@ -48,8 +48,10 @@ from dxtbx.datablock import DataBlockFactory
 from data_2_img import img_w_cpp
 from dials.array_family import flex
 
-
-from OpenGL import GL
+try:
+    from OpenGL import GL
+except:
+    print "Failed to import OpenGL"
 
 import numpy as np
 
