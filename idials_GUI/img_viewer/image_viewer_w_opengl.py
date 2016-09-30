@@ -21,20 +21,27 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+try:
+    from python_qt_bind import GuiBinding
+    if GuiBinding.pyhon_binding == "PyQt4":
+        from PyQt4.QtGui import *
+        from PyQt4.QtCore import *
+        from PyQt4.QtOpenGL import QGLWidget
+        print "   <<<   using PyQt4"
 
-from python_qt_bind import GuiBinding
-if GuiBinding.pyhon_binding == "PyQt4":
+    else:
+        #asuming GuiBinding.pyhon_binding == "PySide"
+        from PySide.QtGui import *
+        from PySide.QtCore import *
+        from PySide.QtOpenGL import QGLWidget
+        print "using PySide"
+
+except:
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
     from PyQt4.QtOpenGL import QGLWidget
     print "   <<<   using PyQt4"
 
-else:
-    #asuming GuiBinding.pyhon_binding == "PySide"
-    from PySide.QtGui import *
-    from PySide.QtCore import *
-    from PySide.QtOpenGL import QGLWidget
-    print "using PySide"
 
 import sys
 from dxtbx.datablock import DataBlockFactory
@@ -50,8 +57,8 @@ from time import time as tm_now
 
 def get_arr(json_file_path = None):
     if json_file_path == None :
-        #json_file_path = str("../../../dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/1_import/datablock.json")
-        json_file_path = str("dials-1/1_import/datablock.json")
+        json_file_path = str("../../../dui_test/only_9_img/dui_idials_GUI_tst_10/dials-1/1_import/datablock.json")
+        #json_file_path = str("dials-1/1_import/datablock.json")
 
     print "json_file_path =", json_file_path
 

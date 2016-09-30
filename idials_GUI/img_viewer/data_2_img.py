@@ -35,8 +35,8 @@ else:
     print "using PySide"
 '''
 
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
 
 import numpy as np
 from time import time as tm_now
