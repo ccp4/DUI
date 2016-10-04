@@ -91,14 +91,17 @@ class ImportPage(QWidget):
         mainLayout.addWidget(import_path_group)
         #mainLayout.addWidget(w_dir_group)
 
-        idials_path = os.environ["IDIALS_PATH"]
+        #idials_path = os.environ["IDIALS_PATH"]
 
-        imageLabel =  QLabel()
-        dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
+        #imageLabel =  QLabel()
+        #dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
 
-        image =  QImage(dials_logo_path)
-        imageLabel.setPixmap( QPixmap.fromImage(image))
-        mainLayout.addWidget(imageLabel)
+        #print "dials_logo_path =", dials_logo_path
+
+        #image =  QImage(dials_logo_path)
+        #imageLabel.setPixmap( QPixmap.fromImage(image))
+        #mainLayout.addWidget(imageLabel)
+
         #imageLabel.setScaledContents(True)
 
 

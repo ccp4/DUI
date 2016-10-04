@@ -21,11 +21,13 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-pyhon_binding = "PyQt4"
+
 '''
 #This is the only variable that needs to be changed if you want
 #the hole GUI to depend on a different Qt binding
 '''
+pyhon_binding = "PyQt4"
+
 
 if pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *

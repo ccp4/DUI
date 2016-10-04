@@ -22,7 +22,7 @@ copyright (c) CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import sys
+import sys, os
 
 from python_qt_bind import *
 
@@ -86,7 +86,11 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        self.idials_widget = IdialsInnerrWidget(self)
+
+        idials_path = os.environ["IDIALS_PATH"]
+        dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
+
+        self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
 
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()

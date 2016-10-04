@@ -146,7 +146,7 @@ class IdialsInnerrWidget( QWidget):
                     "export"
                    ]
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None, dials_logo = None):
         super(IdialsInnerrWidget, self).__init__(parent)
         self.super_parent = parent
         self.controller = Controller(".")
@@ -156,6 +156,16 @@ class IdialsInnerrWidget( QWidget):
 
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
+
+        if( dials_logo == None ):
+            print "No logo to add"
+        else:
+            print "Adding DIALS logo from path:", dials_logo
+
+            imageLabel =  QLabel()
+            image =  QImage(dials_logo)
+            imageLabel.setPixmap( QPixmap.fromImage(image))
+            big_vbox.addWidget(imageLabel)
 
         self.setLayout(big_vbox)
         self.show()
