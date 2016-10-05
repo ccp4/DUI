@@ -2,7 +2,9 @@ from cStringIO import StringIO
 import sys
 
 old_stdout = sys.stdout
-sys.stdout = mystdout = StringIO()
+
+mystdout = StringIO()
+sys.stdout = mystdout
 
 for iterando in xrange(5):
     print " printing time ", iterando
