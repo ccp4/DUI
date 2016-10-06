@@ -29,7 +29,7 @@ class MyReceiver(QObject):
             self.mysignal.emit(text)
 
 # An example QObject (to be run in a QThread) which outputs information with print
-class LongRunningThing(QObject):
+class LongRunningThing(QThread):
     def run(self):
         for i in range(3):
             time.sleep(1)
@@ -40,8 +40,7 @@ class MyApp(QWidget):
     def __init__(self ):
         QWidget.__init__(self )
 
-        #moved stuff
-
+        # start moved stuff
         # Create Queue and redirect sys.stdout to this queue
         tmp_queue = Queue()
         sys.stdout = WriteStream(tmp_queue)
@@ -53,7 +52,6 @@ class MyApp(QWidget):
         my_receiver.moveToThread(self.outher_thread)
         self.outher_thread.started.connect(my_receiver.run)
         self.outher_thread.start()
-
         #end moved stuff
 
         self.layout = QVBoxLayout(self)
