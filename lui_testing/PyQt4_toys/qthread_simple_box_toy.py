@@ -29,6 +29,8 @@ class MyThread(QThread):
         for rep in xrange(10):
             print "rep =", rep
 
+
+        '''
         self.thrd_queue = Queue()
         sys.stdout = WriteStream(self.thrd_queue)
 
@@ -37,6 +39,7 @@ class MyThread(QThread):
     def capturing(self):
         while True:
             text = self.thrd_queue.get()
+        '''
 
 
 
@@ -51,11 +54,8 @@ class Example(QWidget):
         vbox = QVBoxLayout()
         vbox.addWidget(self.btn1)
 
-        bg_box = QVBoxLayout(self)
-        bg_box.addLayout(vbox)
-
         self.setGeometry(1200, 200, 450, 350)
-        self.setLayout(bg_box)
+        self.setLayout(vbox)
         self.setWindowTitle('Shell dialog')
         self.show()
 
