@@ -6,6 +6,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from Queue import Queue
 
+import time
 
 class MyStream(object):
     def __init__(self, parent):
@@ -13,21 +14,6 @@ class MyStream(object):
 
     def write(self, text):
         self.my_parent.append_text(text)
-
-'''
-sys.stdout = MyStream()
-sys.stderr = MyStream()
-'''
-
-'''
-class WriteStream(object):
-    def __init__(self, queue):
-        self.queue = queue
-
-    def write(self, text):
-        pass
-        #self.queue.put(text)
-'''
 
 class MyThread(QThread):
 
@@ -39,23 +25,17 @@ class MyThread(QThread):
         self.wait()
 
     def run(self):
-        print "in run()"
-        self.my_parent.append_text("A")
+        print "in run() begin"
         sys.stdout = MyStream(self.my_parent)
+        sys.stderr = MyStream(self.my_parent)
 
-        for rep in xrange(10):
+        for rep in xrange(3):
             print "rep =", rep
+            time.sleep(1)
 
-
-        err = '''
-        self.thrd_queue = Queue()
-        sys.stdout = WriteStream(self.thrd_queue)
-        self.capturing()
-
-    def capturing(self):
-        while True:
-            text = self.thrd_queue.get()
-        '''
+        sys.stdout = sys.__stdout__
+        sys.stderr = sys.__stderr__
+        print "in run() End"
 
 
 class Example(QWidget):
