@@ -40,6 +40,25 @@ class MyApp(QWidget):
     def __init__(self,*args,**kwargs):
         QWidget.__init__(self,*args,**kwargs)
 
+
+        #moved stuff
+
+        # Create Queue and redirect sys.stdout to this queue
+        tm_queue = Queue()
+        sys.stdout = WriteStream(tm_queue)
+
+
+        # Create thread that will listen on the other end of the queue, and send the text to the textedit in our application
+        tmp_thread = QThread()
+        my_receiver = MyReceiver(tm_queue)
+        my_receiver.mysignal.connect(self.append_text)
+        my_receiver.moveToThread(tmp_thread)
+        tmp_thread.started.connect(my_receiver.run)
+        tmp_thread.start()
+
+        #end moved stuff
+
+
         self.layout = QVBoxLayout(self)
         self.textedit = QTextEdit()
         self.button = QPushButton('start long running thread')
@@ -52,6 +71,8 @@ class MyApp(QWidget):
         self.textedit.insertPlainText( text )
 
     def start_thread(self):
+
+
         self.thread = QThread()
         self.long_running_thing = LongRunningThing()
         self.long_running_thing.moveToThread(self.thread)
@@ -60,22 +81,12 @@ class MyApp(QWidget):
 
 if __name__ == "__main__":
 
-    # Create Queue and redirect sys.stdout to this queue
-    queue = Queue()
-    sys.stdout = WriteStream(queue)
 
     # Create QApplication and QWidget
     qapp = QApplication(sys.argv)
     app = MyApp()
     app.show()
 
-    # Create thread that will listen on the other end of the queue, and send the text to the textedit in our application
-    thread = QThread()
-    my_receiver = MyReceiver(queue)
-    my_receiver.mysignal.connect(app.append_text)
-    my_receiver.moveToThread(thread)
-    thread.started.connect(my_receiver.run)
-    thread.start()
 
     qapp.exec_()
 
