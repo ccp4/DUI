@@ -47,12 +47,12 @@ class MyApp(QWidget):
         sys.stdout = WriteStream(tmp_queue)
 
         # Create thread that will listen on the other end of the queue, and send the text to the textedit in our application
-        tmp_thread = QThread()
+        self.outher_thread = QThread()
         my_receiver = MyReceiver(tmp_queue)
         my_receiver.mysignal.connect(self.append_text)
-        my_receiver.moveToThread(tmp_thread)
-        tmp_thread.started.connect(my_receiver.run)
-        tmp_thread.start()
+        my_receiver.moveToThread(self.outher_thread)
+        self.outher_thread.started.connect(my_receiver.run)
+        self.outher_thread.start()
 
         #end moved stuff
 
