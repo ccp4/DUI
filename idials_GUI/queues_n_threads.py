@@ -1,8 +1,6 @@
 import sys
 from Queue import Queue
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-import time
+from python_qt_bind import *
 
 # The new Stream Object which replaces the default stream associated with sys.stdout
 # This object just puts data in a queue!
@@ -31,8 +29,7 @@ class MyReceiver(QObject):
 # An example QObject (to be run in a QThread) which outputs information with print
 class Running_iDIALS_stuff(QThread):
     def run(self):
-        for i in range(3):
-            time.sleep(1)
+        for i in range(30):
             print i
 
         print "end for loop"

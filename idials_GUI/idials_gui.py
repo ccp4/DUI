@@ -25,6 +25,8 @@ copyright (c) CCP4 - DLS
 from dials.util.idials import Controller
 import sys
 
+from queues_n_threads import WriteStream, MyReceiver, Running_iDIALS_stuff
+
 from python_qt_bind import *
 
 class TreeNavWidget(QTreeView):
