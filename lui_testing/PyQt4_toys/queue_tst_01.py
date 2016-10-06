@@ -34,6 +34,7 @@ class LongRunningThing(QThread):
         for i in range(3):
             time.sleep(1)
             print i
+        print "end for loop"
 
 # An Example application QWidget containing the textedit to redirect stdout to
 class MyApp(QWidget):
@@ -67,12 +68,19 @@ class MyApp(QWidget):
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText( text )
 
+
+    def end_text(self):
+        self.textedit.moveCursor(QTextCursor.End)
+        self.textedit.insertPlainText("End")
+
     def start_thread(self):
         self.thread = QThread()
         self.long_running_thing = LongRunningThing()
         self.long_running_thing.moveToThread(self.thread)
         self.thread.started.connect(self.long_running_thing.run)
+        self.thread.finished.connect(self.end_text)
         self.thread.start()
+
 
 if __name__ == "__main__":
 
