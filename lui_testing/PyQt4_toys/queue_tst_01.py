@@ -19,8 +19,8 @@ class WriteStream(object):
 class MyReceiver(QObject):
     mysignal = pyqtSignal(str)
 
-    def __init__(self,queue,*args,**kwargs):
-        QObject.__init__(self,*args,**kwargs)
+    def __init__(self,queue ):
+        QObject.__init__(self )
         self.queue = queue
 
     def run(self):
@@ -37,20 +37,18 @@ class LongRunningThing(QObject):
 
 # An Example application QWidget containing the textedit to redirect stdout to
 class MyApp(QWidget):
-    def __init__(self,*args,**kwargs):
-        QWidget.__init__(self,*args,**kwargs)
-
+    def __init__(self ):
+        QWidget.__init__(self )
 
         #moved stuff
 
         # Create Queue and redirect sys.stdout to this queue
-        tm_queue = Queue()
-        sys.stdout = WriteStream(tm_queue)
-
+        tmp_queue = Queue()
+        sys.stdout = WriteStream(tmp_queue)
 
         # Create thread that will listen on the other end of the queue, and send the text to the textedit in our application
         tmp_thread = QThread()
-        my_receiver = MyReceiver(tm_queue)
+        my_receiver = MyReceiver(tmp_queue)
         my_receiver.mysignal.connect(self.append_text)
         my_receiver.moveToThread(tmp_thread)
         tmp_thread.started.connect(my_receiver.run)
@@ -58,21 +56,20 @@ class MyApp(QWidget):
 
         #end moved stuff
 
-
         self.layout = QVBoxLayout(self)
         self.textedit = QTextEdit()
         self.button = QPushButton('start long running thread')
         self.button.clicked.connect(self.start_thread)
         self.layout.addWidget(self.textedit)
         self.layout.addWidget(self.button)
+        self.setLayout(self.layout)
+        self.show()
 
     def append_text(self,text):
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText( text )
 
     def start_thread(self):
-
-
         self.thread = QThread()
         self.long_running_thing = LongRunningThing()
         self.long_running_thing.moveToThread(self.thread)
@@ -81,12 +78,6 @@ class MyApp(QWidget):
 
 if __name__ == "__main__":
 
-
-    # Create QApplication and QWidget
-    qapp = QApplication(sys.argv)
-    app = MyApp()
-    app.show()
-
-
-    qapp.exec_()
-
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    sys.exit(app.exec_())
