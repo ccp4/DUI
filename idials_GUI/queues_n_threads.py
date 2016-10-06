@@ -34,12 +34,11 @@ class Running_iDIALS_stuff(QThread):
 
         print "end for loop"
 
-# An Example application QWidget containing the textedit to redirect stdout to
 class MyApp(QWidget):
     def __init__(self ):
         QWidget.__init__(self )
 
-        # start moved stuff
+
         # Create Queue and redirect sys.stdout to this queue
         tmp_queue = Queue()
         sys.stdout = WriteStream(tmp_queue)
@@ -51,7 +50,7 @@ class MyApp(QWidget):
         my_receiver.moveToThread(self.outher_thread)
         self.outher_thread.started.connect(my_receiver.run)
         self.outher_thread.start()
-        #end moved stuff
+
 
         self.layout = QVBoxLayout(self)
         self.textedit = QTextEdit()
