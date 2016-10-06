@@ -26,6 +26,7 @@ class MyThread(QThread):
 
     def run(self):
         print "in run()"
+        self.my_parent.append_text("A")
         for rep in xrange(10):
             print "rep =", rep
 
@@ -51,8 +52,11 @@ class Example(QWidget):
         self.btn1 = QPushButton('\n\n     Click ME    \n\n', self)
         self.btn1.clicked.connect(self.B_clicked1)
 
+        self.textedit = QTextEdit()
+
         vbox = QVBoxLayout()
         vbox.addWidget(self.btn1)
+        vbox.addWidget(self.textedit)
 
         self.setGeometry(1200, 200, 450, 350)
         self.setLayout(vbox)
@@ -63,6 +67,11 @@ class Example(QWidget):
         print "B_clicked1"
         a = MyThread(self)
         a.start()
+
+    def append_text(self, text):
+        self.textedit.moveCursor(QTextCursor.End)
+        self.textedit.insertPlainText( text )
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
