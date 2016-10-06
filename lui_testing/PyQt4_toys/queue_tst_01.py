@@ -2,6 +2,7 @@ import sys
 from Queue import Queue
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import time
 
 # The new Stream Object which replaces the default stream associated with sys.stdout
 # This object just puts data in a queue!
@@ -30,7 +31,8 @@ class MyReceiver(QObject):
 # An example QObject (to be run in a QThread) which outputs information with print
 class LongRunningThing(QObject):
     def run(self):
-        for i in range(1000):
+        for i in range(3):
+            time.sleep(1)
             print i
 
 # An Example application QWidget containing the textedit to redirect stdout to

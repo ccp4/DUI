@@ -4,29 +4,41 @@ import sys
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
+from Queue import Queue
 
-pyside_template = '''
-class MyThread (QThread):
-    def run():
-        socket = QTcpSocket()
-        # connect QTcpSocket's signals somewhere meaningful
-        # ...
-        socket.connectToHost(hostName, portNumber)
-        self.exec_()
+class WriteStream(object):
+    def __init__(self, queue):
+        self.queue = queue
 
-'''
+    def write(self, text):
+        self.queue.put(text)
 
-class YourThreadName(QThread):
 
-    def __init__(self):
-        QThread.__init__(self)
-        print "in __init__"
+
+class MyThread(QThread):
+
+    def __init__(self, parent):
+        super(QThread, self).__init__()
+        self.my_parent = parent
 
     def __del__(self):
         self.wait()
 
     def run(self):
         print "in run()"
+        for rep in xrange(10):
+            print "rep =", rep
+
+        self.thrd_queue = Queue()
+        sys.stdout = WriteStream(self.thrd_queue)
+
+        self.capturing()
+
+    def capturing(self):
+        while True:
+            text = self.thrd_queue.get()
+
+
 
 class Example(QWidget):
 
@@ -49,7 +61,8 @@ class Example(QWidget):
 
     def B_clicked1(self):
         print "B_clicked1"
-        a = YourThreadName()
+        a = MyThread(self)
+        a.start()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
