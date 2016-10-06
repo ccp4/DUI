@@ -1,5 +1,3 @@
-#from subprocess import call as shell_func
-import subprocess
 import sys
 
 from PyQt4.QtGui import *
@@ -8,12 +6,12 @@ from Queue import Queue
 
 import time
 
-class MyStream(object):
-    def __init__(self, parent):
-        self.my_parent = parent
+class EmittingStream(QObject):
+
+    textWritten = pyqtSignal(str)
 
     def write(self, text):
-        self.my_parent.append_text(text)
+        self.textWritten.emit(str(text))
 
 class MyThread(QThread):
 
@@ -26,15 +24,11 @@ class MyThread(QThread):
 
     def run(self):
         print "in run() begin"
-        sys.stdout = MyStream(self.my_parent)
-        sys.stderr = MyStream(self.my_parent)
 
         for rep in xrange(3):
             print "rep =", rep
             time.sleep(1)
 
-        sys.stdout = sys.__stdout__
-        sys.stderr = sys.__stderr__
         print "in run() End"
 
 
@@ -52,19 +46,24 @@ class Example(QWidget):
         vbox.addWidget(self.btn1)
         vbox.addWidget(self.textedit)
 
+        sys.stdout = EmittingStream(textWritten=self.append_text)
+
         self.setGeometry(1200, 200, 450, 350)
         self.setLayout(vbox)
         self.setWindowTitle('Shell dialog')
         self.show()
+
 
     def B_clicked1(self):
         print "B_clicked1"
         a = MyThread(self)
         a.start()
 
+
     def append_text(self, text):
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText( text )
+
 
 
 if __name__ == '__main__':
