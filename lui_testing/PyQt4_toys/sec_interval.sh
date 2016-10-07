@@ -4,7 +4,6 @@ sleep 1
 echo "second 1"
 sleep 1
 echo "second 2"
-rm a
 sleep 1
 echo "second 3"
 sleep 1
