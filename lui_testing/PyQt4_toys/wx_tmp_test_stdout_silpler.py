@@ -28,10 +28,11 @@ class Run1(Process):
 
 class RedirectedWorkerThread(Thread):
     """Worker Thread Class."""
-    def __init__(self, stdout_target):
+    def __init__(self, my_parent):
         """Init Worker Thread Class."""
         Thread.__init__(self)
-        self.stdout_target_ = stdout_target
+        #self.stdout_target_ = stdout_target
+        self.my_parent = my_parent
 
     def run(self):
         """
@@ -46,7 +47,8 @@ class RedirectedWorkerThread(Thread):
         while p.is_alive():
             #Collect all display output from process
             while pipe_outlet.poll():
-                wx.CallAfter(self.stdout_target_.WriteText, pipe_outlet.recv())
+                self.my_parent.pipe_this_text(str(pipe_outlet.recv()))
+                #wx.CallAfter(self.stdout_target_.WriteText, pipe_outlet.recv())
 
 class MainFrame(wx.Frame):
     def __init__(self):
@@ -62,9 +64,15 @@ class MainFrame(wx.Frame):
         self.SetSizer(sizer)
 
     def OnStart(self, event):
-        t1 = RedirectedWorkerThread(self.txt1)
+
+        self.pipe_this_text()
+
+        t1 = RedirectedWorkerThread(self)
         t1.daemon = True
         t1.start()
+
+    def pipe_this_text(self, text = "Hi testing"):
+        self.txt1.WriteText(text)
 
 if __name__ == '__main__':
     app = wx.App(False)
