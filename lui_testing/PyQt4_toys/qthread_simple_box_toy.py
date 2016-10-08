@@ -15,9 +15,9 @@ class EmittingStream(QObject):
 
 class MyThread(QThread):
 
-    def __init__(self, parent):
+    def __init__(self):#, parent):
         super(QThread, self).__init__()
-        self.my_parent = parent
+        #self.my_parent = parent
 
     def __del__(self):
         self.wait()
@@ -56,7 +56,7 @@ class Example(QWidget):
 
     def B_clicked1(self):
         print "B_clicked1"
-        a = MyThread(self)
+        a = MyThread()#self)
         a.start()
 
 
