@@ -16,24 +16,22 @@ class EmittingStream(QObject):
 
 class MyThread(QThread):
 
-    def __init__(self):#, parent):
+    def __init__(self):
         super(QThread, self).__init__()
-        #self.my_parent = parent
 
     def __del__(self):
         self.wait()
 
     def run(self):
         print "in run() begin"
+        # if we remove the comment in the next line the print will go to stdout
+        #subprocess.call("./sec_interval.sh", shell=True)
 
-        subprocess.call("./sec_interval.sh", shell=True)
-        '''
         for rep in xrange(3):
             print "rep =", rep
             time.sleep(1)
 
         print "in run() End"
-        '''
 
 
 class Example(QWidget):
@@ -57,17 +55,14 @@ class Example(QWidget):
         self.setWindowTitle('Shell dialog')
         self.show()
 
-
     def B_clicked1(self):
         print "B_clicked1"
-        a = MyThread()#self)
+        a = MyThread()
         a.start()
-
 
     def append_text(self, text):
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText( text )
-
 
 
 if __name__ == '__main__':

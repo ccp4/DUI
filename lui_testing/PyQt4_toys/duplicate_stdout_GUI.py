@@ -1,6 +1,7 @@
 import sys
 from PyQt4 import QtGui, QtCore
 import time
+import subprocess
 
 class OutputWrapper(QtCore.QObject):
     outputWritten = QtCore.pyqtSignal(object, object)
@@ -33,9 +34,14 @@ class OutputWrapper(QtCore.QObject):
 
 
 def imprime_algo(n = 5):
+
     for rep in xrange(n):
         time.sleep(1)
         print "rep =", rep
+
+    # The next line will NOT be redirected from stdout
+    #subprocess.call("./sec_interval.sh", shell=True)
+
 
 
 class Window(QtGui.QMainWindow):
