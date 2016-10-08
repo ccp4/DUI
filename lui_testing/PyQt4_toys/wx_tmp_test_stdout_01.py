@@ -44,19 +44,18 @@ class RedirectedWorkerThread(Thread):
         p.daemon = True
         p.start()
 
-        txt_lst = ""
         while p.is_alive():
 
             #Collect all display output from process
             while pipe_outlet.poll():
+                #wx.CallAfter(self.stdout_target_.WriteText, pipe_outlet.recv())
                 p_out = pipe_outlet.recv()
                 p_text = str(p_out)
-                txt_lst += p_text
-                #print dir(pipe_outlet)
+                self.my_parent.pipe_this_text(p_text)
 
-                #wx.CallAfter(self.stdout_target_.WriteText, pipe_outlet.recv())
 
-        self.my_parent.pipe_this_text(txt_lst)
+
+        print "after pyping"
 
 
 class MainFrame(wx.Frame):
@@ -81,7 +80,11 @@ class MainFrame(wx.Frame):
         t1.start()
 
     def pipe_this_text(self, text = "Hi testing"):
-        self.txt1.WriteText(text)
+
+        wx.CallAfter(self.txt1.WriteText, text)
+
+        #self.txt1.WriteText(text)
+        #print text
 
 if __name__ == '__main__':
     app = wx.App(False)
