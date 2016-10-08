@@ -81,6 +81,7 @@ class Example(QWidget):
         t1.start()
 
     def pipe_this_text(self, text):
+        time.sleep(0.1)
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText(text)
 
