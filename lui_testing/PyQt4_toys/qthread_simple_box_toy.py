@@ -25,11 +25,21 @@ class MyThread(QThread):
     def run(self):
         print "in run() begin"
 
+
+
+        qProcess  = QProcess()
+        print "after MyQProcess.__init__()"
+        qProcess.setProcessChannelMode(QProcess.MergedChannels);
+        print "after (setProcessChannelMode(QProcess.MergedChannels)"
+        qProcess.start("./sec_interval.sh")
+
+        '''
         for rep in xrange(3):
             print "rep =", rep
             time.sleep(1)
 
         print "in run() End"
+        '''
 
 
 class Example(QWidget):
