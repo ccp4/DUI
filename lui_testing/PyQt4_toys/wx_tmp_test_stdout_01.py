@@ -67,19 +67,13 @@ class MainFrame(wx.Frame):
         self.SetSizer(sizer)
 
     def OnStart(self, event):
-
-        self.pipe_this_text()
-
         t1 = RedirectedWorkerThread(self)
         t1.daemon = True
         t1.start()
 
     def pipe_this_text(self, text = "Hi testing"):
-
         wx.CallAfter(self.txt1.WriteText, text)
 
-        #self.txt1.WriteText(text)
-        #print text
 
 if __name__ == '__main__':
     app = wx.App(False)
