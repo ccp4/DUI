@@ -5,6 +5,7 @@ from PyQt4.QtCore import *
 from Queue import Queue
 
 import time
+import subprocess
 
 class EmittingStream(QObject):
 
@@ -25,11 +26,14 @@ class MyThread(QThread):
     def run(self):
         print "in run() begin"
 
+        subprocess.call("./sec_interval.sh", shell=True)
+        '''
         for rep in xrange(3):
             print "rep =", rep
             time.sleep(1)
 
         print "in run() End"
+        '''
 
 
 class Example(QWidget):
