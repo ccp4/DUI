@@ -48,14 +48,9 @@ class RedirectedWorkerThread(Thread):
 
             #Collect all display output from process
             while pipe_outlet.poll():
-                #wx.CallAfter(self.stdout_target_.WriteText, pipe_outlet.recv())
                 p_out = pipe_outlet.recv()
                 p_text = str(p_out)
                 self.my_parent.pipe_this_text(p_text)
-
-
-
-        print "after pyping"
 
 
 class MainFrame(wx.Frame):
