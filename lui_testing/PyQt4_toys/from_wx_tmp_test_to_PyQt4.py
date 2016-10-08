@@ -54,8 +54,6 @@ class RedirectedWorkerThread(Thread):
                 p_text = str(p_out)
                 self.my_parent.pipe_this_text(p_text)
 
-
-########################################################################
 class Example(QWidget):
 
     def __init__(self):
@@ -80,10 +78,15 @@ class Example(QWidget):
         t1.daemon = True
         t1.start()
 
-    def pipe_this_text(self, text):
-        time.sleep(0.1)
+    def insert_text(self):
+        time.sleep(0.05)
         self.textedit.moveCursor(QTextCursor.End)
-        self.textedit.insertPlainText(text)
+        self.textedit.insertPlainText(self._tmp_text)
+
+    def pipe_this_text(self, text):
+        self._tmp_text = text
+        self.insert_text()
+
 
 
 if __name__ == '__main__':
