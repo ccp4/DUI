@@ -44,11 +44,20 @@ class RedirectedWorkerThread(Thread):
         p.daemon = True
         p.start()
 
+        txt_lst = ""
         while p.is_alive():
+
             #Collect all display output from process
             while pipe_outlet.poll():
-                self.my_parent.pipe_this_text(str(pipe_outlet.recv()))
+                p_out = pipe_outlet.recv()
+                p_text = str(p_out)
+                txt_lst += p_text
+                #print dir(pipe_outlet)
+
                 #wx.CallAfter(self.stdout_target_.WriteText, pipe_outlet.recv())
+
+        self.my_parent.pipe_this_text(txt_lst)
+
 
 class MainFrame(wx.Frame):
     def __init__(self):
