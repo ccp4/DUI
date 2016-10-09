@@ -33,15 +33,15 @@ class MyReceiver(QObject):
 class Running_iDIALS_stuff(QThread):
     def run(self):
 
-        subprocess.call("./sec_interval.sh", shell=True)
+        #subprocess.call("./sec_interval.sh", shell=True)
 
-        '''
+
         for i in range(3):
             time.sleep(1)
             print i
 
         print "end for loop"
-        '''
+
 
 # An Example application QWidget containing the textedit to redirect stdout to
 class MyApp(QWidget):
