@@ -6,7 +6,7 @@ import time
 from multiprocessing import Pipe, Process
 from threading import Thread
 
-class RedirectText2Pipe(object):
+class RedirectText2Pipe(QObject):
     def __init__(self, pipe_inlet):
         self.pipe_inlet = pipe_inlet
     def write(self, string):
@@ -24,35 +24,32 @@ class Run1(Process):
         sys.stdout = redir
         sys.stderr = redir
 
-        for i in range(200):
+        for i in range(30):
             time.sleep(0.1)
             print i,'Hi'
 
-class RedirectedWorkerThread(Thread):
-    """Worker Thread Class."""
+class RedirectedWorkerThread(QThread):
+
+    textWritten = pyqtSignal(str)
+
     def __init__(self, my_parent):
-        """Init Worker Thread Class."""
-        Thread.__init__(self)
-        #self.stdout_target_ = stdout_target
+        super(QThread, self).__init__()
         self.my_parent = my_parent
 
+    def __del__(self):
+        self.wait()
+
     def run(self):
-        """
-        In this function, actually run the process and pull any output from the
-        pipes while the process runs
-        """
         pipe_outlet, pipe_inlet = Pipe(duplex = False)
         p = Run1(pipe_inlet)
         p.daemon = True
         p.start()
 
         while p.is_alive():
-
-            #Collect all display output from process
             while pipe_outlet.poll():
                 p_out = pipe_outlet.recv()
                 p_text = str(p_out)
-                self.my_parent.pipe_this_text(p_text)
+                self.textWritten.emit(str(p_text))
 
         self.my_parent._running = False
 
@@ -82,14 +79,13 @@ class Example(QWidget):
         if( self._running == False ):
             self._running = True
             t1 = RedirectedWorkerThread(self)
-            t1.daemon = True
+            t1.textWritten.connect(self.pipe_this_text)
             t1.start()
         else:
             print "currently Running"
 
     def pipe_this_text(self, text):
-        time.sleep(0.005)
-        self.textedit.moveCursor(QTextCursor.End)
+        #self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText(text)
 
 
