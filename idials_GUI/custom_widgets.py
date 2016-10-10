@@ -59,37 +59,30 @@ class ImportPage(QWidget):
         super(ImportPage, self).__init__(parent = None)
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
-        #self.super_parent.w_dir = os.getcwd()
-        self.w_dir = os.getcwd()
-
-        self.cmd_lin_default = "import ~/put/your/path/here"
-
         import_path_group =  QGroupBox("Experiment IMG Directory")
-        import_path_layout =  QHBoxLayout()
+        import_path_layout =  QVBoxLayout()
 
         self.lin_import_path =   QLineEdit(self)
-        import_path_layout.addWidget(self.lin_import_path)
         import_path_button =  QPushButton(" \n    Find experiment Dir            . \n")
         import_path_button.clicked.connect(self.find_my_img_dir)
-        import_path_layout.addWidget(import_path_button)
         import_path_group.setLayout(import_path_layout)
 
-        '''
+        import_path_layout.addWidget(import_path_button)
+        import_path_layout.addWidget(self.lin_import_path)
+
+        #'''
         w_dir_group =  QGroupBox("Working Directory")
         w_dir_layout =  QHBoxLayout()
         self.w_dir_lin =   QLineEdit(self)
         self.w_dir_lin.setText("/some/w_diw/here")
         #self.w_dir_lin.setText(self.super_parent.w_dir)
         w_dir_layout.addWidget(self.w_dir_lin)
-        w_dir_button =  QPushButton(" \n    Change Working Dir    . \n")
-        w_dir_button.clicked.connect(self.change_w_dir)
-        w_dir_layout.addWidget(w_dir_button)
         w_dir_group.setLayout(w_dir_layout)
-        '''
+        #'''
 
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(import_path_group)
-        #mainLayout.addWidget(w_dir_group)
+        mainLayout.addWidget(w_dir_group)
 
         #idials_path = os.environ["IDIALS_PATH"]
 
@@ -118,6 +111,8 @@ class ImportPage(QWidget):
 
 
     def find_my_img_dir(self, event = None):
+        #TODO make sure it is possible to pic a dir without picking a file
+
         selected_file_path = str( QFileDialog.getOpenFileName(self, "Open IMG Dir"))
         print "[file path found] =", selected_file_path
 
