@@ -139,7 +139,8 @@ class MyImgWin(QWidget):
     def __init__(self):
         super(MyImgWin, self).__init__()
 
-        self.block_3d_flex = get_arr("../../../dui_test/dui_tst/datablock.json")
+        #self.block_3d_flex = get_arr("../../../dui_test/dui_tst/datablock.json")
+        self.block_3d_flex = get_arr("../dui_tst/datablock.json")
         self.arr_img = img_w_cpp()
         self.img_painter = ImgPainter()
         self.img_pos = 0
