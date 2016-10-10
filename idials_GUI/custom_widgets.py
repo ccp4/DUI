@@ -48,8 +48,25 @@ def template_str_build(in_str_tmp, dir_path):
     out_str = in_str_tmp + dir_path
     lst_files = os.listdir(str(dir_path))
 
-    for file_name in lst_files:
-        print file_name
+    for pos, single_char in enumerate(in_str_tmp):
+        if( single_char == "." ):
+            pos_sep = pos
+
+    left_sd_name = in_str_tmp[1:pos_sep]
+    print "left_sd_name =", left_sd_name
+
+    out_str = in_str_tmp
+    for tail_size in xrange(int(len(in_str_tmp) / 3)):
+        prev_str = out_str
+        pos_to_replase = len(in_str_tmp) - tail_size - 1
+        for num_char in '0123456789':
+            if out_str[pos_to_replase] == num_char:
+                out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
+        if( prev_str == out_str ):
+            exit
+
+    print out_str
+
 
     return out_str
 
