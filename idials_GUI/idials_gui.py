@@ -72,8 +72,6 @@ class TreeNavWidget(QTreeView):
                 new_item.setBackground(Qt.white)
                 new_item.setForeground(Qt.gray)
 
-
-
             new_item.setEditable(False)      # not letting the user edit it
 
             self.recursive_node(child_node, new_item)
@@ -254,23 +252,19 @@ class IdialsInnerrWidget( QWidget):
             print "\n\ndir_path =", dir_path, "\n"
             tmpl_str = "template=" + dir_path +"/th_8_2_000#.cbf"
             print "tmpl_str =", tmpl_str, "\n\n"
-            #'''
-
+            '''
             #tmpl_str = "template=/home/lui/dui/dui_test/th_8_2_000#.cbf"
             #tmpl_str = "template=" + dir_path + "/*.cbf"
             #tmpl_str = "template=" + dir_path +"/X4_wide_M1S4_2_####.cbf"
+            tmpl_str = "template=/home/lui/dui/dui_test/only_8_img_trimed_data/th_8_2_000#.cbf"
+            #'''
 
             self.controller.set_parameters(tmpl_str, short_syntax=True)
 
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
         self._update_tree()
-        #print "dir(self.controller)", dir(self.controller)
 
-        #print "self.controller.get_report()", self.controller.get_report()
-        #self.super_parent.update_report(self.controller.get_report())
-
-
-        print "self.controller.get_summary()", self.controller.get_summary()
+        #print "self.controller.get_summary()", self.controller.get_summary()
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"

@@ -140,7 +140,8 @@ class MyImgWin(QWidget):
         super(MyImgWin, self).__init__()
 
         #self.block_3d_flex = get_arr("../../../dui_test/dui_tst/datablock.json")
-        self.block_3d_flex = get_arr("../dui_tst/datablock.json")
+        #self.block_3d_flex = get_arr("../dui_tst/datablock.json")
+        self.block_3d_flex = None
         self.arr_img = img_w_cpp()
         self.img_painter = ImgPainter()
         self.img_pos = 0
@@ -185,13 +186,17 @@ class MyImgWin(QWidget):
         flex_2d_mask = flex.double(flex.grid(2500, 2400),0)
         img_slice = self.img_pos
 
-        flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:2500, 0:2400]
-        flex_2d_data.reshape(flex.grid(2500, 2400))
+        if( self.block_3d_flex == None ):
+            q_img = QImage()
+        else:
 
-        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = self.imax)
+            flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:2500, 0:2400]
+            flex_2d_data.reshape(flex.grid(2500, 2400))
 
-        q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
-                       np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
+            arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = self.imax)
+
+            q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
+                           np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
         self.img_painter.set_img_pix(q_img)
         print "dif_time[set_img_pix(q_img)] =", tm_now() - tm_start

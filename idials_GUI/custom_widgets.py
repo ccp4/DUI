@@ -44,9 +44,8 @@ class ImportPage(QWidget):
 
     '''
     This stacked widget basically helps the user to browse the input images
-    path and the working directory, there is no auto-generated code in use
-    withing this widget and there is no multiple tabs like the other stacked
-    widgets.
+    path, there is no auto-generated GUI form Phil parameters in use withing
+    this widget.
     '''
 
     # FIXME when the user enters a path without images dials fails to import
@@ -70,41 +69,21 @@ class ImportPage(QWidget):
         import_path_layout.addWidget(import_path_button)
         import_path_layout.addWidget(self.lin_import_path)
 
-        #'''
+
         w_dir_group =  QGroupBox("Working Directory")
         w_dir_layout =  QHBoxLayout()
         self.w_dir_lin =   QLineEdit(self)
         self.w_dir_lin.setText("/some/w_diw/here")
-        #self.w_dir_lin.setText(self.super_parent.w_dir)
         w_dir_layout.addWidget(self.w_dir_lin)
         w_dir_group.setLayout(w_dir_layout)
-        #'''
+
 
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(import_path_group)
         mainLayout.addWidget(w_dir_group)
 
-        #idials_path = os.environ["IDIALS_PATH"]
-
-        #imageLabel =  QLabel()
-        #dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
-
-        #print "dials_logo_path =", dials_logo_path
-
-        #image =  QImage(dials_logo_path)
-        #imageLabel.setPixmap( QPixmap.fromImage(image))
-        #mainLayout.addWidget(imageLabel)
-
-        #imageLabel.setScaledContents(True)
-
-
         big_layout =  QHBoxLayout()
         big_layout.addLayout(mainLayout)
-
-        '''
-        self.multi_line_txt = TextBrows()
-        big_layout.addWidget(self.multi_line_txt)
-        '''
 
         self.setLayout(big_layout)
         self.show()
@@ -134,23 +113,6 @@ class ImportPage(QWidget):
         else:
             print "Failed to pick dir"
             self.cmd_lin_default = " "
-
-        #self.super_parent.gui_line_edit.set_text(self.cmd_lin_default)
-
-        '''
-    def change_w_dir(self, event = None):
-        dir_name = str( QFileDialog.getExistingDirectory(self, "Change Working Dir"))
-        print "[dir path found] =", dir_name
-
-        if( dir_name ):
-            self.w_dir = dir_name
-            os.chdir(self.w_dir)
-            self.w_dir_lin.setText(self.w_dir)
-            print "dir_name(w_dir) =", self.w_dir
-
-        else:
-            print "Failed to pick dir"
-        '''
 
 
 class ParamMainWidget( QWidget):
