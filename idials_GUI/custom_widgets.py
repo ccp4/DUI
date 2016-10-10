@@ -40,6 +40,16 @@ try:
 except:
     from dials.command_line.export_mtz import phil_scope as phil_scope_export
 
+def template_str_build(in_str_tmp, dir_path):
+
+    print "in_str_tmp =", in_str_tmp
+    print "dir_path =", dir_path
+
+    out_str = in_str_tmp + dir_path
+
+    return out_str
+
+
 class ImportPage(QWidget):
 
     '''
@@ -70,17 +80,17 @@ class ImportPage(QWidget):
         import_path_layout.addWidget(self.lin_import_path)
 
 
-        w_dir_group =  QGroupBox("Working Directory")
-        w_dir_layout =  QHBoxLayout()
+        template_grp =  QGroupBox("Template =")
+        template_vbox =  QHBoxLayout()
         self.w_dir_lin =   QLineEdit(self)
         self.w_dir_lin.setText("/some/w_diw/here")
-        w_dir_layout.addWidget(self.w_dir_lin)
-        w_dir_group.setLayout(w_dir_layout)
+        template_vbox.addWidget(self.w_dir_lin)
+        template_grp.setLayout(template_vbox)
 
 
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(import_path_group)
-        mainLayout.addWidget(w_dir_group)
+        mainLayout.addWidget(template_grp)
 
         big_layout =  QHBoxLayout()
         big_layout.addLayout(mainLayout)
@@ -106,13 +116,17 @@ class ImportPage(QWidget):
                 dir_name = dir_name[3:]
 
             print "dir_name(final) =", dir_name
+
+            templ_str_tmp = selected_file_path[pos_sep:]
+            print "templ_str_tmp =", templ_str_tmp
+
+            templ_str_fin = template_str_build(templ_str_tmp, dir_name)
+
             self.lin_import_path.setText(dir_name)
-            self.cmd_lin_default = "import "+ dir_name
-            print "CLI =", self.cmd_lin_default
+            self.w_dir_lin.setText(templ_str_fin)
 
         else:
             print "Failed to pick dir"
-            self.cmd_lin_default = " "
 
 
 class ParamMainWidget( QWidget):
