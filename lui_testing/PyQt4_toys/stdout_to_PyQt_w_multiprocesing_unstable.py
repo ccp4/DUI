@@ -24,7 +24,7 @@ class Run1(Process):
         sys.stdout = redir
         sys.stderr = redir
 
-        for i in range(200):
+        for i in range(30):
             time.sleep(0.1)
             print i,'Hi'
 
