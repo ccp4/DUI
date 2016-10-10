@@ -6,7 +6,12 @@ from dials.array_family import flex
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtOpenGL import QGLWidget
-from OpenGL import GL
+
+
+try:
+    from OpenGL import GL
+except:
+    print "Failed to import OpenGL"
 
 import numpy as np
 

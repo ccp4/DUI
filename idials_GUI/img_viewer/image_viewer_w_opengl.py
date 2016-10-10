@@ -46,32 +46,36 @@ import numpy as np
 from time import time as tm_now
 
 def get_arr(json_file_path = None):
-    if json_file_path == None :
-        json_file_path = str("../../../dui_test/only_9_img/dui_idials_GUI_tst_10/dials-1/1_import/datablock.json")
+    if json_file_path != None :
+        #json_file_path = str("../../../dui_test/only_9_img/dui_idials_GUI_tst_10/dials-1/1_import/datablock.json")
         #json_file_path = str("dials-1/1_import/datablock.json")
 
-    print "json_file_path =", json_file_path
+        print "json_file_path =", json_file_path
 
-    datablocks = DataBlockFactory.from_json_file(json_file_path)
 
-    if len(datablocks) > 0:
-        assert(len(datablocks) == 1)
-        imagesets = datablocks[0].extract_imagesets()
-        crystals = None
-        print "len(datablocks) > 0"
+        datablocks = DataBlockFactory.from_json_file(json_file_path)
 
+        if len(datablocks) > 0:
+            assert(len(datablocks) == 1)
+            imagesets = datablocks[0].extract_imagesets()
+            crystals = None
+            print "len(datablocks) > 0"
+
+        else:
+            raise RuntimeError("No imageset could be constructed, len(datablocks) <= 0 ")
+
+        print "len(imagesets) =", len(imagesets)
+        print "type(imagesets) =", type(imagesets)
+        first_data = imagesets[0]
+        print "type(first_data) =", type(first_data)
+        my_array = first_data.to_array()
+        print "type(my_array) =", type(my_array)
+        my_array_double = my_array.as_double()
+
+
+        print "my_array_double.all() =", my_array_double.all()
     else:
-        raise RuntimeError("No imageset could be constructed, len(datablocks) <= 0 ")
-
-    print "len(imagesets) =", len(imagesets)
-    print "type(imagesets) =", type(imagesets)
-    first_data = imagesets[0]
-    print "type(first_data) =", type(first_data)
-    my_array = first_data.to_array()
-    print "type(my_array) =", type(my_array)
-    my_array_double = my_array.as_double()
-
-    print "my_array_double.all() =", my_array_double.all()
+        print "No DataBlock PATH given"
 
     return my_array_double
 
@@ -135,7 +139,7 @@ class MyImgWin(QWidget):
     def __init__(self):
         super(MyImgWin, self).__init__()
 
-        self.block_3d_flex = get_arr()
+        self.block_3d_flex = get_arr("../../../dui_test/dui_tst/datablock.json")
         self.arr_img = img_w_cpp()
         self.img_painter = ImgPainter()
         self.img_pos = 0
