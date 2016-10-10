@@ -46,6 +46,10 @@ def template_str_build(in_str_tmp, dir_path):
     print "dir_path =", dir_path
 
     out_str = in_str_tmp + dir_path
+    lst_files = os.listdir(str(dir_path))
+
+    for file_name in lst_files:
+        print file_name
 
     return out_str
 
