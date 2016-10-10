@@ -24,7 +24,7 @@ copyright (c) CCP4 - DLS
 
 from python_qt_bind import *
 
-import os
+import os, sys
 
 from params_live_gui_generator import PhilWidget
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
@@ -114,7 +114,7 @@ class ImportPage(QWidget):
         '''
 
         self.setLayout(big_layout)
-        #self.show()
+        self.show()
 
 
     def find_my_img_dir(self, event = None):
@@ -253,3 +253,11 @@ class StepList(object):
 
     def __call__(self):
         return self.lst_lablel, self.lst_widg, self.lst_icons, self.lst_commands
+
+
+if __name__ == '__main__':
+    app =  QApplication(sys.argv)
+    ex = ImportPage()
+    sys.exit(app.exec_())
+
+

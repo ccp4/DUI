@@ -34,6 +34,9 @@ except ImportError, e:
 
 from python_qt_bind import *
 
+from dials.command_line.find_spots import phil_scope
+import sys
+
 class ScopeData(object):
     '''
     class conceived to store only data related to the scope Phil object
@@ -276,4 +279,13 @@ class PhilWidget( QWidget):
         str_path = str(sender.local_path)
         print str_path
         self.super_parent.update_lin_txt(str_path, str_value)
+
+
+if __name__ == '__main__':
+    app =  QApplication(sys.argv)
+    ex = PhilWidget(phl_obj = phil_scope)
+    sys.exit(app.exec_())
+
+
+
 
