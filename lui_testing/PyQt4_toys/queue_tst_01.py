@@ -36,8 +36,8 @@ class Running_iDIALS_stuff(QThread):
         #subprocess.call("./sec_interval.sh", shell=True)
 
 
-        for i in range(3):
-            time.sleep(1)
+        for i in range(50):
+            time.sleep(0.1)
             print i
 
         print "end for loop"
