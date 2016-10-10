@@ -62,7 +62,7 @@ class ImportPage(QWidget):
         #self.super_parent.w_dir = os.getcwd()
         self.w_dir = os.getcwd()
 
-        self.cmd_lin_default = "dials.import ~/put/your/path/here"
+        self.cmd_lin_default = "import ~/put/your/path/here"
 
         import_path_group =  QGroupBox("Experiment IMG Directory")
         import_path_layout =  QHBoxLayout()
@@ -133,7 +133,7 @@ class ImportPage(QWidget):
 
             print "dir_name(final) =", dir_name
             self.lin_import_path.setText(dir_name)
-            #self.cmd_lin_default = "dials.import "+ dir_name
+            self.cmd_lin_default = "import "+ dir_name
             print "CLI =", self.cmd_lin_default
 
         else:
@@ -142,19 +142,12 @@ class ImportPage(QWidget):
 
         #self.super_parent.gui_line_edit.set_text(self.cmd_lin_default)
 
-
+        '''
     def change_w_dir(self, event = None):
         dir_name = str( QFileDialog.getExistingDirectory(self, "Change Working Dir"))
         print "[dir path found] =", dir_name
 
         if( dir_name ):
-            old_way = '''
-            self.super_parent.w_dir = dir_name
-            os.chdir(self.super_parent.w_dir)
-            self.w_dir_lin.setText(self.super_parent.w_dir)
-            print "dir_name(w_dir) =", self.super_parent.w_dir
-            '''
-
             self.w_dir = dir_name
             os.chdir(self.w_dir)
             self.w_dir_lin.setText(self.w_dir)
@@ -162,21 +155,8 @@ class ImportPage(QWidget):
 
         else:
             print "Failed to pick dir"
+        '''
 
-
-'''
-
-class imp_ops(QWidget):
-    def __init__(self, str_label = None):
-        super(imp_ops, self).__init__()
-        v_left_box =  QVBoxLayout()
-        if( str_label == None ):
-            str_label = "               Import widget here"
-
-        v_left_box.addWidget(QLabel(str_label))
-        self.setLayout(v_left_box)
-        #self.show()
-'''
 
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
@@ -255,9 +235,22 @@ class StepList(object):
         return self.lst_lablel, self.lst_widg, self.lst_icons, self.lst_commands
 
 
+
+class importOuterWidget( QWidget):
+    def __init__(self, parent = None):
+        super(importOuterWidget, self).__init__(parent)
+
+        import_widget = ImportPage(self)
+        vbox =  QVBoxLayout(self)
+        vbox.addWidget(import_widget)
+        self.setLayout(vbox)
+        self.show()
+
+
+
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ImportPage()
+    ex = importOuterWidget()
     sys.exit(app.exec_())
 
 
