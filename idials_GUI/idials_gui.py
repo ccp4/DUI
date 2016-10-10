@@ -264,7 +264,8 @@ class IdialsInnerrWidget( QWidget):
         self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
         self._update_tree()
 
-        #print "self.controller.get_summary()", self.controller.get_summary()
+        if( self.controller.get_mode() != "import" ):
+            print "self.controller.get_summary()", self.controller.get_summary()
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
