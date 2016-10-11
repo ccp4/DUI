@@ -52,8 +52,12 @@ def template_r_side_build(in_str_tmp, dir_path):
         if( single_char == "." ):
             pos_sep = pos
 
-    left_sd_name = in_str_tmp[1:pos_sep]
+    left_sd_name = in_str_tmp[:pos_sep]
     print "left_sd_name =", left_sd_name
+
+    ext_name = in_str_tmp[pos_sep:]
+    print "ext_name =", ext_name
+
 
     out_str = left_sd_name
 
@@ -73,6 +77,7 @@ def template_r_side_build(in_str_tmp, dir_path):
             print "found non num char"
             break
 
+    out_str = out_str + ext_name
     print out_str
 
 
