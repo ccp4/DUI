@@ -308,7 +308,7 @@ class IdialsInnerrWidget( QWidget):
             #'''
             dir_path = str(self.super_parent.widg_lst[0].lin_import_path.text())
             print "\n\ndir_path =", dir_path, "\n"
-            tmpl_str = "template=" + dir_path +"/th_8_2_000#.cbf"
+            tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
             '''
             #tmpl_str = "template=/home/lui/dui/dui_test/th_8_2_000#.cbf"
             #tmpl_str = "template=" + dir_path + "/*.cbf"

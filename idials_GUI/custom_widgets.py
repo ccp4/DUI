@@ -42,8 +42,8 @@ except:
 
 def template_r_side_build(in_str_tmp, dir_path):
 
-    print "in_str_tmp =", in_str_tmp
-    print "dir_path =", dir_path
+    #print "in_str_tmp =", in_str_tmp
+    #print "dir_path =", dir_path
 
     out_str = in_str_tmp + dir_path
     lst_files = os.listdir(str(dir_path))
@@ -53,32 +53,32 @@ def template_r_side_build(in_str_tmp, dir_path):
             pos_sep = pos
 
     left_sd_name = in_str_tmp[:pos_sep]
-    print "left_sd_name =", left_sd_name
+    #print "left_sd_name =", left_sd_name
 
     ext_name = in_str_tmp[pos_sep:]
-    print "ext_name =", ext_name
+    #print "ext_name =", ext_name
 
 
     out_str = left_sd_name
 
     max_tail_size = int(len(in_str_tmp) / 3)
-    print "max_tail_size =", max_tail_size
+    #print "max_tail_size =", max_tail_size
     for tail_size in xrange(max_tail_size):
-        print "tail_size =", tail_size
+        #print "tail_size =", tail_size
         prev_str = out_str
         pos_to_replase = len(out_str) - tail_size - 1
-        print "pos_to_replase =", pos_to_replase
+        #print "pos_to_replase =", pos_to_replase
         for num_char in '0123456789':
             if out_str[pos_to_replase] == num_char:
                 out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
 
-        print "new out_str =", out_str
+        #print "new out_str =", out_str
         if( prev_str == out_str ):
-            print "found non num char"
+            #print "found non num char"
             break
 
     out_str = out_str + ext_name
-    print out_str
+    #print out_str
 
 
     return out_str
@@ -136,7 +136,7 @@ class ImportPage(QWidget):
     def find_my_img_dir(self, event = None):
 
         selected_file_path = str( QFileDialog.getOpenFileName(self, "Open IMG Dir"))
-        print "[file path found] =", selected_file_path
+        print "[ file path selected ] =", selected_file_path
 
         if( selected_file_path ):
             for pos, single_char in enumerate(selected_file_path):
@@ -151,7 +151,7 @@ class ImportPage(QWidget):
             print "dir_name(final) =", dir_name
 
             templ_str_tmp = selected_file_path[pos_sep:]
-            print "templ_str_tmp =", templ_str_tmp
+            #print "templ_str_tmp =", templ_str_tmp
 
             templ_r_side = template_r_side_build(templ_str_tmp, dir_name)
 
