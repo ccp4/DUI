@@ -24,8 +24,11 @@ copyright (c) CCP4 - DLS
 
 from dials.util.idials import Controller
 import sys
+from Queue import Queue
 
-from queues_n_threads import WriteStream, MyReceiver, Running_iDIALS_stuff
+
+#from queues_n_threads import WriteStream, MyReceiver, Running_iDIALS_stuff
+from duplicate_stdout_GUI import OutputWrapper
 
 from python_qt_bind import *
 
@@ -133,6 +136,21 @@ class IdialsOuterWidget( QWidget):
     def __init__(self, parent = None):
         super(IdialsOuterWidget, self).__init__(parent)
 
+        '''
+        ######################################################################################started moved code
+        tmp_queue = Queue()
+        sys.stdout = WriteStream(tmp_queue)
+
+        self.outher_thread = QThread()
+        my_receiver = MyReceiver(tmp_queue)
+        my_receiver.mysignal.connect(self.append_text)
+        my_receiver.moveToThread(self.outher_thread)
+        self.outher_thread.started.connect(my_receiver.run)
+        self.outher_thread.start()
+
+        ######################################################################################ended  moved code
+        '''
+
         my_inner_widget = IdialsInnerrWidget(self)
         vbox =  QVBoxLayout()
         vbox.addWidget(my_inner_widget)
@@ -156,10 +174,20 @@ class IdialsOuterWidget( QWidget):
 
         big_vbox.addLayout(midl_hbox)
 
-        self.text_out_put = TextOut()
+        #self.text_out_put = TextOut()
+        '''
+        self.terminal =  QTextBrowser(self)              ####################remove later
+        vbox.addWidget(self.terminal)                    ####################remove later
+        ######################################################################################
+        self._err_color =  Qt.red
+        stdout = OutputWrapper(self, True)
+        stdout.outputWritten.connect(self.handleOutput)
+        stderr = OutputWrapper(self, False)
+        stderr.outputWritten.connect(self.handleOutput)
+        ######################################################################################
+        '''
 
-        vbox.addWidget(self.text_out_put)
-
+        #vbox.addWidget(self.text_out_put)
         vbox.addLayout(big_vbox)
 
         self.setLayout(vbox)
@@ -172,6 +200,36 @@ class IdialsOuterWidget( QWidget):
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
+
+
+    def append_text(self,text):
+
+        self.text_out_put.append_green(text)
+
+        copied = '''
+        self.textedit.moveCursor(QTextCursor.End)
+        self.textedit.insertPlainText( text )
+        '''
+
+
+    def handleOutput(self, text, stdout):
+        color = self.terminal.textColor()
+        self.terminal.setTextColor(color if stdout else self._err_color)
+        self.terminal.moveCursor( QTextCursor.End)
+        self.terminal.insertPlainText(text)
+        self.terminal.setTextColor(color)
+
+
+
+
+'''
+    def start_thread(self):
+        self.thread = QThread()
+        self.idials_thread = Running_iDIALS_stuff()
+        self.idials_thread.moveToThread(self.thread)
+        self.thread.started.connect(self.idials_thread.run)
+        self.thread.start()
+'''
 
 
 class IdialsInnerrWidget( QWidget):

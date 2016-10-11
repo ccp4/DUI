@@ -40,7 +40,7 @@ try:
 except:
     from dials.command_line.export_mtz import phil_scope as phil_scope_export
 
-def template_str_build(in_str_tmp, dir_path):
+def template_r_side_build(in_str_tmp, dir_path):
 
     print "in_str_tmp =", in_str_tmp
     print "dir_path =", dir_path
@@ -103,9 +103,9 @@ class ImportPage(QWidget):
 
         template_grp =  QGroupBox("Template =")
         template_vbox =  QHBoxLayout()
-        self.w_dir_lin =   QLineEdit(self)
-        self.w_dir_lin.setText("/some/w_diw/here")
-        template_vbox.addWidget(self.w_dir_lin)
+        self.templ_lin =   QLineEdit(self)
+        self.templ_lin.setText("/some/w_diw/here")
+        template_vbox.addWidget(self.templ_lin)
         template_grp.setLayout(template_vbox)
 
 
@@ -121,7 +121,6 @@ class ImportPage(QWidget):
 
 
     def find_my_img_dir(self, event = None):
-        #TODO make sure it is possible to pic a dir without picking a file
 
         selected_file_path = str( QFileDialog.getOpenFileName(self, "Open IMG Dir"))
         print "[file path found] =", selected_file_path
@@ -141,10 +140,12 @@ class ImportPage(QWidget):
             templ_str_tmp = selected_file_path[pos_sep:]
             print "templ_str_tmp =", templ_str_tmp
 
-            templ_str_fin = template_str_build(templ_str_tmp, dir_name)
+            templ_r_side = template_r_side_build(templ_str_tmp, dir_name)
+
+            templ_str_final = dir_name + templ_r_side
 
             self.lin_import_path.setText(dir_name)
-            self.w_dir_lin.setText(templ_str_fin)
+            self.templ_lin.setText(templ_str_final)
 
         else:
             print "Failed to pick dir"

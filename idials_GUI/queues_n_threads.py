@@ -9,7 +9,12 @@ class WriteStream(object):
         self.queue = queue
 
     def write(self, text):
-        self.queue.put(text)
+        self.storage_text = text
+        self.queue.put(self.storage_text)
+
+    def flush(self):
+        self.queue.put(self.storage_text)
+
 
 # A QObject (to be run in a QThread) which sits waiting for data to come through a Queue.Queue().
 # It blocks until data is available, and one it has got something from the queue, it sends
