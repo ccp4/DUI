@@ -55,15 +55,23 @@ def template_r_side_build(in_str_tmp, dir_path):
     left_sd_name = in_str_tmp[1:pos_sep]
     print "left_sd_name =", left_sd_name
 
-    out_str = in_str_tmp
-    for tail_size in xrange(int(len(in_str_tmp) / 3)):
+    out_str = left_sd_name
+
+    max_tail_size = int(len(in_str_tmp) / 3)
+    print "max_tail_size =", max_tail_size
+    for tail_size in xrange(max_tail_size):
+        print "tail_size =", tail_size
         prev_str = out_str
-        pos_to_replase = len(in_str_tmp) - tail_size - 1
+        pos_to_replase = len(out_str) - tail_size - 1
+        print "pos_to_replase =", pos_to_replase
         for num_char in '0123456789':
             if out_str[pos_to_replase] == num_char:
                 out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
+
+        print "new out_str =", out_str
         if( prev_str == out_str ):
-            exit
+            print "found non num char"
+            break
 
     print out_str
 
@@ -101,10 +109,10 @@ class ImportPage(QWidget):
         import_path_layout.addWidget(self.lin_import_path)
 
 
-        template_grp =  QGroupBox("Template =")
+        template_grp =  QGroupBox("Template ")
         template_vbox =  QHBoxLayout()
         self.templ_lin =   QLineEdit(self)
-        self.templ_lin.setText("/some/w_diw/here")
+        self.templ_lin.setText("Generated Template =")
         template_vbox.addWidget(self.templ_lin)
         template_grp.setLayout(template_vbox)
 
