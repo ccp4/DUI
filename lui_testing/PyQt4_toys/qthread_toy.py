@@ -1,11 +1,15 @@
 import sys
 from PySide.QtGui import *
 from PySide.QtCore import *
+import time
 
 class MyThread (QThread):
 
     def run(self):
         print "Hi from QThread(run)"
+        for i in range(30):
+            time.sleep(0.1)
+            print i
 
         #self.exec_() #complains "QThread: Destroyed while thread is still running"
 
@@ -16,6 +20,8 @@ class Example(QWidget):
         self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('Qthread Toy')
 
+        self.thrd = MyThread(self)
+        self.thrd.finished.connect(self.tell_finished)
         main_box = QHBoxLayout()
 
         self.textedit = QTextEdit()
@@ -29,8 +35,10 @@ class Example(QWidget):
         self.show()
 
     def start_thread(self):
-        thr = MyThread(self)
-        thr.start()
+        self.thrd.start()
+
+    def tell_finished(self):
+        print "finished thread"
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -32,6 +32,17 @@ from duplicate_stdout_GUI import OutputWrapper
 
 from python_qt_bind import *
 
+
+
+class MyThread (QThread):
+
+    def run(self, to_run):
+        #to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+        to_run.run(stdout=sys.stdout, stderr=sys.stderr)
+
+
+
+
 class TreeNavWidget(QTreeView):
     #TODO >> try: QTreeWidget
     def __init__(self, parent = None):
@@ -174,7 +185,9 @@ class IdialsOuterWidget( QWidget):
 
         big_vbox.addLayout(midl_hbox)
 
-        #self.text_out_put = TextOut()
+        self.text_out_put = TextOut()
+        vbox.addWidget(self.text_out_put)
+
         '''
         self.terminal =  QTextBrowser(self)              ####################remove later
         vbox.addWidget(self.terminal)                    ####################remove later
@@ -211,7 +224,7 @@ class IdialsOuterWidget( QWidget):
         self.textedit.insertPlainText( text )
         '''
 
-
+'''
     def handleOutput(self, text, stdout):
         color = self.terminal.textColor()
         self.terminal.setTextColor(color if stdout else self._err_color)
@@ -219,10 +232,6 @@ class IdialsOuterWidget( QWidget):
         self.terminal.insertPlainText(text)
         self.terminal.setTextColor(color)
 
-
-
-
-'''
     def start_thread(self):
         self.thread = QThread()
         self.idials_thread = Running_iDIALS_stuff()
@@ -266,6 +275,15 @@ class IdialsInnerrWidget( QWidget):
             image =  QImage(dials_logo)
             imageLabel.setPixmap( QPixmap.fromImage(image))
             big_vbox.addWidget(imageLabel)
+
+        self.cli_thread = MyThread()
+        self.cli_thread.finished.connect(self.finished_thread)
+
+        '''
+        def finished ()
+        def started ()
+        def terminated ()
+        '''
 
         self.setLayout(big_vbox)
         self.show()
@@ -319,7 +337,14 @@ class IdialsInnerrWidget( QWidget):
             print "tmpl_str =", tmpl_str, "\n\n"
             self.controller.set_parameters(tmpl_str, short_syntax=True)
 
-        self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+        #self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+
+        self.cli_thread.run(self.controller)
+
+    def finished_thread(self):
+
+        print "\n\n<<<                                                                     from finished_thread\n\n"
+
         self._update_tree()
 
         if( self.controller.get_mode() != "import" ):
@@ -365,9 +390,11 @@ class IdialsInnerrWidget( QWidget):
 
         self.tree_nav.update_me(current, lst_path_idx)
 
-        print
-        print " Ready to run >>", self.controller.get_mode()
+        updt_str = " Ready to run >> " + self.controller.get_mode()
 
+        print updt_str
+
+        self.super_parent.text_out_put.append_green(updt_str)
 
 
 if __name__ == '__main__':
