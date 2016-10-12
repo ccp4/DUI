@@ -1,20 +1,13 @@
-
 import sys
 from PySide.QtGui import *
 from PySide.QtCore import *
 
 class MyThread (QThread):
 
-    def __init__(self):
-        print "MyThread.__init__()"
+    def run(self):
+        print "Hi from QThread(run)"
 
-    def run():
-        socket = QTcpSocket()
-
-        # something here
-
-        self.exec_()
-
+        #self.exec_() #complains "QThread: Destroyed while thread is still running"
 
 class Example(QWidget):
 
@@ -23,17 +16,23 @@ class Example(QWidget):
         self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('Qthread Toy')
 
-        self.textedit = QTextEdit()
-        scrollArea = QScrollArea()
-        scrollArea.setWidget(self.textedit)
-
         main_box = QHBoxLayout()
-        main_box.addWidget(scrollArea)
+
+        self.textedit = QTextEdit()
+        main_box.addWidget(self.textedit)
+
+        self.pushbutton = QPushButton('Click Me')
+        main_box.addWidget(self.pushbutton)
+        self.pushbutton.clicked.connect(self.start_thread)
+
         self.setLayout(main_box)
         self.show()
 
-if __name__ == '__main__':
+    def start_thread(self):
+        thr = MyThread(self)
+        thr.start()
 
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
