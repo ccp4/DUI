@@ -10,8 +10,7 @@ class Example(QWidget):
     def __init__(self):
         super(Example, self).__init__()
         self.setGeometry(300, 300, 250, 150)
-        self.setWindowTitle('Image inside scrollable')
-        self.show()
+        self.setWindowTitle('Qthread Toy')
 
         imageLabel = QLabel()
         image = QImage("tux_n_chrome.png")
@@ -23,6 +22,7 @@ class Example(QWidget):
         main_box = QHBoxLayout()
         main_box.addWidget(scrollArea)
         self.setLayout(main_box)
+        self.show()
 
 if __name__ == '__main__':
 
