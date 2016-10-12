@@ -1,9 +1,20 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 import sys
 from PySide.QtGui import *
 from PySide.QtCore import *
+
+class MyThread (QThread):
+
+    def __init__(self):
+        print "MyThread.__init__()"
+
+    def run():
+        socket = QTcpSocket()
+
+        # something here
+
+        self.exec_()
+
 
 class Example(QWidget):
 
@@ -12,12 +23,9 @@ class Example(QWidget):
         self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('Qthread Toy')
 
-        imageLabel = QLabel()
-        image = QImage("tux_n_chrome.png")
-        imageLabel.setPixmap( QPixmap.fromImage(image))
-
+        self.textedit = QTextEdit()
         scrollArea = QScrollArea()
-        scrollArea.setWidget(imageLabel)
+        scrollArea.setWidget(self.textedit)
 
         main_box = QHBoxLayout()
         main_box.addWidget(scrollArea)
