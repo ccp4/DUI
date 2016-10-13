@@ -28,19 +28,9 @@ from Queue import Queue
 
 
 #from queues_n_threads import WriteStream, MyReceiver, Running_iDIALS_stuff
-from duplicate_stdout_GUI import OutputWrapper
+#from duplicate_stdout_GUI import OutputWrapper
 
 from python_qt_bind import *
-
-
-
-class MyThread (QThread):
-
-    def run(self, to_run):
-        #to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        to_run.run(stdout=sys.stdout, stderr=sys.stderr)
-
-
 
 
 class TreeNavWidget(QTreeView):
@@ -147,21 +137,6 @@ class IdialsOuterWidget( QWidget):
     def __init__(self, parent = None):
         super(IdialsOuterWidget, self).__init__(parent)
 
-        '''
-        ######################################################################################started moved code
-        tmp_queue = Queue()
-        sys.stdout = WriteStream(tmp_queue)
-
-        self.outher_thread = QThread()
-        my_receiver = MyReceiver(tmp_queue)
-        my_receiver.mysignal.connect(self.append_text)
-        my_receiver.moveToThread(self.outher_thread)
-        self.outher_thread.started.connect(my_receiver.run)
-        self.outher_thread.start()
-
-        ######################################################################################ended  moved code
-        '''
-
         my_inner_widget = IdialsInnerrWidget(self)
         vbox =  QVBoxLayout()
         vbox.addWidget(my_inner_widget)
@@ -187,20 +162,6 @@ class IdialsOuterWidget( QWidget):
 
         self.text_out_put = TextOut()
         vbox.addWidget(self.text_out_put)
-
-        '''
-        self.terminal =  QTextBrowser(self)              ####################remove later
-        vbox.addWidget(self.terminal)                    ####################remove later
-        ######################################################################################
-        self._err_color =  Qt.red
-        stdout = OutputWrapper(self, True)
-        stdout.outputWritten.connect(self.handleOutput)
-        stderr = OutputWrapper(self, False)
-        stderr.outputWritten.connect(self.handleOutput)
-        ######################################################################################
-        '''
-
-        #vbox.addWidget(self.text_out_put)
         vbox.addLayout(big_vbox)
 
         self.setLayout(vbox)
@@ -214,31 +175,24 @@ class IdialsOuterWidget( QWidget):
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
 
-
     def append_text(self,text):
-
         self.text_out_put.append_green(text)
 
-        copied = '''
-        self.textedit.moveCursor(QTextCursor.End)
-        self.textedit.insertPlainText( text )
-        '''
-
 '''
-    def handleOutput(self, text, stdout):
-        color = self.terminal.textColor()
-        self.terminal.setTextColor(color if stdout else self._err_color)
-        self.terminal.moveCursor( QTextCursor.End)
-        self.terminal.insertPlainText(text)
-        self.terminal.setTextColor(color)
+class MyThread (QThread):
 
-    def start_thread(self):
-        self.thread = QThread()
-        self.idials_thread = Running_iDIALS_stuff()
-        self.idials_thread.moveToThread(self.thread)
-        self.thread.started.connect(self.idials_thread.run)
-        self.thread.start()
+    def run(self, to_run):
+        #to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+        to_run.run(stdout=sys.stdout, stderr=sys.stderr)
 '''
+
+class MyThread (QThread):
+    def set_controler(self, controller):
+        self.to_run = controller
+
+    def run(self):
+        self.to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+
 
 
 class IdialsInnerrWidget( QWidget):
@@ -259,7 +213,7 @@ class IdialsInnerrWidget( QWidget):
         self.controller = Controller(".")
         self.next_cmd = "import"
 
-        print "dir(self.controller) =", dir(self.controller)
+        #print "dir(self.controller) =", dir(self.controller)
 
         big_vbox =  QVBoxLayout()
 
@@ -277,18 +231,17 @@ class IdialsInnerrWidget( QWidget):
             big_vbox.addWidget(imageLabel)
 
         self.cli_thread = MyThread()
+        self.cli_thread.set_controler(self.controller)
         self.cli_thread.finished.connect(self.finished_thread)
 
         self.setLayout(big_vbox)
         self.show()
-
 
     def _set_current_mode(self):
 
         print "...current.mode =", self.controller.get_current().name
         self.next_cmd = self.controller.get_current().name
         self.controller.set_mode(self.next_cmd)
-
 
     def goto(self, idx):
         print "goto: ", idx
@@ -333,7 +286,7 @@ class IdialsInnerrWidget( QWidget):
 
         #self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
-        self.cli_thread.run(self.controller)
+        self.cli_thread.start()
 
     def finished_thread(self):
 
