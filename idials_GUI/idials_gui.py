@@ -279,12 +279,6 @@ class IdialsInnerrWidget( QWidget):
         self.cli_thread = MyThread()
         self.cli_thread.finished.connect(self.finished_thread)
 
-        '''
-        def finished ()
-        def started ()
-        def terminated ()
-        '''
-
         self.setLayout(big_vbox)
         self.show()
 
