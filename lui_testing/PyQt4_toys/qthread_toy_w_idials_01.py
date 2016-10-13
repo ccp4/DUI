@@ -4,15 +4,28 @@ from PyQt4.QtCore import *
 import time
 from dials.util.idials import Controller
 
+class StdOut(QObject):
+
+    write_signal = pyqtSignal(str)
+
+    def write(self,string):
+        self.write_signal.emit(string)
+
+    def flush(self):
+        pass
+
 class MyThread (QThread):
 
     def set_controler(self, controller):
         self.to_run = controller
-
+        self.handler = StdOut()
     def run(self):
         self.to_run.goto(1)
         self.to_run.set_mode("find_spots")
-        self.to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+
+
+
+        self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
 
 class Example(QWidget):
 
@@ -33,6 +46,7 @@ class Example(QWidget):
         self.controller = Controller(".")
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
+        self.thrd.handler.write_signal.connect(self.append_text)
         self.thrd.finished.connect(self.tell_finished)
 
         self.setLayout(main_box)
@@ -45,6 +59,10 @@ class Example(QWidget):
     def tell_finished(self):
         print "finished thread"
         self.textedit.insertPlainText("\nfinished\n")
+
+    def append_text(self,text):
+        self.textedit.moveCursor(QTextCursor.End)
+        self.textedit.insertPlainText( text )
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
