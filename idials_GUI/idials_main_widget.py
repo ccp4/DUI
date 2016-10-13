@@ -28,7 +28,7 @@ from python_qt_bind import *
 
 
 from custom_widgets import StepList
-from idials_gui import IdialsInnerrWidget
+from idials_gui import IdialsInnerrWidget, TextOut
 from outputs_gui import outputs_widget
 
 class CentreWidget( QWidget):
@@ -92,12 +92,18 @@ class MainWidget(QMainWindow):
 
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
 
+
+        self.txt_out = TextOut()
+
+
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
         multi_step_hbox = QSplitter()
 
         multi_step_hbox.addWidget(self.idials_widget)
+        multi_step_hbox.addWidget(self.txt_out)
+
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.idials_widget.run_clicked)

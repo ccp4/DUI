@@ -21,20 +21,12 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 from dials.util.idials import Controller
 import sys
 from Queue import Queue
-
-
-#from queues_n_threads import WriteStream, MyReceiver, Running_iDIALS_stuff
-#from duplicate_stdout_GUI import OutputWrapper
-
 from python_qt_bind import *
 
-
 class TreeNavWidget(QTreeView):
-    #TODO >> try: QTreeWidget
     def __init__(self, parent = None):
         self.my_parent = parent
         super(TreeNavWidget, self).__init__()
@@ -160,8 +152,8 @@ class IdialsOuterWidget( QWidget):
 
         big_vbox.addLayout(midl_hbox)
 
-        self.text_out_put = TextOut()
-        vbox.addWidget(self.text_out_put)
+        self.txt_out = TextOut()
+        vbox.addWidget(self.txt_out)
         vbox.addLayout(big_vbox)
 
         self.setLayout(vbox)
@@ -170,13 +162,13 @@ class IdialsOuterWidget( QWidget):
 
     def jump(self, cmd_name = None, new_url = None):
         print "\n MainWidget swishing to", cmd_name, "\n\n"
-        self.text_out_put.append_green("something green")
+        self.txt_out.append_green("something green")
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
 
     def append_text(self,text):
-        self.text_out_put.append_green(text)
+        self.txt_out.append_green(text)
 
 old_disconnected = '''
 
@@ -307,7 +299,7 @@ class IdialsInnerrWidget( QWidget):
         self.thrd.start()
 
     def append_text(self,text):
-        self.super_parent.text_out_put.append_green(text)
+        self.super_parent.txt_out.append_green(text)
 
     def finished_thread(self):
         print "\n\n<<<                                                                     from finished_thread\n\n"
@@ -359,7 +351,7 @@ class IdialsInnerrWidget( QWidget):
 
         print updt_str
 
-        self.super_parent.text_out_put.append_green(updt_str)
+        self.super_parent.txt_out.append_green(updt_str)
 
 
 if __name__ == '__main__':
