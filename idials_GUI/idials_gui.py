@@ -248,13 +248,6 @@ class IdialsInnerrWidget( QWidget):
             imageLabel.setPixmap( QPixmap.fromImage(image))
             big_vbox.addWidget(imageLabel)
 
-        old_disconnected = '''
-        self.cli_thread = MyThread()
-        self.cli_thread.set_controler(self.controller)
-        self.cli_thread.finished.connect(self.finished_thread)
-        '''
-
-
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
         self.thrd.handler.write_signal.connect(self.append_text)
@@ -311,37 +304,13 @@ class IdialsInnerrWidget( QWidget):
             print "tmpl_str =", tmpl_str, "\n\n"
             self.controller.set_parameters(tmpl_str, short_syntax=True)
 
-        #self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-
-        old_disconnected = '''
-        self.cli_thread.start()
-        '''
-
-        ################################################################################
-        #   inserted from example START
-        ################################################################################
-
         self.thrd.start()
-        #self.textedit.insertPlainText("\nstart_thread\n")
-
-    def tell_finished(self):
-        print "finished thread"
-        #self.textedit.insertPlainText("\nfinished\n")
 
     def append_text(self,text):
-        #self.textedit.moveCursor(QTextCursor.End)
-        #self.textedit.insertPlainText( text )
         self.super_parent.text_out_put.append_green(text)
-        ################################################################################
-        #   inserted from example END
-        ################################################################################
-
-
 
     def finished_thread(self):
-
         print "\n\n<<<                                                                     from finished_thread\n\n"
-
         self._update_tree()
 
         if( self.controller.get_mode() != "import" ):
@@ -360,7 +329,6 @@ class IdialsInnerrWidget( QWidget):
 
     def change_mode(self, new_mode):
         print "change_mode(self)"
-
         self.next_cmd = new_mode
         self.controller.set_mode(self.next_cmd)
         self._update_tree()
