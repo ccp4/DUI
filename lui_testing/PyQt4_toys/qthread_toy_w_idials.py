@@ -5,6 +5,7 @@ import time
 from dials.util.idials import Controller
 
 class MyThread (QThread):
+
     def set_controler(self, controller):
         self.to_run = controller
 
