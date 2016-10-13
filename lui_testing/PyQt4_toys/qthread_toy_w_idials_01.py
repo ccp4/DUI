@@ -19,12 +19,10 @@ class MyThread (QThread):
     def set_controler(self, controller):
         self.to_run = controller
         self.handler = StdOut()
+
     def run(self):
         self.to_run.goto(1)
         self.to_run.set_mode("find_spots")
-
-
-
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
 
 class Example(QWidget):

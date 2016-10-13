@@ -178,13 +178,7 @@ class IdialsOuterWidget( QWidget):
     def append_text(self,text):
         self.text_out_put.append_green(text)
 
-'''
-class MyThread (QThread):
-
-    def run(self, to_run):
-        #to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-        to_run.run(stdout=sys.stdout, stderr=sys.stderr)
-'''
+old_disconnected = '''
 
 class MyThread (QThread):
     def set_controler(self, controller):
@@ -192,6 +186,30 @@ class MyThread (QThread):
 
     def run(self):
         self.to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
+'''
+
+
+
+class StdOut(QObject):
+
+    write_signal = pyqtSignal(str)
+
+    def write(self,string):
+        self.write_signal.emit(string)
+
+    def flush(self):
+        pass
+
+class MyThread (QThread):
+
+    def set_controler(self, controller):
+        self.to_run = controller
+        self.handler = StdOut()
+
+    def run(self):
+        #self.to_run.goto(1)
+        #self.to_run.set_mode("find_spots")
+        self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
 
 
 
@@ -230,9 +248,18 @@ class IdialsInnerrWidget( QWidget):
             imageLabel.setPixmap( QPixmap.fromImage(image))
             big_vbox.addWidget(imageLabel)
 
+        old_disconnected = '''
         self.cli_thread = MyThread()
         self.cli_thread.set_controler(self.controller)
         self.cli_thread.finished.connect(self.finished_thread)
+        '''
+
+
+        self.thrd = MyThread(self)#, self.controller)
+        self.thrd.set_controler(self.controller)
+        self.thrd.handler.write_signal.connect(self.append_text)
+        self.thrd.finished.connect(self.finished_thread)
+
 
         self.setLayout(big_vbox)
         self.show()
@@ -286,7 +313,30 @@ class IdialsInnerrWidget( QWidget):
 
         #self.controller.run(stdout=sys.stdout, stderr=sys.stderr).wait()
 
+        old_disconnected = '''
         self.cli_thread.start()
+        '''
+
+        ################################################################################
+        #   inserted from example START
+        ################################################################################
+
+        self.thrd.start()
+        #self.textedit.insertPlainText("\nstart_thread\n")
+
+    def tell_finished(self):
+        print "finished thread"
+        #self.textedit.insertPlainText("\nfinished\n")
+
+    def append_text(self,text):
+        #self.textedit.moveCursor(QTextCursor.End)
+        #self.textedit.insertPlainText( text )
+        self.super_parent.text_out_put.append_green(text)
+        ################################################################################
+        #   inserted from example END
+        ################################################################################
+
+
 
     def finished_thread(self):
 
