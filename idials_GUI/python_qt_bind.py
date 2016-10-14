@@ -26,8 +26,9 @@ copyright (c) CCP4 - DLS
 #This is the only variable that needs to be changed if you want
 #the hole GUI to depend on a different Qt binding
 '''
-pyhon_binding = "PyQt4"
 
+pyhon_binding = "PyQt4"
+#pyhon_binding = "PySide"
 
 if pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *
@@ -42,6 +43,7 @@ else:
     from PySide.QtCore import *
     from PySide.QtWebKit import *
     from PySide.QtOpenGL import QGLWidget
+    pyqtSignal = Signal
     print "using PySide"
 
 
