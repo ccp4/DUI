@@ -21,20 +21,19 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
+import sys, os
+from dxtbx.datablock import DataBlockFactory
+from data_2_img import img_w_cpp
+from dials.array_family import flex
+
 try:
-    from python_qt_bind import GuiBinding
+    from python_qt_bind import *
 
 except:
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
-    from PyQt4.QtOpenGL import QGLWidget
-    print "   <<<   using PyQt4"
-
-
-import sys
-from dxtbx.datablock import DataBlockFactory
-from data_2_img import img_w_cpp
-from dials.array_family import flex
+    print "    <<<   using PyQt4 (as exception)"
 
 try:
     from OpenGL import GL
@@ -80,7 +79,7 @@ def get_arr(json_file_path = None):
     return my_array_double
 
 
-class ImgPainter(QGLWidget):
+class ImgPainter(QWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
@@ -96,10 +95,10 @@ class ImgPainter(QGLWidget):
         # rendering back end
 
         # Use paintEvent when [self] inherits from QGLWidget
-        self.paintEvent(None)
+        #self.paintEvent(None)
 
         #Use "update" when [self] inherits from QWidget
-        #self.update()
+        self.update()
 
         #in future consider self.repaint() for the video thing
 
@@ -136,12 +135,11 @@ class ScrollableImg(QScrollArea):
 
 
 class MyImgWin(QWidget):
-    def __init__(self):
+    def __init__(self, img_path = None):
         super(MyImgWin, self).__init__()
 
-        #self.block_3d_flex = get_arr("../../../dui_test/dui_tst/datablock.json")
-        #self.block_3d_flex = get_arr("../dui_tst/datablock.json")
-        self.block_3d_flex = None
+        self.block_3d_flex = get_arr(img_path)
+        #self.block_3d_flex = None
         self.arr_img = img_w_cpp()
         self.img_painter = ImgPainter()
         self.img_pos = 0
@@ -214,7 +212,7 @@ class MyImgWin(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    diag = MyImgWin()
+    diag = MyImgWin("../../../dui_test/only_9_img/dui_idials_GUI_tst_10/dials-1/1_import/datablock.json")
     sys.exit(app.exec_())
     app.exec_()
 

@@ -21,16 +21,23 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
-
-from python_qt_bind import *
+import sys, os
 
 import numpy as np
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
-import sys
+
 from time import time as time_now
 from data_2_img import img_w_cpp
+
+
+try:
+    from python_qt_bind import *
+
+except:
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "    <<<   using PyQt4 (as exception)"
 
 def get_3d_flex_array():
     json_file_path = str("dials-1/1_import/datablock.json")

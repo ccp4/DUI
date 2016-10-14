@@ -21,19 +21,23 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-try:
-    from python_qt_bind import GuiBinding
-
-except:
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
-    print "   <<<   using PyQt4"
-
+import sys, os
 import numpy as np
 from time import time as tm_now
 
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
+
+
+try:
+    from python_qt_bind import *
+
+except:
+    from PyQt4.QtGui import *
+    from PyQt4.QtCore import *
+    print "    <<<   using PyQt4 (as exception)"
+
+
 
 def gen_flex_arr(n_col = 800, n_row = 700):
 
