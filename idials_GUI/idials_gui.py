@@ -167,20 +167,6 @@ class IdialsOuterWidget( QWidget):
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
 
-    def append_text(self,text):
-        self.txt_out.append_green(text)
-
-old_disconnected = '''
-
-class MyThread (QThread):
-    def set_controler(self, controller):
-        self.to_run = controller
-
-    def run(self):
-        self.to_run.run(stdout=sys.stdout, stderr=sys.stderr).wait()
-'''
-
-
 
 class StdOut(QObject):
 
@@ -199,10 +185,7 @@ class MyThread (QThread):
         self.handler = StdOut()
 
     def run(self):
-        #self.to_run.goto(1)
-        #self.to_run.set_mode("find_spots")
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
-
 
 
 class IdialsInnerrWidget( QWidget):
@@ -222,8 +205,6 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent = parent
         self.controller = Controller(".")
         self.next_cmd = "import"
-
-        #print "dir(self.controller) =", dir(self.controller)
 
         big_vbox =  QVBoxLayout()
 
@@ -245,7 +226,6 @@ class IdialsInnerrWidget( QWidget):
         self.thrd.handler.write_signal.connect(self.append_text)
         self.thrd.finished.connect(self.finished_thread)
 
-
         self.setLayout(big_vbox)
         self.show()
 
@@ -262,7 +242,6 @@ class IdialsInnerrWidget( QWidget):
         self._set_current_mode()
         self._update_tree()
 
-        #Telling super parent to jump and to update URL
         self.super_parent.jump(self.next_cmd, self.controller.get_report())
 
     def prv_clicked(self):
@@ -299,7 +278,10 @@ class IdialsInnerrWidget( QWidget):
         self.thrd.start()
 
     def append_text(self,text):
-        self.super_parent.txt_out.append_green(text)
+
+        print "appending <<<", text, ">>> to GUI text"
+        trim_cor_text = text[0:len(text) - 1]
+        self.super_parent.txt_out.append_green(trim_cor_text)
 
     def finished_thread(self):
         print "\n\n<<<                                                                     from finished_thread\n\n"
