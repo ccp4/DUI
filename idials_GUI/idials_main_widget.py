@@ -92,17 +92,13 @@ class MainWidget(QMainWindow):
 
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
 
-
-        self.txt_out = TextOut()
-
-
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
         multi_step_hbox = QSplitter()
 
         multi_step_hbox.addWidget(self.idials_widget)
-        multi_step_hbox.addWidget(self.txt_out)
+        #multi_step_hbox.addWidget(self.txt_out)
 
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
@@ -114,6 +110,9 @@ class MainWidget(QMainWindow):
         multi_step_hbox.addWidget(centre_widget)
 
         self.output_wg = outputs_widget(self)
+
+        self.txt_out = self.output_wg.in_txt_out
+
         multi_step_hbox.addWidget(self.output_wg)
 
         self.resize(1200, 900)

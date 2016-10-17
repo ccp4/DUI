@@ -278,9 +278,8 @@ class IdialsInnerrWidget( QWidget):
         self.thrd.start()
 
     def append_text(self,text):
-
-        print "appending <<<", text, ">>> to GUI text"
         trim_cor_text = text[0:len(text) - 1]
+        print "appending <<<", trim_cor_text, ">>> to GUI text"
         self.super_parent.txt_out.append_green(trim_cor_text)
 
     def finished_thread(self):
