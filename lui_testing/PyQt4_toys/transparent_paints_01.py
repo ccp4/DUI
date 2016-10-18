@@ -14,7 +14,7 @@ class OverlayWidg(QWidget):
 
         self.setPalette(palette)
 
-        self.pos_8 = 8
+        self.pos_8 = 1
 
 
     def paintEvent(self, event):
@@ -22,15 +22,24 @@ class OverlayWidg(QWidget):
         painter.begin(self)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 127)))
-        painter.drawLine(self.width() / self.pos_8, self.height() / 8, 7 * self.width() / self.pos_8, 7 * self.height()/8)
-        painter.drawLine(self.width() / self.pos_8, 7*self.height() / 8, 7 * self.width() / self.pos_8, self.height()/8)
+
+        x1 = int( (float(self.pos_8) * float(self.width()) ) / 8.0)
+        y1 = 0
+        h = self.height()
+        w = self.width() / 8.0
+        x1 -= w
+
+        painter.drawRect(x1, y1, w, h)
+        painter.fillRect(x1, y1, w, h, QColor(100, 100, 255, 127))
+
         painter.setPen(QPen(Qt.NoPen))
 
     def update_cross(self):
-        if(self.pos_8 > 2):
-            self.pos_8 = self.pos_8 - 1
+        if(self.pos_8 < 8):
+            self.pos_8 += 1
         else:
-            self.pos_8 = 8
+            self.pos_8 = 1
+
 
 class windowOverlay(QWidget):
     def __init__(self, parent=None):
@@ -52,11 +61,11 @@ class windowOverlay(QWidget):
 
         self.my_timer = QTimer(self)
         self.my_timer.timeout.connect(self.on_timeout)
-        self.my_timer.start(300)
+        self.my_timer.start(500)
 
     def on_timeout(self):
-        print "on_timeout(self)"
         self.painted_overlay.update_cross()
+        self.painted_overlay.update()
 
     def unpdate_w_click(self):
         if self.painted_overlay.isVisible():

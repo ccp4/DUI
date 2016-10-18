@@ -100,7 +100,10 @@ class ImgPainter(QWidget):
         #Use "update" when [self] inherits from QWidget
         self.update()
 
-        #in future consider self.repaint() for the video thing
+        #in future consider *self.repaint()* for the video thing or instead of *self.update()*
+
+
+
 
     def paintEvent(self, event):
         if( self.img == None ):
