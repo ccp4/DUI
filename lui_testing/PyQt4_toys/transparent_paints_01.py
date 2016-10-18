@@ -15,6 +15,9 @@ class OverlayWidg(QWidget):
         self.setPalette(palette)
 
         self.pos_8 = 1
+        self.my_timer = QTimer(self)
+        self.my_timer.timeout.connect(self.on_timeout)
+        self.my_timer.start(500)
 
 
     def paintEvent(self, event):
@@ -41,6 +44,11 @@ class OverlayWidg(QWidget):
             self.pos_8 = 1
 
 
+    def on_timeout(self):
+        self.update_cross()
+        self.update()
+
+
 class windowOverlay(QWidget):
     def __init__(self, parent=None):
         super(windowOverlay, self).__init__(parent)
@@ -58,14 +66,6 @@ class windowOverlay(QWidget):
         self.painted_overlay.hide()
 
         self.button.clicked.connect(self.unpdate_w_click)
-
-        self.my_timer = QTimer(self)
-        self.my_timer.timeout.connect(self.on_timeout)
-        self.my_timer.start(500)
-
-    def on_timeout(self):
-        self.painted_overlay.update_cross()
-        self.painted_overlay.update()
 
     def unpdate_w_click(self):
         if self.painted_overlay.isVisible():
