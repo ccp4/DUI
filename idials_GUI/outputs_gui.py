@@ -53,29 +53,7 @@ class WebTab(QWidget):
         print "new_path:", new_path
         self.web.load(QUrl(new_path))
 
-splitter_instead_of_tab = '''
-class outputs_widget( QWidget):
 
-    #item_changed = pyqtSignal()
-    def __init__(self, phl_obj, parent = None):
-        super(outputs_widget, self).__init__(parent)
-        #self.super_parent = parent
-
-        my_box = QVBoxLayout()
-        v_splitter = QSplitter()
-
-        v_splitter.setOrientation(Qt.Vertical)
-
-        self.img_view = MyImgWin()
-        self.web_view = WebTab()
-
-        v_splitter.addWidget(self.img_view)
-        v_splitter.addWidget(self.web_view)
-        my_box.addWidget(v_splitter)
-
-        self.setLayout(my_box)
-        self.show()
-'''
 class outputs_widget( QWidget):
 
     #item_changed = pyqtSignal()
