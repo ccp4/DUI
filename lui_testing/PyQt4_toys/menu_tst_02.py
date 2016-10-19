@@ -13,6 +13,7 @@ class Example(QtGui.QMainWindow):
         fileMenu.addAction("E&xit", self.quit, "Ctrl+Q")
 
         configMenu = menubar.addMenu('config')
+
         configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
 
         self.setGeometry(300, 300, 250, 150)
