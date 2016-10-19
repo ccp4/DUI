@@ -45,7 +45,7 @@ class OverlayPaintWidg(QWidget):
         self.n_of_pos = 16.0
         self.my_timer = QTimer(self)
         self.my_timer.timeout.connect(self.on_timeout)
-        self.my_timer.start(500)
+        self.my_timer.start(200)
 
 
     def paintEvent(self, event):
@@ -77,7 +77,8 @@ class OverlayPaintWidg(QWidget):
 
     def on_timeout(self):
         self.update_cross()
-        self.update()
+        self.repaint()
+        #self.update()
 
 
 class Text_w_Bar(QWidget):
@@ -187,7 +188,6 @@ class MainWidget(QMainWindow):
 
         multi_splitter.addWidget(self.output_wg)
 
-        ##################################################################
         main_widget = QWidget()
         main_box = QVBoxLayout()
         self.bottom_bar_n_info = Text_w_Bar()
@@ -195,7 +195,6 @@ class MainWidget(QMainWindow):
         main_box.addWidget(multi_splitter)
         main_box.addWidget(self.bottom_bar_n_info)
         main_widget.setLayout(main_box)
-        ###################################################################
 
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
@@ -214,6 +213,7 @@ class MainWidget(QMainWindow):
 
     def update_pbar_text(self, rtime_text):
         self.bottom_bar_n_info.info_line.setText(rtime_text)
+        self.bottom_bar_n_info.painted_overlay.repaint()
 
     def btn_clicked(self):
         my_sender = self.sender()
