@@ -348,8 +348,7 @@ class IdialsInnerrWidget( QWidget):
         updt_str = " Ready to run >> " + self.controller.get_mode()
 
         print updt_str
-
-        self.super_parent.txt_out.append_green(updt_str)
+        self.super_parent.update_pbar_text(updt_str)
 
 
 if __name__ == '__main__':
