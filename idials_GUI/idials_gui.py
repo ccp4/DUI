@@ -109,16 +109,19 @@ class TextOut( QTextBrowser):
         self.setTextColor( QColor("red"))
 
     def append_black(self, to_print):
+        self.moveCursor(QTextCursor.End)
         self.set_black_font()
         self.append(to_print)
         self.content_lst.append(to_print)
 
     def append_green(self, to_print):
+        self.moveCursor(QTextCursor.End)
         self.set_green_font()
         self.append(to_print)
         self.content_lst = []
 
     def append_red(self, to_print):
+        self.moveCursor(QTextCursor.End)
         self.set_red_font()
         self.append(to_print)
 
