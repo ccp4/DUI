@@ -212,6 +212,8 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info.info_line.setText("Done")
         self.bottom_bar_n_info.end_motion()
 
+    def update_pbar_text(self, rtime_text):
+        self.bottom_bar_n_info.info_line.setText(rtime_text)
 
     def btn_clicked(self):
         my_sender = self.sender()

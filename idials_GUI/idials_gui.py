@@ -176,8 +176,8 @@ class IdialsOuterWidget( QWidget):
     def end_pbar_motion(self):
         print "\n\n<<<                                                     end_pbar_motion\n\n"
 
-
-
+    def update_pbar_text(self, trim_cor_text):
+        print "\n update_pbar_text <<<", trim_cor_text, ">>>"
 
 class StdOut(QObject):
 
@@ -293,6 +293,8 @@ class IdialsInnerrWidget( QWidget):
         trim_cor_text = text[0:len(text) - 1]
         print "appending <<<", trim_cor_text, ">>> to GUI text"
         self.super_parent.txt_out.append_green(trim_cor_text)
+        self.super_parent.update_pbar_text(trim_cor_text)
+
 
     def started_thread(self):
         self.super_parent.start_pbar_motion()
