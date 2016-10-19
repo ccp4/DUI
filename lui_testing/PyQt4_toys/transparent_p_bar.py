@@ -53,9 +53,9 @@ class OverlayWidg(QWidget):
         self.update()
 
 
-class windowOverlay(QWidget):
+class WindowOverlay(QWidget):
     def __init__(self, parent=None):
-        super(windowOverlay, self).__init__(parent)
+        super(WindowOverlay, self).__init__(parent)
 
         self.editor = QLineEdit()
         self.editor.setText("AAAAAAAAAAAAAAAAAA11111111111111111333333333333334")
@@ -82,10 +82,23 @@ class windowOverlay(QWidget):
         self.painted_overlay.resize(event.size())
         event.accept()
 
+
+class MainWidget(QMainWindow):
+    def __init__(self):
+        super(MainWidget, self).__init__()
+
+        my_widget = WindowOverlay()
+
+        self.resize(1200, 900)
+        self.setCentralWidget(my_widget)
+
+        self.show()
+
+
 if __name__ == "__main__":
     import  sys
 
     app = QApplication(sys.argv)
-    main = windowOverlay()
+    main = MainWidget()
     main.show()
     sys.exit(app.exec_())
