@@ -53,9 +53,9 @@ class windowOverlay(QWidget):
     def __init__(self, parent=None):
         super(windowOverlay, self).__init__(parent)
 
-        self.editor = QTextEdit()
-        self.editor.setPlainText("OVERLAY"*100)
-
+        self.editor = QLineEdit()
+        self.editor.setText("AAAAAAAAAAAAAAAAAA11111111111111111333333333333334")
+        self.editor.setReadOnly(True)
         self.button = QPushButton("Toggle Overlay")
 
         self.verticalLayout = QVBoxLayout(self)
