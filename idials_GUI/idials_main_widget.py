@@ -31,6 +31,85 @@ from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget, TextOut
 from outputs_gui import outputs_widget
 
+
+class OverlayWidg(QWidget):
+    def __init__(self, parent = None):
+        super(OverlayWidg, self).__init__(parent)
+
+        palette = QPalette(self.palette())
+        palette.setColor(palette.Background, Qt.transparent)
+
+        self.setPalette(palette)
+
+        self.pos_n = 1.0
+        self.n_of_pos = 16.0
+        self.my_timer = QTimer(self)
+        self.my_timer.timeout.connect(self.on_timeout)
+        self.my_timer.start(500)
+
+
+    def paintEvent(self, event):
+        painter = QPainter()
+        painter.begin(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 50)))
+
+        x1 = int( (self.pos_n * float(self.width()) ) / self.n_of_pos)
+        y1 = 0
+        h = self.height()
+        w = self.width() / self.n_of_pos
+        x1 -= w
+
+        rd = 1
+        gr = (self.n_of_pos - self.pos_n) / self.n_of_pos  * 255
+        bl = self.pos_n / self.n_of_pos * 255
+
+        painter.drawRect(x1, y1, w, h)
+        painter.fillRect(x1, y1, w, h, QColor(rd, gr, bl, 127))
+
+        painter.setPen(QPen(Qt.NoPen))
+
+    def update_cross(self):
+        if(self.pos_n < self.n_of_pos):
+            self.pos_n += 1.0
+        else:
+            self.pos_n = 1.0
+
+    def on_timeout(self):
+        self.update_cross()
+        self.update()
+
+
+class Text_w_Bar(QWidget):
+    def __init__(self, parent=None):
+        super(Text_w_Bar, self).__init__(parent)
+
+        self.info_line = QLineEdit()
+        self.info_line.setText("AAAAAAAAAAAAAAAAAA11111111111111111333333333333334")
+        self.info_line.setReadOnly(True)
+        self.button = QPushButton("Toggle Overlay")
+
+        self.verticalLayout = QVBoxLayout(self)
+        self.verticalLayout.addWidget(self.info_line)
+        self.verticalLayout.addWidget(self.button)
+
+        self.painted_overlay = OverlayWidg(self.info_line)
+        self.painted_overlay.hide()
+
+        self.button.clicked.connect(self.unpdate_w_click)
+
+    def unpdate_w_click(self):
+        if self.painted_overlay.isVisible():
+            self.painted_overlay.setVisible(False)
+        else:
+            self.painted_overlay.setVisible(True)
+            self.painted_overlay.pos_n = 1
+
+    def resizeEvent(self, event):
+        self.painted_overlay.resize(event.size())
+        event.accept()
+
+
 class CentreWidget( QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__(parent)
@@ -95,10 +174,10 @@ class MainWidget(QMainWindow):
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
-        multi_step_hbox = QSplitter()
+        multi_splitter = QSplitter()
 
-        multi_step_hbox.addWidget(self.idials_widget)
-        #multi_step_hbox.addWidget(self.txt_out)
+        multi_splitter.addWidget(self.idials_widget)
+        #multi_splitter.addWidget(self.txt_out)
 
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
@@ -107,16 +186,29 @@ class MainWidget(QMainWindow):
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
 
-        multi_step_hbox.addWidget(centre_widget)
+        multi_splitter.addWidget(centre_widget)
 
         self.output_wg = outputs_widget(self)
 
         self.txt_out = self.output_wg.in_txt_out
 
-        multi_step_hbox.addWidget(self.output_wg)
+        multi_splitter.addWidget(self.output_wg)
 
+
+        ##################################################################
+
+        main_widget = QWidget()
+        main_box = QVBoxLayout()
+        bottom_bar = Text_w_Bar()
+
+        main_box.addWidget(multi_splitter)
+        main_box.addWidget(bottom_bar)
+        main_widget.setLayout(main_box)
+
+        ###################################################################
         self.resize(1200, 900)
-        self.setCentralWidget(multi_step_hbox)
+        self.setCentralWidget(main_widget)
+
 
         self.show()
 
