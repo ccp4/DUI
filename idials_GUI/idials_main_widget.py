@@ -42,10 +42,10 @@ class OverlayPaintWidg(QWidget):
         self.setPalette(palette)
 
         self.pos_n = 1.0
-        self.n_of_pos = 16.0
+        self.n_of_pos = 64.0
         self.my_timer = QTimer(self)
         self.my_timer.timeout.connect(self.on_timeout)
-        self.my_timer.start(600)
+        self.my_timer.start(800)
 
 
     def paintEvent(self, event):
