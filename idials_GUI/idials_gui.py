@@ -167,6 +167,14 @@ class IdialsOuterWidget( QWidget):
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
 
+    def start_pbar_motion(self):
+        print "\n\n<<<                                                     start_pbar_motion\n\n"
+
+    def end_pbar_motion(self):
+        print "\n\n<<<                                                     end_pbar_motion\n\n"
+
+
+
 
 class StdOut(QObject):
 
@@ -224,6 +232,7 @@ class IdialsInnerrWidget( QWidget):
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
         self.thrd.handler.write_signal.connect(self.append_text)
+        self.thrd.started.connect(self.started_thread)
         self.thrd.finished.connect(self.finished_thread)
 
         self.setLayout(big_vbox)
@@ -282,12 +291,16 @@ class IdialsInnerrWidget( QWidget):
         print "appending <<<", trim_cor_text, ">>> to GUI text"
         self.super_parent.txt_out.append_green(trim_cor_text)
 
-    def finished_thread(self):
-        print "\n\n<<<                                                                     from finished_thread\n\n"
-        self._update_tree()
+    def started_thread(self):
+        self.super_parent.start_pbar_motion()
 
+    def finished_thread(self):
+        self._update_tree()
+        '''
         if( self.controller.get_mode() != "import" ):
             print "self.controller.get_summary()", self.controller.get_summary()
+        '''
+        self.super_parent.end_pbar_motion()
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"

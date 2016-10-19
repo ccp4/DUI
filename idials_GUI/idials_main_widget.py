@@ -32,9 +32,9 @@ from idials_gui import IdialsInnerrWidget, TextOut
 from outputs_gui import outputs_widget
 
 
-class OverlayWidg(QWidget):
+class OverlayPaintWidg(QWidget):
     def __init__(self, parent = None):
-        super(OverlayWidg, self).__init__(parent)
+        super(OverlayPaintWidg, self).__init__(parent)
 
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
@@ -93,17 +93,23 @@ class Text_w_Bar(QWidget):
         self.verticalLayout.addWidget(self.info_line)
         self.verticalLayout.addWidget(self.button)
 
-        self.painted_overlay = OverlayWidg(self.info_line)
+        self.painted_overlay = OverlayPaintWidg(self.info_line)
         self.painted_overlay.hide()
 
         self.button.clicked.connect(self.unpdate_w_click)
 
     def unpdate_w_click(self):
         if self.painted_overlay.isVisible():
-            self.painted_overlay.setVisible(False)
+            self.end_motion()
         else:
-            self.painted_overlay.setVisible(True)
-            self.painted_overlay.pos_n = 1
+            self.start_motion()
+
+    def start_motion(self):
+        self.painted_overlay.setVisible(True)
+        self.painted_overlay.pos_n = 1
+
+    def end_motion(self):
+        self.painted_overlay.setVisible(False)
 
     def resizeEvent(self, event):
         self.painted_overlay.resize(event.size())
@@ -175,13 +181,10 @@ class MainWidget(QMainWindow):
         self._refrech_btn_look()
 
         multi_splitter = QSplitter()
-
         multi_splitter.addWidget(self.idials_widget)
-        #multi_splitter.addWidget(self.txt_out)
-
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
-        self.btn_go.clicked.connect(self.idials_widget.run_clicked)
+        self.btn_go.clicked.connect(self.btn_go_clicked)
 
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
@@ -194,23 +197,29 @@ class MainWidget(QMainWindow):
 
         multi_splitter.addWidget(self.output_wg)
 
-
         ##################################################################
-
         main_widget = QWidget()
         main_box = QVBoxLayout()
-        bottom_bar = Text_w_Bar()
+        self.bottom_bar_n_info = Text_w_Bar()
 
         main_box.addWidget(multi_splitter)
-        main_box.addWidget(bottom_bar)
+        main_box.addWidget(self.bottom_bar_n_info)
         main_widget.setLayout(main_box)
-
         ###################################################################
+
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
-
-
         self.show()
+
+    def btn_go_clicked(self):
+        self.idials_widget.run_clicked()
+
+    def start_pbar_motion(self):
+        self.bottom_bar_n_info.start_motion()
+
+    def end_pbar_motion(self):
+        self.bottom_bar_n_info.end_motion()
+
 
     def btn_clicked(self):
         my_sender = self.sender()
