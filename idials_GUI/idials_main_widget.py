@@ -205,9 +205,11 @@ class MainWidget(QMainWindow):
         self.idials_widget.run_clicked()
 
     def start_pbar_motion(self):
+        self.bottom_bar_n_info.info_line.setText("Running")
         self.bottom_bar_n_info.start_motion()
 
     def end_pbar_motion(self):
+        self.bottom_bar_n_info.info_line.setText("Done")
         self.bottom_bar_n_info.end_motion()
 
 
