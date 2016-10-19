@@ -54,11 +54,18 @@ class OverlayPaintWidg(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
         painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 50)))
 
+        moving_block = '''
         x1 = int( (self.pos_n * float(self.width()) ) / self.n_of_pos)
         y1 = 0
         h = self.height()
         w = self.width() / self.n_of_pos
         x1 -= w
+        '''
+
+        x1 = 0
+        y1 = 0
+        h = self.height()
+        w = int( (self.pos_n / self.n_of_pos) * float(self.width()) )
 
         rd = 1
         gr = (self.n_of_pos - self.pos_n) / self.n_of_pos  * 255

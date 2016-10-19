@@ -291,7 +291,6 @@ class IdialsInnerrWidget( QWidget):
 
     def append_text(self,text):
         trim_cor_text = text[0:len(text) - 1]
-        print "appending <<<", trim_cor_text, ">>> to GUI text"
         self.super_parent.txt_out.append_green(trim_cor_text)
         self.super_parent.update_pbar_text(trim_cor_text)
 
