@@ -87,22 +87,12 @@ class Text_w_Bar(QWidget):
         self.info_line = QLineEdit()
         self.info_line.setText("AAAAAAAAAAAAAAAAAA11111111111111111333333333333334")
         self.info_line.setReadOnly(True)
-        self.button = QPushButton("Toggle Overlay")
 
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.addWidget(self.info_line)
-        self.verticalLayout.addWidget(self.button)
 
         self.painted_overlay = OverlayPaintWidg(self.info_line)
         self.painted_overlay.hide()
-
-        self.button.clicked.connect(self.unpdate_w_click)
-
-    def unpdate_w_click(self):
-        if self.painted_overlay.isVisible():
-            self.end_motion()
-        else:
-            self.start_motion()
 
     def start_motion(self):
         self.painted_overlay.setVisible(True)
