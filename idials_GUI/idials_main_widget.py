@@ -203,9 +203,31 @@ class MainWidget(QMainWindow):
         main_box.addWidget(self.bottom_bar_n_info)
         main_widget.setLayout(main_box)
 
+        menubar = self.menuBar()
+
+        fileMenu = menubar.addMenu('File')
+        fileMenu.addAction("&Open...", self.openFile, "Ctrl+O")
+        fileMenu.addAction("E&xit", self.quit, "Ctrl+Q")
+
+        configMenu = menubar.addMenu('config')
+        configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
+
+
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
         self.show()
+
+    def openFile(self):
+        print "openFile"
+
+    def quit(self):
+        print "quit"
+
+    def togle_text_rt(self):
+        print "Toggle real time text"
+
+
+
 
     def btn_go_clicked(self):
         self.idials_widget.run_clicked()
