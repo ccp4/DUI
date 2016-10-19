@@ -33,6 +33,10 @@ class OverlayWidg(QWidget):
         w = self.width() / self.n_of_pos
         x1 -= w
 
+        rd = 1
+        gr = 1
+        bl = 255
+
         painter.drawRect(x1, y1, w, h)
         painter.fillRect(x1, y1, w, h, QColor(1, 1, 255, 127))
 
