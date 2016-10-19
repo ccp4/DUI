@@ -133,6 +133,8 @@ class IdialsOuterWidget( QWidget):
         super(IdialsOuterWidget, self).__init__(parent)
 
         my_inner_widget = IdialsInnerrWidget(self)
+        my_inner_widget.rtime_txt_on = True
+
         vbox =  QVBoxLayout()
         vbox.addWidget(my_inner_widget)
 
@@ -292,7 +294,9 @@ class IdialsInnerrWidget( QWidget):
     def append_text(self,text):
         trim_cor_text = text[0:len(text) - 1]
         self.super_parent.txt_out.append_green(trim_cor_text)
-        self.super_parent.update_pbar_text(trim_cor_text)
+
+        if( self.rtime_txt_on == True ):
+            self.super_parent.update_pbar_text(trim_cor_text)
 
 
     def started_thread(self):
@@ -348,6 +352,7 @@ class IdialsInnerrWidget( QWidget):
         updt_str = " Ready to run >> " + self.controller.get_mode()
 
         print updt_str
+
         self.super_parent.update_pbar_text(updt_str)
 
 

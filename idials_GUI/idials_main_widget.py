@@ -174,6 +174,7 @@ class MainWidget(QMainWindow):
         dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
 
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
+        self.idials_widget.rtime_txt_on = True
 
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
@@ -203,6 +204,7 @@ class MainWidget(QMainWindow):
         main_box.addWidget(self.bottom_bar_n_info)
         main_widget.setLayout(main_box)
 
+
         menubar = self.menuBar()
 
         fileMenu = menubar.addMenu('File')
@@ -224,10 +226,15 @@ class MainWidget(QMainWindow):
         print "quit"
 
     def togle_text_rt(self):
+        print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
+        if( self.idials_widget.rtime_txt_on == True):
+            self.idials_widget.rtime_txt_on = False
+
+        else:
+            self.idials_widget.rtime_txt_on = True
+        print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
+
         print "Toggle real time text"
-
-
-
 
     def btn_go_clicked(self):
         self.idials_widget.run_clicked()
