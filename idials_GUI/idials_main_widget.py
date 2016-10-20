@@ -97,6 +97,11 @@ class Text_w_Bar(QWidget):
         self.info_line.setReadOnly(True)
 
         self.verticalLayout = QVBoxLayout(self)
+
+        self.verticalLayout.setMargin(0)
+        self.verticalLayout.setContentsMargins(QMargins(0,0,0,0))
+        self.verticalLayout.setSpacing(0)
+
         self.verticalLayout.addWidget(self.info_line)
 
         self.painted_overlay = OverlayPaintWidg(self.info_line)
@@ -121,9 +126,15 @@ class CentreWidget( QWidget):
     def __call__(self, widget_buts = None, go_btn = None, param_widg = None):
 
         main_box = QVBoxLayout()
+        main_box.setMargin(0)
+        main_box.setContentsMargins(QMargins(0,0,0,0))
+        main_box.setSpacing(0)
 
-        #h_or_v_box = QVBoxLayout()
         h_or_v_box = QHBoxLayout()
+
+        h_or_v_box.setMargin(0)
+        h_or_v_box.setContentsMargins(QMargins(0,0,0,0))
+        h_or_v_box.setSpacing(0)
 
         h_or_v_box.addWidget(widget_buts)
         h_or_v_box.addWidget(go_btn)
@@ -195,12 +206,16 @@ class MainWidget(QMainWindow):
         self.txt_out = self.output_wg.in_txt_out
 
         multi_splitter.addWidget(self.output_wg)
-
         main_widget = QWidget()
         main_box = QVBoxLayout()
-        self.bottom_bar_n_info = Text_w_Bar()
+
+        main_box.setMargin(0)
+        main_box.setContentsMargins(QMargins(0,0,0,0))
+        main_box.setSpacing(0)
 
         main_box.addWidget(multi_splitter)
+
+        self.bottom_bar_n_info = Text_w_Bar()
         main_box.addWidget(self.bottom_bar_n_info)
         main_widget.setLayout(main_box)
 
