@@ -33,17 +33,27 @@ class Main( QMainWindow):
         self.centralWidget.setLayout(self.mainLayout)
 
         self.setCentralWidget(self.centralWidget)
+        self.lst_ops = []
+
 
     def delWidget(self):
         print "delWidget"
+        lng_lst = len(self.lst_ops)
+        print "lng_lst =", lng_lst
+
+        self.scrollLayout.layout().removeWidget(self.lst_ops[lng_lst - 1])
+        self.lst_ops[lng_lst - 1].setParent(None)
+        self.lst_ops
+        del self.lst_ops[-1]
+
 
     def addWidget(self):
-        lst_ops = []
+
         for lin in xrange(3):
             labl = str("op #" + str(lin) + "Pick me")
             new_op = QPushButton(labl)
             self.scrollLayout.addWidget(new_op)
-            lst_ops.append(new_op)
+            self.lst_ops.append(new_op)
 
 
 
