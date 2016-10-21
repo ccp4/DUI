@@ -70,15 +70,9 @@ class Main( QMainWindow):
                 print "inner_value =", value[inner_key]
                 print "\n"
 
-                if( inner_key == "cc_nrefs" ):
-                    cc_nrefs_val = value["cc_nrefs"]
-                    cc_nrefs_str = str(cc_nrefs_val)
-                    print "__________________________________________ type(cc_nrefs_val) =", type(cc_nrefs_val)
-                    #'{:06.2f}'.format(3.141592653589793)
-
-                elif( inner_key == "rmsd" ):
+                if( inner_key == "rmsd" ):
                     rmsd_val = value["rmsd"]
-                    rmsd_str = str(rmsd_val)
+                    rmsd_str = "   {:6.5}   ".format(rmsd_val)
                     print "__________________________________________ type(rmsd_val) =", type(rmsd_val)
 
                 elif( inner_key == "cb_op" ):
@@ -88,12 +82,13 @@ class Main( QMainWindow):
 
                 elif( inner_key ==  "min_cc" ):
                     min_cc_val = value["min_cc"]
-                    min_cc_str = str(min_cc_val)
+                    min_cc_str = "   {:6.5}   ".format(min_cc_val)
+
                     print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
 
                 elif( inner_key ==  "max_cc" ):
                     max_cc_val = value["max_cc"]
-                    max_cc_str = str(max_cc_val)
+                    max_cc_str = "   {:6.5}   ".format(max_cc_val)
                     print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
 
 
@@ -110,7 +105,7 @@ class Main( QMainWindow):
                 elif( inner_key ==  "max_angular_difference" ):
 
                     angular_diff_val = value["max_angular_difference"]
-                    angular_diff_str = str(angular_diff_val)
+                    angular_diff_str = "   {:6.5}   ".format(angular_diff_val)
                     print "__________________________________________ type(angular_diff_val) =", type(angular_diff_val)
 
                 elif( inner_key ==  "correlation_coefficients" ):
@@ -118,8 +113,15 @@ class Main( QMainWindow):
                     corr_coeff_str =str(corr_coeff_val)
                     print "__________________________________________ type(corr_coeff_val) =", type(corr_coeff_val)
 
+                    '''
 
-            labl = cc_nrefs_str + rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str
+                elif( inner_key == "cc_nrefs" ):
+                    cc_nrefs_val = value["cc_nrefs"]
+                    cc_nrefs_str = str(cc_nrefs_val)
+                    print "__________________________________________ type(cc_nrefs_val) =", type(cc_nrefs_val)
+                    '''
+
+            labl = rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str + min_cc_str# + cc_nrefs_str
 
             if( len(labl) > longest_str_lenght ):
                 longest_str_lenght = len(labl)
