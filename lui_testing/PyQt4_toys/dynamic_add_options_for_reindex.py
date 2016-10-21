@@ -101,11 +101,24 @@ class Main( QMainWindow):
             print "\n\n"
             lst_labels.append(labl)
 
+        font = QFont("Monospace")
+        font.setWeight(75)
+        font.setBold(True)
+        my_label = QLabel()
+        my_label.setFont(font)
+
+        label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
+
+        my_label.setText(label_str)
+
+
         print "longest_str_lenght =", longest_str_lenght
 
+        self.scrollLayout.addWidget(my_label)
 
         for labl in lst_labels:
             new_op = QPushButton(labl)
+            new_op.setFont(font)
             self.scrollLayout.addWidget(new_op)
             self.lst_ops.append(new_op)
 
