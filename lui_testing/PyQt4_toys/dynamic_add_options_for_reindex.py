@@ -71,26 +71,52 @@ class Main( QMainWindow):
                 print "\n"
 
                 if( inner_key == "cc_nrefs" ):
-                    cc_nrefs_str = str(value["cc_nrefs"]) + " "
+                    cc_nrefs_val = value["cc_nrefs"]
+                    cc_nrefs_str = str(cc_nrefs_val)
+                    print "__________________________________________ type(cc_nrefs_val) =", type(cc_nrefs_val)
+                    #'{:06.2f}'.format(3.141592653589793)
 
                 elif( inner_key == "rmsd" ):
-                    rmsd_str = str(value["rmsd"]) + " "
+                    rmsd_val = value["rmsd"]
+                    rmsd_str = str(rmsd_val)
+                    print "__________________________________________ type(rmsd_val) =", type(rmsd_val)
 
                 elif( inner_key == "cb_op" ):
-                    cb_op_str = str(value["cb_op"]) + " "
+                    cb_op_val = value["cb_op"]
+                    cb_op_str = str(cb_op_val)
+                    print "__________________________________________ type(cb_op_val) =", type(cb_op_val)
 
                 elif( inner_key ==  "min_cc" ):
-                    min_cc_str = str(value["min_cc"]) + " "
+                    min_cc_val = value["min_cc"]
+                    min_cc_str = str(min_cc_val)
+                    print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
+
+                elif( inner_key ==  "max_cc" ):
+                    max_cc_val = value["max_cc"]
+                    max_cc_str = str(max_cc_val)
+                    print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
+
 
                 elif( inner_key == "bravais" ):
-                    bravais_str = str(value["bravais"]) + " "
+                    bravais_val = value["bravais"]
+                    bravais_str = str(bravais_val)
+                    print "__________________________________________ type(bravais_val) =", type(bravais_val)
 
                 elif( inner_key ==  "nspots" ):
-                    nspots_str = str(value["nspots"]) + " "
+                    nspots_val = value["nspots"]
+                    nspots_str = str(nspots_val)
+                    print "__________________________________________ type(nspots_val) =", type(nspots_val)
 
-                elif( inner_key == "max_cc" ):
-                    max_cc_str = str(value["max_cc"]) + " "
+                elif( inner_key ==  "max_angular_difference" ):
 
+                    angular_diff_val = value["max_angular_difference"]
+                    angular_diff_str = str(angular_diff_val)
+                    print "__________________________________________ type(angular_diff_val) =", type(angular_diff_val)
+
+                elif( inner_key ==  "correlation_coefficients" ):
+                    corr_coeff_val = value["correlation_coefficients"]
+                    corr_coeff_str =str(corr_coeff_val)
+                    print "__________________________________________ type(corr_coeff_val) =", type(corr_coeff_val)
 
 
             labl = cc_nrefs_str + rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str
