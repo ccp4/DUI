@@ -231,7 +231,10 @@ class IdialsInnerrWidget( QWidget):
 
             imageLabel =  QLabel()
             image =  QImage(dials_logo)
-            imageLabel.setPixmap( QPixmap.fromImage(image))
+            #original scale = QSize(380,240)
+            sc_image = image.scaled(QSize(170,120))
+            imageLabel.setPixmap( QPixmap.fromImage(sc_image))
+
             big_vbox.addWidget(imageLabel)
 
         self.thrd = MyThread(self)#, self.controller)

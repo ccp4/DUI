@@ -55,18 +55,56 @@ class Main( QMainWindow):
         with open(tmp_path) as json_file:
             json_data = json.load(json_file)
 
+        lst_labels = []
+
+        longest_str_lenght = 0
+
         for key, value in json_data.iteritems():
-            print key
+            print "key =", key
             print "\n"
-            print value
+            print "value =", value
             print "\n"
+            #labl = ""
             for inner_key in value:
                 print "inner_key =", inner_key
                 print "inner_value =", value[inner_key]
                 print "\n"
 
-        for lin in xrange(3):
-            labl = str("op #" + str(lin) + "Pick me")
+                if( inner_key == "cc_nrefs" ):
+                    cc_nrefs_str = str(value["cc_nrefs"]) + " "
+
+                elif( inner_key == "rmsd" ):
+                    rmsd_str = str(value["rmsd"]) + " "
+
+                elif( inner_key == "cb_op" ):
+                    cb_op_str = str(value["cb_op"]) + " "
+
+                elif( inner_key ==  "min_cc" ):
+                    min_cc_str = str(value["min_cc"]) + " "
+
+                elif( inner_key == "bravais" ):
+                    bravais_str = str(value["bravais"]) + " "
+
+                elif( inner_key ==  "nspots" ):
+                    nspots_str = str(value["nspots"]) + " "
+
+                elif( inner_key == "max_cc" ):
+                    max_cc_str = str(value["max_cc"]) + " "
+
+
+
+            labl = cc_nrefs_str + rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str
+
+            if( len(labl) > longest_str_lenght ):
+                longest_str_lenght = len(labl)
+
+            print "\n\n"
+            lst_labels.append(labl)
+
+        print "longest_str_lenght =", longest_str_lenght
+
+
+        for labl in lst_labels:
             new_op = QPushButton(labl)
             self.scrollLayout.addWidget(new_op)
             self.lst_ops.append(new_op)
