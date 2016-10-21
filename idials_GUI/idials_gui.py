@@ -228,7 +228,6 @@ class IdialsInnerrWidget( QWidget):
             print "No logo to add"
         else:
             print "Adding DIALS logo from path:", dials_logo
-
             imageLabel =  QLabel()
             image =  QImage(dials_logo)
             #original scale = QSize(380,240)
