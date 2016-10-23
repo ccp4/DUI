@@ -1,15 +1,15 @@
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
 import sys
 import json
 
 def ops_list_from_json(json_path = None):
     if( json_path == None ):
-        #tmp_path = "../../../dui_test/X4_wide/dui_idials_test_01/dials-1/4_refine_bravais_settings/bravais_summary.json"
-        tmp_path = "../../../dui_test/X4_wide_first_5_img/dui_idials_test_01/dials-1/7_refine_bravais_settings/bravais_summary.json"
-        #tmp_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
+        #json_path = "../../../dui_test/X4_wide/dui_idials_test_01/dials-1/4_refine_bravais_settings/bravais_summary.json"
+        json_path = "../../../dui_test/X4_wide_first_5_img/dui_idials_test_01/dials-1/7_refine_bravais_settings/bravais_summary.json"
+        #json_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
 
-    with open(tmp_path) as json_file:
+    with open(json_path) as json_file:
         json_data = json.load(json_file)
 
     lst_ops = []
@@ -173,7 +173,7 @@ class Main( QMainWindow):
 
     def addWidget(self):
 
-        lst_labels = ops_list_from_json()
+        lst_labels = ops_list_from_json(json_path = "../../../dui_test/only_8_img_trimed_data/dui_idials_tst_02/dials-1/8_refine_bravais_settings/bravais_summary.json")
 
         font = QFont("Monospace")
         font.setWeight(75)
