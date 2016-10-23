@@ -117,7 +117,23 @@ class Main( QMainWindow):
 
                 elif( inner_key ==  "unit_cell" ):
                     unit_cell_val = value["unit_cell"]
-                    unit_cell_str = str(unit_cell_val)
+                    uc_d = unit_cell_val[0:3]
+                    uc_a = unit_cell_val[3:6]
+
+                    print "uc_d =", uc_d
+                    print "uc_a =", uc_a
+
+
+                    unit_cell_str = "({:9.3} ".format(uc_d[0]) \
+                                  + " {:9.3} ".format(uc_d[1]) \
+                                  + " {:9.3})".format(uc_d[2]) \
+                                  + ", " \
+                                  + "({:9.3} ".format(uc_a[0]) \
+                                  + " {:9.3} ".format(uc_a[1]) \
+                                  + " {:9.3})".format(uc_a[2]) \
+
+                    #unit_cell_str = str(unit_cell_val)
+
                     print "__________________________________________ type(unit_cell_val) =", type(unit_cell_val)
 
 
@@ -138,7 +154,7 @@ class Main( QMainWindow):
 
             #labl = rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str + min_cc_str# + cc_nrefs_str
             labl = rmsd_str + angular_diff_str + min_cc_str + max_cc_str + nspots_str \
-                  + bravais_str + cb_op_str
+                  + bravais_str + cb_op_str +unit_cell_str
 
             if( len(labl) > longest_str_lenght ):
                 longest_str_lenght = len(labl)
