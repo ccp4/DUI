@@ -50,7 +50,8 @@ class Main( QMainWindow):
     def addWidget(self):
 
         import json
-        tmp_path = "../../../dui_test/X4_wide_first_5_img/dui_idials_test_01/dials-1/7_refine_bravais_settings/bravais_summary.json"
+        tmp_path = "../../../dui_test/X4_wide/dui_idials_test_01/dials-1/4_refine_bravais_settings/bravais_summary.json"
+        #tmp_path = "../../../dui_test/X4_wide_first_5_img/dui_idials_test_01/dials-1/7_refine_bravais_settings/bravais_summary.json"
         #tmp_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
         with open(tmp_path) as json_file:
             json_data = json.load(json_file)
@@ -71,7 +72,7 @@ class Main( QMainWindow):
 
                 if( inner_key == "rmsd" ):
                     rmsd_val = value["rmsd"]
-                    rmsd_str = "   {:9.3}   ".format(rmsd_val)
+                    rmsd_str = " {:7.3}".format(rmsd_val)
                     print "__________________________________________ type(rmsd_val) =", type(rmsd_val)
 
                 elif( inner_key == "cb_op" ):
@@ -81,13 +82,13 @@ class Main( QMainWindow):
 
                 elif( inner_key ==  "min_cc" ):
                     min_cc_val = value["min_cc"]
-                    min_cc_str = "   {:9.3}   ".format(min_cc_val)
+                    min_cc_str = " {:7.3}".format(min_cc_val)
 
                     print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
 
                 elif( inner_key ==  "max_cc" ):
                     max_cc_val = value["max_cc"]
-                    max_cc_str = "   {:9.3}   ".format(max_cc_val)
+                    max_cc_str = " {:7.3}".format(max_cc_val)
                     print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
 
 
@@ -100,13 +101,13 @@ class Main( QMainWindow):
 
                 elif( inner_key ==  "nspots" ):
                     nspots_val = value["nspots"]
-                    nspots_str ="   {:12}   ".format(nspots_val)
+                    nspots_str =" {:12} ".format(nspots_val)
                     print "__________________________________________ type(nspots_val) =", type(nspots_val)
 
                 elif( inner_key ==  "max_angular_difference" ):
 
                     angular_diff_val = value["max_angular_difference"]
-                    angular_diff_str = "   {:9.3}   ".format(angular_diff_val)
+                    angular_diff_str = " {:7.4} ".format(angular_diff_val)
                     print "__________________________________________ type(angular_diff_val) =", type(angular_diff_val)
 
                 elif( inner_key ==  "correlation_coefficients" ):
@@ -124,13 +125,13 @@ class Main( QMainWindow):
                     print "uc_a =", uc_a
 
 
-                    unit_cell_str = "({:9.3} ".format(uc_d[0]) \
-                                  + " {:9.3} ".format(uc_d[1]) \
-                                  + " {:9.3})".format(uc_d[2]) \
+                    unit_cell_str = "({:6.3} ".format(uc_d[0]) \
+                                  + " {:6.3} ".format(uc_d[1]) \
+                                  + " {:6.3})".format(uc_d[2]) \
                                   + ", " \
-                                  + "({:9.3} ".format(uc_a[0]) \
-                                  + " {:9.3} ".format(uc_a[1]) \
-                                  + " {:9.3})".format(uc_a[2]) \
+                                  + "({:8.3} ".format(uc_a[0]) \
+                                  + " {:8.3} ".format(uc_a[1]) \
+                                  + " {:8.3})".format(uc_a[2]) \
 
                     #unit_cell_str = str(unit_cell_val)
 
@@ -152,9 +153,11 @@ class Main( QMainWindow):
 
             print "\n\n"
 
+            "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
+
             #labl = rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str + min_cc_str# + cc_nrefs_str
-            labl = rmsd_str + angular_diff_str + min_cc_str + max_cc_str + nspots_str \
-                  + bravais_str + cb_op_str +unit_cell_str
+            labl = angular_diff_str + rmsd_str + min_cc_str + max_cc_str + nspots_str \
+                  + bravais_str +unit_cell_str + cb_op_str
 
             if( len(labl) > longest_str_lenght ):
                 longest_str_lenght = len(labl)
