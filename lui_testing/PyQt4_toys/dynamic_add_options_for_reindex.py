@@ -50,8 +50,8 @@ class Main( QMainWindow):
     def addWidget(self):
 
         import json
-
-        tmp_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
+        tmp_path = "../../../dui_test/X4_wide_first_5_img/dui_idials_test_01/dials-1/7_refine_bravais_settings/bravais_summary.json"
+        #tmp_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
         with open(tmp_path) as json_file:
             json_data = json.load(json_file)
 
@@ -68,44 +68,45 @@ class Main( QMainWindow):
             for inner_key in value:
                 print "inner_key =", inner_key
                 print "inner_value =", value[inner_key]
-                print "\n"
 
                 if( inner_key == "rmsd" ):
                     rmsd_val = value["rmsd"]
-                    rmsd_str = "   {:6.5}   ".format(rmsd_val)
+                    rmsd_str = "   {:9.3}   ".format(rmsd_val)
                     print "__________________________________________ type(rmsd_val) =", type(rmsd_val)
 
                 elif( inner_key == "cb_op" ):
                     cb_op_val = value["cb_op"]
-                    cb_op_str = str(cb_op_val)
+                    cb_op_str = str(cb_op_val).rjust(25)
                     print "__________________________________________ type(cb_op_val) =", type(cb_op_val)
 
                 elif( inner_key ==  "min_cc" ):
                     min_cc_val = value["min_cc"]
-                    min_cc_str = "   {:6.5}   ".format(min_cc_val)
+                    min_cc_str = "   {:9.3}   ".format(min_cc_val)
 
                     print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
 
                 elif( inner_key ==  "max_cc" ):
                     max_cc_val = value["max_cc"]
-                    max_cc_str = "   {:6.5}   ".format(max_cc_val)
+                    max_cc_str = "   {:9.3}   ".format(max_cc_val)
                     print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
 
 
                 elif( inner_key == "bravais" ):
                     bravais_val = value["bravais"]
-                    bravais_str = str(bravais_val)
+
+                    bravais_str =str(bravais_val).rjust(5)
+                    #bravais_str = str(bravais_val)
                     print "__________________________________________ type(bravais_val) =", type(bravais_val)
 
                 elif( inner_key ==  "nspots" ):
                     nspots_val = value["nspots"]
-                    nspots_str = str(nspots_val)
+                    nspots_str ="   {:12}   ".format(nspots_val)
                     print "__________________________________________ type(nspots_val) =", type(nspots_val)
 
                 elif( inner_key ==  "max_angular_difference" ):
 
                     angular_diff_val = value["max_angular_difference"]
-                    angular_diff_str = "   {:6.5}   ".format(angular_diff_val)
+                    angular_diff_str = "   {:9.3}   ".format(angular_diff_val)
                     print "__________________________________________ type(angular_diff_val) =", type(angular_diff_val)
 
                 elif( inner_key ==  "correlation_coefficients" ):
@@ -113,15 +114,31 @@ class Main( QMainWindow):
                     corr_coeff_str =str(corr_coeff_val)
                     print "__________________________________________ type(corr_coeff_val) =", type(corr_coeff_val)
 
-                    '''
 
+                elif( inner_key ==  "unit_cell" ):
+                    unit_cell_val = value["unit_cell"]
+                    unit_cell_str = str(unit_cell_val)
+                    print "__________________________________________ type(unit_cell_val) =", type(unit_cell_val)
+
+
+                elif( inner_key ==  "recommended" ):
+                    recommended_val = value["recommended"]
+                    recommended_str = str(recommended_val)
+                    print "__________________________________________ type(recommended_val) =", type(recommended_val)
+
+                    #'''
                 elif( inner_key == "cc_nrefs" ):
                     cc_nrefs_val = value["cc_nrefs"]
                     cc_nrefs_str = str(cc_nrefs_val)
                     print "__________________________________________ type(cc_nrefs_val) =", type(cc_nrefs_val)
-                    '''
+                    #'''
+                print "\n"
 
-            labl = rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str + min_cc_str# + cc_nrefs_str
+            print "\n\n"
+
+            #labl = rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str + min_cc_str# + cc_nrefs_str
+            labl = rmsd_str + angular_diff_str + min_cc_str + max_cc_str + nspots_str \
+                  + bravais_str + cb_op_str
 
             if( len(labl) > longest_str_lenght ):
                 longest_str_lenght = len(labl)

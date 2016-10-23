@@ -26,7 +26,7 @@ class inner_widg( QWidget):
         box_format_0.local_path = "format"
         box_format_0.tmp_lst=[]
         box_format_0.tmp_lst.append("mtz")
-        box_format_0.tmp_lst.append("hkl")
+        box_format_0.tmp_lst.append("sadabs")
         box_format_0.tmp_lst.append("nxs")
         box_format_0.tmp_lst.append("mosflm")
         box_format_0.tmp_lst.append("xds")
@@ -57,174 +57,210 @@ class inner_widg( QWidget):
         hbox_lay_summation_1.addWidget(box_summation_1)
         bg_box.addLayout(hbox_lay_summation_1)
 
-        label_2 = QLabel("mtz")
-        label_2.setPalette(palette_scope)
-        label_2.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_2)
+        hbox_lay_debug_2 =  QHBoxLayout()
+        label_debug_2 = QLabel("debug")
+        label_debug_2.setPalette(palette_object)
+        label_debug_2.setFont(QFont("Monospace", 10))
+        hbox_lay_debug_2.addWidget(label_debug_2)
 
-        hbox_lay_ignore_panels_3 =  QHBoxLayout()
-        label_ignore_panels_3 = QLabel("    ignore_panels")
-        label_ignore_panels_3.setPalette(palette_object)
-        label_ignore_panels_3.setFont(QFont("Monospace", 10))
-        hbox_lay_ignore_panels_3.addWidget(label_ignore_panels_3)
+        box_debug_2 = QComboBox()
+        box_debug_2.local_path = "debug"
+        box_debug_2.tmp_lst=[]
+        box_debug_2.tmp_lst.append("True")
+        box_debug_2.tmp_lst.append("False")
+        for lst_itm in box_debug_2.tmp_lst:
+            box_debug_2.addItem(lst_itm)
+        box_debug_2.setCurrentIndex(1)
+        box_debug_2.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_debug_2.addWidget(box_debug_2)
+        bg_box.addLayout(hbox_lay_debug_2)
 
-        box_ignore_panels_3 = QComboBox()
-        box_ignore_panels_3.local_path = "mtz.ignore_panels"
-        box_ignore_panels_3.tmp_lst=[]
-        box_ignore_panels_3.tmp_lst.append("True")
-        box_ignore_panels_3.tmp_lst.append("False")
-        for lst_itm in box_ignore_panels_3.tmp_lst:
-            box_ignore_panels_3.addItem(lst_itm)
-        box_ignore_panels_3.setCurrentIndex(1)
-        box_ignore_panels_3.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_ignore_panels_3.addWidget(box_ignore_panels_3)
-        bg_box.addLayout(hbox_lay_ignore_panels_3)
+        label_3 = QLabel("mtz")
+        label_3.setPalette(palette_scope)
+        label_3.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_3)
 
-        hbox_lay_include_partials_4 =  QHBoxLayout()
-        label_include_partials_4 = QLabel("    include_partials")
-        label_include_partials_4.setPalette(palette_object)
-        label_include_partials_4.setFont(QFont("Monospace", 10))
-        hbox_lay_include_partials_4.addWidget(label_include_partials_4)
+        hbox_lay_ignore_panels_4 =  QHBoxLayout()
+        label_ignore_panels_4 = QLabel("    ignore_panels")
+        label_ignore_panels_4.setPalette(palette_object)
+        label_ignore_panels_4.setFont(QFont("Monospace", 10))
+        hbox_lay_ignore_panels_4.addWidget(label_ignore_panels_4)
 
-        box_include_partials_4 = QComboBox()
-        box_include_partials_4.local_path = "mtz.include_partials"
-        box_include_partials_4.tmp_lst=[]
-        box_include_partials_4.tmp_lst.append("True")
-        box_include_partials_4.tmp_lst.append("False")
-        for lst_itm in box_include_partials_4.tmp_lst:
-            box_include_partials_4.addItem(lst_itm)
-        box_include_partials_4.setCurrentIndex(1)
-        box_include_partials_4.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_include_partials_4.addWidget(box_include_partials_4)
-        bg_box.addLayout(hbox_lay_include_partials_4)
+        box_ignore_panels_4 = QComboBox()
+        box_ignore_panels_4.local_path = "mtz.ignore_panels"
+        box_ignore_panels_4.tmp_lst=[]
+        box_ignore_panels_4.tmp_lst.append("True")
+        box_ignore_panels_4.tmp_lst.append("False")
+        for lst_itm in box_ignore_panels_4.tmp_lst:
+            box_ignore_panels_4.addItem(lst_itm)
+        box_ignore_panels_4.setCurrentIndex(1)
+        box_ignore_panels_4.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_ignore_panels_4.addWidget(box_ignore_panels_4)
+        bg_box.addLayout(hbox_lay_ignore_panels_4)
 
-        hbox_lay_keep_partials_5 =  QHBoxLayout()
-        label_keep_partials_5 = QLabel("    keep_partials")
-        label_keep_partials_5.setPalette(palette_object)
-        label_keep_partials_5.setFont(QFont("Monospace", 10))
-        hbox_lay_keep_partials_5.addWidget(label_keep_partials_5)
+        hbox_lay_include_partials_5 =  QHBoxLayout()
+        label_include_partials_5 = QLabel("    include_partials")
+        label_include_partials_5.setPalette(palette_object)
+        label_include_partials_5.setFont(QFont("Monospace", 10))
+        hbox_lay_include_partials_5.addWidget(label_include_partials_5)
 
-        box_keep_partials_5 = QComboBox()
-        box_keep_partials_5.local_path = "mtz.keep_partials"
-        box_keep_partials_5.tmp_lst=[]
-        box_keep_partials_5.tmp_lst.append("True")
-        box_keep_partials_5.tmp_lst.append("False")
-        for lst_itm in box_keep_partials_5.tmp_lst:
-            box_keep_partials_5.addItem(lst_itm)
-        box_keep_partials_5.setCurrentIndex(1)
-        box_keep_partials_5.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_keep_partials_5.addWidget(box_keep_partials_5)
-        bg_box.addLayout(hbox_lay_keep_partials_5)
+        box_include_partials_5 = QComboBox()
+        box_include_partials_5.local_path = "mtz.include_partials"
+        box_include_partials_5.tmp_lst=[]
+        box_include_partials_5.tmp_lst.append("True")
+        box_include_partials_5.tmp_lst.append("False")
+        for lst_itm in box_include_partials_5.tmp_lst:
+            box_include_partials_5.addItem(lst_itm)
+        box_include_partials_5.setCurrentIndex(1)
+        box_include_partials_5.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_include_partials_5.addWidget(box_include_partials_5)
+        bg_box.addLayout(hbox_lay_include_partials_5)
 
-        hbox_lay_min_isigi_6 =  QHBoxLayout()
-        label_min_isigi_6 = QLabel("    min_isigi")
-        label_min_isigi_6.setPalette(palette_object)
-        label_min_isigi_6.setFont(QFont("Monospace", 10))
-        hbox_lay_min_isigi_6.addWidget(label_min_isigi_6)
+        hbox_lay_keep_partials_6 =  QHBoxLayout()
+        label_keep_partials_6 = QLabel("    keep_partials")
+        label_keep_partials_6.setPalette(palette_object)
+        label_keep_partials_6.setFont(QFont("Monospace", 10))
+        hbox_lay_keep_partials_6.addWidget(label_keep_partials_6)
 
-        box_min_isigi_6 = QDoubleSpinBox()
-        box_min_isigi_6.setValue(-5.0)
-        box_min_isigi_6.local_path = "mtz.min_isigi"
-        box_min_isigi_6.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_min_isigi_6.addWidget(box_min_isigi_6)
-        bg_box.addLayout(hbox_lay_min_isigi_6)
+        box_keep_partials_6 = QComboBox()
+        box_keep_partials_6.local_path = "mtz.keep_partials"
+        box_keep_partials_6.tmp_lst=[]
+        box_keep_partials_6.tmp_lst.append("True")
+        box_keep_partials_6.tmp_lst.append("False")
+        for lst_itm in box_keep_partials_6.tmp_lst:
+            box_keep_partials_6.addItem(lst_itm)
+        box_keep_partials_6.setCurrentIndex(1)
+        box_keep_partials_6.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_keep_partials_6.addWidget(box_keep_partials_6)
+        bg_box.addLayout(hbox_lay_keep_partials_6)
 
-        hbox_lay_force_static_model_7 =  QHBoxLayout()
-        label_force_static_model_7 = QLabel("    force_static_model")
-        label_force_static_model_7.setPalette(palette_object)
-        label_force_static_model_7.setFont(QFont("Monospace", 10))
-        hbox_lay_force_static_model_7.addWidget(label_force_static_model_7)
+        hbox_lay_min_isigi_7 =  QHBoxLayout()
+        label_min_isigi_7 = QLabel("    min_isigi")
+        label_min_isigi_7.setPalette(palette_object)
+        label_min_isigi_7.setFont(QFont("Monospace", 10))
+        hbox_lay_min_isigi_7.addWidget(label_min_isigi_7)
 
-        box_force_static_model_7 = QComboBox()
-        box_force_static_model_7.local_path = "mtz.force_static_model"
-        box_force_static_model_7.tmp_lst=[]
-        box_force_static_model_7.tmp_lst.append("True")
-        box_force_static_model_7.tmp_lst.append("False")
-        for lst_itm in box_force_static_model_7.tmp_lst:
-            box_force_static_model_7.addItem(lst_itm)
-        box_force_static_model_7.setCurrentIndex(1)
-        box_force_static_model_7.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_force_static_model_7.addWidget(box_force_static_model_7)
-        bg_box.addLayout(hbox_lay_force_static_model_7)
+        box_min_isigi_7 = QDoubleSpinBox()
+        box_min_isigi_7.setValue(-5.0)
+        box_min_isigi_7.local_path = "mtz.min_isigi"
+        box_min_isigi_7.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_min_isigi_7.addWidget(box_min_isigi_7)
+        bg_box.addLayout(hbox_lay_min_isigi_7)
 
+        hbox_lay_force_static_model_8 =  QHBoxLayout()
+        label_force_static_model_8 = QLabel("    force_static_model")
+        label_force_static_model_8.setPalette(palette_object)
+        label_force_static_model_8.setFont(QFont("Monospace", 10))
+        hbox_lay_force_static_model_8.addWidget(label_force_static_model_8)
 
-        label_9 = QLabel("hklf4")
-        label_9.setPalette(palette_scope)
-        label_9.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_9)
-
-
-        hbox_lay_run_11 =  QHBoxLayout()
-        label_run_11 = QLabel("    run")
-        label_run_11.setPalette(palette_object)
-        label_run_11.setFont(QFont("Monospace", 10))
-        hbox_lay_run_11.addWidget(label_run_11)
-
-        box_run_11 = QSpinBox()
-        box_run_11.setValue(0)
-        box_run_11.local_path = "hklf4.run"
-        box_run_11.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_run_11.addWidget(box_run_11)
-        bg_box.addLayout(hbox_lay_run_11)
-
-        label_12 = QLabel("xds_ascii")
-        label_12.setPalette(palette_scope)
-        label_12.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_12)
+        box_force_static_model_8 = QComboBox()
+        box_force_static_model_8.local_path = "mtz.force_static_model"
+        box_force_static_model_8.tmp_lst=[]
+        box_force_static_model_8.tmp_lst.append("True")
+        box_force_static_model_8.tmp_lst.append("False")
+        for lst_itm in box_force_static_model_8.tmp_lst:
+            box_force_static_model_8.addItem(lst_itm)
+        box_force_static_model_8.setCurrentIndex(1)
+        box_force_static_model_8.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_force_static_model_8.addWidget(box_force_static_model_8)
+        bg_box.addLayout(hbox_lay_force_static_model_8)
 
 
-        label_14 = QLabel("nxs")
+        label_10 = QLabel("sadabs")
+        label_10.setPalette(palette_scope)
+        label_10.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_10)
+
+
+        hbox_lay_run_12 =  QHBoxLayout()
+        label_run_12 = QLabel("    run")
+        label_run_12.setPalette(palette_object)
+        label_run_12.setFont(QFont("Monospace", 10))
+        hbox_lay_run_12.addWidget(label_run_12)
+
+        box_run_12 = QSpinBox()
+        box_run_12.setValue(1)
+        box_run_12.local_path = "sadabs.run"
+        box_run_12.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_run_12.addWidget(box_run_12)
+        bg_box.addLayout(hbox_lay_run_12)
+
+        hbox_lay_predict_13 =  QHBoxLayout()
+        label_predict_13 = QLabel("    predict")
+        label_predict_13.setPalette(palette_object)
+        label_predict_13.setFont(QFont("Monospace", 10))
+        hbox_lay_predict_13.addWidget(label_predict_13)
+
+        box_predict_13 = QComboBox()
+        box_predict_13.local_path = "sadabs.predict"
+        box_predict_13.tmp_lst=[]
+        box_predict_13.tmp_lst.append("True")
+        box_predict_13.tmp_lst.append("False")
+        for lst_itm in box_predict_13.tmp_lst:
+            box_predict_13.addItem(lst_itm)
+        box_predict_13.setCurrentIndex(1)
+        box_predict_13.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_predict_13.addWidget(box_predict_13)
+        bg_box.addLayout(hbox_lay_predict_13)
+
+        label_14 = QLabel("xds_ascii")
         label_14.setPalette(palette_scope)
         label_14.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_14)
 
 
-        label_16 = QLabel("mosflm")
+        label_16 = QLabel("nxs")
         label_16.setPalette(palette_scope)
         label_16.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_16)
 
 
-        label_18 = QLabel("xds")
+        label_18 = QLabel("mosflm")
         label_18.setPalette(palette_scope)
         label_18.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_18)
 
 
-        label_20 = QLabel("best")
+        label_20 = QLabel("xds")
         label_20.setPalette(palette_scope)
         label_20.setFont(QFont("Monospace", 10, QFont.Bold))
         bg_box.addWidget(label_20)
 
-        hbox_lay_prefix_21 =  QHBoxLayout()
-        label_prefix_21 = QLabel("    prefix")
-        label_prefix_21.setPalette(palette_object)
-        label_prefix_21.setFont(QFont("Monospace", 10))
-        hbox_lay_prefix_21.addWidget(label_prefix_21)
 
-        box_prefix_21 = QLineEdit()
-        box_prefix_21.local_path = "best.prefix"
-        box_prefix_21.textChanged.connect(self.spnbox_changed)
-        hbox_lay_prefix_21.addWidget(box_prefix_21)
-        bg_box.addLayout(hbox_lay_prefix_21)
+        label_22 = QLabel("best")
+        label_22.setPalette(palette_scope)
+        label_22.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_22)
 
-        hbox_lay_n_bins_22 =  QHBoxLayout()
-        label_n_bins_22 = QLabel("    n_bins")
-        label_n_bins_22.setPalette(palette_object)
-        label_n_bins_22.setFont(QFont("Monospace", 10))
-        hbox_lay_n_bins_22.addWidget(label_n_bins_22)
+        hbox_lay_prefix_23 =  QHBoxLayout()
+        label_prefix_23 = QLabel("    prefix")
+        label_prefix_23.setPalette(palette_object)
+        label_prefix_23.setFont(QFont("Monospace", 10))
+        hbox_lay_prefix_23.addWidget(label_prefix_23)
 
-        box_n_bins_22 = QSpinBox()
-        box_n_bins_22.setValue(100)
-        box_n_bins_22.local_path = "best.n_bins"
-        box_n_bins_22.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_n_bins_22.addWidget(box_n_bins_22)
-        bg_box.addLayout(hbox_lay_n_bins_22)
+        box_prefix_23 = QLineEdit()
+        box_prefix_23.local_path = "best.prefix"
+        box_prefix_23.textChanged.connect(self.spnbox_changed)
+        hbox_lay_prefix_23.addWidget(box_prefix_23)
+        bg_box.addLayout(hbox_lay_prefix_23)
 
-        label_23 = QLabel("output")
-        label_23.setPalette(palette_scope)
-        label_23.setFont(QFont("Monospace", 10, QFont.Bold))
-        bg_box.addWidget(label_23)
+        hbox_lay_n_bins_24 =  QHBoxLayout()
+        label_n_bins_24 = QLabel("    n_bins")
+        label_n_bins_24.setPalette(palette_object)
+        label_n_bins_24.setFont(QFont("Monospace", 10))
+        hbox_lay_n_bins_24.addWidget(label_n_bins_24)
+
+        box_n_bins_24 = QSpinBox()
+        box_n_bins_24.setValue(100)
+        box_n_bins_24.local_path = "best.n_bins"
+        box_n_bins_24.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_n_bins_24.addWidget(box_n_bins_24)
+        bg_box.addLayout(hbox_lay_n_bins_24)
+
+        label_25 = QLabel("output")
+        label_25.setPalette(palette_scope)
+        label_25.setFont(QFont("Monospace", 10, QFont.Bold))
+        bg_box.addWidget(label_25)
 
 
 
