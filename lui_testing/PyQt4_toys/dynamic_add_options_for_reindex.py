@@ -143,6 +143,15 @@ class Main( QMainWindow):
         self.mainLayout =  QVBoxLayout()
         self.mainLayout.addWidget(self.addButton)
         self.mainLayout.addWidget(self.delButton)
+
+        self.my_font = QFont("Monospace")
+        #self.my_font.setWeight(75)
+        #self.my_font.setBold(True)
+        my_label = QLabel()
+
+        my_label.setFont(self.my_font)
+
+        self.mainLayout.addWidget(my_label)
         self.mainLayout.addWidget(self.scrollArea)
 
         self.centralWidget =  QWidget()
@@ -150,6 +159,12 @@ class Main( QMainWindow):
 
         self.setCentralWidget(self.centralWidget)
         self.lst_ops = []
+
+
+
+        label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
+
+        my_label.setText(label_str)
 
 
     def delWidget(self):
@@ -160,7 +175,6 @@ class Main( QMainWindow):
         for btn_lst in self.lst_ops:
             self.scrollLayout.layout().removeWidget(btn_lst)
             btn_lst.setParent(None)
-            #self.lst_ops
             del btn_lst
 
         '''
@@ -175,21 +189,9 @@ class Main( QMainWindow):
 
         lst_labels = ops_list_from_json(json_path = "../../../dui_test/only_8_img_trimed_data/dui_idials_tst_02/dials-1/8_refine_bravais_settings/bravais_summary.json")
 
-        font = QFont("Monospace")
-        font.setWeight(75)
-        font.setBold(True)
-        my_label = QLabel()
-        my_label.setFont(font)
-
-        label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
-
-        my_label.setText(label_str)
-
-        self.scrollLayout.addWidget(my_label)
-
         for labl in lst_labels:
             new_op = QPushButton(labl)
-            new_op.setFont(font)
+            new_op.setFont(self.my_font)
             self.scrollLayout.addWidget(new_op)
             self.lst_ops.append(new_op)
 
