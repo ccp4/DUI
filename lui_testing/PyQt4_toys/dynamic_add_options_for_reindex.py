@@ -89,10 +89,7 @@ def ops_list_from_json(json_path = None):
                               +  "{:7.4}".format(uc_a[1]) \
                               +  "{:7.4})".format(uc_a[2]) \
 
-                #unit_cell_str = str(unit_cell_val)
-
                 print "__________________________________________ type(unit_cell_val) =", type(unit_cell_val)
-
 
             elif( inner_key ==  "recommended" ):
                 recommended_val = value["recommended"]
@@ -104,18 +101,17 @@ def ops_list_from_json(json_path = None):
                 cc_nrefs_val = value["cc_nrefs"]
                 cc_nrefs_str = str(cc_nrefs_val)
                 print "__________________________________________ type(cc_nrefs_val) =", type(cc_nrefs_val)
+
                 #'''
             print "\n"
+
         print "\n"
 
         labl = str(key).ljust(4) + angular_diff_str + rmsd_str + min_cc_str \
               + max_cc_str + nspots_str + bravais_str +unit_cell_str + cb_op_str
-
-        print "\n\n"
         lst_ops.append(labl)
 
     return lst_ops
-
 
 
 class Main( QMainWindow):
@@ -160,8 +156,6 @@ class Main( QMainWindow):
         self.setCentralWidget(self.centralWidget)
         self.lst_ops = []
 
-
-
         label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
 
         my_label.setText(label_str)
@@ -177,14 +171,6 @@ class Main( QMainWindow):
             btn_lst.setParent(None)
             del btn_lst
 
-        '''
-        self.scrollLayout.layout().removeWidget(self.lst_ops[lng_lst - 1])
-        self.lst_ops[lng_lst - 1].setParent(None)
-        self.lst_ops
-        del self.lst_ops[-1]
-        '''
-
-
     def addWidget(self):
 
         lst_labels = ops_list_from_json(json_path = "../../../dui_test/only_8_img_trimed_data/dui_idials_tst_02/dials-1/8_refine_bravais_settings/bravais_summary.json")
@@ -194,7 +180,6 @@ class Main( QMainWindow):
             new_op.setFont(self.my_font)
             self.scrollLayout.addWidget(new_op)
             self.lst_ops.append(new_op)
-
 
 
 if __name__ == "__main__":
