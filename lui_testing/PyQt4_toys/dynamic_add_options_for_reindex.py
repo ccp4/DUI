@@ -122,10 +122,10 @@ class Main( QMainWindow):
     def __init__(self, parent = None):
         super(Main, self).__init__(parent)
 
-        self.addButton =  QPushButton('button to add 3 QPushButtons')
+        self.addButton =  QPushButton('Add list of QPushButtons')
         self.addButton.clicked.connect(self.addWidget)
 
-        self.delButton =  QPushButton('button to remove one QPushButton')
+        self.delButton =  QPushButton('remove all QPushButton')
         self.delButton.clicked.connect(self.delWidget)
 
         self.scrollLayout = QVBoxLayout()
@@ -157,10 +157,18 @@ class Main( QMainWindow):
         lng_lst = len(self.lst_ops)
         print "lng_lst =", lng_lst
 
+        for btn_lst in self.lst_ops:
+            self.scrollLayout.layout().removeWidget(btn_lst)
+            btn_lst.setParent(None)
+            #self.lst_ops
+            del btn_lst
+
+        '''
         self.scrollLayout.layout().removeWidget(self.lst_ops[lng_lst - 1])
         self.lst_ops[lng_lst - 1].setParent(None)
         self.lst_ops
         del self.lst_ops[-1]
+        '''
 
 
     def addWidget(self):
