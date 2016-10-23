@@ -77,7 +77,7 @@ class Main( QMainWindow):
 
                 elif( inner_key == "cb_op" ):
                     cb_op_val = value["cb_op"]
-                    cb_op_str = str(cb_op_val).rjust(25)
+                    cb_op_str = str(cb_op_val).rjust(18)
                     print "__________________________________________ type(cb_op_val) =", type(cb_op_val)
 
                 elif( inner_key ==  "min_cc" ):
@@ -95,13 +95,13 @@ class Main( QMainWindow):
                 elif( inner_key == "bravais" ):
                     bravais_val = value["bravais"]
 
-                    bravais_str =str(bravais_val).rjust(5)
+                    bravais_str = " " + str(bravais_val).ljust(3)
                     #bravais_str = str(bravais_val)
                     print "__________________________________________ type(bravais_val) =", type(bravais_val)
 
                 elif( inner_key ==  "nspots" ):
                     nspots_val = value["nspots"]
-                    nspots_str =" {:12} ".format(nspots_val)
+                    nspots_str =" {:9} ".format(nspots_val)
                     print "__________________________________________ type(nspots_val) =", type(nspots_val)
 
                 elif( inner_key ==  "max_angular_difference" ):
@@ -125,13 +125,13 @@ class Main( QMainWindow):
                     print "uc_a =", uc_a
 
 
-                    unit_cell_str = "({:6.3} ".format(uc_d[0]) \
-                                  + " {:6.3} ".format(uc_d[1]) \
+                    unit_cell_str = "({:6.3}".format(uc_d[0]) \
+                                  + " {:6.3}".format(uc_d[1]) \
                                   + " {:6.3})".format(uc_d[2]) \
                                   + ", " \
-                                  + "({:8.3} ".format(uc_a[0]) \
-                                  + " {:8.3} ".format(uc_a[1]) \
-                                  + " {:8.3})".format(uc_a[2]) \
+                                  + "({:7.4}".format(uc_a[0]) \
+                                  +  "{:7.4}".format(uc_a[1]) \
+                                  +  "{:7.4})".format(uc_a[2]) \
 
                     #unit_cell_str = str(unit_cell_val)
 
@@ -156,8 +156,8 @@ class Main( QMainWindow):
             "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
 
             #labl = rmsd_str + cb_op_str + min_cc_str + bravais_str + nspots_str + max_cc_str + min_cc_str# + cc_nrefs_str
-            labl = angular_diff_str + rmsd_str + min_cc_str + max_cc_str + nspots_str \
-                  + bravais_str +unit_cell_str + cb_op_str
+            labl = str(key).ljust(4) + angular_diff_str + rmsd_str + min_cc_str \
+                  + max_cc_str + nspots_str + bravais_str +unit_cell_str + cb_op_str
 
             if( len(labl) > longest_str_lenght ):
                 longest_str_lenght = len(labl)
