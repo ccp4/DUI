@@ -116,17 +116,15 @@ def ops_list_from_json(json_path = None):
     return lst_ops
 
 class MyReindexOpts(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent = None, ):
         super(MyReindexOpts, self).__init__(parent)
 
         self.scrollLayout = QVBoxLayout()
-        #self.scrollLayout.setMargin(0)
         self.scrollLayout.setContentsMargins(QMargins(0,0,0,0))
         self.scrollLayout.setSpacing(0)
 
         self.scrollWidget =  QWidget()
         self.scrollWidget.setLayout(self.scrollLayout)
-        #self.scrollWidget.show()
 
         self.scrollArea =  QScrollArea()
         self.scrollArea.setWidgetResizable(True)
@@ -146,18 +144,41 @@ class MyReindexOpts(QWidget):
         self.my_Layout.addWidget(self.scrollArea)
         #self.my_Layout.addWidget(self.scrollWidget)
         self.setLayout(self.my_Layout)
+        self.lst_ops = []
 
+
+    def del_opts_lst(self):
+        print "del_opts_lst"
+        lng_lst = len(self.lst_ops)
+        print "lng_lst =", lng_lst
+
+        for btn_lst in self.lst_ops:
+            self.scrollLayout.layout().removeWidget(btn_lst)
+            btn_lst.setParent(None)
+            del btn_lst
+        self.lst_ops = []
+    def add_opts_lst(self, lst_labels):
+        for labl in lst_labels:
+            new_op = QPushButton(labl)
+            new_op.setFont(self.my_font)
+            self.scrollLayout.addWidget(new_op)
+            self.lst_ops.append(new_op)
 
 
 class Main( QMainWindow):
     def __init__(self, parent = None):
         super(Main, self).__init__(parent)
 
+        try:
+            self.my_json_path = str(sys.argv[1])
+        except:
+            self.my_json_path = None
+
         self.addButton =  QPushButton('Add list of QPushButtons')
         self.delButton =  QPushButton('remove all QPushButton')
 
-        self.addButton.clicked.connect(self.addWidget)
-        self.delButton.clicked.connect(self.delWidget)
+        self.addButton.clicked.connect(self.addQbuttonsList)
+        self.delButton.clicked.connect(self.delQbuttonsList)
 
         self.mainLayout =  QVBoxLayout()
         self.mainLayout.addWidget(self.addButton)
@@ -170,33 +191,16 @@ class Main( QMainWindow):
         self.main_widget.setLayout(self.mainLayout)
 
         self.setCentralWidget(self.main_widget)
-        self.lst_ops = []
 
+    def delQbuttonsList(self):
+        self.scroll_w_list.del_opts_lst()
 
-
-
-    def delWidget(self):
-        print "delWidget"
-        lng_lst = len(self.lst_ops)
-        print "lng_lst =", lng_lst
-
-        for btn_lst in self.lst_ops:
-            self.scroll_w_list.scrollLayout.layout().removeWidget(btn_lst)
-            btn_lst.setParent(None)
-            del btn_lst
-
-    def addWidget(self):
-
-        lst_labels = ops_list_from_json("../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json")
-        for labl in lst_labels:
-            new_op = QPushButton(labl)
-            new_op.setFont(self.scroll_w_list.my_font)
-            self.scroll_w_list.scrollLayout.addWidget(new_op)
-            self.lst_ops.append(new_op)
+    def addQbuttonsList(self):
+        lst_labels = ops_list_from_json(self.my_json_path)
+        self.scroll_w_list.add_opts_lst(lst_labels)
 
 
 if __name__ == "__main__":
-
     app =  QApplication(sys.argv)
     myWidget = Main()
     myWidget.show()
