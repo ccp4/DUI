@@ -54,6 +54,11 @@ class MainWidget(QMainWindow):
     def btn_clicked(self):
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.par_wig)
+        try:
+            my_sender.par_wig()
+        except:
+            print "no __call__ in ", my_sender.par_wig
+
         self._refrech_btn_look()
         my_sender.setStyleSheet("background-color: lightblue")
 

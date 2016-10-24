@@ -135,7 +135,8 @@ class MyReindexOpts(QWidget):
         #self.my_font.setWeight(75)
         #self.my_font.setBold(True)
         my_label = QLabel()
-        label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
+        #label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
+        label_str = "Multiple labels"
         my_label.setText(label_str)
         my_label.setFont(self.my_font)
 
@@ -145,6 +146,9 @@ class MyReindexOpts(QWidget):
         #self.my_Layout.addWidget(self.scrollWidget)
         self.setLayout(self.my_Layout)
         self.lst_ops = []
+
+    def __call__(self):
+        print "from __call__ "
 
 
     def del_opts_lst(self):
