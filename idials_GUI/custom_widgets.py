@@ -165,6 +165,10 @@ class ImportPage(QWidget):
             print "Failed to pick dir"
 
 
+    def __call__(self):
+        print "from __call__   << import page >>"
+
+
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()

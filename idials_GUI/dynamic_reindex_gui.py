@@ -148,7 +148,7 @@ class MyReindexOpts(QWidget):
         self.lst_ops = []
 
     def __call__(self):
-        print "from __call__ "
+        print "from __call__  << ReindexOpts page >>"
 
 
     def del_opts_lst(self):
