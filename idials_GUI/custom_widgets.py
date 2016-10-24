@@ -212,7 +212,7 @@ class StepList(object):
                           ImportPage(parent = self),
                           ParamMainWidget(phl_obj = phil_scope_find_spots, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_index, parent = self),
-                          MyReindexOpts(),
+                          MyReindexOpts(parent = self),
                           ParamMainWidget(phl_obj = phil_scope_refine, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_integrate, parent = self)
                          ]

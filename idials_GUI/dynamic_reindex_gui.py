@@ -114,9 +114,10 @@ def ops_list_from_json(json_path = None):
 
     return lst_ops
 
+
 class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
-        super(MyReindexOpts, self).__init__(parent)
+        super(MyReindexOpts, self).__init__(parent = None)
 
         self.scrollLayout = QVBoxLayout()
         self.scrollLayout.setContentsMargins(QMargins(0,0,0,0))
