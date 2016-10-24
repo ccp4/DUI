@@ -25,6 +25,7 @@ copyright (c) CCP4 - DLS
 from python_qt_bind import *
 
 import os, sys
+from dynamic_reindex_gui import MyReindexOpts
 
 from params_live_gui_generator import PhilWidget
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
@@ -163,30 +164,6 @@ class ImportPage(QWidget):
         else:
             print "Failed to pick dir"
 
-class RefineBrvPage(QWidget):
-
-    def __init__(self, parent = None):
-        super(RefineBrvPage, self).__init__(parent = None)
-        self.super_parent = parent  # reference across the hole GUI to MyMainDialog
-        ops_layout =  QVBoxLayout()
-        #ops_layout.setMargin(0)    # this does NOT work in PySide
-        ops_layout.setContentsMargins(QMargins(0,0,0,0))
-        ops_layout.setSpacing(0)
-
-        lst_ops = []
-        for lin in xrange(5):
-            labl = str("op #" + str(lin) + "Pick me")
-            new_op = QPushButton(labl)
-            ops_layout.addWidget(new_op)
-            lst_ops.append(new_op)
-
-        big_layout =  QVBoxLayout()
-        big_layout.addWidget(QLabel("Select option "))
-        big_layout.addLayout(ops_layout)
-        big_layout.addWidget(QLabel("option Selected ="))
-
-        self.setLayout(big_layout)
-        self.show()
 
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
@@ -235,7 +212,7 @@ class StepList(object):
                           ImportPage(parent = self),
                           ParamMainWidget(phl_obj = phil_scope_find_spots, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_index, parent = self),
-                          RefineBrvPage(parent = self),
+                          MyReindexOpts(),
                           ParamMainWidget(phl_obj = phil_scope_refine, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_integrate, parent = self)
                          ]

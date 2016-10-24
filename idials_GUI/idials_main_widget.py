@@ -189,7 +189,7 @@ class MainWidget(QMainWindow):
 
         v_control_splitter = QSplitter()
         v_control_splitter.setOrientation(Qt.Vertical)
-
+        #v_control_splitter.setOrientation(Qt.Horizontal)
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.btn_go_clicked)
