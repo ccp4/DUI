@@ -27,8 +27,8 @@ copyright (c) CCP4 - DLS
 #the hole GUI to depend on a different Qt binding
 '''
 
-pyhon_binding = "PyQt4"
-#pyhon_binding = "PySide"
+#pyhon_binding = "PyQt4"
+pyhon_binding = "PySide"
 
 if pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *

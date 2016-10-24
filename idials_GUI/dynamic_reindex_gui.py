@@ -1,5 +1,4 @@
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from python_qt_bind import *
 import sys
 import json
 
@@ -157,6 +156,7 @@ class MyReindexOpts(QWidget):
             btn_lst.setParent(None)
             del btn_lst
         self.lst_ops = []
+
     def add_opts_lst(self, lst_labels):
         for labl in lst_labels:
             new_op = QPushButton(labl)
@@ -165,9 +165,9 @@ class MyReindexOpts(QWidget):
             self.lst_ops.append(new_op)
 
 
-class Main( QMainWindow):
+class MainWindow( QMainWindow):
     def __init__(self, parent = None):
-        super(Main, self).__init__(parent)
+        super(MainWindow, self).__init__(parent)
 
         try:
             self.my_json_path = str(sys.argv[1])
@@ -202,7 +202,7 @@ class Main( QMainWindow):
 
 if __name__ == "__main__":
     app =  QApplication(sys.argv)
-    myWidget = Main()
+    myWidget = MainWindow()
     myWidget.show()
     app.exec_()
 

@@ -98,7 +98,7 @@ class Text_w_Bar(QWidget):
 
         self.verticalLayout = QVBoxLayout(self)
 
-        self.verticalLayout.setMargin(0)
+        #self.verticalLayout.setMargin(0)   # This does NOT work in PySide
         self.verticalLayout.setContentsMargins(QMargins(0,0,0,0))
         self.verticalLayout.setSpacing(0)
 
@@ -126,13 +126,13 @@ class CentreWidget( QWidget):
     def __call__(self, widget_buts = None, go_btn = None, param_widg = None):
 
         main_box = QVBoxLayout()
-        main_box.setMargin(0)
+        #main_box.setMargin(0)    # This does NOT work in PySide
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
 
         h_or_v_box = QHBoxLayout()
 
-        h_or_v_box.setMargin(0)
+        #h_or_v_box.setMargin(0)   # This does NOT work in PySide
         h_or_v_box.setContentsMargins(QMargins(0,0,0,0))
         h_or_v_box.setSpacing(0)
 
@@ -184,36 +184,41 @@ class MainWidget(QMainWindow):
         idials_path = os.environ["IDIALS_PATH"]
         dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
 
-        self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
-        self.idials_widget.rtime_txt_on = True
-
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
-        multi_splitter = QSplitter()
-        multi_splitter.addWidget(self.idials_widget)
+        v_control_splitter = QSplitter()
+        v_control_splitter.setOrientation(Qt.Vertical)
+
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(self.btn_go_clicked)
 
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
+        v_control_splitter.addWidget(centre_widget)
 
-        multi_splitter.addWidget(centre_widget)
+        self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
+        self.idials_widget.rtime_txt_on = True
+        v_control_splitter.addWidget(self.idials_widget)
 
+        h_main_splitter = QSplitter()
+        h_main_splitter.setOrientation(Qt.Horizontal)
         self.output_wg = outputs_widget(self)
-
         self.txt_out = self.output_wg.in_txt_out
+        h_main_splitter.addWidget(v_control_splitter)
+        h_main_splitter.addWidget(self.output_wg)
 
-        multi_splitter.addWidget(self.output_wg)
+
         main_widget = QWidget()
         main_box = QVBoxLayout()
 
-        main_box.setMargin(0)
+        #main_box.setMargin(0)   # This does NOT work in PySide
+
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
 
-        main_box.addWidget(multi_splitter)
+        main_box.addWidget(h_main_splitter)
 
         self.bottom_bar_n_info = Text_w_Bar()
         main_box.addWidget(self.bottom_bar_n_info)

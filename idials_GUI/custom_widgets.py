@@ -40,7 +40,7 @@ try:
 except:
     from dials.command_line.export_mtz import phil_scope as phil_scope_export
 
-def template_r_side_build(in_str_tmp, dir_path):
+def template_right_side_build(in_str_tmp, dir_path):
 
     #print "in_str_tmp =", in_str_tmp
     #print "dir_path =", dir_path
@@ -153,7 +153,7 @@ class ImportPage(QWidget):
             templ_str_tmp = selected_file_path[pos_sep:]
             #print "templ_str_tmp =", templ_str_tmp
 
-            templ_r_side = template_r_side_build(templ_str_tmp, dir_name)
+            templ_r_side = template_right_side_build(templ_str_tmp, dir_name)
 
             templ_str_final = dir_name + templ_r_side
 
@@ -167,9 +167,9 @@ class RefineBrvPage(QWidget):
 
     def __init__(self, parent = None):
         super(RefineBrvPage, self).__init__(parent = None)
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.super_parent = parent  # reference across the hole GUI to MyMainDialog
         ops_layout =  QVBoxLayout()
-        ops_layout.setMargin(0)
+        #ops_layout.setMargin(0)    # this does NOT work in PySide
         ops_layout.setContentsMargins(QMargins(0,0,0,0))
         ops_layout.setSpacing(0)
 
