@@ -78,7 +78,6 @@ class TreeNavWidget(QTreeView):
         print "item_clicked"
         item = self.tmp_model.itemFromIndex(it_index)
 
-
         if item.idials_node.success == True:
             print "item.idials_node.index =", item.idials_node.index
             index_to_jump = item.idials_node.index
@@ -86,7 +85,6 @@ class TreeNavWidget(QTreeView):
         else:
             print "cannot jump to failed step"
             index_to_jump = item.idials_node.parent.index
-
 
         self.my_parent.goto(index_to_jump)
 

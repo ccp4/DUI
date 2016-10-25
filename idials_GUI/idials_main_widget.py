@@ -272,24 +272,21 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info.info_line.setText(rtime_text)
         self.bottom_bar_n_info.painted_overlay.repaint()
 
+    def _refresh_stacked_widget(self, new_widget):
+        self.step_param_widg.setCurrentWidget(new_widget)
+        self._refrech_btn_look()
+        self.current_widget = new_widget
+
     def btn_clicked(self):
         my_sender = self.sender()
-        self.step_param_widg.setCurrentWidget(my_sender.par_wig)
-        self._refrech_btn_look()
+        self._refresh_stacked_widget(my_sender.par_wig)
         my_sender.setStyleSheet("background-color: lightblue")
-
         self.idials_widget.change_mode(my_sender.command)
 
         try:
             my_sender.par_wig()
-            #print dir()
-            #print "controller.get_current.success =", self.idials_widget.controller.get_current.success
-            #print "controller.get_current.success() =", self.idials_widget.controller.get_current.success()
-            #print "controller.get_current() =", self.idials_widget.controller.get_current()
-            #print "controller.get_mode self.idials_widget.controller.get_current()
-            #print self.idials_widget.controller.get_current()
-            #print self.idials_widget.controller.get_current()
-            #print self.idials_widget.controller.get_current()
+            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
+
             dir_self_idials_widget_controller = '''
             ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__',
             '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__',
@@ -313,8 +310,7 @@ class MainWidget(QMainWindow):
         for pos, widget_search in enumerate(self.command_lst):
             if( widget_search == cmd_name ):
                 print "Widget in pos:", pos
-                self.step_param_widg.setCurrentWidget(self.widg_lst[pos])
-                self._refrech_btn_look()
+                self._refresh_stacked_widget(self.widg_lst[pos])
                 self.btn_lst[pos].setStyleSheet("background-color: lightblue")
 
         if new_url != None:
