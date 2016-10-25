@@ -170,7 +170,11 @@ class MyReindexOpts(QWidget):
             del btn_lst
         self.lst_ops = []
 
-    def add_opts_lst(self, lst_labels):
+    def add_opts_lst(self, lst_labels = None, in_json_path = None):
+
+        if( lst_labels == None ):
+            lst_labels = ops_list_from_json(in_json_path)
+
         for labl in lst_labels:
             new_op = QPushButton(labl)
             new_op.setFont(self.my_font)

@@ -278,6 +278,15 @@ class MainWidget(QMainWindow):
 
             self.current_widget.success_stat = True
 
+        elif( self.idials_widget.controller.get_current().success == True and
+           self.idials_widget.controller.get_current().name == "refine_bravais_settings"   ):
+
+            print "\n ________________________ <<< Time to show the table \n"
+            sumr_path = self.idials_widget.controller.get_summary()
+
+            self.current_widget.add_opts_lst(in_json_path = sumr_path)
+
+
     def _refresh_stacked_widget(self, new_widget):
         self.step_param_widg.setCurrentWidget(new_widget)
         self._refrech_btn_look()
@@ -297,8 +306,6 @@ class MainWidget(QMainWindow):
             self.idials_widget.change_mode(my_sender.command)
             self._refresh_stacked_widget(my_sender.par_wig)
             my_sender.setStyleSheet("background-color: lightblue")
-
-
 
     def _refrech_btn_look(self):
         for btn in self.btn_lst:
