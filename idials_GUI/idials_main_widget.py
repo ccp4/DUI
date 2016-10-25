@@ -266,6 +266,7 @@ class MainWidget(QMainWindow):
     def end_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Done")
         self.bottom_bar_n_info.end_motion()
+        print "controller.get_current().success =", self.idials_widget.controller.get_current().success
 
     def update_pbar_text(self, rtime_text):
         self.bottom_bar_n_info.info_line.setText(rtime_text)
@@ -282,8 +283,8 @@ class MainWidget(QMainWindow):
         try:
             my_sender.par_wig()
             #print dir()
+            #print "controller.get_current.success =", self.idials_widget.controller.get_current.success
             #print "controller.get_current.success() =", self.idials_widget.controller.get_current.success()
-
             #print "controller.get_current() =", self.idials_widget.controller.get_current()
             #print "controller.get_mode self.idials_widget.controller.get_current()
             #print self.idials_widget.controller.get_current()
