@@ -223,7 +223,7 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info = Text_w_Bar()
         main_box.addWidget(self.bottom_bar_n_info)
         main_widget.setLayout(main_box)
-
+        self.running = False
 
         menubar = self.menuBar()
 
@@ -258,19 +258,28 @@ class MainWidget(QMainWindow):
 
     def btn_go_clicked(self):
         self.idials_widget.run_clicked()
+        self.running = True
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Running")
         self.bottom_bar_n_info.start_motion()
 
+    def update_pbar_text(self, rtime_text):
+        self.bottom_bar_n_info.info_line.setText(rtime_text)
+        self.bottom_bar_n_info.painted_overlay.repaint()
+
     def end_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Done")
         self.bottom_bar_n_info.end_motion()
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
+        self.running = False
 
-    def update_pbar_text(self, rtime_text):
-        self.bottom_bar_n_info.info_line.setText(rtime_text)
-        self.bottom_bar_n_info.painted_overlay.repaint()
+        try:
+            self.current_widget()
+            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
+
+        except:
+            print "no __call__ in ", self.current_widget
 
     def _refresh_stacked_widget(self, new_widget):
         self.step_param_widg.setCurrentWidget(new_widget)
@@ -278,43 +287,28 @@ class MainWidget(QMainWindow):
         self.current_widget = new_widget
 
     def btn_clicked(self):
-        my_sender = self.sender()
-        self._refresh_stacked_widget(my_sender.par_wig)
-        my_sender.setStyleSheet("background-color: lightblue")
-        self.idials_widget.change_mode(my_sender.command)
+        if( self.running == False ):
+            my_sender = self.sender()
+            self._refresh_stacked_widget(my_sender.par_wig)
+            my_sender.setStyleSheet("background-color: lightblue")
+            self.idials_widget.change_mode(my_sender.command)
 
-        try:
-            my_sender.par_wig()
-            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
-
-            dir_self_idials_widget_controller = '''
-            ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__',
-            '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__',
-            '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__',
-            'get_command_tree', 'get_current', 'get_history', 'get_mode', 'get_models',
-            'get_parameters', 'get_report', 'get_summary', 'goto', 'lock', 'mode_list',
-            'redo_parameters', 'reset_parameters', 'run', 'set_mode', 'set_parameters',
-            'state', 'state_filename', 'undo_parameters']
-            '''
-
-        except:
-            print "no __call__ in ", my_sender.par_wig
 
     def _refrech_btn_look(self):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
 
     def jump(self, cmd_name = None, new_url = None):
-        print "\n MainWidget swishing to", cmd_name, "\n\n"
+        if( self.running == False ):
+            print "\n MainWidget swishing to", cmd_name, "\n\n"
+            for pos, widget_search in enumerate(self.command_lst):
+                if( widget_search == cmd_name ):
+                    print "Widget in pos:", pos
+                    self._refresh_stacked_widget(self.widg_lst[pos])
+                    self.btn_lst[pos].setStyleSheet("background-color: lightblue")
 
-        for pos, widget_search in enumerate(self.command_lst):
-            if( widget_search == cmd_name ):
-                print "Widget in pos:", pos
-                self._refresh_stacked_widget(self.widg_lst[pos])
-                self.btn_lst[pos].setStyleSheet("background-color: lightblue")
-
-        if new_url != None:
-            self.update_report(new_url)
+            if new_url != None:
+                self.update_report(new_url)
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path

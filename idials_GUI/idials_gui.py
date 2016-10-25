@@ -75,18 +75,20 @@ class TreeNavWidget(QTreeView):
 
 
     def item_clicked(self, it_index):
-        print "item_clicked"
-        item = self.tmp_model.itemFromIndex(it_index)
+        print "self.my_parent.super_parent.running =", self.my_parent.super_parent.running
+        if( self.my_parent.super_parent.running == False ):
+            print "_____________________________________________________ <<< item_clicked"
+            item = self.tmp_model.itemFromIndex(it_index)
 
-        if item.idials_node.success == True:
-            print "item.idials_node.index =", item.idials_node.index
-            index_to_jump = item.idials_node.index
+            if item.idials_node.success == True:
+                print "item.idials_node.index =", item.idials_node.index
+                index_to_jump = item.idials_node.index
 
-        else:
-            print "cannot jump to failed step"
-            index_to_jump = item.idials_node.parent.index
+            else:
+                print "cannot jump to failed step"
+                index_to_jump = item.idials_node.parent.index
 
-        self.my_parent.goto(index_to_jump)
+            self.my_parent.goto(index_to_jump)
 
 class TextOut( QTextBrowser):
     def __init__(self, parent = None):
@@ -132,6 +134,7 @@ class IdialsOuterWidget( QWidget):
 
         my_inner_widget = IdialsInnerrWidget(self)
         my_inner_widget.rtime_txt_on = True
+        self.running = False
 
         vbox =  QVBoxLayout()
         vbox.addWidget(my_inner_widget)
@@ -171,13 +174,15 @@ class IdialsOuterWidget( QWidget):
         print "\n MainWidget update report with:", report_path
 
     def start_pbar_motion(self):
+        self.running = True
         print "\n\n<<<                                                     start_pbar_motion\n\n"
-
-    def end_pbar_motion(self):
-        print "\n\n<<<                                                     end_pbar_motion\n\n"
 
     def update_pbar_text(self, trim_cor_text):
         print "\n update_pbar_text <<<", trim_cor_text, ">>>"
+
+    def end_pbar_motion(self):
+        print "\n\n<<<                                                     end_pbar_motion\n\n"
+        self.running = False
 
 class StdOut(QObject):
 

@@ -133,6 +133,9 @@ class ImportPage(QWidget):
         self.setLayout(big_layout)
         self.show()
 
+    def __call__(self):
+        print "from __call__   << import page >>"
+
 
     def find_my_img_dir(self, event = None):
 
@@ -163,10 +166,6 @@ class ImportPage(QWidget):
 
         else:
             print "Failed to pick dir"
-
-
-    def __call__(self):
-        print "from __call__   << import page >>"
 
 
 class ParamMainWidget( QWidget):
