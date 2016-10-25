@@ -201,6 +201,7 @@ class MainWindow( QMainWindow):
         self.mainLayout.addWidget(self.addButton)
         self.mainLayout.addWidget(self.delButton)
 
+        self.super_parent = self
         self.scroll_w_list = MyReindexOpts(self)
         self.mainLayout.addWidget(self.scroll_w_list)
 
