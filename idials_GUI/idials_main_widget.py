@@ -273,25 +273,31 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info.end_motion()
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
         self.running = False
+        if( self.idials_widget.controller.get_current().success == True and
+           self.idials_widget.controller.get_current().name == "import"   ):
 
-        try:
-            self.current_widget()
-            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
-
-        except:
-            print "no __call__ in ", self.current_widget
+            self.current_widget.success_stat = True
 
     def _refresh_stacked_widget(self, new_widget):
         self.step_param_widg.setCurrentWidget(new_widget)
         self._refrech_btn_look()
         self.current_widget = new_widget
 
+        try:
+            print "controller.get_current().name =", self.idials_widget.controller.get_current().name
+            self.current_widget()
+            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
+
+        except:
+            print "\n no __call__ in ", self.current_widget, "\n"
+
     def btn_clicked(self):
         if( self.running == False ):
             my_sender = self.sender()
+            self.idials_widget.change_mode(my_sender.command)
             self._refresh_stacked_widget(my_sender.par_wig)
             my_sender.setStyleSheet("background-color: lightblue")
-            self.idials_widget.change_mode(my_sender.command)
+
 
 
     def _refrech_btn_look(self):

@@ -101,7 +101,7 @@ class ImportPage(QWidget):
 
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
         import_path_group =  QGroupBox("Experiment IMG Directory")
         import_path_layout =  QVBoxLayout()
@@ -133,8 +133,17 @@ class ImportPage(QWidget):
         self.setLayout(big_layout)
         self.show()
 
+        self.success_stat = False
+
+
     def __call__(self):
         print "from __call__   << import page >>"
+
+        if( self.success_stat == False ):
+            self.find_my_img_dir()
+            #TODO find a way to know if idials was already running
+            # maybe by looking at self.super_parent. idials_widget.controler
+            # self.super_parent == MainWidget(QMainWindow)
 
 
     def find_my_img_dir(self, event = None):

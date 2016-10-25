@@ -118,6 +118,7 @@ def ops_list_from_json(json_path = None):
 class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
         super(MyReindexOpts, self).__init__(parent = None)
+        self.super_parent = parent.super_parent
 
         self.scrollLayout = QVBoxLayout()
         self.scrollLayout.setContentsMargins(QMargins(0,0,0,0))
@@ -148,8 +149,15 @@ class MyReindexOpts(QWidget):
         self.lst_ops = []
 
     def __call__(self):
-        print "from __call__  << ReindexOpts page >>"
 
+        print "\n from __call__  << ReindexOpts page >> \n"
+
+        #print "dir(self.super_parent) =", dir(self.super_parent)
+        #print "dir(self.super_parent.idials_widget.controler) =", dir(self.super_parent.idials_widget)
+
+        print "self.super_parent.idials_widget.controller.get_current().name =", self.super_parent.idials_widget.controller.get_current().name
+
+        self.super_parent.btn_go_clicked()
 
     def del_opts_lst(self):
         print "del_opts_lst"
