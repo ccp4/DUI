@@ -332,6 +332,8 @@ class IdialsInnerrWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
         self._update_tree()
 
+        
+
 
     def _update_tree(self):
 
