@@ -2,6 +2,8 @@ from python_qt_bind import *
 import sys
 import json
 
+
+
 def ops_list_from_json(json_path = None):
     if( json_path == None ):
         #json_path = "../../../dui_test/X4_wide/dui_idials_test_01/dials-1/4_refine_bravais_settings/bravais_summary.json"
@@ -108,11 +110,18 @@ def ops_list_from_json(json_path = None):
 
         print "\n"
 
-        labl = str(key).ljust(4) + angular_diff_str + rmsd_str + min_cc_str \
-              + max_cc_str + nspots_str + bravais_str +unit_cell_str + cb_op_str
-        lst_ops.append(labl)
+        single_lin_lst = [int(key), angular_diff_str + rmsd_str + min_cc_str
+              + max_cc_str + nspots_str + bravais_str +unit_cell_str + cb_op_str]
+        lst_ops.append(single_lin_lst)
 
-    return lst_ops
+
+    sorted_lst_ops = sorted(lst_ops)
+    str_sorted_lst = []
+    for labl in sorted_lst_ops:
+        str_labl = str(labl[0]).rjust(3)+ "  " + labl[1]
+        str_sorted_lst.append(str_labl)
+
+    return str_sorted_lst
 
 
 class MyReindexOpts(QWidget):
@@ -188,6 +197,7 @@ class MyReindexOpts(QWidget):
     def opt_clicked(self):
         my_sender = self.sender()
         print "QPushButton.lst_pos =", my_sender.lst_pos
+        self.super_parent.opt_picked(my_sender.lst_pos + 1)
 
 class MainWindow( QMainWindow):
     def __init__(self, parent = None):
@@ -223,6 +233,10 @@ class MainWindow( QMainWindow):
     def addQbuttonsList(self):
         lst_labels = ops_list_from_json(self.my_json_path)
         self.scroll_w_list.add_opts_lst(lst_labels)
+
+    def opt_picked(self, opt_num):
+        print "\n from dynamic_reindex_gui.py MainWindow"
+        print "opt_num =", opt_num, "\n"
 
 
 if __name__ == "__main__":

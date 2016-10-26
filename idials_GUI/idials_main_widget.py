@@ -327,6 +327,15 @@ class MainWidget(QMainWindow):
         print "\n MainWidget update report with:", report_path
         self.output_wg.web_view.update_page(report_path)
 
+    def opt_picked(self, opt_num):
+        print "\n from idials_main_widget.py MainWidget"
+        print "opt_num =", opt_num, " \n"
+
+        # should run "reindex solution=[opt_num]" now
+
+
+
+
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = MainWidget()
