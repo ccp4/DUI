@@ -292,7 +292,7 @@ class IdialsInnerrWidget( QWidget):
             #tmpl_str = "template=/home/lui/dui/dui_test/only_8_img_trimed_data/th_8_2_000#.cbf"
             #'''
             print "tmpl_str =", tmpl_str, "\n\n"
-            self.controller.set_parameters(tmpl_str, short_syntax=True)
+            self.change_parameter(tmpl_str)
 
         self.thrd.start()
 
@@ -332,7 +332,8 @@ class IdialsInnerrWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
         self._update_tree()
 
-        
+    def change_parameter(self, par_str):
+        self.controller.set_parameters(par_str, short_syntax=True)
 
 
     def _update_tree(self):

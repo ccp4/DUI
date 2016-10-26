@@ -334,7 +334,9 @@ class MainWidget(QMainWindow):
         # should run "reindex solution=[opt_num]" now
         #self.idials_widget.controller.set_parameters("", short_syntax=True)
         self.idials_widget.change_mode("reindex")
-
+        str_par = "solution="+str(opt_num)
+        print "\n change_parameter =", str_par
+        self.idials_widget.change_parameter(str_par)
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
