@@ -181,6 +181,8 @@ class MyReindexOpts(QWidget):
 
     def add_opts_lst(self, lst_labels = None, in_json_path = None):
 
+        self.del_opts_lst()
+
         if( lst_labels == None ):
             lst_labels = ops_list_from_json(in_json_path)
 
