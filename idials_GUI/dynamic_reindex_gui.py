@@ -175,12 +175,19 @@ class MyReindexOpts(QWidget):
         if( lst_labels == None ):
             lst_labels = ops_list_from_json(in_json_path)
 
-        for labl in lst_labels:
+        for lst_pos, labl in enumerate(lst_labels):
             new_op = QPushButton(labl)
+            new_op.lst_pos = lst_pos
             new_op.setFont(self.my_font)
             self.scrollLayout.addWidget(new_op)
+
+            new_op.clicked.connect(self.opt_clicked)
+
             self.lst_ops.append(new_op)
 
+    def opt_clicked(self):
+        my_sender = self.sender()
+        print "QPushButton.lst_pos =", my_sender.lst_pos
 
 class MainWindow( QMainWindow):
     def __init__(self, parent = None):
