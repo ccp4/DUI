@@ -164,11 +164,13 @@ class MainWidget(QMainWindow):
 
         for pos, step_data in enumerate(label_lst):
             print "pos = ", pos
-            new_btn = QToolButton(self)
+            #new_btn = QToolButton(self)
+            new_btn = QPushButton(self)
+
             #new_btn.setText(step_data)
             new_btn.setToolTip(step_data)
             new_btn.setIcon(icon_lst[pos])
-            new_btn.setIconSize(QSize(50,50))
+            new_btn.setIconSize(QSize(60, 60))
             new_btn.par_wig = self.widg_lst[pos]
             new_btn.command = self.command_lst[pos]
             #new_btn.setToolButtonStyle(My_style)
@@ -194,7 +196,7 @@ class MainWidget(QMainWindow):
         self.btn_go =  QPushButton('\n   Run  \n', self)
 
         self.btn_go.setIcon(QIcon(dials_logo_path))
-        self.btn_go.setIconSize(QSize(90,90))
+        self.btn_go.setIconSize(QSize(60, 60))
 
         self.btn_go.clicked.connect(self.btn_go_clicked)
 
