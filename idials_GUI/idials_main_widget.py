@@ -288,6 +288,8 @@ class MainWidget(QMainWindow):
 
             print "\n ________________________ <<< Time to show the table \n"
             sumr_path = self.idials_widget.controller.get_summary()
+            #FIXME controller.get_current().name == "refine_bravais_settings" is NOT the acurate
+            #FIXME way to find output the current parameter widget
 
             self.current_widget.add_opts_lst(in_json_path = sumr_path)
 
