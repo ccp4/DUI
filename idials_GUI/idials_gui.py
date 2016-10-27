@@ -227,6 +227,7 @@ class IdialsInnerrWidget( QWidget):
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
 
+        to_be_removed = '''
         if( dials_logo == None ):
             print "No logo to add"
         else:
@@ -238,6 +239,7 @@ class IdialsInnerrWidget( QWidget):
             imageLabel.setPixmap( QPixmap.fromImage(sc_image))
 
             big_vbox.addWidget(imageLabel)
+        '''
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)

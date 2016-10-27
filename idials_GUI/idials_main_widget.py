@@ -192,6 +192,10 @@ class MainWidget(QMainWindow):
         #v_control_splitter.setOrientation(Qt.Horizontal)
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
+
+        self.btn_go.setIcon(QIcon(dials_logo_path))
+        self.btn_go.setIconSize(QSize(90,90))
+
         self.btn_go.clicked.connect(self.btn_go_clicked)
 
         centre_widget = CentreWidget(self)
