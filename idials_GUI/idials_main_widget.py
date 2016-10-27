@@ -92,7 +92,21 @@ class Text_w_Bar(QWidget):
     def __init__(self, parent=None):
         super(Text_w_Bar, self).__init__(parent)
 
+        try_tis = '''
+        title = QtGui.QLabel("FixedTitle:")
+        # title.setText("A much larger fixed title")
+
+        title.setSizePolicy(
+            QtGui.QSizePolicy.Preferred,
+            QtGui.QSizePolicy.Fixed)
+        '''
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+
         self.info_line = QLineEdit()
+
+        self.info_line.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+
+
         self.info_line.setText("Import images to start")
         self.info_line.setReadOnly(True)
 
@@ -223,6 +237,7 @@ class MainWidget(QMainWindow):
         main_box = QVBoxLayout()
 
         #main_box.setMargin(0)   # This does NOT work in PySide
+        #try something like: this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); (c++ code)
 
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
