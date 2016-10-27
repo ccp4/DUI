@@ -359,7 +359,7 @@ class IdialsInnerrWidget( QWidget):
 
         self.tree_nav.update_me(current, lst_path_idx)
 
-        updt_str = " Ready to run >> " + self.controller.get_mode()
+        updt_str = " Click the Dials icon run << " + self.controller.get_mode() + " >>"
 
         print updt_str
 

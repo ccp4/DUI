@@ -68,10 +68,9 @@ class outputs_widget( QWidget):
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
 
-
         #v_splitter.addTab(self.img_view, "Image View")
-        v_splitter.addTab(self.web_view, "Report View")
         v_splitter.addTab(self.in_txt_out, "Log View")
+        v_splitter.addTab(self.web_view, "Report View")
 
         my_box.addWidget(v_splitter)
 
