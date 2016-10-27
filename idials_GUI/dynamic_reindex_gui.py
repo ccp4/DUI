@@ -186,18 +186,28 @@ class MyReindexOpts(QWidget):
 
         for lst_pos, labl in enumerate(lst_labels):
             new_op = QPushButton(labl)
+
             new_op.lst_pos = lst_pos
             new_op.setFont(self.my_font)
             self.scrollLayout.addWidget(new_op)
-
             new_op.clicked.connect(self.opt_clicked)
-
             self.lst_ops.append(new_op)
+
+        self.all_gray()
+
+
+    def all_gray(self):
+        for btn_lst in self.lst_ops:
+            btn_lst.setStyleSheet("background-color: lightgray")
+
 
     def opt_clicked(self):
         my_sender = self.sender()
         print "QPushButton.lst_pos =", my_sender.lst_pos
         self.super_parent.opt_picked(my_sender.lst_pos + 1)
+        self.all_gray()
+        my_sender.setStyleSheet("background-color: lightblue")
+
 
 class MainWindow( QMainWindow):
     def __init__(self, parent = None):
