@@ -257,7 +257,9 @@ class importOuterWidget( QWidget):
     def __init__(self, parent = None):
         super(importOuterWidget, self).__init__(parent)
 
+        self.super_parent = self
         import_widget = ImportPage(self)
+
         vbox =  QVBoxLayout(self)
         vbox.addWidget(import_widget)
         self.setLayout(vbox)
