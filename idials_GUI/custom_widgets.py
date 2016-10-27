@@ -180,7 +180,7 @@ class ImportPage(QWidget):
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
@@ -190,10 +190,9 @@ class ParamMainWidget( QWidget):
         self.show()
 
     def update_lin_txt(self, str_path, str_value):
-
         cmd_to_run = str_path + "=" + str_value
         print "running command = {", cmd_to_run,"}"
-
+        self.super_parent.param_changed(cmd_to_run)
 
 class StepList(object):
 

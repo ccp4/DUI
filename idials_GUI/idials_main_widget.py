@@ -93,7 +93,7 @@ class Text_w_Bar(QWidget):
         super(Text_w_Bar, self).__init__(parent)
 
         self.info_line = QLineEdit()
-        self.info_line.setText("AAAAAAAAAAAAAAAAAA11111111111111111333333333333334")
+        self.info_line.setText("Import images to start")
         self.info_line.setReadOnly(True)
 
         self.verticalLayout = QVBoxLayout(self)
@@ -255,6 +255,11 @@ class MainWidget(QMainWindow):
         print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
 
         print "Toggle real time text"
+
+
+    def param_changed(self, new_par_str):
+        print "\n MainWidget, param_changed, new_par_str =", new_par_str
+        self.idials_widget.change_parameter(new_par_str)
 
     def btn_go_clicked(self):
         self.idials_widget.run_clicked()
