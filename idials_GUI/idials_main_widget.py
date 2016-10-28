@@ -294,7 +294,7 @@ class MainWidget(QMainWindow):
 
         else:
             print "\n\n something went WRONG \n"
-            #TODO how in the GUI that something went WRONG
+            #TODO show in the GUI that something went WRONG
 
 
     def update_report(self, report_path):
