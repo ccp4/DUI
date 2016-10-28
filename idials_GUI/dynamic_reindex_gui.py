@@ -139,15 +139,15 @@ class MyReindexOpts(QWidget):
         self.my_font = QFont("Monospace")
         #self.my_font.setWeight(75)
         #self.my_font.setBold(True)
-        my_label = QLabel()
+        self.my_label = QLabel()
 
-        label_str = "     Solution   Metric fit   rmsd   min/max   cc   #spots               lattice (a b c)  lattice (angles)                   cb_op"
+        self.label_str = "     Solution   Metric fit   rmsd   min/max   cc   #spots               lattice (a b c)  lattice (angles)                   cb_op"
 
-        my_label.setText(label_str)
-        my_label.setFont(self.my_font)
+        self.my_label.setText(" tmp   -- None --")
+        self.my_label.setFont(self.my_font)
 
         self.my_Layout =  QVBoxLayout()
-        self.my_Layout.addWidget(my_label)
+        self.my_Layout.addWidget(self.my_label)
         self.my_Layout.addWidget(self.scrollArea)
         #self.my_Layout.addWidget(self.scrollWidget)
         self.setLayout(self.my_Layout)
@@ -172,7 +172,7 @@ class MyReindexOpts(QWidget):
         self.lst_ops = []
 
     def add_opts_lst(self, lst_labels = None, in_json_path = None):
-
+        self.my_label.setText(self.label_str)
         self.del_opts_lst()
 
         if( lst_labels == None ):
