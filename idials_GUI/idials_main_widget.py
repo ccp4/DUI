@@ -273,21 +273,33 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info.end_motion()
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
         self.running = False
-        if( self.idials_widget.controller.get_current().success == True and
-           self.idials_widget.controller.get_current().name == "import"   ):
 
-            self.current_widget.success_stat = True
+        #FIXME controller.get_current().name == "refine_bravais_settings" is NOT the acurate
+        #FIXME way to find output the current parameter widget
 
-        elif( self.idials_widget.controller.get_current().success == True and
-           self.idials_widget.controller.get_current().name == "refine_bravais_settings"   ):
+        if( self.idials_widget.controller.get_current().success == True ):
+            if( self.idials_widget.controller.get_current().name == "import" ):
+                self.current_widget.success_stat = True
 
-            print "\n ________________________ <<< Time to show the table \n"
-            sumr_path = self.idials_widget.controller.get_summary()
-            #FIXME controller.get_current().name == "refine_bravais_settings" is NOT the acurate
-            #FIXME way to find output the current parameter widget
+            elif( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
+                print "\n ________________________ <<< Time to show the table \n"
+                sumr_path = self.idials_widget.controller.get_summary()
+                self.current_widget.add_opts_lst(in_json_path = sumr_path)
 
-            self.current_widget.add_opts_lst(in_json_path = sumr_path)
+            else:
+                print "Time to update html << report >>"
+                #put here something that calls << self.update_report
+                repr_path = self.idials_widget.controller.get_report()
+                self.update_report(repr_path)
 
+        else:
+            print "\n\n something went WRONG \n"
+            #TODO how in the GUI that something went WRONG
+
+
+    def update_report(self, report_path):
+        print "\n MainWidget update report with:", report_path
+        self.output_wg.web_view.update_page(report_path)
 
     def _refresh_stacked_widget(self, new_widget):
         self.step_param_widg.setCurrentWidget(new_widget)
@@ -313,6 +325,7 @@ class MainWidget(QMainWindow):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
 
+
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
             print "\n MainWidget swishing to", cmd_name, "\n\n"
@@ -325,9 +338,6 @@ class MainWidget(QMainWindow):
             if new_url != None:
                 self.update_report(new_url)
 
-    def update_report(self, report_path):
-        print "\n MainWidget update report with:", report_path
-        self.output_wg.web_view.update_page(report_path)
 
     def opt_picked(self, opt_num):
         if( self.running == False ):
