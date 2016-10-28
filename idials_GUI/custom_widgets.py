@@ -141,10 +141,7 @@ class ImportPage(QWidget):
 
         if( self.success_stat == False ):
             self.find_my_img_dir()
-            #TODO find a way to know if idials was already running
-            # maybe by looking at self.super_parent. idials_widget.controler
-            # self.super_parent == MainWidget(QMainWindow)
-
+            print "( self.success_stat == False )  == False"
 
     def find_my_img_dir(self, event = None):
 
@@ -202,10 +199,8 @@ class StepList(object):
                   "find spots",
                   "index",
                   "refine bravais settings",
-                  #"reindex",
                   "refine",
                   "integrate"
-                  #,"export"
                   ]
 
     lst_commands = [
@@ -213,10 +208,8 @@ class StepList(object):
                     "find_spots",
                     "index",
                     "refine_bravais_settings",
-                    #"reindex",
                     "refine",
                     "integrate"
-                    #,"export"
                    ]
 
     def __init__(self, parent = None):
@@ -238,11 +231,9 @@ class StepList(object):
         lst_icons_path.append(str(idials_path + "/resources/import.png"))
         lst_icons_path.append(str(idials_path + "/resources/find_spots.png"))
         lst_icons_path.append(str(idials_path + "/resources/index.png"))
-        #lst_icons_path.append(str(idials_path + "/resources/refine_v_sets.png"))
         lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
         lst_icons_path.append(str(idials_path + "/resources/refine.png"))
         lst_icons_path.append(str(idials_path + "/resources/integrate.png"))
-        #lst_icons_path.append(str(idials_path + "/resources/export.png"))
 
         self.lst_icons = []
         for my_icon_path in lst_icons_path:
