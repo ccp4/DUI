@@ -21,11 +21,9 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 import sys, os
 
 from python_qt_bind import *
-
 
 from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget, TextOut
@@ -40,13 +38,11 @@ class OverlayPaintWidg(QWidget):
         palette.setColor(palette.Background, Qt.transparent)
 
         self.setPalette(palette)
-
         self.pos_n = 1.0
         self.n_of_pos = 64.0
         self.my_timer = QTimer(self)
         self.my_timer.timeout.connect(self.on_timeout)
         self.my_timer.start(800)
-
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -92,27 +88,14 @@ class Text_w_Bar(QWidget):
     def __init__(self, parent=None):
         super(Text_w_Bar, self).__init__(parent)
 
-        try_tis = '''
-        title = QtGui.QLabel("FixedTitle:")
-        # title.setText("A much larger fixed title")
-
-        title.setSizePolicy(
-            QtGui.QSizePolicy.Preferred,
-            QtGui.QSizePolicy.Fixed)
-        '''
         self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         self.info_line = QLineEdit()
-
         self.info_line.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-
-
         self.info_line.setText("Import images to start")
         self.info_line.setReadOnly(True)
 
         self.verticalLayout = QVBoxLayout(self)
-
-        #self.verticalLayout.setMargin(0)   # This does NOT work in PySide
         self.verticalLayout.setContentsMargins(QMargins(0,0,0,0))
         self.verticalLayout.setSpacing(0)
 
@@ -140,13 +123,10 @@ class CentreWidget( QWidget):
     def __call__(self, widget_buts = None, go_btn = None, param_widg = None):
 
         main_box = QVBoxLayout()
-        #main_box.setMargin(0)    # This does NOT work in PySide
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
 
         h_or_v_box = QHBoxLayout()
-
-        #h_or_v_box.setMargin(0)   # This does NOT work in PySide
         h_or_v_box.setContentsMargins(QMargins(0,0,0,0))
         h_or_v_box.setSpacing(0)
 
@@ -175,24 +155,21 @@ class MainWidget(QMainWindow):
         self.setWindowTitle('DUI / idials')
 
         self.btn_lst = []
-
-
-        my_icon_qsize = QSize(80, 50)
-
         for pos, step_data in enumerate(label_lst):
             print "pos = ", pos
             #new_btn = QToolButton(self)
             new_btn = QPushButton(self)
 
-            #new_btn.setText(step_data)
             new_btn.setToolTip(step_data)
             new_btn.setIcon(icon_lst[pos])
             new_btn.setIconSize(QSize(48, 48))
             new_btn.par_wig = self.widg_lst[pos]
             new_btn.command = self.command_lst[pos]
-            #new_btn.setToolButtonStyle(My_style)
 
+            #new_btn.setText(step_data)
+            #new_btn.setToolButtonStyle(My_style)
             #new_btn.setFont(QFont("Monospace", 10, QFont.Bold))
+
             new_btn.clicked.connect(self.btn_clicked)
 
             v_left_box.addWidget(new_btn)
@@ -232,12 +209,8 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(v_control_splitter)
         h_main_splitter.addWidget(self.output_wg)
 
-
         main_widget = QWidget()
         main_box = QVBoxLayout()
-
-        #main_box.setMargin(0)   # This does NOT work in PySide
-        #try something like: this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); (c++ code)
 
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
@@ -258,7 +231,6 @@ class MainWidget(QMainWindow):
         configMenu = menubar.addMenu('config')
         configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
 
-
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
         self.show()
@@ -277,17 +249,16 @@ class MainWidget(QMainWindow):
         else:
             self.idials_widget.rtime_txt_on = True
         print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
-
         print "Toggle real time text"
-
 
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
         self.idials_widget.change_parameter(new_par_str)
 
     def btn_go_clicked(self):
-        self.idials_widget.run_clicked()
-        self.running = True
+        if( self.running == False ):
+            self.idials_widget.run_clicked()
+            self.running = True
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Running")
@@ -359,15 +330,15 @@ class MainWidget(QMainWindow):
         self.output_wg.web_view.update_page(report_path)
 
     def opt_picked(self, opt_num):
-        print "\n from idials_main_widget.py MainWidget"
-        print "opt_num =", opt_num, " \n"
+        if( self.running == False ):
+            print "\n from idials_main_widget.py MainWidget"
+            print "opt_num =", opt_num, " \n"
 
-        # should run "reindex solution=[opt_num]" now
-        #self.idials_widget.controller.set_parameters("", short_syntax=True)
-        self.idials_widget.change_mode("reindex")
-        str_par = "solution="+str(opt_num)
-        print "\n change_parameter =", str_par
-        self.idials_widget.change_parameter(str_par)
+            self.idials_widget.change_mode("reindex")
+            str_par = "solution=" + str(opt_num)
+            print "\n change_parameter =", str_par
+            self.idials_widget.change_parameter(str_par)
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
