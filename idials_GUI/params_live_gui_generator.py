@@ -69,7 +69,7 @@ class tree_2_lineal(object):
                 scope_info = ScopeData()
                 scope_info.name = str(single_obj.name)
                 scope_info.f_path = str(single_obj.full_path())
-                scope_info.soy_scope = True
+                scope_info.i_m_scope = True
 
                 #print "scope_info.f_path =", scope_info.f_path
                 scope_info.indent = scope_info.f_path.count('.')
@@ -79,7 +79,8 @@ class tree_2_lineal(object):
                 self.deep_in_rec(single_obj.objects)
 
             else:
-                print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
+                #print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
+                pass
 
 
 class PhilWidget( QWidget):
@@ -150,7 +151,8 @@ class PhilWidget( QWidget):
                         if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
 
                             if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
-                                print "TODO fix the libtbx.AutoType in double Phil parameter"
+                                #print "TODO fix the libtbx.AutoType in double Phil parameter"
+                                pass
 
                             else:
                                 lst_widg[nm].setValue(obj.extract())
@@ -238,13 +240,14 @@ class PhilWidget( QWidget):
                         something_else = True
 
                 else:
-
+                    debugging = '''
                     print
                     print "_____________________ << WARNING find something ELSE"
                     print "_____________________ << full_path =", obj.full_path()
                     print "_____________________ << obj.type.phil_type =", obj.type.phil_type
                     print "_____________________ << obj.type =", obj.type
                     print
+                    '''
                     something_else = True
 
                 if( something_else == False ):

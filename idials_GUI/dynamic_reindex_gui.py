@@ -6,10 +6,7 @@ import json
 
 def ops_list_from_json(json_path = None):
     if( json_path == None ):
-        #json_path = "../../../dui_test/X4_wide/dui_idials_test_01/dials-1/4_refine_bravais_settings/bravais_summary.json"
-        #json_path = "../../../dui_test/X4_wide_first_5_img/dui_idials_test_01/dials-1/7_refine_bravais_settings/bravais_summary.json"
         #json_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
-        #print "\n No Path to bravais_summary.json provided \n"
         return None
 
     with open(json_path) as json_file:
@@ -20,11 +17,7 @@ def ops_list_from_json(json_path = None):
     longest_str_lenght = 0
 
     for key, value in json_data.iteritems():
-        #print "key =", key
-        #print "\n"
-        #print "value =", value
-        #print "\n"
-        #labl = ""
+
         for inner_key in value:
             #print "inner_key =", inner_key
             #print "inner_value =", value[inner_key]
@@ -147,8 +140,9 @@ class MyReindexOpts(QWidget):
         #self.my_font.setWeight(75)
         #self.my_font.setBold(True)
         my_label = QLabel()
-        #label_str = "Solution Metric fit  rmsd  min/max cc #spots lattice                                 unit_cell volume           cb_op"
-        label_str = "Multiple labels"
+
+        label_str = "     Solution   Metric fit   rmsd   min/max   cc   #spots               lattice (a b c)  lattice (angles)                   cb_op"
+
         my_label.setText(label_str)
         my_label.setFont(self.my_font)
 
@@ -163,7 +157,6 @@ class MyReindexOpts(QWidget):
 
         print "\n from __call__  << ReindexOpts page >> \n"
         print "self.super_parent.idials_widget.controller.get_current().name =", self.super_parent.idials_widget.controller.get_current().name
-
         self.super_parent.btn_go_clicked()
 
     def del_opts_lst(self):
@@ -175,6 +168,7 @@ class MyReindexOpts(QWidget):
             self.scrollLayout.layout().removeWidget(btn_lst)
             btn_lst.setParent(None)
             del btn_lst
+
         self.lst_ops = []
 
     def add_opts_lst(self, lst_labels = None, in_json_path = None):
@@ -203,7 +197,7 @@ class MyReindexOpts(QWidget):
 
     def opt_clicked(self):
         my_sender = self.sender()
-        print "QPushButton.lst_pos =", my_sender.lst_pos
+        print "Solution clicked =", my_sender.lst_pos
         self.super_parent.opt_picked(my_sender.lst_pos + 1)
         self.all_gray()
         my_sender.setStyleSheet("background-color: lightblue")
