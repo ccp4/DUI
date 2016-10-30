@@ -10,8 +10,9 @@ cd $DUI_PATH
 echo "DUI_PATH =$(pwd)"
 cd ../idials_GUI/
 export IDIALS_PATH=$(pwd)
+echo "IDIALS_PATH=$IDIALS_PATH"
 echo "done"
 echo ""
 echo "type \"dui_idials\" (without quotes) to launch DUI/iDIALS"
-echo "IDIALS_PATH=$IDIALS_PATH"
+echo ""
 cd $DUI_PATH
