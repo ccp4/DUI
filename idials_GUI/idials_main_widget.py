@@ -286,6 +286,9 @@ class MainWidget(QMainWindow):
                 sumr_path = self.idials_widget.controller.get_summary()
                 self.current_widget.add_opts_lst(in_json_path = sumr_path)
 
+            elif( self.idials_widget.controller.get_current().name == "reindex" ):
+                print "Time to shrink back reindex GUI"
+                self.current_widget.del_opts_lst()
             else:
                 print "Time to update html << report >>"
                 #put here something that calls << self.update_report
