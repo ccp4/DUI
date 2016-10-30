@@ -143,7 +143,7 @@ class MyReindexOpts(QWidget):
 
         self.label_str = "     Solution   Metric fit   rmsd   min/max   cc   #spots               lattice (a b c)  lattice (angles)                   cb_op"
 
-        self.my_label.setText(" tmp   -- None --")
+        self.my_label.setText("need to run: refine_bravais_settings")
         self.my_label.setFont(self.my_font)
 
         self.my_Layout =  QVBoxLayout()
@@ -160,8 +160,7 @@ class MyReindexOpts(QWidget):
         self.super_parent.btn_go_clicked()
 
     def del_opts_lst(self):
-
-        self.my_label.setText("  -- None -- tmp ")
+        self.my_label.setText(" << After Reindex >> ")
 
         print "del_opts_lst"
         lng_lst = len(self.lst_ops)
