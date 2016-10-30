@@ -12,10 +12,6 @@ cd ../idials_GUI/
 export IDIALS_PATH=$(pwd)
 echo "done"
 echo ""
-echo "type \"run_DUI.sh\" (without quotes) to launch Dials User Interface"
-echo ""
-echo "type \"idials_GUI.sh\" (without quotes) to launch iDIALS GUI"
-echo ""
-echo "type \"img_view.sh\" (without quotes) to launch IMG PyQt4 viewer"
+echo "type \"dui_idials\" (without quotes) to launch DUI/iDIALS"
 echo "IDIALS_PATH=$IDIALS_PATH"
 cd $DUI_PATH
