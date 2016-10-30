@@ -160,6 +160,9 @@ class MyReindexOpts(QWidget):
         self.super_parent.btn_go_clicked()
 
     def del_opts_lst(self):
+
+        self.my_label.setText("  -- None -- tmp ")
+
         print "del_opts_lst"
         lng_lst = len(self.lst_ops)
         print "lng_lst =", lng_lst
@@ -172,8 +175,8 @@ class MyReindexOpts(QWidget):
         self.lst_ops = []
 
     def add_opts_lst(self, lst_labels = None, in_json_path = None):
-        self.my_label.setText(self.label_str)
         self.del_opts_lst()
+        self.my_label.setText(self.label_str)
 
         if( lst_labels == None ):
             lst_labels = ops_list_from_json(in_json_path)
