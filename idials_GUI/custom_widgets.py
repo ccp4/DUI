@@ -88,6 +88,11 @@ class FileOrDir(QFileDialog):
     def __init__(self, parent = None):
         super(FileOrDir, self).__init__(parent = None)
 
+        print "before setFileMode"
+        self.setFileMode(QFileDialog.Directory)
+        print "after setFileMode"
+
+
 
 
 class ImportPage(QWidget):
@@ -150,11 +155,23 @@ class ImportPage(QWidget):
 
     def find_my_img_dir(self, event = None):
 
-        #selected_file_path = str(QFileDialog.getOpenFileName(self, "Open IMG Dir"))
-        selected_file_path = str(FileOrDir.getOpenFileName(self, "Open IMG Dir"))
-        print "[ file path selected ] =", selected_file_path
+        selector = FileOrDir(self)
+        #selected_file_path = str(selector.getOpenFileName(self, "Open IMG Dir"))
+        lst_file_path = selector.getOpenFileNames(self, "Open IMG Dir")
+        #getOpenFileNamesAndFilter
 
-        if( selected_file_path ):
+        print "[ file path selected ] =", lst_file_path
+        print "len(lst_file_path) =", len(lst_file_path)
+
+        for single_string in lst_file_path:
+            print "single_string =", single_string
+
+        if( lst_file_path and len(lst_file_path) == 1 ):
+            selected_file_path = str(lst_file_path[0])
+
+            print "\n selected_file_path =", selected_file_path, "\n"
+            print "type(selected_file_path) =", type(selected_file_path)
+
             for pos, single_char in enumerate(selected_file_path):
                 if( single_char == "/" or single_char == "\\" ):
                     pos_sep = pos
@@ -176,8 +193,12 @@ class ImportPage(QWidget):
             self.lin_import_path.setText(dir_name)
             self.templ_lin.setText(templ_str_final)
 
+        elif( len(lst_file_path) > 1 ):
+            print "time to handle multiple files selected"
+
         else:
             print "Failed to pick dir"
+
 
 
 class ParamMainWidget( QWidget):
