@@ -299,6 +299,13 @@ class MainWidget(QMainWindow):
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
 
+        if(
+            self.idials_widget.controller.get_current().success == True and
+            self.idials_widget.controller.get_current().name == "integrate"
+           ):
+            self.idials_widget.change_mode("export")
+            self.btn_go_clicked()
+
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
