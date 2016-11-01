@@ -84,6 +84,11 @@ def template_right_side_build(in_str_tmp, dir_path):
 
     return out_str
 
+class FileOrDir(QFileDialog):
+    def __init__(self, parent = None):
+        super(FileOrDir, self).__init__(parent = None)
+
+
 
 class ImportPage(QWidget):
 
@@ -145,7 +150,8 @@ class ImportPage(QWidget):
 
     def find_my_img_dir(self, event = None):
 
-        selected_file_path = str( QFileDialog.getOpenFileName(self, "Open IMG Dir"))
+        #selected_file_path = str(QFileDialog.getOpenFileName(self, "Open IMG Dir"))
+        selected_file_path = str(FileOrDir.getOpenFileName(self, "Open IMG Dir"))
         print "[ file path selected ] =", selected_file_path
 
         if( selected_file_path ):
