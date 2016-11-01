@@ -49,21 +49,23 @@ def template_right_side_build(in_str_tmp, dir_path):
     out_str = in_str_tmp + dir_path
     lst_files = os.listdir(str(dir_path))
 
-    for pos, single_char in enumerate(in_str_tmp):
+    #for i, e in reversed(list(enumerate(a))):
+    #for pos, single_char in enumerate(in_str_tmp):
+    for pos, single_char in reversed(list(enumerate(in_str_tmp))):
         if( single_char == "." ):
             pos_sep = pos
 
     left_sd_name = in_str_tmp[:pos_sep]
-    #print "left_sd_name =", left_sd_name
+    print "\n left_sd_name =", left_sd_name, "\n"
 
     ext_name = in_str_tmp[pos_sep:]
-    #print "ext_name =", ext_name
+    print "\n ext_name =", ext_name, "\n"
 
 
     out_str = left_sd_name
 
     max_tail_size = int(len(in_str_tmp) / 3)
-    #print "max_tail_size =", max_tail_size
+    print "\n max_tail_size =", max_tail_size, "\n"
     for tail_size in xrange(max_tail_size):
         #print "tail_size =", tail_size
         prev_str = out_str
@@ -79,10 +81,35 @@ def template_right_side_build(in_str_tmp, dir_path):
             break
 
     out_str = out_str + ext_name
-    #print out_str
+    return out_str
 
+
+def template_from_lst_build(in_str_lst):
+    print "in_str_lst =", in_str_lst
+    str_lst = []
+    for single_qstring in in_str_lst:
+        str_lst.append(str(single_qstring))
+
+    print "str_lst =", str_lst
+
+    out_str = ""
+    for pos in xrange(len(str_lst[0])):
+        all_equal = True
+        single_char = str_lst[0][pos]
+        for single_string in str_lst:
+            if( single_string[pos] != single_char ):
+                all_equal = False
+
+        if(all_equal == True):
+            out_str = out_str + single_char
+
+        else:
+            out_str = out_str + "#"
+
+    print "out_str =", out_str
 
     return out_str
+
 
 class FileOrDir(QFileDialog):
     def __init__(self, parent = None):
@@ -116,14 +143,11 @@ class ImportPage(QWidget):
         import_path_group =  QGroupBox("Experiment IMG Directory")
         import_path_layout =  QVBoxLayout()
 
-        self.lin_import_path =   QLineEdit(self)
-        import_path_button =  QPushButton(" \n    Find experiment Dir            . \n")
+        import_path_button =  QPushButton(" \n    Find Images      . \n")
         import_path_button.clicked.connect(self.find_my_img_dir)
         import_path_group.setLayout(import_path_layout)
 
         import_path_layout.addWidget(import_path_button)
-        import_path_layout.addWidget(self.lin_import_path)
-
 
         template_grp =  QGroupBox("Template ")
         template_vbox =  QHBoxLayout()
@@ -131,7 +155,6 @@ class ImportPage(QWidget):
         self.templ_lin.setText("Generated Template =")
         template_vbox.addWidget(self.templ_lin)
         template_grp.setLayout(template_vbox)
-
 
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(import_path_group)
@@ -189,12 +212,13 @@ class ImportPage(QWidget):
             templ_r_side = template_right_side_build(templ_str_tmp, dir_name)
 
             templ_str_final = dir_name + templ_r_side
-
-            self.lin_import_path.setText(dir_name)
             self.templ_lin.setText(templ_str_final)
 
         elif( len(lst_file_path) > 1 ):
             print "time to handle multiple files selected"
+            templ_str_final = template_from_lst_build(lst_file_path)
+            print "templ_str_final =", templ_str_final
+            self.templ_lin.setText(templ_str_final)
 
         else:
             print "Failed to pick dir"

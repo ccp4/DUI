@@ -281,14 +281,9 @@ class IdialsInnerrWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
 
         if( self.controller.get_mode() == "import" ):
-            #'''
-            dir_path = str(self.super_parent.widg_lst[0].lin_import_path.text())
-            print "\n\ndir_path =", dir_path, "\n"
             tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
             '''
             #tmpl_str = "template=/home/lui/dui/dui_test/th_8_2_000#.cbf"
-            #tmpl_str = "template=" + dir_path + "/*.cbf"
-            #tmpl_str = "template=" + dir_path +"/X4_wide_M1S4_2_####.cbf"
             tmpl_str = "template=/home/luisolafg/dui_test/only_9_images/th_8_2_000#.cbf"
             #tmpl_str = "template=/home/lui/dui/dui_test/only_8_img_trimed_data/th_8_2_000#.cbf"
             #'''
