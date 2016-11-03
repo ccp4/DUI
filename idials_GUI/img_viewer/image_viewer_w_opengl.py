@@ -217,7 +217,7 @@ class MyImgWin(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    diag = MyImgWin("../../../dui_test/only_9_img/dui_idials_GUI_tst_10/dials-1/1_import/datablock.json")
+    diag = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
     sys.exit(app.exec_())
     app.exec_()
 
