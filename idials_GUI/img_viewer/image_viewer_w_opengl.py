@@ -46,12 +46,7 @@ from time import time as tm_now
 
 def get_arr(json_file_path = None):
     if json_file_path != None :
-        #json_file_path = str("../../../dui_test/only_9_img/dui_idials_GUI_tst_10/dials-1/1_import/datablock.json")
-        #json_file_path = str("dials-1/1_import/datablock.json")
-
         print "json_file_path =", json_file_path
-
-
         datablocks = DataBlockFactory.from_json_file(json_file_path)
 
         if len(datablocks) > 0:
@@ -141,6 +136,9 @@ class MyImgWin(QWidget):
     def __init__(self, img_path = None):
         super(MyImgWin, self).__init__()
 
+        if( img_path == None ):
+            img_path = "/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json"
+
         self.block_3d_flex = get_arr(img_path)
         #self.block_3d_flex = None
         self.arr_img = img_w_cpp()
@@ -217,7 +215,17 @@ class MyImgWin(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    diag = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
+
+    print "sys.argv =", sys.argv
+
+    if( len(sys.argv) > 1 ):
+        img_path = sys.argv[1]
+    else:
+        img_path = None
+
+    print "img_path =", img_path
+
+    diag = MyImgWin(img_path)
     sys.exit(app.exec_())
     app.exec_()
 
