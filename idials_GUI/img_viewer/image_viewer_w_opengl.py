@@ -152,13 +152,16 @@ class MyImgWin(QWidget):
         label_img_num = QLabel(" <<< IMG Num >>>")
         main_box.addWidget(label_img_num)
 
-        '''
+        #'''
+        n_of_imgs = self.block_3d_flex.all()[0]
+        print "num of imgs =", n_of_imgs
+
         img_num_slider = QSlider()
-        img_num_slider.setRange(0, 8)
+        img_num_slider.setRange(0, n_of_imgs)
         img_num_slider.setOrientation(Qt.Horizontal)
         img_num_slider.sliderMoved.connect(self.onImgSliderMove)
         main_box.addWidget(img_num_slider)
-        '''
+        #'''
 
 
         label_imax = QLabel(" <<< I Max >>>")
