@@ -40,7 +40,7 @@ except:
     print "    <<<   using PyQt4 (as exception)"
 
 def get_3d_flex_array():
-    json_file_path = str("/home/luiso/dui/dui_test/X4_wide/test_01/dials-1/1_import/datablock.json")
+    json_file_path = str("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
     print "json_file_path =", json_file_path
 
     datablocks = DataBlockFactory.from_json_file(json_file_path)
