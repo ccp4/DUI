@@ -82,6 +82,14 @@ class ImgPainter(QWidget):
         #self.pix = None
         self.img = None
 
+    def mouseMoveEvent(self, event):
+        if event.buttons() == Qt.NoButton:
+            print "Simple mouse motion"
+        elif event.buttons() == Qt.LeftButton:
+            print "Left click drag"
+        elif event.buttons() == Qt.RightButton:
+            print "Right click drag"
+
     def set_img_pix(self, q_img = None):
 
         #self.pix = QPixmap.fromImage(q_img)
