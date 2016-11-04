@@ -56,6 +56,46 @@ def build_qimg(img_flex):
                    np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
 
+class ImgPainter(QWidget):
+
+    def __init__(self):
+        super(ImgPainter, self).__init__()
+        self.setFixedSize(2550, 2400)
+        #self.pix = None
+        self.img = None
+        self.show()
+
+    def set_img_pix(self, q_img = None):
+
+        #self.pix = QPixmap.fromImage(q_img)
+        self.img = q_img
+        # the next two choices need to be taken depending on the
+        # rendering back end
+
+        # Use paintEvent when [self] inherits from QGLWidget
+        #self.paintEvent(None)
+
+        #Use "update" when [self] inherits from QWidget
+        self.update()
+
+        #in future consider *self.repaint()* for the video thing or instead of *self.update()*
+
+
+
+
+    def paintEvent(self, event):
+        if( self.img == None ):
+            print "self.img = None"
+            return
+
+        else:
+            img_paint = QPainter()
+            img_paint.begin(self)
+            img_paint.drawImage(0, 0, self.img)
+            img_paint.end()
+
+
+
 if( __name__ == "__main__" ):
 
     datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
@@ -71,4 +111,10 @@ if( __name__ == "__main__" ):
     im1=sw.get_raw_data(0)[0]
 
     print "im1.all() =", im1.all()
+
+    app = QApplication(sys.argv)
+    ex = ImgPainter()
+    sys.exit(app.exec_())
+
+
 
