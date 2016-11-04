@@ -1,4 +1,5 @@
 import sys, os
+import numpy as np
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 from dials_viewer_ext import rgb_img
@@ -54,6 +55,8 @@ def build_qimg(img_flex):
 
     q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                    np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
+
+    return q_img
 
 
 class ImgPainter(QWidget):
@@ -114,6 +117,11 @@ if( __name__ == "__main__" ):
 
     app = QApplication(sys.argv)
     ex = ImgPainter()
+
+    q_img = build_qimg(im1)
+
+    ex.set_img_pix(q_img)
+
     sys.exit(app.exec_())
 
 
