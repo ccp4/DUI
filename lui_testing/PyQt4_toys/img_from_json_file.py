@@ -59,6 +59,61 @@ def build_qimg(img_flex):
     return q_img
 
 
+
+class BigWidget(QWidget):
+    def __init__(self):
+        super(BigWidget, self).__init__()
+        my_box = QVBoxLayout()
+        my_painter = ImgPainter()
+
+        datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
+        print "datablocks[0] =", datablocks[0]
+        db=datablocks[0]
+        sw=db.extract_sweeps()[0]
+        im1=sw.get_raw_data(0)[0]
+        print "im1.all() =", im1.all()
+        q_img = build_qimg(im1)
+
+        '''
+    datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
+    print "datablocks[0] =", datablocks[0]
+    db=datablocks[0]
+
+    sw=db.extract_sweeps()[0]
+
+    print "sw.get_raw_data(0) =", sw.get_raw_data(0)
+    print "sw.get_raw_data(1) =", sw.get_raw_data(1)
+    print "sw.get_raw_data(2) =", sw.get_raw_data(2)
+
+    im1=sw.get_raw_data(0)[0]
+
+    print "im1.all() =", im1.all()
+
+    app = QApplication(sys.argv)
+    ex = ImgPainter()
+
+    q_img = build_qimg(im1)
+
+    ex.set_img_pix(q_img)
+        '''
+
+        my_painter.set_img_pix(q_img)
+
+        my_scrollable = ScrollableImg(my_painter)
+        my_box.addWidget(my_scrollable)
+        self.setLayout(my_box)
+        self.show()
+
+
+
+
+class ScrollableImg(QScrollArea):
+    def __init__(self, parent = None):
+        super(ScrollableImg, self).__init__()
+        self.setWidget(parent)
+
+
+
 class ImgPainter(QWidget):
 
     def __init__(self):
@@ -101,27 +156,8 @@ class ImgPainter(QWidget):
 
 if( __name__ == "__main__" ):
 
-    datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
-    print "datablocks[0] =", datablocks[0]
-    db=datablocks[0]
-
-    sw=db.extract_sweeps()[0]
-
-    print "sw.get_raw_data(0) =", sw.get_raw_data(0)
-    print "sw.get_raw_data(1) =", sw.get_raw_data(1)
-    print "sw.get_raw_data(2) =", sw.get_raw_data(2)
-
-    im1=sw.get_raw_data(0)[0]
-
-    print "im1.all() =", im1.all()
-
     app = QApplication(sys.argv)
-    ex = ImgPainter()
-
-    q_img = build_qimg(im1)
-
-    ex.set_img_pix(q_img)
-
+    ex = BigWidget()
     sys.exit(app.exec_())
 
 
