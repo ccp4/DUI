@@ -81,12 +81,15 @@ class ImgPainter(QWidget):
         self.setFixedSize(2550, 2400)
         #self.pix = None
         self.img = None
+        self.setMouseTracking(True)
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             print "Simple mouse motion"
         elif event.buttons() == Qt.LeftButton:
             print "Left click drag"
+            print "(x, y) =", event.x(), event.y()
+
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
