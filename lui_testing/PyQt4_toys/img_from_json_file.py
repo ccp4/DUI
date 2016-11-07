@@ -114,7 +114,7 @@ class BigWidget(QWidget):
         db = datablocks[0]
         self.my_sweep = db.extract_sweeps()[0]
 
-        self.get_img_num(0)
+        self.set_img_num(0)
 
         self.my_painter.set_img_pix(self.current_qimg )
 
@@ -137,7 +137,7 @@ class BigWidget(QWidget):
         self.setLayout(my_box)
         self.show()
 
-    def get_img_num(self, n_of_img):
+    def set_img_num(self, n_of_img):
         self.img_arr = self.my_sweep.get_raw_data(n_of_img)[0]
         print "self.img_arr.all() =", self.img_arr.all()
         self.current_qimg  = build_qimg(self.img_arr)
@@ -149,7 +149,9 @@ class BigWidget(QWidget):
         str_value = str(sender.tmp_lst[value])
         print str_value
 
-        self.get_img_num(20)
+        print "Num =", value
+
+        self.set_img_num(value)
         self.my_painter.set_img_pix(self.current_qimg )
 
 
