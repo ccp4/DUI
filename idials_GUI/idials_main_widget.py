@@ -126,7 +126,7 @@ class CentreWidget( QWidget):
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
 
-        h_or_v_box = QHBoxLayout()
+        h_or_v_box = QVBoxLayout()
         h_or_v_box.setContentsMargins(QMargins(0,0,0,0))
         h_or_v_box.setSpacing(0)
 

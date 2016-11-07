@@ -143,6 +143,7 @@ class IdialsOuterWidget( QWidget):
 
         midl_hbox =  QHBoxLayout()
 
+
         self.btn_prv =  QPushButton('\n  Prev \n', self)
         self.btn_prv.clicked.connect(my_inner_widget.prv_clicked)
         midl_hbox.addWidget(self.btn_prv)
@@ -153,9 +154,11 @@ class IdialsOuterWidget( QWidget):
 
         self.btn_go =  QPushButton('\n   Run  \n', self)
         self.btn_go.clicked.connect(my_inner_widget.run_clicked)
-        midl_hbox.addWidget(self.btn_go)
 
         big_vbox.addLayout(midl_hbox)
+        big_vbox.addWidget(self.btn_go)
+
+
 
         self.txt_out = TextOut()
         vbox.addWidget(self.txt_out)
