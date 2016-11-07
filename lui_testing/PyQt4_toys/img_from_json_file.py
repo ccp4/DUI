@@ -77,8 +77,30 @@ class BigWidget(QWidget):
 
         my_scrollable = ScrollableImg(my_painter)
         my_box.addWidget(my_scrollable)
+
+        img_select = QComboBox()
+        img_select.tmp_lst=[]
+        for num in xrange(90):
+            labl = "image number:" + str(num)
+            img_select.tmp_lst.append(labl)
+
+        for lst_itm in img_select.tmp_lst:
+            img_select.addItem(lst_itm)
+
+        img_select.setCurrentIndex(0)
+        img_select.currentIndexChanged.connect(self.combobox_changed)
+        my_box.addWidget(img_select)
+
         self.setLayout(my_box)
         self.show()
+
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "combobox_changed to: ",
+        str_value = str(sender.tmp_lst[value])
+        print str_value
+
 
 
 class ScrollableImg(QScrollArea):
