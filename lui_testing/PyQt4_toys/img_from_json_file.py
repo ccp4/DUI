@@ -42,66 +42,6 @@ class img_w_cpp(object):
         return img_array
 
 
-def build_qimg(img_flex):
-    arr_img = img_w_cpp()
-
-    flex_2d_data = img_flex.as_double()
-    flex_2d_mask = flex.double(flex.grid(flex_2d_data.all()[0], flex_2d_data.all()[1]), 0)
-    arr_i = arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
-
-    q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
-                   np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
-
-    return q_img
-
-
-
-class BigWidget(QWidget):
-    def __init__(self):
-        super(BigWidget, self).__init__()
-        my_box = QVBoxLayout()
-        my_painter = ImgPainter()
-
-        json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
-        #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
-        datablocks = DataBlockFactory.from_json_file(json_file_path)
-
-        print "datablocks[0] =", datablocks[0]
-        db=datablocks[0]
-        sw=db.extract_sweeps()[0]
-        im1=sw.get_raw_data(0)[0]
-        print "im1.all() =", im1.all()
-        q_img = build_qimg(im1)
-
-        my_painter.set_img_pix(q_img)
-
-        my_scrollable = ScrollableImg(my_painter)
-        my_box.addWidget(my_scrollable)
-
-        img_select = QComboBox()
-        img_select.tmp_lst=[]
-        for num in xrange(90):
-            labl = "image number:" + str(num)
-            img_select.tmp_lst.append(labl)
-
-        for lst_itm in img_select.tmp_lst:
-            img_select.addItem(lst_itm)
-
-        img_select.setCurrentIndex(0)
-        img_select.currentIndexChanged.connect(self.combobox_changed)
-        my_box.addWidget(img_select)
-
-        self.setLayout(my_box)
-        self.show()
-
-
-    def combobox_changed(self, value):
-        sender = self.sender()
-        print "combobox_changed to: ",
-        str_value = str(sender.tmp_lst[value])
-        print str_value
-
-
 
 class ScrollableImg(QScrollArea):
     def __init__(self, parent = None):
@@ -146,6 +86,65 @@ class ImgPainter(QWidget):
             img_paint.end()
 
 
+def build_qimg(img_flex):
+    arr_img = img_w_cpp()
+
+    flex_2d_data = img_flex.as_double()
+    flex_2d_mask = flex.double(flex.grid(flex_2d_data.all()[0], flex_2d_data.all()[1]), 0)
+    arr_i = arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
+
+    q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
+                   np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
+
+    return q_img
+
+
+
+class BigWidget(QWidget):
+    def __init__(self):
+        super(BigWidget, self).__init__()
+        my_box = QVBoxLayout()
+        my_painter = ImgPainter()
+
+        json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
+        #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
+        datablocks = DataBlockFactory.from_json_file(json_file_path)
+
+        print "datablocks[0] =", datablocks[0]
+        db = datablocks[0]
+        self.my_sweep = db.extract_sweeps()[0]
+        self.img_arr = self.my_sweep.get_raw_data(0)[0]
+        print "self.img_arr.all() =", self.img_arr.all()
+        self.current_qimg  = build_qimg(self.img_arr)
+
+        my_painter.set_img_pix(self.current_qimg )
+
+        my_scrollable = ScrollableImg(my_painter)
+        my_box.addWidget(my_scrollable)
+
+        img_select = QComboBox()
+        img_select.tmp_lst=[]
+        for num in xrange(90):
+            labl = "image number:" + str(num)
+            img_select.tmp_lst.append(labl)
+
+        for lst_itm in img_select.tmp_lst:
+            img_select.addItem(lst_itm)
+
+        img_select.setCurrentIndex(0)
+        img_select.currentIndexChanged.connect(self.combobox_changed)
+        my_box.addWidget(img_select)
+
+        self.setLayout(my_box)
+        self.show()
+
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "combobox_changed to: ",
+        str_value = str(sender.tmp_lst[value])
+        print str_value
+
 
 if( __name__ == "__main__" ):
 
@@ -165,14 +164,14 @@ if( __name__ == "__main__" ):
     print "sw.get_raw_data(1) =", sw.get_raw_data(1)
     print "sw.get_raw_data(2) =", sw.get_raw_data(2)
 
-    im1=sw.get_raw_data(0)[0]
+    img_arr=sw.get_raw_data(0)[0]
 
-    print "im1.all() =", im1.all()
+    print "img_arr.all() =", img_arr.all()
 
     app = QApplication(sys.argv)
     ex = ImgPainter()
 
-    q_img = build_qimg(im1)
+    q_img = build_qimg(img_arr)
 
     ex.set_img_pix(q_img)
     '''
