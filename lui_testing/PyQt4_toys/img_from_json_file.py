@@ -66,8 +66,8 @@ class BigWidget(QWidget):
         my_box = QVBoxLayout()
         my_painter = ImgPainter()
 
-        #json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
-        json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
+        json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
+        #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
         datablocks = DataBlockFactory.from_json_file(json_file_path)
 
         #datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")

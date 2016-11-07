@@ -184,8 +184,8 @@ class MainWidget(QMainWindow):
         self._refrech_btn_look()
 
         v_control_splitter = QSplitter()
-        v_control_splitter.setOrientation(Qt.Vertical)
-        #v_control_splitter.setOrientation(Qt.Horizontal)
+        #v_control_splitter.setOrientation(Qt.Vertical)
+        v_control_splitter.setOrientation(Qt.Horizontal)
 
         self.btn_go =  QPushButton('Run', self)
 
@@ -194,13 +194,14 @@ class MainWidget(QMainWindow):
 
         self.btn_go.clicked.connect(self.btn_go_clicked)
 
+        self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
+        self.idials_widget.rtime_txt_on = True
+        v_control_splitter.addWidget(self.idials_widget)
+
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
         v_control_splitter.addWidget(centre_widget)
 
-        self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
-        self.idials_widget.rtime_txt_on = True
-        v_control_splitter.addWidget(self.idials_widget)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
