@@ -104,7 +104,7 @@ class BigWidget(QWidget):
     def __init__(self):
         super(BigWidget, self).__init__()
         my_box = QVBoxLayout()
-        my_painter = ImgPainter()
+        self.my_painter = ImgPainter()
 
         json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
         #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
@@ -113,13 +113,12 @@ class BigWidget(QWidget):
         print "datablocks[0] =", datablocks[0]
         db = datablocks[0]
         self.my_sweep = db.extract_sweeps()[0]
-        self.img_arr = self.my_sweep.get_raw_data(0)[0]
-        print "self.img_arr.all() =", self.img_arr.all()
-        self.current_qimg  = build_qimg(self.img_arr)
 
-        my_painter.set_img_pix(self.current_qimg )
+        self.get_img_num(0)
 
-        my_scrollable = ScrollableImg(my_painter)
+        self.my_painter.set_img_pix(self.current_qimg )
+
+        my_scrollable = ScrollableImg(self.my_painter)
         my_box.addWidget(my_scrollable)
 
         img_select = QComboBox()
@@ -138,12 +137,20 @@ class BigWidget(QWidget):
         self.setLayout(my_box)
         self.show()
 
+    def get_img_num(self, n_of_img):
+        self.img_arr = self.my_sweep.get_raw_data(n_of_img)[0]
+        print "self.img_arr.all() =", self.img_arr.all()
+        self.current_qimg  = build_qimg(self.img_arr)
+
 
     def combobox_changed(self, value):
         sender = self.sender()
         print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
         print str_value
+
+        self.get_img_num(20)
+        self.my_painter.set_img_pix(self.current_qimg )
 
 
 if( __name__ == "__main__" ):
