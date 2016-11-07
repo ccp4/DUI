@@ -46,11 +46,7 @@ def build_qimg(img_flex):
     arr_img = img_w_cpp()
 
     flex_2d_data = img_flex.as_double()
-    #flex_2d_data = self.block_3d_flex[img_slice:img_slice + 1, 0:2500, 0:2400]
-    #flex_2d_data.reshape(flex.grid(2500, 2400))
-
     flex_2d_mask = flex.double(flex.grid(flex_2d_data.all()[0], flex_2d_data.all()[1]), 0)
-
     arr_i = arr_img(flex_2d_data, flex_2d_mask, i_min = -3.0, i_max = 500)
 
     q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
@@ -70,8 +66,6 @@ class BigWidget(QWidget):
         #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
         datablocks = DataBlockFactory.from_json_file(json_file_path)
 
-        #datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
-
         print "datablocks[0] =", datablocks[0]
         db=datablocks[0]
         sw=db.extract_sweeps()[0]
@@ -87,13 +81,10 @@ class BigWidget(QWidget):
         self.show()
 
 
-
-
 class ScrollableImg(QScrollArea):
     def __init__(self, parent = None):
         super(ScrollableImg, self).__init__()
         self.setWidget(parent)
-
 
 
 class ImgPainter(QWidget):
@@ -119,8 +110,6 @@ class ImgPainter(QWidget):
         self.update()
 
         #in future consider *self.repaint()* for the video thing or instead of *self.update()*
-
-
 
 
     def paintEvent(self, event):
