@@ -115,7 +115,6 @@ class BigWidget(QWidget):
         self.my_sweep = db.extract_sweeps()[0]
 
         self.set_img_num(0)
-
         self.my_painter.set_img_pix(self.current_qimg )
 
         my_scrollable = ScrollableImg(self.my_painter)
@@ -138,21 +137,18 @@ class BigWidget(QWidget):
         self.show()
 
     def set_img_num(self, n_of_img):
-        self.img_arr = self.my_sweep.get_raw_data(n_of_img)[0]
-        print "self.img_arr.all() =", self.img_arr.all()
-        self.current_qimg  = build_qimg(self.img_arr)
-
+        img_arr = self.my_sweep.get_raw_data(n_of_img)[0]
+        print "img_arr.all() =", img_arr.all()
+        self.current_qimg  = build_qimg(img_arr)
 
     def combobox_changed(self, value):
         sender = self.sender()
         print "combobox_changed to: ",
         str_value = str(sender.tmp_lst[value])
         print str_value
-
         print "Num =", value
-
         self.set_img_num(value)
-        self.my_painter.set_img_pix(self.current_qimg )
+        self.my_painter.set_img_pix(self.current_qimg)
 
 
 if( __name__ == "__main__" ):
