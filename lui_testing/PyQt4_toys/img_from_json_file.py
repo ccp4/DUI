@@ -167,20 +167,24 @@ class BigWidget(QWidget):
         self.img_arr = self.my_sweep.get_raw_data(img_n)[0]
         print "self.img_arr.all() =", self.img_arr.all()
         self.current_qimg  = build_qimg(self.img_arr, palette)
+        self.my_painter.set_img_pix(self.current_qimg)
+
 
     def palette_changed_by_user(self, new_palette_num):
         print "palette_num =", new_palette_num
         self.palette = self.palette_lst[new_palette_num]
-        self.current_qimg  = build_qimg(self.img_arr, self.palette)
-        self.my_painter.set_img_pix(self.current_qimg)
+        self.set_img(self.img_num, self.palette)
+
+        #self.current_qimg  = build_qimg(self.img_arr, self.palette)
+        #self.my_painter.set_img_pix(self.current_qimg)
 
 
     def img_changed_by_user(self, value):
         sender = self.sender()
-        print "Num =", value
+        self.img_num = value
+        self.set_img(self.img_num, self.palette)
 
-        self.set_img(value, self.palette)
-        self.my_painter.set_img_pix(self.current_qimg)
+        #self.my_painter.set_img_pix(self.current_qimg)
 
 
 if( __name__ == "__main__" ):
