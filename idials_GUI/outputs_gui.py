@@ -23,7 +23,7 @@ copyright (c) CCP4 - DLS
 
 from python_qt_bind import *
 
-from img_viewer.image_viewer_w_opengl import MyImgWin
+from img_viewer.img_viewer import MyImgWin
 from idials_gui import TextOut
 class WebTab(QWidget):
 
@@ -64,12 +64,12 @@ class outputs_widget( QWidget):
         my_box = QVBoxLayout()
         v_splitter = QTabWidget()
 
-        #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
+        self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
 
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
 
-        #v_splitter.addTab(self.img_view, "Image View")
+        v_splitter.addTab(self.img_view, "Image View")
 
         v_splitter.addTab(self.in_txt_out, "Log View")
         v_splitter.addTab(self.web_view, "Report View")

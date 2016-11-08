@@ -95,9 +95,9 @@ def build_qimg(img_flex, palette):
     return q_img
 
 
-class BigWidget(QWidget):
+class MyImgWin(QWidget):
     def __init__(self, json_file_path = None):
-        super(BigWidget, self).__init__()
+        super(MyImgWin, self).__init__()
         my_box = QVBoxLayout()
         top_box = QHBoxLayout()
         left_top_box = QVBoxLayout()
@@ -190,7 +190,7 @@ if( __name__ == "__main__" ):
 
     print "img_path =", img_path
 
-    diag = BigWidget(img_path)
+    diag = MyImgWin(img_path)
     sys.exit(app.exec_())
     app.exec_()
 
