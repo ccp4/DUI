@@ -42,12 +42,6 @@ class img_w_cpp(object):
 
 
 
-class ScrollableImg(QScrollArea):
-    def __init__(self, parent = None):
-        super(ScrollableImg, self).__init__()
-        self.setWidget(parent)
-
-
 class ImgPainter(QWidget):
 
     def __init__(self):
@@ -130,9 +124,6 @@ class BigWidget(QWidget):
         self.palette = self.palette_lst[0]
         self.img_num = 0
         self.set_img()
-        #self.my_painter.set_img_pix(self.current_qimg )
-
-        my_scrollable = ScrollableImg(self.my_painter)
 
 
         img_select = QComboBox()
@@ -158,6 +149,10 @@ class BigWidget(QWidget):
         top_box.addLayout(right_top_box)
 
         my_box.addLayout(top_box)
+
+        my_scrollable =QScrollArea()
+        my_scrollable.setWidget(self.my_painter)
+
         my_box.addWidget(my_scrollable)
 
         self.setLayout(my_box)
@@ -165,7 +160,7 @@ class BigWidget(QWidget):
 
     def set_img(self):
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
-        self.current_qimg  = build_qimg(self.img_arr, self.palette)
+        self.current_qimg = build_qimg(self.img_arr, self.palette)
         self.my_painter.set_img_pix(self.current_qimg)
 
     def palette_changed_by_user(self, new_palette_num):
