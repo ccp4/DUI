@@ -129,7 +129,7 @@ class BigWidget(QWidget):
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
 
-        self.set_img_num(0, self.palette)
+        self.set_img(0, self.palette)
         self.my_painter.set_img_pix(self.current_qimg )
 
         my_scrollable = ScrollableImg(self.my_painter)
@@ -163,7 +163,7 @@ class BigWidget(QWidget):
         self.setLayout(my_box)
         self.show()
 
-    def set_img_num(self, img_n, palette):
+    def set_img(self, img_n, palette):
         self.img_arr = self.my_sweep.get_raw_data(img_n)[0]
         print "self.img_arr.all() =", self.img_arr.all()
         self.current_qimg  = build_qimg(self.img_arr, palette)
@@ -179,7 +179,7 @@ class BigWidget(QWidget):
         sender = self.sender()
         print "Num =", value
 
-        self.set_img_num(value, self.palette)
+        self.set_img(value, self.palette)
         self.my_painter.set_img_pix(self.current_qimg)
 
 
