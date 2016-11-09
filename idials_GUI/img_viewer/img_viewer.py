@@ -46,8 +46,7 @@ class ImgPainter(QWidget):
 
     def __init__(self):
         super(ImgPainter, self).__init__()
-        self.setFixedSize(2550, 2400)
-        #self.pix = None
+        self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
         self.img = None
         self.setMouseTracking(True)
         self.show()
@@ -63,20 +62,15 @@ class ImgPainter(QWidget):
             print "Right click drag"
 
     def set_img_pix(self, q_img = None):
-
-        #self.pix = QPixmap.fromImage(q_img)
         self.img = q_img
         # the next two choices need to be taken depending on the
         # rendering back end
 
         # Use paintEvent when [self] inherits from QGLWidget
         #self.paintEvent(None)
-
         #Use "update" when [self] inherits from QWidget
         self.update()
-
         #in future consider *self.repaint()* for the video thing or instead of *self.update()*
-
 
     def paintEvent(self, event):
         if( self.img == None ):
@@ -122,6 +116,9 @@ class MyImgWin(QWidget):
             #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
 
         datablocks = DataBlockFactory.from_json_file(json_file_path)
+
+        #TODO check length of datablock
+
         db = datablocks[0]
         self.my_sweep = db.extract_sweeps()[0]
 
