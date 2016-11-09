@@ -311,8 +311,15 @@ class MainWidget(QMainWindow):
             self.btn_go_clicked()
 
     def update_img(self):
-        print "\n images from:", self.idials_widget.controller.get_current().datablock, "\n"
-        self.output_wg.img_view.ini_datablock(self.idials_widget.controller.get_current().datablock)
+        print "attempting to update imgs"
+
+        try:
+            json_file_path = str(self.idials_widget.controller.get_current().datablock)
+            print "\n images from:", json_file_path, "\n"
+            self.output_wg.img_view.ini_datablock(json_file_path)
+
+        except:
+            print "no datablock.json found"
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
@@ -333,13 +340,7 @@ class MainWidget(QMainWindow):
         except:
             print "\n no __call__ in ", self.current_widget, "\n"
 
-        print "Tst 01"
-
-        try:
-            self.update_img()
-
-        except:
-            print "no datablock.json found"
+        self.update_img()
 
     def btn_clicked(self):
         if( self.running == False ):

@@ -119,6 +119,7 @@ class MyImgWin(QWidget):
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
         self.img_num = 0
+        self.current_qimg = build_qimg()
 
         if( json_file_path == None ):
             print "\n\n no datablock given \n\n"
@@ -126,7 +127,6 @@ class MyImgWin(QWidget):
 
         else:
             self.ini_datablock(json_file_path)
-
 
         self.img_select.setCurrentIndex(0)
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
@@ -175,9 +175,6 @@ class MyImgWin(QWidget):
             self.img_select.addItem(labl)
 
 
-
-
-        self.current_qimg = build_qimg()
         self.set_img()
 
     def set_img(self):
