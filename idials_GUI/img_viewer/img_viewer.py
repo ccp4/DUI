@@ -49,7 +49,18 @@ class ImgPainter(QWidget):
         self.setFixedSize(2550, 2400)
         #self.pix = None
         self.img = None
+        self.setMouseTracking(True)
         self.show()
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == Qt.NoButton:
+            print "Simple mouse motion"
+        elif event.buttons() == Qt.LeftButton:
+            print "Left click drag"
+            print "(x, y) =", event.x(), event.y()
+
+        elif event.buttons() == Qt.RightButton:
+            print "Right click drag"
 
     def set_img_pix(self, q_img = None):
 
@@ -194,26 +205,3 @@ if( __name__ == "__main__" ):
     sys.exit(app.exec_())
     app.exec_()
 
-
-    old_example = '''
-    datablocks = DataBlockFactory.from_json_file("/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json")
-    print "datablocks[0] =", datablocks[0]
-    db=datablocks[0]
-
-    sw=db.extract_sweeps()[0]
-
-    print "sw.get_raw_data(0) =", sw.get_raw_data(0)
-    print "sw.get_raw_data(1) =", sw.get_raw_data(1)
-    print "sw.get_raw_data(2) =", sw.get_raw_data(2)
-
-    img_arr=sw.get_raw_data(0)[0]
-
-    print "img_arr.all() =", img_arr.all()
-
-    app = QApplication(sys.argv)
-    ex = ImgPainter()
-
-    q_img = build_qimg(img_arr)
-
-    ex.set_img_pix(q_img)
-    '''
