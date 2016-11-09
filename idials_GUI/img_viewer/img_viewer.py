@@ -113,9 +113,11 @@ class MyImgWin(QWidget):
         self.my_painter = ImgPainter()
 
         if( json_file_path == None ):
-            #json_file_path = "/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_04/dials-1/1_import/datablock.json"
             json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
+
+            #json_file_path = "/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_04/dials-1/1_import/datablock.json"
             #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
+
 
         datablocks = DataBlockFactory.from_json_file(json_file_path)
 
