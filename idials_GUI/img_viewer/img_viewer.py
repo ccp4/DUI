@@ -6,6 +6,9 @@ from dials_viewer_ext import rgb_img
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+from time import time as time_now
+
+
 class img_w_cpp(object):
     def __init__(self):
         self.wx_bmp_arr = rgb_img()
@@ -84,20 +87,19 @@ class ImgPainter(QWidget):
             img_paint.end()
 
 
-def build_qimg(img_flex, palette):
-    arr_img = img_w_cpp()
+class build_qimg(object):
+    def __init__(self):
+        self.arr_img = img_w_cpp()
 
-    #TODO remember that the previous line needs to run only once
+    def __call__ (self, img_flex, palette):
+        flex_2d_data = img_flex.as_double()
+        flex_2d_mask = flex.double(flex.grid(flex_2d_data.all()[0], flex_2d_data.all()[1]), 0)
+        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = 0.0, i_max = 100, palette = palette)
 
+        q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
+                       np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
-    flex_2d_data = img_flex.as_double()
-    flex_2d_mask = flex.double(flex.grid(flex_2d_data.all()[0], flex_2d_data.all()[1]), 0)
-    arr_i = arr_img(flex_2d_data, flex_2d_mask, i_min = 0.0, i_max = 100, palette = palette)
-
-    q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
-                   np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
-
-    return q_img
+        return q_img
 
 
 class MyImgWin(QWidget):
@@ -131,6 +133,8 @@ class MyImgWin(QWidget):
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
         self.img_num = 0
+
+        self.current_qimg = build_qimg()
         self.set_img()
 
 
@@ -167,9 +171,10 @@ class MyImgWin(QWidget):
         self.show()
 
     def set_img(self):
+        firts_time = time_now()
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
-        self.current_qimg = build_qimg(self.img_arr, self.palette)
-        self.my_painter.set_img_pix(self.current_qimg)
+        self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette))
+        print "diff time =", time_now() - firts_time, "\n"
 
     def palette_changed_by_user(self, new_palette_num):
         self.palette = self.palette_lst[new_palette_num]
