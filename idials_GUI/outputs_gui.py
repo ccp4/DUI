@@ -36,7 +36,6 @@ class WebTab(QWidget):
 
         self.web =  QWebView()
 
-        #self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
         self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
 
         hbox = QHBoxLayout()
@@ -63,8 +62,8 @@ class outputs_widget( QWidget):
 
         my_box = QVBoxLayout()
         v_splitter = QTabWidget()
-        self.img_view = MyImgWin("/scratch/some_data/weak_data/dui_idials_tst_01/dials-1/1_import/datablock.json")
-        #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
+
+        self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
 
         self.web_view = WebTab()
         self.in_txt_out = TextOut()

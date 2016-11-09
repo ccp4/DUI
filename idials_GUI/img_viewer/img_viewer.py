@@ -57,6 +57,7 @@ class ImgPainter(QWidget):
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             print "Simple mouse motion"
+
         elif event.buttons() == Qt.LeftButton:
             print "Left click drag"
             print "(x, y) =", event.x(), event.y()
@@ -71,6 +72,7 @@ class ImgPainter(QWidget):
 
         # Use paintEvent when [self] inherits from QGLWidget
         #self.paintEvent(None)
+
         #Use "update" when [self] inherits from QWidget
         self.update()
         #in future consider *self.repaint()* for the video thing or instead of *self.update()*
@@ -111,43 +113,28 @@ class MyImgWin(QWidget):
         right_top_box = QVBoxLayout()
 
         self.my_painter = ImgPainter()
-
-        if( json_file_path == None ):
-            json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
-
-            #json_file_path = "/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_04/dials-1/1_import/datablock.json"
-            #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
-
-
-        datablocks = DataBlockFactory.from_json_file(json_file_path)
-
-        #TODO check length of datablock
-
-        db = datablocks[0]
-        self.my_sweep = db.extract_sweeps()[0]
-
-        print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
-        print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
-
-        n_of_imgs = self.my_sweep.get_array_range()[1]
-        print "n_of_imgs =", n_of_imgs
+        self.img_select = QComboBox()
 
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
         self.img_num = 0
 
-        self.current_qimg = build_qimg()
-        self.set_img()
+        if( json_file_path == None ):
+            '''
+            json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
+            #json_file_path = "/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_04/dials-1/1_import/datablock.json"
+            #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
+            '''
+            #/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_05/dials-1/1_import/datablock.json
+            print "\n\n no datablock given \n\n"
+            n_of_imgs = 1
+
+        else:
+            self.ini_datablock(json_file_path)
 
 
-        img_select = QComboBox()
-
-        for num in xrange(n_of_imgs):
-            labl = "image number:" + str(num)
-            img_select.addItem(labl)
-
-        img_select.setCurrentIndex(0)
-        img_select.currentIndexChanged.connect(self.img_changed_by_user)
+        self.img_select.setCurrentIndex(0)
+        self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
 
         palette_select = QComboBox()
 
@@ -159,7 +146,7 @@ class MyImgWin(QWidget):
         left_top_box.addWidget(palette_select)
         top_box.addLayout(left_top_box)
 
-        right_top_box.addWidget(img_select)
+        right_top_box.addWidget(self.img_select)
         top_box.addLayout(right_top_box)
 
         my_box.addLayout(top_box)
@@ -171,6 +158,32 @@ class MyImgWin(QWidget):
 
         self.setLayout(my_box)
         self.show()
+
+
+    def ini_datablock(self, json_file_path):
+
+        datablocks = DataBlockFactory.from_json_file(json_file_path)
+        #TODO check length of datablock
+
+        db = datablocks[0]
+        self.my_sweep = db.extract_sweeps()[0]
+        self.img_select.clear()
+
+        print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
+        print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
+
+        n_of_imgs = self.my_sweep.get_array_range()[1]
+        print "n_of_imgs =", n_of_imgs
+
+        for num in xrange(n_of_imgs):
+            labl = "image number:" + str(num)
+            self.img_select.addItem(labl)
+
+
+
+
+        self.current_qimg = build_qimg()
+        self.set_img()
 
     def set_img(self):
         firts_time = time_now()
@@ -190,14 +203,8 @@ class MyImgWin(QWidget):
 
 if( __name__ == "__main__" ):
 
-    #app = QApplication(sys.argv)
-    #ex = BigWidget()
-    #sys.exit(app.exec_())
-
     app = QApplication(sys.argv)
-
     print "sys.argv =", sys.argv
-
     if( len(sys.argv) > 1 ):
         img_path = sys.argv[1]
     else:
