@@ -47,8 +47,10 @@ class img_w_cpp(object):
 
 class ImgPainter(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent = None):
         super(ImgPainter, self).__init__()
+
+        self.my_parent = parent
         self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
         self.img = None
         self.setMouseTracking(True)
@@ -56,12 +58,15 @@ class ImgPainter(QWidget):
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
-            #print "Simple mouse motion"
-            pass
+            self.x_pos, self.y_pos = event.x(), event.y()
 
         elif event.buttons() == Qt.LeftButton:
-            print "Left click drag"
-            print "(x, y) =", event.x(), event.y()
+            dx = event.x() - self.x_pos
+            dy = event.y() - self.y_pos
+            #self.my_parent.my_scrollable.setAlignment(100,200)
+
+            print "(dx, dy) =", dx, dy
+            self.x_pos, self.y_pos = event.x(), event.y()
 
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
@@ -113,7 +118,7 @@ class MyImgWin(QWidget):
         left_top_box = QVBoxLayout()
         right_top_box = QVBoxLayout()
 
-        self.my_painter = ImgPainter()
+        self.my_painter = ImgPainter(self)
         self.img_select = QComboBox()
 
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
@@ -146,10 +151,10 @@ class MyImgWin(QWidget):
 
         my_box.addLayout(top_box)
 
-        my_scrollable =QScrollArea()
-        my_scrollable.setWidget(self.my_painter)
+        self.my_scrollable = QScrollArea()
+        self.my_scrollable.setWidget(self.my_painter)
 
-        my_box.addWidget(my_scrollable)
+        my_box.addWidget(self.my_scrollable)
 
         self.setLayout(my_box)
         self.show()
