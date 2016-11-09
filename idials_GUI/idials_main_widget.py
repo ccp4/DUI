@@ -249,6 +249,7 @@ class MainWidget(QMainWindow):
 
         else:
             self.idials_widget.rtime_txt_on = True
+
         print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
         print "Toggle real time text"
 
@@ -281,6 +282,8 @@ class MainWidget(QMainWindow):
         if( self.idials_widget.controller.get_current().success == True ):
             if( self.idials_widget.controller.get_current().name == "import" ):
                 self.current_widget.success_stat = True
+                self.update_img()
+
 
             elif( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 print "\n ________________________ <<< Time to show the table \n"
@@ -307,6 +310,9 @@ class MainWidget(QMainWindow):
             self.idials_widget.change_mode("export")
             self.btn_go_clicked()
 
+    def update_img(self):
+        print "\n images from:", self.idials_widget.controller.get_current().datablock, "\n"
+        self.output_wg.img_view.ini_datablock(self.idials_widget.controller.get_current().datablock)
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
@@ -317,6 +323,8 @@ class MainWidget(QMainWindow):
         self._refrech_btn_look()
         self.current_widget = new_widget
 
+        print "Tst 01"
+
         try:
             print "controller.get_current().name =", self.idials_widget.controller.get_current().name
             self.current_widget()
@@ -324,6 +332,14 @@ class MainWidget(QMainWindow):
 
         except:
             print "\n no __call__ in ", self.current_widget, "\n"
+
+        print "Tst 01"
+
+        try:
+            self.update_img()
+
+        except:
+            print "no datablock.json found"
 
     def btn_clicked(self):
         if( self.running == False ):

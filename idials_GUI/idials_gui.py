@@ -229,20 +229,6 @@ class IdialsInnerrWidget( QWidget):
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
 
-        to_be_removed = '''
-        if( dials_logo == None ):
-            print "No logo to add"
-        else:
-            print "Adding DIALS logo from path:", dials_logo
-            imageLabel =  QLabel()
-            image =  QImage(dials_logo)
-            #original scale = QSize(380,240)
-            sc_image = image.scaled(QSize(170,120))
-            imageLabel.setPixmap( QPixmap.fromImage(sc_image))
-
-            big_vbox.addWidget(imageLabel)
-        '''
-
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
         self.thrd.handler.write_signal.connect(self.append_text)
@@ -307,12 +293,19 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent.start_pbar_motion()
 
     def finished_thread(self):
+
+        print "\n\n Here \n\n"
         self._update_tree()
-        '''
-        if( self.controller.get_mode() != "import" ):
-            print "self.controller.get_summary()", self.controller.get_summary()
-        '''
         self.super_parent.end_pbar_motion()
+
+        to_reuse_later = '''
+        print "self.controller.get_current().datablock =", str(self.controller.get_current().datablock)
+        print "self.controller.get_current().description =", str(self.controller.get_current().description)
+        print "self.controller.get_current().directory =", str(self.controller.get_current().directory)
+        print "self.controller.get_current().output =", str(self.controller.get_current().output)
+        print "self.controller.get_current().workspace =", str(self.controller.get_current().workspace)
+        '''
+
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"
@@ -357,9 +350,7 @@ class IdialsInnerrWidget( QWidget):
         self.tree_nav.update_me(current, lst_path_idx)
 
         updt_str = " Click the Dials icon to run >> " + self.controller.get_mode()
-
         print updt_str
-
         self.super_parent.update_pbar_text(updt_str)
 
 

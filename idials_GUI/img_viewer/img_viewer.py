@@ -56,7 +56,8 @@ class ImgPainter(QWidget):
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
-            print "Simple mouse motion"
+            #print "Simple mouse motion"
+            pass
 
         elif event.buttons() == Qt.LeftButton:
             print "Left click drag"
@@ -79,7 +80,7 @@ class ImgPainter(QWidget):
 
     def paintEvent(self, event):
         if( self.img == None ):
-            print "self.img = None"
+            #print "self.img = None"
             return
 
         else:
@@ -120,12 +121,6 @@ class MyImgWin(QWidget):
         self.img_num = 0
 
         if( json_file_path == None ):
-            '''
-            json_file_path = "/home/luiso/dui/dui_test/X4_wide/test_02/dials-1/1_import/datablock.json"
-            #json_file_path = "/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_04/dials-1/1_import/datablock.json"
-            #json_file_path = "/home/lui/dui/dui_test/X4_wide/tst01/datablock.json"
-            '''
-            #/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_05/dials-1/1_import/datablock.json
             print "\n\n no datablock given \n\n"
             n_of_imgs = 1
 
