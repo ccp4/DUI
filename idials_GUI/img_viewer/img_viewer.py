@@ -71,15 +71,27 @@ class ImgPainter(QWidget):
             print "ver_pos =", ver_pos
             print "hor_pos =", hor_pos
 
-            #self.my_parent.my_scrollable.move(dy, dx)
+            height = self.my_parent.my_scrollable.height()
+            width = self.my_parent.my_scrollable.width()
 
-            self.my_parent.my_scrollable.ensureVisible(hor_pos + 150 - dx, ver_pos + 150 - dy, 150, 150)
+            half_height = height / 2 - 1
+            half_width = width / 2 - 1
+
+            print "height =", height
+
+            #self.my_parent.my_scrollable.ensureVisible(hor_pos + half_width - dx, ver_pos + half_height - dy, half_width, half_height)
+            self.adjustScrollBar(self.my_parent.my_scrollable.horizontalScrollBar(), dx)
+            self.adjustScrollBar(self.my_parent.my_scrollable.verticalScrollBar(), dy)
 
             print "(dx, dy) =", dx, dy
             self.x_pos, self.y_pos = event.x(), event.y()
 
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
+
+    def adjustScrollBar(self, scrollBar, factor):
+        scrollBar.setValue(scrollBar.value() - factor)
+
 
     def set_img_pix(self, q_img = None):
         self.img = q_img
