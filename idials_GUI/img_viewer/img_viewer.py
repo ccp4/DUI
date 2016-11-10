@@ -59,6 +59,9 @@ class ImgPainter(QWidget):
         self.setMouseTracking(True)
         self.show()
 
+        self.my_scale = 1.0
+
+
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             self.x_pos, self.y_pos = event.x(), event.y()
@@ -74,6 +77,16 @@ class ImgPainter(QWidget):
 
     def wheelEvent(self, event):
         print "wheelEvent()"
+        #print "event.delta() =", event.delta()
+
+        if( event.delta() > 0 ):
+            #print "Up"
+            self.my_scale = self.my_scale + 0.1
+
+        elif( event.delta() < 0 ):
+            #print "Down"
+            self.my_scale = self.my_scale - 0.1
+
 
 
     def adjustScrollBar(self, scrollBar, delta):
@@ -88,7 +101,7 @@ class ImgPainter(QWidget):
         #self.setFixedSize(2550, 2400)
         self.resize(self.img.size())
 
-        print "self.img.size() =", self.img.size()
+        #print "self.img.size() =", self.img.size()
 
         #print "dir(self.img)", dir(self.img)
 
@@ -108,6 +121,7 @@ class ImgPainter(QWidget):
             return
 
         else:
+            print "paintEvent"
             img_paint = QPainter()
             img_paint.begin(self)
             img_paint.drawImage(0, 0, self.img)
