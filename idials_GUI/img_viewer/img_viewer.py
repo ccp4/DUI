@@ -72,10 +72,10 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
-    def adjustScrollBar(self, scrollBar, factor):
+    def adjustScrollBar(self, scrollBar, delta):
 
         old_val = scrollBar.value()
-        scrollBar.setValue(old_val - factor)
+        scrollBar.setValue(old_val - delta)
 
 
     def set_img_pix(self, q_img = None):
