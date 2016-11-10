@@ -51,7 +51,11 @@ class ImgPainter(QWidget):
         super(ImgPainter, self).__init__()
 
         self.my_parent = parent
-        self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
+
+        #self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
+        #self.setFixedSize(550, 400) #TODO This should be the XY size of the images
+        self.resize(50, 40)
+
         self.img = None
         self.setMouseTracking(True)
         self.show()
@@ -63,11 +67,8 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
             dy = event.y() - self.y_pos
-
             self.adjustScrollBar(self.my_parent.my_scrollable.horizontalScrollBar(), dx)
             self.adjustScrollBar(self.my_parent.my_scrollable.verticalScrollBar(), dy)
-
-            print "(dx, dy) =", dx, dy
 
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
@@ -79,7 +80,15 @@ class ImgPainter(QWidget):
 
 
     def set_img_pix(self, q_img = None):
+
         self.img = q_img
+        #self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
+        self.resize(self.img.size())
+
+        print "self.img.size() =", self.img.size()
+
+        #print "dir(self.img)", dir(self.img)
+
         # the next two choices need to be taken depending on the
         # rendering back end
 
