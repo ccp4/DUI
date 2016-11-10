@@ -63,7 +63,22 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
             dy = event.y() - self.y_pos
-            #self.my_parent.my_scrollable.setAlignment(100,200)
+            #self.my_parent.my_scrollable.scroll(dx,dy)
+
+            ver_pos = self.my_parent.my_scrollable.verticalScrollBar().value()
+            hor_pos =  self.my_parent.my_scrollable.horizontalScrollBar().value()
+
+            print "ver_pos =", ver_pos
+            print "hor_pos =", hor_pos
+
+            #self.my_parent.my_scrollable.move(dy, dx)
+
+            '''
+            verticalScrollBar()->setValue(verticalScrollBar()->value() +
+            diff.y());
+                    horizontalScrollBar()->setValue(horizontalScrollBar()->value() +
+            diff.x());
+            '''
 
             print "(dx, dy) =", dx, dy
             self.x_pos, self.y_pos = event.x(), event.y()
