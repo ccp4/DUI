@@ -162,7 +162,7 @@ class MainWidget(QMainWindow):
 
             new_btn.setToolTip(step_data)
             new_btn.setIcon(icon_lst[pos])
-            new_btn.setIconSize(QSize(48, 48))
+            new_btn.setIconSize(QSize(38, 38))
             new_btn.par_wig = self.widg_lst[pos]
             new_btn.command = self.command_lst[pos]
 
