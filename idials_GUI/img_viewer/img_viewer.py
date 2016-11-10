@@ -52,9 +52,8 @@ class ImgPainter(QWidget):
 
         self.my_parent = parent
 
-        #self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
-        #self.setFixedSize(550, 400) #TODO This should be the XY size of the images
-        self.resize(50, 40)
+        #self.setFixedSize(2550, 2400)
+        #self.resize(50, 40)
 
         self.img = None
         self.setMouseTracking(True)
@@ -73,6 +72,10 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
+    def wheelEvent(self, event):
+        print "wheelEvent()"
+
+
     def adjustScrollBar(self, scrollBar, delta):
 
         old_val = scrollBar.value()
@@ -82,7 +85,7 @@ class ImgPainter(QWidget):
     def set_img_pix(self, q_img = None):
 
         self.img = q_img
-        #self.setFixedSize(2550, 2400) #TODO This should be the XY size of the images
+        #self.setFixedSize(2550, 2400)
         self.resize(self.img.size())
 
         print "self.img.size() =", self.img.size()
