@@ -73,12 +73,7 @@ class ImgPainter(QWidget):
 
             #self.my_parent.my_scrollable.move(dy, dx)
 
-            '''
-            verticalScrollBar()->setValue(verticalScrollBar()->value() +
-            diff.y());
-                    horizontalScrollBar()->setValue(horizontalScrollBar()->value() +
-            diff.x());
-            '''
+            self.my_parent.my_scrollable.ensureVisible(hor_pos + 150 - dx, ver_pos + 150 - dy, 150, 150)
 
             print "(dx, dy) =", dx, dy
             self.x_pos, self.y_pos = event.x(), event.y()
