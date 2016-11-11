@@ -205,8 +205,10 @@ class MyImgWin(QWidget):
         btn_first =  QPushButton(' I< ')
         btn_rev =  QPushButton(' << ')
         btn_prev = QPushButton('  < ')
+        btn_prev.clicked.connect(self.btn_prev_clicked)
 
         btn_next =  QPushButton(' >  ')
+        btn_next.clicked.connect(self.btn_next_clicked)
         btn_ffw =  QPushButton(' >> ')
         btn_last = QPushButton('  >I ')
         top_box.addStretch()
@@ -251,10 +253,10 @@ class MyImgWin(QWidget):
         n_of_imgs = self.my_sweep.get_array_range()[1]
         print "n_of_imgs =", n_of_imgs
 
+        self.img_select.setMaxCount(n_of_imgs)
         for num in xrange(n_of_imgs):
-            labl = "img#" + str(num)
+            labl = "img#" + str(num + 1)
             self.img_select.addItem(labl)
-
 
         self.set_img()
 
@@ -288,8 +290,26 @@ class MyImgWin(QWidget):
         self.palette = self.palette_lst[new_palette_num]
         self.set_img()
 
+    def btn_next_clicked(self):
+        print "btn_next_clicked"
+        self.img_num += 1
+        if( self.img_num >= self.img_select.maxCount() ):
+            self.img_num = self.img_select.maxCount() - 1
+
+        self.img_select.setCurrentIndex(self.img_num)
+        self.set_img()
+
+    def btn_prev_clicked(self):
+        print "btn_prev_clicked"
+        self.img_num -= 1
+        if( self.img_num < 0 ):
+            self.img_num = 0
+
+        self.img_select.setCurrentIndex(self.img_num)
+        self.set_img()
+
+
     def img_changed_by_user(self, value):
-        sender = self.sender()
         self.img_num = value
         self.set_img()
 
