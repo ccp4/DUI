@@ -82,14 +82,14 @@ class ImgPainter(QWidget):
 
         if( event.delta() > 0 ):
             self.my_scale = self.my_scale * 1.1
-            h_new_pbar_pos = int(h_fl_val * 1.12)
-            v_new_pbar_pos = int(v_fl_val * 1.12)
+            h_new_pbar_pos = int(h_fl_val * 1.105)
+            v_new_pbar_pos = int(v_fl_val * 1.105)
 
 
         elif( event.delta() < 0 ):
             self.my_scale = self.my_scale * 0.9
-            h_new_pbar_pos = int(h_fl_val * 0.88)
-            v_new_pbar_pos = int(v_fl_val * 0.88)
+            h_new_pbar_pos = int(h_fl_val * 0.895)
+            v_new_pbar_pos = int(v_fl_val * 0.895)
 
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
