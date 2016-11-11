@@ -165,8 +165,25 @@ class MyImgWin(QWidget):
         self.my_painter = ImgPainter(self)
         self.img_select = QComboBox()
 
+        max_min_validator = QIntValidator(-5, 9995, self)
+
+        max_edit = QLineEdit()
+        max_edit.setValidator(max_min_validator)
+
+        min_edit = QLineEdit()
+        min_edit.setValidator(max_min_validator)
+
+
+        palette_select = QComboBox()
+
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
+        for plt in self.palette_lst:
+            palette_select.addItem(plt)
+
+        palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
+
+
         self.img_num = 0
         self.current_qimg = build_qimg()
 
@@ -180,18 +197,28 @@ class MyImgWin(QWidget):
         self.img_select.setCurrentIndex(0)
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
 
-        palette_select = QComboBox()
+        btn_first =  QPushButton(' I< ')
+        btn_rev =  QPushButton(' << ')
+        btn_prev = QPushButton('  < ')
 
-        for plt in self.palette_lst:
-            palette_select.addItem(plt)
+        btn_next =  QPushButton(' >  ')
+        btn_ffw =  QPushButton(' >> ')
+        btn_last = QPushButton('  >I ')
+        top_box.addStretch()
 
-        palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
+        top_box.addWidget(QLabel("I min"))
+        top_box.addWidget(min_edit)
+        top_box.addWidget(QLabel("I max"))
+        top_box.addWidget(max_edit)
+        top_box.addWidget(palette_select)
 
-        left_top_box.addWidget(palette_select)
-        top_box.addLayout(left_top_box)
-
-        right_top_box.addWidget(self.img_select)
-        top_box.addLayout(right_top_box)
+        top_box.addWidget(btn_first)
+        top_box.addWidget(btn_rev)
+        top_box.addWidget(btn_prev)
+        top_box.addWidget(self.img_select)
+        top_box.addWidget(btn_next)
+        top_box.addWidget(btn_ffw)
+        top_box.addWidget(btn_last)
 
         my_box.addLayout(top_box)
 
@@ -220,7 +247,7 @@ class MyImgWin(QWidget):
         print "n_of_imgs =", n_of_imgs
 
         for num in xrange(n_of_imgs):
-            labl = "image number:" + str(num)
+            labl = "img#" + str(num)
             self.img_select.addItem(labl)
 
 
