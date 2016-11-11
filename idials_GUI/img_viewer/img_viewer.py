@@ -60,8 +60,12 @@ class ImgPainter(QWidget):
         self.show()
 
         self.my_scale = 1.0
-        self.rec = QRect(0, 0, 2463 * self.my_scale, 2527 * self.my_scale)
-        self.resize(2463 * self.my_scale, 2527 * self.my_scale)
+
+        self.img_width = 2463
+        self.img_height = 2527
+
+        self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
+        self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
@@ -88,7 +92,7 @@ class ImgPainter(QWidget):
             #print "Down"
             self.my_scale = self.my_scale - 0.1
 
-        self.rec = QRect(0, 0, 2463 * self.my_scale, 2527 * self.my_scale)
+        self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
 
@@ -124,7 +128,7 @@ class ImgPainter(QWidget):
             return
 
         else:
-            self.resize(2463 * self.my_scale, 2527 * self.my_scale)
+            self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
             img_paint = QPainter()
             img_paint.begin(self)
             img_paint.drawImage(self.rec, self.img)
