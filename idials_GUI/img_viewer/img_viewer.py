@@ -69,33 +69,42 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
             dy = event.y() - self.y_pos
-            self.move_scrollbar(self.my_parent.my_scrollable.horizontalScrollBar(), dx)
-            self.move_scrollbar(self.my_parent.my_scrollable.verticalScrollBar(), dy)
+            self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.horizontalScrollBar(), dst = dx)
+            self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.verticalScrollBar(), dst = dy)
 
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
     def wheelEvent(self, event):
-        #print "event.delta() =", event.delta()
+
+        h_fl_val = float(self.my_parent.my_scrollable.horizontalScrollBar().value())
+        v_fl_val = float(self.my_parent.my_scrollable.verticalScrollBar().value())
+
         if( event.delta() > 0 ):
-            self.my_scale = self.my_scale + 0.1
+            self.my_scale = self.my_scale * 1.1
+            h_new_pbar_pos = int(h_fl_val * 1.12)
+            v_new_pbar_pos = int(v_fl_val * 1.12)
+
 
         elif( event.delta() < 0 ):
-            self.my_scale = self.my_scale - 0.1
+            self.my_scale = self.my_scale * 0.9
+            h_new_pbar_pos = int(h_fl_val * 0.88)
+            v_new_pbar_pos = int(v_fl_val * 0.88)
 
-
-        print "\n\n horizontalScrollBar().value() =", self.my_parent.my_scrollable.horizontalScrollBar().value()
-        print " horizontalScrollBar().maximum() =",  self.my_parent.my_scrollable.horizontalScrollBar().maximum()
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
-        print " horizontalScrollBar().value() =", self.my_parent.my_scrollable.horizontalScrollBar().value()
-        print "horizontalScrollBar().maximum() =",  self.my_parent.my_scrollable.horizontalScrollBar().maximum(), "\n\n"
+        self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.horizontalScrollBar(), new_pos = h_new_pbar_pos)
+        self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.verticalScrollBar(), new_pos = v_new_pbar_pos)
+
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
         if( dst != None ):
             old_val = scrollBar.value()
             scrollBar.setValue(old_val - dst)
+
+        if( new_pos != None ):
+            scrollBar.setValue(new_pos)
 
         #print dir(scrollBar), "\n\n"
 
