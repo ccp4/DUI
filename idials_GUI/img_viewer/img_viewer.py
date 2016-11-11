@@ -52,9 +52,6 @@ class ImgPainter(QWidget):
 
         self.my_parent = parent
 
-        #self.setFixedSize(2550, 2400)
-
-
         self.img = None
         self.setMouseTracking(True)
         self.show()
@@ -63,8 +60,6 @@ class ImgPainter(QWidget):
 
         self.img_width = 247
         self.img_height = 253
-
-
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
     def mouseMoveEvent(self, event):
