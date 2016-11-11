@@ -4,7 +4,6 @@ class GraphWidget(QGraphicsView):
     def __init__(self):
         QGraphicsView.__init__(self)
         scene = QGraphicsScene(self)
-        #scene.setSceneRect(-200, -200, 400, 400)
         self.setScene(scene)
 
         imageLabel = QLabel()

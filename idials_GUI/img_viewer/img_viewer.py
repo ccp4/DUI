@@ -60,6 +60,7 @@ class ImgPainter(QWidget):
         self.show()
 
         self.my_scale = 1.0
+        self.rec = QRect(0, 0, 2463 * self.my_scale, 2527 * self.my_scale)
 
 
     def mouseMoveEvent(self, event):
@@ -76,7 +77,7 @@ class ImgPainter(QWidget):
             print "Right click drag"
 
     def wheelEvent(self, event):
-        print "wheelEvent()"
+        #print "wheelEvent()"
         #print "event.delta() =", event.delta()
 
         if( event.delta() > 0 ):
@@ -87,6 +88,8 @@ class ImgPainter(QWidget):
             #print "Down"
             self.my_scale = self.my_scale - 0.1
 
+        self.rec = QRect(0, 0, 2463 * self.my_scale, 2527 * self.my_scale)
+        self.update()
 
 
     def adjustScrollBar(self, scrollBar, delta):
@@ -100,6 +103,8 @@ class ImgPainter(QWidget):
         self.img = q_img
         #self.setFixedSize(2550, 2400)
         self.resize(self.img.size())
+
+
 
         #print "self.img.size() =", self.img.size()
 
@@ -117,14 +122,12 @@ class ImgPainter(QWidget):
 
     def paintEvent(self, event):
         if( self.img == None ):
-            #print "self.img = None"
             return
 
         else:
-            print "paintEvent"
             img_paint = QPainter()
             img_paint.begin(self)
-            img_paint.drawImage(0, 0, self.img)
+            img_paint.drawImage(self.rec, self.img)
             img_paint.end()
 
 
