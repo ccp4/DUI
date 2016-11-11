@@ -61,10 +61,10 @@ class ImgPainter(QWidget):
 
         self.my_scale = 1.0
 
-        self.img_width = 2463
-        self.img_height = 2527
+        self.img_width = 247
+        self.img_height = 253
 
-        self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
+
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
     def mouseMoveEvent(self, event):
@@ -81,37 +81,30 @@ class ImgPainter(QWidget):
             print "Right click drag"
 
     def wheelEvent(self, event):
-        #print "wheelEvent()"
         #print "event.delta() =", event.delta()
-
         if( event.delta() > 0 ):
-            #print "Up"
             self.my_scale = self.my_scale + 0.1
 
         elif( event.delta() < 0 ):
-            #print "Down"
             self.my_scale = self.my_scale - 0.1
 
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
 
-    def adjustScrollBar(self, scrollBar, delta):
+    def adjustScrollBar(self, scrollBar, dst):
 
         old_val = scrollBar.value()
-        scrollBar.setValue(old_val - delta)
+        scrollBar.setValue(old_val - dst)
 
 
     def set_img_pix(self, q_img = None):
 
         self.img = q_img
-        #self.setFixedSize(2550, 2400)
-        #self.resize(self.img.size())
 
-
-        #print "self.img.size() =", self.img.size()
-
-        #print "dir(self.img)", dir(self.img)
+        self.img_width = q_img.width()
+        self.img_height = q_img.height()
+        self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         # the next two choices need to be taken depending on the
         # rendering back end
