@@ -143,10 +143,10 @@ class build_qimg(object):
     def __init__(self):
         self.arr_img = img_w_cpp()
 
-    def __call__ (self, img_flex, palette):
+    def __call__ (self, img_flex, palette_in, min_i, max_i):
         flex_2d_data = img_flex.as_double()
         flex_2d_mask = flex.double(flex.grid(flex_2d_data.all()[0], flex_2d_data.all()[1]), 0)
-        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = 0.0, i_max = 100, palette = palette)
+        arr_i = self.arr_img(flex_2d_data, flex_2d_mask, i_min = min_i, i_max = max_i, palette = palette_in)
 
         q_img = QImage(arr_i.data, np.size(arr_i[0:1, :, 0:1]),
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
@@ -167,12 +167,17 @@ class MyImgWin(QWidget):
 
         max_min_validator = QIntValidator(-5, 9995, self)
 
-        max_edit = QLineEdit()
-        max_edit.setValidator(max_min_validator)
-
+        self.i_min = -3
         min_edit = QLineEdit()
         min_edit.setValidator(max_min_validator)
+        min_edit.setText(str(self.i_min))
+        min_edit.textChanged.connect(self.min_changed_by_user)
 
+        self.i_max = 100
+        max_edit = QLineEdit()
+        max_edit.setValidator(max_min_validator)
+        max_edit.setText(str(self.i_max))
+        max_edit.textChanged.connect(self.max_changed_by_user)
 
         palette_select = QComboBox()
 
@@ -253,10 +258,30 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
+
+    def min_changed_by_user(self, value):
+        print "min_changed_by_user"
+        try:
+            self.i_min = int(value)
+        except:
+            self.i_min = 0
+        print "self.i_min =", self.i_min
+        self.set_img()
+
+    def max_changed_by_user(self, value):
+        print "max_changed_by_user"
+        try:
+            self.i_max = int(value)
+        except:
+            self.i_max = 0
+        print "self.i_max =", self.i_max
+        self.set_img()
+
     def set_img(self):
+
         firts_time = time_now()
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
-        self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette))
+        self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette, self.i_min, self.i_max))
         print "diff time =", time_now() - firts_time, "\n"
 
     def palette_changed_by_user(self, new_palette_num):
