@@ -53,7 +53,7 @@ class ImgPainter(QWidget):
         self.my_parent = parent
 
         #self.setFixedSize(2550, 2400)
-        #self.resize(50, 40)
+
 
         self.img = None
         self.setMouseTracking(True)
@@ -61,7 +61,7 @@ class ImgPainter(QWidget):
 
         self.my_scale = 1.0
         self.rec = QRect(0, 0, 2463 * self.my_scale, 2527 * self.my_scale)
-
+        self.resize(2463 * self.my_scale, 2527 * self.my_scale)
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
@@ -102,8 +102,7 @@ class ImgPainter(QWidget):
 
         self.img = q_img
         #self.setFixedSize(2550, 2400)
-        self.resize(self.img.size())
-
+        #self.resize(self.img.size())
 
 
         #print "self.img.size() =", self.img.size()
@@ -125,6 +124,7 @@ class ImgPainter(QWidget):
             return
 
         else:
+            self.resize(2463 * self.my_scale, 2527 * self.my_scale)
             img_paint = QPainter()
             img_paint.begin(self)
             img_paint.drawImage(self.rec, self.img)
