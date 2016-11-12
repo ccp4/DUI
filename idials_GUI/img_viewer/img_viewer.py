@@ -260,25 +260,6 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
-
-    def min_changed_by_user(self, value):
-        print "min_changed_by_user"
-        try:
-            self.i_min = int(value)
-        except:
-            self.i_min = 0
-        print "self.i_min =", self.i_min
-        self.set_img()
-
-    def max_changed_by_user(self, value):
-        print "max_changed_by_user"
-        try:
-            self.i_max = int(value)
-        except:
-            self.i_max = 0
-        print "self.i_max =", self.i_max
-        self.set_img()
-
     def set_img(self):
 
         firts_time = time_now()
@@ -286,28 +267,37 @@ class MyImgWin(QWidget):
         self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette, self.i_min, self.i_max))
         print "diff time =", time_now() - firts_time, "\n"
 
+    def min_changed_by_user(self, value):
+        try:
+            self.i_min = int(value)
+        except:
+            self.i_min = 0
+        self.set_img()
+
+    def max_changed_by_user(self, value):
+        try:
+            self.i_max = int(value)
+        except:
+            self.i_max = 0
+        self.set_img()
+
     def palette_changed_by_user(self, new_palette_num):
         self.palette = self.palette_lst[new_palette_num]
         self.set_img()
 
-    def btn_next_clicked(self):
-        print "btn_next_clicked"
-        self.img_num += 1
-        if( self.img_num >= self.img_select.maxCount() ):
-            self.img_num = self.img_select.maxCount() - 1
-
-        self.img_select.setCurrentIndex(self.img_num)
-        self.set_img()
-
     def btn_prev_clicked(self):
-        print "btn_prev_clicked"
         self.img_num -= 1
         if( self.img_num < 0 ):
             self.img_num = 0
 
         self.img_select.setCurrentIndex(self.img_num)
-        self.set_img()
 
+    def btn_next_clicked(self):
+        self.img_num += 1
+        if( self.img_num >= self.img_select.maxCount() ):
+            self.img_num = self.img_select.maxCount() - 1
+
+        self.img_select.setCurrentIndex(self.img_num)
 
     def img_changed_by_user(self, value):
         self.img_num = value
