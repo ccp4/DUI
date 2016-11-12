@@ -203,14 +203,18 @@ class MyImgWin(QWidget):
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
 
         btn_first =  QPushButton(' I< ')
+        btn_first.clicked.connect(self.btn_first_clicked)
         btn_rev =  QPushButton(' << ')
+        btn_rev.clicked.connect(self.btn_rev_clicked)
         btn_prev = QPushButton('  < ')
         btn_prev.clicked.connect(self.btn_prev_clicked)
-
         btn_next =  QPushButton(' >  ')
         btn_next.clicked.connect(self.btn_next_clicked)
         btn_ffw =  QPushButton(' >> ')
+        btn_ffw.clicked.connect(self.btn_ffw_clicked)
         btn_last = QPushButton('  >I ')
+        btn_last.clicked.connect(self.btn_last_clicked)
+
         top_box.addStretch()
 
         top_box.addWidget(QLabel("I min"))
@@ -241,7 +245,7 @@ class MyImgWin(QWidget):
     def ini_datablock(self, json_file_path):
 
         datablocks = DataBlockFactory.from_json_file(json_file_path)
-        #TODO check length of datablock
+        #TODO check length of datablock for safety
 
         db = datablocks[0]
         self.my_sweep = db.extract_sweeps()[0]
@@ -253,6 +257,8 @@ class MyImgWin(QWidget):
         n_of_imgs = self.my_sweep.get_array_range()[1]
         print "n_of_imgs =", n_of_imgs
 
+        #TODO check vale of n_of_imgs (looks like is len() + 1)
+
         self.img_select.setMaxCount(n_of_imgs)
         for num in xrange(n_of_imgs):
             labl = "img#" + str(num + 1)
@@ -261,6 +267,8 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def set_img(self):
+
+        print "New self.img_num =", self.img_num
 
         firts_time = time_now()
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
@@ -285,18 +293,37 @@ class MyImgWin(QWidget):
         self.palette = self.palette_lst[new_palette_num]
         self.set_img()
 
+
+    def btn_first_clicked(self):
+        self.img_num = 0
+        self.img_select.setCurrentIndex(self.img_num)
+
+    def btn_rev_clicked(self):
+        self.img_num -= 10
+        if( self.img_num < 0 ):
+            self.img_num = 0
+        self.img_select.setCurrentIndex(self.img_num)
+
     def btn_prev_clicked(self):
         self.img_num -= 1
         if( self.img_num < 0 ):
             self.img_num = 0
-
         self.img_select.setCurrentIndex(self.img_num)
 
     def btn_next_clicked(self):
         self.img_num += 1
         if( self.img_num >= self.img_select.maxCount() ):
             self.img_num = self.img_select.maxCount() - 1
+        self.img_select.setCurrentIndex(self.img_num)
 
+    def btn_ffw_clicked(self):
+        self.img_num += 10
+        if( self.img_num >= self.img_select.maxCount() ):
+            self.img_num = self.img_select.maxCount() - 1
+        self.img_select.setCurrentIndex(self.img_num)
+
+    def btn_last_clicked(self):
+        self.img_num = self.img_select.maxCount() - 1
         self.img_select.setCurrentIndex(self.img_num)
 
     def img_changed_by_user(self, value):
