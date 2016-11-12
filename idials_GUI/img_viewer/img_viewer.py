@@ -250,14 +250,12 @@ class MyImgWin(QWidget):
         db = datablocks[0]
         self.my_sweep = db.extract_sweeps()[0]
         self.img_select.clear()
-
+        print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
         print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
         print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
-
-        n_of_imgs = self.my_sweep.get_array_range()[1]
+        print "self.my_sweep.indices() =", self.my_sweep.indices()
+        n_of_imgs = len(self.my_sweep.indices())
         print "n_of_imgs =", n_of_imgs
-
-        #TODO check vale of n_of_imgs (looks like is len() + 1)
 
         self.img_select.setMaxCount(n_of_imgs)
         for num in xrange(n_of_imgs):
