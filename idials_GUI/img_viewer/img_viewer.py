@@ -126,7 +126,8 @@ class ImgPainter(QWidget):
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
-        self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
+        self.rec = QRect(0, 0, self.img_width * self.my_scale,
+                         self.img_height * self.my_scale)
 
         # the next two choices need to be taken depending on the
         # rendering back end
@@ -174,17 +175,13 @@ class MyImgWin(QWidget):
         right_top_box = QVBoxLayout()
 
         self.img_select = QComboBox()
-
         self.my_scrollable = QScrollArea()
-
         self.my_painter = ImgPainter(self)
-
         self.my_scrollable.setWidget(self.my_painter)
-
-        max_min_validator = QIntValidator(-5, 9995, self)
 
         self.i_min = -3
         min_edit = QLineEdit()
+        max_min_validator = QIntValidator(-5, 9995, self)
         min_edit.setValidator(max_min_validator)
         min_edit.setText(str(self.i_min))
         min_edit.textChanged.connect(self.min_changed_by_user)
