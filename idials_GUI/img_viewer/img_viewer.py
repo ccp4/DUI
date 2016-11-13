@@ -62,6 +62,9 @@ class ImgPainter(QWidget):
         self.img_height = 253
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
+        self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
+        self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
+
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             self.x_pos, self.y_pos = event.x(), event.y()
@@ -69,33 +72,41 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
             dy = event.y() - self.y_pos
-            self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.horizontalScrollBar(), dst = dx)
-            self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.verticalScrollBar(), dst = dy)
+            self.move_scrollbar(scrollBar = self.p_h_svar(), dst = dx)
+            self.move_scrollbar(scrollBar = self.p_v_svar(), dst = dy)
 
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
     def wheelEvent(self, event):
 
-        h_fl_val = float(self.my_parent.my_scrollable.horizontalScrollBar().value())
-        v_fl_val = float(self.my_parent.my_scrollable.verticalScrollBar().value())
+        old_x = event.x()
+        print "old_x =", old_x
+        h_scr_bar = float(self.p_h_svar().value())
+        print "h_scr_bar =", h_scr_bar
+
+        old_y = event.y()
+        print "old_y =", old_y
+        v_scr_bar = float(self.p_v_svar().value())
+        print "v_scr_bar =", v_scr_bar
+
+        print "self.my_scale =", self.my_scale
 
         if( event.delta() > 0 ):
-            self.my_scale = self.my_scale * 1.1
-            h_new_pbar_pos = int(h_fl_val * 1.105)
-            v_new_pbar_pos = int(v_fl_val * 1.105)
-
+            scale_factor = 1.1
 
         elif( event.delta() < 0 ):
-            self.my_scale = self.my_scale * 0.9
-            h_new_pbar_pos = int(h_fl_val * 0.895)
-            v_new_pbar_pos = int(v_fl_val * 0.895)
+            scale_factor = 0.9
+
+        self.my_scale *= scale_factor
+        h_new_pbar_pos = int(h_scr_bar * scale_factor)
+        v_new_pbar_pos = int(v_scr_bar * scale_factor)
 
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
-        self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.horizontalScrollBar(), new_pos = h_new_pbar_pos)
-        self.move_scrollbar(scrollBar = self.my_parent.my_scrollable.verticalScrollBar(), new_pos = v_new_pbar_pos)
+        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
+        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
@@ -162,8 +173,13 @@ class MyImgWin(QWidget):
         left_top_box = QVBoxLayout()
         right_top_box = QVBoxLayout()
 
-        self.my_painter = ImgPainter(self)
         self.img_select = QComboBox()
+
+        self.my_scrollable = QScrollArea()
+
+        self.my_painter = ImgPainter(self)
+
+        self.my_scrollable.setWidget(self.my_painter)
 
         max_min_validator = QIntValidator(-5, 9995, self)
 
@@ -233,8 +249,7 @@ class MyImgWin(QWidget):
 
         my_box.addLayout(top_box)
 
-        self.my_scrollable = QScrollArea()
-        self.my_scrollable.setWidget(self.my_painter)
+
 
         my_box.addWidget(self.my_scrollable)
 
