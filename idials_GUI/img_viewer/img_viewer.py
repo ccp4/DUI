@@ -102,11 +102,12 @@ class ImgPainter(QWidget):
         h_new_pbar_pos = int(h_scr_bar * scale_factor)
         v_new_pbar_pos = int(v_scr_bar * scale_factor)
 
+        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
+        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
+        
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
-        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
-        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
