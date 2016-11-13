@@ -90,7 +90,7 @@ class ImgPainter(QWidget):
         v_scr_bar = float(self.p_v_svar().value())
         print "v_scr_bar =", v_scr_bar
 
-        print "self.my_scale =", self.my_scale
+        print "self.my_scale =", self.my_scale, "\n"
 
         if( event.delta() > 0 ):
             scale_factor = 1.1
@@ -102,12 +102,11 @@ class ImgPainter(QWidget):
         h_new_pbar_pos = int(h_scr_bar * scale_factor)
         v_new_pbar_pos = int(v_scr_bar * scale_factor)
 
-        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
-        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
-        
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
+        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
+        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
@@ -118,9 +117,6 @@ class ImgPainter(QWidget):
         if( new_pos != None ):
             scrollBar.setValue(new_pos)
 
-        #print dir(scrollBar), "\n\n"
-
-
     def set_img_pix(self, q_img = None):
 
         self.img = q_img
@@ -130,13 +126,9 @@ class ImgPainter(QWidget):
         self.rec = QRect(0, 0, self.img_width * self.my_scale,
                          self.img_height * self.my_scale)
 
-        # the next two choices need to be taken depending on the
-        # rendering back end
-
-        # Use paintEvent when [self] inherits from QGLWidget
+        #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
         #self.paintEvent(None)
 
-        #Use "update" when [self] inherits from QWidget
         self.update()
         #in future consider *self.repaint()* for the video thing or instead of *self.update()*
 
@@ -266,7 +258,6 @@ class MyImgWin(QWidget):
         print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
         print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
         print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
-        print "self.my_sweep.indices() =", self.my_sweep.indices()
         n_of_imgs = len(self.my_sweep.indices())
         print "n_of_imgs =", n_of_imgs
 
