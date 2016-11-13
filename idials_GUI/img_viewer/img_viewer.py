@@ -80,17 +80,8 @@ class ImgPainter(QWidget):
 
     def wheelEvent(self, event):
 
-        old_x = event.x()
-        print "old_x =", old_x
         h_scr_bar = float(self.p_h_svar().value())
-        print "h_scr_bar =", h_scr_bar
-
-        old_y = event.y()
-        print "old_y =", old_y
         v_scr_bar = float(self.p_v_svar().value())
-        print "v_scr_bar =", v_scr_bar
-
-        print "self.my_scale =", self.my_scale, "\n"
 
         if( event.delta() > 0 ):
             scale_factor = 1.1
@@ -99,8 +90,11 @@ class ImgPainter(QWidget):
             scale_factor = 0.9
 
         self.my_scale *= scale_factor
-        h_new_pbar_pos = int(h_scr_bar * scale_factor)
-        v_new_pbar_pos = int(v_scr_bar * scale_factor)
+        h_new_pbar_pos = int(scale_factor * h_scr_bar
+                         + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
+
+        v_new_pbar_pos = int(scale_factor * v_scr_bar
+                         + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
 
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
