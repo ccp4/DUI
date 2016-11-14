@@ -309,10 +309,26 @@ class importOuterWidget( QWidget):
         self.show()
 
 
+class FindSpotsOuterWidget( QWidget):
+    def __init__(self, parent = None):
+        super(FindSpotsOuterWidget, self).__init__(parent)
+
+        self.super_parent = self
+
+        self.scrollable_widget = PhilWidget(phil_scope_find_spots, parent = self)
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(self.scrollable_widget)
+
+        vbox =  QVBoxLayout(self)
+        vbox.addWidget(scrollArea)
+        self.setLayout(vbox)
+        self.show()
+
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = importOuterWidget()
+    ex = FindSpotsOuterWidget()
     sys.exit(app.exec_())
 
 
