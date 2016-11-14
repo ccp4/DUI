@@ -65,21 +65,27 @@ class tree_2_lineal(object):
                 self.lst_obj.append(single_obj)
 
             elif( single_obj.is_scope ):
-                #print "scope.name = ", single_obj.name
-                scope_info = ScopeData()
-                scope_info.name = str(single_obj.name)
-                scope_info.f_path = str(single_obj.full_path())
-                scope_info.i_m_scope = True
 
-                #print "scope_info.f_path =", scope_info.f_path
-                scope_info.indent = scope_info.f_path.count('.')
-                #print "scope_info.f_path.count('.') =", scope_info.indent
+                if( single_obj.name != "output" ):
+                    scope_info = ScopeData()
+                    scope_info.name = str(single_obj.name)
+                    scope_info.f_path = str(single_obj.full_path())
+                    scope_info.i_m_scope = True
 
-                self.lst_obj.append(scope_info)
-                self.deep_in_rec(single_obj.objects)
+                    #print "scope_info.f_path =", scope_info.f_path
+                    scope_info.indent = scope_info.f_path.count('.')
+                    #print "scope_info.f_path.count('.') =", scope_info.indent
+
+                    self.lst_obj.append(scope_info)
+                    self.deep_in_rec(single_obj.objects)
+
+                else:
+                    print "scope =", single_obj.name
+
+
 
             else:
-                #print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
+                print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
                 pass
 
 
@@ -105,6 +111,7 @@ class PhilWidget( QWidget):
     def phil_list2gui(self, lst_obj):
 
         lst_widg = lst_obj
+        something_else = False
 
         for nm, obj in enumerate(lst_obj):
 
