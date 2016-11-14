@@ -98,36 +98,54 @@ class PhilWidget( QWidget):
         self.plt_obj.setColor(QPalette.Foreground,Qt.black)
         self.bg_box = QVBoxLayout(self)
 
+        self.plt_fnd = QPalette()
+        self.plt_fnd.setColor(QPalette.Foreground, QColor(255, 0, 0, 255))
+
         lst_obj = tree_2_lineal(phl_obj.objects)
-        self.lst_phil_obj = lst_obj()
+        lst_phil_obj = lst_obj()
 
         search_edit = QLineEdit("type search here")
         search_edit.textChanged.connect(self.user_searching)
         self.bg_box.addWidget(search_edit)
 
-        self.phil_list2gui()
+        self.phil_list2gui(lst_phil_obj)
 
         self.setLayout(self.bg_box)
         self.show()
 
     def user_searching(self, value):
         print "user searching for:", value
-        for nm, obj in enumerate(self.lst_phil_obj):
+        pos_str = None
+
+        for nm, labl_obj in enumerate(self.lst_widg):
             print "Num =", nm
-            print "obj =", obj
+            labl_text = labl_obj.text()
+            print "QLabel =", labl_text
 
-    def phil_list2gui(self):
+            labl_obj.setPalette(labl_obj.palette_orig)
 
-        lst_widg = self.lst_phil_obj
+            if( value in labl_text ):
+                labl_obj.setPalette(self.plt_fnd)
+                print "pos_str =", nm
+
+
+    def phil_list2gui(self, lst_phil_obj):
+
+        #lst_widg = self.lst_phil_obj
+        self.lst_widg = []
+
         something_else = False
 
-        for nm, obj in enumerate(self.lst_phil_obj):
+        for nm, obj in enumerate(lst_phil_obj):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
-                lst_widg[nm] = QLabel(" " * int(obj.indent * 4) + str(obj.name))
-                lst_widg[nm].setPalette(self.plt_scp)
-                lst_widg[nm].setFont(QFont("Monospace", 10, QFont.Bold))
-                self.bg_box.addWidget(lst_widg[nm])
+                tmp_widg = QLabel(" " * int(obj.indent * 4) + str(obj.name))
+                tmp_widg.setPalette(self.plt_scp)
+                tmp_widg.setFont(QFont("Monospace", 10, QFont.Bold))
+                self.bg_box.addWidget(tmp_widg)
+                tmp_widg.palette_orig = self.plt_scp
+
+                self.lst_widg.append(tmp_widg)
 
             else:
                 multiple_index = False
@@ -146,6 +164,8 @@ class PhilWidget( QWidget):
                     tmp_label.setFont(QFont("Monospace", 10))
 
                     tmp_h_box.addWidget(tmp_label)
+                    tmp_label.palette_orig = self.plt_obj
+                    self.lst_widg.append(tmp_label)
 
                     something_else = False
                     if(obj.type.phil_type == 'float' or
@@ -153,13 +173,13 @@ class PhilWidget( QWidget):
                        obj.type.phil_type == 'str'     ):
 
                         if( obj.type.phil_type == 'float' ):
-                            lst_widg[nm] = QDoubleSpinBox()
+                            tmp_widg = QDoubleSpinBox()
 
                         elif( obj.type.phil_type == 'int' ):
-                            lst_widg[nm] = QSpinBox()
+                            tmp_widg = QSpinBox()
 
                         elif( obj.type.phil_type == 'str' ):
-                            lst_widg[nm] = QLineEdit()
+                            tmp_widg = QLineEdit()
 
                         if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
 
@@ -168,37 +188,37 @@ class PhilWidget( QWidget):
                                 pass
 
                             else:
-                                lst_widg[nm].setValue(obj.extract())
+                                tmp_widg.setValue(obj.extract())
 
-                        lst_widg[nm].local_path = str(obj.full_path())
+                        tmp_widg.local_path = str(obj.full_path())
 
                         if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
-                            lst_widg[nm].valueChanged.connect(self.spnbox_changed)
+                            tmp_widg.valueChanged.connect(self.spnbox_changed)
                         else:
-                            lst_widg[nm].textChanged.connect(self.spnbox_changed)
+                            tmp_widg.textChanged.connect(self.spnbox_changed)
 
                     elif( obj.type.phil_type == 'bool' ):
 
-                        lst_widg[nm] = QComboBox()
+                        tmp_widg = QComboBox()
 
-                        lst_widg[nm].local_path = str(obj.full_path())
-                        lst_widg[nm].tmp_lst=[]
-                        lst_widg[nm].tmp_lst.append("True")
-                        lst_widg[nm].tmp_lst.append("False")
+                        tmp_widg.local_path = str(obj.full_path())
+                        tmp_widg.tmp_lst=[]
+                        tmp_widg.tmp_lst.append("True")
+                        tmp_widg.tmp_lst.append("False")
 
-                        for lst_itm in lst_widg[nm].tmp_lst:
-                            lst_widg[nm].addItem(lst_itm)
+                        for lst_itm in tmp_widg.tmp_lst:
+                            tmp_widg.addItem(lst_itm)
 
                         if( str(obj.extract()) == "False" ):
-                            lst_widg[nm].setCurrentIndex(1)
+                            tmp_widg.setCurrentIndex(1)
 
-                        lst_widg[nm].currentIndexChanged.connect(self.combobox_changed)
+                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
                     elif( obj.type.phil_type == 'choice' ):
 
-                        lst_widg[nm] = QComboBox()
-                        lst_widg[nm].local_path = str(obj.full_path())
-                        lst_widg[nm].tmp_lst=[]
+                        tmp_widg = QComboBox()
+                        tmp_widg.local_path = str(obj.full_path())
+                        tmp_widg.tmp_lst=[]
                         pos = 0
                         for num, opt in enumerate(obj.words):
                             opt = str(opt)
@@ -206,13 +226,13 @@ class PhilWidget( QWidget):
                                 opt = opt[1:]
                                 pos = num
 
-                            lst_widg[nm].tmp_lst.append(opt)
+                            tmp_widg.tmp_lst.append(opt)
 
-                        for lst_itm in lst_widg[nm].tmp_lst:
-                            lst_widg[nm].addItem(lst_itm)
+                        for lst_itm in tmp_widg.tmp_lst:
+                            tmp_widg.addItem(lst_itm)
 
-                        lst_widg[nm].setCurrentIndex(pos)
-                        lst_widg[nm].currentIndexChanged.connect(self.combobox_changed)
+                        tmp_widg.setCurrentIndex(pos)
+                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
                 elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
 
@@ -265,7 +285,7 @@ class PhilWidget( QWidget):
 
                 if( something_else == False ):
                     if(multiple_index == False):
-                        tmp_h_box.addWidget(lst_widg[nm])
+                        tmp_h_box.addWidget(tmp_widg)
                         self.bg_box.addLayout(tmp_h_box)
 
                     else:
