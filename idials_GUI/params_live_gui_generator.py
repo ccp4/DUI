@@ -100,27 +100,31 @@ class PhilWidget( QWidget):
         self.bg_box = QVBoxLayout(self)
 
         lst_obj = tree_2_lineal(phl_obj.objects)
-        multipl_phil_lst = lst_obj()
+        self.lst_phil_obj = lst_obj()
 
         search_edit = QLineEdit("type search here")
         search_edit.textChanged.connect(self.user_searching)
         self.bg_box.addWidget(search_edit)
 
-        self.phil_list2gui(multipl_phil_lst)
+        self.phil_list2gui()
 
         self.setLayout(self.bg_box)
         self.show()
 
     def user_searching(self, value):
         print "user searching for:", value
+        for nm, obj in enumerate(self.lst_phil_obj):
+            print "Num =", nm
+            print "obj =", obj
 
 
-    def phil_list2gui(self, lst_obj):
 
-        lst_widg = lst_obj
+    def phil_list2gui(self):
+
+        lst_widg = self.lst_phil_obj
         something_else = False
 
-        for nm, obj in enumerate(lst_obj):
+        for nm, obj in enumerate(self.lst_phil_obj):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
                 lst_widg[nm] = QLabel(" " * int(obj.indent * 4) + str(obj.name))
