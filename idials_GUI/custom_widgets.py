@@ -329,6 +329,7 @@ class FindSpotsOuterWidget( QWidget):
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = FindSpotsOuterWidget()
+    #ex = importOuterWidget()
     sys.exit(app.exec_())
 
 

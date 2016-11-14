@@ -65,7 +65,6 @@ class tree_2_lineal(object):
                 self.lst_obj.append(single_obj)
 
             elif( single_obj.is_scope ):
-
                 if( single_obj.name != "output" ):
                     scope_info = ScopeData()
                     scope_info.name = str(single_obj.name)
@@ -117,8 +116,6 @@ class PhilWidget( QWidget):
             print "Num =", nm
             print "obj =", obj
 
-
-
     def phil_list2gui(self):
 
         lst_widg = self.lst_phil_obj
@@ -134,8 +131,6 @@ class PhilWidget( QWidget):
 
             else:
                 multiple_index = False
-
-                #print "dir(obj) =", dir(obj)
 
                 if(obj.type.phil_type == 'float' or
                    obj.type.phil_type == 'int'   or
@@ -277,6 +272,7 @@ class PhilWidget( QWidget):
                         for indx in range(obj.type.size_max):
                             tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
                             self.bg_box.addLayout(tmp_h_box_lst[indx])
+
 
     def spnbox_changed(self, value):
         sender = self.sender()
