@@ -102,10 +102,18 @@ class PhilWidget( QWidget):
         lst_obj = tree_2_lineal(phl_obj.objects)
         multipl_phil_lst = lst_obj()
 
+        search_edit = QLineEdit("type search here")
+        search_edit.textChanged.connect(self.user_searching)
+        self.bg_box.addWidget(search_edit)
+
         self.phil_list2gui(multipl_phil_lst)
 
         self.setLayout(self.bg_box)
         self.show()
+
+    def user_searching(self, value):
+        print "user searching for:", value
+
 
     def phil_list2gui(self, lst_obj):
 
