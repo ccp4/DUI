@@ -80,13 +80,12 @@ class tree_2_lineal(object):
                     self.deep_in_rec(single_obj.objects)
 
                 else:
-                    print "scope =", single_obj.name
-
-
+                    print "The \"", single_obj.name, "\" set of parameters is automatically handled by idials"
+                    #pass
 
             else:
                 print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
-                pass
+                #pass
 
 
 class PhilWidget( QWidget):
