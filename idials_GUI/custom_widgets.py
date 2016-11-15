@@ -235,9 +235,15 @@ class ParamMainWidget( QWidget):
         scrollArea.setWidget(self.scrollable_widget)
         vbox =  QVBoxLayout()
 
+        search_label = QLabel("search:")
         search_edit = QLineEdit("type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
-        vbox.addWidget(search_edit)
+
+        hbox = QHBoxLayout()
+        hbox.addWidget(search_edit)
+        hbox.addWidget(search_label)
+
+        vbox.addLayout(hbox)
 
 
         vbox.addWidget(scrollArea)
