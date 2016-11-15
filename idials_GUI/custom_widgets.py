@@ -228,6 +228,7 @@ class ImportPage(QWidget):
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()
+
         self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()

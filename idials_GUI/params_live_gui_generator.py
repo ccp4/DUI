@@ -91,15 +91,38 @@ class PhilWidget( QWidget):
     item_changed = pyqtSignal()
     def __init__(self, phl_obj, parent = None):
         super(PhilWidget, self).__init__(parent)
+
+        self.win_pal = QPalette()
+        self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
+        self.setAutoFillBackground(True)
+        self.setPalette(self.win_pal)
+
+        std_bkgr = self.palette().color(self.backgroundRole())
+
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.plt_scp = QPalette()
-        self.plt_scp.setColor(QPalette.Foreground, QColor(85, 85, 85, 255))
+        self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
+
+        self.plt_scp.setColor(QPalette.Background, std_bkgr)
+        #self.plt_scp.setColor(QPalette.Background, QColor(125, 125, 125, 255))
+
+        #self.plt_scp.setColor(QPalette.Window, QColor(125, 125, 125, 255))
+        #self.plt_scp.setColor(QPalette.AlternateBase, QColor(125, 125, 125, 255))
+        #self.plt_scp.setColor(QPalette.Button, QColor(125, 125, 125, 255))
+        #self.plt_scp.setColor(QPalette.Window, QColor(85, 85, 85, 255))
+
+
         self.plt_obj = QPalette()
-        self.plt_obj.setColor(QPalette.Foreground,Qt.black)
+        self.plt_obj.setColor(QPalette.WindowText, Qt.black)
+        self.plt_obj.setColor(QPalette.Background, std_bkgr)
+
         self.bg_box = QVBoxLayout(self)
 
         self.plt_fnd = QPalette()
-        self.plt_fnd.setColor(QPalette.Foreground, QColor(255, 0, 0, 255))
+        self.plt_fnd.setColor(QPalette.WindowText, QColor(0, 0, 255, 255))
+        self.plt_fnd.setColor(QPalette.Background, QColor(255, 255, 0, 255))
+
+
 
         lst_obj = tree_2_lineal(phl_obj.objects)
         lst_phil_obj = lst_obj()
@@ -136,6 +159,7 @@ class PhilWidget( QWidget):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
                 tmp_widg = QLabel(" " * int(obj.indent * 4) + str(obj.name))
+                tmp_widg.setAutoFillBackground(True)
                 tmp_widg.setPalette(self.plt_scp)
                 tmp_widg.setFont(QFont("Monospace", 10, QFont.Bold))
                 self.bg_box.addWidget(tmp_widg)
@@ -156,6 +180,7 @@ class PhilWidget( QWidget):
 
                     indent = str(obj.full_path()).count('.')
                     tmp_label  = QLabel(" " * indent * 4 + str(obj.name))
+                    tmp_label.setAutoFillBackground(True)
                     tmp_label.setPalette(self.plt_obj)
                     tmp_label.setFont(QFont("Monospace", 10))
 
