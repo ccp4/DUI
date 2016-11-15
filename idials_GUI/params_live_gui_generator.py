@@ -127,7 +127,6 @@ class PhilWidget( QWidget):
     def user_searching(self, value):
 
         for nm, labl_obj in enumerate(self.lst_widg):
-            labl_text = labl_obj.text()
             labl_obj.setPalette(labl_obj.palette_orig)
 
         if( len(value) > 1 ):
