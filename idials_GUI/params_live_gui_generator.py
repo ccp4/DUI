@@ -102,15 +102,7 @@ class PhilWidget( QWidget):
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.plt_scp = QPalette()
         self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
-
         self.plt_scp.setColor(QPalette.Background, std_bkgr)
-        #self.plt_scp.setColor(QPalette.Background, QColor(125, 125, 125, 255))
-
-        #self.plt_scp.setColor(QPalette.Window, QColor(125, 125, 125, 255))
-        #self.plt_scp.setColor(QPalette.AlternateBase, QColor(125, 125, 125, 255))
-        #self.plt_scp.setColor(QPalette.Button, QColor(125, 125, 125, 255))
-        #self.plt_scp.setColor(QPalette.Window, QColor(85, 85, 85, 255))
-
 
         self.plt_obj = QPalette()
         self.plt_obj.setColor(QPalette.WindowText, Qt.black)
@@ -133,19 +125,21 @@ class PhilWidget( QWidget):
         self.show()
 
     def user_searching(self, value):
-        print "user searching for:", value
-        pos_str = None
 
         for nm, labl_obj in enumerate(self.lst_widg):
-            print "Num =", nm
             labl_text = labl_obj.text()
-            print "QLabel =", labl_text
-
             labl_obj.setPalette(labl_obj.palette_orig)
 
-            if( value in labl_text ):
-                labl_obj.setPalette(self.plt_fnd)
-                print "pos_str =", nm
+        if( len(value) > 1 ):
+            print "user searching for:", value
+            pos_str = None
+            print "len =", len(value)
+
+            for nm, labl_obj in enumerate(self.lst_widg):
+                labl_text = labl_obj.text()
+                if( value in labl_text ):
+                    labl_obj.setPalette(self.plt_fnd)
+                    print "pos_str =", nm
 
 
     def phil_list2gui(self, lst_phil_obj):
