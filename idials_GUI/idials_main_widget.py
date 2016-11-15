@@ -357,11 +357,13 @@ class MainWidget(QMainWindow):
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
             print "\n MainWidget swishing to", cmd_name, "\n\n"
+            tmp_disabled = '''
             for pos, widget_search in enumerate(self.command_lst):
                 if( widget_search == cmd_name ):
                     print "Widget in pos:", pos
                     self._refresh_stacked_widget(self.widg_lst[pos])
                     self.btn_lst[pos].setStyleSheet("background-color: lightblue")
+            '''
 
             if new_url != None:
                 self.update_report(new_url)
