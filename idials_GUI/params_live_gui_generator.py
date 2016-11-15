@@ -104,10 +104,6 @@ class PhilWidget( QWidget):
         lst_obj = tree_2_lineal(phl_obj.objects)
         lst_phil_obj = lst_obj()
 
-
-
-
-
         self.phil_list2gui(lst_phil_obj)
 
         self.setLayout(self.bg_box)

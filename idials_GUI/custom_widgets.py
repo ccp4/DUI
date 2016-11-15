@@ -232,9 +232,15 @@ class ParamMainWidget( QWidget):
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
-        hbox =  QHBoxLayout()
-        hbox.addWidget(scrollArea)
-        self.setLayout(hbox)
+        vbox =  QVBoxLayout()
+
+        search_edit = QLineEdit("type search here")
+        search_edit.textChanged.connect(self.scrollable_widget.user_searching)
+        vbox.addWidget(search_edit)
+
+
+        vbox.addWidget(scrollArea)
+        self.setLayout(vbox)
         self.show()
 
     def update_lin_txt(self, str_path, str_value):
@@ -320,7 +326,6 @@ class FindSpotsOuterWidget( QWidget):
         scrollArea.setWidget(self.scrollable_widget)
 
         vbox =  QVBoxLayout(self)
-
 
         search_edit = QLineEdit("type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
