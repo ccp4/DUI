@@ -208,6 +208,7 @@ class PhilWidget( QWidget):
                                 tmp_widg.setValue(obj.extract())
 
                         tmp_widg.local_path = str(obj.full_path())
+                        tmp_widg.tmp_lst = None
 
                         if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
                             tmp_widg.valueChanged.connect(self.spnbox_changed)
