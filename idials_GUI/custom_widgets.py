@@ -252,7 +252,7 @@ class ParamAdvancedWidget( QWidget):
 
 
 class ParamMainWidget( QWidget):
-    def __init__(self, phl_obj = None, parent = None):
+    def __init__(self, phl_obj = None, simp_widg = None, parent = None):
         super(ParamMainWidget, self).__init__()
 
         #TODO remove this << if >> and run directly the
@@ -261,6 +261,7 @@ class ParamMainWidget( QWidget):
         if parent == None:
             self.super_parent = self
             my_phl_obj = phil_scope_index
+            simp_widg = IndexSimplerParamTab
 
         else:
             self.super_parent = parent.super_parent
@@ -272,7 +273,7 @@ class ParamMainWidget( QWidget):
 
         level_tab = QTabWidget()
 
-        self.sipler_widget = IndexSimplerParamTab(parent = self)
+        self.sipler_widget = simp_widg(parent = self)
         self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
 
         level_tab.addTab(self.sipler_widget, "Simple Editor")
@@ -336,11 +337,11 @@ class StepList(object):
         self.super_parent = parent
         self.lst_widg  = [
                           ImportPage(parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_find_spots, parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_index, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = IndexSimplerParamTab, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab, parent = self),
                           MyReindexOpts(parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_refine, parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_integrate, parent = self)
+                          ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = IndexSimplerParamTab, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IndexSimplerParamTab, parent = self)
                          ]
 
         idials_path = os.environ["IDIALS_PATH"]
