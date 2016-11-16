@@ -90,12 +90,3 @@ class IndexSimplerParamTab( QWidget):
         print cmd_to_run
         self.super_parent.param_changed(cmd_to_run)
 
-        #self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
-
-        '''
-    def update_lin_txt(self, str_path, str_value):
-        cmd_to_run = str_path + "=" + str_value
-        print "running command = {", cmd_to_run,"}"
-        self.super_parent.param_changed(cmd_to_run)
-
-        '''
