@@ -76,6 +76,10 @@ class IndexSimplerParamTab( QWidget):
 
         self.setLayout(localLayout)
 
+        self.lst_wgs = []
+        self.lst_wgs.append(box_scan_varying)
+        self.lst_wgs.append(box_method_62)
+
 
     def combobox_changed(self, value):
         sender = self.sender()

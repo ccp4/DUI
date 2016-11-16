@@ -149,6 +149,8 @@ class PhilWidget( QWidget):
 
         something_else = False
 
+        self.lst_wgs = []
+
         for nm, obj in enumerate(lst_phil_obj):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
@@ -305,6 +307,7 @@ class PhilWidget( QWidget):
                     if(multiple_index == False):
                         tmp_h_box.addWidget(tmp_widg)
                         self.bg_box.addLayout(tmp_h_box)
+                        self.lst_wgs.append(tmp_widg)
 
                     else:
                         for indx in range(obj.type.size_max):

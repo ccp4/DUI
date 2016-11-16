@@ -299,6 +299,9 @@ class ParamMainWidget( QWidget):
 
             self.super_parent.param_changed(cmd_to_run)
 
+        print self.sipler_widget.lst_wgs
+        print self.advanced_widget.scrollable_widget.lst_wgs
+
 
 class StepList(object):
 
