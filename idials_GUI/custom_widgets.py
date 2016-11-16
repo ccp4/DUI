@@ -302,16 +302,17 @@ class ParamMainWidget( QWidget):
         #print self.sipler_widget.lst_wgs
         #print self.advanced_widget.scrollable_widget.lst_wgs
 
-        for widg in self.advanced_widget.scrollable_widget.lst_wgs:
-            if( widg.local_path == str_path ):
-                print "\n\n found widget 1 \n\n"
-                if( widg.tmp_lst == None ):
-                    print "Number widget"
-                else:
-                    for pos, val in enumerate(widg.tmp_lst):
-                        if( val == str_value ):
-                            print "found val, v=", val
-                            widg.setCurrentIndex(pos)
+        for bg_widg in[self.advanced_widget.scrollable_widget.lst_wgs, self.sipler_widget.lst_wgs]:
+            for widg in bg_widg:
+                if( widg.local_path == str_path ):
+                    print "\n\n found widget 1 \n\n"
+                    if( widg.tmp_lst == None ):
+                        print "Number widget"
+                    else:
+                        for pos, val in enumerate(widg.tmp_lst):
+                            if( val == str_value ):
+                                print "found val, v=", val
+                                widg.setCurrentIndex(pos)
 
         '''
         for widg in self.sipler_widget.lst_wgs:
