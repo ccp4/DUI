@@ -296,15 +296,15 @@ class ParamMainWidget( QWidget):
 
         else:
             print"\n self.super_parent != self \n"
-
             self.super_parent.param_changed(cmd_to_run)
 
-        for bg_widg in[self.advanced_widget.scrollable_widget.lst_wgs, self.sipler_widget.lst_wgs]:
+        for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
+                       self.sipler_widget.lst_wgs):
             for widg in bg_widg:
                 if( widg.local_path == str_path ):
-                    print "\n\n found widget 1 \n\n"
                     if( widg.tmp_lst == None ):
                         print "Number widget"
+
                     else:
                         for pos, val in enumerate(widg.tmp_lst):
                             if( val == str_value ):
