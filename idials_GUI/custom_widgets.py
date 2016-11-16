@@ -263,6 +263,7 @@ class ParamAdvancedWidget( QWidget):
         print "running command = {", cmd_to_run,"}"
         self.super_parent.param_changed(cmd_to_run)
 
+
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()
@@ -291,7 +292,6 @@ class ParamMainWidget( QWidget):
 
 
 class StepList(object):
-
 
     lst_lablel = [
                   " import",
