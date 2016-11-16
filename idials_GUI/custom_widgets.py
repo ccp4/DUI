@@ -268,40 +268,26 @@ class ParamMainWidget( QWidget):
         super(ParamMainWidget, self).__init__()
         if parent == None:
             self.super_parent = self
-            self.scrollable_widget = PhilWidget(phl_obj = phil_scope_find_spots, parent = self)
+            my_phl_obj = phil_scope_find_spots
 
         else:
-            self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
-            self.scrollable_widget = ParamAdvancedWidget(phl_obj = phl_obj, parent = self)
+            self.super_parent = parent.super_parent
+            my_phl_obj = phl_obj
 
         hbox = QHBoxLayout()
 
         level_tab = QTabWidget()
 
-        level_tab.addTab(ParamSiplerWidget(), "Simple Editor")
-        level_tab.addTab(self.scrollable_widget, "Advanced Editor")
+        self.sipler_widget = ParamSiplerWidget()
+        self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
+
+        level_tab.addTab(self.sipler_widget, "Simple Editor")
+        level_tab.addTab(self.advanced_widget, "Advanced Editor")
 
         hbox.addWidget(level_tab)
 
         self.setLayout(hbox)
         self.show()
-
-        '''
-        super(ParamMainWidget, self).__init__()
-        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
-
-        hbox = QHBoxLayout()
-
-        level_tab = QTabWidget()
-
-        level_tab.addTab(ParamSiplerWidget(), "Simple Editor")
-        level_tab.addTab(ParamAdvancedWidget(phl_obj = phl_obj, parent = self), "Advanced Editor")
-
-        hbox.addWidget(level_tab)
-
-        self.setLayout(hbox)
-        self.show()
-        '''
 
 
 class StepList(object):
@@ -356,43 +342,6 @@ class StepList(object):
     def __call__(self):
         return self.lst_lablel, self.lst_widg, self.lst_icons, self.lst_commands
 
-'''
-
-class importOuterWidget( QWidget):
-    def __init__(self, parent = None):
-        super(importOuterWidget, self).__init__(parent)
-
-        self.super_parent = self
-        import_widget = ImportPage(self)
-
-        vbox =  QVBoxLayout(self)
-        vbox.addWidget(import_widget)
-        self.setLayout(vbox)
-        self.show()
-
-
-class FindSpotsOuterWidget( QWidget):
-    def __init__(self, parent = None):
-        super(FindSpotsOuterWidget, self).__init__(parent)
-
-        self.super_parent = self
-
-        self.scrollable_widget = PhilWidget(phil_scope_find_spots, parent = self)
-        scrollArea = QScrollArea()
-        scrollArea.setWidget(self.scrollable_widget)
-
-        vbox =  QVBoxLayout(self)
-
-        search_edit = QLineEdit("type search here")
-        search_edit.textChanged.connect(self.scrollable_widget.user_searching)
-        vbox.addWidget(search_edit)
-
-
-        vbox.addWidget(scrollArea)
-        self.setLayout(vbox)
-        self.show()
-
-'''
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
