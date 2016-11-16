@@ -28,17 +28,14 @@ import os, sys
 
 class IndexSimplerParamTab( QWidget):
 
-
     '''
     This widget is the tool for tunning the simpler and most common parameters
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
     '''
 
-
     def __init__(self, phl_obj = None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
-        #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
         self.param_widget_paret = parent.param_widget_paret
 
         hbox_lay_scan_varying =  QHBoxLayout()
@@ -74,9 +71,7 @@ class IndexSimplerParamTab( QWidget):
 
         localLayout = QVBoxLayout()
         localLayout.addLayout(hbox_lay_scan_varying)
-
         localLayout.addLayout(hbox_method)
-
         localLayout.addStretch(1)
 
         self.setLayout(localLayout)

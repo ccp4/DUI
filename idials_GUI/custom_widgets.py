@@ -141,7 +141,7 @@ class ImportPage(QWidget):
 
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
-        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
         import_path_group =  QGroupBox("Experiment IMG Directory")
         import_path_layout =  QVBoxLayout()
@@ -227,17 +227,6 @@ class ImportPage(QWidget):
             print "Failed to pick dir"
 
 
-class ParamSiplerWidget( QWidget):
-    def __init__(self, phl_obj = None, parent = None):
-        super(ParamSiplerWidget, self).__init__()
-
-        vbox =  QVBoxLayout()
-        dummy_label = QLabel("dummy test")
-        vbox.addWidget(dummy_label)
-        self.setLayout(vbox)
-        self.show()
-
-
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
@@ -260,9 +249,6 @@ class ParamAdvancedWidget( QWidget):
         vbox.addWidget(scrollArea)
         self.setLayout(vbox)
         self.show()
-
-
-
 
 
 class ParamMainWidget( QWidget):
@@ -295,9 +281,8 @@ class ParamMainWidget( QWidget):
 
     def update_lin_txt(self, str_path, str_value):
         cmd_to_run = str_path + "=" + str_value
-        print "running command = {", cmd_to_run,"}"
+        print "adjusting parameter: {", cmd_to_run,"}"
         self.super_parent.param_changed(cmd_to_run)
-        print "\n\n YES \n\n"
 
 class StepList(object):
 
