@@ -42,12 +42,12 @@ class IndexSimplerParamTab( QWidget):
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
 
         hbox_lay_scan_varying =  QHBoxLayout()
-        label_scan_varying = QLabel("refinement.parameterisation.crystal.scan_varying")
+        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
         box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.crystal.scan_varying"
+        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
         box_scan_varying.tmp_lst=[]
         box_scan_varying.tmp_lst.append("True")
         box_scan_varying.tmp_lst.append("False")
