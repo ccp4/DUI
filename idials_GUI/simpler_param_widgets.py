@@ -26,7 +26,6 @@ from python_qt_bind import *
 
 import os, sys
 
-
 class IndexSimplerParamTab( QWidget):
 
 
@@ -37,9 +36,9 @@ class IndexSimplerParamTab( QWidget):
     '''
 
 
-    def __init__(self, parent=None):
-        super(IndexSimplerParamTab, self).__init__(parent)
-        self.super_parent = parent # reference across the hole GUI to MyMainDialog
+    def __init__(self, phl_obj = None, parent=None):
+        super(IndexSimplerParamTab, self).__init__()
+        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
         hbox_lay_scan_varying =  QHBoxLayout()
         label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
@@ -84,9 +83,19 @@ class IndexSimplerParamTab( QWidget):
 
     def combobox_changed(self, value):
         sender = self.sender()
-        print "combobox_changed to: ",
+        print "from from simple parameters running: ",
         str_value = str(sender.tmp_lst[value])
-        print str_value
         str_path = str(sender.local_path)
-        print str_path
+        cmd_to_run = str_path + "=" + str_value
+        print cmd_to_run
+        self.super_parent.param_changed(cmd_to_run)
+
         #self.super_parent.update_lin_txt(str_path, str_value, from_simple = True)
+
+        '''
+    def update_lin_txt(self, str_path, str_value):
+        cmd_to_run = str_path + "=" + str_value
+        print "running command = {", cmd_to_run,"}"
+        self.super_parent.param_changed(cmd_to_run)
+
+        '''

@@ -282,7 +282,7 @@ class ParamMainWidget( QWidget):
 
         level_tab = QTabWidget()
 
-        self.sipler_widget = IndexSimplerParamTab()
+        self.sipler_widget = IndexSimplerParamTab(parent = self)
         self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
 
         level_tab.addTab(self.sipler_widget, "Simple Editor")
