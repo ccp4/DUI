@@ -240,11 +240,9 @@ class ParamMainWidget( QWidget):
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
 
         hbox = QHBoxLayout()
-        hbox.addWidget(search_edit)
         hbox.addWidget(search_label)
-
+        hbox.addWidget(search_edit)
         vbox.addLayout(hbox)
-
 
         vbox.addWidget(scrollArea)
         self.setLayout(vbox)

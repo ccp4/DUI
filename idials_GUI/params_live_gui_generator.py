@@ -248,6 +248,8 @@ class PhilWidget( QWidget):
                         tmp_widg.setCurrentIndex(pos)
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
+                    tmp_disabled = '''
+
                 elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
 
                     if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
@@ -285,6 +287,7 @@ class PhilWidget( QWidget):
 
                     else:
                         something_else = True
+                    '''
 
                 else:
                     debugging = '''
