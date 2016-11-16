@@ -235,27 +235,6 @@ class ParamSiplerWidget( QWidget):
         self.show()
 
 
-'''
-        my_box = QVBoxLayout()
-        v_splitter = QTabWidget()
-
-        #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
-        self.img_view = MyImgWin()
-
-        self.web_view = WebTab()
-        self.in_txt_out = TextOut()
-
-        v_splitter.addTab(self.img_view, "Image View")
-
-        v_splitter.addTab(self.in_txt_out, "Log View")
-        v_splitter.addTab(self.web_view, "Report View")
-
-        my_box.addWidget(v_splitter)
-
-        self.setLayout(my_box)
-        self.show()
-'''
-
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
@@ -287,16 +266,40 @@ class ParamAdvancedWidget( QWidget):
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()
-
         self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
         hbox = QHBoxLayout()
-        hbox.addWidget(ParamAdvancedWidget(phl_obj = phl_obj, parent = self))
-        hbox.addWidget(ParamSiplerWidget())
+
+        level_tab = QTabWidget()
+
+        level_tab.addTab(ParamSiplerWidget(), "Simple Editor")
+        level_tab.addTab(ParamAdvancedWidget(phl_obj = phl_obj, parent = self), "Advanced Editor")
+
+        hbox.addWidget(level_tab)
 
         self.setLayout(hbox)
         self.show()
 
+'''
+        my_box = QVBoxLayout()
+        v_splitter = QTabWidget()
+
+        #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
+        self.img_view = MyImgWin()
+
+        self.web_view = WebTab()
+        self.in_txt_out = TextOut()
+
+        v_splitter.addTab(self.img_view, "Image View")
+
+        v_splitter.addTab(self.in_txt_out, "Log View")
+        v_splitter.addTab(self.web_view, "Report View")
+
+        my_box.addWidget(v_splitter)
+
+        self.setLayout(my_box)
+        self.show()
+'''
 
 class StepList(object):
 
