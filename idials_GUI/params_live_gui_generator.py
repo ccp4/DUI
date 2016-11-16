@@ -91,6 +91,7 @@ class PhilWidget( QWidget):
     item_changed = pyqtSignal()
     def __init__(self, phl_obj, parent = None):
         super(PhilWidget, self).__init__(parent)
+        self.param_widget_paret = parent.param_widget_paret
 
         self.win_pal = QPalette()
         self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
@@ -99,8 +100,6 @@ class PhilWidget( QWidget):
         self.setPalette(self.win_pal)
 
         #std_bkgr = self.palette().color(self.backgroundRole())
-
-        self.param_widget_paret = parent.param_widget_paret
 
         self.plt_scp = QPalette()
         self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))

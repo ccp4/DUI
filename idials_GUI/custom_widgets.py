@@ -254,9 +254,13 @@ class ParamAdvancedWidget( QWidget):
 class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamMainWidget, self).__init__()
+
+        #TODO remove this << if >> and run directly the
+        # second shoice
+
         if parent == None:
             self.super_parent = self
-            my_phl_obj = phil_scope_find_spots
+            my_phl_obj = phil_scope_index
 
         else:
             self.super_parent = parent.super_parent
@@ -280,9 +284,21 @@ class ParamMainWidget( QWidget):
         self.show()
 
     def update_lin_txt(self, str_path, str_value):
+
         cmd_to_run = str_path + "=" + str_value
         print "adjusting parameter: {", cmd_to_run,"}"
-        self.super_parent.param_changed(cmd_to_run)
+
+        #TODO in a future will no longer be needed to check
+        # because this should be running only from incide
+        # the big GUI
+        if( self.super_parent == self ):
+            print"\n self.super_parent == self \n"
+
+        else:
+            print"\n self.super_parent != self \n"
+
+            self.super_parent.param_changed(cmd_to_run)
+
 
 class StepList(object):
 
