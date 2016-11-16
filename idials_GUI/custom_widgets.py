@@ -242,7 +242,7 @@ class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
 
-        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        self.param_widget_paret = parent.param_widget_paret
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
@@ -262,10 +262,6 @@ class ParamAdvancedWidget( QWidget):
         self.show()
 
 
-    def update_lin_txt(self, str_path, str_value):
-        cmd_to_run = str_path + "=" + str_value
-        print "running command = {", cmd_to_run,"}"
-        self.super_parent.param_changed(cmd_to_run)
 
 
 
@@ -279,6 +275,8 @@ class ParamMainWidget( QWidget):
         else:
             self.super_parent = parent.super_parent
             my_phl_obj = phl_obj
+
+        self.param_widget_paret = self
 
         hbox = QHBoxLayout()
 
@@ -295,6 +293,11 @@ class ParamMainWidget( QWidget):
         self.setLayout(hbox)
         self.show()
 
+    def update_lin_txt(self, str_path, str_value):
+        cmd_to_run = str_path + "=" + str_value
+        print "running command = {", cmd_to_run,"}"
+        self.super_parent.param_changed(cmd_to_run)
+        print "\n\n YES \n\n"
 
 class StepList(object):
 

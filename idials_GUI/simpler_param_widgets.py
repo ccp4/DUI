@@ -38,7 +38,8 @@ class IndexSimplerParamTab( QWidget):
 
     def __init__(self, phl_obj = None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
-        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        self.param_widget_paret = parent.param_widget_paret
 
         hbox_lay_scan_varying =  QHBoxLayout()
         label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
@@ -86,7 +87,6 @@ class IndexSimplerParamTab( QWidget):
         print "from from simple parameters running: ",
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        cmd_to_run = str_path + "=" + str_value
-        print cmd_to_run
-        self.super_parent.param_changed(cmd_to_run)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
+
 

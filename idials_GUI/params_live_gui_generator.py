@@ -100,7 +100,8 @@ class PhilWidget( QWidget):
 
         #std_bkgr = self.palette().color(self.backgroundRole())
 
-        self.my_parent = parent # reference across the hole GUI to MyMainDialog
+        self.param_widget_paret = parent.param_widget_paret
+
         self.plt_scp = QPalette()
         self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
         #self.plt_scp.setColor(QPalette.Background, std_bkgr)
@@ -321,7 +322,7 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print "local_path =", str_path
-        self.my_parent.update_lin_txt(str_path, str_value)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
 
 
     def combobox_changed(self, value):
@@ -332,7 +333,7 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.my_parent.update_lin_txt(str_path, str_value)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
 
 
 if __name__ == '__main__':
