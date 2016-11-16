@@ -28,6 +28,9 @@ import os, sys
 from dynamic_reindex_gui import MyReindexOpts
 
 from params_live_gui_generator import PhilWidget
+
+from simpler_param_widgets import IndexSimplerParamTab
+
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
 
@@ -279,7 +282,7 @@ class ParamMainWidget( QWidget):
 
         level_tab = QTabWidget()
 
-        self.sipler_widget = ParamSiplerWidget()
+        self.sipler_widget = IndexSimplerParamTab()
         self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
 
         level_tab.addTab(self.sipler_widget, "Simple Editor")
