@@ -94,19 +94,20 @@ class PhilWidget( QWidget):
 
         self.win_pal = QPalette()
         self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
+        #self.win_pal.setColor(QPalette.Background, Qt.white)
         self.setAutoFillBackground(True)
         self.setPalette(self.win_pal)
 
-        std_bkgr = self.palette().color(self.backgroundRole())
+        #std_bkgr = self.palette().color(self.backgroundRole())
 
         self.super_parent = parent # reference across the hole GUI to MyMainDialog
         self.plt_scp = QPalette()
         self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
-        self.plt_scp.setColor(QPalette.Background, std_bkgr)
+        #self.plt_scp.setColor(QPalette.Background, std_bkgr)
 
         self.plt_obj = QPalette()
         self.plt_obj.setColor(QPalette.WindowText, Qt.black)
-        self.plt_obj.setColor(QPalette.Background, std_bkgr)
+        #self.plt_obj.setColor(QPalette.Background, std_bkgr)
 
         self.bg_box = QVBoxLayout(self)
 
