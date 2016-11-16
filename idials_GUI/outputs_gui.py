@@ -61,7 +61,7 @@ class outputs_widget( QWidget):
         #self.super_parent = parent
 
         my_box = QVBoxLayout()
-        v_splitter = QTabWidget()
+        out_tabs = QTabWidget()
 
         #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
         self.img_view = MyImgWin()
@@ -69,12 +69,12 @@ class outputs_widget( QWidget):
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
 
-        v_splitter.addTab(self.img_view, "Image View")
+        out_tabs.addTab(self.img_view, "Image View")
 
-        v_splitter.addTab(self.in_txt_out, "Log View")
-        v_splitter.addTab(self.web_view, "Report View")
+        out_tabs.addTab(self.in_txt_out, "Log View")
+        out_tabs.addTab(self.web_view, "Report View")
 
-        my_box.addWidget(v_splitter)
+        my_box.addWidget(out_tabs)
 
         self.setLayout(my_box)
         self.show()

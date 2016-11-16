@@ -224,10 +224,41 @@ class ImportPage(QWidget):
             print "Failed to pick dir"
 
 
-
-class ParamMainWidget( QWidget):
+class ParamSiplerWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
-        super(ParamMainWidget, self).__init__()
+        super(ParamSiplerWidget, self).__init__()
+
+        vbox =  QVBoxLayout()
+        dummy_label = QLabel("dummy test")
+        vbox.addWidget(dummy_label)
+        self.setLayout(vbox)
+        self.show()
+
+
+'''
+        my_box = QVBoxLayout()
+        v_splitter = QTabWidget()
+
+        #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
+        self.img_view = MyImgWin()
+
+        self.web_view = WebTab()
+        self.in_txt_out = TextOut()
+
+        v_splitter.addTab(self.img_view, "Image View")
+
+        v_splitter.addTab(self.in_txt_out, "Log View")
+        v_splitter.addTab(self.web_view, "Report View")
+
+        my_box.addWidget(v_splitter)
+
+        self.setLayout(my_box)
+        self.show()
+'''
+
+class ParamAdvancedWidget( QWidget):
+    def __init__(self, phl_obj = None, parent = None):
+        super(ParamAdvancedWidget, self).__init__()
 
         self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
@@ -252,6 +283,20 @@ class ParamMainWidget( QWidget):
         cmd_to_run = str_path + "=" + str_value
         print "running command = {", cmd_to_run,"}"
         self.super_parent.param_changed(cmd_to_run)
+
+class ParamMainWidget( QWidget):
+    def __init__(self, phl_obj = None, parent = None):
+        super(ParamMainWidget, self).__init__()
+
+        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+
+        hbox = QHBoxLayout()
+        hbox.addWidget(ParamAdvancedWidget(phl_obj = phl_obj, parent = self))
+        hbox.addWidget(ParamSiplerWidget())
+
+        self.setLayout(hbox)
+        self.show()
+
 
 class StepList(object):
 
