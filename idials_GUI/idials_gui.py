@@ -248,7 +248,7 @@ class IdialsInnerrWidget( QWidget):
         print "goto: ", idx
 
         self.controller.goto(idx)
-        self._set_current_mode()
+        #self._set_current_mode()
         self._update_tree()
 
         self.super_parent.jump(self.next_cmd, self.controller.get_report())
@@ -271,11 +271,6 @@ class IdialsInnerrWidget( QWidget):
 
         if( self.controller.get_mode() == "import" ):
             tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
-            '''
-            #tmpl_str = "template=/home/lui/dui/dui_test/th_8_2_000#.cbf"
-            tmpl_str = "template=/home/luisolafg/dui_test/only_9_images/th_8_2_000#.cbf"
-            #tmpl_str = "template=/home/lui/dui/dui_test/only_8_img_trimed_data/th_8_2_000#.cbf"
-            #'''
             print "tmpl_str =", tmpl_str, "\n\n"
             self.change_parameter(tmpl_str)
 
