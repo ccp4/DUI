@@ -115,13 +115,11 @@ class FindspotsSimplerParameterTab( QWidget):
 
 
 class IndexSimplerParamTab( QWidget):
-
     '''
     This widget is the tool for tunning the simpler and most common parameters
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
     '''
-
     def __init__(self, phl_obj = None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
         self.param_widget_paret = parent.param_widget_paret
@@ -169,14 +167,11 @@ class IndexSimplerParamTab( QWidget):
         self.lst_wgs.append(box_scan_varying)
         self.lst_wgs.append(box_method_62)
 
-
     def combobox_changed(self, value):
         sender = self.sender()
-        print "from from simple parameters running: ",
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
         self.param_widget_paret.update_lin_txt(str_path, str_value)
-
 
 
 class RefineSimplerParamTab( QWidget):
@@ -215,8 +210,90 @@ class RefineSimplerParamTab( QWidget):
 
     def combobox_changed(self, value):
         sender = self.sender()
-        print "from from simple parameters running: ",
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
         self.param_widget_paret.update_lin_txt(str_path, str_value)
+
+
+class IntegrateSimplerParamTab( QWidget):
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the integrate algorithm, this widget is the first to appear once the button
+    "Integrate" at the left side of the GUI is clicked
+    '''
+    def __init__(self, parent=None):
+        super(IntegrateSimplerParamTab, self).__init__()
+        self.param_widget_paret = parent.param_widget_paret
+
+        localLayout = QVBoxLayout()
+        PrFit_lay_out =  QHBoxLayout()
+        label_PrFit = QLabel("integration.profile.fitting")
+        PrFit_lay_out.addWidget(label_PrFit)
+
+        PrFit_comb_bx = QComboBox()
+        PrFit_comb_bx.local_path = "integration.profile.fitting"
+        PrFit_comb_bx.tmp_lst=[]
+        PrFit_comb_bx.tmp_lst.append("True")
+        PrFit_comb_bx.tmp_lst.append("False")
+
+        for lst_itm in PrFit_comb_bx.tmp_lst:
+            PrFit_comb_bx.addItem(lst_itm)
+        PrFit_comb_bx.currentIndexChanged.connect(self.combobox_changed)
+        PrFit_lay_out.addWidget(PrFit_comb_bx)
+        localLayout.addLayout(PrFit_lay_out)
+
+        hbox_lay_algorithm_53 =  QHBoxLayout()
+        label_algorithm_53 = QLabel("integration.background.algorithm")
+        hbox_lay_algorithm_53.addWidget(label_algorithm_53)
+
+        box_algorithm_53 = QComboBox()
+        box_algorithm_53.local_path = "integration.background.algorithm"
+        box_algorithm_53.tmp_lst=[]
+        box_algorithm_53.tmp_lst.append("simple")
+        box_algorithm_53.tmp_lst.append("null")
+        box_algorithm_53.tmp_lst.append("median")
+        box_algorithm_53.tmp_lst.append("gmodel")
+        box_algorithm_53.tmp_lst.append("glm")
+
+        for lst_itm in box_algorithm_53.tmp_lst:
+            box_algorithm_53.addItem(lst_itm)
+        box_algorithm_53.setCurrentIndex(2)
+        box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_algorithm_53.addWidget(box_algorithm_53)
+        localLayout.addLayout(hbox_lay_algorithm_53)
+
+        hbox_lay_nproc =  QHBoxLayout()
+        label_nproc = QLabel("integration.mp.nproc")
+        #label_nproc.setFont( QFont("Monospace", 10))
+        hbox_lay_nproc.addWidget(label_nproc)
+
+        box_nproc = QSpinBox()
+        box_nproc.setValue(1)
+        box_nproc.local_path = "integration.mp.nproc"
+        box_nproc.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_nproc.addWidget(box_nproc)
+        localLayout.addLayout(hbox_lay_nproc)
+
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
+
+        self.lst_wgs = []
+        self.lst_wgs.append(PrFit_comb_bx)
+        self.lst_wgs.append(box_algorithm_53)
+        box_nproc.tmp_lst = None
+        self.lst_wgs.append(box_nproc)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        str_value = str(sender.tmp_lst[value])
+        str_path = str(sender.local_path)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
+
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
+
 
