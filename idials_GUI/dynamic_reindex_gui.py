@@ -26,13 +26,7 @@ def ops_list_from_json(json_path = None):
                 rmsd_val = value["rmsd"]
                 rmsd_str = " {:7.4}".format(rmsd_val)
                 #rmsd_str = " " + str(rmsd_val)
-
                 #print "__________________________________________ type(rmsd_val) =", type(rmsd_val)
-
-            elif( inner_key == "cb_op" ):
-                cb_op_val = value["cb_op"]
-                cb_op_str = str(cb_op_val).rjust(18)
-                #print "__________________________________________ type(cb_op_val) =", type(cb_op_val)
 
             elif( inner_key ==  "min_cc" ):
                 min_cc_val = value["min_cc"]
@@ -52,11 +46,6 @@ def ops_list_from_json(json_path = None):
                 bravais_str = " " + str(bravais_val).ljust(3)
                 #bravais_str = str(bravais_val)
                 #print "__________________________________________ type(bravais_val) =", type(bravais_val)
-
-            elif( inner_key ==  "nspots" ):
-                nspots_val = value["nspots"]
-                nspots_str =" {:9} ".format(nspots_val)
-                #print "__________________________________________ type(nspots_val) =", type(nspots_val)
 
             elif( inner_key ==  "max_angular_difference" ):
 
@@ -78,7 +67,6 @@ def ops_list_from_json(json_path = None):
                 #print "uc_d =", uc_d
                 #print "uc_a =", uc_a
 
-
                 unit_cell_str = "({:6.3}".format(uc_d[0]) \
                               + " {:6.3}".format(uc_d[1]) \
                               + " {:6.3})".format(uc_d[2]) \
@@ -91,8 +79,12 @@ def ops_list_from_json(json_path = None):
 
             elif( inner_key ==  "recommended" ):
                 recommended_val = value["recommended"]
-                recommended_str = str(recommended_val)
-                #print "__________________________________________ type(recommended_val) =", type(recommended_val)
+                if( recommended_val == True ):
+                    recommended_str = " *"
+                else:
+                    recommended_str = "  "
+
+                print "__________________________________________ recommended_val =", recommended_val
 
                 #'''
             elif( inner_key == "cc_nrefs" ):
@@ -106,9 +98,9 @@ def ops_list_from_json(json_path = None):
         #print "\n"
 
         single_lin_lst = [int(key), angular_diff_str + rmsd_str + min_cc_str
-              + max_cc_str + nspots_str + bravais_str +unit_cell_str + cb_op_str]
-        lst_ops.append(single_lin_lst)
+              + max_cc_str + bravais_str + unit_cell_str + recommended_str]
 
+        lst_ops.append(single_lin_lst)
 
     sorted_lst_ops = sorted(lst_ops)
     str_sorted_lst = []
@@ -141,7 +133,7 @@ class MyReindexOpts(QWidget):
         #self.my_font.setBold(True)
         self.my_label = QLabel()
 
-        self.label_str = "     Solution   Metric fit   rmsd   min/max   cc   #spots               lattice (a b c)  lattice (angles)                   cb_op"
+        self.label_str = "     Solution   Metric fit   rmsd   min/max   cc                lattice (a b c)  lattice (angles)  "
 
         self.my_label.setText("need to run: refine_bravais_settings")
         self.my_label.setFont(self.my_font)
@@ -194,7 +186,13 @@ class MyReindexOpts(QWidget):
 
     def all_gray(self):
         for btn_lst in self.lst_ops:
-            btn_lst.setStyleSheet("background-color: lightgray")
+            #btn_lst.setStyleSheet("background-color: lightgray")
+            local_label_str = str(btn_lst.text())
+
+            if( local_label_str[-1] == "*" ):
+                btn_lst.setStyleSheet("background-color: lightgreen")
+            else:
+                btn_lst.setStyleSheet("background-color: lightyellow")
 
 
     def opt_clicked(self):
