@@ -142,7 +142,7 @@ class IndexSimplerParamTab( QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
 
-        indexing_method_check = QCheckBox("indexing.method")
+        #indexing_method_check = QCheckBox("indexing.method")
         hbox_method =  QHBoxLayout()
         label_method_62 = QLabel("indexing.method")
         hbox_method.addWidget(label_method_62)
@@ -179,5 +179,44 @@ class IndexSimplerParamTab( QWidget):
 
 
 
+class RefineSimplerParamTab( QWidget):
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the refiner, this widget is the first to appear once the button
+    "Refine" at the left side of the GUI is clicked
+    '''
+    def __init__(self, parent=None):
+        super(RefineSimplerParamTab, self).__init__()
+        self.param_widget_paret = parent.param_widget_paret
 
+        hbox_lay_scan_varying =  QHBoxLayout()
+        localLayout = QVBoxLayout()
+        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
+
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
+
+        box_scan_varying = QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.setCurrentIndex(1)
+
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
+        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
+
+        self.lst_wgs = []
+        self.lst_wgs.append(box_scan_varying)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        print "from from simple parameters running: ",
+        str_value = str(sender.tmp_lst[value])
+        str_path = str(sender.local_path)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
 
