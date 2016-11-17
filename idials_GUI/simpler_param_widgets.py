@@ -138,6 +138,7 @@ class IndexSimplerParamTab( QWidget):
         box_scan_varying.tmp_lst.append("False")
         for lst_itm in box_scan_varying.tmp_lst:
             box_scan_varying.addItem(lst_itm)
+        box_scan_varying.setCurrentIndex(1)
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
 
