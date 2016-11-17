@@ -21,10 +21,98 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 from python_qt_bind import *
-
 import os, sys
+
+class FindspotsSimplerParameterTab( QWidget):
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the spot-finder, this widget is the first to appear once the button
+    "Find Sots" at the left side of the GUI is clicked
+    '''
+    def __init__(self, parent = None):
+        super(FindspotsSimplerParameterTab, self).__init__()
+        self.param_widget_paret = parent.param_widget_paret
+
+        xds_gain_label = QLabel("spotfinder.threshold.xds.gain")
+        xds_gain_spn_bx = QDoubleSpinBox()
+        xds_gain_spn_bx.local_path = "spotfinder.threshold.xds.gain"
+        xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
+
+        xds_sigma_background_label = QLabel("spotfinder.threshold.xds.sigma_background")
+        xds_sigma_background_spn_bx = QDoubleSpinBox()
+        xds_sigma_background_spn_bx.setValue(6.0)
+        xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.xds.sigma_background"
+        xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
+
+        xds_sigma_strong_label = QLabel("spotfinder.threshold.xds.sigma_strong")
+        xds_sigma_strong_spn_bx = QDoubleSpinBox()
+        xds_sigma_strong_spn_bx.setValue(3.0)
+        xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.xds.sigma_strong"
+        xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
+
+        xds_global_threshold_label = QLabel("spotfinder.threshold.xds.global_threshold")
+        xds_global_threshold_spn_bx = QDoubleSpinBox()
+        xds_global_threshold_spn_bx.local_path = "spotfinder.threshold.xds.global_threshold"
+        xds_global_threshold_spn_bx.valueChanged.connect(self.spnbox_changed)
+
+        localLayout = QVBoxLayout()
+
+        xds_gain_hb = QHBoxLayout()
+        xds_gain_hb.addWidget(xds_gain_label)
+        xds_gain_hb.addWidget(xds_gain_spn_bx)
+        localLayout.addLayout(xds_gain_hb)
+
+        xds_sigma_background_hb = QHBoxLayout()
+        xds_sigma_background_hb.addWidget(xds_sigma_background_label)
+        xds_sigma_background_hb.addWidget(xds_sigma_background_spn_bx)
+        localLayout.addLayout(xds_sigma_background_hb)
+
+        xds_sigma_strong_hb = QHBoxLayout()
+        xds_sigma_strong_hb.addWidget(xds_sigma_strong_label)
+        xds_sigma_strong_hb.addWidget(xds_sigma_strong_spn_bx)
+        localLayout.addLayout(xds_sigma_strong_hb)
+
+        xds_global_threshold_hb = QHBoxLayout()
+        xds_global_threshold_hb.addWidget(xds_global_threshold_label)
+        xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
+        localLayout.addLayout(xds_global_threshold_hb)
+
+
+        hbox_lay_nproc =  QHBoxLayout()
+        label_nproc = QLabel("spotfinder.mp.nproc")
+        #label_nproc.setPalette(palette_object)
+        #label_nproc.setFont( QFont("Monospace", 10))
+        hbox_lay_nproc.addWidget(label_nproc)
+
+        box_nproc = QSpinBox()
+        box_nproc.setValue(1)
+        box_nproc.local_path = "spotfinder.mp.nproc"
+        box_nproc.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_nproc.addWidget(box_nproc)
+        localLayout.addLayout(hbox_lay_nproc)
+
+        localLayout.addStretch(1)
+
+        self.setLayout(localLayout)
+
+        self.lst_wgs = []
+        self.lst_wgs.append(xds_gain_spn_bx)
+        self.lst_wgs.append(xds_sigma_background_spn_bx)
+        self.lst_wgs.append(xds_sigma_strong_spn_bx)
+        self.lst_wgs.append(xds_global_threshold_spn_bx)
+        self.lst_wgs.append(box_nproc)
+
+        for wgdt in self.lst_wgs:
+            wgdt.tmp_lst = None
+
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
+        self.param_widget_paret.update_lin_txt(str_path, str_value)
+
 
 class IndexSimplerParamTab( QWidget):
 
@@ -87,5 +175,8 @@ class IndexSimplerParamTab( QWidget):
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
         self.param_widget_paret.update_lin_txt(str_path, str_value)
+
+
+
 
 

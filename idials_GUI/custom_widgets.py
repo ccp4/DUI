@@ -29,7 +29,7 @@ from dynamic_reindex_gui import MyReindexOpts
 
 from params_live_gui_generator import PhilWidget
 
-from simpler_param_widgets import IndexSimplerParamTab
+from simpler_param_widgets import IndexSimplerParamTab, FindspotsSimplerParameterTab
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
@@ -337,7 +337,7 @@ class StepList(object):
         self.super_parent = parent
         self.lst_widg  = [
                           ImportPage(parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = IndexSimplerParamTab, parent = self),
+                          ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab, parent = self),
                           MyReindexOpts(parent = self),
                           ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = IndexSimplerParamTab, parent = self),
