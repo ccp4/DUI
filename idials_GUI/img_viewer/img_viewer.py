@@ -167,17 +167,18 @@ class MyImgWin(QWidget):
         self.my_scrollable.setWidget(self.my_painter)
 
         self.i_min = -3
-        min_edit = QLineEdit()
+        self.min_edit = QLineEdit()
         max_min_validator = QIntValidator(-5, 9995, self)
-        min_edit.setValidator(max_min_validator)
-        min_edit.setText(str(self.i_min))
-        min_edit.textChanged.connect(self.min_changed_by_user)
+        self.min_edit.setValidator(max_min_validator)
+        self.min_edit.setText(str(self.i_min))
+        self.min_edit.editingFinished.connect(self.min_changed_by_user)
+
 
         self.i_max = 100
-        max_edit = QLineEdit()
-        max_edit.setValidator(max_min_validator)
-        max_edit.setText(str(self.i_max))
-        max_edit.textChanged.connect(self.max_changed_by_user)
+        self.max_edit = QLineEdit()
+        self.max_edit.setValidator(max_min_validator)
+        self.max_edit.setText(str(self.i_max))
+        self.max_edit.editingFinished.connect(self.max_changed_by_user)
 
         palette_select = QComboBox()
 
@@ -218,9 +219,9 @@ class MyImgWin(QWidget):
         top_box.addStretch()
 
         top_box.addWidget(QLabel("I min"))
-        top_box.addWidget(min_edit)
+        top_box.addWidget(self.min_edit)
         top_box.addWidget(QLabel("I max"))
-        top_box.addWidget(max_edit)
+        top_box.addWidget(self.max_edit)
         top_box.addWidget(palette_select)
 
         top_box.addWidget(btn_first)
@@ -240,6 +241,8 @@ class MyImgWin(QWidget):
         self.setLayout(my_box)
         self.show()
 
+    def test(self):
+        print "\n\n YES \n\n"
 
     def ini_datablock(self, json_file_path):
 
@@ -271,16 +274,18 @@ class MyImgWin(QWidget):
         self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette, self.i_min, self.i_max))
         print "diff time =", time_now() - firts_time, "\n"
 
-    def min_changed_by_user(self, value):
+    def min_changed_by_user(self):
+        new_value = self.min_edit.text()
         try:
-            self.i_min = int(value)
+            self.i_min = int(new_value)
         except:
             self.i_min = 0
         self.set_img()
 
-    def max_changed_by_user(self, value):
+    def max_changed_by_user(self):
+        new_value = self.max_edit.text()
         try:
-            self.i_max = int(value)
+            self.i_max = int(new_value)
         except:
             self.i_max = 0
         self.set_img()
@@ -288,7 +293,6 @@ class MyImgWin(QWidget):
     def palette_changed_by_user(self, new_palette_num):
         self.palette = self.palette_lst[new_palette_num]
         self.set_img()
-
 
     def btn_first_clicked(self):
         self.img_num = 0
