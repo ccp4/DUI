@@ -305,6 +305,8 @@ class ParamMainWidget( QWidget):
                 if( widg.local_path == str_path ):
                     if( widg.tmp_lst == None ):
                         print "Number widget"
+                        num_val = float(str_value)
+                        widg.setValue(num_val)
 
                     else:
                         for pos, val in enumerate(widg.tmp_lst):
