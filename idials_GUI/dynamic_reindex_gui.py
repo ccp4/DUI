@@ -13,27 +13,17 @@ def ops_list_from_json(json_path = None):
         json_data = json.load(json_file)
 
     lst_ops = []
-
-    longest_str_lenght = 0
-
     for key, value in json_data.iteritems():
-
         for inner_key in value:
-            #print "inner_key =", inner_key
-            #print "inner_value =", value[inner_key]
-
             if( inner_key == "rmsd" ):
                 rmsd_val = value["rmsd"]
                 rmsd_str = " {:7.4}".format(rmsd_val)
-                #rmsd_str = " " + str(rmsd_val)
-                #print "__________________________________________ type(rmsd_val) =", type(rmsd_val)
 
             elif( inner_key ==  "min_cc" ):
                 min_cc_val = value["min_cc"]
                 min_cc_str = " {:7.3}".format(min_cc_val)
                 #print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
                 #TODO the format here is not always giving the same with
-
 
             elif( inner_key ==  "max_cc" ):
                 max_cc_val = value["max_cc"]
@@ -44,28 +34,19 @@ def ops_list_from_json(json_path = None):
             elif( inner_key == "bravais" ):
                 bravais_val = value["bravais"]
                 bravais_str = " " + str(bravais_val).ljust(3)
-                #bravais_str = str(bravais_val)
-                #print "__________________________________________ type(bravais_val) =", type(bravais_val)
 
             elif( inner_key ==  "max_angular_difference" ):
-
                 angular_diff_val = value["max_angular_difference"]
                 angular_diff_str = " {:7.4} ".format(angular_diff_val)
-                #print "__________________________________________ type(angular_diff_val) =", type(angular_diff_val)
 
             elif( inner_key ==  "correlation_coefficients" ):
                 corr_coeff_val = value["correlation_coefficients"]
                 corr_coeff_str =str(corr_coeff_val)
-                #print "__________________________________________ type(corr_coeff_val) =", type(corr_coeff_val)
-
 
             elif( inner_key ==  "unit_cell" ):
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
                 uc_a = unit_cell_val[3:6]
-
-                #print "uc_d =", uc_d
-                #print "uc_a =", uc_a
 
                 unit_cell_str = "({:6.3}".format(uc_d[0]) \
                               + " {:6.3}".format(uc_d[1]) \
@@ -75,27 +56,12 @@ def ops_list_from_json(json_path = None):
                               +  "{:7.4}".format(uc_a[1]) \
                               +  "{:7.4})".format(uc_a[2]) \
 
-                #print "__________________________________________ type(unit_cell_val) =", type(unit_cell_val)
-
             elif( inner_key ==  "recommended" ):
                 recommended_val = value["recommended"]
                 if( recommended_val == True ):
                     recommended_str = " *"
                 else:
                     recommended_str = "  "
-
-                print "__________________________________________ recommended_val =", recommended_val
-
-                #'''
-            elif( inner_key == "cc_nrefs" ):
-                cc_nrefs_val = value["cc_nrefs"]
-                cc_nrefs_str = str(cc_nrefs_val)
-                #print "__________________________________________ type(cc_nrefs_val) =", type(cc_nrefs_val)
-
-                #'''
-            #print "\n"
-
-        #print "\n"
 
         single_lin_lst = [int(key), angular_diff_str + rmsd_str + min_cc_str
               + max_cc_str + bravais_str + unit_cell_str + recommended_str]
@@ -127,7 +93,6 @@ class MyReindexOpts(QWidget):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setWidget(self.scrollWidget)
 
-
         self.my_font = QFont("Monospace")
         #self.my_font.setWeight(75)
         #self.my_font.setBold(True)
@@ -146,18 +111,15 @@ class MyReindexOpts(QWidget):
         self.lst_ops = []
 
     def __call__(self):
-
         print "\n from __call__  << ReindexOpts page >> \n"
         print "self.super_parent.idials_widget.controller.get_current().name =", self.super_parent.idials_widget.controller.get_current().name
         self.super_parent.btn_go_clicked()
 
     def del_opts_lst(self):
         self.my_label.setText(" << After Reindex >> ")
-
         print "del_opts_lst"
         lng_lst = len(self.lst_ops)
         print "lng_lst =", lng_lst
-
         for btn_lst in self.lst_ops:
             self.scrollLayout.layout().removeWidget(btn_lst)
             btn_lst.setParent(None)
@@ -183,17 +145,14 @@ class MyReindexOpts(QWidget):
 
         self.all_gray()
 
-
     def all_gray(self):
         for btn_lst in self.lst_ops:
             #btn_lst.setStyleSheet("background-color: lightgray")
             local_label_str = str(btn_lst.text())
-
             if( local_label_str[-1] == "*" ):
                 btn_lst.setStyleSheet("background-color: lightgreen")
             else:
                 btn_lst.setStyleSheet("background-color: lightyellow")
-
 
     def opt_clicked(self):
         my_sender = self.sender()
