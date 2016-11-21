@@ -36,7 +36,7 @@ class WebTab(QWidget):
 
         self.web =  QWebView()
 
-        self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
+        #self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
 
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
