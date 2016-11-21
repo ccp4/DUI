@@ -340,6 +340,10 @@ class MainWidget(QMainWindow):
         except:
             print "\n no __call__ in ", self.current_widget, "\n"
 
+
+        if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
+            self.output_wg.set_reindex_tab()
+
         self.update_img()
 
     def btn_clicked(self):
