@@ -59,10 +59,6 @@ class outputs_widget( QWidget):
         super(outputs_widget, self).__init__()
         self.super_parent = parent
 
-        print "\n\n from outputs_widget"
-        print "type(parent) =", type(parent)
-        print "type(self.super_parent) =", type(self.super_parent)
-
         my_box = QVBoxLayout()
         self.my_tabs = QTabWidget()
 
