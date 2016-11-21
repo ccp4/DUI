@@ -57,9 +57,16 @@ class WebTab(QWidget):
 class outputs_widget( QWidget):
 
     #item_changed = pyqtSignal()
-    def __init__(self, phl_obj, parent = None):
-        super(outputs_widget, self).__init__(parent)
+    def __init__(self, parent = None):
+        super(outputs_widget, self).__init__()
         self.super_parent = parent
+
+
+        print "\n\n from outputs_widget"
+        print "type(parent) =", type(parent)
+        print "type(self.super_parent) =", type(self.super_parent)
+
+
 
         my_box = QVBoxLayout()
         self.my_tabs = QTabWidget()
@@ -69,7 +76,7 @@ class outputs_widget( QWidget):
 
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
-        self.reindex_tool = MyReindexOpts(parent = self)
+        self.reindex_tool = MyReindexOpts(self)
 
         self.my_tabs.addTab(self.img_view, "Image View")
 

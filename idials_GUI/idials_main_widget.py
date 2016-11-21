@@ -287,8 +287,7 @@ class MainWidget(QMainWindow):
                 print "\n ________________________ <<< Time to show the table \n"
                 self.output_wg.set_reindex_tab()
                 sumr_path = self.idials_widget.controller.get_summary()
-
-                #self.current_widget.add_opts_lst(in_json_path = sumr_path)
+                self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
 
             elif( self.idials_widget.controller.get_current().name == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")
@@ -296,7 +295,7 @@ class MainWidget(QMainWindow):
 
             elif( self.idials_widget.controller.get_current().name == "reindex" ):
                 print "Time to shrink back reindex GUI"
-                self.current_widget.del_opts_lst()
+                #self.current_widget.del_opts_lst()
 
             elif( self.idials_widget.controller.get_current().name == "integrate" ):
                 self.idials_widget.change_mode("export")

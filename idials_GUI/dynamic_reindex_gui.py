@@ -77,10 +77,27 @@ def ops_list_from_json(json_path = None):
     return str_sorted_lst
 
 
+copied_example = '''
+
+class ParamAdvancedWidget( QWidget):
+    def __init__(self, phl_obj = None, parent = None):
+        super(ParamAdvancedWidget, self).__init__()
+
+        self.param_widget_paret = parent.param_widget_paret
+
+'''
+
+
 class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
-        super(MyReindexOpts, self).__init__(parent = None)
+        super(MyReindexOpts, self).__init__()
         self.super_parent = parent.super_parent
+        print "\n\n from MyReindexOpts"
+        print "type(parent) =", type(parent)
+        print "type(self.super_parent) =", type(self.super_parent)
+        print "type(parent.super_parent) =", type(parent.super_parent)
+        print "\n\n"
+
 
         self.scrollLayout = QVBoxLayout()
         self.scrollLayout.setContentsMargins(QMargins(0,0,0,0))
@@ -109,13 +126,6 @@ class MyReindexOpts(QWidget):
         #self.my_Layout.addWidget(self.scrollWidget)
         self.setLayout(self.my_Layout)
         self.lst_ops = []
-
-    '''
-    def __call__(self):
-        print "\n from __call__  << ReindexOpts page >> \n"
-        print "self.super_parent.idials_widget.controller.get_current().name =", self.super_parent.idials_widget.controller.get_current().name
-        self.super_parent.btn_go_clicked()
-    '''
 
     def del_opts_lst(self):
         self.my_label.setText(" << After Reindex >> ")
