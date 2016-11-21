@@ -25,10 +25,8 @@ copyright (c) CCP4 - DLS
 from python_qt_bind import *
 
 import os, sys
-from dynamic_reindex_gui import MyReindexOpts
 
 from params_live_gui_generator import PhilWidget
-
 from simpler_param_widgets import IndexSimplerParamTab, FindspotsSimplerParameterTab, \
                                    RefineSimplerParamTab, IntegrateSimplerParamTab
 

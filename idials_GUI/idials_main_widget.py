@@ -29,7 +29,6 @@ from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget, TextOut
 from outputs_gui import outputs_widget
 
-
 class OverlayPaintWidg(QWidget):
     def __init__(self, parent = None):
         super(OverlayPaintWidg, self).__init__(parent)
@@ -288,7 +287,8 @@ class MainWidget(QMainWindow):
                 print "\n ________________________ <<< Time to show the table \n"
                 self.output_wg.set_reindex_tab()
                 sumr_path = self.idials_widget.controller.get_summary()
-                self.current_widget.add_opts_lst(in_json_path = sumr_path)
+
+                #self.current_widget.add_opts_lst(in_json_path = sumr_path)
 
             elif( self.idials_widget.controller.get_current().name == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")

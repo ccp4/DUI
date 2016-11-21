@@ -25,6 +25,9 @@ from python_qt_bind import *
 
 from img_viewer.img_viewer import MyImgWin
 from idials_gui import TextOut
+from dynamic_reindex_gui import MyReindexOpts
+
+
 class WebTab(QWidget):
 
     def __init__(self):
@@ -50,23 +53,13 @@ class WebTab(QWidget):
         print "new_path:", new_path
         self.web.load(QUrl(new_path))
 
-class ReindexTab(QWidget):
-
-    def __init__(self):
-        super(ReindexTab, self).__init__()
-
-        hbox = QHBoxLayout()
-        hbox.addWidget(QLabel("empty for now"))
-
-        self.setLayout(hbox)
-        self.show()
 
 class outputs_widget( QWidget):
 
     #item_changed = pyqtSignal()
     def __init__(self, phl_obj, parent = None):
         super(outputs_widget, self).__init__(parent)
-        #self.super_parent = parent
+        self.super_parent = parent
 
         my_box = QVBoxLayout()
         self.my_tabs = QTabWidget()
@@ -76,7 +69,7 @@ class outputs_widget( QWidget):
 
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
-        self.reindex_tool = ReindexTab()
+        self.reindex_tool = MyReindexOpts(parent = self)
 
         self.my_tabs.addTab(self.img_view, "Image View")
 
