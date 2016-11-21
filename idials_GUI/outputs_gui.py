@@ -35,15 +35,13 @@ class WebTab(QWidget):
         QWebSettings.JavascriptEnabled = True
 
         self.web =  QWebView()
-
-        #self.web.load(QUrl("file:///home/luiso/dui/dui_test/only_9_img/dui_idials_GUI_tst_09/dials-1/8_refine/report.html"))
+        print "\n\n No need to load HTML file yet\n\n"
 
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
 
         #self.setGeometry(1100, 200, 550, 250)
         self.setLayout(hbox)
-        self.setWindowTitle('Shell dialog')
         self.show()
 
     def update_page(self, new_path):
@@ -52,6 +50,16 @@ class WebTab(QWidget):
         print "new_path:", new_path
         self.web.load(QUrl(new_path))
 
+class ReindexTab(QWidget):
+
+    def __init__(self):
+        super(ReindexTab, self).__init__()
+
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel("empty for now"))
+
+        self.setLayout(hbox)
+        self.show()
 
 class outputs_widget( QWidget):
 
@@ -68,11 +76,13 @@ class outputs_widget( QWidget):
 
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
+        self.Reindex_tool = ReindexTab()
 
         out_tabs.addTab(self.img_view, "Image View")
 
         out_tabs.addTab(self.in_txt_out, "Log View")
         out_tabs.addTab(self.web_view, "Report View")
+        out_tabs.addTab(self.Reindex_tool, "Re-index table")
 
         my_box.addWidget(out_tabs)
 
