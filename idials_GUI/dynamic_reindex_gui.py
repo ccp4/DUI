@@ -84,9 +84,13 @@ class LeftSideTmpWidget( QWidget):
         super(LeftSideTmpWidget, self).__init__()
         self.super_parent = parent
         vbox = QVBoxLayout()
-        vbox.addWidget(QLabel("Select Indexing option  ==>"))
+        self.my_label = QLabel("Select Indexing option  ==>")
+        vbox.addWidget(self.my_label)
         self.setLayout(vbox)
         self.show()
+
+    def update_opt(self):
+        self.my_label.setText("re - indexed")
 
 
 

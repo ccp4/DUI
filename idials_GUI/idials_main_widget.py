@@ -377,7 +377,8 @@ class MainWidget(QMainWindow):
             self.idials_widget.change_mode("reindex")
             str_par = "solution=" + str(opt_num)
             print "\n change_parameter =", str_par
-            self.idials_widget.change_parameter(str_par)
+            self.idials_widget.change_parameter
+            self.tmp_reindex_widg.update_opt()
 
 
 if __name__ == '__main__':
