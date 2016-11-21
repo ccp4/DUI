@@ -14,6 +14,7 @@ def ops_list_from_json(json_path = None):
 
     lst_ops = []
     for key, value in json_data.iteritems():
+        recommended_str = "  "
         for inner_key in value:
             if( inner_key == "rmsd" ):
                 rmsd_val = value["rmsd"]
