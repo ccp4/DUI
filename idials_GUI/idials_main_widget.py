@@ -29,6 +29,8 @@ from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget, TextOut
 from outputs_gui import outputs_widget
 
+from dynamic_reindex_gui import LeftSideTmpWidget
+
 class OverlayPaintWidg(QWidget):
     def __init__(self, parent = None):
         super(OverlayPaintWidg, self).__init__(parent)
@@ -175,6 +177,9 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
+        #TODO Next 2 lines needs to be tested
+        self.tmp_reindex_widg = LeftSideTmpWidget(self)
+        self.step_param_widg.addWidget(self.tmp_reindex_widg)
 
         idials_path = os.environ["IDIALS_PATH"]
         dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
@@ -288,6 +293,7 @@ class MainWidget(QMainWindow):
                 self.output_wg.set_reindex_tab()
                 sumr_path = self.idials_widget.controller.get_summary()
                 self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+                self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
 
             elif( self.idials_widget.controller.get_current().name == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")

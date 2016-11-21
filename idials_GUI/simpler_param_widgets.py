@@ -32,7 +32,7 @@ class FindspotsSimplerParameterTab( QWidget):
     '''
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__()
-        self.param_widget_paret = parent.param_widget_paret
+        self.param_widget_parent = parent.param_widget_parent
 
         xds_gain_label = QLabel("spotfinder.threshold.xds.gain")
         xds_gain_spn_bx = QDoubleSpinBox()
@@ -111,7 +111,7 @@ class FindspotsSimplerParameterTab( QWidget):
         str_value = str(value)
         print value
         str_path = str(sender.local_path)
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
 class IndexSimplerParamTab( QWidget):
@@ -122,7 +122,7 @@ class IndexSimplerParamTab( QWidget):
     '''
     def __init__(self, phl_obj = None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
-        self.param_widget_paret = parent.param_widget_paret
+        self.param_widget_parent = parent.param_widget_parent
 
         hbox_lay_scan_varying =  QHBoxLayout()
         label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
@@ -171,7 +171,7 @@ class IndexSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
 class RefineSimplerParamTab( QWidget):
@@ -182,7 +182,7 @@ class RefineSimplerParamTab( QWidget):
     '''
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__()
-        self.param_widget_paret = parent.param_widget_paret
+        self.param_widget_parent = parent.param_widget_parent
 
         hbox_lay_scan_varying =  QHBoxLayout()
         localLayout = QVBoxLayout()
@@ -212,7 +212,7 @@ class RefineSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
 class IntegrateSimplerParamTab( QWidget):
@@ -223,7 +223,7 @@ class IntegrateSimplerParamTab( QWidget):
     '''
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
-        self.param_widget_paret = parent.param_widget_paret
+        self.param_widget_parent = parent.param_widget_parent
 
         localLayout = QVBoxLayout()
         PrFit_lay_out =  QHBoxLayout()
@@ -287,13 +287,13 @@ class IntegrateSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
         print value
         str_path = str(sender.local_path)
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 

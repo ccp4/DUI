@@ -78,6 +78,19 @@ def ops_list_from_json(json_path = None):
     return str_sorted_lst
 
 
+
+class LeftSideTmpWidget( QWidget):
+    def __init__(self, parent = None):
+        super(LeftSideTmpWidget, self).__init__()
+        self.super_parent = parent
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("Select Indexing option  ==>"))
+        self.setLayout(vbox)
+        self.show()
+
+
+
+
 class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
         super(MyReindexOpts, self).__init__()

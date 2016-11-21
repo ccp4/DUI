@@ -91,7 +91,7 @@ class PhilWidget( QWidget):
     item_changed = pyqtSignal()
     def __init__(self, phl_obj, parent = None):
         super(PhilWidget, self).__init__(parent)
-        self.param_widget_paret = parent.param_widget_paret
+        self.param_widget_parent = parent.param_widget_parent
 
         self.win_pal = QPalette()
         self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
@@ -325,7 +325,7 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print "local_path =", str_path
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
     def combobox_changed(self, value):
@@ -336,7 +336,7 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.param_widget_paret.update_lin_txt(str_path, str_value)
+        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
 if __name__ == '__main__':

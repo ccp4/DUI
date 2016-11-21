@@ -230,7 +230,7 @@ class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
 
-        self.param_widget_paret = parent.param_widget_paret
+        self.param_widget_parent = parent.param_widget_parent
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
@@ -266,7 +266,7 @@ class ParamMainWidget( QWidget):
             self.super_parent = parent.super_parent
             my_phl_obj = phl_obj
 
-        self.param_widget_paret = self
+        self.param_widget_parent = self
 
         hbox = QHBoxLayout()
 
