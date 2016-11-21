@@ -92,12 +92,12 @@ class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
         super(MyReindexOpts, self).__init__()
         self.super_parent = parent.super_parent
+
         print "\n\n from MyReindexOpts"
         print "type(parent) =", type(parent)
         print "type(self.super_parent) =", type(self.super_parent)
         print "type(parent.super_parent) =", type(parent.super_parent)
         print "\n\n"
-
 
         self.scrollLayout = QVBoxLayout()
         self.scrollLayout.setContentsMargins(QMargins(0,0,0,0))
