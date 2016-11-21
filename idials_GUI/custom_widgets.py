@@ -291,7 +291,7 @@ class ParamMainWidget( QWidget):
         print "adjusting parameter: {", cmd_to_run,"}"
 
         #TODO in a future will no longer be needed to check
-        # because this should be running only from incide
+        # because this should be running only from inside
         # the big GUI
         if( self.super_parent == self ):
             print"\n self.super_parent == self \n"
@@ -322,7 +322,7 @@ class StepList(object):
                   " import",
                   "find spots",
                   "index",
-                  "refine bravais settings",
+                  #"refine bravais settings",
                   "refine",
                   "integrate"
                   ]
@@ -331,7 +331,7 @@ class StepList(object):
                     "import",
                     "find_spots",
                     "index",
-                    "refine_bravais_settings",
+                    #"refine_bravais_settings",
                     "refine",
                     "integrate"
                    ]
@@ -342,7 +342,7 @@ class StepList(object):
                           ImportPage(parent = self),
                           ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab, parent = self),
-                          MyReindexOpts(parent = self),
+                          #MyReindexOpts(parent = self),
                           ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = RefineSimplerParamTab, parent = self),
                           ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab, parent = self)
                          ]
@@ -355,7 +355,7 @@ class StepList(object):
         lst_icons_path.append(str(idials_path + "/resources/import.png"))
         lst_icons_path.append(str(idials_path + "/resources/find_spots.png"))
         lst_icons_path.append(str(idials_path + "/resources/index.png"))
-        lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
+        #lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
         lst_icons_path.append(str(idials_path + "/resources/refine.png"))
         lst_icons_path.append(str(idials_path + "/resources/integrate.png"))
 

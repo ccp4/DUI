@@ -284,15 +284,24 @@ class MainWidget(QMainWindow):
                 self.current_widget.success_stat = True
                 self.update_img()
 
-
             elif( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 print "\n ________________________ <<< Time to show the table \n"
+                self.output_wg.set_reindex_tab()
                 sumr_path = self.idials_widget.controller.get_summary()
                 self.current_widget.add_opts_lst(in_json_path = sumr_path)
+
+            elif( self.idials_widget.controller.get_current().name == "index" ):
+                self.idials_widget.change_mode("refine_bravais_settings")
+                self.btn_go_clicked()
 
             elif( self.idials_widget.controller.get_current().name == "reindex" ):
                 print "Time to shrink back reindex GUI"
                 self.current_widget.del_opts_lst()
+
+            elif( self.idials_widget.controller.get_current().name == "integrate" ):
+                self.idials_widget.change_mode("export")
+                self.btn_go_clicked()
+
             else:
                 print "Time to update html << report >>"
                 #put here something that calls << self.update_report
@@ -303,12 +312,6 @@ class MainWidget(QMainWindow):
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
 
-        if(
-            self.idials_widget.controller.get_current().success == True and
-            self.idials_widget.controller.get_current().name == "integrate"
-           ):
-            self.idials_widget.change_mode("export")
-            self.btn_go_clicked()
 
     def update_img(self):
         print "attempting to update imgs"
@@ -340,10 +343,6 @@ class MainWidget(QMainWindow):
         except:
             print "\n no __call__ in ", self.current_widget, "\n"
 
-
-        if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
-            self.output_wg.set_reindex_tab()
-
         self.update_img()
 
     def btn_clicked(self):
@@ -361,14 +360,6 @@ class MainWidget(QMainWindow):
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
             print "\n MainWidget swishing to", cmd_name, "\n\n"
-            tmp_disabled = '''
-            for pos, widget_search in enumerate(self.command_lst):
-                if( widget_search == cmd_name ):
-                    print "Widget in pos:", pos
-                    self._refresh_stacked_widget(self.widg_lst[pos])
-                    self.btn_lst[pos].setStyleSheet("background-color: lightblue")
-            '''
-
             if new_url != None:
                 self.update_report(new_url)
 

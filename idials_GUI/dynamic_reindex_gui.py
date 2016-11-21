@@ -110,10 +110,12 @@ class MyReindexOpts(QWidget):
         self.setLayout(self.my_Layout)
         self.lst_ops = []
 
+    '''
     def __call__(self):
         print "\n from __call__  << ReindexOpts page >> \n"
         print "self.super_parent.idials_widget.controller.get_current().name =", self.super_parent.idials_widget.controller.get_current().name
         self.super_parent.btn_go_clicked()
+    '''
 
     def del_opts_lst(self):
         self.my_label.setText(" << After Reindex >> ")
