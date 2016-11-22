@@ -361,23 +361,19 @@ class MainWidget(QMainWindow):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
 
-
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
             print "\n MainWidget swishing to", cmd_name, "\n\n"
             if new_url != None:
                 self.update_report(new_url)
 
-
     def opt_picked(self, opt_num):
         if( self.running == False ):
-            print "\n from idials_main_widget.py MainWidget"
-            print "opt_num =", opt_num, " \n"
-
+            print "\n opt_num =", opt_num, " \n"
             self.idials_widget.change_mode("reindex")
             str_par = "solution=" + str(opt_num)
-            print "\n change_parameter =", str_par
-            self.idials_widget.change_parameter
+            print "\n change_parameter =", str_par, "\n"
+            self.idials_widget.change_parameter(str_par)
             self.tmp_reindex_widg.update_opt()
 
 
