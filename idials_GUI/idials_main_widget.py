@@ -246,6 +246,16 @@ class MainWidget(QMainWindow):
     def quit(self):
         print "quit"
 
+    def _gray_unwanted(self):
+        for btn in self.btn_lst:
+            print btn.command
+            btn.setEnabled(False)
+
+    def _ungray_all(self):
+        for btn in self.btn_lst:
+            print btn.command
+            btn.setEnabled(True)
+
     def togle_text_rt(self):
         print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
         if( self.idials_widget.rtime_txt_on == True):
@@ -265,6 +275,7 @@ class MainWidget(QMainWindow):
         if( self.running == False ):
             self.idials_widget.run_clicked()
             self.running = True
+            self._gray_unwanted()
 
     def pop_reindex_gui(self):
         print "\n ________________________ <<< Time to show the table \n"
@@ -321,6 +332,7 @@ class MainWidget(QMainWindow):
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
 
+        self._ungray_all()
 
     def update_img(self):
         print "attempting to update imgs"
@@ -380,8 +392,7 @@ class MainWidget(QMainWindow):
             else:
                 self.output_wg.set_pref_tab()
 
-
-
+            #self._gray_unwanted()
 
     def opt_picked(self, opt_num):
         if( self.running == False ):
