@@ -327,11 +327,15 @@ class MainWidget(QMainWindow):
 
         try:
             json_file_path = str(self.idials_widget.controller.get_current().datablock)
+
+            #TODO consider  json_file_path = self.idials_widget.controller.get_current().workspace ... hardcoded rute
+
             print "\n images from:", json_file_path, "\n"
             self.output_wg.img_view.ini_datablock(json_file_path)
 
         except:
             print "no datablock.json found"
+
 
     def update_report(self, report_path):
         print "\n MainWidget update report with:", report_path
@@ -375,6 +379,9 @@ class MainWidget(QMainWindow):
                 self.pop_reindex_gui()
             else:
                 self.output_wg.set_pref_tab()
+
+
+
 
     def opt_picked(self, opt_num):
         if( self.running == False ):
