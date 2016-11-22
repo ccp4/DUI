@@ -250,8 +250,12 @@ class IdialsInnerrWidget( QWidget):
         self.controller.goto(idx)
         #self._set_current_mode()
         self._update_tree()
+        try:
+            html_rep = self.controller.get_report()
+        except:
+            html_rep = None
 
-        self.super_parent.jump(self.next_cmd, self.controller.get_report())
+        self.super_parent.jump(self.next_cmd, html_rep)
 
     def prv_clicked(self):
         print "prv_clicked(self)"

@@ -266,6 +266,13 @@ class MainWidget(QMainWindow):
             self.idials_widget.run_clicked()
             self.running = True
 
+    def pop_reindex_gui(self):
+        print "\n ________________________ <<< Time to show the table \n"
+        self.output_wg.set_reindex_tab()
+        sumr_path = self.idials_widget.controller.get_summary()
+        self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+        self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+
     def start_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Running")
         self.bottom_bar_n_info.start_motion()
@@ -289,11 +296,7 @@ class MainWidget(QMainWindow):
                 self.update_img()
 
             elif( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
-                print "\n ________________________ <<< Time to show the table \n"
-                self.output_wg.set_reindex_tab()
-                sumr_path = self.idials_widget.controller.get_summary()
-                self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-                self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+                self.pop_reindex_gui()
 
             elif( self.idials_widget.controller.get_current().name == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")
@@ -301,6 +304,7 @@ class MainWidget(QMainWindow):
 
             elif( self.idials_widget.controller.get_current().name == "reindex" ):
                 print "Time to shrink back reindex GUI"
+                self.output_wg.set_pref_tab()
                 #self.current_widget.del_opts_lst()
 
             elif( self.idials_widget.controller.get_current().name == "integrate" ):
@@ -363,9 +367,14 @@ class MainWidget(QMainWindow):
 
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
-            print "\n MainWidget swishing to", cmd_name, "\n\n"
+            print "\n Tree swishing to", cmd_name, "\n\n"
             if new_url != None:
                 self.update_report(new_url)
+
+            if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
+                self.pop_reindex_gui()
+            else:
+                self.output_wg.set_pref_tab()
 
     def opt_picked(self, opt_num):
         if( self.running == False ):
