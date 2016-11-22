@@ -250,10 +250,14 @@ class MainWidget(QMainWindow):
         curr_command = self.idials_widget.controller.get_current().name
         print "curr_command =", curr_command
 
-        cmd_next = None
-        for pos, cmd in enumerate(self.command_lst):
-            if( cmd == curr_command ):
-                cmd_next = self.command_lst[pos + 1]
+        if( curr_command == "index" or curr_command =="reindex" or curr_command == "integrate" ):
+            cmd_next = "refine"
+
+        else:
+            cmd_next = None
+            for pos, cmd in enumerate(self.command_lst):
+                if( cmd == curr_command ):
+                    cmd_next = self.command_lst[pos + 1]
 
         for btn in self.btn_lst:
             print btn.command
@@ -261,8 +265,6 @@ class MainWidget(QMainWindow):
                 btn.setEnabled(True)
             else:
                 btn.setEnabled(False)
-
-
 
 
     def _ungray_all(self):
@@ -286,9 +288,10 @@ class MainWidget(QMainWindow):
 
     def btn_go_clicked(self):
         if( self.running == False ):
+            self._gray_unwanted()
             self.idials_widget.run_clicked()
             self.running = True
-            self._gray_unwanted()
+
 
     def pop_reindex_gui(self):
         print "\n ________________________ <<< Time to show the table \n"
@@ -311,41 +314,40 @@ class MainWidget(QMainWindow):
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
         self.running = False
 
-        #FIXME controller.get_current().name == "refine_bravais_settings" is NOT the acurate
-        #FIXME way to find output the current parameter widget
+        curr_command = self.idials_widget.controller.get_current().name
 
         if( self.idials_widget.controller.get_current().success == True ):
-            if( self.idials_widget.controller.get_current().name == "import" ):
+            if( curr_command == "import" ):
                 self.current_widget.success_stat = True
                 self.update_img()
 
-            elif( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
+            elif( curr_command == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
 
-            elif( self.idials_widget.controller.get_current().name == "index" ):
+            elif( curr_command == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")
                 self.btn_go_clicked()
 
-            elif( self.idials_widget.controller.get_current().name == "reindex" ):
+            elif( curr_command == "reindex" ):
                 print "Time to shrink back reindex GUI"
                 self.output_wg.set_pref_tab()
                 #self.current_widget.del_opts_lst()
 
-            elif( self.idials_widget.controller.get_current().name == "integrate" ):
+            elif( curr_command == "integrate" ):
                 self.idials_widget.change_mode("export")
                 self.btn_go_clicked()
 
-            else:
+            elif(curr_command != "export"):
                 print "Time to update html << report >>"
-                #put here something that calls << self.update_report
                 repr_path = self.idials_widget.controller.get_report()
                 self.update_report(repr_path)
+
+            self._gray_unwanted()
 
         else:
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
 
-        self._ungray_all()
 
     def update_img(self):
         print "attempting to update imgs"
