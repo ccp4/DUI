@@ -247,13 +247,26 @@ class MainWidget(QMainWindow):
         print "quit"
 
     def _gray_unwanted(self):
+        curr_command = self.idials_widget.controller.get_current().name
+        print "curr_command =", curr_command
+
+        cmd_next = None
+        for pos, cmd in enumerate(self.command_lst):
+            if( cmd == curr_command ):
+                cmd_next = self.command_lst[pos + 1]
+
         for btn in self.btn_lst:
             print btn.command
-            btn.setEnabled(False)
+            if( btn.command == cmd_next ):
+                btn.setEnabled(True)
+            else:
+                btn.setEnabled(False)
+
+
+
 
     def _ungray_all(self):
         for btn in self.btn_lst:
-            print btn.command
             btn.setEnabled(True)
 
     def togle_text_rt(self):
@@ -392,7 +405,7 @@ class MainWidget(QMainWindow):
             else:
                 self.output_wg.set_pref_tab()
 
-            #self._gray_unwanted()
+            self._gray_unwanted()
 
     def opt_picked(self, opt_num):
         if( self.running == False ):
