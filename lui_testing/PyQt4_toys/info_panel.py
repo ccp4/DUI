@@ -27,9 +27,9 @@ def update_crystal(cryst_dat):
         cryst_dat.b = 40.555
         cryst_dat.c = 60.555
 
-        cryst_dat.alpha = 90.0
-        cryst_dat.beta = 90.0
-        cryst_dat.gamma = 90.0
+        cryst_dat.alpha = 90.1
+        cryst_dat.beta = 90.2
+        cryst_dat.gamma = 90.3
 
 def update_intrument(exp_dat):
         exp_dat.r1 = 90.02
@@ -38,6 +38,14 @@ def update_intrument(exp_dat):
         exp_dat.xb = 1588
         exp_dat.yb = 1466
         exp_dat.dd = 2135
+
+def update_data_label(data_label, data_info):
+    if( data_info == None ):
+        data_label.setText("  ______  ")
+    else:
+        data_label.setText(str(data_info))
+
+
 
 class InfoWidget( QWidget):
     def __init__(self, parent = None):
@@ -164,20 +172,22 @@ class InfoWidget( QWidget):
     def update_data(self):
 
         update_crystal(self.crys_data)
-        self.a_data.setText(str(self.crys_data.a))
-        self.b_data.setText(str(self.crys_data.b))
-        self.c_data.setText(str(self.crys_data.c))
-
-        self.alpha_data.setText(str(self.crys_data.alpha))
-        self.beta_data.setText(str(self.crys_data.beta))
-        self.gamma_data.setText(str(self.crys_data.gamma))
-
         update_intrument(self.expm_data)
-        self.r1_data.setText(str(self.expm_data.r1))
-        self.r2_data.setText(str(self.expm_data.r2))
-        self.r3_data.setText(str(self.expm_data.r3))
-        self.xb_data.setText(str(self.expm_data.xb))
-        self.yb_data.setText(str(self.expm_data.yb))
+
+        update_data_label(self.a_data      ,     self.crys_data.a)
+        update_data_label(self.b_data      ,     self.crys_data.b)
+        update_data_label(self.c_data      ,     self.crys_data.c)
+
+        update_data_label(self.alpha_data  , self.crys_data.alpha)
+        update_data_label(self.beta_data   ,  self.crys_data.beta)
+        update_data_label(self.gamma_data  , self.crys_data.gamma)
+
+        update_data_label(self.r1_data     ,    self.expm_data.r1)
+        update_data_label(self.r2_data     ,    self.expm_data.r2)
+        update_data_label(self.r3_data     ,    self.expm_data.r3)
+        update_data_label(self.xb_data     ,    self.expm_data.xb)
+        update_data_label(self.yb_data     ,    self.expm_data.yb)
+        update_data_label(self.d_dist_data ,    self.expm_data.dd)
 
 
 
