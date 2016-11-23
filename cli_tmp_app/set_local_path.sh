@@ -3,9 +3,7 @@ echo "setting up tmp path"
 export PATH=$PATH:$(pwd)
 export DUI_PATH=$(pwd)
 cd $DUI_PATH/../dui/resources
-#echo "preparing phil parameter editor"
 rm *.pyc
-#dials.python phil_edit_code_generator.py #only needed for the old DUI
 cd $DUI_PATH
 echo "DUI_PATH =$(pwd)"
 cd ../idials_GUI/
