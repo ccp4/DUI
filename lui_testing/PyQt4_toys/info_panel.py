@@ -1,10 +1,35 @@
-
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import sys
 
-class CustomData(object):
-    pass
+class CrystalData(object):
+    def __init__(self):
+        self.a = None
+        self.b = None
+        self.c = None
+        self.alpha = None
+        self.beta = None
+        self.gamma = None
+        self.spg_group = None
+
+
+class InstrumentData(object):
+    def __init__(self):
+        self.r1 = None
+        self.r2 = None
+        self.r3 = None
+        self.xb = None
+        self.yb = None
+        self.dd = None
+
+def update_crystal(cryst_dat):
+        cryst_dat.a = 20.555
+        cryst_dat.b = 40.555
+        cryst_dat.c = 60.555
+
+        cryst_dat.alpha = 90.0
+        cryst_dat.beta = 90.0
+        cryst_dat.gamma = 90.0
 
 
 
@@ -14,7 +39,7 @@ class InfoWidget( QWidget):
 
         cell_group =  QGroupBox(" Crystal Cell ")
 
-        empty_str = "__________0"
+        empty_str = "__________"
 
         cell_v_layout = QVBoxLayout()
 
@@ -27,13 +52,13 @@ class InfoWidget( QWidget):
         cell_label_d_layout.addWidget(c_label)
         cell_v_layout.addLayout(cell_label_d_layout)
 
-        a_data = QLabel(empty_str)
-        b_data = QLabel(empty_str)
-        c_data = QLabel(empty_str)
+        self.a_data = QLabel(empty_str)
+        self.b_data = QLabel(empty_str)
+        self.c_data = QLabel(empty_str)
         cell_data_layout = QHBoxLayout()
-        cell_data_layout.addWidget(a_data)
-        cell_data_layout.addWidget(b_data)
-        cell_data_layout.addWidget(c_data)
+        cell_data_layout.addWidget(self.a_data)
+        cell_data_layout.addWidget(self.b_data)
+        cell_data_layout.addWidget(self.c_data)
         cell_v_layout.addLayout(cell_data_layout)
         cell_v_layout.addWidget(QLabel("  "))
 
@@ -46,13 +71,13 @@ class InfoWidget( QWidget):
         cell_label_a_layout.addWidget(gamma_label)
         cell_v_layout.addLayout(cell_label_a_layout)
 
-        alpha_data = QLabel(empty_str)
-        beta_data = QLabel(empty_str)
-        gamma_data = QLabel(empty_str)
+        self.alpha_data = QLabel(empty_str)
+        self.beta_data = QLabel(empty_str)
+        self.gamma_data = QLabel(empty_str)
         cell_data_layout = QHBoxLayout()
-        cell_data_layout.addWidget(alpha_data)
-        cell_data_layout.addWidget(beta_data)
-        cell_data_layout.addWidget(gamma_data)
+        cell_data_layout.addWidget(self.alpha_data)
+        cell_data_layout.addWidget(self.beta_data)
+        cell_data_layout.addWidget(self.gamma_data)
         cell_v_layout.addLayout(cell_data_layout)
 
         cell_group.setLayout(cell_v_layout)
@@ -71,13 +96,13 @@ class InfoWidget( QWidget):
 
         r_v_layout.addLayout(r_label_a_layout)
 
-        r1_data = QLabel(empty_str)
-        r2_data = QLabel(empty_str)
-        r3_data = QLabel(empty_str)
+        self.r1_data = QLabel(empty_str)
+        self.r2_data = QLabel(empty_str)
+        self.r3_data = QLabel(empty_str)
         r_data_layout = QHBoxLayout()
-        r_data_layout.addWidget(r1_data)
-        r_data_layout.addWidget(r2_data)
-        r_data_layout.addWidget(r3_data)
+        r_data_layout.addWidget(self.r1_data)
+        r_data_layout.addWidget(self.r2_data)
+        r_data_layout.addWidget(self.r3_data)
         r_v_layout.addLayout(r_data_layout)
         orien_group.setLayout(r_v_layout)
 
@@ -95,54 +120,51 @@ class InfoWidget( QWidget):
 
         bm_v_layout.addLayout(bm_label_a_layout)
 
-        xb_data = QLabel(empty_str)
-        yb_data = QLabel(empty_str)
+        self.xb_data = QLabel(empty_str)
+        self.yb_data = QLabel(empty_str)
         bm_data_layout = QHBoxLayout()
-        bm_data_layout.addWidget(xb_data)
-        bm_data_layout.addWidget(yb_data)
+        bm_data_layout.addWidget(self.xb_data)
+        bm_data_layout.addWidget(self.yb_data)
         bm_v_layout.addLayout(bm_data_layout)
 
         bm_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel("  Detector Distance ")
         bm_v_layout.addWidget(d_dist_label)
-        d_dist_data = QLabel(empty_str)
-        bm_v_layout.addWidget(yb_data)
+        self.d_dist_data = QLabel(empty_str)
+        bm_v_layout.addWidget(self.d_dist_data)
         bm_v_layout.addWidget(QLabel("  "))
 
         beam_group.setLayout(bm_v_layout)
 
-        crys_data = CustomData()
-        expm_data = CustomData()
+        self.crys_data = CrystalData()
+        expm_data = InstrumentData()
 
         my_box = QVBoxLayout()
         my_box.addWidget(cell_group)
         my_box.addWidget(orien_group)
         my_box.addWidget(beam_group)
 
+        #next 3 lines and connections will be removed when this goes to the main GUI
+        update_data = QPushButton(self)
+        update_data.clicked.connect(self.btn_clicked)
+        my_box.addWidget(update_data)
+
         self.setLayout(my_box)
         self.show()
 
-'''
+    def btn_clicked(self):
+        self.update_data()
 
-template for info panel
-________________________________
-crystal cell
+    def update_data(self):
 
-a    b    c
+        update_crystal(self.crys_data)
+        self.a_data.setText(str(self.crys_data.a))
+        self.b_data.setText(str(self.crys_data.b))
+        self.c_data.setText(str(self.crys_data.c))
 
-alpha beta gamma
-________________________________
-crystal orientation
-
-R1           R2           R3
-________________________________
-bean / source
-
-x - bean       y - bean
-
-Detector distance
-
-'''
+        self.alpha_data.setText(str(self.crys_data.alpha))
+        self.beta_data.setText(str(self.crys_data.beta))
+        self.gamma_data.setText(str(self.crys_data.gamma))
 
 
 if( __name__ == "__main__" ):
