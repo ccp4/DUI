@@ -22,6 +22,7 @@ class InstrumentData(object):
         self.yb = None
         self.dd = None
 
+
 def update_crystal(cryst_dat):
         cryst_dat.a = 20.555
         cryst_dat.b = 40.555
@@ -31,6 +32,7 @@ def update_crystal(cryst_dat):
         cryst_dat.beta = 90.2
         cryst_dat.gamma = 90.3
 
+
 def update_intrument(exp_dat):
         exp_dat.r1 = 90.02
         exp_dat.r2 = 89.8
@@ -39,12 +41,13 @@ def update_intrument(exp_dat):
         exp_dat.yb = 1466
         exp_dat.dd = 2135
 
+
 def update_data_label(data_label, data_info):
     if( data_info == None ):
         data_label.setText("  ______  ")
     else:
         data_label.setText(str(data_info))
-
+        data_label.setStyleSheet("background-color: white")
 
 
 class InfoWidget( QWidget):
