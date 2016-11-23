@@ -31,7 +31,13 @@ def update_crystal(cryst_dat):
         cryst_dat.beta = 90.0
         cryst_dat.gamma = 90.0
 
-
+def update_intrument(exp_dat):
+        exp_dat.r1 = 90.02
+        exp_dat.r2 = 89.8
+        exp_dat.r3 = 91.4
+        exp_dat.xb = 1588
+        exp_dat.yb = 1466
+        exp_dat.dd = 2135
 
 class InfoWidget( QWidget):
     def __init__(self, parent = None):
@@ -137,7 +143,7 @@ class InfoWidget( QWidget):
         beam_group.setLayout(bm_v_layout)
 
         self.crys_data = CrystalData()
-        expm_data = InstrumentData()
+        self.expm_data = InstrumentData()
 
         my_box = QVBoxLayout()
         my_box.addWidget(cell_group)
@@ -165,6 +171,14 @@ class InfoWidget( QWidget):
         self.alpha_data.setText(str(self.crys_data.alpha))
         self.beta_data.setText(str(self.crys_data.beta))
         self.gamma_data.setText(str(self.crys_data.gamma))
+
+        update_intrument(self.expm_data)
+        self.r1_data.setText(str(self.expm_data.r1))
+        self.r2_data.setText(str(self.expm_data.r2))
+        self.r3_data.setText(str(self.expm_data.r3))
+        self.xb_data.setText(str(self.expm_data.xb))
+        self.yb_data.setText(str(self.expm_data.yb))
+
 
 
 if( __name__ == "__main__" ):
