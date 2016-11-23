@@ -59,6 +59,8 @@ class outputs_widget( QWidget):
         super(outputs_widget, self).__init__()
         self.super_parent = parent
 
+        #FIXME remember the upper case convention with class names
+
         my_box = QVBoxLayout()
         self.my_tabs = QTabWidget()
 
