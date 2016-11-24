@@ -8,11 +8,8 @@ def print_someting(experiments_argv):
     experiments = ExperimentListFactory.from_json_file(
                   experiments_argv, check_format=False)
 
-
     print "len(experiments)", len(experiments)
-
     print experiments[0]
-
 
     for exp in experiments:
         print "exp =", exp
@@ -24,14 +21,13 @@ def print_someting(experiments_argv):
         print "exp.crystal.get_unit_cell =", exp.crystal.get_unit_cell()
 
 
-    print "Hi"
+    print "Pass"
 
 
 if( __name__ == "__main__" ):
 
     #with datablock.json it fails badly
     #data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/1_import/datablock.json'
-
 
     data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json'
     print_someting(data)
