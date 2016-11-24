@@ -72,15 +72,6 @@ def update_crystal(experiments_path):
 def update_intrument():
     exp_dat = InstrumentData()
 
-    '''
-    exp_dat.r1 = 90.02
-    exp_dat.r2 = 89.8
-    exp_dat.r3 = 91.4
-    exp_dat.xb = 1588
-    exp_dat.yb = 1466
-    exp_dat.dd = 2135
-    '''
-
     return exp_dat
 
 
@@ -214,10 +205,12 @@ class InfoWidget( QWidget):
     def btn_clicked(self):
         self.update_data()
 
-    def update_data(self):
+    def update_data(self, exp_json_path = None):
 
-        self.crys_data = update_crystal(
-        "/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
+        #self.crys_data = update_crystal(
+        #"/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
+
+        self.crys_data = update_crystal(exp_json_path)
 
         self.expm_data = update_intrument()
         self.expm_data = InstrumentData()

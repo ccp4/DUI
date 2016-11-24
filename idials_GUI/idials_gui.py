@@ -193,7 +193,9 @@ class IdialsInnerrWidget( QWidget):
 
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
-        big_vbox.addWidget(InfoWidget())
+
+        self.info_widget = InfoWidget()
+        big_vbox.addWidget(self.info_widget)
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
@@ -220,6 +222,16 @@ class IdialsInnerrWidget( QWidget):
             html_rep = self.controller.get_report()
         except:
             html_rep = None
+
+        try:
+            exp_json_path = self.controller.get_current().experiments
+            print "exp_json_path =", exp_json_path
+            self.info_widget.update_data(exp_json_path = exp_json_path)
+
+        except:
+            print "failed to find << exp_json_path >>"
+
+
 
         self.super_parent.jump(self.next_cmd, html_rep)
 
