@@ -23,23 +23,68 @@ class InstrumentData(object):
         self.dd = None
 
 
-def update_crystal(cryst_dat):
-        cryst_dat.a = 20.555
-        cryst_dat.b = 40.555
-        cryst_dat.c = 60.555
+def print_someting(experiments_argv):
 
-        cryst_dat.alpha = 90.1
-        cryst_dat.beta = 90.2
-        cryst_dat.gamma = 90.3
+    '''
+
+    data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json'
+    print_someting(data)
+
+    data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/5_refine/experiments.json'
+    print_someting(data)
+
+
+    '''
+
+    from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+
+    experiments = ExperimentListFactory.from_json_file(
+                  experiments_argv, check_format=False)
+
+    print "len(experiments)", len(experiments)
+    print experiments[0]
+
+    for exp in experiments:
+        print "exp =", exp
+        #print "dir(exp) =", dir(exp), "\n\n"
+
+        #print "dir(exp.crystal) =", dir(exp.crystal)
+
+        print "exp.crystal.get_space_group =", exp.crystal.get_space_group()
+        print "exp.crystal.get_unit_cell =", exp.crystal.get_unit_cell()
+
+
+def update_crystal(cryst_dat, experiments_argv):
+
+
+    from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+
+    experiments = ExperimentListFactory.from_json_file(
+                  experiments_argv, check_format=False)
+
+    print "len(experiments)", len(experiments)
+    print experiments[0]
+
+    exp = experiments[0]
+    #print "exp.crystal.get_space_group =", exp.crystal.get_space_group()
+    #print "exp.crystal.get_unit_cell =", exp.crystal.get_unit_cell()
+    unit_cell = exp.crystal.get_unit_cell()
+    #lst_cell = unit_cell.as_list()
+    #a, b, c, alpha, beta, gamma = unit_cell.parameters()
+    #print "a, b, c, alpha, beta, gamma =", a, b, c, alpha, beta, gamma
+    #a, b, c, alpha, beta, gamma = expt.crystal.get_unit_cell_at_scan_point(n).parameters()
+    #print "type(unit_cell) =", type(unit_cell)
+
+    cryst_dat.a, cryst_dat.b, cryst_dat.c, cryst_dat.alpha, cryst_dat.beta, cryst_dat.gamma = unit_cell.parameters()
 
 
 def update_intrument(exp_dat):
-        exp_dat.r1 = 90.02
-        exp_dat.r2 = 89.8
-        exp_dat.r3 = 91.4
-        exp_dat.xb = 1588
-        exp_dat.yb = 1466
-        exp_dat.dd = 2135
+    exp_dat.r1 = 90.02
+    exp_dat.r2 = 89.8
+    exp_dat.r3 = 91.4
+    exp_dat.xb = 1588
+    exp_dat.yb = 1466
+    exp_dat.dd = 2135
 
 
 def update_data_label(data_label, data_info):
@@ -175,7 +220,7 @@ class InfoWidget( QWidget):
 
     def update_data(self):
 
-        update_crystal(self.crys_data)
+        update_crystal(self.crys_data, "/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
         update_intrument(self.expm_data)
 
         update_data_label(self.a_data, self.crys_data.a)
