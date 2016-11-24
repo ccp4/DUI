@@ -54,7 +54,7 @@ def print_someting(experiments_argv):
         print "exp.crystal.get_unit_cell =", exp.crystal.get_unit_cell()
 
 
-def update_crystal(cryst_dat, experiments_argv):
+def update_crystal(cr_dat, experiments_argv):
 
 
     from dxtbx.model.experiment.experiment_list import ExperimentListFactory
@@ -66,16 +66,8 @@ def update_crystal(cryst_dat, experiments_argv):
     print experiments[0]
 
     exp = experiments[0]
-    #print "exp.crystal.get_space_group =", exp.crystal.get_space_group()
-    #print "exp.crystal.get_unit_cell =", exp.crystal.get_unit_cell()
     unit_cell = exp.crystal.get_unit_cell()
-    #lst_cell = unit_cell.as_list()
-    #a, b, c, alpha, beta, gamma = unit_cell.parameters()
-    #print "a, b, c, alpha, beta, gamma =", a, b, c, alpha, beta, gamma
-    #a, b, c, alpha, beta, gamma = expt.crystal.get_unit_cell_at_scan_point(n).parameters()
-    #print "type(unit_cell) =", type(unit_cell)
-
-    cryst_dat.a, cryst_dat.b, cryst_dat.c, cryst_dat.alpha, cryst_dat.beta, cryst_dat.gamma = unit_cell.parameters()
+    cr_dat.a, cr_dat.b, cr_dat.c, cr_dat.alpha, cr_dat.beta, cr_dat.gamma = unit_cell.parameters()
 
 
 def update_intrument(exp_dat):
@@ -91,8 +83,10 @@ def update_data_label(data_label, data_info):
     if( data_info == None ):
         data_label.setText("   -      ")
         data_label.setStyleSheet("background-color: white")
+
     else:
-        data_label.setText(str(data_info))
+        rnd_nm = round(data_info, ndigits=4)
+        data_label.setText(str(rnd_nm))
         data_label.setStyleSheet("background-color: white")
 
 
