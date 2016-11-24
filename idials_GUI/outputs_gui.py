@@ -26,46 +26,6 @@ from img_viewer.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
 
 
-class TextOut( QTextBrowser):
-    def __init__(self, parent = None):
-        super(TextOut, self).__init__(parent)
-        self.set_black_font()
-        self.content_lst = []
-
-    def set_black_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("black"))
-
-    def set_green_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("green"))
-
-    def set_red_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("red"))
-
-    def append_black(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_black_font()
-        self.append(to_print)
-        self.content_lst.append(to_print)
-
-    def append_green(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_green_font()
-        self.append(to_print)
-        self.content_lst = []
-
-    def append_red(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_red_font()
-        self.append(to_print)
-
-    def get_full_output_lst(self):
-        return self.content_lst
-
-
-
 
 class CrystalData(object):
     def __init__(self):
@@ -109,13 +69,19 @@ def update_crystal(experiments_path):
     return dat
 
 
-def update_intrument(exp_dat):
+def update_intrument():
+    exp_dat = InstrumentData()
+
+    '''
     exp_dat.r1 = 90.02
     exp_dat.r2 = 89.8
     exp_dat.r3 = 91.4
     exp_dat.xb = 1588
     exp_dat.yb = 1466
     exp_dat.dd = 2135
+    '''
+
+    return exp_dat
 
 
 def update_data_label(data_label, data_info):
@@ -253,7 +219,7 @@ class InfoWidget( QWidget):
         self.crys_data = update_crystal(
         "/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
 
-        update_intrument(self.expm_data)
+        self.expm_data = update_intrument()
         self.expm_data = InstrumentData()
 
         update_data_label(self.a_data, self.crys_data.a)
@@ -270,6 +236,46 @@ class InfoWidget( QWidget):
         update_data_label(self.xb_data, self.expm_data.xb)
         update_data_label(self.yb_data, self.expm_data.yb)
         update_data_label(self.d_dist_data, self.expm_data.dd)
+
+
+
+class TextOut( QTextBrowser):
+    def __init__(self, parent = None):
+        super(TextOut, self).__init__(parent)
+        self.set_black_font()
+        self.content_lst = []
+
+    def set_black_font(self):
+        self.setCurrentFont( QFont("Monospace"))
+        self.setTextColor( QColor("black"))
+
+    def set_green_font(self):
+        self.setCurrentFont( QFont("Monospace"))
+        self.setTextColor( QColor("green"))
+
+    def set_red_font(self):
+        self.setCurrentFont( QFont("Monospace"))
+        self.setTextColor( QColor("red"))
+
+    def append_black(self, to_print):
+        self.moveCursor(QTextCursor.End)
+        self.set_black_font()
+        self.append(to_print)
+        self.content_lst.append(to_print)
+
+    def append_green(self, to_print):
+        self.moveCursor(QTextCursor.End)
+        self.set_green_font()
+        self.append(to_print)
+        self.content_lst = []
+
+    def append_red(self, to_print):
+        self.moveCursor(QTextCursor.End)
+        self.set_red_font()
+        self.append(to_print)
+
+    def get_full_output_lst(self):
+        return self.content_lst
 
 
 class WebTab(QWidget):
