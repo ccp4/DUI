@@ -22,20 +22,26 @@ class InstrumentData(object):
         self.yb = None
         self.dd = None
 
-def update_crystal(cr_dat, experiments_path):
+def update_crystal(experiments_path):
 
-    from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+    dat = CrystalData()
 
-    experiments = ExperimentListFactory.from_json_file(
-                  experiments_path, check_format=False)
+    try:
 
-    print "len(experiments)", len(experiments)
-    print experiments[0]
+        from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+        experiments = ExperimentListFactory.from_json_file(
+                      experiments_path, check_format=False)
 
-    exp = experiments[0]
-    unit_cell = exp.crystal.get_unit_cell()
-    cr_dat.a, cr_dat.b, cr_dat.c, cr_dat.alpha, cr_dat.beta, cr_dat.gamma = unit_cell.parameters()
+        print "len(experiments)", len(experiments)
 
+        exp = experiments[0]
+        unit_cell = exp.crystal.get_unit_cell()
+        dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
+
+    except:
+        print "Unable to find cell data"
+
+    return dat
 
 def update_intrument(exp_dat):
     exp_dat.r1 = 90.02
@@ -160,7 +166,7 @@ class InfoWidget( QWidget):
 
         beam_group.setLayout(bm_v_layout)
 
-        self.crys_data = CrystalData()
+        #self.crys_data = CrystalData()
         self.expm_data = InstrumentData()
 
         my_box = QVBoxLayout()
@@ -181,7 +187,9 @@ class InfoWidget( QWidget):
 
     def update_data(self):
 
-        update_crystal(self.crys_data, "/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
+        self.crys_data = update_crystal(
+        "/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
+
         update_intrument(self.expm_data)
 
         update_data_label(self.a_data, self.crys_data.a)
