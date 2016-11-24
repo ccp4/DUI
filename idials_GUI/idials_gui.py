@@ -223,14 +223,15 @@ class IdialsInnerrWidget( QWidget):
         except:
             html_rep = None
 
+        exp_json_path = None
         try:
             exp_json_path = self.controller.get_current().experiments
             print "exp_json_path =", exp_json_path
-            self.info_widget.update_data(exp_json_path = exp_json_path)
 
         except:
             print "failed to find << exp_json_path >>"
 
+        self.info_widget.update_data(exp_json_path = exp_json_path)
 
 
         self.super_parent.jump(self.next_cmd, html_rep)
