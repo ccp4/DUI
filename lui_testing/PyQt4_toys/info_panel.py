@@ -44,7 +44,8 @@ def update_intrument(exp_dat):
 
 def update_data_label(data_label, data_info):
     if( data_info == None ):
-        data_label.setText("  ______  ")
+        data_label.setText("   -      ")
+        data_label.setStyleSheet("background-color: white")
     else:
         data_label.setText(str(data_info))
         data_label.setStyleSheet("background-color: white")
@@ -177,21 +178,20 @@ class InfoWidget( QWidget):
         update_crystal(self.crys_data)
         update_intrument(self.expm_data)
 
-        update_data_label(self.a_data      ,     self.crys_data.a)
-        update_data_label(self.b_data      ,     self.crys_data.b)
-        update_data_label(self.c_data      ,     self.crys_data.c)
+        update_data_label(self.a_data, self.crys_data.a)
+        update_data_label(self.b_data, self.crys_data.b)
+        update_data_label(self.c_data, self.crys_data.c)
 
-        update_data_label(self.alpha_data  , self.crys_data.alpha)
-        update_data_label(self.beta_data   ,  self.crys_data.beta)
-        update_data_label(self.gamma_data  , self.crys_data.gamma)
+        update_data_label(self.alpha_data, self.crys_data.alpha)
+        update_data_label(self.beta_data , self.crys_data.beta)
+        update_data_label(self.gamma_data, self.crys_data.gamma)
 
-        update_data_label(self.r1_data     ,    self.expm_data.r1)
-        update_data_label(self.r2_data     ,    self.expm_data.r2)
-        update_data_label(self.r3_data     ,    self.expm_data.r3)
-        update_data_label(self.xb_data     ,    self.expm_data.xb)
-        update_data_label(self.yb_data     ,    self.expm_data.yb)
-        update_data_label(self.d_dist_data ,    self.expm_data.dd)
-
+        update_data_label(self.r1_data, self.expm_data.r1)
+        update_data_label(self.r2_data, self.expm_data.r2)
+        update_data_label(self.r3_data, self.expm_data.r3)
+        update_data_label(self.xb_data, self.expm_data.xb)
+        update_data_label(self.yb_data, self.expm_data.yb)
+        update_data_label(self.d_dist_data, self.expm_data.dd)
 
 
 if( __name__ == "__main__" ):

@@ -26,11 +26,16 @@ def ops_list_from_json(json_path = None):
                 #print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
                 #TODO the format here is not always giving the same with
 
+                #TODO think about someting like: "aa = list(round(i, ndigits=6) for i in aa)"
+
             elif( inner_key ==  "max_cc" ):
                 max_cc_val = value["max_cc"]
                 max_cc_str = " {:7.3}".format(max_cc_val)
                 #print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
                 #TODO the format here is not always giving the same with
+
+                #TODO think about someting like: "aa = list(round(i, ndigits=6) for i in aa)"
+
 
             elif( inner_key == "bravais" ):
                 bravais_val = value["bravais"]
