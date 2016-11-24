@@ -25,6 +25,8 @@ from dials.util.idials import Controller
 import sys
 from Queue import Queue
 from python_qt_bind import *
+from outputs_gui import InfoWidget, TextOut
+
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
@@ -90,43 +92,6 @@ class TreeNavWidget(QTreeView):
 
             self.my_parent.goto(index_to_jump)
 
-class TextOut( QTextBrowser):
-    def __init__(self, parent = None):
-        super(TextOut, self).__init__(parent)
-        self.set_black_font()
-        self.content_lst = []
-
-    def set_black_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("black"))
-
-    def set_green_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("green"))
-
-    def set_red_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("red"))
-
-    def append_black(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_black_font()
-        self.append(to_print)
-        self.content_lst.append(to_print)
-
-    def append_green(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_green_font()
-        self.append(to_print)
-        self.content_lst = []
-
-    def append_red(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_red_font()
-        self.append(to_print)
-
-    def get_full_output_lst(self):
-        return self.content_lst
 
 class IdialsOuterWidget( QWidget):
     def __init__(self, parent = None):
@@ -228,6 +193,7 @@ class IdialsInnerrWidget( QWidget):
 
         self.tree_nav = TreeNavWidget(self)
         big_vbox.addWidget(self.tree_nav)
+        big_vbox.addWidget(InfoWidget())
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)

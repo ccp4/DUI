@@ -26,9 +26,8 @@ import sys, os
 from python_qt_bind import *
 
 from custom_widgets import StepList
-from idials_gui import IdialsInnerrWidget, TextOut
+from idials_gui import IdialsInnerrWidget
 from outputs_gui import outputs_widget
-
 from dynamic_reindex_gui import LeftSideTmpWidget
 
 class OverlayPaintWidg(QWidget):
@@ -213,6 +212,7 @@ class MainWidget(QMainWindow):
         self.txt_out = self.output_wg.in_txt_out
         h_main_splitter.addWidget(v_control_splitter)
         h_main_splitter.addWidget(self.output_wg)
+
 
         main_widget = QWidget()
         main_box = QVBoxLayout()
