@@ -1,41 +1,41 @@
 import json
 
-def get_list(data):
-    print "type(data) =", type(data)
-    for key in data.keys():
-        print "key =", key
-        print "<<key>> = <<" , key , ">>"
 
 
-    print "_______________________________ end key loop \n\n\n"
+def print_someting(experiments_argv):
 
-    '''
-    for col in data['beam']:
-        print "col =", col
+    from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+    experiments = ExperimentListFactory.from_json_file(
+                  experiments_argv, check_format=False)
 
-    print "_______________________________"
-    '''
 
-    for val in data.items():
+    print "len(experiments)", len(experiments)
 
-        print "\n\n_____________________________________________________"
-        print "val =", val
-        print "_____________________________________________________"
+    print experiments[0]
 
-        for iner_val in val:
-            print "iner_val=", iner_val
-            '''
-            for iner__iner_val in iner_val:
 
-                print "iner__iner_val =", iner__iner_val
-                print "<<<"
-            '''
+    for exp in experiments:
+        print "exp =", exp
+        #print "dir(exp) =", dir(exp), "\n\n"
+
+        #print "dir(exp.crystal) =", dir(exp.crystal)
+
+        print "exp.crystal.get_space_group =", exp.crystal.get_space_group()
+        print "exp.crystal.get_unit_cell =", exp.crystal.get_unit_cell()
+
+
+    print "Hi"
+
 
 if( __name__ == "__main__" ):
 
-    #input_file=open('/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/1_import/datablock.json', 'r')
-    #input_file=open('/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json', 'r')
-    input_file=open('/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/5_refine/experiments.json', 'r')
-    data = json.load(input_file)
+    #with datablock.json it fails badly
+    #data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/1_import/datablock.json'
 
-    get_list(data)
+
+    data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json'
+    print_someting(data)
+
+    data ='/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/5_refine/experiments.json'
+    print_someting(data)
+
