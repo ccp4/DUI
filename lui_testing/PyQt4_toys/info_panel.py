@@ -43,6 +43,7 @@ def update_crystal(experiments_path):
 
     return dat
 
+
 def update_intrument(exp_dat):
     exp_dat.r1 = 90.02
     exp_dat.r2 = 89.8
@@ -166,7 +167,6 @@ class InfoWidget( QWidget):
 
         beam_group.setLayout(bm_v_layout)
 
-        #self.crys_data = CrystalData()
         self.expm_data = InstrumentData()
 
         my_box = QVBoxLayout()
