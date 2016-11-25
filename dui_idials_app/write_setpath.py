@@ -29,11 +29,11 @@ def write_script(self_path):
 
     line_x_tut = "echo \"type "
     line_x_tut = line_x_tut + "\\" + "\"" + "dui_idials" + "\\" + "\""
-    line_x_tut = line_x_tut + " (without quotes) to launch DUI/iDIALS \n"
+    line_x_tut = line_x_tut + " (without quotes) to launch DUI/iDIALS\" \n"
     lst_lin.append(line_x_tut)
 
     lst_lin.append( "echo \" \"\n")
-    lst_lin.append( "cd $DUI_PATH\n")
+    lst_lin.append( " \n")
 
     myfile = open("setpath.sh", "w")
 
