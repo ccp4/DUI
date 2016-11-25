@@ -1,7 +1,7 @@
 import sys
 
 def write_script(self_path):
-    print "Python script running from =", self_path
+
     print "writing setpath.sh"
     print
 
@@ -51,7 +51,6 @@ def write_script(self_path):
 
 if( __name__ == "__main__" ):
 
-    print "sys.argv =", sys.argv
     if( len(sys.argv) > 1 ):
         self_path = sys.argv[1]
         write_script(self_path)
