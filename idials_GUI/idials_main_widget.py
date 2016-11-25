@@ -180,8 +180,8 @@ class MainWidget(QMainWindow):
         self.tmp_reindex_widg = LeftSideTmpWidget(self)
         self.step_param_widg.addWidget(self.tmp_reindex_widg)
 
-        idials_path = os.environ["IDIALS_PATH"]
-        dials_logo_path = str(idials_path + "/resources/DIALS_Logo_smaller_centred.png")
+        idials_gui_path = os.environ["IDIALS_GUI_PATH"]
+        dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()

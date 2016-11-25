@@ -345,17 +345,17 @@ class StepList(object):
                           ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab, parent = self)
                          ]
 
-        idials_path = os.environ["IDIALS_PATH"]
-        print "idials_path =", idials_path
+        idials_gui_path = os.environ["IDIALS_GUI_PATH"]
+        print "idials_gui_path =", idials_gui_path
 
         lst_icons_path = []
 
-        lst_icons_path.append(str(idials_path + "/resources/import.png"))
-        lst_icons_path.append(str(idials_path + "/resources/find_spots.png"))
-        lst_icons_path.append(str(idials_path + "/resources/index.png"))
-        #lst_icons_path.append(str(idials_path + "/resources/reindex.png"))
-        lst_icons_path.append(str(idials_path + "/resources/refine.png"))
-        lst_icons_path.append(str(idials_path + "/resources/integrate.png"))
+        lst_icons_path.append(str(idials_gui_path + "/resources/import.png"))
+        lst_icons_path.append(str(idials_gui_path + "/resources/find_spots.png"))
+        lst_icons_path.append(str(idials_gui_path + "/resources/index.png"))
+        #lst_icons_path.append(str(idials_gui_path + "/resources/reindex.png"))
+        lst_icons_path.append(str(idials_gui_path + "/resources/refine.png"))
+        lst_icons_path.append(str(idials_gui_path + "/resources/integrate.png"))
 
         self.lst_icons = []
         for my_icon_path in lst_icons_path:
