@@ -317,6 +317,12 @@ class MainWidget(QMainWindow):
         curr_command = self.idials_widget.controller.get_current().name
 
         if( self.idials_widget.controller.get_current().success == True ):
+            try:
+                repr_path = self.idials_widget.controller.get_report()
+                self.update_report(repr_path)
+            except:
+                print "Not supposed to update report"
+
             if( curr_command == "import" ):
                 self.current_widget.success_stat = True
                 self.update_img()
@@ -339,10 +345,12 @@ class MainWidget(QMainWindow):
 
             elif(curr_command != "export"):
                 print "Time to update html << report >>"
-                repr_path = self.idials_widget.controller.get_report()
-                self.update_report(repr_path)
+
 
             self._gray_unwanted()
+
+            self.idials_widget.update_info()
+
 
         else:
             print "\n\n something went WRONG \n"

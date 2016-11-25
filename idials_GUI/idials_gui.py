@@ -223,6 +223,12 @@ class IdialsInnerrWidget( QWidget):
         except:
             html_rep = None
 
+        self.super_parent.jump(self.next_cmd, html_rep)
+        self.update_info()
+        # this is NOT the only place where self.update_info gets called
+
+    def update_info(self):
+
         exp_json_path = None
         try:
             exp_json_path = self.controller.get_current().experiments
@@ -233,15 +239,10 @@ class IdialsInnerrWidget( QWidget):
 
         self.info_widget.update_data(exp_json_path = exp_json_path)
 
-
-        self.super_parent.jump(self.next_cmd, html_rep)
-
     def prv_clicked(self):
         print "prv_clicked(self)"
-
         current = self.controller.get_current()
         previous = current.parent
-
         self.controller.goto(previous.index)
         self._set_current_mode()
         self._update_tree()
@@ -249,9 +250,7 @@ class IdialsInnerrWidget( QWidget):
     def run_clicked(self):
         print "run_clicked(self)"
         print "Running ", self.next_cmd
-
         self.controller.set_mode(self.next_cmd)
-
         if( self.controller.get_mode() == "import" ):
             tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
             print "tmpl_str =", tmpl_str, "\n\n"
@@ -266,13 +265,10 @@ class IdialsInnerrWidget( QWidget):
         if( self.rtime_txt_on == True ):
             self.super_parent.update_pbar_text(trim_cor_text)
 
-
     def started_thread(self):
         self.super_parent.start_pbar_motion()
 
     def finished_thread(self):
-
-        print "\n\n Here \n\n"
         self._update_tree()
         self.super_parent.end_pbar_motion()
 
