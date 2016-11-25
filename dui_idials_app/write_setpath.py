@@ -12,19 +12,25 @@ def write_script(self_path):
     lst_lin.append( "echo \"This script should be run with the source command\"\n")
     lst_lin.append( "echo \"setting up tmp path\"\n")
 
+    lst_lin.append( "MY_WORKING_DIR=$(pwd)\n")
+
+
     line_w_path = "export DUI_PATH=\""
     line_w_path += self_path
     line_w_path += "\"\n"
     lst_lin.append( line_w_path)
 
-
     lst_lin.append( "export PATH=$PATH:$DUI_PATH\n")
     lst_lin.append( "cd $DUI_PATH\n")
     lst_lin.append( "echo \"DUI_PATH =$DUI_PATH\"\n")
     lst_lin.append( "cd ../idials_GUI/\n")
-    lst_lin.append( "export IDIALS_PATH=$DUI_PATH\n")
+    lst_lin.append( "export IDIALS_PATH=$(pwd)\n")
     lst_lin.append( "echo \"IDIALS_PATH=$IDIALS_PATH\"\n")
     lst_lin.append( "echo \"done\"\n")
+
+    lst_lin.append( "cd $MY_WORKING_DIR\n")
+
+
     lst_lin.append( "echo \" \"\n")
 
     line_x_tut = "echo \"type "
