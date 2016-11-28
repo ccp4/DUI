@@ -24,7 +24,7 @@ copyright (c) CCP4 - DLS
 from python_qt_bind import *
 from img_viewer.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
-
+import sys
 
 
 class CrystalData(object):
@@ -40,9 +40,21 @@ class CrystalData(object):
 
 class InstrumentData(object):
     def __init__(self):
+        old_way = '''
         self.r1 = None
         self.r2 = None
         self.r3 = None
+        '''
+        self.u11 = None
+        self.u12 = None
+        self.u13 = None
+        self.u21 = None
+        self.u22 = None
+        self.u23 = None
+        self.u31 = None
+        self.u32 = None
+        self.u33 = None
+
         self.xb = None
         self.yb = None
         self.dd = None
@@ -135,8 +147,40 @@ class InfoWidget( QWidget):
 
         cell_group.setLayout(cell_v_layout)
 
-        orien_group =  QGroupBox(" Crystal Orientation ")
+        orien_group =  QGroupBox("  U matrix    ")
 
+        u1n_data_layout = QHBoxLayout()
+        self.u11_data = QLabel(empty_str)
+        self.u12_data = QLabel(empty_str)
+        self.u13_data = QLabel(empty_str)
+        u1n_data_layout.addWidget(self.u11_data)
+        u1n_data_layout.addWidget(self.u12_data)
+        u1n_data_layout.addWidget(self.u13_data)
+
+        u2n_data_layout = QHBoxLayout()
+        self.u21_data = QLabel(empty_str)
+        self.u22_data = QLabel(empty_str)
+        self.u23_data = QLabel(empty_str)
+        u2n_data_layout.addWidget(self.u21_data)
+        u2n_data_layout.addWidget(self.u22_data)
+        u2n_data_layout.addWidget(self.u23_data)
+
+        u3n_data_layout = QHBoxLayout()
+        self.u31_data = QLabel(empty_str)
+        self.u32_data = QLabel(empty_str)
+        self.u33_data = QLabel(empty_str)
+        u3n_data_layout.addWidget(self.u31_data)
+        u3n_data_layout.addWidget(self.u32_data)
+        u3n_data_layout.addWidget(self.u33_data)
+
+        r_v_layout = QVBoxLayout()
+        r_v_layout.addLayout(u1n_data_layout)
+        r_v_layout.addLayout(u2n_data_layout)
+        r_v_layout.addLayout(u3n_data_layout)
+        orien_group.setLayout(r_v_layout)
+
+
+        '''
         r_v_layout = QVBoxLayout()
         r1_label = QLabel("  R 1 ")
         r2_label = QLabel("  R 2 ")
@@ -157,7 +201,9 @@ class InfoWidget( QWidget):
         r_data_layout.addWidget(self.r2_data)
         r_data_layout.addWidget(self.r3_data)
         r_v_layout.addLayout(r_data_layout)
+
         orien_group.setLayout(r_v_layout)
+        '''
 
 
         beam_group =  QGroupBox(" Bean / Source ")
@@ -189,17 +235,19 @@ class InfoWidget( QWidget):
 
         beam_group.setLayout(bm_v_layout)
 
-        my_box = QVBoxLayout()
-        my_box.addWidget(cell_group)
-        my_box.addWidget(orien_group)
-        my_box.addWidget(beam_group)
+        my_main_box = QHBoxLayout()
+        left_v_box = QVBoxLayout()
+        left_v_box.addWidget(cell_group)
+        left_v_box.addWidget(beam_group)
+        my_main_box.addLayout(left_v_box)
+        my_main_box.addWidget(orien_group)
 
         #next 3 lines and connections will be removed when this goes to the main GUI
         update_data = QPushButton(self)
         update_data.clicked.connect(self.btn_clicked)
-        my_box.addWidget(update_data)
+        my_main_box.addWidget(update_data)
 
-        self.setLayout(my_box)
+        self.setLayout(my_main_box)
         self.show()
 
     def btn_clicked(self):
@@ -213,7 +261,7 @@ class InfoWidget( QWidget):
         self.crys_data = update_crystal(exp_json_path)
 
         self.expm_data = update_intrument()
-        self.expm_data = InstrumentData()
+        #self.expm_data = InstrumentData()
 
         update_data_label(self.a_data, self.crys_data.a)
         update_data_label(self.b_data, self.crys_data.b)
@@ -223,9 +271,18 @@ class InfoWidget( QWidget):
         update_data_label(self.beta_data , self.crys_data.beta)
         update_data_label(self.gamma_data, self.crys_data.gamma)
 
-        update_data_label(self.r1_data, self.expm_data.r1)
-        update_data_label(self.r2_data, self.expm_data.r2)
-        update_data_label(self.r3_data, self.expm_data.r3)
+
+        update_data_label(self.u11_data, self.expm_data.u11)
+        update_data_label(self.u12_data, self.expm_data.u12)
+        update_data_label(self.u13_data, self.expm_data.u13)
+        update_data_label(self.u21_data, self.expm_data.u21)
+        update_data_label(self.u22_data, self.expm_data.u22)
+        update_data_label(self.u23_data, self.expm_data.u23)
+        update_data_label(self.u31_data, self.expm_data.u31)
+        update_data_label(self.u32_data, self.expm_data.u32)
+        update_data_label(self.u33_data, self.expm_data.u33)
+
+
         update_data_label(self.xb_data, self.expm_data.xb)
         update_data_label(self.yb_data, self.expm_data.yb)
         update_data_label(self.d_dist_data, self.expm_data.dd)
@@ -346,3 +403,9 @@ class outputs_widget( QWidget):
     def set_pref_tab(self):
         self.my_tabs.setCurrentWidget(self.pref_tab_pos)
 
+
+if( __name__ == "__main__" ):
+
+    app =  QApplication(sys.argv)
+    ex = InfoWidget()
+    sys.exit(app.exec_())

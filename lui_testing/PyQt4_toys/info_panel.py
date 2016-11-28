@@ -116,6 +116,14 @@ class InfoWidget( QWidget):
         orien_group =  QGroupBox(" Crystal Orientation ")
 
         r_v_layout = QVBoxLayout()
+        umatr_label = QLabel("      U matrix    ")
+
+
+        orien_group.setLayout(r_v_layout)
+
+
+        '''
+        r_v_layout = QVBoxLayout()
         r1_label = QLabel("  R 1 ")
         r2_label = QLabel("  R 2 ")
         r3_label = QLabel("  R 3 ")
@@ -135,7 +143,9 @@ class InfoWidget( QWidget):
         r_data_layout.addWidget(self.r2_data)
         r_data_layout.addWidget(self.r3_data)
         r_v_layout.addLayout(r_data_layout)
+
         orien_group.setLayout(r_v_layout)
+        '''
 
 
         beam_group =  QGroupBox(" Bean / Source ")
