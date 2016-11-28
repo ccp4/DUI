@@ -289,26 +289,13 @@ class InfoWidget( QWidget):
         my_main_box.addLayout(left_v_box)
         my_main_box.addLayout(right_v_box)
 
-        #next 3 lines and connections will be removed when this goes to the main GUI
-        '''
-        update_data = QPushButton(self)
-        update_data.clicked.connect(self.btn_clicked)
-        my_main_box.addWidget(update_data)
-        '''
+        #uncomment the next line only for debugging purpose
+        #self.update_data()
 
         self.setLayout(my_main_box)
         self.show()
 
-        '''
-    def btn_clicked(self):
-        self.update_data()
-        '''
-
     def update_data(self, exp_json_path = None):
-
-        #self.crys_data = update_crystal(
-        #"/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_03/dials-1/3_index/experiments.json")
-
         self.crys_data = update_crystal(exp_json_path)
 
         self.expm_data = update_instrument(exp_json_path)
