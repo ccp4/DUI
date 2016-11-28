@@ -21,11 +21,11 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import sys
 from python_qt_bind import *
 from img_viewer.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
-import sys
-
+from dxtbx.model.experiment.experiment_list import ExperimentListFactory
 
 class CrystalData(object):
     def __init__(self):
@@ -70,8 +70,6 @@ def update_crystal(experiments_path):
 
 
     try:
-
-        from dxtbx.model.experiment.experiment_list import ExperimentListFactory
         experiments = ExperimentListFactory.from_json_file(
                       experiments_path, check_format=False)
 
@@ -80,6 +78,9 @@ def update_crystal(experiments_path):
         exp = experiments[0]
         unit_cell = exp.crystal.get_unit_cell()
         dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
+        print "\nexp.crystal.get_U() =\n", exp.crystal.get_U().elems
+        u_mat = exp.crystal.get_U()
+        dat.u11, dat.u12, dat.u12, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
 
     except:
         print "Unable to find cell data"
@@ -87,24 +88,28 @@ def update_crystal(experiments_path):
     return dat
 
 
-def update_instrument():
-    exp_dat = InstrumentData()
+def update_instrument(experiments_path):
+    dat = InstrumentData()
 
-    '''
     try:
+        experiments = ExperimentListFactory.from_json_file(
+                      experiments_path, check_format=False)
 
+        print "len(experiments)", len(experiments)
 
+        exp = experiments[0]
+        print "\nexp.crystal.get_B() =\n", exp.crystal.get_B().elems
+        b_mat = exp.crystal.get_B()
 
-
-
+        dat.b11, dat.b12, dat.b12, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
 
     except:
         print "Unable to find instrument"
-    '''
 
 
 
-    return exp_dat
+
+    return dat
 
 
 def update_data_label(data_label, data_info):
@@ -296,7 +301,7 @@ class InfoWidget( QWidget):
 
         self.crys_data = update_crystal(exp_json_path)
 
-        self.expm_data = update_instrument()
+        self.expm_data = update_instrument(exp_json_path)
 
         update_data_label(self.a_data, self.crys_data.a)
         update_data_label(self.b_data, self.crys_data.b)
