@@ -50,11 +50,6 @@ class CrystalData(object):
 
 class InstrumentData(object):
     def __init__(self):
-        old_way = '''
-        self.r1 = None
-        self.r2 = None
-        self.r3 = None
-        '''
         self.u11 = None
         self.u12 = None
         self.u13 = None
@@ -72,6 +67,7 @@ class InstrumentData(object):
 def update_crystal(experiments_path):
 
     dat = CrystalData()
+
 
     try:
 
@@ -192,9 +188,6 @@ class InfoWidget( QWidget):
         u_v_layout.addWidget(QLabel("  "))
         u_mat_group.setLayout(u_v_layout)
 
-        ####################################################################################################
-
-
         b_mat_group =  QGroupBox("  B matrix    ")
 
         b1n_data_layout = QHBoxLayout()
@@ -222,17 +215,13 @@ class InfoWidget( QWidget):
         b3n_data_layout.addWidget(self.b33_data)
 
         b_v_layout = QVBoxLayout()
-        b_v_layout.addLayout(u1n_data_layout)
+        b_v_layout.addLayout(b1n_data_layout)
         b_v_layout.addWidget(QLabel("  "))
-        b_v_layout.addLayout(u2n_data_layout)
+        b_v_layout.addLayout(b2n_data_layout)
         b_v_layout.addWidget(QLabel("  "))
-        b_v_layout.addLayout(u3n_data_layout)
+        b_v_layout.addLayout(b3n_data_layout)
         b_v_layout.addWidget(QLabel("  "))
-        u_mat_group.setLayout(b_v_layout)
-
-
-        ####################################################################################################
-
+        b_mat_group.setLayout(b_v_layout)
 
         beam_group =  QGroupBox(" Bean / Source ")
 
