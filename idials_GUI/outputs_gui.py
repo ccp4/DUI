@@ -248,7 +248,7 @@ class InfoWidget( QWidget):
         b_v_layout.addWidget(QLabel("  "))
         b_mat_group.setLayout(b_v_layout)
 
-        beam_group =  QGroupBox(" Bean / Source ")
+        beam_group =  QGroupBox(" Bean / Source  (mm)")
 
         bm_v_layout = QVBoxLayout()
 
