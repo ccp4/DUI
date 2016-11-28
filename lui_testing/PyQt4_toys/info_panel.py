@@ -122,32 +122,6 @@ class InfoWidget( QWidget):
         orien_group.setLayout(r_v_layout)
 
 
-        '''
-        r_v_layout = QVBoxLayout()
-        r1_label = QLabel("  R 1 ")
-        r2_label = QLabel("  R 2 ")
-        r3_label = QLabel("  R 3 ")
-
-        r_label_a_layout = QHBoxLayout()
-        r_label_a_layout.addWidget(r1_label)
-        r_label_a_layout.addWidget(r2_label)
-        r_label_a_layout.addWidget(r3_label)
-
-        r_v_layout.addLayout(r_label_a_layout)
-
-        self.r1_data = QLabel(empty_str)
-        self.r2_data = QLabel(empty_str)
-        self.r3_data = QLabel(empty_str)
-        r_data_layout = QHBoxLayout()
-        r_data_layout.addWidget(self.r1_data)
-        r_data_layout.addWidget(self.r2_data)
-        r_data_layout.addWidget(self.r3_data)
-        r_v_layout.addLayout(r_data_layout)
-
-        orien_group.setLayout(r_v_layout)
-        '''
-
-
         beam_group =  QGroupBox(" Bean / Source ")
 
         bm_v_layout = QVBoxLayout()

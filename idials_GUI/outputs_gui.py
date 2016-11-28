@@ -100,6 +100,18 @@ def update_instrument(experiments_path):
         u_mat = exp.crystal.get_U()
         dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
 
+        for expt in experiments:
+            for panel in expt.detector:
+                print 'Origin:', panel.get_origin()
+                dat.dd = panel.get_distance()
+                print 'Distance (mm)', dat.dd
+            try:
+                # does the beam intersect with the panel?
+                dat.xb, dat.yb = panel.get_beam_centre(expt.beam.get_s0())
+            except:
+                print"RuntimeError, e:"
+
+
     except:
         print "Unable to find instrument"
 
@@ -278,15 +290,19 @@ class InfoWidget( QWidget):
         my_main_box.addLayout(right_v_box)
 
         #next 3 lines and connections will be removed when this goes to the main GUI
+        '''
         update_data = QPushButton(self)
         update_data.clicked.connect(self.btn_clicked)
         my_main_box.addWidget(update_data)
+        '''
 
         self.setLayout(my_main_box)
         self.show()
 
+        '''
     def btn_clicked(self):
         self.update_data()
+        '''
 
     def update_data(self, exp_json_path = None):
 
