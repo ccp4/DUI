@@ -68,7 +68,6 @@ def update_crystal(experiments_path):
 
     dat = CrystalData()
 
-
     try:
         experiments = ExperimentListFactory.from_json_file(
                       experiments_path, check_format=False)
@@ -78,9 +77,8 @@ def update_crystal(experiments_path):
         exp = experiments[0]
         unit_cell = exp.crystal.get_unit_cell()
         dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
-        print "\nexp.crystal.get_U() =\n", exp.crystal.get_U().elems
-        u_mat = exp.crystal.get_U()
-        dat.u11, dat.u12, dat.u12, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+        b_mat = exp.crystal.get_B()
+        dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
 
     except:
         print "Unable to find cell data"
@@ -89,6 +87,7 @@ def update_crystal(experiments_path):
 
 
 def update_instrument(experiments_path):
+
     dat = InstrumentData()
 
     try:
@@ -98,16 +97,11 @@ def update_instrument(experiments_path):
         print "len(experiments)", len(experiments)
 
         exp = experiments[0]
-        print "\nexp.crystal.get_B() =\n", exp.crystal.get_B().elems
-        b_mat = exp.crystal.get_B()
-
-        dat.b11, dat.b12, dat.b12, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
+        u_mat = exp.crystal.get_U()
+        dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
 
     except:
         print "Unable to find instrument"
-
-
-
 
     return dat
 
