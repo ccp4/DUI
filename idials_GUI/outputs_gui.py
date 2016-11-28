@@ -87,8 +87,22 @@ def update_crystal(experiments_path):
     return dat
 
 
-def update_intrument():
+def update_instrument():
     exp_dat = InstrumentData()
+
+    '''
+    try:
+
+
+
+
+
+
+    except:
+        print "Unable to find instrument"
+    '''
+
+
 
     return exp_dat
 
@@ -282,8 +296,7 @@ class InfoWidget( QWidget):
 
         self.crys_data = update_crystal(exp_json_path)
 
-        self.expm_data = update_intrument()
-        #self.expm_data = InstrumentData()
+        self.expm_data = update_instrument()
 
         update_data_label(self.a_data, self.crys_data.a)
         update_data_label(self.b_data, self.crys_data.b)
