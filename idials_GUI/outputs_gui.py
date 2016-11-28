@@ -37,6 +37,16 @@ class CrystalData(object):
         self.gamma = None
         self.spg_group = None
 
+        self.b11 = None
+        self.b12 = None
+        self.b13 = None
+        self.b21 = None
+        self.b22 = None
+        self.b23 = None
+        self.b31 = None
+        self.b32 = None
+        self.b33 = None
+
 
 class InstrumentData(object):
     def __init__(self):
@@ -147,7 +157,7 @@ class InfoWidget( QWidget):
 
         cell_group.setLayout(cell_v_layout)
 
-        orien_group =  QGroupBox("  U matrix    ")
+        u_mat_group =  QGroupBox("  U matrix    ")
 
         u1n_data_layout = QHBoxLayout()
         self.u11_data = QLabel(empty_str)
@@ -173,37 +183,55 @@ class InfoWidget( QWidget):
         u3n_data_layout.addWidget(self.u32_data)
         u3n_data_layout.addWidget(self.u33_data)
 
-        r_v_layout = QVBoxLayout()
-        r_v_layout.addLayout(u1n_data_layout)
-        r_v_layout.addLayout(u2n_data_layout)
-        r_v_layout.addLayout(u3n_data_layout)
-        orien_group.setLayout(r_v_layout)
+        u_v_layout = QVBoxLayout()
+        u_v_layout.addLayout(u1n_data_layout)
+        u_v_layout.addWidget(QLabel("  "))
+        u_v_layout.addLayout(u2n_data_layout)
+        u_v_layout.addWidget(QLabel("  "))
+        u_v_layout.addLayout(u3n_data_layout)
+        u_v_layout.addWidget(QLabel("  "))
+        u_mat_group.setLayout(u_v_layout)
+
+        ####################################################################################################
 
 
-        '''
-        r_v_layout = QVBoxLayout()
-        r1_label = QLabel("  R 1 ")
-        r2_label = QLabel("  R 2 ")
-        r3_label = QLabel("  R 3 ")
+        b_mat_group =  QGroupBox("  B matrix    ")
 
-        r_label_a_layout = QHBoxLayout()
-        r_label_a_layout.addWidget(r1_label)
-        r_label_a_layout.addWidget(r2_label)
-        r_label_a_layout.addWidget(r3_label)
+        b1n_data_layout = QHBoxLayout()
+        self.b11_data = QLabel(empty_str)
+        self.b12_data = QLabel(empty_str)
+        self.b13_data = QLabel(empty_str)
+        b1n_data_layout.addWidget(self.b11_data)
+        b1n_data_layout.addWidget(self.b12_data)
+        b1n_data_layout.addWidget(self.b13_data)
 
-        r_v_layout.addLayout(r_label_a_layout)
+        b2n_data_layout = QHBoxLayout()
+        self.b21_data = QLabel(empty_str)
+        self.b22_data = QLabel(empty_str)
+        self.b23_data = QLabel(empty_str)
+        b2n_data_layout.addWidget(self.b21_data)
+        b2n_data_layout.addWidget(self.b22_data)
+        b2n_data_layout.addWidget(self.b23_data)
 
-        self.r1_data = QLabel(empty_str)
-        self.r2_data = QLabel(empty_str)
-        self.r3_data = QLabel(empty_str)
-        r_data_layout = QHBoxLayout()
-        r_data_layout.addWidget(self.r1_data)
-        r_data_layout.addWidget(self.r2_data)
-        r_data_layout.addWidget(self.r3_data)
-        r_v_layout.addLayout(r_data_layout)
+        b3n_data_layout = QHBoxLayout()
+        self.b31_data = QLabel(empty_str)
+        self.b32_data = QLabel(empty_str)
+        self.b33_data = QLabel(empty_str)
+        b3n_data_layout.addWidget(self.b31_data)
+        b3n_data_layout.addWidget(self.b32_data)
+        b3n_data_layout.addWidget(self.b33_data)
 
-        orien_group.setLayout(r_v_layout)
-        '''
+        b_v_layout = QVBoxLayout()
+        b_v_layout.addLayout(u1n_data_layout)
+        b_v_layout.addWidget(QLabel("  "))
+        b_v_layout.addLayout(u2n_data_layout)
+        b_v_layout.addWidget(QLabel("  "))
+        b_v_layout.addLayout(u3n_data_layout)
+        b_v_layout.addWidget(QLabel("  "))
+        u_mat_group.setLayout(b_v_layout)
+
+
+        ####################################################################################################
 
 
         beam_group =  QGroupBox(" Bean / Source ")
@@ -239,8 +267,13 @@ class InfoWidget( QWidget):
         left_v_box = QVBoxLayout()
         left_v_box.addWidget(cell_group)
         left_v_box.addWidget(beam_group)
+
+        right_v_box = QVBoxLayout()
+        right_v_box.addWidget(u_mat_group)
+        right_v_box.addWidget(b_mat_group)
+
         my_main_box.addLayout(left_v_box)
-        my_main_box.addWidget(orien_group)
+        my_main_box.addLayout(right_v_box)
 
         #next 3 lines and connections will be removed when this goes to the main GUI
         update_data = QPushButton(self)
@@ -281,6 +314,16 @@ class InfoWidget( QWidget):
         update_data_label(self.u31_data, self.expm_data.u31)
         update_data_label(self.u32_data, self.expm_data.u32)
         update_data_label(self.u33_data, self.expm_data.u33)
+
+        update_data_label(self.b11_data, self.crys_data.b11)
+        update_data_label(self.b12_data, self.crys_data.b12)
+        update_data_label(self.b13_data, self.crys_data.b13)
+        update_data_label(self.b21_data, self.crys_data.b21)
+        update_data_label(self.b22_data, self.crys_data.b22)
+        update_data_label(self.b23_data, self.crys_data.b23)
+        update_data_label(self.b31_data, self.crys_data.b31)
+        update_data_label(self.b32_data, self.crys_data.b32)
+        update_data_label(self.b33_data, self.crys_data.b33)
 
 
         update_data_label(self.xb_data, self.expm_data.xb)
