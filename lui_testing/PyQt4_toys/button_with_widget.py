@@ -1,18 +1,18 @@
 from PyQt4 import QtGui, QtCore
 import sys
-
+'''
 class Layers(QtGui.QWidget):
     def __init__(self, parent=None):
         super(Layers, self).__init__(parent)
-
+'''
 class LayersMenu(QtGui.QMenu):
 
     def __init__(self, parent=None):
         super(LayersMenu, self).__init__(parent)
-
         layout = QtGui.QVBoxLayout(self)
         self.layers = Layers()
-        layout.addWidget(self.layers)
+        layout.addWidget(QPushButton("Action1"))
+        layout.addWidget(QPushButton("Action2"))
         self.setLayout(layout)
 
     def Action1(self):
