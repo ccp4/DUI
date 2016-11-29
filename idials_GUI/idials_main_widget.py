@@ -29,6 +29,7 @@ from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget
 from outputs_gui import outputs_widget
 from dynamic_reindex_gui import LeftSideTmpWidget
+from dynamic_reindex_gui import MyReindexOpts
 
 class OverlayPaintWidg(QWidget):
     def __init__(self, parent = None):
@@ -176,9 +177,16 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        #TODO Next 2 lines needs to be tested
-        self.tmp_reindex_widg = LeftSideTmpWidget(self)
-        self.step_param_widg.addWidget(self.tmp_reindex_widg)
+        self.vertical_main_splitter = True
+
+        if( self.vertical_main_splitter ):
+            self.reindex_tool = MyReindexOpts(self)
+            self.step_param_widg.addWidget(self.reindex_tool)
+
+        else:
+            #TODO Next 2 lines needs to be tested
+            self.tmp_reindex_widg = LeftSideTmpWidget(self)
+            self.step_param_widg.addWidget(self.tmp_reindex_widg)
 
         idials_gui_path = os.environ["IDIALS_GUI_PATH"]
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
@@ -189,7 +197,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.vertical_main_splitter = False
+
 
         self.btn_go =  QPushButton('Run', self)
         self.btn_go.setIcon(QIcon(dials_logo_path))
@@ -302,10 +310,17 @@ class MainWidget(QMainWindow):
 
     def pop_reindex_gui(self):
         print "\n ________________________ <<< Time to show the table \n"
-        self.output_wg.set_reindex_tab()
-        sumr_path = self.idials_widget.controller.get_summary()
-        self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-        self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+
+        if( self.vertical_main_splitter ):
+            sumr_path = self.idials_widget.controller.get_summary()
+            self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            self.step_param_widg.setCurrentWidget(self.reindex_tool)
+
+        else:
+            self.output_wg.set_reindex_tab()
+            sumr_path = self.idials_widget.controller.get_summary()
+            self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Running")
@@ -431,7 +446,9 @@ class MainWidget(QMainWindow):
             str_par = "solution=" + str(opt_num)
             print "\n change_parameter =", str_par, "\n"
             self.idials_widget.change_parameter(str_par)
-            self.tmp_reindex_widg.update_opt()
+
+            if( not(self.vertical_main_splitter) ):
+                self.tmp_reindex_widg.update_opt()
 
 
 if __name__ == '__main__':

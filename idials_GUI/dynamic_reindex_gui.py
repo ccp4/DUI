@@ -103,7 +103,7 @@ class LeftSideTmpWidget( QWidget):
 class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
         super(MyReindexOpts, self).__init__()
-        self.super_parent = parent.super_parent
+        self.super_parent = parent
 
         self.scrollLayout = QVBoxLayout()
         self.scrollLayout.setContentsMargins(QMargins(0,0,0,0))

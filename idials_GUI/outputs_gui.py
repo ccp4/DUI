@@ -415,7 +415,9 @@ class outputs_widget( QWidget):
 
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
-        self.reindex_tool = MyReindexOpts(self)
+
+        #TODO make sure consistent the way to use the "super_parent" reference in the next line
+        self.reindex_tool = MyReindexOpts(parent)
 
         self.my_tabs.addTab(self.img_view, "Image View")
 
