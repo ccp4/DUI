@@ -186,9 +186,7 @@ class MainWidget(QMainWindow):
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
-        v_control_splitter = QSplitter()
-        #v_control_splitter.setOrientation(Qt.Vertical)
-        v_control_splitter.setOrientation(Qt.Horizontal)
+
 
         self.btn_go =  QPushButton('Run', self)
 
@@ -199,12 +197,24 @@ class MainWidget(QMainWindow):
 
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
         self.idials_widget.rtime_txt_on = True
-        v_control_splitter.addWidget(self.idials_widget)
 
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
-        v_control_splitter.addWidget(centre_widget)
 
+        # This flag will define the layout orientation of the left left side
+        # area of the GUI and therefore needs to be taking into account when
+        # the rest of the GUI gets build
+        self.vertical_main_splitter = True
+        v_control_splitter = QSplitter()
+        if( self.vertical_main_splitter ):
+            v_control_splitter.setOrientation(Qt.Vertical)
+            v_control_splitter.addWidget(centre_widget)
+            v_control_splitter.addWidget(self.idials_widget)
+
+        else:
+            v_control_splitter.setOrientation(Qt.Horizontal)
+            v_control_splitter.addWidget(self.idials_widget)
+            v_control_splitter.addWidget(centre_widget)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
