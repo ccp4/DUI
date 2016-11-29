@@ -176,8 +176,38 @@ class InfoWidget( QWidget):
         cell_data_layout.addWidget(self.beta_data)
         cell_data_layout.addWidget(self.gamma_data)
         cell_v_layout.addLayout(cell_data_layout)
+        cell_v_layout.addWidget(QLabel("  "))
 
         cell_group.setLayout(cell_v_layout)
+
+        beam_group =  QGroupBox(" Bean / Source  (mm)")
+
+        bm_v_layout = QVBoxLayout()
+
+        xb_label = QLabel("  X Beam ")
+        yb_label = QLabel("  Y Beam ")
+
+        bm_label_a_layout = QHBoxLayout()
+        bm_label_a_layout.addWidget(xb_label)
+        bm_label_a_layout.addWidget(yb_label)
+
+        bm_v_layout.addLayout(bm_label_a_layout)
+
+        self.xb_data = QLabel(empty_str)
+        self.yb_data = QLabel(empty_str)
+        bm_data_layout = QHBoxLayout()
+        bm_data_layout.addWidget(self.xb_data)
+        bm_data_layout.addWidget(self.yb_data)
+        bm_v_layout.addLayout(bm_data_layout)
+
+        bm_v_layout.addWidget(QLabel("  "))
+        d_dist_label = QLabel("  Detector Distance ")
+        bm_v_layout.addWidget(d_dist_label)
+        self.d_dist_data = QLabel(empty_str)
+        bm_v_layout.addWidget(self.d_dist_data)
+        bm_v_layout.addWidget(QLabel("  "))
+
+        beam_group.setLayout(bm_v_layout)
 
         u_mat_group =  QGroupBox("  U matrix    ")
 
@@ -214,6 +244,7 @@ class InfoWidget( QWidget):
         u_v_layout.addWidget(QLabel("  "))
         u_mat_group.setLayout(u_v_layout)
 
+
         '''
         b_mat_group =  QGroupBox("  B matrix    ")
         b1n_data_layout = QHBoxLayout()
@@ -246,35 +277,6 @@ class InfoWidget( QWidget):
         b_v_layout.addWidget(QLabel("  "))
         b_mat_group.setLayout(b_v_layout)
         '''
-
-        beam_group =  QGroupBox(" Bean / Source  (mm)")
-
-        bm_v_layout = QVBoxLayout()
-
-        xb_label = QLabel("  X Beam ")
-        yb_label = QLabel("  Y Beam ")
-
-        bm_label_a_layout = QHBoxLayout()
-        bm_label_a_layout.addWidget(xb_label)
-        bm_label_a_layout.addWidget(yb_label)
-
-        bm_v_layout.addLayout(bm_label_a_layout)
-
-        self.xb_data = QLabel(empty_str)
-        self.yb_data = QLabel(empty_str)
-        bm_data_layout = QHBoxLayout()
-        bm_data_layout.addWidget(self.xb_data)
-        bm_data_layout.addWidget(self.yb_data)
-        bm_v_layout.addLayout(bm_data_layout)
-
-        bm_v_layout.addWidget(QLabel("  "))
-        d_dist_label = QLabel("  Detector Distance ")
-        bm_v_layout.addWidget(d_dist_label)
-        self.d_dist_data = QLabel(empty_str)
-        bm_v_layout.addWidget(self.d_dist_data)
-        bm_v_layout.addWidget(QLabel("  "))
-
-        beam_group.setLayout(bm_v_layout)
 
         if( self.super_parent.vertical_main_splitter == False ):
             my_main_box = QVBoxLayout()

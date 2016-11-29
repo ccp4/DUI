@@ -177,7 +177,7 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        self.vertical_main_splitter = True
+        self.vertical_main_splitter = False
 
         if( self.vertical_main_splitter ):
             self.reindex_tool = MyReindexOpts(self)
