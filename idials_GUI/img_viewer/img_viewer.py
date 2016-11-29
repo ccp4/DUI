@@ -153,6 +153,51 @@ class build_qimg(object):
         return q_img
 
 
+class PopImgChange(QMenu):
+    def __init__(self, parent=None):
+        super(PopImgChange, self).__init__(parent)
+        self.my_parent = parent
+
+        top_box = QHBoxLayout()
+
+        btn_first =  QPushButton(' I< ')
+        btn_first.clicked.connect(self.my_parent.btn_first_clicked)
+        btn_rev =  QPushButton(' << ')
+        btn_rev.clicked.connect(self.my_parent.btn_rev_clicked)
+        btn_prev = QPushButton('  < ')
+        btn_prev.clicked.connect(self.my_parent.btn_prev_clicked)
+        btn_next =  QPushButton(' >  ')
+        btn_next.clicked.connect(self.my_parent.btn_next_clicked)
+        btn_ffw =  QPushButton(' >> ')
+        btn_ffw.clicked.connect(self.my_parent.btn_ffw_clicked)
+        btn_last = QPushButton('  >I ')
+        btn_last.clicked.connect(self.my_parent.btn_last_clicked)
+
+        top_box.addWidget(btn_first)
+        top_box.addWidget(btn_rev)
+        top_box.addWidget(btn_prev)
+        top_box.addWidget(self.my_parent.img_select)
+        top_box.addWidget(btn_next)
+        top_box.addWidget(btn_ffw)
+        top_box.addWidget(btn_last)
+        self.setLayout(top_box)
+        self.show()
+
+
+class PopImgTreat(QMenu):
+    def __init__(self, parent=None):
+        super(PopImgTreat, self).__init__(parent)
+        self.my_parent = parent
+
+        top_box = QHBoxLayout()
+        top_box.addWidget(QLabel("I min"))
+        top_box.addWidget(self.my_parent.min_edit)
+        top_box.addWidget(QLabel("I max"))
+        top_box.addWidget(self.my_parent.max_edit)
+        top_box.addWidget(self.my_parent.palette_select)
+        self.setLayout(top_box)
+        self.show()
+
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None):
         super(MyImgWin, self).__init__()
@@ -180,15 +225,21 @@ class MyImgWin(QWidget):
         self.max_edit.setText(str(self.i_max))
         self.max_edit.editingFinished.connect(self.max_changed_by_user)
 
-        palette_select = QComboBox()
+        self.palette_select = QComboBox()
 
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
         for plt in self.palette_lst:
-            palette_select.addItem(plt)
+            self.palette_select.addItem(plt)
 
-        palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
+        self.palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
 
+
+        img_select_but = QPushButton('Img Select')
+        img_select_but.setMenu(PopImgChange(self))
+
+        img_pal_but = QPushButton('Img Palette')
+        img_pal_but.setMenu(PopImgTreat(self))
 
         self.img_num = 0
         self.current_qimg = build_qimg()
@@ -203,38 +254,11 @@ class MyImgWin(QWidget):
         self.img_select.setCurrentIndex(0)
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
 
-        btn_first =  QPushButton(' I< ')
-        btn_first.clicked.connect(self.btn_first_clicked)
-        btn_rev =  QPushButton(' << ')
-        btn_rev.clicked.connect(self.btn_rev_clicked)
-        btn_prev = QPushButton('  < ')
-        btn_prev.clicked.connect(self.btn_prev_clicked)
-        btn_next =  QPushButton(' >  ')
-        btn_next.clicked.connect(self.btn_next_clicked)
-        btn_ffw =  QPushButton(' >> ')
-        btn_ffw.clicked.connect(self.btn_ffw_clicked)
-        btn_last = QPushButton('  >I ')
-        btn_last.clicked.connect(self.btn_last_clicked)
+        top_box.addWidget(img_select_but)
+        top_box.addWidget(img_pal_but)
 
-        top_box.addStretch()
-
-        top_box.addWidget(QLabel("I min"))
-        top_box.addWidget(self.min_edit)
-        top_box.addWidget(QLabel("I max"))
-        top_box.addWidget(self.max_edit)
-        top_box.addWidget(palette_select)
-
-        top_box.addWidget(btn_first)
-        top_box.addWidget(btn_rev)
-        top_box.addWidget(btn_prev)
-        top_box.addWidget(self.img_select)
-        top_box.addWidget(btn_next)
-        top_box.addWidget(btn_ffw)
-        top_box.addWidget(btn_last)
 
         my_box.addLayout(top_box)
-
-
 
         my_box.addWidget(self.my_scrollable)
 

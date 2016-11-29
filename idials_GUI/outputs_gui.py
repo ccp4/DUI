@@ -287,6 +287,10 @@ class InfoWidget( QWidget):
         my_main_box.addWidget(beam_group)
         my_main_box.addWidget(u_mat_group)
         #my_main_box.addWidget(b_mat_group)
+        my_main_box
+
+        my_main_box.addStretch()
+
 
         #uncomment the next line only for debugging purpose
         #self.update_data()
