@@ -1,5 +1,6 @@
 from PyQt4 import QtGui, QtCore
 import sys
+#FIXME this does NOT work with PySide
 
 class PopMenu(QtGui.QMenu):
     def __init__(self, parent=None):
