@@ -97,6 +97,7 @@ class IdialsOuterWidget( QWidget):
     def __init__(self, parent = None):
         super(IdialsOuterWidget, self).__init__(parent)
 
+        self.vertical_main_splitter = False
         my_inner_widget = IdialsInnerrWidget(self)
         my_inner_widget.rtime_txt_on = True
         self.running = False
@@ -189,13 +190,18 @@ class IdialsInnerrWidget( QWidget):
         self.controller = Controller(".")
         self.next_cmd = "import"
 
-        big_vbox =  QVBoxLayout()
+        if( self.super_parent.vertical_main_splitter == False ):
+            big_box =  QVBoxLayout()
+        else:
+            big_box =  QHBoxLayout()
 
         self.tree_nav = TreeNavWidget(self)
-        big_vbox.addWidget(self.tree_nav)
+        big_box.addWidget(self.tree_nav)
 
-        self.info_widget = InfoWidget()
-        big_vbox.addWidget(self.info_widget)
+        self.info_widget = InfoWidget(self)
+        big_box.addWidget(self.info_widget)
+
+
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
@@ -203,7 +209,7 @@ class IdialsInnerrWidget( QWidget):
         self.thrd.started.connect(self.started_thread)
         self.thrd.finished.connect(self.finished_thread)
 
-        self.setLayout(big_vbox)
+        self.setLayout(big_box)
         self.show()
 
     def _set_current_mode(self):
