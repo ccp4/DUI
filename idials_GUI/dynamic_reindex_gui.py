@@ -135,6 +135,7 @@ class MyReindexOpts(QWidget):
         my_outher_h_layout = QHBoxLayout()
         my_outher_h_layout.addLayout(self.inner_v_layout)
         my_outher_h_layout.addStretch()
+
         self.setLayout(my_outher_h_layout)
         self.lst_ops = []
 
@@ -143,6 +144,7 @@ class MyReindexOpts(QWidget):
         print "del_opts_lst"
         lng_lst = len(self.lst_ops)
         print "lng_lst =", lng_lst
+
         for btn_lst in self.lst_ops:
             self.scrollLayout.layout().removeWidget(btn_lst)
             btn_lst.setParent(None)
@@ -165,6 +167,10 @@ class MyReindexOpts(QWidget):
             self.scrollLayout.addWidget(new_op)
             new_op.clicked.connect(self.opt_clicked)
             self.lst_ops.append(new_op)
+
+        #TODO test stability of next line
+        #self.scrollLayout.addStretch()
+
 
         self.all_gray()
 
