@@ -32,6 +32,11 @@ class InnerWidg(QtGui.QWidget):
         self.setLayout(vbox)
         self.show()
 
+        font = QtGui.QFont()
+        print "font.defaultFamily() =", font.defaultFamily()
+        print "font.pointSize() =", font.pointSize()
+
+
 class MainWidget(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(MainWidget, self).__init__(parent)

@@ -211,16 +211,18 @@ class MyImgWin(QWidget):
         self.my_painter = ImgPainter(self)
         self.my_scrollable.setWidget(self.my_painter)
 
+        max_min_validator = QIntValidator(-5, 9995, self)
+
         self.i_min = -3
         self.min_edit = QLineEdit()
-        max_min_validator = QIntValidator(-5, 9995, self)
+        self.min_edit.setFixedWidth(60)
         self.min_edit.setValidator(max_min_validator)
         self.min_edit.setText(str(self.i_min))
         self.min_edit.editingFinished.connect(self.min_changed_by_user)
 
-
         self.i_max = 100
         self.max_edit = QLineEdit()
+        self.max_edit.setFixedWidth(60)
         self.max_edit.setValidator(max_min_validator)
         self.max_edit.setText(str(self.i_max))
         self.max_edit.editingFinished.connect(self.max_changed_by_user)

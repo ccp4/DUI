@@ -20,6 +20,7 @@ class Example(QtGui.QMainWindow):
         self.setWindowTitle('Menubar')
         self.show()
 
+
     def openFile(self):
         print "openFile"
 
