@@ -144,11 +144,13 @@ class PhilWidget( QWidget):
 
     def phil_list2gui(self, lst_phil_obj):
 
+        sys_font = QFont()
+        sys_font_point_size =  sys_font.pointSize()
+        print "sys_font_point_size =", sys_font_point_size
+
         #lst_widg = self.lst_phil_obj
         self.lst_widg = []
-
         something_else = False
-
         self.lst_wgs = []
 
         for nm, obj in enumerate(lst_phil_obj):
@@ -157,7 +159,7 @@ class PhilWidget( QWidget):
                 tmp_widg = QLabel(" " * int(obj.indent * 4) + str(obj.name))
                 tmp_widg.setAutoFillBackground(True)
                 tmp_widg.setPalette(self.plt_scp)
-                tmp_widg.setFont(QFont("Monospace", 10, QFont.Bold))
+                tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
                 self.bg_box.addWidget(tmp_widg)
                 tmp_widg.palette_orig = self.plt_scp
 
@@ -178,7 +180,7 @@ class PhilWidget( QWidget):
                     tmp_label  = QLabel(" " * indent * 4 + str(obj.name))
                     tmp_label.setAutoFillBackground(True)
                     tmp_label.setPalette(self.plt_obj)
-                    tmp_label.setFont(QFont("Monospace", 10))
+                    tmp_label.setFont(QFont("Monospace", sys_font_point_size))
 
                     tmp_h_box.addWidget(tmp_label)
                     tmp_label.palette_orig = self.plt_obj
@@ -269,7 +271,7 @@ class PhilWidget( QWidget):
                                               + "[" + str(indx + 1) + "]")
 
                             new_labl.setPalette(self.plt_obj)
-                            new_labl.setFont(QFont("Monospace", 10))
+                            new_labl.setFont(QFont("Monospace", sys_font_point_size))
                             tmp_label_lst.append(new_labl)
 
 
