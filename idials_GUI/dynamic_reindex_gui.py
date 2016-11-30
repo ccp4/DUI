@@ -127,11 +127,15 @@ class MyReindexOpts(QWidget):
         #self.my_label.setText("need to run: refine_bravais_settings")
         self.my_label.setFont(self.my_font)
 
-        self.my_Layout =  QVBoxLayout()
-        self.my_Layout.addWidget(self.my_label)
-        self.my_Layout.addWidget(self.scrollArea)
-        #self.my_Layout.addWidget(self.scrollWidget)
-        self.setLayout(self.my_Layout)
+        self.inner_v_layout =  QVBoxLayout()
+        self.inner_v_layout.addWidget(self.my_label)
+        self.inner_v_layout.addWidget(self.scrollArea)
+        #self.inner_v_layout.addWidget(self.scrollWidget)
+
+        my_outher_h_layout = QHBoxLayout()
+        my_outher_h_layout.addLayout(self.inner_v_layout)
+        my_outher_h_layout.addStretch()
+        self.setLayout(my_outher_h_layout)
         self.lst_ops = []
 
     def del_opts_lst(self):
