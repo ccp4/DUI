@@ -177,7 +177,7 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        self.vertical_main_splitter = True
+        self.vertical_main_splitter = False
 
         if( self.vertical_main_splitter ):
             self.reindex_tool = MyReindexOpts(self)
@@ -254,6 +254,16 @@ class MainWidget(QMainWindow):
         self.resize(1200, 900)
         self.setCentralWidget(main_widget)
         self.show()
+
+        #starting where it left before
+        ini_index = self.idials_widget.controller.get_current().index
+        print "self.idials_widget.controller.get_current().index =", ini_index
+
+        if( ini_index == 0 ):
+            print "some default begin"
+        else:
+            self.idials_widget.goto(ini_index)
+
 
     def openFile(self):
         print "openFile"
