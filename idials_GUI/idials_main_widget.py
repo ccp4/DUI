@@ -310,15 +310,13 @@ class MainWidget(QMainWindow):
 
     def pop_reindex_gui(self):
         print "\n ________________________ <<< Time to show the table \n"
-
+        sumr_path = self.idials_widget.controller.get_summary()
         if( self.vertical_main_splitter ):
-            sumr_path = self.idials_widget.controller.get_summary()
             self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
 
         else:
             self.output_wg.set_reindex_tab()
-            sumr_path = self.idials_widget.controller.get_summary()
             self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
 
