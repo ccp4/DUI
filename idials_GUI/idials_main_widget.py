@@ -144,6 +144,11 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
 
+        # This flag will define the layout orientation of the left left side
+        # area of the GUI and therefore needs to be taking into account when
+        # the rest of the GUI gets build
+        self.vertical_main_splitter = True
+
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
         buttons_widget.setStyleSheet("background-color: lightgray")
@@ -177,10 +182,6 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        # This flag will define the layout orientation of the left left side
-        # area of the GUI and therefore needs to be taking into account when
-        # the rest of the GUI gets build
-        self.vertical_main_splitter = True
 
         if( self.vertical_main_splitter ):
             self.reindex_tool = MyReindexOpts(self)

@@ -229,7 +229,7 @@ class ImportPage(QWidget):
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
-
+        self.super_parent = parent.super_parent
         self.param_widget_parent = parent.param_widget_parent
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()

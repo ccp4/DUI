@@ -93,6 +93,9 @@ class PhilWidget( QWidget):
         super(PhilWidget, self).__init__(parent)
         self.param_widget_parent = parent.param_widget_parent
 
+        self.super_parent = parent.super_parent
+        #self.super_parent = self.param_widget_parent.super_parent
+
         self.win_pal = QPalette()
         self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
         #self.win_pal.setColor(QPalette.Background, Qt.white)
@@ -148,6 +151,11 @@ class PhilWidget( QWidget):
         sys_font_point_size =  sys_font.pointSize()
         print "sys_font_point_size =", sys_font_point_size
 
+        if( self.super_parent.vertical_main_splitter ):
+            inde_step = 7
+        else:
+            inde_step = 2
+
         #lst_widg = self.lst_phil_obj
         self.lst_widg = []
         something_else = False
@@ -156,7 +164,7 @@ class PhilWidget( QWidget):
         for nm, obj in enumerate(lst_phil_obj):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
-                tmp_widg = QLabel(" " * int(obj.indent * 4) + str(obj.name))
+                tmp_widg = QLabel(" " * int(obj.indent * inde_step) + str(obj.name))
                 tmp_widg.setAutoFillBackground(True)
                 tmp_widg.setPalette(self.plt_scp)
                 tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
@@ -177,7 +185,7 @@ class PhilWidget( QWidget):
                     tmp_h_box = QHBoxLayout()
 
                     indent = str(obj.full_path()).count('.')
-                    tmp_label  = QLabel(" " * indent * 4 + str(obj.name))
+                    tmp_label  = QLabel(" " * indent * inde_step + str(obj.name))
                     tmp_label.setAutoFillBackground(True)
                     tmp_label.setPalette(self.plt_obj)
                     tmp_label.setFont(QFont("Monospace", sys_font_point_size))
@@ -267,7 +275,7 @@ class PhilWidget( QWidget):
 
                         for indx in range(obj.type.size_max):
 
-                            new_labl = QLabel(" " * indent * 4 + str(obj.name)
+                            new_labl = QLabel(" " * indent * inde_step + str(obj.name)
                                               + "[" + str(indx + 1) + "]")
 
                             new_labl.setPalette(self.plt_obj)
