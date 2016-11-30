@@ -177,7 +177,10 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(new_btn.par_wig)
             self.btn_lst.append(new_btn)
 
-        self.vertical_main_splitter = False
+        # This flag will define the layout orientation of the left left side
+        # area of the GUI and therefore needs to be taking into account when
+        # the rest of the GUI gets build
+        self.vertical_main_splitter = True
 
         if( self.vertical_main_splitter ):
             self.reindex_tool = MyReindexOpts(self)
@@ -194,9 +197,6 @@ class MainWidget(QMainWindow):
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
-        # This flag will define the layout orientation of the left left side
-        # area of the GUI and therefore needs to be taking into account when
-        # the rest of the GUI gets build
 
 
         self.btn_go =  QPushButton('Run', self)

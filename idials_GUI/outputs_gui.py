@@ -279,16 +279,22 @@ class InfoWidget( QWidget):
         '''
 
         if( self.super_parent.vertical_main_splitter == False ):
-            my_main_box = QVBoxLayout()
+            inner_main_box = QVBoxLayout()
         else:
+            inner_main_box = QHBoxLayout()
+
+        inner_main_box.addWidget(cell_group)
+        inner_main_box.addWidget(beam_group)
+        inner_main_box.addWidget(u_mat_group)
+        #inner_main_box.addWidget(b_mat_group)
+
+
+        if( self.super_parent.vertical_main_splitter == False ):
             my_main_box = QHBoxLayout()
+        else:
+            my_main_box = QVBoxLayout()
 
-        my_main_box.addWidget(cell_group)
-        my_main_box.addWidget(beam_group)
-        my_main_box.addWidget(u_mat_group)
-        #my_main_box.addWidget(b_mat_group)
-        my_main_box
-
+        my_main_box.addLayout(inner_main_box)
         my_main_box.addStretch()
 
 
