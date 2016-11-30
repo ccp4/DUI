@@ -119,11 +119,11 @@ class MyReindexOpts(QWidget):
         self.my_font = QFont("Monospace")
         #self.my_font.setWeight(75)
         #self.my_font.setBold(True)
-        self.my_label = QLabel()
 
         self.label_str = "     Solution   Metric fit   rmsd   min/max   cc                lattice (a b c)  lattice (angles)  "
+        self.my_label = QLabel(self.label_str)
 
-        self.my_label.setText("need to run: refine_bravais_settings")
+        #self.my_label.setText("need to run: refine_bravais_settings")
         self.my_label.setFont(self.my_font)
 
         self.my_Layout =  QVBoxLayout()

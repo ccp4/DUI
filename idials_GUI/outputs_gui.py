@@ -428,14 +428,20 @@ class outputs_widget( QWidget):
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
 
-        #TODO make sure consistent the way to use the "super_parent" reference in the next line
-        self.reindex_tool = MyReindexOpts(parent)
 
         self.my_tabs.addTab(self.img_view, "Image View")
 
         self.my_tabs.addTab(self.in_txt_out, "Log View")
         self.my_tabs.addTab(self.web_view, "Report View")
-        self.my_tabs.addTab(self.reindex_tool, "Re-index table")
+
+
+        if( self.super_parent.vertical_main_splitter == False ):
+            #TODO make sure consistent the way to use the "super_parent" reference in the next line
+            self.reindex_tool = MyReindexOpts(parent)
+            self.my_tabs.addTab(self.reindex_tool, "Re-index table")
+
+
+
 
         my_box.addWidget(self.my_tabs)
 

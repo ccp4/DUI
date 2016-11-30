@@ -367,8 +367,9 @@ class MainWidget(QMainWindow):
 
             elif( curr_command == "reindex" ):
                 print "Time to shrink back reindex GUI"
-                self.output_wg.set_pref_tab()
-                #self.current_widget.del_opts_lst()
+                if( self.vertical_main_splitter == False ):
+                    self.output_wg.set_pref_tab()
+                    #self.current_widget.del_opts_lst()
 
             elif( curr_command == "integrate" ):
                 self.idials_widget.change_mode("export")
@@ -443,7 +444,7 @@ class MainWidget(QMainWindow):
 
             if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
-            else:
+            elif( self.vertical_main_splitter == False ):
                 self.output_wg.set_pref_tab()
 
             self._gray_unwanted()
