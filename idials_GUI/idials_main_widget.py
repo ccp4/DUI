@@ -262,6 +262,8 @@ class MainWidget(QMainWindow):
 
         if( ini_index == 0 ):
             print "some default begin"
+            self._gray_unwanted()
+
         else:
             self.idials_widget.goto(ini_index)
 
@@ -278,6 +280,8 @@ class MainWidget(QMainWindow):
 
         if( curr_command == "index" or curr_command =="reindex" or curr_command == "integrate" ):
             cmd_next = "refine"
+        elif( curr_command == "clean" ):
+            cmd_next = "import"
 
         else:
             cmd_next = None

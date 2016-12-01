@@ -142,14 +142,14 @@ class ImportPage(QWidget):
         super(ImportPage, self).__init__(parent = None)
         #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
-        import_path_group =  QGroupBox("Experiment IMG Directory")
-        import_path_layout =  QVBoxLayout()
+        #import_path_group =  QGroupBox("Experiment IMG Directory")
+        #import_path_layout =  QVBoxLayout()
 
-        import_path_button =  QPushButton(" \n    Find Images      . \n")
-        import_path_button.clicked.connect(self.find_my_img_dir)
-        import_path_group.setLayout(import_path_layout)
+        #import_path_button =  QPushButton(" \n    Find Images      . \n")
+        #import_path_button.clicked.connect(self.find_my_img_dir)
+        #import_path_group.setLayout(import_path_layout)
 
-        import_path_layout.addWidget(import_path_button)
+        #import_path_layout.addWidget(import_path_button)
 
         template_grp =  QGroupBox("Template ")
         template_vbox =  QHBoxLayout()
@@ -159,7 +159,7 @@ class ImportPage(QWidget):
         template_grp.setLayout(template_vbox)
 
         mainLayout =  QVBoxLayout()
-        mainLayout.addWidget(import_path_group)
+        #mainLayout.addWidget(import_path_group)
         mainLayout.addWidget(template_grp)
 
         big_layout =  QHBoxLayout()
