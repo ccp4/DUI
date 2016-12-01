@@ -263,7 +263,7 @@ class MainWidget(QMainWindow):
         if( ini_index == 0 ):
             print "some default begin"
             self._gray_unwanted()
-
+            self.idials_widget.update_info()
         else:
             self.idials_widget.goto(ini_index)
 
