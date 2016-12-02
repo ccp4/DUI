@@ -230,14 +230,13 @@ class MainWidget(QMainWindow):
         self.output_wg = outputs_widget(self)
         self.txt_out = self.output_wg.in_txt_out
 
-        left_side_widget = QSplitter()
-        left_side_widget.setOrientation(Qt.Vertical)
+        control_p_info_splitt = QSplitter()
+        control_p_info_splitt.setOrientation(Qt.Vertical)
         self.info_widget = InfoWidget(self)
-        left_side_widget.addWidget(v_control_splitter)
-        left_side_widget.addWidget(self.info_widget)
+        control_p_info_splitt.addWidget(v_control_splitter)
+        control_p_info_splitt.addWidget(self.info_widget)
 
-
-        h_main_splitter.addWidget(left_side_widget)
+        h_main_splitter.addWidget(control_p_info_splitt)
         h_main_splitter.addWidget(self.output_wg)
 
 
