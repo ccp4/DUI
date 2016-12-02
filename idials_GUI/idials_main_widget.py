@@ -31,6 +31,9 @@ from outputs_gui import outputs_widget
 from dynamic_reindex_gui import LeftSideTmpWidget
 from dynamic_reindex_gui import MyReindexOpts
 
+from outputs_gui import InfoWidget
+
+
 class OverlayPaintWidg(QWidget):
     def __init__(self, parent = None):
         super(OverlayPaintWidg, self).__init__(parent)
@@ -147,7 +150,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.embedded_reindex = False
+        self.embedded_reindex = True
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -226,7 +229,15 @@ class MainWidget(QMainWindow):
         h_main_splitter.setOrientation(Qt.Horizontal)
         self.output_wg = outputs_widget(self)
         self.txt_out = self.output_wg.in_txt_out
-        h_main_splitter.addWidget(v_control_splitter)
+
+        left_side_widget = QSplitter()
+        left_side_widget.setOrientation(Qt.Vertical)
+        self.info_widget = InfoWidget(self)
+        left_side_widget.addWidget(v_control_splitter)
+        left_side_widget.addWidget(self.info_widget)
+
+
+        h_main_splitter.addWidget(left_side_widget)
         h_main_splitter.addWidget(self.output_wg)
 
 
@@ -237,6 +248,7 @@ class MainWidget(QMainWindow):
         main_box.setSpacing(0)
 
         main_box.addWidget(h_main_splitter)
+
 
         self.bottom_bar_n_info = Text_w_Bar()
         main_box.addWidget(self.bottom_bar_n_info)
@@ -263,9 +275,10 @@ class MainWidget(QMainWindow):
         if( ini_index == 0 ):
             print "some default begin"
             self._gray_unwanted()
-            self.idials_widget.update_info()
+            #self.idials_widget.update_info()
         else:
             self.idials_widget.goto(ini_index)
+
 
 
     def openFile(self):
@@ -385,7 +398,7 @@ class MainWidget(QMainWindow):
 
             self._gray_unwanted()
 
-            self.idials_widget.update_info()
+            #self.idials_widget.update_info()
 
 
         else:

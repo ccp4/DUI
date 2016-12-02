@@ -25,8 +25,8 @@ from dials.util.idials import Controller
 import sys
 from Queue import Queue
 from python_qt_bind import *
-from outputs_gui import InfoWidget, TextOut
-
+#from outputs_gui import InfoWidget
+from outputs_gui import TextOut
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
@@ -198,10 +198,8 @@ class IdialsInnerrWidget( QWidget):
         self.tree_nav = TreeNavWidget(self)
         big_box.addWidget(self.tree_nav)
 
-        self.info_widget = InfoWidget(self)
-        big_box.addWidget(self.info_widget)
-
-
+        #self.info_widget = InfoWidget(self)
+        #big_box.addWidget(self.info_widget)
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
@@ -230,7 +228,7 @@ class IdialsInnerrWidget( QWidget):
             html_rep = None
 
         self.super_parent.jump(self.next_cmd, html_rep)
-        self.update_info()
+        #self.update_info()
         # this is NOT the only place where self.update_info gets called
 
     def update_info(self):

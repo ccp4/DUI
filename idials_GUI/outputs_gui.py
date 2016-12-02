@@ -133,7 +133,7 @@ class InfoWidget( QWidget):
     def __init__(self, parent = None):
         super(InfoWidget, self).__init__()
 
-        self.super_parent = parent.super_parent
+        #self.super_parent = parent.super_parent
         cell_group =  QGroupBox(" Crystal Cell ")
 
         empty_str = "__________"
