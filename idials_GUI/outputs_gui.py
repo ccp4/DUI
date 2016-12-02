@@ -26,6 +26,7 @@ from python_qt_bind import *
 from img_viewer.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
 from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+from dials.array_family import flex
 
 class CrystalData(object):
     def __init__(self):
@@ -64,6 +65,39 @@ class InstrumentData(object):
         self.yb = None
         self.dd = None
 
+
+        self.w_lambda =None
+
+class ReflectionsData(object):
+    def __init__(self):
+        self.n_strng = None
+        self.n_index = None
+        self.n_refnd = None
+        self.n_integ_sum = None
+        self.n_integ_prf = None
+
+def update_reflections(reflections_path):
+
+    dat = ReflectionsData()
+
+    try:
+        refl_tabl = flex.reflection_table.from_pickle(reflections_path)
+        dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
+        print "dat.n_strng =", dat.n_strng
+        dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
+        print "dat.n_index =", dat.n_index
+        dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(True)
+        print "dat.n_refnd =", dat.n_refnd
+        dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(True)
+        print "dat.n_integ_sum =", dat.n_integ_sum
+        dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(True)
+        print "dat.n_integ_prf =", dat.n_integ_prf
+
+    except:
+        print "failed"
+
+    return dat
+
 def update_crystal(experiments_path):
 
     dat = CrystalData()
@@ -89,6 +123,8 @@ def update_crystal(experiments_path):
 def update_instrument(experiments_path):
 
     dat = InstrumentData()
+    print "\n\n Hi \n\n"
+    '''
 
     try:
         experiments = ExperimentListFactory.from_json_file(
@@ -98,8 +134,12 @@ def update_instrument(experiments_path):
 
         exp = experiments[0]
         u_mat = exp.crystal.get_U()
+
+        dat.w_lambda = exp.beam.get_wavelength()
+
         dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
 
+        #TODO find the right way to find Distance
         for expt in experiments:
             for panel in expt.detector:
                 print 'Origin:', panel.get_origin()
@@ -110,10 +150,45 @@ def update_instrument(experiments_path):
                 dat.xb, dat.yb = panel.get_beam_centre(expt.beam.get_s0())
             except:
                 print"RuntimeError, e:"
+    '''
+    experiments = ExperimentListFactory.from_json_file(
+                  experiments_path, check_format=False)
+
+    print "len(experiments)", len(experiments)
+
+    exp = experiments[0]
+
+    # assume details for the panel the beam intersects are the same for the whole detector
+    pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
+    pnl = exp.detector[pnl_beam_intersects]
+    dist = pnl.get_distance()
+    npanels = len(exp.detector)
+    px_size = pnl.get_pixel_size()
+    gain = pnl.get_gain()
+    max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
+
+    print "pnl_beam_intersects             ", pnl_beam_intersects
+    print "dist                            ", dist
+    print "npanels                         ", npanels
+    print "px_size                         ", px_size
+    print "gain                            ", gain
+    print "max_res                         ", max_res
 
 
+    # todo get scan data
+    print exp.scan.get_image_range()
+    print exp.scan.get_oscillation()
+    # is this next line right? check what dials.show does
+    print max(exp.scan.get_exposure_times())
+    #print set(exp.scan.get_exposure_times())
+
+
+
+
+    '''
     except:
         print "Unable to find instrument"
+    '''
 
     return dat
 
@@ -180,12 +255,12 @@ class InfoWidget( QWidget):
 
         cell_group.setLayout(cell_v_layout)
 
-        beam_group =  QGroupBox(" Bean / Source  (mm)")
+        beam_group =  QGroupBox(" Beam ")
 
         bm_v_layout = QVBoxLayout()
 
-        xb_label = QLabel("  X Beam ")
-        yb_label = QLabel("  Y Beam ")
+        xb_label = QLabel("  X (mm) ")
+        yb_label = QLabel("  Y (mm) ")
 
         bm_label_a_layout = QHBoxLayout()
         bm_label_a_layout.addWidget(xb_label)
@@ -200,12 +275,25 @@ class InfoWidget( QWidget):
         bm_data_layout.addWidget(self.yb_data)
         bm_v_layout.addLayout(bm_data_layout)
 
+        '''
         bm_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel("  Detector Distance ")
         bm_v_layout.addWidget(d_dist_label)
         self.d_dist_data = QLabel(empty_str)
         bm_v_layout.addWidget(self.d_dist_data)
         bm_v_layout.addWidget(QLabel("  "))
+        '''
+
+        bm_v_layout.addWidget(QLabel("  "))
+        w_lambda_label = QLabel("  Wavelength ang...")
+        bm_v_layout.addWidget(w_lambda_label)
+        self.w_lambda_data = QLabel(empty_str)
+        bm_v_layout.addWidget(self.w_lambda_data)
+        bm_v_layout.addWidget(QLabel("  "))
+
+
+
+        #TODO find the angstrom symbol
 
         beam_group.setLayout(bm_v_layout)
 
@@ -279,8 +367,8 @@ class InfoWidget( QWidget):
 
         inner_main_box = QHBoxLayout()
 
-        inner_main_box.addWidget(cell_group)
         inner_main_box.addWidget(beam_group)
+        inner_main_box.addWidget(cell_group)
         inner_main_box.addWidget(u_mat_group)
         #inner_main_box.addWidget(b_mat_group)
 
@@ -296,8 +384,13 @@ class InfoWidget( QWidget):
         self.setLayout(my_main_box)
         self.show()
 
-    def update_data(self, exp_json_path = None):
+    def update_data(self, exp_json_path = None, refl_pikl_path = None):
+
+        print "\nrefl_pikl_path =", refl_pikl_path,"\n"
+
         self.crys_data = update_crystal(exp_json_path)
+
+        self.reflection_data = update_reflections(refl_pikl_path)
 
         self.expm_data = update_instrument(exp_json_path)
 
@@ -335,7 +428,7 @@ class InfoWidget( QWidget):
 
         update_data_label(self.xb_data, self.expm_data.xb)
         update_data_label(self.yb_data, self.expm_data.yb)
-        update_data_label(self.d_dist_data, self.expm_data.dd)
+        update_data_label(self.w_lambda_data, self.expm_data.w_lambda)
 
 
 

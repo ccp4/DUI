@@ -228,8 +228,14 @@ class IdialsInnerrWidget( QWidget):
             html_rep = None
 
         self.super_parent.jump(self.next_cmd, html_rep)
-        #self.update_info()
+        self.update_info()
         # this is NOT the only place where self.update_info gets called
+
+        from_david_trick = '''
+        from dials.util.command_line import interactive_console; interactive_console(); 1/0
+        '''
+
+
 
     def update_info(self):
 
@@ -241,7 +247,12 @@ class IdialsInnerrWidget( QWidget):
         except:
             print "failed to find << exp_json_path >>"
 
-        self.info_widget.update_data(exp_json_path = exp_json_path)
+        try:
+            refl_pikl_path = self.controller.get_current().reflections
+        except:
+            print "failed to find <<< refl_pikl_path >>>"
+
+        self.super_parent.info_widget.update_data(exp_json_path = exp_json_path, refl_pikl_path = refl_pikl_path)
 
     def prv_clicked(self):
         print "prv_clicked(self)"

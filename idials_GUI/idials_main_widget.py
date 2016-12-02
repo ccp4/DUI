@@ -150,7 +150,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.embedded_reindex = True
+        self.embedded_reindex = False
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -274,7 +274,11 @@ class MainWidget(QMainWindow):
         if( ini_index == 0 ):
             print "some default begin"
             self._gray_unwanted()
-            #self.idials_widget.update_info()
+
+            #TODO Think a bit if you are going a bit
+            #back and forward with the next line
+            self.idials_widget.update_info()
+
         else:
             self.idials_widget.goto(ini_index)
 
@@ -394,10 +398,11 @@ class MainWidget(QMainWindow):
             elif(curr_command != "export"):
                 print "Time to update html << report >>"
 
-
             self._gray_unwanted()
 
-            #self.idials_widget.update_info()
+            #TODO Think a bit if you are going a bit
+            #back and forward with the next line
+            self.idials_widget.update_info()
 
 
         else:
