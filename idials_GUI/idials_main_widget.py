@@ -147,7 +147,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.vertical_main_splitter = True
+        self.embedded_reindex = True
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -183,7 +183,7 @@ class MainWidget(QMainWindow):
             self.btn_lst.append(new_btn)
 
 
-        if( self.vertical_main_splitter ):
+        if( self.embedded_reindex ):
             self.reindex_tool = MyReindexOpts(self)
             self.step_param_widg.addWidget(self.reindex_tool)
 
@@ -212,7 +212,7 @@ class MainWidget(QMainWindow):
         centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
 
         v_control_splitter = QSplitter()
-        if( self.vertical_main_splitter ):
+        if( self.embedded_reindex ):
             v_control_splitter.setOrientation(Qt.Vertical)
             v_control_splitter.addWidget(centre_widget)
             v_control_splitter.addWidget(self.idials_widget)
@@ -326,7 +326,7 @@ class MainWidget(QMainWindow):
     def pop_reindex_gui(self):
         print "\n ________________________ <<< Time to show the table \n"
         sumr_path = self.idials_widget.controller.get_summary()
-        if( self.vertical_main_splitter ):
+        if( self.embedded_reindex ):
             self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
 
@@ -371,7 +371,7 @@ class MainWidget(QMainWindow):
 
             elif( curr_command == "reindex" ):
                 print "Time to shrink back reindex GUI"
-                if( self.vertical_main_splitter == False ):
+                if( self.embedded_reindex == False ):
                     self.output_wg.set_pref_tab()
                     #self.current_widget.del_opts_lst()
 
@@ -448,7 +448,7 @@ class MainWidget(QMainWindow):
 
             if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
-            elif( self.vertical_main_splitter == False ):
+            elif( self.embedded_reindex == False ):
                 self.output_wg.set_pref_tab()
 
             self._gray_unwanted()
@@ -461,7 +461,7 @@ class MainWidget(QMainWindow):
             print "\n change_parameter =", str_par, "\n"
             self.idials_widget.change_parameter(str_par)
 
-            if( not(self.vertical_main_splitter) ):
+            if( not(self.embedded_reindex) ):
                 self.tmp_reindex_widg.update_opt()
 
 

@@ -278,7 +278,7 @@ class InfoWidget( QWidget):
         b_mat_group.setLayout(b_v_layout)
         '''
 
-        if( self.super_parent.vertical_main_splitter == False ):
+        if( self.super_parent.embedded_reindex == False ):
             inner_main_box = QVBoxLayout()
         else:
             inner_main_box = QHBoxLayout()
@@ -289,7 +289,7 @@ class InfoWidget( QWidget):
         #inner_main_box.addWidget(b_mat_group)
 
 
-        if( self.super_parent.vertical_main_splitter == False ):
+        if( self.super_parent.embedded_reindex == False ):
             my_main_box = QHBoxLayout()
         else:
             my_main_box = QVBoxLayout()
@@ -435,7 +435,7 @@ class outputs_widget( QWidget):
         self.my_tabs.addTab(self.web_view, "Report View")
 
 
-        if( self.super_parent.vertical_main_splitter == False ):
+        if( self.super_parent.embedded_reindex == False ):
             #TODO make sure consistent the way to use the "super_parent" reference in the next line
             self.reindex_tool = MyReindexOpts(parent)
             self.my_tabs.addTab(self.reindex_tool, "Re-index table")

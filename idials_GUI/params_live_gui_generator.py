@@ -151,7 +151,7 @@ class PhilWidget( QWidget):
         sys_font_point_size =  sys_font.pointSize()
         print "sys_font_point_size =", sys_font_point_size
 
-        if( self.super_parent.vertical_main_splitter ):
+        if( self.super_parent.embedded_reindex ):
             inde_step = 7
         else:
             inde_step = 2

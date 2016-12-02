@@ -97,7 +97,7 @@ class IdialsOuterWidget( QWidget):
     def __init__(self, parent = None):
         super(IdialsOuterWidget, self).__init__(parent)
 
-        self.vertical_main_splitter = False
+        self.embedded_reindex = False
         my_inner_widget = IdialsInnerrWidget(self)
         my_inner_widget.rtime_txt_on = True
         self.running = False
@@ -190,10 +190,10 @@ class IdialsInnerrWidget( QWidget):
         self.controller = Controller(".")
         self.next_cmd = "import"
 
-        if( self.super_parent.vertical_main_splitter == False ):
-            big_box =  QVBoxLayout()
-        else:
+        if( self.super_parent.embedded_reindex):
             big_box =  QHBoxLayout()
+        else:
+            big_box =  QVBoxLayout()
 
         self.tree_nav = TreeNavWidget(self)
         big_box.addWidget(self.tree_nav)
