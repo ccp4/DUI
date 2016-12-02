@@ -244,7 +244,6 @@ class InfoWidget( QWidget):
         u_v_layout.addWidget(QLabel("  "))
         u_mat_group.setLayout(u_v_layout)
 
-
         '''
         b_mat_group =  QGroupBox("  B matrix    ")
         b1n_data_layout = QHBoxLayout()
@@ -278,10 +277,7 @@ class InfoWidget( QWidget):
         b_mat_group.setLayout(b_v_layout)
         '''
 
-        if( self.super_parent.embedded_reindex == False ):
-            inner_main_box = QVBoxLayout()
-        else:
-            inner_main_box = QHBoxLayout()
+        inner_main_box = QHBoxLayout()
 
         inner_main_box.addWidget(cell_group)
         inner_main_box.addWidget(beam_group)
@@ -289,11 +285,7 @@ class InfoWidget( QWidget):
         #inner_main_box.addWidget(b_mat_group)
 
 
-        if( self.super_parent.embedded_reindex == False ):
-            my_main_box = QHBoxLayout()
-        else:
-            my_main_box = QVBoxLayout()
-
+        my_main_box = QVBoxLayout()
         my_main_box.addLayout(inner_main_box)
         my_main_box.addStretch()
 
