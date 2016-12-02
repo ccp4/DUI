@@ -158,6 +158,10 @@ def update_instrument(experiments_path):
 
     exp = experiments[0]
 
+    dat.w_lambda = exp.beam.get_wavelength()
+    u_mat = exp.crystal.get_U()
+    dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+
     # assume details for the panel the beam intersects are the same for the whole detector
     pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
     pnl = exp.detector[pnl_beam_intersects]
@@ -167,12 +171,17 @@ def update_instrument(experiments_path):
     gain = pnl.get_gain()
     max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
 
+    print dir(pnl)
+
     print "pnl_beam_intersects             ", pnl_beam_intersects
     print "dist                            ", dist
     print "npanels                         ", npanels
     print "px_size                         ", px_size
     print "gain                            ", gain
     print "max_res                         ", max_res
+
+    dat.dd = dist
+    #dat.xb, dat.yb =
 
 
     # todo get scan data
