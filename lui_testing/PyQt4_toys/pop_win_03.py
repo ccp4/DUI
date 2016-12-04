@@ -25,14 +25,16 @@ class MainWindow(QMainWindow):
         self.btn1 = QPushButton("Click me", self.cw)
         self.btn1.setGeometry(QRect(0, 0, 100, 30))
         self.connect(self.btn1, SIGNAL("clicked()"), self.doit)
-        self.w = None
+        self.my_pop = None
 
     def doit(self):
         print "Opening a new popup window"
-        self.w = MyPopup()
+        self.my_pop = MyPopup()
 
     def closeEvent(self, event):
         print "<< closeEvent ( from QMainWindow) >>"
+        if( self.my_pop != None ):
+            self.my_pop.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
