@@ -13,8 +13,12 @@ class MyDialog(QDialog):
     def __init__(self, parent = None):
         super(MyDialog, self).__init__(parent)
         labl1 = QLabel("\n\n Hi QDialog \n\n")
-        self.show()
 
+        vbox = QVBoxLayout()
+        vbox.addWidget(labl1)
+        self.setLayout(vbox)
+
+        self.show()
 
 class MainWindow(QMainWindow):
     def __init__(self, parent = None):
