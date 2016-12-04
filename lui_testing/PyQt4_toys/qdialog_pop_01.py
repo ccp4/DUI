@@ -17,7 +17,7 @@ class MyDialog(QDialog):
         vbox = QVBoxLayout()
         vbox.addWidget(labl1)
         self.setLayout(vbox)
-
+        self.setModal(true)
         self.show()
 
 class MainWindow(QMainWindow):
