@@ -1,17 +1,12 @@
 import sys
-#from PyQt4.Qt import *
-
 from PySide.QtCore import *
 from PySide.QtGui import *
 
-example = '''
-class MyDialog(QDialog):
-    def __init__(self, parent = None):
-        super(MyDialog, self).__init__(parent)
-'''
 class MyPopup(QWidget):
     def __init__(self, parent = None):
         super(MyPopup, self).__init__(parent)
+        self.setGeometry(QRect(100, 100, 400, 200))
+        self.show()
 
     def paintEvent(self, e):
         dc = QPainter(self)
@@ -35,8 +30,6 @@ class MainWindow(QMainWindow):
     def doit(self):
         print "Opening a new popup window"
         self.w = MyPopup()
-        self.w.setGeometry(QRect(100, 100, 400, 200))
-        self.w.show()
 
     def closeEvent(self, event):
         print "<< closeEvent ( from QMainWindow) >>"
