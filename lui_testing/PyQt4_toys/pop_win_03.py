@@ -5,13 +5,10 @@ from PySide.QtGui import *
 class MyPopup(QWidget):
     def __init__(self, parent = None):
         super(MyPopup, self).__init__(parent)
-        self.setGeometry(QRect(100, 100, 400, 200))
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("\n - \n                Pop Up              \n - \n"))
+        self.setLayout(vbox)
         self.show()
-
-    def paintEvent(self, e):
-        dc = QPainter(self)
-        dc.drawLine(0, 0, 100, 100)
-        dc.drawLine(100, 0, 0, 100)
 
     def closeEvent(self, event):
         print "<< closeEvent ( from QWidget) >>"
