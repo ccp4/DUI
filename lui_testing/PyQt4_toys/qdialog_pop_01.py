@@ -3,11 +3,6 @@ import sys
 from PySide.QtCore import *
 from PySide.QtGui import *
 
-example = '''
-class AnalogClock(QtGui.QWidget):
-    def __init__(self, parent=None):
-        super(AnalogClock, self).__init__(parent)
-'''
 
 class MyDialog(QDialog):
     def __init__(self, parent = None):
@@ -19,6 +14,9 @@ class MyDialog(QDialog):
         self.setLayout(vbox)
         self.setModal(True)
         self.show()
+
+    def closeEvent(self, event):
+        print "from << closeEvent  (QDialog) >>"
 
 class MainWindow(QMainWindow):
     def __init__(self, parent = None):
@@ -33,6 +31,9 @@ class MainWindow(QMainWindow):
     def createDialog(self):
         my_dialog= MyDialog()
         my_dialog.exec_()
+
+    def closeEvent(self, event):
+        print "from << closeEvent  (QMainWindow) >>"
 
 
 if __name__ == "__main__":
