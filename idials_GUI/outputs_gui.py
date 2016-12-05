@@ -38,16 +38,6 @@ class CrystalData(object):
         self.gamma = None
         self.spg_group = None
 
-        self.b11 = None
-        self.b12 = None
-        self.b13 = None
-        self.b21 = None
-        self.b22 = None
-        self.b23 = None
-        self.b31 = None
-        self.b32 = None
-        self.b33 = None
-
 
 class InstrumentData(object):
     def __init__(self):
@@ -65,8 +55,20 @@ class InstrumentData(object):
         self.yb = None
         self.dd = None
 
-
         self.w_lambda =None
+
+        self.img_ran1 = None
+        self.img_ran2 = None
+        self.oscil1 = None
+        self.oscil2 = None
+        self.e_time = None
+
+
+
+
+
+
+
 
 class ReflectionsData(object):
     def __init__(self):
@@ -184,14 +186,20 @@ def update_instrument(experiments_path):
     #dat.xb, dat.yb =
 
 
-    # todo get scan data
-    print "image_range =", exp.scan.get_image_range()
-    print "oscillation =", exp.scan.get_oscillation()
-    # is this next line right? check what dials.show does
-    print "exposure times =", max(exp.scan.get_exposure_times())
+    dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
+    dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
+
+    # is the next line right? check what dials.show does
+    dat.e_time = max(exp.scan.get_exposure_times())
     #print set(exp.scan.get_exposure_times())
 
-
+    '''
+    dat.img_ran1 = None
+    dat.img_ran2 = None
+    dat.oscil1 =   None
+    dat.oscil2 =   None
+    dat.e_time =   None
+    '''
 
     '''
     except:
@@ -257,8 +265,6 @@ class InfoWidget( QWidget):
 
 
         cell_group =  QGroupBox(" Crystal Cell ")
-
-
         cell_v_layout = QVBoxLayout()
 
         a_label = QLabel("   a ")
@@ -339,16 +345,11 @@ class InfoWidget( QWidget):
         u_v_layout.addWidget(QLabel("  "))
         u_v_layout.addLayout(u3n_data_layout)
         u_v_layout.addWidget(QLabel("  "))
-        #u_mat_group.setLayout(u_v_layout)
-
 
         crys_v_layout = QVBoxLayout()
-
         crys_v_layout.addLayout(cell_v_layout)
         crys_v_layout.addLayout(u_v_layout)
-
         cell_group.setLayout(crys_v_layout)
-
 
 
         scan_group =  QGroupBox("          Scan       ")
@@ -373,7 +374,6 @@ class InfoWidget( QWidget):
         img_ran_h_layout.addLayout(img_ran2_v_layout)
 
         scan_v_layout.addLayout(img_ran_h_layout)
-
 
         scan_v_layout.addWidget(QLabel("  oscillation  "))
         oscil_h_layout = QHBoxLayout()
@@ -519,6 +519,18 @@ class InfoWidget( QWidget):
         update_data_label(self.u31_data, self.expm_data.u31)
         update_data_label(self.u32_data, self.expm_data.u32)
         update_data_label(self.u33_data, self.expm_data.u33)
+
+
+
+        update_data_label(self.img_ran1_data, self.expm_data.img_ran1)
+        update_data_label(self.img_ran2_data, self.expm_data.img_ran2)
+        update_data_label(self.oscil1_data,   self.expm_data.oscil1)
+        update_data_label(self.oscil2_data,   self.expm_data.oscil2)
+        update_data_label(self.e_time_data,   self.expm_data.e_time)
+
+
+
+
 
         update_data_label(self.xb_data, self.expm_data.xb)
         update_data_label(self.yb_data, self.expm_data.yb)
