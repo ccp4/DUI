@@ -27,9 +27,14 @@ from img_viewer.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
 from dxtbx.model.experiment.experiment_list import ExperimentListFactory
 from dials.array_family import flex
+class InfoData(object):
+    def __init__(self):
 
+        to_be_removed = '''
 class CrystalData(object):
     def __init__(self):
+        '''
+
         self.a = None
         self.b = None
         self.c = None
@@ -38,9 +43,11 @@ class CrystalData(object):
         self.gamma = None
         self.spg_group = None
 
-
+        to_be_removed = '''
 class InstrumentData(object):
     def __init__(self):
+        '''
+
         self.u11 = None
         self.u12 = None
         self.u13 = None
@@ -63,65 +70,72 @@ class InstrumentData(object):
         self.oscil2 = None
         self.e_time = None
 
-
-
         self.n_pans = None
         self.x_px_size = None
         self.y_px_size = None
         self.gain = None
         self.max_res = None
 
-
-
-
+        to_be_removed = '''
 class ReflectionsData(object):
     def __init__(self):
+        '''
         self.n_strng = None
         self.n_index = None
         self.n_refnd = None
         self.n_integ_sum = None
         self.n_integ_prf = None
 
+def update_all_data(reflections_path = None, experiments_path = None):
+    dat = InfoData()
+
+    to_be_removed = '''
 def update_reflections(reflections_path):
-
     dat = ReflectionsData()
+    '''
+    if( reflections_path != None ):
 
-    try:
-        refl_tabl = flex.reflection_table.from_pickle(reflections_path)
-        dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
-        print "dat.n_strng =", dat.n_strng
-        dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
-        print "dat.n_index =", dat.n_index
-        dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(True)
-        print "dat.n_refnd =", dat.n_refnd
-        dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(True)
-        print "dat.n_integ_sum =", dat.n_integ_sum
-        dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(True)
-        print "dat.n_integ_prf =", dat.n_integ_prf
+        try:
+            refl_tabl = flex.reflection_table.from_pickle(reflections_path)
+            dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
+            print "dat.n_strng =", dat.n_strng
+            dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
+            print "dat.n_index =", dat.n_index
+            dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(True)
+            print "dat.n_refnd =", dat.n_refnd
+            dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(True)
+            print "dat.n_integ_sum =", dat.n_integ_sum
+            dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(True)
+            print "dat.n_integ_prf =", dat.n_integ_prf
 
-    except:
-        print "failed"
+        except:
+            print "failed"
+
+    to_be_removed = '''
 
     return dat
 
 def update_crystal(experiments_path):
-
     dat = CrystalData()
+    '''
+    if(experiments_path != None):
 
-    try:
-        experiments = ExperimentListFactory.from_json_file(
-                      experiments_path, check_format=False)
+        try:
+            experiments = ExperimentListFactory.from_json_file(
+                          experiments_path, check_format=False)
 
-        print "len(experiments)", len(experiments)
+            print "len(experiments)", len(experiments)
 
-        exp = experiments[0]
-        unit_cell = exp.crystal.get_unit_cell()
-        dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
-        b_mat = exp.crystal.get_B()
-        dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
+            exp = experiments[0]
+            unit_cell = exp.crystal.get_unit_cell()
+            dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
+            b_mat = exp.crystal.get_B()
+            dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
 
-    except:
-        print "Unable to find cell data"
+        except:
+            print "Unable to find cell data"
+
+    to_be_removed = '''
 
     return dat
 
@@ -130,85 +144,86 @@ def update_instrument(experiments_path):
 
     dat = InstrumentData()
     #print "\n\n Hi \n\n"
-
     '''
-    try:
-        experiments = ExperimentListFactory.from_json_file(
-                      experiments_path, check_format=False)
+    if(experiments_path != None):
+        '''
+        try:
+            experiments = ExperimentListFactory.from_json_file(
+                          experiments_path, check_format=False)
 
-        print "len(experiments)", len(experiments)
+            print "len(experiments)", len(experiments)
 
-        exp = experiments[0]
-        u_mat = exp.crystal.get_U()
+            exp = experiments[0]
+            u_mat = exp.crystal.get_U()
 
-        dat.w_lambda = exp.beam.get_wavelength()
+            dat.w_lambda = exp.beam.get_wavelength()
 
-        dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+            dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
 
-        #TODO find the right way to find Distance
-        for expt in experiments:
-            for panel in expt.detector:
-                print 'Origin:', panel.get_origin()
-                dat.dd = panel.get_distance()
-                print 'Distance (mm)', dat.dd
-            try:
-                # does the beam intersect with the panel?
-                dat.xb, dat.yb = panel.get_beam_centre(expt.beam.get_s0())
-            except:
-                print"RuntimeError, e:"
-    '''
+            #TODO find the right way to find Distance
+            for expt in experiments:
+                for panel in expt.detector:
+                    print 'Origin:', panel.get_origin()
+                    dat.dd = panel.get_distance()
+                    print 'Distance (mm)', dat.dd
+                try:
+                    # does the beam intersect with the panel?
+                    dat.xb, dat.yb = panel.get_beam_centre(expt.beam.get_s0())
+                except:
+                    print"RuntimeError, e:"
+        '''
 
-    try:
-        experiments = ExperimentListFactory.from_json_file(
-                      experiments_path, check_format=False)
+        try:
+            experiments = ExperimentListFactory.from_json_file(
+                          experiments_path, check_format=False)
 
-        print "len(experiments)", len(experiments)
+            print "len(experiments)", len(experiments)
 
-        exp = experiments[0]
+            exp = experiments[0]
 
-    except:
-        print "Unable to find instrument"
+        except:
+            print "Unable to find instrument"
 
-    try:
+        try:
 
-        dat.w_lambda = exp.beam.get_wavelength()
-        u_mat = exp.crystal.get_U()
-        dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+            dat.w_lambda = exp.beam.get_wavelength()
+            u_mat = exp.crystal.get_U()
+            dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
 
-    except:
-        print "failed to read json file"
+        except:
+            print "failed to read json file"
 
-    try:
+        try:
 
-        # assume details for the panel the beam intersects are the same for the whole detector
-        pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
-        pnl = exp.detector[pnl_beam_intersects]
-        dist = pnl.get_distance()
+            # assume details for the panel the beam intersects are the same for the whole detector
+            pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
+            pnl = exp.detector[pnl_beam_intersects]
+            dist = pnl.get_distance()
 
-        #print dir(pnl)
+            #print dir(pnl)
 
-        print "pnl_beam_intersects             ", pnl_beam_intersects
-        print "dist                            ", dist
+            print "pnl_beam_intersects             ", pnl_beam_intersects
+            print "dist                            ", dist
 
-        dat.dd = dist
-        #dat.xb, dat.yb =
-
-
-        dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
-        dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
-
-        # is the next line right? check what dials.show does
-        dat.e_time = max(exp.scan.get_exposure_times())
-        #print set(exp.scan.get_exposure_times())
-
-        dat.n_pans = len(exp.detector)
-        dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
-        dat.gain = pnl.get_gain()
-        dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
+            dat.dd = dist
+            #dat.xb, dat.yb =
 
 
-    except:
-        print "failed to read json file #2"
+            dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
+            dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
+
+            # is the next line right? check what dials.show does
+            dat.e_time = max(exp.scan.get_exposure_times())
+            #print set(exp.scan.get_exposure_times())
+
+            dat.n_pans = len(exp.detector)
+            dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
+            dat.gain = pnl.get_gain()
+            dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
+
+
+        except:
+            print "failed to read json file #2"
 
     return dat
 
@@ -502,47 +517,50 @@ class InfoWidget( QWidget):
 
         print "\nrefl_pikl_path =", refl_pikl_path,"\n"
 
-        self.crys_data = update_crystal(exp_json_path)
-        self.reflection_data = update_reflections(refl_pikl_path)
-        self.expm_data = update_instrument(exp_json_path)
+        #self.crys_data = update_crystal(exp_json_path)
+        #self.reflection_data = update_reflections(refl_pikl_path)
+        #self.expm_data = update_instrument(exp_json_path)
 
-        update_data_label(self.a_data, self.crys_data.a)
-        update_data_label(self.b_data, self.crys_data.b)
-        update_data_label(self.c_data, self.crys_data.c)
+        self.all_data = update_all_data(experiments_path = exp_json_path,
+                                        reflections_path = refl_pikl_path)
 
-        update_data_label(self.alpha_data, self.crys_data.alpha)
-        update_data_label(self.beta_data , self.crys_data.beta)
-        update_data_label(self.gamma_data, self.crys_data.gamma)
+        update_data_label(self.a_data, self.all_data.a)
+        update_data_label(self.b_data, self.all_data.b)
+        update_data_label(self.c_data, self.all_data.c)
 
-        update_data_label(self.u11_data, self.expm_data.u11)
-        update_data_label(self.u12_data, self.expm_data.u12)
-        update_data_label(self.u13_data, self.expm_data.u13)
-        update_data_label(self.u21_data, self.expm_data.u21)
-        update_data_label(self.u22_data, self.expm_data.u22)
-        update_data_label(self.u23_data, self.expm_data.u23)
-        update_data_label(self.u31_data, self.expm_data.u31)
-        update_data_label(self.u32_data, self.expm_data.u32)
-        update_data_label(self.u33_data, self.expm_data.u33)
+        update_data_label(self.alpha_data, self.all_data.alpha)
+        update_data_label(self.beta_data , self.all_data.beta)
+        update_data_label(self.gamma_data, self.all_data.gamma)
 
-        update_data_label(self.img_ran1_data, self.expm_data.img_ran1)
-        update_data_label(self.img_ran2_data, self.expm_data.img_ran2)
-        update_data_label(self.oscil1_data,   self.expm_data.oscil1)
-        update_data_label(self.oscil2_data,   self.expm_data.oscil2)
-        update_data_label(self.e_time_data,   self.expm_data.e_time)
+        update_data_label(self.u11_data, self.all_data.u11)
+        update_data_label(self.u12_data, self.all_data.u12)
+        update_data_label(self.u13_data, self.all_data.u13)
+        update_data_label(self.u21_data, self.all_data.u21)
+        update_data_label(self.u22_data, self.all_data.u22)
+        update_data_label(self.u23_data, self.all_data.u23)
+        update_data_label(self.u31_data, self.all_data.u31)
+        update_data_label(self.u32_data, self.all_data.u32)
+        update_data_label(self.u33_data, self.all_data.u33)
 
-
-        update_data_label(self.n_pans_data, self.expm_data.n_pans)
-        update_data_label(self.x_px_size_data, self.expm_data.x_px_size)
-        update_data_label(self.y_px_size_data, self.expm_data.y_px_size)
-        update_data_label(self.gain_data, self.expm_data.gain)
-        update_data_label(self.max_res_data, self.expm_data.max_res)
+        update_data_label(self.img_ran1_data, self.all_data.img_ran1)
+        update_data_label(self.img_ran2_data, self.all_data.img_ran2)
+        update_data_label(self.oscil1_data,   self.all_data.oscil1)
+        update_data_label(self.oscil2_data,   self.all_data.oscil2)
+        update_data_label(self.e_time_data,   self.all_data.e_time)
 
 
-        update_data_label(self.xb_data, self.expm_data.xb)
-        update_data_label(self.yb_data, self.expm_data.yb)
-        update_data_label(self.w_lambda_data, self.expm_data.w_lambda)
+        update_data_label(self.n_pans_data,    self.all_data.n_pans)
+        update_data_label(self.x_px_size_data, self.all_data.x_px_size)
+        update_data_label(self.y_px_size_data, self.all_data.y_px_size)
+        update_data_label(self.gain_data,      self.all_data.gain)
+        update_data_label(self.max_res_data,   self.all_data.max_res)
 
-        update_data_label(self.d_dist_data, self.expm_data.dd)
+
+        update_data_label(self.xb_data,        self.all_data.xb)
+        update_data_label(self.yb_data,        self.all_data.yb)
+        update_data_label(self.w_lambda_data,  self.all_data.w_lambda)
+
+        update_data_label(self.d_dist_data, self.all_data.dd)
 
 class TextOut( QTextBrowser):
     def __init__(self, parent = None):
