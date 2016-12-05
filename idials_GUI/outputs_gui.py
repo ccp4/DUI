@@ -30,11 +30,6 @@ from dials.array_family import flex
 class InfoData(object):
     def __init__(self):
 
-        to_be_removed = '''
-class CrystalData(object):
-    def __init__(self):
-        '''
-
         self.a = None
         self.b = None
         self.c = None
@@ -42,11 +37,6 @@ class CrystalData(object):
         self.beta = None
         self.gamma = None
         self.spg_group = None
-
-        to_be_removed = '''
-class InstrumentData(object):
-    def __init__(self):
-        '''
 
         self.u11 = None
         self.u12 = None
@@ -76,10 +66,6 @@ class InstrumentData(object):
         self.gain = None
         self.max_res = None
 
-        to_be_removed = '''
-class ReflectionsData(object):
-    def __init__(self):
-        '''
         self.n_strng = None
         self.n_index = None
         self.n_refnd = None
@@ -89,10 +75,6 @@ class ReflectionsData(object):
 def update_all_data(reflections_path = None, experiments_path = None):
     dat = InfoData()
 
-    to_be_removed = '''
-def update_reflections(reflections_path):
-    dat = ReflectionsData()
-    '''
     if( reflections_path != None ):
 
         try:
@@ -109,16 +91,7 @@ def update_reflections(reflections_path):
             print "dat.n_integ_prf =", dat.n_integ_prf
 
         except:
-            print "failed"
-
-    to_be_removed = '''
-
-    return dat
-
-def update_crystal(experiments_path):
-    dat = CrystalData()
-    '''
-    if(experiments_path != None):
+            print "failed to find reflections"
 
         try:
             experiments = ExperimentListFactory.from_json_file(
@@ -135,16 +108,6 @@ def update_crystal(experiments_path):
         except:
             print "Unable to find cell data"
 
-    to_be_removed = '''
-
-    return dat
-
-
-def update_instrument(experiments_path):
-
-    dat = InstrumentData()
-    #print "\n\n Hi \n\n"
-    '''
     if(experiments_path != None):
         '''
         try:
@@ -517,10 +480,6 @@ class InfoWidget( QWidget):
 
         print "\nrefl_pikl_path =", refl_pikl_path,"\n"
 
-        #self.crys_data = update_crystal(exp_json_path)
-        #self.reflection_data = update_reflections(refl_pikl_path)
-        #self.expm_data = update_instrument(exp_json_path)
-
         self.all_data = update_all_data(experiments_path = exp_json_path,
                                         reflections_path = refl_pikl_path)
 
@@ -548,13 +507,11 @@ class InfoWidget( QWidget):
         update_data_label(self.oscil2_data,   self.all_data.oscil2)
         update_data_label(self.e_time_data,   self.all_data.e_time)
 
-
         update_data_label(self.n_pans_data,    self.all_data.n_pans)
         update_data_label(self.x_px_size_data, self.all_data.x_px_size)
         update_data_label(self.y_px_size_data, self.all_data.y_px_size)
         update_data_label(self.gain_data,      self.all_data.gain)
         update_data_label(self.max_res_data,   self.all_data.max_res)
-
 
         update_data_label(self.xb_data,        self.all_data.xb)
         update_data_label(self.yb_data,        self.all_data.yb)
