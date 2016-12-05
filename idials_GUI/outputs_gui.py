@@ -284,14 +284,14 @@ class InfoWidget( QWidget):
         bm_data_layout.addWidget(self.yb_data)
         bm_v_layout.addLayout(bm_data_layout)
 
-        '''
+        #'''
         bm_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel("  Detector Distance ")
         bm_v_layout.addWidget(d_dist_label)
         self.d_dist_data = QLabel(empty_str)
         bm_v_layout.addWidget(self.d_dist_data)
         bm_v_layout.addWidget(QLabel("  "))
-        '''
+        #'''
 
         bm_v_layout.addWidget(QLabel("  "))
         w_lambda_label = QLabel("  Wavelength ang...")
@@ -341,51 +341,14 @@ class InfoWidget( QWidget):
         u_v_layout.addWidget(QLabel("  "))
         u_mat_group.setLayout(u_v_layout)
 
-        '''
-        b_mat_group =  QGroupBox("  B matrix    ")
-        b1n_data_layout = QHBoxLayout()
-        self.b11_data = QLabel(empty_str)
-        self.b12_data = QLabel(empty_str)
-        self.b13_data = QLabel(empty_str)
-        b1n_data_layout.addWidget(self.b11_data)
-        b1n_data_layout.addWidget(self.b12_data)
-        b1n_data_layout.addWidget(self.b13_data)
-        b2n_data_layout = QHBoxLayout()
-        self.b21_data = QLabel(empty_str)
-        self.b22_data = QLabel(empty_str)
-        self.b23_data = QLabel(empty_str)
-        b2n_data_layout.addWidget(self.b21_data)
-        b2n_data_layout.addWidget(self.b22_data)
-        b2n_data_layout.addWidget(self.b23_data)
-        b3n_data_layout = QHBoxLayout()
-        self.b31_data = QLabel(empty_str)
-        self.b32_data = QLabel(empty_str)
-        self.b33_data = QLabel(empty_str)
-        b3n_data_layout.addWidget(self.b31_data)
-        b3n_data_layout.addWidget(self.b32_data)
-        b3n_data_layout.addWidget(self.b33_data)
-        b_v_layout = QVBoxLayout()
-        b_v_layout.addLayout(b1n_data_layout)
-        b_v_layout.addWidget(QLabel("  "))
-        b_v_layout.addLayout(b2n_data_layout)
-        b_v_layout.addWidget(QLabel("  "))
-        b_v_layout.addLayout(b3n_data_layout)
-        b_v_layout.addWidget(QLabel("  "))
-        b_mat_group.setLayout(b_v_layout)
-        '''
-
         inner_main_box = QHBoxLayout()
-
         inner_main_box.addWidget(beam_group)
         inner_main_box.addWidget(cell_group)
         inner_main_box.addWidget(u_mat_group)
-        #inner_main_box.addWidget(b_mat_group)
-
 
         my_main_box = QVBoxLayout()
         my_main_box.addLayout(inner_main_box)
         my_main_box.addStretch()
-
 
         #uncomment the next line only for debugging purpose
         #self.update_data()
@@ -421,19 +384,6 @@ class InfoWidget( QWidget):
         update_data_label(self.u31_data, self.expm_data.u31)
         update_data_label(self.u32_data, self.expm_data.u32)
         update_data_label(self.u33_data, self.expm_data.u33)
-
-        '''
-        update_data_label(self.b11_data, self.crys_data.b11)
-        update_data_label(self.b12_data, self.crys_data.b12)
-        update_data_label(self.b13_data, self.crys_data.b13)
-        update_data_label(self.b21_data, self.crys_data.b21)
-        update_data_label(self.b22_data, self.crys_data.b22)
-        update_data_label(self.b23_data, self.crys_data.b23)
-        update_data_label(self.b31_data, self.crys_data.b31)
-        update_data_label(self.b32_data, self.crys_data.b32)
-        update_data_label(self.b33_data, self.crys_data.b33)
-        '''
-
 
         update_data_label(self.xb_data, self.expm_data.xb)
         update_data_label(self.yb_data, self.expm_data.yb)
