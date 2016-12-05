@@ -123,9 +123,9 @@ def update_crystal(experiments_path):
 def update_instrument(experiments_path):
 
     dat = InstrumentData()
-    print "\n\n Hi \n\n"
-    '''
+    #print "\n\n Hi \n\n"
 
+    '''
     try:
         experiments = ExperimentListFactory.from_json_file(
                       experiments_path, check_format=False)
@@ -171,7 +171,7 @@ def update_instrument(experiments_path):
     gain = pnl.get_gain()
     max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
 
-    print dir(pnl)
+    #print dir(pnl)
 
     print "pnl_beam_intersects             ", pnl_beam_intersects
     print "dist                            ", dist
@@ -185,12 +185,11 @@ def update_instrument(experiments_path):
 
 
     # todo get scan data
-    print exp.scan.get_image_range()
-    print exp.scan.get_oscillation()
+    print "image_range =", exp.scan.get_image_range()
+    print "oscillation =", exp.scan.get_oscillation()
     # is this next line right? check what dials.show does
-    print max(exp.scan.get_exposure_times())
+    print "exposure times =", max(exp.scan.get_exposure_times())
     #print set(exp.scan.get_exposure_times())
-
 
 
 
@@ -342,22 +341,32 @@ class InfoWidget( QWidget):
         cell_group.setLayout(crys_v_layout)
 
 
-        scan_group =  QGroupBox("          Scan       ")
 
+        scan_group =  QGroupBox("          Scan       ")
         self.scan_data_01 = QLabel(empty_str)
-        self.scan_data_02 = QLabel(empty_str)
-        self.scan_data_03 = QLabel(empty_str)
-        self.scan_data_04 = QLabel(empty_str)
-        self.scan_data_05 = QLabel(empty_str)
-        self.scan_data_06 = QLabel(empty_str)
 
         scan_v_layout = QVBoxLayout()
-        scan_v_layout.addWidget(self.scan_data_01)
-        scan_v_layout.addWidget(self.scan_data_02)
-        scan_v_layout.addWidget(self.scan_data_03)
-        scan_v_layout.addWidget(self.scan_data_04)
-        scan_v_layout.addWidget(self.scan_data_05)
-        scan_v_layout.addWidget(self.scan_data_06)
+
+
+        img_ran_h_layout = QHBoxLayout()
+
+        img_ran1_v_layout = QVBoxLayout()
+        img_ran1_label = QLabel(" from")
+        self.img_ran1_data = QLabel(empty_str)
+        img_ran1_v_layout.addWidget(img_ran1_label)
+        img_ran1_v_layout.addWidget(self.img_ran1_data)
+
+        img_ran2_v_layout = QVBoxLayout()
+        img_ran2_label = QLabel(" to")
+        self.img_ran2_data = QLabel(empty_str)
+        img_ran2_v_layout.addWidget(img_ran2_label)
+        img_ran2_v_layout.addWidget(self.img_ran2_data)
+
+        img_ran_h_layout.addLayout(img_ran1_v_layout)
+        img_ran_h_layout.addLayout(img_ran2_v_layout)
+
+        scan_v_layout.addLayout(img_ran_h_layout)
+
         scan_group.setLayout(scan_v_layout)
 
         detec_group =  QGroupBox("      Detector    ")
