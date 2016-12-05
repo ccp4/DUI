@@ -218,9 +218,53 @@ class InfoWidget( QWidget):
         super(InfoWidget, self).__init__()
 
         #self.super_parent = parent.super_parent
-        cell_group =  QGroupBox(" Crystal Cell ")
 
         empty_str = "__________"
+
+        beam_group =  QGroupBox(" Beam ")
+
+        bm_v_layout = QVBoxLayout()
+
+        xb_label = QLabel("  X (mm) ")
+        yb_label = QLabel("  Y (mm) ")
+
+        bm_label_a_layout = QHBoxLayout()
+        bm_label_a_layout.addWidget(xb_label)
+        bm_label_a_layout.addWidget(yb_label)
+
+        bm_v_layout.addLayout(bm_label_a_layout)
+
+        self.xb_data = QLabel(empty_str)
+        self.yb_data = QLabel(empty_str)
+        bm_data_layout = QHBoxLayout()
+        bm_data_layout.addWidget(self.xb_data)
+        bm_data_layout.addWidget(self.yb_data)
+        bm_v_layout.addLayout(bm_data_layout)
+
+        #'''
+        bm_v_layout.addWidget(QLabel("  "))
+        d_dist_label = QLabel("  Detector Distance ")
+        bm_v_layout.addWidget(d_dist_label)
+        self.d_dist_data = QLabel(empty_str)
+        bm_v_layout.addWidget(self.d_dist_data)
+        bm_v_layout.addWidget(QLabel("  "))
+        #'''
+
+        bm_v_layout.addWidget(QLabel("  "))
+        w_lambda_label = QLabel("  Wavelength ang...")
+        bm_v_layout.addWidget(w_lambda_label)
+        self.w_lambda_data = QLabel(empty_str)
+        bm_v_layout.addWidget(self.w_lambda_data)
+        bm_v_layout.addWidget(QLabel("  "))
+
+        #TODO find the angstrom symbol
+
+        beam_group.setLayout(bm_v_layout)
+
+
+
+        cell_group =  QGroupBox(" Crystal Cell ")
+
 
         cell_v_layout = QVBoxLayout()
 
@@ -262,51 +306,8 @@ class InfoWidget( QWidget):
         cell_v_layout.addLayout(cell_data_layout)
         cell_v_layout.addWidget(QLabel("  "))
 
-        cell_group.setLayout(cell_v_layout)
-
-        beam_group =  QGroupBox(" Beam ")
-
-        bm_v_layout = QVBoxLayout()
-
-        xb_label = QLabel("  X (mm) ")
-        yb_label = QLabel("  Y (mm) ")
-
-        bm_label_a_layout = QHBoxLayout()
-        bm_label_a_layout.addWidget(xb_label)
-        bm_label_a_layout.addWidget(yb_label)
-
-        bm_v_layout.addLayout(bm_label_a_layout)
-
-        self.xb_data = QLabel(empty_str)
-        self.yb_data = QLabel(empty_str)
-        bm_data_layout = QHBoxLayout()
-        bm_data_layout.addWidget(self.xb_data)
-        bm_data_layout.addWidget(self.yb_data)
-        bm_v_layout.addLayout(bm_data_layout)
-
-        #'''
-        bm_v_layout.addWidget(QLabel("  "))
-        d_dist_label = QLabel("  Detector Distance ")
-        bm_v_layout.addWidget(d_dist_label)
-        self.d_dist_data = QLabel(empty_str)
-        bm_v_layout.addWidget(self.d_dist_data)
-        bm_v_layout.addWidget(QLabel("  "))
-        #'''
-
-        bm_v_layout.addWidget(QLabel("  "))
-        w_lambda_label = QLabel("  Wavelength ang...")
-        bm_v_layout.addWidget(w_lambda_label)
-        self.w_lambda_data = QLabel(empty_str)
-        bm_v_layout.addWidget(self.w_lambda_data)
-        bm_v_layout.addWidget(QLabel("  "))
-
-
-
-        #TODO find the angstrom symbol
-
-        beam_group.setLayout(bm_v_layout)
-
-        u_mat_group =  QGroupBox("  U matrix    ")
+        u_v_layout = QVBoxLayout()
+        u_v_layout.addWidget(QLabel("  U matrix    "))
 
         u1n_data_layout = QHBoxLayout()
         self.u11_data = QLabel(empty_str)
@@ -332,19 +333,66 @@ class InfoWidget( QWidget):
         u3n_data_layout.addWidget(self.u32_data)
         u3n_data_layout.addWidget(self.u33_data)
 
-        u_v_layout = QVBoxLayout()
+
         u_v_layout.addLayout(u1n_data_layout)
         u_v_layout.addWidget(QLabel("  "))
         u_v_layout.addLayout(u2n_data_layout)
         u_v_layout.addWidget(QLabel("  "))
         u_v_layout.addLayout(u3n_data_layout)
         u_v_layout.addWidget(QLabel("  "))
-        u_mat_group.setLayout(u_v_layout)
+        #u_mat_group.setLayout(u_v_layout)
+
+
+        crys_v_layout = QVBoxLayout()
+
+        crys_v_layout.addLayout(cell_v_layout)
+        crys_v_layout.addLayout(u_v_layout)
+
+        cell_group.setLayout(crys_v_layout)
+
+
+        scan_group =  QGroupBox("          Scan       ")
+        u1n_data_layout = QHBoxLayout()
+        self.scan_data_01 = QLabel(empty_str)
+        self.scan_data_02 = QLabel(empty_str)
+        self.scan_data_03 = QLabel(empty_str)
+        self.scan_data_04 = QLabel(empty_str)
+        self.scan_data_05 = QLabel(empty_str)
+        self.scan_data_06 = QLabel(empty_str)
+
+        scan_v_layout = QVBoxLayout()
+        scan_v_layout.addWidget(self.scan_data_01)
+        scan_v_layout.addWidget(self.scan_data_02)
+        scan_v_layout.addWidget(self.scan_data_03)
+        scan_v_layout.addWidget(self.scan_data_04)
+        scan_v_layout.addWidget(self.scan_data_05)
+        scan_v_layout.addWidget(self.scan_data_06)
+        scan_group.setLayout(scan_v_layout)
+
+        detec_group =  QGroupBox("      Detector    ")
+        u1n_data_layout = QHBoxLayout()
+        self.detec_data_01 = QLabel(empty_str)
+        self.detec_data_02 = QLabel(empty_str)
+        self.detec_data_03 = QLabel(empty_str)
+        self.detec_data_04 = QLabel(empty_str)
+        self.detec_data_05 = QLabel(empty_str)
+        self.detec_data_06 = QLabel(empty_str)
+
+        detec_v_layout = QVBoxLayout()
+        detec_v_layout.addWidget(self.detec_data_01)
+        detec_v_layout.addWidget(self.detec_data_02)
+        detec_v_layout.addWidget(self.detec_data_03)
+        detec_v_layout.addWidget(self.detec_data_04)
+        detec_v_layout.addWidget(self.detec_data_05)
+        detec_v_layout.addWidget(self.detec_data_06)
+        detec_group.setLayout(detec_v_layout)
 
         inner_main_box = QHBoxLayout()
         inner_main_box.addWidget(beam_group)
         inner_main_box.addWidget(cell_group)
-        inner_main_box.addWidget(u_mat_group)
+        #inner_main_box.addWidget(u_mat_group)
+        inner_main_box.addWidget(scan_group)
+        inner_main_box.addWidget(detec_group)
 
         my_main_box = QVBoxLayout()
         my_main_box.addLayout(inner_main_box)
