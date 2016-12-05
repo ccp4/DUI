@@ -62,6 +62,10 @@ class MyTable(QtGui.QTableWidget):
                 item.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.setItem(row, col, item)
 
+        #remember that with is given in pixels
+        self.setColumnWidth(5, 50)
+        self.setColumnWidth(6, 288)
+
 
 class MainWidget(QtGui.QWidget):
     def __init__(self, parent=None):
