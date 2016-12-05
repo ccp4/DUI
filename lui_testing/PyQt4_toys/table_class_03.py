@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-#from PySide import QtCore, QtGui
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
+#from PyQt4 import QtCore, QtGui
 
 to_test = '''
 PySide.QtGui.QTableView.selectRow(row)
@@ -56,11 +56,12 @@ class MyTable(QtGui.QTableWidget):
         self.setRowCount(n_row)
         self.setColumnCount(n_col)
 
-        #self.setItem(2, 3, QtGui.QTableWidgetItem("Hi there"))
-
         for row, row_cont in enumerate(data_content):
             for col, col_cont in enumerate(row_cont):
-                self.setItem(row, col, QtGui.QTableWidgetItem(col_cont))
+                item = QtGui.QTableWidgetItem(col_cont)
+                item.setFlags(QtCore.Qt.ItemIsEnabled)
+                self.setItem(row, col, item)
+
 
 class MainWidget(QtGui.QWidget):
     def __init__(self, parent=None):
