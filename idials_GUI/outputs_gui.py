@@ -241,7 +241,10 @@ class InfoWidget( QWidget):
         bm_v_layout.addLayout(bm_data_layout)
 
         bm_v_layout.addWidget(QLabel("  "))
-        w_lambda_label = QLabel("  Wavelength ang...")
+
+        tmp_str = "  Wavelength (" + u"\u212B" + ") "
+
+        w_lambda_label = QLabel(tmp_str)
         bm_v_layout.addWidget(w_lambda_label)
         self.w_lambda_data = QLabel(empty_str)
         bm_v_layout.addWidget(self.w_lambda_data)
