@@ -349,15 +349,15 @@ class InfoWidget( QWidget):
 
         img_ran_h_layout = QHBoxLayout()
         img_ran1_v_layout = QVBoxLayout()
-        img_ran1_label = QLabel(" from")
+        #img_ran1_label = QLabel(" from")
         self.img_ran1_data = QLabel(empty_str)
-        img_ran1_v_layout.addWidget(img_ran1_label)
+        #img_ran1_v_layout.addWidget(img_ran1_label)
         img_ran1_v_layout.addWidget(self.img_ran1_data)
 
         img_ran2_v_layout = QVBoxLayout()
-        img_ran2_label = QLabel(" to")
+        #img_ran2_label = QLabel(" to")
         self.img_ran2_data = QLabel(empty_str)
-        img_ran2_v_layout.addWidget(img_ran2_label)
+        #img_ran2_v_layout.addWidget(img_ran2_label)
         img_ran2_v_layout.addWidget(self.img_ran2_data)
 
         img_ran_h_layout.addLayout(img_ran1_v_layout)
@@ -369,23 +369,50 @@ class InfoWidget( QWidget):
         scan_v_layout.addWidget(QLabel("  oscillation  "))
         oscil_h_layout = QHBoxLayout()
         oscil1_v_layout = QVBoxLayout()
-        oscil1_label = QLabel(" from ")
+        #oscil1_label = QLabel(" from ")
         self.oscil1_data = QLabel(empty_str)
-        oscil1_v_layout.addWidget(oscil1_label)
+        #oscil1_v_layout.addWidget(oscil1_label)
         oscil1_v_layout.addWidget(self.oscil1_data)
 
         oscil2_v_layout = QVBoxLayout()
-        oscil2_label = QLabel(" to ")
+        #oscil2_label = QLabel(" to ")
         self.oscil2_data = QLabel(empty_str)
-        oscil2_v_layout.addWidget(oscil2_label)
+        #oscil2_v_layout.addWidget(oscil2_label)
         oscil2_v_layout.addWidget(self.oscil2_data)
 
         oscil_h_layout.addLayout(oscil1_v_layout)
         oscil_h_layout.addLayout(oscil2_v_layout)
-
         scan_v_layout.addLayout(oscil_h_layout)
 
+        scan_v_layout.addWidget(QLabel("  "))
+        e_time_label = QLabel(" Exposure time")
+        scan_v_layout.addWidget(e_time_label)
+        self.e_time_data = QLabel(empty_str)
+        scan_v_layout.addWidget(self.e_time_data)
 
+        scan_v_layout.addWidget(QLabel("  "))
+        strn_sp_label = QLabel(" Number of strong spots")
+        scan_v_layout.addWidget(strn_sp_label)
+        self.strn_sp_data = QLabel(empty_str)
+        scan_v_layout.addWidget(self.strn_sp_data)
+
+        scan_v_layout.addWidget(QLabel("  "))
+        indx_sp_label = QLabel(" Number of indexed spots")
+        scan_v_layout.addWidget(indx_sp_label)
+        self.indx_sp_data = QLabel(empty_str)
+        scan_v_layout.addWidget(self.indx_sp_data)
+
+        scan_v_layout.addWidget(QLabel("  "))
+        refn_sp_label = QLabel(" Number of refined spots")
+        scan_v_layout.addWidget(refn_sp_label)
+        self.refn_sp_data = QLabel(empty_str)
+        scan_v_layout.addWidget(self.refn_sp_data)
+
+        scan_v_layout.addWidget(QLabel("  "))
+        itgr_sp_label = QLabel(" Number of integrated spots")
+        scan_v_layout.addWidget(itgr_sp_label)
+        self.itgr_sp_data = QLabel(empty_str)
+        scan_v_layout.addWidget(self.itgr_sp_data)
 
         scan_group.setLayout(scan_v_layout)
 
@@ -450,7 +477,6 @@ class InfoWidget( QWidget):
         inner_main_box = QHBoxLayout()
         inner_main_box.addWidget(beam_group)
         inner_main_box.addWidget(cell_group)
-        #inner_main_box.addWidget(u_mat_group)
         inner_main_box.addWidget(scan_group)
         inner_main_box.addWidget(detec_group)
 
