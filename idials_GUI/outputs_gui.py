@@ -294,6 +294,12 @@ class InfoWidget( QWidget):
         cell_data_layout.addWidget(self.beta_data)
         cell_data_layout.addWidget(self.gamma_data)
         cell_v_layout.addLayout(cell_data_layout)
+
+        cell_v_layout.addWidget(QLabel("  "))
+        spgrp_label = QLabel(" Space Group")
+        cell_v_layout.addWidget(spgrp_label)
+        self.spgrp_data = QLabel(empty_str)
+        cell_v_layout.addWidget(self.spgrp_data)
         cell_v_layout.addWidget(QLabel("  "))
 
         u_v_layout = QVBoxLayout()
@@ -439,13 +445,13 @@ class InfoWidget( QWidget):
         px_h_layout = QHBoxLayout()
 
         px_x_v_layout = QVBoxLayout()
-        x_px_size_label = QLabel(" X(mm)")
+        x_px_size_label = QLabel(" X (mm)")
         self.x_px_size_data = QLabel(empty_str)
         px_x_v_layout.addWidget(x_px_size_label)
         px_x_v_layout.addWidget(self.x_px_size_data)
 
         px_y_v_layout = QVBoxLayout()
-        y_px_size_label = QLabel(" Y(mm)")
+        y_px_size_label = QLabel(" Y (mm)")
         self.y_px_size_data = QLabel(empty_str)
         px_y_v_layout.addWidget(y_px_size_label)
         px_y_v_layout.addWidget(self.y_px_size_data)
@@ -455,22 +461,17 @@ class InfoWidget( QWidget):
 
         detec_v_layout.addLayout(px_h_layout)
 
-
         detec_v_layout.addWidget(QLabel("  "))
         gain_label = QLabel(" Gain ")
         detec_v_layout.addWidget(gain_label)
         self.gain_data = QLabel(empty_str)
         detec_v_layout.addWidget(self.gain_data)
 
-
         detec_v_layout.addWidget(QLabel("  "))
         max_res_label = QLabel(" Max resolution ")
         detec_v_layout.addWidget(max_res_label)
         self.max_res_data = QLabel(empty_str)
         detec_v_layout.addWidget(self.max_res_data)
-
-
-
 
         detec_group.setLayout(detec_v_layout)
 
