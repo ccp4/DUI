@@ -241,15 +241,6 @@ class InfoWidget( QWidget):
         bm_data_layout.addWidget(self.yb_data)
         bm_v_layout.addLayout(bm_data_layout)
 
-        #'''
-        bm_v_layout.addWidget(QLabel("  "))
-        d_dist_label = QLabel("  Detector Distance ")
-        bm_v_layout.addWidget(d_dist_label)
-        self.d_dist_data = QLabel(empty_str)
-        bm_v_layout.addWidget(self.d_dist_data)
-        bm_v_layout.addWidget(QLabel("  "))
-        #'''
-
         bm_v_layout.addWidget(QLabel("  "))
         w_lambda_label = QLabel("  Wavelength ang...")
         bm_v_layout.addWidget(w_lambda_label)
@@ -352,7 +343,7 @@ class InfoWidget( QWidget):
 
 
         scan_group =  QGroupBox("          Scan       ")
-        u1n_data_layout = QHBoxLayout()
+
         self.scan_data_01 = QLabel(empty_str)
         self.scan_data_02 = QLabel(empty_str)
         self.scan_data_03 = QLabel(empty_str)
@@ -370,7 +361,18 @@ class InfoWidget( QWidget):
         scan_group.setLayout(scan_v_layout)
 
         detec_group =  QGroupBox("      Detector    ")
-        u1n_data_layout = QHBoxLayout()
+        detec_v_layout = QVBoxLayout()
+        #'''
+        detec_v_layout.addWidget(QLabel("  "))
+        d_dist_label = QLabel("  Detector Distance ")
+        detec_v_layout.addWidget(d_dist_label)
+        self.d_dist_data = QLabel(empty_str)
+        detec_v_layout.addWidget(self.d_dist_data)
+        detec_v_layout.addWidget(QLabel("  "))
+        #'''
+
+
+
         self.detec_data_01 = QLabel(empty_str)
         self.detec_data_02 = QLabel(empty_str)
         self.detec_data_03 = QLabel(empty_str)
@@ -378,7 +380,7 @@ class InfoWidget( QWidget):
         self.detec_data_05 = QLabel(empty_str)
         self.detec_data_06 = QLabel(empty_str)
 
-        detec_v_layout = QVBoxLayout()
+
         detec_v_layout.addWidget(self.detec_data_01)
         detec_v_layout.addWidget(self.detec_data_02)
         detec_v_layout.addWidget(self.detec_data_03)
@@ -409,9 +411,7 @@ class InfoWidget( QWidget):
         print "\nrefl_pikl_path =", refl_pikl_path,"\n"
 
         self.crys_data = update_crystal(exp_json_path)
-
         self.reflection_data = update_reflections(refl_pikl_path)
-
         self.expm_data = update_instrument(exp_json_path)
 
         update_data_label(self.a_data, self.crys_data.a)
@@ -421,7 +421,6 @@ class InfoWidget( QWidget):
         update_data_label(self.alpha_data, self.crys_data.alpha)
         update_data_label(self.beta_data , self.crys_data.beta)
         update_data_label(self.gamma_data, self.crys_data.gamma)
-
 
         update_data_label(self.u11_data, self.expm_data.u11)
         update_data_label(self.u12_data, self.expm_data.u12)
@@ -437,7 +436,7 @@ class InfoWidget( QWidget):
         update_data_label(self.yb_data, self.expm_data.yb)
         update_data_label(self.w_lambda_data, self.expm_data.w_lambda)
 
-
+        update_data_label(self.d_dist_data, self.expm_data.dd)
 
 class TextOut( QTextBrowser):
     def __init__(self, parent = None):
