@@ -235,11 +235,11 @@ class IdialsInnerrWidget( QWidget):
         from dials.util.command_line import interactive_console; interactive_console(); 1/0
         '''
 
-
-
     def update_info(self):
 
         exp_json_path = None
+        refl_pikl_path = None
+
         try:
             exp_json_path = self.controller.get_current().experiments
             print "exp_json_path =", exp_json_path
@@ -252,7 +252,8 @@ class IdialsInnerrWidget( QWidget):
         except:
             print "failed to find <<< refl_pikl_path >>>"
 
-        self.super_parent.info_widget.update_data(exp_json_path = exp_json_path, refl_pikl_path = refl_pikl_path)
+        self.super_parent.info_widget.update_data(exp_json_path = exp_json_path,
+                                                  refl_pikl_path = refl_pikl_path)
 
     def prv_clicked(self):
         print "prv_clicked(self)"

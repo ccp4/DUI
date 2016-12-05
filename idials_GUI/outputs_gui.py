@@ -157,47 +157,58 @@ def update_instrument(experiments_path):
             except:
                 print"RuntimeError, e:"
     '''
-    experiments = ExperimentListFactory.from_json_file(
-                  experiments_path, check_format=False)
 
-    print "len(experiments)", len(experiments)
+    try:
+        experiments = ExperimentListFactory.from_json_file(
+                      experiments_path, check_format=False)
 
-    exp = experiments[0]
+        print "len(experiments)", len(experiments)
 
-    dat.w_lambda = exp.beam.get_wavelength()
-    u_mat = exp.crystal.get_U()
-    dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+        exp = experiments[0]
 
-    # assume details for the panel the beam intersects are the same for the whole detector
-    pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
-    pnl = exp.detector[pnl_beam_intersects]
-    dist = pnl.get_distance()
-
-    #print dir(pnl)
-
-    print "pnl_beam_intersects             ", pnl_beam_intersects
-    print "dist                            ", dist
-
-    dat.dd = dist
-    #dat.xb, dat.yb =
-
-
-    dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
-    dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
-
-    # is the next line right? check what dials.show does
-    dat.e_time = max(exp.scan.get_exposure_times())
-    #print set(exp.scan.get_exposure_times())
-
-    dat.n_pans = len(exp.detector)
-    dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
-    dat.gain = pnl.get_gain()
-    dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
-
-    '''
     except:
         print "Unable to find instrument"
-    '''
+
+    try:
+
+        dat.w_lambda = exp.beam.get_wavelength()
+        u_mat = exp.crystal.get_U()
+        dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+
+    except:
+        print "failed to read json file"
+
+    try:
+
+        # assume details for the panel the beam intersects are the same for the whole detector
+        pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
+        pnl = exp.detector[pnl_beam_intersects]
+        dist = pnl.get_distance()
+
+        #print dir(pnl)
+
+        print "pnl_beam_intersects             ", pnl_beam_intersects
+        print "dist                            ", dist
+
+        dat.dd = dist
+        #dat.xb, dat.yb =
+
+
+        dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
+        dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
+
+        # is the next line right? check what dials.show does
+        dat.e_time = max(exp.scan.get_exposure_times())
+        #print set(exp.scan.get_exposure_times())
+
+        dat.n_pans = len(exp.detector)
+        dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
+        dat.gain = pnl.get_gain()
+        dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
+
+
+    except:
+        print "failed to read json file #2"
 
     return dat
 
