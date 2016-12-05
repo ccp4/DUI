@@ -65,7 +65,11 @@ class InstrumentData(object):
 
 
 
-
+        self.n_pans = None
+        self.x_px_size = None
+        self.y_px_size = None
+        self.gain = None
+        self.max_res = None
 
 
 
@@ -168,19 +172,11 @@ def update_instrument(experiments_path):
     pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
     pnl = exp.detector[pnl_beam_intersects]
     dist = pnl.get_distance()
-    npanels = len(exp.detector)
-    px_size = pnl.get_pixel_size()
-    gain = pnl.get_gain()
-    max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
 
     #print dir(pnl)
 
     print "pnl_beam_intersects             ", pnl_beam_intersects
     print "dist                            ", dist
-    print "npanels                         ", npanels
-    print "px_size                         ", px_size
-    print "gain                            ", gain
-    print "max_res                         ", max_res
 
     dat.dd = dist
     #dat.xb, dat.yb =
@@ -193,13 +189,10 @@ def update_instrument(experiments_path):
     dat.e_time = max(exp.scan.get_exposure_times())
     #print set(exp.scan.get_exposure_times())
 
-    '''
-    dat.img_ran1 = None
-    dat.img_ran2 = None
-    dat.oscil1 =   None
-    dat.oscil2 =   None
-    dat.e_time =   None
-    '''
+    dat.n_pans = len(exp.detector)
+    dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
+    dat.gain = pnl.get_gain()
+    dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
 
     '''
     except:
@@ -520,8 +513,6 @@ class InfoWidget( QWidget):
         update_data_label(self.u32_data, self.expm_data.u32)
         update_data_label(self.u33_data, self.expm_data.u33)
 
-
-
         update_data_label(self.img_ran1_data, self.expm_data.img_ran1)
         update_data_label(self.img_ran2_data, self.expm_data.img_ran2)
         update_data_label(self.oscil1_data,   self.expm_data.oscil1)
@@ -529,7 +520,11 @@ class InfoWidget( QWidget):
         update_data_label(self.e_time_data,   self.expm_data.e_time)
 
 
-
+        update_data_label(self.n_pans_data, self.expm_data.n_pans)
+        update_data_label(self.x_px_size_data, self.expm_data.x_px_size)
+        update_data_label(self.y_px_size_data, self.expm_data.y_px_size)
+        update_data_label(self.gain_data, self.expm_data.gain)
+        update_data_label(self.max_res_data, self.expm_data.max_res)
 
 
         update_data_label(self.xb_data, self.expm_data.xb)
