@@ -343,13 +343,11 @@ class InfoWidget( QWidget):
 
 
         scan_group =  QGroupBox("          Scan       ")
-        self.scan_data_01 = QLabel(empty_str)
 
         scan_v_layout = QVBoxLayout()
-
+        scan_v_layout.addWidget(QLabel("  Image Range  "))
 
         img_ran_h_layout = QHBoxLayout()
-
         img_ran1_v_layout = QVBoxLayout()
         img_ran1_label = QLabel(" from")
         self.img_ran1_data = QLabel(empty_str)
@@ -366,6 +364,28 @@ class InfoWidget( QWidget):
         img_ran_h_layout.addLayout(img_ran2_v_layout)
 
         scan_v_layout.addLayout(img_ran_h_layout)
+
+
+        scan_v_layout.addWidget(QLabel("  oscillation  "))
+        oscil_h_layout = QHBoxLayout()
+        oscil1_v_layout = QVBoxLayout()
+        oscil1_label = QLabel(" from ")
+        self.oscil1_data = QLabel(empty_str)
+        oscil1_v_layout.addWidget(oscil1_label)
+        oscil1_v_layout.addWidget(self.oscil1_data)
+
+        oscil2_v_layout = QVBoxLayout()
+        oscil2_label = QLabel(" to ")
+        self.oscil2_data = QLabel(empty_str)
+        oscil2_v_layout.addWidget(oscil2_label)
+        oscil2_v_layout.addWidget(self.oscil2_data)
+
+        oscil_h_layout.addLayout(oscil1_v_layout)
+        oscil_h_layout.addLayout(oscil2_v_layout)
+
+        scan_v_layout.addLayout(oscil_h_layout)
+
+
 
         scan_group.setLayout(scan_v_layout)
 
