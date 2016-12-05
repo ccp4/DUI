@@ -362,31 +362,60 @@ class InfoWidget( QWidget):
 
         detec_group =  QGroupBox("      Detector    ")
         detec_v_layout = QVBoxLayout()
-        #'''
+
         detec_v_layout.addWidget(QLabel("  "))
-        d_dist_label = QLabel("  Detector Distance ")
+        d_dist_label = QLabel(" Sample - Detector \n       Distance ")
         detec_v_layout.addWidget(d_dist_label)
         self.d_dist_data = QLabel(empty_str)
         detec_v_layout.addWidget(self.d_dist_data)
+
         detec_v_layout.addWidget(QLabel("  "))
-        #'''
+        n_pans_label = QLabel(" Number of panels ")
+        detec_v_layout.addWidget(n_pans_label)
+        self.n_pans_data = QLabel(empty_str)
+        detec_v_layout.addWidget(self.n_pans_data)
+        detec_v_layout.addWidget(QLabel("  "))
+
+        detec_v_layout.addWidget(QLabel("  "))
+        pix_size_label = QLabel(" Pixel size ")
+        detec_v_layout.addWidget(pix_size_label)
+
+        px_h_layout = QHBoxLayout()
+
+        px_x_v_layout = QVBoxLayout()
+        x_px_size_label = QLabel(" X(mm)")
+        self.x_px_size_data = QLabel(empty_str)
+        px_x_v_layout.addWidget(x_px_size_label)
+        px_x_v_layout.addWidget(self.x_px_size_data)
+
+        px_y_v_layout = QVBoxLayout()
+        y_px_size_label = QLabel(" Y(mm)")
+        self.y_px_size_data = QLabel(empty_str)
+        px_y_v_layout.addWidget(y_px_size_label)
+        px_y_v_layout.addWidget(self.y_px_size_data)
+
+        px_h_layout.addLayout(px_x_v_layout)
+        px_h_layout.addLayout(px_y_v_layout)
+
+        detec_v_layout.addLayout(px_h_layout)
+
+
+        detec_v_layout.addWidget(QLabel("  "))
+        gain_label = QLabel(" Gain ")
+        detec_v_layout.addWidget(gain_label)
+        self.gain_data = QLabel(empty_str)
+        detec_v_layout.addWidget(self.gain_data)
+
+
+        detec_v_layout.addWidget(QLabel("  "))
+        max_res_label = QLabel(" Max resolution ")
+        detec_v_layout.addWidget(max_res_label)
+        self.max_res_data = QLabel(empty_str)
+        detec_v_layout.addWidget(self.max_res_data)
 
 
 
-        self.detec_data_01 = QLabel(empty_str)
-        self.detec_data_02 = QLabel(empty_str)
-        self.detec_data_03 = QLabel(empty_str)
-        self.detec_data_04 = QLabel(empty_str)
-        self.detec_data_05 = QLabel(empty_str)
-        self.detec_data_06 = QLabel(empty_str)
 
-
-        detec_v_layout.addWidget(self.detec_data_01)
-        detec_v_layout.addWidget(self.detec_data_02)
-        detec_v_layout.addWidget(self.detec_data_03)
-        detec_v_layout.addWidget(self.detec_data_04)
-        detec_v_layout.addWidget(self.detec_data_05)
-        detec_v_layout.addWidget(self.detec_data_06)
         detec_group.setLayout(detec_v_layout)
 
         inner_main_box = QHBoxLayout()
