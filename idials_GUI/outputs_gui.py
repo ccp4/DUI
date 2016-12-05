@@ -519,6 +519,17 @@ class InfoWidget( QWidget):
 
         update_data_label(self.d_dist_data, self.all_data.dd)
 
+
+        update_data_label(self.strn_sp_data    , self.all_data.n_strng)
+        update_data_label(self.indx_sp_data    , self.all_data.n_index)
+        update_data_label(self.refn_sp_data    , self.all_data.n_refnd)
+        update_data_label(self.itgr_sp_data    , self.all_data.n_integ_sum)
+
+        #update_data_label(self.n_integ_prf_data, self.all_data.n_integ_prf
+
+
+
+
 class TextOut( QTextBrowser):
     def __init__(self, parent = None):
         super(TextOut, self).__init__(parent)
