@@ -186,8 +186,9 @@ class MainWidget(QMainWindow):
             self.btn_lst.append(new_btn)
 
 
+        self.reindex_tool = MyReindexOpts(self)
         if( self.embedded_reindex ):
-            self.reindex_tool = MyReindexOpts(self)
+            #self.reindex_tool = MyReindexOpts(self)
             self.step_param_widg.addWidget(self.reindex_tool)
 
         else:
@@ -342,14 +343,16 @@ class MainWidget(QMainWindow):
     def pop_reindex_gui(self):
         print "\n ________________________ <<< Time to show the table \n"
         sumr_path = self.idials_widget.controller.get_summary()
+        self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
         if( self.embedded_reindex ):
-            self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
 
         else:
-            self.output_wg.set_reindex_tab()
-            self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+            #self.output_wg.set_reindex_tab()
+            #self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            #self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+            self.reindex_tool.show()
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Running")
@@ -387,9 +390,12 @@ class MainWidget(QMainWindow):
 
             elif( curr_command == "reindex" ):
                 print "Time to shrink back reindex GUI"
+
                 if( self.embedded_reindex == False ):
-                    self.output_wg.set_pref_tab()
+                    #self.output_wg.set_pref_tab()
                     #self.current_widget.del_opts_lst()
+                    self.reindex_tool.close()
+
 
             elif( curr_command == "integrate" ):
                 self.idials_widget.change_mode("export")
@@ -465,8 +471,11 @@ class MainWidget(QMainWindow):
 
             if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
+
             elif( self.embedded_reindex == False ):
-                self.output_wg.set_pref_tab()
+                #self.output_wg.set_pref_tab()
+                self.reindex_tool.close()
+
 
             self._gray_unwanted()
 

@@ -676,7 +676,8 @@ class outputs_widget( QWidget):
         if( self.super_parent.embedded_reindex == False ):
             #TODO make sure consistent the way to use the "super_parent" reference in the next line
             self.reindex_tool = MyReindexOpts(parent)
-            self.my_tabs.addTab(self.reindex_tool, "Re-index table")
+
+            #self.my_tabs.addTab(self.reindex_tool, "Re-index table")
 
 
 
