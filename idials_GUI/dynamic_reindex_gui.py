@@ -69,19 +69,28 @@ def ops_list_from_json(json_path = None):
                 else:
                     recommended_str = "  "
 
+        single_lin_lst = [int(key), angular_diff_str , rmsd_str , min_cc_str,
+                       max_cc_str , bravais_str , unit_cell_str , recommended_str]
+
+        button_case = '''
         single_lin_lst = [int(key), angular_diff_str + rmsd_str + min_cc_str
               + max_cc_str + bravais_str + unit_cell_str + recommended_str]
+        '''
 
         lst_ops.append(single_lin_lst)
 
     sorted_lst_ops = sorted(lst_ops)
+
+    button_case = '''
     str_sorted_lst = []
     for labl in sorted_lst_ops:
         str_labl = str(labl[0]).rjust(3)+ "  " + labl[1]
         str_sorted_lst.append(str_labl)
 
     return str_sorted_lst
+    '''
 
+    return sorted_lst_ops
 
 
 class LeftSideTmpWidget( QWidget):
@@ -100,6 +109,98 @@ class LeftSideTmpWidget( QWidget):
 
 
 
+'''
+class MyReindexOpts(QTableWidget):
+    def __init__(self, parent=None):
+        super(MyReindexOpts, self).__init__(parent)
+        self.super_parent = parent
+'''
+
+
+class MyReindexOpts(QWidget):
+    def __init__(self, parent=None):
+        super(MyReindexOpts, self).__init__(parent)
+        self.super_parent = parent
+        self.my_table = QTableWidget(self)
+        self.my_table.cellClicked.connect(self.opt_clicked)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(QLabel("AAAAAAAAAAAAAAAa TTTTTTest"))
+        my_box.addWidget(self.my_table)
+        self.setLayout(my_box)
+        #self.show()
+
+
+    def opt_clicked(self, row, col):
+        #my_sender = self.sender()
+        print "Solution clicked =", row + 1
+        self.super_parent.opt_picked(row + 1)
+        self.all_gray()
+        #my_sender.setStyleSheet("background-color: lightblue")
+
+    def add_opts_lst(self, lst_labels = None, in_json_path = None):
+        '''
+    def setContent(self, data_content):
+        '''
+        if( lst_labels == None ):
+            lst_labels = ops_list_from_json(in_json_path)
+
+        n_row = len(lst_labels)
+        print "n_row =", n_row
+        n_col = len(lst_labels[0])
+        print "n_col =", n_col
+
+        self.my_table.setRowCount(n_row)
+        self.my_table.setColumnCount(n_col)
+        '''
+        width_lst = []
+        for pos in range(n_col):
+            width_lst.append(0)
+        '''
+
+        for row, row_cont in enumerate(lst_labels):
+            for col, col_cont in enumerate(row_cont):
+                item = QTableWidgetItem(col_cont)
+                item.setFlags(Qt.ItemIsEnabled)
+                self.my_table.setItem(row, col, item)
+                '''
+                if( width_lst[col] < len(col_cont) ):
+                    width_lst[col] = len(col_cont)
+                '''
+
+        self.my_table.resizeColumnsToContents()
+        '''
+        print "width_lst =", width_lst
+        for col_n, col_len in enumerate(width_lst):
+            #remember that with is given in pixels
+            self.setColumnWidth(col_n, (col_len+1) * 10)
+        '''
+
+    def del_opts_lst(self):
+
+        print "del_opts_lst"
+        self.my_table.clear()
+        self.my_table.setRowCount(1)
+        self.my_table.setColumnCount(1)
+
+        '''
+        lng_lst = len(self.lst_ops)
+        print "lng_lst =", lng_lst
+        for btn_lst in self.lst_ops:
+            self.scrollLayout.layout().removeWidget(btn_lst)
+            btn_lst.setParent(None)
+            del btn_lst
+
+        self.lst_ops = []
+        '''
+
+    def all_gray(self):
+        pass
+
+
+
+
+button_case = '''
 class MyReindexOpts(QWidget):
     def __init__(self, parent = None):
         super(MyReindexOpts, self).__init__()
@@ -190,6 +291,7 @@ class MyReindexOpts(QWidget):
         self.all_gray()
         my_sender.setStyleSheet("background-color: lightblue")
 
+'''
 
 class MainWindow( QMainWindow):
     def __init__(self, parent = None):
