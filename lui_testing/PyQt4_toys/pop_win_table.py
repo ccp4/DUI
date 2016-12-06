@@ -35,12 +35,11 @@ class MyReindexOpts(QTableWidget):
 
 
 class MyPopup(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent = None, tbl = None):
         super(MyPopup, self).__init__(parent)
         vbox = QVBoxLayout()
         reindex_widg = MyReindexOpts()
-
-        reindex_widg.add_opts_lst([[1234,"abcd"],[5678,"efgh"]])
+        reindex_widg.add_opts_lst(tbl)
 
         vbox.addWidget(reindex_widg)
         self.setLayout(vbox)
@@ -54,15 +53,24 @@ class MainWindow(QMainWindow):
     def __init__(self, parent = None):
         super(MainWindow, self).__init__(parent)
         self.cw = QWidget(self)
-        self.setCentralWidget(self.cw)
-        self.btn1 = QPushButton("Click me", self.cw)
-        self.btn1.setGeometry(QRect(0, 0, 100, 30))
-        self.connect(self.btn1, SIGNAL("clicked()"), self.doit)
+        self.btn1 = QPushButton("Click me", self)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("A1"))
+        vbox.addWidget(self.btn1)
+        vbox.addWidget(QLabel("B2"))
+        self.cw.setLayout(vbox)
+
+
+        self.btn1.clicked.connect(self.doit)
         self.my_pop = None
+
+        self.setCentralWidget(self.cw)
+
 
     def doit(self):
         print "Opening a new popup window"
-        self.my_pop = MyPopup()
+        self.my_pop = MyPopup(tbl = [[1234,"abcd"],[5678,"efgh"]])
 
     def closeEvent(self, event):
         print "<< closeEvent ( from QMainWindow) >>"

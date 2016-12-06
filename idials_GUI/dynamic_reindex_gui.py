@@ -107,19 +107,20 @@ class LeftSideTmpWidget( QWidget):
         self.my_label.setText("re - indexed")
 
 
-'''
+
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.super_parent = parent
         my_box = QVBoxLayout()
-        my_box.addWidget(QLabel("AAAAAAAAAAAAAAAa TTTTTTest"))
-        my_box.addWidget()
+        a_labl = QLabel("111 AAAAAAAAAAAAAAAa TTTTTTest")
+        my_box.addWidget(a_labl)
         self.setLayout(my_box)
         self.show()
-'''
 
-class MyReindexOpts(QTableWidget):
+
+
+class MyReindexOpts_1(QTableWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.super_parent = parent
@@ -303,10 +304,7 @@ class MainWindow( QMainWindow):
         self.mainLayout =  QVBoxLayout()
         self.mainLayout.addWidget(self.addButton)
         self.mainLayout.addWidget(self.delButton)
-
         self.super_parent = self
-        self.scroll_w_list = MyReindexOpts(self)
-        self.mainLayout.addWidget(self.scroll_w_list)
 
         self.main_widget = QWidget(self)
         self.main_widget.setLayout(self.mainLayout)
@@ -318,7 +316,9 @@ class MainWindow( QMainWindow):
 
     def addQbuttonsList(self):
         lst_labels = ops_list_from_json(self.my_json_path)
-        self.scroll_w_list.add_opts_lst(lst_labels)
+
+        self.scroll_w_list = MyReindexOpts(self)
+        #self.scroll_w_list.add_opts_lst(lst_labels)
 
     def opt_picked(self, opt_num):
         print "\n from dynamic_reindex_gui.py MainWindow"
