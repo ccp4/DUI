@@ -375,11 +375,21 @@ class InfoWidget( QWidget):
         oscil_h_layout.addLayout(oscil2_v_layout)
         scan_v_layout.addLayout(oscil_h_layout)
 
+        '''
         scan_v_layout.addWidget(QLabel("  "))
         e_time_label = QLabel(" Exposure time")
         scan_v_layout.addWidget(e_time_label)
         self.e_time_data = QLabel(empty_str)
         scan_v_layout.addWidget(self.e_time_data)
+        '''
+
+        scan_v_layout.addWidget(QLabel("  "))
+        e_time_label = QLabel("Exposure time")
+        self.e_time_data = QLabel(empty_str)
+        e_time_hbox = QHBoxLayout()
+        e_time_hbox.addWidget(e_time_label)
+        e_time_hbox.addWidget(self.e_time_data)
+        scan_v_layout.addLayout(e_time_hbox)
 
 
         scan_v_layout.addWidget(QLabel("  "))
@@ -391,50 +401,28 @@ class InfoWidget( QWidget):
         scan_v_layout.addLayout(strn_hbox)
 
         scan_v_layout.addWidget(QLabel("  "))
-        indx_sp_label = QLabel("strong spots")
+        indx_sp_label = QLabel("Indexed spots")
         self.indx_sp_data = QLabel(empty_str)
         indx_hbox = QHBoxLayout()
         indx_hbox.addWidget(indx_sp_label)
         indx_hbox.addWidget(self.indx_sp_data)
         scan_v_layout.addLayout(indx_hbox)
 
-        '''
-        scan_v_layout.addWidget(QLabel("  "))
-        indx_sp_label = QLabel("indexed spots")
-        scan_v_layout.addWidget(indx_sp_label)
-        self.indx_sp_data = QLabel(empty_str)
-        scan_v_layout.addWidget(self.indx_sp_data)
-
         scan_v_layout.addWidget(QLabel("  "))
         refn_sp_label = QLabel("refined spots")
-        scan_v_layout.addWidget(refn_sp_label)
-        self.refn_sp_data = QLabel(empty_str)
-        scan_v_layout.addWidget(self.refn_sp_data)
-        '''
-
-        scan_v_layout.addWidget(QLabel("  "))
-        refn_sp_label = QLabel("strong spots")
         self.refn_sp_data = QLabel(empty_str)
         refn_hbox = QHBoxLayout()
         refn_hbox.addWidget(refn_sp_label)
         refn_hbox.addWidget(self.refn_sp_data)
         scan_v_layout.addLayout(refn_hbox)
 
-        
         scan_v_layout.addWidget(QLabel("  "))
-        itgr_sp_label = QLabel("strong spots")
+        itgr_sp_label = QLabel("integrated spots")
         self.itgr_sp_data = QLabel(empty_str)
         itgr_hbox = QHBoxLayout()
         itgr_hbox.addWidget(itgr_sp_label)
         itgr_hbox.addWidget(self.itgr_sp_data)
         scan_v_layout.addLayout(itgr_hbox)
-        '''
-        scan_v_layout.addWidget(QLabel("  "))
-        itgr_sp_label = QLabel("integrated spots")
-        scan_v_layout.addWidget(itgr_sp_label)
-        self.itgr_sp_data = QLabel(empty_str)
-        scan_v_layout.addWidget(self.itgr_sp_data)
-        '''
 
         scan_group.setLayout(scan_v_layout)
 
@@ -452,7 +440,6 @@ class InfoWidget( QWidget):
         detec_v_layout.addWidget(n_pans_label)
         self.n_pans_data = QLabel(empty_str)
         detec_v_layout.addWidget(self.n_pans_data)
-        detec_v_layout.addWidget(QLabel("  "))
 
         detec_v_layout.addWidget(QLabel("  "))
         pix_size_label = QLabel(" Pixel size ")
