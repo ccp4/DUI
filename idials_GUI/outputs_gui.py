@@ -207,6 +207,10 @@ class InfoWidget( QWidget):
         super(InfoWidget, self).__init__()
 
         #self.super_parent = parent.super_parent
+        try:
+            self.my_json_path = str(sys.argv[1])
+        except:
+            self.my_json_path = None
 
         empty_str = "__________"
 
@@ -521,7 +525,7 @@ class InfoWidget( QWidget):
         my_main_box.addStretch()
 
         #uncomment the next line only for debugging purpose
-        #self.update_data()
+        self.update_data(exp_json_path = self.my_json_path)
 
         self.setLayout(my_main_box)
         self.show()
