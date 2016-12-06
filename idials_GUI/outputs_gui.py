@@ -381,29 +381,60 @@ class InfoWidget( QWidget):
         self.e_time_data = QLabel(empty_str)
         scan_v_layout.addWidget(self.e_time_data)
 
-        scan_v_layout.addWidget(QLabel("  "))
-        strn_sp_label = QLabel(" Number of strong spots")
-        scan_v_layout.addWidget(strn_sp_label)
-        self.strn_sp_data = QLabel(empty_str)
-        scan_v_layout.addWidget(self.strn_sp_data)
 
         scan_v_layout.addWidget(QLabel("  "))
-        indx_sp_label = QLabel(" Number of indexed spots")
+        strn_sp_label = QLabel("strong spots")
+        self.strn_sp_data = QLabel(empty_str)
+        strn_hbox = QHBoxLayout()
+        strn_hbox.addWidget(strn_sp_label)
+        strn_hbox.addWidget(self.strn_sp_data)
+        scan_v_layout.addLayout(strn_hbox)
+
+        scan_v_layout.addWidget(QLabel("  "))
+        indx_sp_label = QLabel("strong spots")
+        self.indx_sp_data = QLabel(empty_str)
+        indx_hbox = QHBoxLayout()
+        indx_hbox.addWidget(indx_sp_label)
+        indx_hbox.addWidget(self.indx_sp_data)
+        scan_v_layout.addLayout(indx_hbox)
+
+        '''
+        scan_v_layout.addWidget(QLabel("  "))
+        indx_sp_label = QLabel("indexed spots")
         scan_v_layout.addWidget(indx_sp_label)
         self.indx_sp_data = QLabel(empty_str)
         scan_v_layout.addWidget(self.indx_sp_data)
 
         scan_v_layout.addWidget(QLabel("  "))
-        refn_sp_label = QLabel(" Number of refined spots")
+        refn_sp_label = QLabel("refined spots")
         scan_v_layout.addWidget(refn_sp_label)
         self.refn_sp_data = QLabel(empty_str)
         scan_v_layout.addWidget(self.refn_sp_data)
+        '''
 
         scan_v_layout.addWidget(QLabel("  "))
-        itgr_sp_label = QLabel(" Number of integrated spots")
+        refn_sp_label = QLabel("strong spots")
+        self.refn_sp_data = QLabel(empty_str)
+        refn_hbox = QHBoxLayout()
+        refn_hbox.addWidget(refn_sp_label)
+        refn_hbox.addWidget(self.refn_sp_data)
+        scan_v_layout.addLayout(refn_hbox)
+
+        
+        scan_v_layout.addWidget(QLabel("  "))
+        itgr_sp_label = QLabel("strong spots")
+        self.itgr_sp_data = QLabel(empty_str)
+        itgr_hbox = QHBoxLayout()
+        itgr_hbox.addWidget(itgr_sp_label)
+        itgr_hbox.addWidget(self.itgr_sp_data)
+        scan_v_layout.addLayout(itgr_hbox)
+        '''
+        scan_v_layout.addWidget(QLabel("  "))
+        itgr_sp_label = QLabel("integrated spots")
         scan_v_layout.addWidget(itgr_sp_label)
         self.itgr_sp_data = QLabel(empty_str)
         scan_v_layout.addWidget(self.itgr_sp_data)
+        '''
 
         scan_group.setLayout(scan_v_layout)
 
