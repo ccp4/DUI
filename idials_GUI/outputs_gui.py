@@ -286,12 +286,23 @@ class InfoWidget( QWidget):
         cell_data_layout.addWidget(self.gamma_data)
         cell_v_layout.addLayout(cell_data_layout)
 
+        '''
         cell_v_layout.addWidget(QLabel("  "))
         spgrp_label = QLabel(" Space Group")
         cell_v_layout.addWidget(spgrp_label)
         self.spgrp_data = QLabel(empty_str)
         cell_v_layout.addWidget(self.spgrp_data)
         cell_v_layout.addWidget(QLabel("  "))
+        '''
+        cell_v_layout.addWidget(QLabel("  "))
+        spgrp_label = QLabel(" Space Group")
+        self.spgrp_data = QLabel(empty_str)
+        spgrp_hbox = QHBoxLayout()
+        spgrp_hbox.addWidget(spgrp_label)
+        spgrp_hbox.addWidget(self.spgrp_data)
+        cell_v_layout.addLayout(spgrp_hbox)
+
+
 
         u_v_layout = QVBoxLayout()
         u_v_layout.addWidget(QLabel("  U matrix    "))
@@ -375,14 +386,6 @@ class InfoWidget( QWidget):
         oscil_h_layout.addLayout(oscil2_v_layout)
         scan_v_layout.addLayout(oscil_h_layout)
 
-        '''
-        scan_v_layout.addWidget(QLabel("  "))
-        e_time_label = QLabel(" Exposure time")
-        scan_v_layout.addWidget(e_time_label)
-        self.e_time_data = QLabel(empty_str)
-        scan_v_layout.addWidget(self.e_time_data)
-        '''
-
         scan_v_layout.addWidget(QLabel("  "))
         e_time_label = QLabel("Exposure time")
         self.e_time_data = QLabel(empty_str)
@@ -400,7 +403,7 @@ class InfoWidget( QWidget):
         strn_hbox.addWidget(self.strn_sp_data)
         scan_v_layout.addLayout(strn_hbox)
 
-        scan_v_layout.addWidget(QLabel("  "))
+        #scan_v_layout.addWidget(QLabel("  "))
         indx_sp_label = QLabel("Indexed spots")
         self.indx_sp_data = QLabel(empty_str)
         indx_hbox = QHBoxLayout()
@@ -408,7 +411,7 @@ class InfoWidget( QWidget):
         indx_hbox.addWidget(self.indx_sp_data)
         scan_v_layout.addLayout(indx_hbox)
 
-        scan_v_layout.addWidget(QLabel("  "))
+        #scan_v_layout.addWidget(QLabel("  "))
         refn_sp_label = QLabel("refined spots")
         self.refn_sp_data = QLabel(empty_str)
         refn_hbox = QHBoxLayout()
@@ -416,7 +419,7 @@ class InfoWidget( QWidget):
         refn_hbox.addWidget(self.refn_sp_data)
         scan_v_layout.addLayout(refn_hbox)
 
-        scan_v_layout.addWidget(QLabel("  "))
+        #scan_v_layout.addWidget(QLabel("  "))
         itgr_sp_label = QLabel("integrated spots")
         self.itgr_sp_data = QLabel(empty_str)
         itgr_hbox = QHBoxLayout()
@@ -429,20 +432,51 @@ class InfoWidget( QWidget):
         detec_group =  QGroupBox("      Detector    ")
         detec_v_layout = QVBoxLayout()
 
-        detec_v_layout.addWidget(QLabel("  "))
+        #detec_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel(" Sample - Detector \n       Distance ")
         detec_v_layout.addWidget(d_dist_label)
         self.d_dist_data = QLabel(empty_str)
         detec_v_layout.addWidget(self.d_dist_data)
 
-        detec_v_layout.addWidget(QLabel("  "))
+        #detec_v_layout.addWidget(QLabel("  "))
         n_pans_label = QLabel(" Number of panels ")
-        detec_v_layout.addWidget(n_pans_label)
         self.n_pans_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.n_pans_data)
+        n_pans_hbox = QHBoxLayout()
+        n_pans_hbox.addWidget(n_pans_label)
+        n_pans_hbox.addWidget(self.n_pans_data)
+        detec_v_layout.addLayout(n_pans_hbox)
 
+        '''
         detec_v_layout.addWidget(QLabel("  "))
-        pix_size_label = QLabel(" Pixel size ")
+        gain_label = QLabel(" Gain ")
+        detec_v_layout.addWidget(gain_label)
+        self.gain_data = QLabel(empty_str)
+        detec_v_layout.addWidget(self.gain_data)
+        '''
+        #detec_v_layout.addWidget(QLabel("  "))
+        gain_label = QLabel(" Gain ")
+        self.gain_data = QLabel(empty_str)
+        gain_hbox = QHBoxLayout()
+        gain_hbox.addWidget(gain_label)
+        gain_hbox.addWidget(self.gain_data)
+        detec_v_layout.addLayout(gain_hbox)
+        '''
+        detec_v_layout.addWidget(QLabel("  "))
+        max_res_label = QLabel(" Max resolution ")
+        detec_v_layout.addWidget(max_res_label)
+        self.max_res_data = QLabel(empty_str)
+        detec_v_layout.addWidget(self.max_res_data)
+        '''
+        #detec_v_layout.addWidget(QLabel("  "))
+        max_res_label = QLabel(" Max resolution ")
+        self.max_res_data = QLabel(empty_str)
+        max_res_hbox = QHBoxLayout()
+        max_res_hbox.addWidget(max_res_label)
+        max_res_hbox.addWidget(self.max_res_data)
+        detec_v_layout.addLayout(max_res_hbox)
+
+        #detec_v_layout.addWidget(QLabel("  "))
+        pix_size_label = QLabel("       Pixel size ")
         detec_v_layout.addWidget(pix_size_label)
 
         px_h_layout = QHBoxLayout()
@@ -465,16 +499,6 @@ class InfoWidget( QWidget):
         detec_v_layout.addLayout(px_h_layout)
 
         detec_v_layout.addWidget(QLabel("  "))
-        gain_label = QLabel(" Gain ")
-        detec_v_layout.addWidget(gain_label)
-        self.gain_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.gain_data)
-
-        detec_v_layout.addWidget(QLabel("  "))
-        max_res_label = QLabel(" Max resolution ")
-        detec_v_layout.addWidget(max_res_label)
-        self.max_res_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.max_res_data)
 
         detec_group.setLayout(detec_v_layout)
 
