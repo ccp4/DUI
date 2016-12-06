@@ -112,22 +112,18 @@ class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.super_parent = parent
+        my_box = QVBoxLayout()
+        my_box.addWidget(QLabel("AAAAAAAAAAAAAAAa TTTTTTest"))
+        my_box.addWidget()
+        self.setLayout(my_box)
+        self.show()
 '''
+
 class MyReindexOpts(QTableWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.super_parent = parent
-
-        #self = QTableWidget(self)
         self.cellClicked.connect(self.opt_clicked)
-        '''
-        my_box = QVBoxLayout()
-        my_box.addWidget(QLabel("AAAAAAAAAAAAAAAa TTTTTTest"))
-        my_box.addWidget(self)
-        self.setLayout(my_box)
-        #self.show()
-        '''
-
 
     def opt_clicked(self, row, col):
         #my_sender = self.sender()
