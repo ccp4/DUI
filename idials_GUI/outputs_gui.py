@@ -240,8 +240,7 @@ class InfoWidget( QWidget):
         bm_v_layout.addWidget(self.w_lambda_data)
         bm_v_layout.addWidget(QLabel("  "))
 
-        #TODO find the angstrom symbol
-
+        bm_v_layout.addStretch()
         beam_group.setLayout(bm_v_layout)
 
 
@@ -331,17 +330,17 @@ class InfoWidget( QWidget):
         u3n_data_layout.addWidget(self.u32_data)
         u3n_data_layout.addWidget(self.u33_data)
 
-
         u_v_layout.addLayout(u1n_data_layout)
-        u_v_layout.addWidget(QLabel("  "))
+        #u_v_layout.addWidget(QLabel("  "))
         u_v_layout.addLayout(u2n_data_layout)
-        u_v_layout.addWidget(QLabel("  "))
+        #u_v_layout.addWidget(QLabel("  "))
         u_v_layout.addLayout(u3n_data_layout)
         u_v_layout.addWidget(QLabel("  "))
 
         crys_v_layout = QVBoxLayout()
         crys_v_layout.addLayout(cell_v_layout)
         crys_v_layout.addLayout(u_v_layout)
+        crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
 
@@ -420,13 +419,22 @@ class InfoWidget( QWidget):
         scan_v_layout.addLayout(refn_hbox)
 
         #scan_v_layout.addWidget(QLabel("  "))
-        itgr_sp_label = QLabel("integrated spots")
-        self.itgr_sp_data = QLabel(empty_str)
-        itgr_hbox = QHBoxLayout()
-        itgr_hbox.addWidget(itgr_sp_label)
-        itgr_hbox.addWidget(self.itgr_sp_data)
-        scan_v_layout.addLayout(itgr_hbox)
+        itgr_prf_label = QLabel("prf int spots")
+        self.itgr_prf_data = QLabel(empty_str)
+        itgr_prf_hbox = QHBoxLayout()
+        itgr_prf_hbox.addWidget(itgr_prf_label)
+        itgr_prf_hbox.addWidget(self.itgr_prf_data)
+        scan_v_layout.addLayout(itgr_prf_hbox)
 
+        #scan_v_layout.addWidget(QLabel("  "))
+        itgr_sum_label = QLabel("sum int spots")
+        self.itgr_sum_data = QLabel(empty_str)
+        itgr_sum_hbox = QHBoxLayout()
+        itgr_sum_hbox.addWidget(itgr_sum_label)
+        itgr_sum_hbox.addWidget(self.itgr_sum_data)
+        scan_v_layout.addLayout(itgr_sum_hbox)
+
+        scan_v_layout.addStretch()
         scan_group.setLayout(scan_v_layout)
 
         detec_group =  QGroupBox("      Detector    ")
@@ -475,7 +483,7 @@ class InfoWidget( QWidget):
         max_res_hbox.addWidget(self.max_res_data)
         detec_v_layout.addLayout(max_res_hbox)
 
-        #detec_v_layout.addWidget(QLabel("  "))
+        detec_v_layout.addWidget(QLabel("  "))
         pix_size_label = QLabel("       Pixel size ")
         detec_v_layout.addWidget(pix_size_label)
 
@@ -499,7 +507,7 @@ class InfoWidget( QWidget):
         detec_v_layout.addLayout(px_h_layout)
 
         detec_v_layout.addWidget(QLabel("  "))
-
+        detec_v_layout.addStretch()
         detec_group.setLayout(detec_v_layout)
 
         inner_main_box = QHBoxLayout()
@@ -565,7 +573,8 @@ class InfoWidget( QWidget):
         update_data_label(self.strn_sp_data    , self.all_data.n_strng)
         update_data_label(self.indx_sp_data    , self.all_data.n_index)
         update_data_label(self.refn_sp_data    , self.all_data.n_refnd)
-        update_data_label(self.itgr_sp_data    , self.all_data.n_integ_sum)
+        update_data_label(self.itgr_sum_data    , self.all_data.n_integ_sum)
+        update_data_label(self.itgr_prf_data    , self.all_data.n_integ_prf)
 
         #update_data_label(self.n_integ_prf_data, self.all_data.n_integ_prf
 
