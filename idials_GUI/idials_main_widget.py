@@ -150,7 +150,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.embedded_reindex = False
+        self.embedded_reindex = True
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -283,7 +283,8 @@ class MainWidget(QMainWindow):
         else:
             self.idials_widget.goto(ini_index)
 
-
+    def closeEvent(self, event):
+        self.reindex_tool.close()
 
     def openFile(self):
         print "openFile"
