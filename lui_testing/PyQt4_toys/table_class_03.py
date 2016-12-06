@@ -69,10 +69,13 @@ class MyTable(QtGui.QTableWidget):
                     width_lst[col] = len(col_cont)
 
         print "width_lst =", width_lst
+        self.resizeColumnsToContents()
+        '''
+        for col_n, col_len in enumerate(width_lst):
+            #remember that with is given in pixels
+            self.setColumnWidth(col_n, (col_len+1) * 10)
+        '''
 
-        #remember that with is given in pixels
-        self.setColumnWidth(5, 50)
-        self.setColumnWidth(6, 288)
 
 
 class MainWidget(QtGui.QWidget):
