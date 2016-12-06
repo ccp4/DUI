@@ -107,41 +107,37 @@ class LeftSideTmpWidget( QWidget):
         self.my_label.setText("re - indexed")
 
 
-
-
+'''
+class MyReindexOpts(QWidget):
+    def __init__(self, parent=None):
+        super(MyReindexOpts, self).__init__(parent)
+        self.super_parent = parent
 '''
 class MyReindexOpts(QTableWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.super_parent = parent
-'''
 
-
-class MyReindexOpts(QWidget):
-    def __init__(self, parent=None):
-        super(MyReindexOpts, self).__init__(parent)
-        self.super_parent = parent
-        self.my_table = QTableWidget(self)
-        self.my_table.cellClicked.connect(self.opt_clicked)
-
+        #self = QTableWidget(self)
+        self.cellClicked.connect(self.opt_clicked)
+        '''
         my_box = QVBoxLayout()
         my_box.addWidget(QLabel("AAAAAAAAAAAAAAAa TTTTTTest"))
-        my_box.addWidget(self.my_table)
+        my_box.addWidget(self)
         self.setLayout(my_box)
         #self.show()
+        '''
 
 
     def opt_clicked(self, row, col):
         #my_sender = self.sender()
         print "Solution clicked =", row + 1
         self.super_parent.opt_picked(row + 1)
-        self.all_gray()
+        #self.all_gray()
         #my_sender.setStyleSheet("background-color: lightblue")
 
     def add_opts_lst(self, lst_labels = None, in_json_path = None):
-        '''
-    def setContent(self, data_content):
-        '''
+
         if( lst_labels == None ):
             lst_labels = ops_list_from_json(in_json_path)
 
@@ -150,8 +146,8 @@ class MyReindexOpts(QWidget):
         n_col = len(lst_labels[0])
         print "n_col =", n_col
 
-        self.my_table.setRowCount(n_row)
-        self.my_table.setColumnCount(n_col)
+        self.setRowCount(n_row)
+        self.setColumnCount(n_col)
         '''
         width_lst = []
         for pos in range(n_col):
@@ -162,13 +158,13 @@ class MyReindexOpts(QWidget):
             for col, col_cont in enumerate(row_cont):
                 item = QTableWidgetItem(col_cont)
                 item.setFlags(Qt.ItemIsEnabled)
-                self.my_table.setItem(row, col, item)
+                self.setItem(row, col, item)
                 '''
                 if( width_lst[col] < len(col_cont) ):
                     width_lst[col] = len(col_cont)
                 '''
 
-        self.my_table.resizeColumnsToContents()
+        self.resizeColumnsToContents()
         '''
         print "width_lst =", width_lst
         for col_n, col_len in enumerate(width_lst):
@@ -179,9 +175,9 @@ class MyReindexOpts(QWidget):
     def del_opts_lst(self):
 
         print "del_opts_lst"
-        self.my_table.clear()
-        self.my_table.setRowCount(1)
-        self.my_table.setColumnCount(1)
+        self.clear()
+        self.setRowCount(1)
+        self.setColumnCount(1)
 
         '''
         lng_lst = len(self.lst_ops)
@@ -192,10 +188,10 @@ class MyReindexOpts(QWidget):
             del btn_lst
 
         self.lst_ops = []
-        '''
 
     def all_gray(self):
         pass
+        '''
 
 
 
