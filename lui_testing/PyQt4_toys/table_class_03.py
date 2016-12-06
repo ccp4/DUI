@@ -55,12 +55,20 @@ class MyTable(QtGui.QTableWidget):
 
         self.setRowCount(n_row)
         self.setColumnCount(n_col)
+        width_lst = []
+        for pos in range(n_col):
+            width_lst.append(0)
 
         for row, row_cont in enumerate(data_content):
             for col, col_cont in enumerate(row_cont):
                 item = QtGui.QTableWidgetItem(col_cont)
                 item.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.setItem(row, col, item)
+
+                if( width_lst[col] < len(col_cont) ):
+                    width_lst[col] = len(col_cont)
+
+        print "width_lst =", width_lst
 
         #remember that with is given in pixels
         self.setColumnWidth(5, 50)

@@ -352,7 +352,7 @@ class MainWidget(QMainWindow):
         else:
             #self.output_wg.set_reindex_tab()
             #self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-            #self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
             self.reindex_tool.show()
 
     def start_pbar_motion(self):
