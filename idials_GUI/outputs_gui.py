@@ -423,7 +423,7 @@ class InfoWidget( QWidget):
         scan_v_layout.addLayout(refn_hbox)
 
         #scan_v_layout.addWidget(QLabel("  "))
-        itgr_prf_label = QLabel("prf int spots")
+        itgr_prf_label = QLabel("prof int spots")
         self.itgr_prf_data = QLabel(empty_str)
         itgr_prf_hbox = QHBoxLayout()
         itgr_prf_hbox.addWidget(itgr_prf_label)
