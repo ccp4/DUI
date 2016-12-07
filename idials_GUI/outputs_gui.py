@@ -40,15 +40,9 @@ class InfoData(object):
         self.gamma = None
         self.spg_group = None
 
-        self.u11 = None
-        self.u12 = None
-        self.u13 = None
-        self.u21 = None
-        self.u22 = None
-        self.u23 = None
-        self.u31 = None
-        self.u32 = None
-        self.u33 = None
+        self.r1 = None
+        self.r2 = None
+        self.r3 = None
 
         self.xb = None
         self.yb = None
@@ -134,6 +128,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
             sg = str(exp.crystal.get_space_group().info())
             print "\n spgr = ", sg, "\n"
+            dat.spg_group = sg
 
             u_mat = exp.crystal.get_U()
             #from dials.util.command_line import interactive_console; interactive_console(); 1/0
@@ -141,6 +136,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
             rot_angs = u_mat.r3_rotation_matrix_as_x_y_z_angles(deg=True)
 
             print "rot_angs =", rot_angs
+            dat.r1, dat.r2, dat.r3 = rot_angs
 
         #from_david_trick = '''
         #from dials.util.command_line import interactive_console; interactive_console(); 1/0
@@ -156,6 +152,9 @@ def update_all_data(reflections_path = None, experiments_path = None):
         pnl = exp.detector[pnl_beam_intersects]
         print "\nbeam_x, beam_y =", beam_x, beam_y, "\n"
 
+        dat.xb = beam_x
+        dat.yb = beam_y
+
         dist = pnl.get_distance()
 
         #print dir(pnl)
@@ -164,7 +163,6 @@ def update_all_data(reflections_path = None, experiments_path = None):
         print "dist                            ", dist
 
         dat.dd = dist
-        #dat.xb, dat.yb =
 
         dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
         dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
@@ -182,14 +180,21 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
 
 def update_data_label(data_label, data_info):
-    if( data_info == None ):
-        data_label.setText("   -      ")
-        data_label.setStyleSheet("background-color: white")
 
-    else:
+    if 'int' in str(type(data_info)):
+        data_label.setText(str(data_info))
+
+    elif 'float' in str(type(data_info)):
         rnd_nm = round(data_info, ndigits=4)
         data_label.setText(str(rnd_nm))
-        data_label.setStyleSheet("background-color: white")
+
+    elif 'str' in str(type(data_info)):
+        data_label.setText(data_info)
+
+    else:
+        data_label.setText("   -      ")
+
+    data_label.setStyleSheet("background-color: white")
 
 
 class InfoWidget( QWidget):
@@ -279,14 +284,6 @@ class InfoWidget( QWidget):
         cell_data_layout.addWidget(self.gamma_data)
         cell_v_layout.addLayout(cell_data_layout)
 
-        '''
-        cell_v_layout.addWidget(QLabel("  "))
-        spgrp_label = QLabel(" Space Group")
-        cell_v_layout.addWidget(spgrp_label)
-        self.spgrp_data = QLabel(empty_str)
-        cell_v_layout.addWidget(self.spgrp_data)
-        cell_v_layout.addWidget(QLabel("  "))
-        '''
         cell_v_layout.addWidget(QLabel("  "))
         spgrp_label = QLabel(" Space Group")
         self.spgrp_data = QLabel(empty_str)
@@ -297,43 +294,33 @@ class InfoWidget( QWidget):
 
 
 
-        u_v_layout = QVBoxLayout()
-        u_v_layout.addWidget(QLabel("  U matrix    "))
+        r_layout = QVBoxLayout()
+        r_layout.addWidget(QLabel("  "))
+        r_layout.addWidget(QLabel(" Crystal orientation "))
 
-        u1n_data_layout = QHBoxLayout()
-        self.u11_data = QLabel(empty_str)
-        self.u12_data = QLabel(empty_str)
-        self.u13_data = QLabel(empty_str)
-        u1n_data_layout.addWidget(self.u11_data)
-        u1n_data_layout.addWidget(self.u12_data)
-        u1n_data_layout.addWidget(self.u13_data)
+        r_label_layout = QHBoxLayout()
+        r1_label = QLabel(" R1 ")
+        r2_label = QLabel(" R2 ")
+        r3_label = QLabel(" R3 ")
+        r_label_layout.addWidget(r1_label)
+        r_label_layout.addWidget(r2_label)
+        r_label_layout.addWidget(r3_label)
 
-        u2n_data_layout = QHBoxLayout()
-        self.u21_data = QLabel(empty_str)
-        self.u22_data = QLabel(empty_str)
-        self.u23_data = QLabel(empty_str)
-        u2n_data_layout.addWidget(self.u21_data)
-        u2n_data_layout.addWidget(self.u22_data)
-        u2n_data_layout.addWidget(self.u23_data)
+        r_data_layout = QHBoxLayout()
+        self.r1_data = QLabel(empty_str)
+        self.r2_data = QLabel(empty_str)
+        self.r3_data = QLabel(empty_str)
+        r_data_layout.addWidget(self.r1_data)
+        r_data_layout.addWidget(self.r2_data)
+        r_data_layout.addWidget(self.r3_data)
 
-        u3n_data_layout = QHBoxLayout()
-        self.u31_data = QLabel(empty_str)
-        self.u32_data = QLabel(empty_str)
-        self.u33_data = QLabel(empty_str)
-        u3n_data_layout.addWidget(self.u31_data)
-        u3n_data_layout.addWidget(self.u32_data)
-        u3n_data_layout.addWidget(self.u33_data)
+        r_layout.addLayout(r_label_layout)
+        r_layout.addLayout(r_data_layout)
 
-        u_v_layout.addLayout(u1n_data_layout)
-        #u_v_layout.addWidget(QLabel("  "))
-        u_v_layout.addLayout(u2n_data_layout)
-        #u_v_layout.addWidget(QLabel("  "))
-        u_v_layout.addLayout(u3n_data_layout)
-        u_v_layout.addWidget(QLabel("  "))
 
         crys_v_layout = QVBoxLayout()
         crys_v_layout.addLayout(cell_v_layout)
-        crys_v_layout.addLayout(u_v_layout)
+        crys_v_layout.addLayout(r_layout)
         crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
@@ -448,13 +435,6 @@ class InfoWidget( QWidget):
         n_pans_hbox.addWidget(self.n_pans_data)
         detec_v_layout.addLayout(n_pans_hbox)
 
-        '''
-        detec_v_layout.addWidget(QLabel("  "))
-        gain_label = QLabel(" Gain ")
-        detec_v_layout.addWidget(gain_label)
-        self.gain_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.gain_data)
-        '''
         #detec_v_layout.addWidget(QLabel("  "))
         gain_label = QLabel(" Gain ")
         self.gain_data = QLabel(empty_str)
@@ -462,13 +442,7 @@ class InfoWidget( QWidget):
         gain_hbox.addWidget(gain_label)
         gain_hbox.addWidget(self.gain_data)
         detec_v_layout.addLayout(gain_hbox)
-        '''
-        detec_v_layout.addWidget(QLabel("  "))
-        max_res_label = QLabel(" Max resolution ")
-        detec_v_layout.addWidget(max_res_label)
-        self.max_res_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.max_res_data)
-        '''
+
         #detec_v_layout.addWidget(QLabel("  "))
         max_res_label = QLabel(" Max resolution ")
         self.max_res_data = QLabel(empty_str)
@@ -514,8 +488,7 @@ class InfoWidget( QWidget):
         my_main_box.addLayout(inner_main_box)
         my_main_box.addStretch()
 
-        #uncomment the next line only for debugging purpose
-        #self.update_data(exp_json_path = self.my_json_path)
+        self.update_data(exp_json_path = self.my_json_path)
 
         self.setLayout(my_main_box)
         self.show()
@@ -538,15 +511,10 @@ class InfoWidget( QWidget):
         update_data_label(self.beta_data , self.all_data.beta)
         update_data_label(self.gamma_data, self.all_data.gamma)
 
-        update_data_label(self.u11_data, self.all_data.u11)
-        update_data_label(self.u12_data, self.all_data.u12)
-        update_data_label(self.u13_data, self.all_data.u13)
-        update_data_label(self.u21_data, self.all_data.u21)
-        update_data_label(self.u22_data, self.all_data.u22)
-        update_data_label(self.u23_data, self.all_data.u23)
-        update_data_label(self.u31_data, self.all_data.u31)
-        update_data_label(self.u32_data, self.all_data.u32)
-        update_data_label(self.u33_data, self.all_data.u33)
+        update_data_label(self.r1_data, self.all_data.r1)
+        update_data_label(self.r2_data, self.all_data.r2)
+        update_data_label(self.r3_data, self.all_data.r3)
+
 
         update_data_label(self.img_ran1_data, self.all_data.img_ran1)
         update_data_label(self.img_ran2_data, self.all_data.img_ran2)
@@ -570,11 +538,10 @@ class InfoWidget( QWidget):
         update_data_label(self.strn_sp_data    , self.all_data.n_strng)
         update_data_label(self.indx_sp_data    , self.all_data.n_index)
         update_data_label(self.refn_sp_data    , self.all_data.n_refnd)
-        update_data_label(self.itgr_sum_data    , self.all_data.n_integ_sum)
-        update_data_label(self.itgr_prf_data    , self.all_data.n_integ_prf)
+        update_data_label(self.itgr_sum_data   , self.all_data.n_integ_sum)
+        update_data_label(self.itgr_prf_data   , self.all_data.n_integ_prf)
 
-        #update_data_label(self.n_integ_prf_data, self.all_data.n_integ_prf
-
+        update_data_label(self.spgrp_data   , self.all_data.spg_group)
 
 
 
