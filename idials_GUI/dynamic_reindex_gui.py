@@ -96,7 +96,7 @@ def ops_list_from_json(json_path = None):
 class LeftSideTmpWidget( QWidget):
     def __init__(self, parent = None):
         super(LeftSideTmpWidget, self).__init__()
-        self.super_parent = parent.super_parent
+        #self.super_parent = parent.super_parent
 
 
         vbox = QVBoxLayout()
@@ -131,6 +131,7 @@ class ReindexTable(QTableWidget):
         super(ReindexTable, self).__init__(parent)
         self.super_parent = parent.super_parent
         self.cellClicked.connect(self.opt_clicked)
+        self.show()
 
     def opt_clicked(self, row, col):
         #my_sender = self.sender()
@@ -315,6 +316,13 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
 
+        '''
+    def addQbuttonsList(self):
+        lst_labels = ops_list_from_json(self.my_json_path)
+
+        self.scroll_w_list = MyReindexOpts(self)
+        #self.scroll_w_list.add_opts_lst(lst_labels)
+        '''
 
     def doit(self):
         print "Opening a new popup window"

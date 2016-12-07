@@ -146,6 +146,7 @@ class CentreWidget( QWidget):
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
+        self.super_parent = self
 
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
@@ -241,7 +242,6 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.output_wg)
 
 
-        main_widget = QWidget()
         main_box = QVBoxLayout()
 
         main_box.setContentsMargins(QMargins(0,0,0,0))
@@ -252,8 +252,8 @@ class MainWidget(QMainWindow):
 
         self.bottom_bar_n_info = Text_w_Bar()
         main_box.addWidget(self.bottom_bar_n_info)
-        main_widget.setLayout(main_box)
         self.running = False
+
 
         menubar = self.menuBar()
 
@@ -264,9 +264,6 @@ class MainWidget(QMainWindow):
         configMenu = menubar.addMenu('config')
         configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
 
-        self.resize(1200, 900)
-        self.setCentralWidget(main_widget)
-        self.show()
 
         #starting where it left before
         ini_index = self.idials_widget.controller.get_current().index
@@ -282,6 +279,10 @@ class MainWidget(QMainWindow):
 
         else:
             self.idials_widget.goto(ini_index)
+
+        self.main_widget = QWidget()
+        self.main_widget.setLayout(main_box)
+        self.setCentralWidget(self.main_widget)
 
     def closeEvent(self, event):
         self.reindex_tool.close()
@@ -349,17 +350,21 @@ class MainWidget(QMainWindow):
         sumr_path = self.idials_widget.controller.get_summary()
         #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
         if( self.embedded_reindex ):
-            self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
 
         else:
-            #self.output_wg.set_reindex_tab()
-            #self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+            deprecated = '''
+            self.output_wg.set_reindex_tab()
+            self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            '''
 
+            #self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
             self.reindex_tool = MyReindexOpts(self)
-            self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-            self.reindex_tool.show()
+            #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
+            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
+
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.info_line.setText("Running")
@@ -398,7 +403,7 @@ class MainWidget(QMainWindow):
             elif( curr_command == "reindex" ):
                 print "Time to shrink back reindex GUI"
 
-                if( self.embedded_reindex == False ):
+                if( not(self.embedded_reindex) ):
                     #self.output_wg.set_pref_tab()
                     #self.current_widget.del_opts_lst()
                     self.reindex_tool.close()
@@ -480,10 +485,11 @@ class MainWidget(QMainWindow):
             if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
 
-            elif( self.embedded_reindex == False ):
+            elif( not(self.embedded_reindex) ):
                 #self.output_wg.set_pref_tab()
-                self.reindex_tool.close()
-                self.reindex_tool = None
+                if( self.reindex_tool != None ):
+                    self.reindex_tool.close()
+                    self.reindex_tool = None
 
             self._gray_unwanted()
 
@@ -502,6 +508,7 @@ class MainWidget(QMainWindow):
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = MainWidget()
+    ex.show()
     sys.exit(app.exec_())
 
 
