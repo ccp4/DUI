@@ -351,8 +351,9 @@ class MainWidget(QMainWindow):
         #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
         if( self.embedded_reindex ):
             #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
+
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
+            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
 
         else:
             deprecated = '''
