@@ -96,7 +96,9 @@ def ops_list_from_json(json_path = None):
 class LeftSideTmpWidget( QWidget):
     def __init__(self, parent = None):
         super(LeftSideTmpWidget, self).__init__()
-        self.super_parent = parent
+        self.super_parent = parent.super_parent
+
+
         vbox = QVBoxLayout()
         self.my_label = QLabel("Select Indexing option  ==>")
         vbox.addWidget(self.my_label)
@@ -111,19 +113,23 @@ class LeftSideTmpWidget( QWidget):
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
+
+    def set_ref(self, parent, in_json_path):
+
         self.super_parent = parent
         my_box = QVBoxLayout()
-        a_labl = QLabel("111 AAAAAAAAAAAAAAAa TTTTTTest")
-        my_box.addWidget(a_labl)
+        a_table = ReindexTable(self)
+        a_table.add_opts_lst(json_path = in_json_path)
+        my_box.addWidget(a_table)
         self.setLayout(my_box)
         self.show()
 
 
 
-class MyReindexOpts_1(QTableWidget):
+class ReindexTable(QTableWidget):
     def __init__(self, parent=None):
-        super(MyReindexOpts, self).__init__(parent)
-        self.super_parent = parent
+        super(ReindexTable, self).__init__(parent)
+        self.super_parent = parent.super_parent
         self.cellClicked.connect(self.opt_clicked)
 
     def opt_clicked(self, row, col):
@@ -133,10 +139,11 @@ class MyReindexOpts_1(QTableWidget):
         #self.all_gray()
         #my_sender.setStyleSheet("background-color: lightblue")
 
-    def add_opts_lst(self, lst_labels = None, in_json_path = None):
+    def add_opts_lst(self, lst_labels = None, json_path = None):
 
         if( lst_labels == None ):
-            lst_labels = ops_list_from_json(in_json_path)
+            print "json_path =", json_path
+            lst_labels = ops_list_from_json(json_path)
 
         n_row = len(lst_labels)
         print "n_row =", n_row
@@ -145,6 +152,7 @@ class MyReindexOpts_1(QTableWidget):
 
         self.setRowCount(n_row)
         self.setColumnCount(n_col)
+
         '''
         width_lst = []
         for pos in range(n_col):
@@ -286,9 +294,54 @@ class MyReindexOpts(QWidget):
 
 '''
 
+
+class MainWindow(QMainWindow):
+    def __init__(self, parent = None):
+        super(MainWindow, self).__init__(parent)
+        self.super_parent = self
+
+        self.btn1 = QPushButton("Click me", self)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("A1"))
+        vbox.addWidget(self.btn1)
+        vbox.addWidget(QLabel("B2"))
+
+        self.btn1.clicked.connect(self.doit)
+        self.my_pop = None
+
+        self.main_widget = QWidget(self)
+        self.main_widget.setLayout(vbox)
+        self.setCentralWidget(self.main_widget)
+
+
+
+    def doit(self):
+        print "Opening a new popup window"
+        #self.my_pop = MyPopup(tbl = [[1234,"abcd"],[5678,"efgh"]])
+        self.my_pop = MyReindexOpts()
+        self.my_pop.set_ref(parent = self, in_json_path = str(sys.argv[1]) )
+
+
+    def opt_picked(self, opt_num):
+        print "\n from dynamic_reindex_gui.py MainWindow"
+        print "opt_num =", opt_num, "\n"
+
+
+    def closeEvent(self, event):
+        print "<< closeEvent ( from QMainWindow) >>"
+        if( self.my_pop != None ):
+            self.my_pop.close()
+
+
+
+
+
+'''
 class MainWindow( QMainWindow):
     def __init__(self, parent = None):
         super(MainWindow, self).__init__(parent)
+        self.super_parent = self
 
         try:
             self.my_json_path = str(sys.argv[1])
@@ -304,7 +357,6 @@ class MainWindow( QMainWindow):
         self.mainLayout =  QVBoxLayout()
         self.mainLayout.addWidget(self.addButton)
         self.mainLayout.addWidget(self.delButton)
-        self.super_parent = self
 
         self.main_widget = QWidget(self)
         self.main_widget.setLayout(self.mainLayout)
@@ -323,7 +375,7 @@ class MainWindow( QMainWindow):
     def opt_picked(self, opt_num):
         print "\n from dynamic_reindex_gui.py MainWindow"
         print "opt_num =", opt_num, "\n"
-
+'''
 
 if __name__ == "__main__":
     app =  QApplication(sys.argv)
