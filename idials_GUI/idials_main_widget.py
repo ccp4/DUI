@@ -285,10 +285,11 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
     def closeEvent(self, event):
-        self.reindex_tool.close()
-        self.reindex_tool = None
-
-
+        try:
+            self.reindex_tool.close()
+            self.reindex_tool = None
+        except:
+            print "no need to close reindex tool"
 
     def openFile(self):
         print "openFile"
