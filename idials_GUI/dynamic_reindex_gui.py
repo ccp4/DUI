@@ -113,16 +113,21 @@ class LeftSideTmpWidget( QWidget):
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
+        self.super_parent = None
 
     def set_ref(self, parent, in_json_path):
+        if( self.super_parent == None ):
+            self.super_parent = parent
+            my_box = QVBoxLayout()
+            self.my_inner_table = ReindexTable(self)
+            self.my_inner_table.add_opts_lst(json_path = in_json_path)
+            my_box.addWidget(self.my_inner_table)
+            self.setLayout(my_box)
+            self.show()
+        else:
+            self.my_inner_table.del_opts_lst()
+            self.my_inner_table.add_opts_lst(json_path = in_json_path)
 
-        self.super_parent = parent
-        my_box = QVBoxLayout()
-        a_table = ReindexTable(self)
-        a_table.add_opts_lst(json_path = in_json_path)
-        my_box.addWidget(a_table)
-        self.setLayout(my_box)
-        self.show()
 
 
 
