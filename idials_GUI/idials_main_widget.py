@@ -151,7 +151,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.embedded_reindex = True
+        self.embedded_reindex = False
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -361,7 +361,7 @@ class MainWidget(QMainWindow):
             '''
 
             #self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
-            self.reindex_tool = MyReindexOpts(self)
+            self.reindex_tool = MyReindexOpts()
             #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
 
