@@ -122,7 +122,14 @@ class MyReindexOpts(QWidget):
             self.my_inner_table = ReindexTable(self)
             self.my_inner_table.add_opts_lst(json_path = in_json_path)
             my_box.addWidget(self.my_inner_table)
+            #my_box.addStretch()
             self.setLayout(my_box)
+
+            #print dir(self.my_inner_table)
+            #self.resize(1100, 700)
+            #print "self.my_inner_table.PdmWidth =", self.my_inner_table.PdmWidth
+
+            self.adjustSize()
             self.show()
         else:
             self.my_inner_table.del_opts_lst()
@@ -204,6 +211,44 @@ class ReindexTable(QTableWidget):
         pass
         '''
 
+
+
+
+class MainWindow(QMainWindow):
+    def __init__(self, parent = None):
+        super(MainWindow, self).__init__(parent)
+        self.super_parent = self
+
+        self.btn1 = QPushButton("Click me", self)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("A1"))
+        vbox.addWidget(self.btn1)
+        vbox.addWidget(QLabel("B2"))
+
+        self.btn1.clicked.connect(self.doit)
+        self.my_pop = None
+
+        self.main_widget = QWidget(self)
+        self.main_widget.setLayout(vbox)
+        self.setCentralWidget(self.main_widget)
+
+    def doit(self):
+        print "Opening a new popup window"
+        #self.my_pop = MyPopup(tbl = [[1234,"abcd"],[5678,"efgh"]])
+        self.my_pop = MyReindexOpts()
+        self.my_pop.set_ref(parent = self, in_json_path = str(sys.argv[1]) )
+
+
+    def opt_picked(self, opt_num):
+        print "\n from dynamic_reindex_gui.py MainWindow"
+        print "opt_num =", opt_num, "\n"
+
+
+    def closeEvent(self, event):
+        print "<< closeEvent ( from QMainWindow) >>"
+        if( self.my_pop != None ):
+            self.my_pop.close()
 
 
 
@@ -300,57 +345,7 @@ class MyReindexOpts(QWidget):
 
 '''
 
-
-class MainWindow(QMainWindow):
-    def __init__(self, parent = None):
-        super(MainWindow, self).__init__(parent)
-        self.super_parent = self
-
-        self.btn1 = QPushButton("Click me", self)
-
-        vbox = QVBoxLayout()
-        vbox.addWidget(QLabel("A1"))
-        vbox.addWidget(self.btn1)
-        vbox.addWidget(QLabel("B2"))
-
-        self.btn1.clicked.connect(self.doit)
-        self.my_pop = None
-
-        self.main_widget = QWidget(self)
-        self.main_widget.setLayout(vbox)
-        self.setCentralWidget(self.main_widget)
-
-
-        '''
-    def addQbuttonsList(self):
-        lst_labels = ops_list_from_json(self.my_json_path)
-
-        self.scroll_w_list = MyReindexOpts(self)
-        #self.scroll_w_list.add_opts_lst(lst_labels)
-        '''
-
-    def doit(self):
-        print "Opening a new popup window"
-        #self.my_pop = MyPopup(tbl = [[1234,"abcd"],[5678,"efgh"]])
-        self.my_pop = MyReindexOpts()
-        self.my_pop.set_ref(parent = self, in_json_path = str(sys.argv[1]) )
-
-
-    def opt_picked(self, opt_num):
-        print "\n from dynamic_reindex_gui.py MainWindow"
-        print "opt_num =", opt_num, "\n"
-
-
-    def closeEvent(self, event):
-        print "<< closeEvent ( from QMainWindow) >>"
-        if( self.my_pop != None ):
-            self.my_pop.close()
-
-
-
-
-
-'''
+button_case = '''
 class MainWindow( QMainWindow):
     def __init__(self, parent = None):
         super(MainWindow, self).__init__(parent)
