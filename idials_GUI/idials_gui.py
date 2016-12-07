@@ -239,6 +239,7 @@ class IdialsInnerrWidget( QWidget):
 
         exp_json_path = None
         refl_pikl_path = None
+        dblock_json_path = None
 
         try:
             exp_json_path = self.controller.get_current().experiments
@@ -250,10 +251,17 @@ class IdialsInnerrWidget( QWidget):
         try:
             refl_pikl_path = self.controller.get_current().reflections
         except:
-            print "failed to find <<< refl_pikl_path >>>"
+            print "failed to find << refl_pikl_path >>"
 
-        self.super_parent.info_widget.update_data(exp_json_path = exp_json_path,
+        try:
+            dblock_json_path = self.controller.get_current().datablock
+        except:
+            print "failed to find << dblock_json_path >>"
+
+        self.super_parent.info_widget.update_data(dblock_json_path = dblock_json_path,
+                                                  exp_json_path = exp_json_path,
                                                   refl_pikl_path = refl_pikl_path)
+
 
     def prv_clicked(self):
         print "prv_clicked(self)"

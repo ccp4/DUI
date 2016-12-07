@@ -26,6 +26,8 @@ from python_qt_bind import *
 from img_viewer.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
 from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+from dxtbx.model.experiment.experiment_list import ExperimentList, Experiment
+from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 class InfoData(object):
     def __init__(self):
@@ -93,100 +95,88 @@ def update_all_data(reflections_path = None, experiments_path = None):
         except:
             print "failed to find reflections"
 
+    if(experiments_path != None):
+
+        print "trying experiments"
         try:
             experiments = ExperimentListFactory.from_json_file(
                           experiments_path, check_format=False)
+        except:
+            try:
+                # FIXME here only take the first datablock. What if there are more?
+                datablock = DataBlockFactory.from_serialized_format(experiments_path, check_format=False)[0]
 
-            print "len(experiments)", len(experiments)
+                # FIXME here only take the first model from each
+                beam = datablock.unique_beams()[0]
+                detector = datablock.unique_detectors()[0]
+                scan = datablock.unique_scans()[0]
 
-            exp = experiments[0]
+                # build a pseudo ExperimentList (with empty crystals)
+                experiments=ExperimentList()
+                experiments.append(Experiment(
+                    beam=beam, detector=detector, scan=scan))
+
+            except ValueError:
+                print "failed to read json file"
+                return dat
+
+        print "len(experiments)", len(experiments)
+
+        # FIXME take just the first experiment. What if there are more?
+        exp = experiments[0]
+
+        # Get crystal data
+        if exp.crystal is not None:
             unit_cell = exp.crystal.get_unit_cell()
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
             b_mat = exp.crystal.get_B()
             dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
 
-        except:
-            print "Unable to find cell data"
+            sg = str(exp.crystal.get_space_group().info())
+            print "\n spgr = ", sg, "\n"
 
-    if(experiments_path != None):
-        '''
-        try:
-            experiments = ExperimentListFactory.from_json_file(
-                          experiments_path, check_format=False)
-
-            print "len(experiments)", len(experiments)
-
-            exp = experiments[0]
             u_mat = exp.crystal.get_U()
-
-            dat.w_lambda = exp.beam.get_wavelength()
-
+            #from dials.util.command_line import interactive_console; interactive_console(); 1/0
             dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+            rot_angs = u_mat.r3_rotation_matrix_as_x_y_z_angles(deg=True)
 
-            #TODO find the right way to find Distance
-            for expt in experiments:
-                for panel in expt.detector:
-                    print 'Origin:', panel.get_origin()
-                    dat.dd = panel.get_distance()
-                    print 'Distance (mm)', dat.dd
-                try:
-                    # does the beam intersect with the panel?
-                    dat.xb, dat.yb = panel.get_beam_centre(expt.beam.get_s0())
-                except:
-                    print"RuntimeError, e:"
-        '''
+            print "rot_angs =", rot_angs
 
-        try:
-            experiments = ExperimentListFactory.from_json_file(
-                          experiments_path, check_format=False)
+        #from_david_trick = '''
+        #from dials.util.command_line import interactive_console; interactive_console(); 1/0
+        #'''
 
-            print "len(experiments)", len(experiments)
+        # Get beam data
+        dat.w_lambda = exp.beam.get_wavelength()
 
-            exp = experiments[0]
+        # Get detector data
+        # assume details for the panel the beam intersects are the same for the whole detector
+        pnl_beam_intersects, (beam_x, beam_y) = \
+            exp.detector.get_ray_intersection(exp.beam.get_s0())
+        pnl = exp.detector[pnl_beam_intersects]
+        print "\nbeam_x, beam_y =", beam_x, beam_y, "\n"
 
-        except:
-            print "Unable to find instrument"
+        dist = pnl.get_distance()
 
-        try:
+        #print dir(pnl)
 
-            dat.w_lambda = exp.beam.get_wavelength()
-            u_mat = exp.crystal.get_U()
-            dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+        print "pnl_beam_intersects             ", pnl_beam_intersects
+        print "dist                            ", dist
 
-        except:
-            print "failed to read json file"
+        dat.dd = dist
+        #dat.xb, dat.yb =
 
-        try:
+        dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
+        dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
 
-            # assume details for the panel the beam intersects are the same for the whole detector
-            pnl_beam_intersects = exp.detector.get_ray_intersection(exp.beam.get_s0())[0]
-            pnl = exp.detector[pnl_beam_intersects]
-            dist = pnl.get_distance()
+        # is the next line right? check what dials.show does
+        dat.e_time = max(exp.scan.get_exposure_times())
+        #print set(exp.scan.get_exposure_times())
 
-            #print dir(pnl)
-
-            print "pnl_beam_intersects             ", pnl_beam_intersects
-            print "dist                            ", dist
-
-            dat.dd = dist
-            #dat.xb, dat.yb =
-
-
-            dat.img_ran1, dat.img_ran2 = exp.scan.get_image_range()
-            dat.oscil1, dat.oscil2 = exp.scan.get_oscillation()
-
-            # is the next line right? check what dials.show does
-            dat.e_time = max(exp.scan.get_exposure_times())
-            #print set(exp.scan.get_exposure_times())
-
-            dat.n_pans = len(exp.detector)
-            dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
-            dat.gain = pnl.get_gain()
-            dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
-
-
-        except:
-            print "failed to read json file #2"
+        dat.n_pans = len(exp.detector)
+        dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
+        dat.gain = pnl.get_gain()
+        dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
 
     return dat
 
@@ -525,14 +515,17 @@ class InfoWidget( QWidget):
         my_main_box.addStretch()
 
         #uncomment the next line only for debugging purpose
-        self.update_data(exp_json_path = self.my_json_path)
+        #self.update_data(exp_json_path = self.my_json_path)
 
         self.setLayout(my_main_box)
         self.show()
 
-    def update_data(self, exp_json_path = None, refl_pikl_path = None):
+    def update_data(self, dblock_json_path = None, exp_json_path = None, refl_pikl_path = None):
 
         print "\nrefl_pikl_path =", refl_pikl_path,"\n"
+
+        if( dblock_json_path != None ):
+            exp_json_path = dblock_json_path
 
         self.all_data = update_all_data(experiments_path = exp_json_path,
                                         reflections_path = refl_pikl_path)
