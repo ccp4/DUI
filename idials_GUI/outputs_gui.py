@@ -299,9 +299,9 @@ class InfoWidget( QWidget):
         r_layout.addWidget(QLabel(" Crystal orientation "))
 
         r_label_layout = QHBoxLayout()
-        r1_label = QLabel(" R1 ")
-        r2_label = QLabel(" R2 ")
-        r3_label = QLabel(" R3 ")
+        r1_label = QLabel("   R1 ")
+        r2_label = QLabel("   R2 ")
+        r3_label = QLabel("   R3 ")
         r_label_layout.addWidget(r1_label)
         r_label_layout.addWidget(r2_label)
         r_label_layout.addWidget(r3_label)
