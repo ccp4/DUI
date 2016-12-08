@@ -74,7 +74,7 @@ def ops_list_from_json(json_path = None):
             elif( inner_key ==  "recommended" ):
                 recommended_val = value["recommended"]
                 if( recommended_val == True ):
-                    recommended_str = " *"
+                    recommended_str = " Y"
                 else:
                     recommended_str = "  "
 
@@ -185,12 +185,19 @@ class ReindexTable(QTableWidget):
         self.setRowCount(n_row)
         self.setColumnCount(n_col - 1)
 
+        '''
+        single_lin_lst = [int(key), angular_diff_str , rmsd_str , min_cc_str, max_cc_str ,
+                       bravais_str , unit_cell_str1 , unit_cell_str2 , recommended_str]
+        '''
 
-        left_margin_str = "   "
+        left_margin_str = "     "
         alpha_str = left_margin_str + u"\u03B1"
         beta_str = left_margin_str + u"\u03B2"
         gamma_str = left_margin_str + u"\u03B3"
-        header_label_lst = ["dat","datt"," more dat", "  something", "sym","   a    b    c",alpha_str + beta_str + gamma_str, "Ok"]
+
+        #thump_up
+
+        header_label_lst = ["ang diff","rmsd"," min cc", "max cc", "sym","   a     b     c",alpha_str + beta_str + gamma_str, "Ok"]
         self.setHorizontalHeaderLabels(header_label_lst)
 
         '''
