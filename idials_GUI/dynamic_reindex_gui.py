@@ -76,7 +76,7 @@ def ops_list_from_json(json_path = None):
                 if( recommended_val == True ):
                     recommended_str = " Y"
                 else:
-                    recommended_str = "  "
+                    recommended_str = " N"
 
         single_lin_lst = [int(key), angular_diff_str , rmsd_str , min_cc_str, max_cc_str ,
                        bravais_str , unit_cell_str1 , unit_cell_str2 , recommended_str]
@@ -210,6 +210,18 @@ class ReindexTable(QTableWidget):
             for col, col_cont in enumerate(row_cont[1:]):
                 item = QTableWidgetItem(col_cont)
                 item.setFlags(Qt.ItemIsEnabled)
+                if(col_cont == " Y"):
+                    item.setBackground(Qt.green)
+
+                elif(col_cont == " N"):
+                    item.setBackground(Qt.red)
+
+                else:
+                    if(float(row) / 2.0 == int(float(row) / 2.0)):
+                        item.setBackground(QColor(50,50,50,50))
+                    else:
+                        item.setBackground(Qt.white)
+
                 self.setItem(row, col, item)
                 '''
                 if( width_lst[col] < len(col_cont) ):
