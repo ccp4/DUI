@@ -203,7 +203,9 @@ class ReindexTable(QTableWidget):
 
         #separate a,b,c alpha, beta gamma
         #try the subscript thing
-        header_label_lst = [delta_max_str,"rmsd"," min cc", "max cc", "latt","   a     b     c", alpha_str + beta_str + gamma_str, "Ok"]
+        header_label_lst = [delta_max_str, "rmsd"," min cc", "max cc", "latt",
+                            "   a     b     c", alpha_str + beta_str + gamma_str, "Ok"]
+
         self.setHorizontalHeaderLabels(header_label_lst)
 
         '''
