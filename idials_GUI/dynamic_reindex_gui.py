@@ -122,12 +122,11 @@ class MyReindexOpts(QWidget):
             self.my_inner_table = ReindexTable(self)
             self.my_inner_table.add_opts_lst(json_path = in_json_path)
             my_box.addWidget(self.my_inner_table)
-            #my_box.addStretch()
             self.setLayout(my_box)
 
             #print dir(self.my_inner_table)
             n_col = self.my_inner_table.columnCount()
-            tot_width = 30
+            tot_width = 80
             for col in xrange(n_col):
                 loc_width = self.my_inner_table.columnWidth(col)
                 print "self.my_inner_table.columnWidth(col)", loc_width
@@ -175,7 +174,7 @@ class ReindexTable(QTableWidget):
         print "n_col =", n_col
 
         self.setRowCount(n_row)
-        self.setColumnCount(n_col)
+        self.setColumnCount(n_col - 1)
 
         '''
         width_lst = []
@@ -184,7 +183,7 @@ class ReindexTable(QTableWidget):
         '''
 
         for row, row_cont in enumerate(lst_labels):
-            for col, col_cont in enumerate(row_cont):
+            for col, col_cont in enumerate(row_cont[1:]):
                 item = QTableWidgetItem(col_cont)
                 item.setFlags(Qt.ItemIsEnabled)
                 self.setItem(row, col, item)
