@@ -130,13 +130,15 @@ class CentreWidget( QWidget):
         main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
 
-        h_or_v_box = QVBoxLayout()
-        h_or_v_box.setContentsMargins(QMargins(0,0,0,0))
-        h_or_v_box.setSpacing(0)
+        main_box.addWidget(widget_buts)
 
-        h_or_v_box.addWidget(widget_buts)
-        h_or_v_box.addWidget(go_btn)
-        main_box.addLayout(h_or_v_box)
+        stop_n_go_box = QHBoxLayout()
+        btn_stop = QPushButton("Stop", self)
+        stop_n_go_box.addWidget(btn_stop)
+        stop_n_go_box.addWidget(go_btn)
+
+        main_box.addLayout(stop_n_go_box)
+
         main_box.addWidget(param_widg)
 
         self.setLayout(main_box)
