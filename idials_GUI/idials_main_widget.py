@@ -135,7 +135,7 @@ class CentreWidget( QWidget):
         stop_n_go_box = QHBoxLayout()
         #stop_n_go_box.setContentsMargins(QMargins(0,0,0,0))
         stop_n_go_box.setSpacing(0)
-        btn_stop = QPushButton("Stop", self)
+        btn_stop = QPushButton("\n  Stop  \n", self)
         #btn_stop.setContentsMargins(QMargins(0,0,0,0))
         btn_stop.setIcon(QIcon.fromTheme("process-stop"))
 
@@ -212,7 +212,7 @@ class MainWidget(QMainWindow):
 
 
 
-        self.btn_go =  QPushButton('Run', self)
+        self.btn_go =  QPushButton('\n Run \n', self)
         self.btn_go.setIcon(QIcon(dials_logo_path))
         self.btn_go.setIconSize(QSize(80, 48))
         self.btn_go.clicked.connect(self.btn_go_clicked)
