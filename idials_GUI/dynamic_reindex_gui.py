@@ -53,7 +53,15 @@ def ops_list_from_json(json_path = None):
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
                 uc_a = unit_cell_val[3:6]
+                unit_cell_str1 = "{:6.3}".format(uc_d[0]) \
+                               + "{:6.3}".format(uc_d[1]) \
+                               + "{:6.3}".format(uc_d[2])
 
+                unit_cell_str2 = "{:7.4}".format(uc_a[0]) \
+                               + "{:7.4}".format(uc_a[1]) \
+                               + "{:7.4}".format(uc_a[2])
+
+                button_case = '''
                 unit_cell_str = "({:6.3}".format(uc_d[0]) \
                               + " {:6.3}".format(uc_d[1]) \
                               + " {:6.3})".format(uc_d[2]) \
@@ -61,6 +69,7 @@ def ops_list_from_json(json_path = None):
                               + "({:7.4}".format(uc_a[0]) \
                               +  "{:7.4}".format(uc_a[1]) \
                               +  "{:7.4})".format(uc_a[2]) \
+                '''
 
             elif( inner_key ==  "recommended" ):
                 recommended_val = value["recommended"]
@@ -69,8 +78,8 @@ def ops_list_from_json(json_path = None):
                 else:
                     recommended_str = "  "
 
-        single_lin_lst = [int(key), angular_diff_str , rmsd_str , min_cc_str,
-                       max_cc_str , bravais_str , unit_cell_str , recommended_str]
+        single_lin_lst = [int(key), angular_diff_str , rmsd_str , min_cc_str, max_cc_str ,
+                       bravais_str , unit_cell_str1 , unit_cell_str2 , recommended_str]
 
         button_case = '''
         single_lin_lst = [int(key), angular_diff_str + rmsd_str + min_cc_str

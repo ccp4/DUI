@@ -247,9 +247,9 @@ class InfoWidget( QWidget):
         cell_group =  QGroupBox(" Crystal Cell ")
         cell_v_layout = QVBoxLayout()
 
-        a_label = QLabel("   a ")
-        b_label = QLabel("   b ")
-        c_label = QLabel("   c ")
+        a_label = QLabel("    a ")
+        b_label = QLabel("    b ")
+        c_label = QLabel("    c ")
         cell_label_d_layout = QHBoxLayout()
         cell_label_d_layout.addWidget(a_label)
         cell_label_d_layout.addWidget(b_label)
@@ -266,9 +266,15 @@ class InfoWidget( QWidget):
         cell_v_layout.addLayout(cell_data_layout)
         cell_v_layout.addWidget(QLabel("  "))
 
-        alpha_label = QLabel("  alpha ")
-        beta_label = QLabel("   beta ")
-        gamma_label = QLabel("  gamma ")
+        left_margin_str = "    "
+        alpha_str = left_margin_str + u"\u03B1"
+        beta_str = left_margin_str + u"\u03B2"
+        gamma_str = left_margin_str + u"\u03B3"
+
+        alpha_label = QLabel(alpha_str)
+        beta_label = QLabel(beta_str)
+        gamma_label = QLabel(gamma_str)
+
         cell_label_a_layout = QHBoxLayout()
         cell_label_a_layout.addWidget(alpha_label)
         cell_label_a_layout.addWidget(beta_label)
