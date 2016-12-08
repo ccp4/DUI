@@ -134,6 +134,9 @@ class CentreWidget( QWidget):
 
         stop_n_go_box = QHBoxLayout()
         btn_stop = QPushButton("Stop", self)
+
+        btn_stop.setIcon(QIcon.fromTheme("process-stop"))
+
         stop_n_go_box.addWidget(btn_stop)
         stop_n_go_box.addWidget(go_btn)
 
