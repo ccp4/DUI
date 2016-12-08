@@ -185,6 +185,14 @@ class ReindexTable(QTableWidget):
         self.setRowCount(n_row)
         self.setColumnCount(n_col - 1)
 
+
+        left_margin_str = "   "
+        alpha_str = left_margin_str + u"\u03B1"
+        beta_str = left_margin_str + u"\u03B2"
+        gamma_str = left_margin_str + u"\u03B3"
+        header_label_lst = ["dat","datt"," more dat", "  something", "sym","   a    b    c",alpha_str + beta_str + gamma_str, "Ok"]
+        self.setHorizontalHeaderLabels(header_label_lst)
+
         '''
         width_lst = []
         for pos in range(n_col):
