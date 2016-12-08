@@ -126,10 +126,21 @@ class MyReindexOpts(QWidget):
             self.setLayout(my_box)
 
             #print dir(self.my_inner_table)
-            #self.resize(1100, 700)
+            n_col = self.my_inner_table.columnCount()
+            tot_width = 30
+            for col in xrange(n_col):
+                loc_width = self.my_inner_table.columnWidth(col)
+                print "self.my_inner_table.columnWidth(col)", loc_width
+                tot_width += loc_width
+
+            n_row = self.my_inner_table.rowCount()
+            row_height = self.my_inner_table.rowHeight(1)
+            tot_heght = (n_row + 2) * row_height
+
+            self.resize(tot_width, tot_heght)
             #print "self.my_inner_table.PdmWidth =", self.my_inner_table.PdmWidth
 
-            self.adjustSize()
+            #self.adjustSize()
             self.show()
         else:
             self.my_inner_table.del_opts_lst()
