@@ -127,14 +127,16 @@ class CentreWidget( QWidget):
     def __call__(self, widget_buts = None, go_btn = None, param_widg = None):
 
         main_box = QVBoxLayout()
-        main_box.setContentsMargins(QMargins(0,0,0,0))
+        #main_box.setContentsMargins(QMargins(0,0,0,0))
         main_box.setSpacing(0)
 
         main_box.addWidget(widget_buts)
 
         stop_n_go_box = QHBoxLayout()
+        #stop_n_go_box.setContentsMargins(QMargins(0,0,0,0))
+        stop_n_go_box.setSpacing(0)
         btn_stop = QPushButton("Stop", self)
-
+        #btn_stop.setContentsMargins(QMargins(0,0,0,0))
         btn_stop.setIcon(QIcon.fromTheme("process-stop"))
 
         stop_n_go_box.addWidget(btn_stop)
