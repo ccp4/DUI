@@ -244,7 +244,7 @@ class InfoWidget( QWidget):
 
 
 
-        cell_group =  QGroupBox(" Crystal Cell ")
+        cell_group =  QGroupBox(" Crystal ")
         cell_v_layout = QVBoxLayout()
 
         a_label = QLabel("    a ")
@@ -302,12 +302,12 @@ class InfoWidget( QWidget):
 
         r_layout = QVBoxLayout()
         r_layout.addWidget(QLabel("  "))
-        r_layout.addWidget(QLabel(" Crystal orientation "))
+        r_layout.addWidget(QLabel(" Orientation (deg) "))
 
         r_label_layout = QHBoxLayout()
-        r1_label = QLabel("   R1 ")
-        r2_label = QLabel("   R2 ")
-        r3_label = QLabel("   R3 ")
+        r1_label = QLabel(" rot X")
+        r2_label = QLabel(" rot Y")
+        r3_label = QLabel(" rot Z")
         r_label_layout.addWidget(r1_label)
         r_label_layout.addWidget(r2_label)
         r_label_layout.addWidget(r3_label)
@@ -428,7 +428,7 @@ class InfoWidget( QWidget):
         detec_v_layout = QVBoxLayout()
 
         #detec_v_layout.addWidget(QLabel("  "))
-        d_dist_label = QLabel(" Sample - Detector \n       Distance ")
+        d_dist_label = QLabel(" Distance (mm)")
         detec_v_layout.addWidget(d_dist_label)
         self.d_dist_data = QLabel(empty_str)
         detec_v_layout.addWidget(self.d_dist_data)
@@ -450,7 +450,7 @@ class InfoWidget( QWidget):
         detec_v_layout.addLayout(gain_hbox)
 
         #detec_v_layout.addWidget(QLabel("  "))
-        max_res_label = QLabel(" Max resolution ")
+        max_res_label = QLabel(" Max res (" + u"\u212B" + ")")
         self.max_res_data = QLabel(empty_str)
         max_res_hbox = QHBoxLayout()
         max_res_hbox.addWidget(max_res_label)
