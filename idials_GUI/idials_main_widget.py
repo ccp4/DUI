@@ -212,7 +212,7 @@ class MainWidget(QMainWindow):
 
 
 
-        self.btn_go =  QPushButton('\n Run \n', self)
+        self.btn_go =  QPushButton('\n          Run              \'\n', self)
         self.btn_go.setIcon(QIcon(dials_logo_path))
         self.btn_go.setIconSize(QSize(80, 48))
         self.btn_go.clicked.connect(self.btn_go_clicked)
