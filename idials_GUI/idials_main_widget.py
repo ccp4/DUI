@@ -124,7 +124,7 @@ class CentreWidget( QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__(parent)
 
-    def __call__(self, widget_buts = None, go_btn = None, param_widg = None):
+    def __call__(self, widget_buts = None, btn_stop = None, go_btn = None, param_widg = None):
 
         main_box = QVBoxLayout()
         #main_box.setContentsMargins(QMargins(0,0,0,0))
@@ -135,10 +135,6 @@ class CentreWidget( QWidget):
         stop_n_go_box = QHBoxLayout()
         #stop_n_go_box.setContentsMargins(QMargins(0,0,0,0))
         stop_n_go_box.setSpacing(0)
-        btn_stop = QPushButton("\n  Stop  \n", self)
-        #btn_stop.setContentsMargins(QMargins(0,0,0,0))
-        btn_stop.setIcon(QIcon.fromTheme("process-stop"))
-
         stop_n_go_box.addWidget(btn_stop)
         stop_n_go_box.addWidget(go_btn)
 
@@ -210,18 +206,20 @@ class MainWidget(QMainWindow):
         buttons_widget.setLayout(v_left_box)
         self._refrech_btn_look()
 
-
+        self.btn_stop = QPushButton("\n  Stop  \n", self)
+        #self.btn_stop.setContentsMargins(QMargins(0,0,0,0))
+        self.btn_stop.setIcon(QIcon.fromTheme("process-stop"))
 
         self.btn_go =  QPushButton('\n          Run              \'\n', self)
         self.btn_go.setIcon(QIcon(dials_logo_path))
         self.btn_go.setIconSize(QSize(80, 48))
         self.btn_go.clicked.connect(self.btn_go_clicked)
-
+        self.btn_stop.clicked.connect(self.btn_stop_clicked)
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
         self.idials_widget.rtime_txt_on = True
 
         centre_widget = CentreWidget(self)
-        centre_widget(buttons_widget, self.btn_go, self.step_param_widg)
+        centre_widget(buttons_widget, self.btn_stop, self.btn_go, self.step_param_widg)
 
         v_control_splitter = QSplitter()
         if( self.embedded_reindex ):
@@ -345,6 +343,12 @@ class MainWidget(QMainWindow):
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
         self.idials_widget.change_parameter(new_par_str)
+
+    def btn_stop_clicked(self):
+        if( self.running == True ):
+            #self._gray_unwanted()
+            self.idials_widget.stop_clicked()
+            self.running = False
 
     def btn_go_clicked(self):
         if( self.running == False ):

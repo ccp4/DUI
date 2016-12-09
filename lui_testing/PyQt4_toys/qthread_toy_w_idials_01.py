@@ -16,6 +16,10 @@ class StdOut(QObject):
 
 class MyThread (QThread):
 
+    def __init__(self, parent = None):
+        super(MyThread, self).__init__(parent)
+        print "\n\n MyThread(__init__)"
+
     def set_controler(self, controller):
         self.to_run = controller
         self.handler = StdOut()
@@ -41,6 +45,10 @@ class Example(QWidget):
         main_box.addWidget(self.pushbutton)
         self.pushbutton.clicked.connect(self.start_thread)
 
+        self.stopbutton = QPushButton('Stop Me')
+        main_box.addWidget(self.stopbutton)
+        self.stopbutton.clicked.connect(self.stop_thread)
+
         self.controller = Controller(".")
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
@@ -61,6 +69,24 @@ class Example(QWidget):
     def append_text(self,text):
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText( text )
+
+    def stop_thread(self):
+        print "stopping"
+        #print "dir(self.thrd) =", dir(self.thrd)
+        #print "type(self.thrd) =", type(self.thrd)
+
+
+        print "dir(self.thrd.findChild) =", dir(self.thrd.findChild)
+        print "type(self.thrd.findChild) =", type(self.thrd.findChild)
+
+        print "self.thrd.findChild =", self.thrd.findChild
+        print "self.thrd.findChild(...) =", self.thrd.findChild(self.thrd)
+
+
+        #self.thrd.thread.terminate()
+        #self.thrd.terminate()
+        #'findChild', 'findChildren'
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -164,12 +164,25 @@ class StdOut(QObject):
 
 class MyThread (QThread):
 
+    def __init__(self, parent = None):
+        super(MyThread, self).__init__(parent)
+        print "\n\n MyThread(__init__)"
+
     def set_controler(self, controller):
+        #self.setTerminationEnabled(enabled = True)
         self.to_run = controller
         self.handler = StdOut()
 
     def run(self):
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
+
+    def on_timeout(self):
+        print "on_timeout(self)"
+
+    def terminated(self):
+        print "terminated(idials)"
+        print "dir(self.to_run) =", dir(self.to_run)
+
 
 
 class IdialsInnerrWidget( QWidget):
@@ -270,6 +283,23 @@ class IdialsInnerrWidget( QWidget):
         self.controller.goto(previous.index)
         self._set_current_mode()
         self._update_tree()
+
+    def stop_clicked(self):
+        import os
+        print "\n btn_stop clicked \n"
+        #print self.thrd.currentThreadId()
+
+        #print dir(self.thrd.to_run)
+        print dir(self.thrd.to_run.state)
+
+        '''
+        self.thrd.terminate()
+        self.thrd.wait()
+        self.thrd.quit()
+        self.thrd.terminate()
+        self.thrd.exit()
+        '''
+        #self.thrd.wait()
 
     def run_clicked(self):
         print "run_clicked(self)"
