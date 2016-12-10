@@ -71,21 +71,29 @@ class Example(QWidget):
         self.textedit.insertPlainText( text )
 
     def stop_thread(self):
-        print "stopping"
-        #print "dir(self.thrd) =", dir(self.thrd)
-        #print "type(self.thrd) =", type(self.thrd)
+        import os
 
+        print "In Stopping"
 
-        print "dir(self.thrd.findChild) =", dir(self.thrd.findChild)
-        print "type(self.thrd.findChild) =", type(self.thrd.findChild)
+        print "\n self.thrd.to_run =", self.thrd.to_run
+        #print "dir(self.thrd.to_run) =", dir(self.thrd.to_run)
 
-        print "self.thrd.findChild =", self.thrd.findChild
-        print "self.thrd.findChild(...) =", self.thrd.findChild(self.thrd)
+        print "\n self.thrd.to_run.state =", self.thrd.to_run.state
+        #print "dir(self.thrd.to_run.state) =", dir(self.thrd.to_run.state)
 
+        print "\n self.thrd.to_run.state.my_command =", self.thrd.to_run.state.my_command
+        #print "dir(self.thrd.to_run.state.my_command)", dir(self.thrd.to_run.state.my_command)
 
-        #self.thrd.thread.terminate()
-        #self.thrd.terminate()
-        #'findChild', 'findChildren'
+        my_process = self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process
+
+        print "\n self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process =", my_process
+        #os.kill(my_process.pid, -9)
+
+        print "my_process.pid =", my_process.pid
+
+        kill_str = 'pkill -TERM -P ' + str(my_process.pid)# + '.format(pid=' + str(12345)+
+        #os.system('pkill -TERM -P {pid}'.format(pid=12345))
+        os.system(kill_str)
 
 
 if __name__ == '__main__':
