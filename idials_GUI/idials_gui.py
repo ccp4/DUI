@@ -286,20 +286,35 @@ class IdialsInnerrWidget( QWidget):
 
     def stop_clicked(self):
         import os
-        print "\n btn_stop clicked \n"
-        #print self.thrd.currentThreadId()
+        print "\n\n_______________________________________________In Stopping\n"
+        my_process = self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process
+        print "\n self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process =", my_process
+        print "my_process.pid =", my_process.pid
+        kill_str = 'pkill -TERM -P ' + str(my_process.pid)# + '.format(pid=' + str(12345)+
+        #os.system('pkill -TERM -P {pid}'.format(pid=12345))
+        os.system(kill_str)
 
-        #print dir(self.thrd.to_run)
-        print dir(self.thrd.to_run.state)
+    def stop_thread(self):
+        import os
 
         '''
-        self.thrd.terminate()
-        self.thrd.wait()
-        self.thrd.quit()
-        self.thrd.terminate()
-        self.thrd.exit()
+        print "In Stopping"
+        print "\n self.thrd.to_run =", self.thrd.to_run
+        print "\n self.thrd.to_run.state =", self.thrd.to_run.state
+        #print dir(self.thrd)
+        #print dir(self.thrd.thread)
+        print self.thrd.currentThreadId()
         '''
-        #self.thrd.wait()
+        new_try = '''
+        my_process = self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process
+        print "\n self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process =", my_process
+        print "my_process.pid =", my_process.pid
+        kill_str = 'pkill -TERM -P ' + str(my_process.pid)# + '.format(pid=' + str(12345)+
+        #os.system('pkill -TERM -P {pid}'.format(pid=12345))
+        os.system(kill_str)
+        '''
+
+
 
     def run_clicked(self):
         print "run_clicked(self)"
