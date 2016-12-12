@@ -169,18 +169,20 @@ class ReindexTable(QTableWidget):
         #my_sender = self.sender()
         print "Solution clicked =", row + 1
         self.super_parent.opt_picked(row + 1)
-        #self.all_gray()
-        #my_sender.setStyleSheet("background-color: lightblue")
 
-    def add_opts_lst(self, lst_labels = None, json_path = None):
+        self.del_opts_lst()
+        self.add_opts_lst(lst_labels = self.list_labl, selected_pos = row)
+
+
+    def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
 
         if( lst_labels == None ):
             print "json_path =", json_path
-            lst_labels = ops_list_from_json(json_path)
+            self.list_labl = ops_list_from_json(json_path)
 
-        n_row = len(lst_labels)
+        n_row = len(self.list_labl)
         print "n_row =", n_row
-        n_col = len(lst_labels[0])
+        n_col = len(self.list_labl[0])
         print "n_col =", n_col
 
         self.setRowCount(n_row)
@@ -210,7 +212,7 @@ class ReindexTable(QTableWidget):
             width_lst.append(0)
         '''
 
-        for row, row_cont in enumerate(lst_labels):
+        for row, row_cont in enumerate(self.list_labl):
             for col, col_cont in enumerate(row_cont[1:]):
                 item = QTableWidgetItem(col_cont)
                 item.setFlags(Qt.ItemIsEnabled)
@@ -221,10 +223,13 @@ class ReindexTable(QTableWidget):
                     item.setBackground(Qt.red)
 
                 else:
-                    if(float(row) / 2.0 == int(float(row) / 2.0)):
-                        item.setBackground(QColor(50,50,50,50))
+                    if(row == selected_pos):
+                        item.setBackground(Qt.cyan)
                     else:
-                        item.setBackground(Qt.white)
+                        if(float(row) / 2.0 == int(float(row) / 2.0)):
+                            item.setBackground(QColor(50,50,50,50))
+                        else:
+                            item.setBackground(Qt.white)
 
                 self.setItem(row, col, item)
                 '''
