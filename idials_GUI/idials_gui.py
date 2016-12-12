@@ -40,14 +40,12 @@ def kill_2nd_level_child_processes(parent_pid, sig=signal.SIGTERM):
     lst_str = ps_output.split("\n")[:-1]
 
     if( retcode == 0 ):
-        print "retcode == 0"
         for pid_str in lst_str:
             os.kill(int(pid_str), sig)
 
         return 0
 
     else:
-        print "retcode != 0"
         return -1
 
 def kill_child_processes(parent_pid, sig=signal.SIGTERM):
