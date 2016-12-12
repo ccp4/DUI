@@ -1,8 +1,20 @@
-import sys
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import time
 from dials.util.idials import Controller
+
+import os
+import sys
+import signal
+import subprocess
+def kill_child_processes(parent_pid, sig=signal.SIGTERM):
+    ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE)
+    ps_output = ps_command.stdout.read()
+    retcode = ps_command.wait()
+    assert retcode == 0, "ps command returned %d" % retcode
+    for pid_str in ps_output.split("\n")[:-1]:
+        os.kill(int(pid_str), sig)
 
 class StdOut(QObject):
 
@@ -28,6 +40,9 @@ class MyThread (QThread):
         self.to_run.goto(1)
         self.to_run.set_mode("find_spots")
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
+
+
+
 
 class Example(QWidget):
 
@@ -71,25 +86,22 @@ class Example(QWidget):
         self.textedit.insertPlainText( text )
 
     def stop_thread(self):
-        import os
-
-        '''
-        print "In Stopping"
-        print "\n self.thrd.to_run =", self.thrd.to_run
-        print "\n self.thrd.to_run.state =", self.thrd.to_run.state
-        #print dir(self.thrd)
-        #print dir(self.thrd.thread)
-        print self.thrd.currentThreadId()
-        '''
 
         #'''
-        my_process = self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process
-        print "\n self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process =", my_process
+        my_process = self.thrd.to_run.state.command.external_command.command_run.process
+
         print "my_process.pid =", my_process.pid
+        kill_child_processes(my_process.pid)
+        #print dir(os)
+        #print "group ID =", os.getpgid(my_process.pid)
+
+        #os.killpg(os.getpgid(my_process.pid), signal.SIGTERM)
+
+        '''
         kill_str = 'pkill -TERM -P ' + str(my_process.pid)# + '.format(pid=' + str(12345)+
         #os.system('pkill -TERM -P {pid}'.format(pid=12345))
         os.system(kill_str)
-        #'''
+        '''
 
 
 
