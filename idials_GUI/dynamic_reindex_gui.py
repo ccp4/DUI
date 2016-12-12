@@ -163,7 +163,11 @@ class ReindexTable(QTableWidget):
         super(ReindexTable, self).__init__(parent)
         self.super_parent = parent.super_parent
         self.cellClicked.connect(self.opt_clicked)
+
+        sys_font = QFont()
+        self.sys_font_point_size =  sys_font.pointSize()
         self.show()
+
 
     def opt_clicked(self, row, col):
         #my_sender = self.sender()
@@ -225,6 +229,7 @@ class ReindexTable(QTableWidget):
                         else:
                             item.setBackground(Qt.white)
 
+                item.setFont(QFont("Monospace", self.sys_font_point_size))#, QFont.Bold))
                 self.setItem(row, col, item)
                 '''
                 if( width_lst[col] < len(col_cont) ):
