@@ -34,17 +34,10 @@ import subprocess
 
 def kill_2nd_level_child_processes(parent_pid, sig=signal.SIGTERM):
 
-    print "kill_2nd_level_child_processes(PID) =", parent_pid
-    print "type(PID) =", type(parent_pid)
-
     ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE)
     ps_output = ps_command.stdout.read()
     retcode = ps_command.wait()
-    #assert retcode == 0, "ps command returned %d" % retcode
-
     lst_str = ps_output.split("\n")[:-1]
-
-    print lst_str
 
     if( retcode == 0 ):
         print "retcode == 0"
@@ -63,31 +56,14 @@ def kill_child_processes(parent_pid, sig=signal.SIGTERM):
     retcode = ps_command.wait()
     assert retcode == 0, "ps command returned %d" % retcode
 
-    level_1_str = ps_output.split("\n")[:-1]
-
-    print "level_1_str =", level_1_str
-    print "type(level_1_str) =", type(level_1_str)
-
-    print "ps_output =", ps_output
-    print "type(ps_output) =", type(ps_output)
-
     kill_error = kill_2nd_level_child_processes(int(ps_output))
 
     if( kill_error == 0 ):
-        '''
-        print "kill_error == 0"
-        os.kill(int(level_1_str), sig)
-        '''
         for pid_str in ps_output.split("\n")[:-1]:
             os.kill(int(pid_str), sig)
 
     else:
         os.kill(int(ps_output), sig)
-
-    '''
-    for pid_str in ps_output.split("\n")[:-1]:
-        os.kill(int(pid_str), sig)
-    '''
 
 
 class TreeNavWidget(QTreeView):
