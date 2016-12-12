@@ -202,15 +202,9 @@ class ReindexTable(QTableWidget):
         #separate a,b,c alpha, beta gamma
         #try the subscript thing
         header_label_lst = [delta_max_str, "rmsd"," min cc", "max cc", "latt",
-                            "   a   ","  b   ","  c", alpha_str , beta_str , gamma_str, "Ok"]
+                            "  a ","  b ","  c ", alpha_str , beta_str , gamma_str, "Ok"]
 
         self.setHorizontalHeaderLabels(header_label_lst)
-
-        '''
-        width_lst = []
-        for pos in range(n_col):
-            width_lst.append(0)
-        '''
 
         for row, row_cont in enumerate(self.list_labl):
             for col, col_cont in enumerate(row_cont[1:]):
@@ -251,21 +245,6 @@ class ReindexTable(QTableWidget):
         self.clear()
         self.setRowCount(1)
         self.setColumnCount(1)
-
-        '''
-        lng_lst = len(self.lst_ops)
-        print "lng_lst =", lng_lst
-        for btn_lst in self.lst_ops:
-            self.scrollLayout.layout().removeWidget(btn_lst)
-            btn_lst.setParent(None)
-            del btn_lst
-
-        self.lst_ops = []
-
-    def all_gray(self):
-        pass
-        '''
-
 
 
 
