@@ -142,19 +142,10 @@ class ImportPage(QWidget):
         super(ImportPage, self).__init__(parent = None)
         self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
-        #import_path_group =  QGroupBox("Experiment IMG Directory")
-        #import_path_layout =  QVBoxLayout()
-
-        #import_path_button =  QPushButton(" \n    Find Images      . \n")
-        #import_path_button.clicked.connect(self.find_my_img_dir)
-        #import_path_group.setLayout(import_path_layout)
-
-        #import_path_layout.addWidget(import_path_button)
-
-        template_grp =  QGroupBox("Template ")
+        template_grp =  QGroupBox("Import Template ")
         template_vbox =  QHBoxLayout()
         self.templ_lin =   QLineEdit(self)
-        self.templ_lin.setText("Generated Template =")
+        self.templ_lin.setText("template = ?")
         template_vbox.addWidget(self.templ_lin)
         template_grp.setLayout(template_vbox)
 
@@ -253,7 +244,7 @@ class ParamAdvancedWidget( QWidget):
 
 
 class ParamMainWidget( QWidget):
-    def __init__(self, phl_obj = None, simp_widg = None, parent = None):
+    def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
         super(ParamMainWidget, self).__init__()
 
         #TODO remove this << if >> and run directly the
@@ -270,7 +261,7 @@ class ParamMainWidget( QWidget):
 
         self.param_widget_parent = self
 
-        hbox = QHBoxLayout()
+        hbox = QVBoxLayout()
 
         level_tab = QTabWidget()
 
@@ -280,6 +271,13 @@ class ParamMainWidget( QWidget):
         level_tab.addTab(self.sipler_widget, "Simple Editor")
         level_tab.addTab(self.advanced_widget, "Advanced Editor")
 
+        label_font = QFont()
+        sys_font_point_size =  label_font.pointSize()
+        label_font.setPointSize(sys_font_point_size + 2)
+        step_label = QLabel(str(upper_label))
+        step_label.setFont(label_font)
+
+        hbox.addWidget(step_label)
         hbox.addWidget(level_tab)
 
         self.setLayout(hbox)
@@ -340,11 +338,14 @@ class StepList(object):
         self.super_parent = parent
         self.lst_widg  = [
                           ImportPage(parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab, parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab, parent = self),
-                          #MyReindexOpts(parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = RefineSimplerParamTab, parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab, parent = self)
+                          ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
+                                          parent = self, upper_label = "Find Spots"),
+                          ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab,
+                                          parent = self, upper_label = "Index"),
+                          ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = RefineSimplerParamTab,
+                                          parent = self, upper_label = "Refine"),
+                          ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab,
+                                          parent = self, upper_label = "Integrate")
                          ]
 
         idials_gui_path = os.environ["IDIALS_GUI_PATH"]
