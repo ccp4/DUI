@@ -309,6 +309,13 @@ class MainWidget(QMainWindow):
     def openFile(self):
         print "openFile"
 
+        #FIXME add check for status
+        if( self.running == False ):
+            self.idials_widget.change_mode(self.btn_lst[0].command)
+            self._refresh_stacked_widget(self.btn_lst[0].par_wig)
+            self.btn_lst[0].setStyleSheet("background-color: lightblue")
+
+
     def quit(self):
         print "quit"
         self.closeEvent(QCloseEvent)
