@@ -304,11 +304,14 @@ class MainWidget(QMainWindow):
         except:
             print "no need to close reindex tool"
 
+        self.close()
+
     def openFile(self):
         print "openFile"
 
     def quit(self):
         print "quit"
+        self.closeEvent(QCloseEvent)
 
     def _gray_unwanted(self):
         curr_command = self.idials_widget.controller.get_current().name
