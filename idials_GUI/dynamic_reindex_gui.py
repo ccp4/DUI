@@ -206,19 +206,13 @@ class ReindexTable(QTableWidget):
         self.setRowCount(n_row)
         self.setColumnCount(n_col - 1)
 
-        left_margin_str = "     "
-        alpha_str = left_margin_str + u"\u03B1"
-        beta_str = left_margin_str + u"\u03B2"
-        gamma_str = left_margin_str + u"\u03B3"
+        alpha_str = " " + u"\u03B1" + " "
+        beta_str = " " + u"\u03B2" + " "
+        gamma_str = " " + u"\u03B3" + " "
 
-        #low_delta_str = u"\u03B4"
-        #delta_max_str = low_delta_str + " max"
+        low_delta_str = u"\u03B4"
+        delta_max_str = "max " + low_delta_str
 
-        up_delta_str = u"\u0394"
-        delta_max_str = up_delta_str + " max"
-
-        #separate a,b,c alpha, beta gamma
-        #try the subscript thing
         header_label_lst = [delta_max_str, "rmsd"," min cc", "max cc", "latt",
                             "  a ","  b ","  c ", alpha_str , beta_str , gamma_str, "Ok"]
 
@@ -230,18 +224,24 @@ class ReindexTable(QTableWidget):
                 item.setFlags(Qt.ItemIsEnabled)
                 if(col_cont == " Y"):
                     item.setBackground(Qt.green)
+                    item.setTextColor(Qt.black)
 
                 elif(col_cont == " N"):
                     item.setBackground(Qt.red)
+                    item.setTextColor(Qt.black)
 
                 else:
                     if(row == selected_pos):
-                        item.setBackground(Qt.cyan)
+                        item.setBackground(Qt.blue)
+                        item.setTextColor(Qt.yellow)
+
                     else:
                         if(float(row) / 2.0 == int(float(row) / 2.0)):
                             item.setBackground(QColor(50,50,50,50))
                         else:
                             item.setBackground(Qt.white)
+
+                        item.setTextColor(Qt.black)
 
                 item.setFont(QFont("Monospace", self.sys_font_point_size))#, QFont.Bold))
                 self.setItem(row, col, item)
