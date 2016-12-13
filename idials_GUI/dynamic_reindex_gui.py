@@ -177,12 +177,14 @@ class ReindexTable(QTableWidget):
         self.del_opts_lst()
         self.add_opts_lst(lst_labels = self.list_labl, selected_pos = row)
 
-        workin_on_it_now = '''
-        self.scrollToBottom()
-        self.scrollTo(row, col)
+        #self.scrollToBottom()
+        #self.scrollTo(row, col)
+
+        self.scrollToItem(self.item(row, col))
+
         #, 'scrollTo', 'scrollToBottom', 'scrollToItem', 'scrollToTop',
         #print dir(self)
-        '''
+
 
 
     def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
