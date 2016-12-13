@@ -485,6 +485,8 @@ class MainWidget(QMainWindow):
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
 
+        self.check_next(curr_command)
+
 
     def update_img(self):
         print "attempting to update imgs"
@@ -534,8 +536,9 @@ class MainWidget(QMainWindow):
             btn.setStyleSheet("background-color: lightgray")
 
 
-    def check_next(self):
-        print "\n check_next(self) \n"
+    def check_next(self, last_command = None):
+        print "\n check_next(self)"
+        print "last_command =", last_command, "\n"
 
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
