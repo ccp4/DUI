@@ -154,7 +154,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.embedded_reindex = False
+        self.embedded_reindex = True
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -409,15 +409,10 @@ class MainWidget(QMainWindow):
         #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
         if( self.embedded_reindex ):
             #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
             self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
 
         else:
-            deprecated = '''
-            self.output_wg.set_reindex_tab()
-            self.output_wg.reindex_tool.add_opts_lst(in_json_path = sumr_path)
-            '''
 
             #self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
             self.reindex_tool = MyReindexOpts()
@@ -565,11 +560,11 @@ class MainWidget(QMainWindow):
             if( self.idials_widget.controller.get_current().name == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
 
-            elif( not(self.embedded_reindex) ):
-                #self.output_wg.set_pref_tab()
-                if( self.reindex_tool != None ):
-                    self.reindex_tool.close()
-                    self.reindex_tool = None
+            else:
+                if( not(self.embedded_reindex) ):
+                    if( self.reindex_tool != None ):
+                        self.reindex_tool.close()
+                        self.reindex_tool = None
 
                 self.check_next(self.idials_widget.controller.get_current().name)
 
