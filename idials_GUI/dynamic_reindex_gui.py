@@ -164,13 +164,16 @@ class ReindexTable(QTableWidget):
         self.super_parent = parent.super_parent
         self.cellClicked.connect(self.opt_clicked)
 
+        self.v_sliderBar = self.verticalScrollBar()
+        self.h_sliderBar = self.horizontalScrollBar()
+
+
         sys_font = QFont()
         self.sys_font_point_size =  sys_font.pointSize()
         self.show()
 
 
     def opt_clicked(self, row, col):
-        #my_sender = self.sender()
         print "Solution clicked =", row + 1
         self.super_parent.opt_picked(row + 1)
 
@@ -180,17 +183,14 @@ class ReindexTable(QTableWidget):
         print "p_h_svar =", p_h_svar
         print "p_v_svar =", p_v_svar
 
+        v_sliderValue = self.v_sliderBar.value()
+        h_sliderValue = self.h_sliderBar.value()
+
         self.del_opts_lst()
         self.add_opts_lst(lst_labels = self.list_labl, selected_pos = row)
 
-        #self.setHorizontalScrollBar(p_h_svar)
-        #self.setVerticalScrollBar(p_v_svar)
-        self.scrollTo(p_h_svar, p_v_svar)
-
-        #print dir(self.horizontalScrollbarAction)
-        #print dir(self)
-
-        #self.scrollToItem(self.item(row, col))
+        self.v_sliderBar.setValue(v_sliderValue)
+        self.h_sliderBar.setValue(h_sliderValue)
 
     def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
 
