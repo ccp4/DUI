@@ -218,6 +218,7 @@ class MainWidget(QMainWindow):
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
         self.idials_widget.rtime_txt_on = True
         self.grayed_out_buttons = True
+        self.next_step_on = True
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_stop, self.btn_go, self.step_param_widg)
 
@@ -277,7 +278,7 @@ class MainWidget(QMainWindow):
         #configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
         configMenu.addAction("Real time log text in Pbar", self.togle_text_rt)
         configMenu.addAction("Automatic gray out buttons", self.togle_gray_out)
-
+        configMenu.addAction("Automatic go to next step", self.togle_auto_next_step)
         #starting where it left before
         ini_index = self.idials_widget.controller.get_current().index
         print "self.idials_widget.controller.get_current().index =", ini_index
@@ -351,6 +352,16 @@ class MainWidget(QMainWindow):
     def _ungray_all(self):
         for btn in self.btn_lst:
             btn.setEnabled(True)
+
+    def togle_auto_next_step(self):
+        if( self.next_step_on == True):
+            self.next_step_on = False
+
+        else:
+            self.next_step_on = True
+
+        print "self.next_step_on =", self.next_step_on
+
 
     def togle_text_rt(self):
         print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
