@@ -140,7 +140,7 @@ class ImportPage(QWidget):
 
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
-        #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
         #import_path_group =  QGroupBox("Experiment IMG Directory")
         #import_path_layout =  QVBoxLayout()
@@ -224,6 +224,8 @@ class ImportPage(QWidget):
 
         else:
             print "Failed to pick dir"
+
+        self.super_parent.check_next()
 
 
 class ParamAdvancedWidget( QWidget):

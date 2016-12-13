@@ -306,41 +306,46 @@ class MainWidget(QMainWindow):
 
         self.close()
 
+    def _active_btn(self, my_sender):
+            self.idials_widget.change_mode(my_sender.command)
+            self._refresh_stacked_widget(my_sender.par_wig)
+            my_sender.setStyleSheet("background-color: lightblue")
+
     def openFile(self):
         print "openFile"
-
-        #FIXME add check for status
         if( self.running == False ):
-            self.idials_widget.change_mode(self.btn_lst[0].command)
-            self._refresh_stacked_widget(self.btn_lst[0].par_wig)
-            self.btn_lst[0].setStyleSheet("background-color: lightblue")
-
+            my_sender = self.btn_lst[0]
+            # this is not the only place where _active_btn gets called
+            self._active_btn(my_sender)
 
     def quit(self):
         print "quit"
         self.closeEvent(QCloseEvent)
 
     def _gray_unwanted(self):
-        curr_command = self.idials_widget.controller.get_current().name
-        print "curr_command =", curr_command
+        self._ungray_all()
+        if( self.grayed_out_buttons == True ):
+            curr_command = self.idials_widget.controller.get_current().name
+            print "curr_command =", curr_command
 
-        if( curr_command == "index" or curr_command =="reindex" or curr_command == "integrate" ):
-            cmd_next = "refine"
-        elif( curr_command == "clean" ):
-            cmd_next = "import"
+            if( curr_command == "index" or curr_command =="reindex" or curr_command == "integrate" ):
+                cmd_next = "refine"
 
-        else:
-            cmd_next = None
-            for pos, cmd in enumerate(self.command_lst):
-                if( cmd == curr_command ):
-                    cmd_next = self.command_lst[pos + 1]
+            elif( curr_command == "clean" ):
+                cmd_next = "import"
 
-        for btn in self.btn_lst:
-            print btn.command
-            if( btn.command == cmd_next ):
-                btn.setEnabled(True)
             else:
-                btn.setEnabled(False)
+                cmd_next = None
+                for pos, cmd in enumerate(self.command_lst):
+                    if( cmd == curr_command ):
+                        cmd_next = self.command_lst[pos + 1]
+
+            for btn in self.btn_lst:
+                print btn.command
+                if( btn.command == cmd_next ):
+                    btn.setEnabled(True)
+                else:
+                    btn.setEnabled(False)
 
 
     def _ungray_all(self):
@@ -366,6 +371,7 @@ class MainWidget(QMainWindow):
             self.grayed_out_buttons = True
 
         print "self.grayed_out_buttons =", self.grayed_out_buttons
+        self._gray_unwanted()
 
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
@@ -508,13 +514,17 @@ class MainWidget(QMainWindow):
     def btn_clicked(self):
         if( self.running == False ):
             my_sender = self.sender()
-            self.idials_widget.change_mode(my_sender.command)
-            self._refresh_stacked_widget(my_sender.par_wig)
-            my_sender.setStyleSheet("background-color: lightblue")
+            # this is not the only place where _active_btn gets called
+            self._active_btn(my_sender)
+
 
     def _refrech_btn_look(self):
         for btn in self.btn_lst:
             btn.setStyleSheet("background-color: lightgray")
+
+
+    def check_next(self):
+        print "\n check_next(self) \n"
 
     def jump(self, cmd_name = None, new_url = None):
         if( self.running == False ):
