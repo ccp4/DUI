@@ -217,7 +217,7 @@ class MainWidget(QMainWindow):
         self.btn_stop.clicked.connect(self.btn_stop_clicked)
         self.idials_widget = IdialsInnerrWidget(self, dials_logo_path)
         self.idials_widget.rtime_txt_on = True
-
+        self.grayed_out_buttons = True
         centre_widget = CentreWidget(self)
         centre_widget(buttons_widget, self.btn_stop, self.btn_go, self.step_param_widg)
 
@@ -274,8 +274,9 @@ class MainWidget(QMainWindow):
         fileMenu.addAction("E&xit", self.quit, "Ctrl+Q")
 
         configMenu = menubar.addMenu('config')
-        configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
-
+        #configMenu.addAction("T&oggle real time text", self.togle_text_rt, "Ctrl+T")
+        configMenu.addAction("Real time log text in Pbar", self.togle_text_rt)
+        configMenu.addAction("Automatic gray out buttons", self.togle_gray_out)
 
         #starting where it left before
         ini_index = self.idials_widget.controller.get_current().index
@@ -345,7 +346,16 @@ class MainWidget(QMainWindow):
             self.idials_widget.rtime_txt_on = True
 
         print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
-        print "Toggle real time text"
+
+    def togle_gray_out(self):
+        print "self.grayed_out_buttons =", self.grayed_out_buttons
+        if( self.grayed_out_buttons == True):
+            self.grayed_out_buttons = False
+
+        else:
+            self.grayed_out_buttons = True
+
+        print "self.grayed_out_buttons =", self.grayed_out_buttons
 
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
