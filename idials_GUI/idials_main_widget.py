@@ -323,23 +323,30 @@ class MainWidget(QMainWindow):
         print "quit"
         self.closeEvent(QCloseEvent)
 
+    def _find_next(self, current_command = None):
+
+        if( current_command == "index" or current_command =="reindex" or current_command == "integrate" ):
+            cmd_next = "refine"
+
+        elif( current_command == "clean" ):
+            cmd_next = "import"
+
+        else:
+            cmd_next = None
+            for pos, cmd in enumerate(self.command_lst):
+                if( cmd == current_command ):
+                    cmd_next = self.command_lst[pos + 1]
+
+        return cmd_next
+
     def _gray_unwanted(self):
-        self._ungray_all()
+        for btn in self.btn_lst:
+            btn.setEnabled(True)
+
         if( self.grayed_out_buttons == True ):
-            curr_command = self.idials_widget.controller.get_current().name
-            print "curr_command =", curr_command
-
-            if( curr_command == "index" or curr_command =="reindex" or curr_command == "integrate" ):
-                cmd_next = "refine"
-
-            elif( curr_command == "clean" ):
-                cmd_next = "import"
-
-            else:
-                cmd_next = None
-                for pos, cmd in enumerate(self.command_lst):
-                    if( cmd == curr_command ):
-                        cmd_next = self.command_lst[pos + 1]
+            current_command = self.idials_widget.controller.get_current().name
+            print "current_command =", current_command
+            cmd_next = self._find_next(current_command)
 
             for btn in self.btn_lst:
                 print btn.command
@@ -347,11 +354,6 @@ class MainWidget(QMainWindow):
                     btn.setEnabled(True)
                 else:
                     btn.setEnabled(False)
-
-
-    def _ungray_all(self):
-        for btn in self.btn_lst:
-            btn.setEnabled(True)
 
     def togle_auto_next_step(self):
         if( self.next_step_on == True):
@@ -437,7 +439,7 @@ class MainWidget(QMainWindow):
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
         self.running = False
 
-        curr_command = self.idials_widget.controller.get_current().name
+        current_command = self.idials_widget.controller.get_current().name
 
         if( self.idials_widget.controller.get_current().success == True ):
             try:
@@ -446,18 +448,18 @@ class MainWidget(QMainWindow):
             except:
                 print "Not supposed to update report"
 
-            if( curr_command == "import" ):
+            if( current_command == "import" ):
                 self.current_widget.success_stat = True
                 self.update_img()
 
-            elif( curr_command == "refine_bravais_settings" ):
+            elif( current_command == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
 
-            elif( curr_command == "index" ):
+            elif( current_command == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")
                 self.btn_go_clicked()
 
-            elif( curr_command == "reindex" ):
+            elif( current_command == "reindex" ):
                 print "Time to shrink back reindex GUI"
 
                 if( not(self.embedded_reindex) ):
@@ -467,11 +469,11 @@ class MainWidget(QMainWindow):
                     self.reindex_tool = None
 
 
-            elif( curr_command == "integrate" ):
+            elif( current_command == "integrate" ):
                 self.idials_widget.change_mode("export")
                 self.btn_go_clicked()
 
-            elif(curr_command != "export"):
+            elif(current_command != "export"):
                 print "Time to update html << report >>"
 
             self._gray_unwanted()
@@ -485,7 +487,7 @@ class MainWidget(QMainWindow):
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
 
-        self.check_next(curr_command)
+        self.check_next(current_command)
 
 
     def update_img(self):
@@ -536,13 +538,27 @@ class MainWidget(QMainWindow):
             btn.setStyleSheet("background-color: lightgray")
 
 
-    def check_next(self, last_command = None):
+    def check_next(self, current_command = "clean"):
         print "\n check_next(self)"
-        print "last_command =", last_command, "\n"
+        print "current_command =", current_command, "\n"
+        if( self.next_step_on == True ):
+            if( current_command == "clean" ):
+                self.btn_go_clicked()
+            else:
+                next_command = self._find_next(current_command)
+                print "\n\n next_command =", next_command, "\n\n"
+
+                for btn in self.btn_lst:
+                    print btn.command
+                    if( btn.command == next_command ):
+                        self._active_btn(btn)
+
 
     def jump(self, cmd_name = None, new_url = None):
+
+        #TODO cmd_name does not have any use any more
         if( self.running == False ):
-            print "\n Tree swishing to", cmd_name, "\n\n"
+            #print "\n Tree swishing to", cmd_name, "\n\n"
             if new_url != None:
                 self.update_report(new_url)
 
@@ -554,6 +570,8 @@ class MainWidget(QMainWindow):
                 if( self.reindex_tool != None ):
                     self.reindex_tool.close()
                     self.reindex_tool = None
+
+                self.check_next(self.idials_widget.controller.get_current().name)
 
             self._gray_unwanted()
 
