@@ -154,7 +154,7 @@ class MainWidget(QMainWindow):
         # This flag will define the layout orientation of the left left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
-        self.embedded_reindex = False
+        self.embedded_reindex = True
 
         buttons_widget = QWidget()
         #buttons_widget.setStyleSheet("background-color: solid gray")
@@ -222,6 +222,12 @@ class MainWidget(QMainWindow):
         centre_widget(buttons_widget, self.btn_stop, self.btn_go, self.step_param_widg)
 
         v_control_splitter = QSplitter()
+
+        v_control_splitter.setOrientation(Qt.Horizontal)
+        v_control_splitter.addWidget(self.idials_widget)
+        v_control_splitter.addWidget(centre_widget)
+
+        '''
         if( self.embedded_reindex ):
             v_control_splitter.setOrientation(Qt.Vertical)
             v_control_splitter.addWidget(centre_widget)
@@ -231,6 +237,7 @@ class MainWidget(QMainWindow):
             v_control_splitter.setOrientation(Qt.Horizontal)
             v_control_splitter.addWidget(self.idials_widget)
             v_control_splitter.addWidget(centre_widget)
+        '''
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)

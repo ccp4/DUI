@@ -174,9 +174,23 @@ class ReindexTable(QTableWidget):
         print "Solution clicked =", row + 1
         self.super_parent.opt_picked(row + 1)
 
+        p_h_svar = self.horizontalScrollBar().value()
+        p_v_svar = self.verticalScrollBar().value()
+
+        print "p_h_svar =", p_h_svar
+        print "p_v_svar =", p_v_svar
+
         self.del_opts_lst()
         self.add_opts_lst(lst_labels = self.list_labl, selected_pos = row)
-        self.scrollToItem(self.item(row, col))
+
+        #self.setHorizontalScrollBar(p_h_svar)
+        #self.setVerticalScrollBar(p_v_svar)
+        self.scrollTo(p_h_svar, p_v_svar)
+
+        #print dir(self.horizontalScrollbarAction)
+        #print dir(self)
+
+        #self.scrollToItem(self.item(row, col))
 
     def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
 
