@@ -271,7 +271,7 @@ class MainWidget(QMainWindow):
         menubar = self.menuBar()
 
         fileMenu = menubar.addMenu('File')
-        fileMenu.addAction("&Open...", self.openFile, "Ctrl+O")
+        fileMenu.addAction("&Import...", self.openFile, "Ctrl+I")
         fileMenu.addAction("E&xit", self.quit, "Ctrl+Q")
 
         configMenu = menubar.addMenu('config')

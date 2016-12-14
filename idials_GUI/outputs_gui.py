@@ -185,7 +185,7 @@ def update_data_label(data_label, data_info):
         data_label.setText(str(data_info))
 
     elif 'float' in str(type(data_info)):
-        rnd_nm = round(data_info, ndigits=4)
+        rnd_nm = round(data_info, ndigits=2)
         data_label.setText(str(rnd_nm))
 
     elif 'str' in str(type(data_info)):
@@ -354,13 +354,19 @@ class InfoWidget( QWidget):
 
         scan_v_layout.addLayout(img_ran_h_layout)
 
-        scan_v_layout.addWidget(QLabel("  oscillation  "))
+        scan_v_layout.addWidget(QLabel("  "))
+
+        #scan_v_layout.addWidget(QLabel("  oscillation  "))
         oscil_h_layout = QHBoxLayout()
         oscil1_v_layout = QVBoxLayout()
+        oscil_h_layout.addWidget(QLabel("  oscillation  "))
+
         #oscil1_label = QLabel(" from ")
+        tmp_off = '''
         self.oscil1_data = QLabel(empty_str)
         #oscil1_v_layout.addWidget(oscil1_label)
         oscil1_v_layout.addWidget(self.oscil1_data)
+        '''
 
         oscil2_v_layout = QVBoxLayout()
         #oscil2_label = QLabel(" to ")
@@ -372,7 +378,6 @@ class InfoWidget( QWidget):
         oscil_h_layout.addLayout(oscil2_v_layout)
         scan_v_layout.addLayout(oscil_h_layout)
 
-        scan_v_layout.addWidget(QLabel("  "))
         e_time_label = QLabel("Exposure time")
         self.e_time_data = QLabel(empty_str)
         e_time_hbox = QHBoxLayout()
@@ -524,7 +529,7 @@ class InfoWidget( QWidget):
 
         update_data_label(self.img_ran1_data, self.all_data.img_ran1)
         update_data_label(self.img_ran2_data, self.all_data.img_ran2)
-        update_data_label(self.oscil1_data,   self.all_data.oscil1)
+        #update_data_label(self.oscil1_data,   self.all_data.oscil1)
         update_data_label(self.oscil2_data,   self.all_data.oscil2)
         update_data_label(self.e_time_data,   self.all_data.e_time)
 
