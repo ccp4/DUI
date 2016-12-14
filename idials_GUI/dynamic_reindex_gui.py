@@ -124,6 +124,7 @@ class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.super_parent = None
+        self.setWindowTitle("Reindex")
 
     def set_ref(self, parent, in_json_path):
         if( self.super_parent == None ):
