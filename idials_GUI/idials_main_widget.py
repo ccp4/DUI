@@ -88,7 +88,7 @@ class OverlayPaintWidg(QWidget):
         #self.update()
 
 
-class Text_w_Bar(QWidget):
+class Text_w_Bar_01(QWidget):
     def __init__(self, parent=None):
         super(Text_w_Bar, self).__init__(parent)
 
@@ -118,6 +118,26 @@ class Text_w_Bar(QWidget):
     def resizeEvent(self, event):
         self.painted_overlay.resize(event.size())
         event.accept()
+
+
+class Text_w_Bar(QProgressBar):
+
+    def __init__(self, parent):
+        super(Text_w_Bar,self).__init__()
+        self._text = None
+
+    def setText(self, text):
+        self._text = text
+
+    def text(self):
+        return self._text
+
+    def start_motion(self):
+        self.setRange(0, 0)
+        self.setAlignment(QtCore.Qt.AlignCenter)
+
+    def end_motion(self):
+        self.setRange(0, 1)
 
 
 class CentreWidget( QWidget):
@@ -263,7 +283,7 @@ class MainWidget(QMainWindow):
         main_box.addWidget(h_main_splitter)
 
 
-        self.bottom_bar_n_info = Text_w_Bar()
+        self.bottom_bar_n_info = Text_w_Bar(self)
         main_box.addWidget(self.bottom_bar_n_info)
         self.running = False
 
@@ -421,15 +441,18 @@ class MainWidget(QMainWindow):
 
 
     def start_pbar_motion(self):
-        self.bottom_bar_n_info.info_line.setText("Running")
+        #self.bottom_bar_n_info.info_line.setText("Running")
+
+        self.bottom_bar_n_info.setText("Running")
+
         self.bottom_bar_n_info.start_motion()
 
     def update_pbar_text(self, rtime_text):
-        self.bottom_bar_n_info.info_line.setText(rtime_text)
-        self.bottom_bar_n_info.painted_overlay.repaint()
+        self.bottom_bar_n_info.setText(rtime_text)
+        #self.bottom_bar_n_info.painted_overlay.repaint()
 
     def end_pbar_motion(self):
-        self.bottom_bar_n_info.info_line.setText("Done")
+        self.bottom_bar_n_info.setText("Done")
         self.bottom_bar_n_info.end_motion()
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
         self.running = False
