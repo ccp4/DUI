@@ -33,7 +33,7 @@ from dynamic_reindex_gui import MyReindexOpts
 
 from outputs_gui import InfoWidget
 
-
+deprecated = '''
 class OverlayPaintWidg(QWidget):
     def __init__(self, parent = None):
         super(OverlayPaintWidg, self).__init__(parent)
@@ -54,13 +54,6 @@ class OverlayPaintWidg(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
         painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 50)))
 
-        moving_block = '''
-        x1 = int( (self.pos_n * float(self.width()) ) / self.n_of_pos)
-        y1 = 0
-        h = self.height()
-        w = self.width() / self.n_of_pos
-        x1 -= w
-        '''
 
         x1 = 0
         y1 = 0
@@ -119,6 +112,8 @@ class Text_w_Bar_01(QWidget):
         self.painted_overlay.resize(event.size())
         event.accept()
 
+'''
+
 
 class Text_w_Bar(QProgressBar):
 
@@ -134,7 +129,7 @@ class Text_w_Bar(QProgressBar):
 
     def start_motion(self):
         self.setRange(0, 0)
-        self.setAlignment(QtCore.Qt.AlignCenter)
+        self.setAlignment(Qt.AlignCenter)
 
     def end_motion(self):
         self.setRange(0, 1)
@@ -448,8 +443,12 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info.start_motion()
 
     def update_pbar_text(self, rtime_text):
-        self.bottom_bar_n_info.setText(rtime_text)
-        #self.bottom_bar_n_info.painted_overlay.repaint()
+        if( len(rtime_text) < 3):
+            print "len(rtime_text) =", len(rtime_text)
+
+        else:
+            self.bottom_bar_n_info.setText(rtime_text)
+            #self.bottom_bar_n_info.painted_overlay.repaint()
 
     def end_pbar_motion(self):
         self.bottom_bar_n_info.setText("Done")
