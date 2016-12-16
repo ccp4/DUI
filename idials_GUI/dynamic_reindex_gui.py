@@ -54,8 +54,8 @@ def ops_list_from_json(json_path = None):
                 uc_d = unit_cell_val[0:3]
                 uc_a = unit_cell_val[3:6]
                 unit_cell_str_a = "{:6.3}".format(uc_d[0])
-                unit_cell_str_b = "{:6.3}".format(uc_d[0])
-                unit_cell_str_c = "{:6.3}".format(uc_d[0])
+                unit_cell_str_b = "{:6.3}".format(uc_d[1])
+                unit_cell_str_c = "{:6.3}".format(uc_d[2])
 
                 unit_cell_str_apl = "{:7.4}".format(uc_a[0])
                 unit_cell_str_bet = "{:7.4}".format(uc_a[1])
