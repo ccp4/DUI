@@ -36,12 +36,6 @@ class ImageViewer(QMainWindow):
 
             self.imageLabel.setPixmap(QPixmap.fromImage(image))
             self.scaleFactor = 1.0
-            self.fitToWindowAct.setEnabled(True)
-            self.updateActions()
-
-            if not self.fitToWindowAct.isChecked():
-                self.imageLabel.adjustSize()
-
 
     def wheelEvent(self, event):
         if( event.delta() > 0 ):
@@ -55,19 +49,6 @@ class ImageViewer(QMainWindow):
     def zoomOut(self):
         self.scaleImage(0.9)
 
-    def normalSize(self):
-        self.imageLabel.adjustSize()
-        self.scaleFactor = 1.0
-
-    def fitToWindow(self):
-        fitToWindow = self.fitToWindowAct.isChecked()
-        self.scrollArea.setWidgetResizable(fitToWindow)
-        if not fitToWindow:
-            self.normalSize()
-
-        self.updateActions()
-
-
     def createActions(self):
         self.openAct = QAction("&Open...", self, shortcut="Ctrl+O",
                 triggered=self.open)
@@ -78,14 +59,6 @@ class ImageViewer(QMainWindow):
         self.zoomOutAct = QAction("Zoom &Out (25%)", self,
                 shortcut="Ctrl+-", enabled=False, triggered=self.zoomOut)
 
-        self.normalSizeAct = QAction("&Normal Size", self,
-                shortcut="Ctrl+S", enabled=False, triggered=self.normalSize)
-
-        self.fitToWindowAct = QAction("&Fit to Window", self,
-                enabled=False, checkable=True, shortcut="Ctrl+F",
-                triggered=self.fitToWindow)
-
-
     def createMenus(self):
         self.fileMenu = QMenu("&File", self)
         self.fileMenu.addAction(self.openAct)
@@ -94,17 +67,10 @@ class ImageViewer(QMainWindow):
         self.viewMenu = QMenu("&View", self)
         self.viewMenu.addAction(self.zoomInAct)
         self.viewMenu.addAction(self.zoomOutAct)
-        self.viewMenu.addAction(self.normalSizeAct)
         self.viewMenu.addSeparator()
-        self.viewMenu.addAction(self.fitToWindowAct)
 
         self.menuBar().addMenu(self.fileMenu)
         self.menuBar().addMenu(self.viewMenu)
-
-    def updateActions(self):
-        self.zoomInAct.setEnabled(not self.fitToWindowAct.isChecked())
-        self.zoomOutAct.setEnabled(not self.fitToWindowAct.isChecked())
-        self.normalSizeAct.setEnabled(not self.fitToWindowAct.isChecked())
 
     def scaleImage(self, factor):
         self.scaleFactor *= factor
