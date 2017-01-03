@@ -22,23 +22,11 @@ class ImageViewer(QMainWindow):
         self.openAct = QAction("&Open...", self, shortcut="Ctrl+O",
                 triggered=self.open)
 
-        self.zoomInAct = QAction("Zoom &In (25%)", self,
-                shortcut="Ctrl++", enabled=False, triggered=self.zoomIn)
-
-        self.zoomOutAct = QAction("Zoom &Out (25%)", self,
-                shortcut="Ctrl+-", enabled=False, triggered=self.zoomOut)
-
         self.fileMenu = QMenu("&File", self)
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addSeparator()
 
-        self.viewMenu = QMenu("&View", self)
-        self.viewMenu.addAction(self.zoomInAct)
-        self.viewMenu.addAction(self.zoomOutAct)
-        self.viewMenu.addSeparator()
-
         self.menuBar().addMenu(self.fileMenu)
-        self.menuBar().addMenu(self.viewMenu)
 
         self.setWindowTitle("Image Viewer")
         self.resize(500, 400)
@@ -57,15 +45,9 @@ class ImageViewer(QMainWindow):
 
     def wheelEvent(self, event):
         if( event.delta() > 0 ):
-            self.zoomIn()
+            self.scaleImage(1.1)
         else:
-            self.zoomOut()
-
-    def zoomIn(self):
-        self.scaleImage(1.1)
-
-    def zoomOut(self):
-        self.scaleImage(0.9)
+            self.scaleImage(0.9)
 
     def scaleImage(self, factor):
         self.scaleFactor *= factor
@@ -73,9 +55,6 @@ class ImageViewer(QMainWindow):
 
         self.adjustScrollBar(self.scrollArea.horizontalScrollBar(), factor)
         self.adjustScrollBar(self.scrollArea.verticalScrollBar(), factor)
-
-        self.zoomInAct.setEnabled(self.scaleFactor < 3.0)
-        self.zoomOutAct.setEnabled(self.scaleFactor > 0.333)
 
     def adjustScrollBar(self, scrollBar, factor):
         scrollBar.setValue(int(factor * scrollBar.value()
