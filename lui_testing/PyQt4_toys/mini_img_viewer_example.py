@@ -3,10 +3,17 @@ from PyQt4.QtGui import *
 class Scrolling(QScrollArea):
     def __init__(self, parent = None):
         super(Scrolling, self).__init__()
+        self.my_parent = parent
         self.setBackgroundRole(QPalette.Dark)
 
     def __call__(self, image_label):
         self.setWidget(image_label)
+
+    def wheelEvent(self, event):
+        if( event.delta() > 0 ):
+            self.my_parent.scaleImage(1.1)
+        else:
+            self.my_parent.scaleImage(0.9)
 
 class ImageViewer(QMainWindow):
     def __init__(self):
@@ -49,12 +56,6 @@ class ImageViewer(QMainWindow):
             self.imageLabel.setPixmap(QPixmap.fromImage(image))
             self.scaleFactor = 1.0
             self.imageLabel.adjustSize()
-
-    def wheelEvent(self, event):
-        if( event.delta() > 0 ):
-            self.scaleImage(1.1)
-        else:
-            self.scaleImage(0.9)
 
     def scaleImage(self, factor):
         self.scaleFactor *= factor
