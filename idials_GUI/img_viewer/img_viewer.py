@@ -78,6 +78,11 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
+        #TODO find out how does this works despite
+        #               NOT updating
+        #      self.x_pos and self.y_pos always
+
+
     def wheelEvent(self, event):
 
         h_scr_bar = float(self.p_h_svar().value())
