@@ -7,9 +7,11 @@ class Scrolling(QScrollArea):
         self.setBackgroundRole(QPalette.Dark)
         self.x_pos = 0
         self.y_pos = 0
+        self.setMouseTracking(True)
 
     def ini_label(self, image_label):
         self.setWidget(image_label)
+        image_label.setMouseTracking(True)
 
     def wheelEvent(self, event):
         if( event.delta() > 0 ):
@@ -18,8 +20,11 @@ class Scrolling(QScrollArea):
             self.my_parent.scaleImage(0.9)
 
     def mouseMoveEvent(self, event):
+
         if event.buttons() == Qt.NoButton:
             self.x_pos, self.y_pos = event.x(), event.y()
+            print "event.x() =", event.x()
+            print "event.y() =", event.y()
 
         elif event.buttons() == Qt.LeftButton:
 
@@ -29,13 +34,24 @@ class Scrolling(QScrollArea):
             dx = event.x() - self.x_pos
             dy = event.y() - self.y_pos
 
-            print "dx, dy =", dx, dy
-            #self.move_scrollbar(scrollBar = self.p_h_svar(), dst = dx)
-            #self.move_scrollbar(scrollBar = self.p_v_svar(), dst = dy)
+            #print "dx, dy =", dx, dy
+            self.move_scrollbar(scrollBar = self.horizontalScrollBar(), dst = dx)
+            self.move_scrollbar(scrollBar = self.verticalScrollBar(), dst = dy)
+
         elif event.buttons() == Qt.RightButton:
             print "Right click drag"
 
         self.x_pos, self.y_pos = event.x(), event.y()
+
+
+    def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
+        if( dst != None ):
+            old_val = scrollBar.value()
+            scrollBar.setValue(old_val - dst)
+
+        if( new_pos != None ):
+            scrollBar.setValue(new_pos)
+
 
 class ImageViewer(QMainWindow):
     def __init__(self):
