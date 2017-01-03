@@ -1,11 +1,17 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+class Scrolling(QScrollArea):
+    def __init__(self, parent = None):
+        super(Scrolling, self).__init__()
+        self.setBackgroundRole(QPalette.Dark)
+
+    def __call__(self, image_label):
+        self.setWidget(image_label)
 
 class ImageViewer(QMainWindow):
     def __init__(self):
         super(ImageViewer, self).__init__()
 
-        self.printer = QPrinter()
         self.scaleFactor = 0.0
 
         self.imageLabel = QLabel()
@@ -14,9 +20,9 @@ class ImageViewer(QMainWindow):
                 QSizePolicy.Ignored)
         self.imageLabel.setScaledContents(True)
 
-        self.scrollArea = QScrollArea()
-        self.scrollArea.setBackgroundRole(QPalette.Dark)
-        self.scrollArea.setWidget(self.imageLabel)
+        self.scrollArea = Scrolling(self)
+        self.scrollArea(self.imageLabel)
+
         self.setCentralWidget(self.scrollArea)
 
         self.openAct = QAction("&Open...", self, shortcut="Ctrl+O",
@@ -43,7 +49,7 @@ class ImageViewer(QMainWindow):
             self.imageLabel.setPixmap(QPixmap.fromImage(image))
             self.scaleFactor = 1.0
             self.imageLabel.adjustSize()
-            
+
     def wheelEvent(self, event):
         if( event.delta() > 0 ):
             self.scaleImage(1.1)
