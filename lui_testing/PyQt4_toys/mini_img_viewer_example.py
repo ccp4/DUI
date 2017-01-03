@@ -42,7 +42,8 @@ class ImageViewer(QMainWindow):
 
             self.imageLabel.setPixmap(QPixmap.fromImage(image))
             self.scaleFactor = 1.0
-
+            self.imageLabel.adjustSize()
+            
     def wheelEvent(self, event):
         if( event.delta() > 0 ):
             self.scaleImage(1.1)
