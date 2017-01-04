@@ -130,8 +130,8 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
-        self.rec = QRectF(0, 0, self.img_width * self.my_scale,
-                         self.img_height * self.my_scale)
+        self.rec = QRect(0, 0, int(self.img_width * self.my_scale),
+                         int(self.img_height * self.my_scale))
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
         print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
