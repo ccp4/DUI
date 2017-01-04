@@ -8,6 +8,14 @@ from PyQt4.QtCore import *
 
 from time import time as time_now
 
+try:
+    from PyQt4.QtOpenGL import QGLWidget
+    from OpenGL import GL
+    MyQWidgetWithQPainter = QGLWidget
+
+except:
+    print "Failed to import OpenGL"
+    MyQWidgetWithQPainter = QWidget
 
 class img_w_cpp(object):
     def __init__(self):
@@ -45,7 +53,7 @@ class img_w_cpp(object):
 
 
 
-class ImgPainter(QWidget):
+class ImgPainter(MyQWidgetWithQPainter):
 
     def __init__(self, parent = None):
         super(ImgPainter, self).__init__()
@@ -126,10 +134,16 @@ class ImgPainter(QWidget):
                          self.img_height * self.my_scale)
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
-        #self.paintEvent(None)
+        print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
+        if( self.__class__.__bases__[0].__name__ == "QWidget" ):
+            print "inherits from QWidget"
+            self.update()
+        else:
+            self.paintEvent(None)
 
-        self.update()
         #in future consider *self.repaint()* for the video thing or instead of *self.update()*
+
+
 
     def paintEvent(self, event):
         if( self.img == None ):
