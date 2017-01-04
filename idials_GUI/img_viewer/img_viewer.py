@@ -130,8 +130,15 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
+        '''
         self.rec = QRect(0, 0, int(self.img_width * self.my_scale),
                          int(self.img_height * self.my_scale))
+        '''
+
+        self.rec = QRect(QPoint(0, 0),
+                         QSize(int(self.img_width * self.my_scale),
+                               int(self.img_height * self.my_scale)))
+
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
         print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
@@ -139,6 +146,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             print "inherits from QWidget"
             self.update()
         else:
+            print "inherits from QGLWidget"
             self.paintEvent(None)
 
         #in future consider *self.repaint()* for the video thing or instead of *self.update()*
