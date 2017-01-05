@@ -331,12 +331,6 @@ class IdialsInnerrWidget( QWidget):
 
         kill_child_processes(my_process.pid)
 
-        '''
-        kill_str = 'pkill -TERM -P ' + str(my_process.pid)# + '.format(pid=' + str(12345)+
-        #os.system('pkill -TERM -P {pid}'.format(pid=12345))
-        os.system(kill_str)
-        '''
-
     def run_clicked(self):
         print "run_clicked(self)"
         print "Running ", self.next_cmd
