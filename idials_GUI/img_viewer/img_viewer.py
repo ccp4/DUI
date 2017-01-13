@@ -16,7 +16,7 @@ try:
 except:
     print "Failed to import OpenGL"
     MyQWidgetWithQPainter = QWidget
-'''
+#'''
 
 MyQWidgetWithQPainter = QWidget
 
@@ -107,20 +107,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.my_scale *= scale_factor
 
-        '''
-        old_scale = self.my_scale
-        if( event.delta() > 0 ):
-            self.my_scale += 1
-
-        else:
-            self.my_scale -= 1
-            if( self.my_scale < 1 ):
-                self.my_scale = 1
-
-        scale_factor = self.my_scale / old_scale
-        print "self.my_scale =", self.my_scale
-        '''
-
         h_new_pbar_pos = int(scale_factor * h_scr_bar
                          + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
 
@@ -132,7 +118,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
 
-        #self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
         self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
@@ -169,7 +154,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             print "inherits from QGLWidget"
             self.paintEvent(None)
 
-        #in future consider *self.repaint()* for the video thing or instead of *self.update()*
+        #in future consider *self.repaint()* for the video thing instead of *self.update()*
 
 
 
