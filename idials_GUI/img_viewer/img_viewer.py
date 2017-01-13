@@ -7,7 +7,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from time import time as time_now
-
+test = '''
 try:
     from PyQt4.QtOpenGL import QGLWidget
     from OpenGL import GL
@@ -16,6 +16,9 @@ try:
 except:
     print "Failed to import OpenGL"
     MyQWidgetWithQPainter = QWidget
+'''
+
+MyQWidgetWithQPainter = QWidget
 
 class img_w_cpp(object):
     def __init__(self):
@@ -64,7 +67,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.setMouseTracking(True)
         self.show()
 
-        self.my_scale = 1.0
+        self.my_scale = 1
 
         self.img_width = 247
         self.img_height = 253
@@ -95,7 +98,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         h_scr_bar = float(self.p_h_svar().value())
         v_scr_bar = float(self.p_v_svar().value())
-
+        '''
         if( event.delta() > 0 ):
             scale_factor = 1.1
 
@@ -103,11 +106,29 @@ class ImgPainter(MyQWidgetWithQPainter):
             scale_factor = 0.9
 
         self.my_scale *= scale_factor
+        '''
+
+        old_scale = self.my_scale
+
+        if( event.delta() > 0 ):
+            self.my_scale += 1
+
+        else:
+            self.my_scale -= 1
+            if( self.my_scale < 1 ):
+                self.my_scale = 1
+
+        scale_factor = self.my_scale / old_scale
+
+        print "self.my_scale =", self.my_scale
+
         h_new_pbar_pos = int(scale_factor * h_scr_bar
                          + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
 
         v_new_pbar_pos = int(scale_factor * v_scr_bar
                          + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
+
+        print "(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)", (0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
