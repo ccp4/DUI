@@ -182,11 +182,29 @@ class ImgPainter(MyQWidgetWithQPainter):
             return
 
         else:
-            self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
+            scaled_width = int(self.img_width * self.my_scale)
+            scaled_height = int(self.img_height * self.my_scale)
+            self.resize(scaled_width, scaled_height)
+
+            old_stable = '''
             img_paint = QPainter()
             img_paint.begin(self)
             img_paint.drawImage(self.rec, self.img)
             img_paint.end()
+            '''
+
+            #target = QRectF(0.0, 0.0, scaled_width, scaled_height)
+            #point = QPointF(0.0, 0.0)
+            rect = QRect(0, 0, scaled_width, scaled_height)
+            pixmap = QPixmap(self.img)
+
+            print "Drawing"
+
+            painter = QPainter(self)
+            painter.begin(self)
+            painter.drawPixmap(rect, pixmap)
+            painter.end()
+
 
 
 class build_qimg(object):
