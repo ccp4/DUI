@@ -98,7 +98,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         h_scr_bar = float(self.p_h_svar().value())
         v_scr_bar = float(self.p_v_svar().value())
-        '''
+
         if( event.delta() > 0 ):
             scale_factor = 1.1
 
@@ -106,10 +106,9 @@ class ImgPainter(MyQWidgetWithQPainter):
             scale_factor = 0.9
 
         self.my_scale *= scale_factor
+
         '''
-
         old_scale = self.my_scale
-
         if( event.delta() > 0 ):
             self.my_scale += 1
 
@@ -119,8 +118,8 @@ class ImgPainter(MyQWidgetWithQPainter):
                 self.my_scale = 1
 
         scale_factor = self.my_scale / old_scale
-
         print "self.my_scale =", self.my_scale
+        '''
 
         h_new_pbar_pos = int(scale_factor * h_scr_bar
                          + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
@@ -128,10 +127,10 @@ class ImgPainter(MyQWidgetWithQPainter):
         v_new_pbar_pos = int(scale_factor * v_scr_bar
                          + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
 
-        print "(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)", (0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
-        self.rec = QRect(QPoint(0, 0),
-                         QSize(int(self.img_width * self.my_scale),
-                               int(self.img_height * self.my_scale)))
+        scaled_width = int(self.img_width * self.my_scale)
+        scaled_height = int(self.img_height * self.my_scale)
+
+        self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
 
         #self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
@@ -154,14 +153,11 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
-        '''
-        self.rec = QRect(0, 0, int(self.img_width * self.my_scale),
-                         int(self.img_height * self.my_scale))
-        '''
 
-        self.rec = QRect(QPoint(0, 0),
-                         QSize(int(self.img_width * self.my_scale),
-                               int(self.img_height * self.my_scale)))
+        scaled_width = int(self.img_width * self.my_scale)
+        scaled_height = int(self.img_height * self.my_scale)
+
+        self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
 
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
@@ -192,16 +188,9 @@ class ImgPainter(MyQWidgetWithQPainter):
             img_paint.drawImage(self.rec, self.img)
             img_paint.end()
             '''
-
-            #target = QRectF(0.0, 0.0, scaled_width, scaled_height)
-            #point = QPointF(0.0, 0.0)
             rect = QRect(0, 0, scaled_width, scaled_height)
             pixmap = QPixmap(self.img)
-
-            print "Drawing"
-
             painter = QPainter(self)
-            painter.begin(self)
             painter.drawPixmap(rect, pixmap)
             painter.end()
 
