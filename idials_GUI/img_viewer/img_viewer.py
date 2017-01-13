@@ -129,8 +129,11 @@ class ImgPainter(MyQWidgetWithQPainter):
                          + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
 
         print "(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)", (0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
+        self.rec = QRect(QPoint(0, 0),
+                         QSize(int(self.img_width * self.my_scale),
+                               int(self.img_height * self.my_scale)))
 
-        self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
+        #self.rec = QRect(0, 0, self.img_width * self.my_scale, self.img_height * self.my_scale)
         self.update()
 
         self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
