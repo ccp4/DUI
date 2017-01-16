@@ -119,12 +119,6 @@ class ImgPainter(MyQWidgetWithQPainter):
             v_new_pbar_pos = int(scale_factor * v_scr_bar
                              + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
 
-            seems_to_be_no_longer_needed = '''
-            scaled_width = int(self.img_width * self.my_scale)
-            scaled_height = int(self.img_height * self.my_scale)
-            self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
-            '''
-
             self.update()
 
             self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
@@ -145,13 +139,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
-
-        seems_to_be_no_longer_needed = '''
-        scaled_width = int(self.img_width * self.my_scale)
-        scaled_height = int(self.img_height * self.my_scale)
-        self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
-        '''
-
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
         print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
@@ -175,12 +162,6 @@ class ImgPainter(MyQWidgetWithQPainter):
             scaled_height = int(self.img_height * self.my_scale)
             self.resize(scaled_width, scaled_height)
 
-            old_stable = '''
-            img_paint = QPainter()
-            img_paint.begin(self)
-            img_paint.drawImage(self.rec, self.img)
-            img_paint.end()
-            '''
             rect = QRect(0, 0, scaled_width, scaled_height)
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
