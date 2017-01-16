@@ -101,8 +101,12 @@ class TreeNavWidget(QTreeView):
                 new_item.setForeground(Qt.white)
 
                 last_mod = str(child_node.name)
+                #TODO have a think about how the next piece of code
+                #     are repeated at least 3 times almost identical
+                #     and must stay consistent and easy to maintain
+
                 for pos, cmd in enumerate(self.lst_commands):
-                    if( cmd == last_mod and pos < len(self.lst_commands) - 1 ):
+                    if( cmd == last_mod and pos < len(self.lst_commands) - 2 ):
                         next_cmd = self.lst_commands[pos + 1]
 
                         nxt_new_item = QStandardItem(str(next_cmd))

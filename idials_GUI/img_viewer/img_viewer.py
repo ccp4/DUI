@@ -165,6 +165,13 @@ class ImgPainter(MyQWidgetWithQPainter):
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
             painter.drawPixmap(rect, pixmap)
+
+            rectangle = QRectF(600.0 * self.my_scale, 600.0 * self.my_scale,
+                               10.0 * self.my_scale, 10.0 * self.my_scale)
+
+            painter.drawRect(rectangle)
+            #painter.drawLine(0, 0, 1000, 1000)
+
             painter.end()
 
 

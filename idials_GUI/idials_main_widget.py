@@ -84,7 +84,7 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
         self.super_parent = self
 
-        # This flag will define the layout orientation of the left left side
+        # This flag will define the layout orientation of the left side
         # area of the GUI and therefore needs to be taking into account when
         # the rest of the GUI gets build
         self.embedded_reindex = False
