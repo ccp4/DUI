@@ -99,7 +99,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         if( event.delta() > 0 and self.my_scale < 100 ):
             scale_factor = 1.1
 
-        elif( event.delta() < 0 and self.my_scale > 0.5 ):
+        elif( event.delta() < 0 and self.my_scale > 0.333 ):
             scale_factor = 0.9
 
         else:
