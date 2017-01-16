@@ -100,7 +100,7 @@ class TreeNavWidget(QTreeView):
 
                 nxt_new_item = QStandardItem("Next ... something")
                 nxt_new_item.setBackground(Qt.green)
-                nxt_new_item.setForeground(Qt.white)
+                nxt_new_item.setForeground(Qt.black)
                 new_item.appendRow(nxt_new_item)
 
             elif new_item.idials_node.index in self.lst_idx:
