@@ -60,7 +60,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
     def __init__(self, parent = None):
         super(ImgPainter, self).__init__()
-
         self.my_parent = parent
 
         self.img = None

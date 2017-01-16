@@ -66,8 +66,10 @@ def kill_child_processes(parent_pid, sig=signal.SIGTERM):
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
-        self.my_parent = parent
         super(TreeNavWidget, self).__init__()
+        self.my_parent = parent
+
+        self.lst_commands = self.my_parent.lst_commands
         self.clicked[QModelIndex].connect(self.item_clicked)
 
     def update_me(self, root_node, lst_path_idx):
@@ -98,10 +100,16 @@ class TreeNavWidget(QTreeView):
                 new_item.setBackground(Qt.blue)
                 new_item.setForeground(Qt.white)
 
-                nxt_new_item = QStandardItem("Next ... something")
-                nxt_new_item.setBackground(Qt.green)
-                nxt_new_item.setForeground(Qt.black)
-                new_item.appendRow(nxt_new_item)
+                last_mod = str(child_node.name)
+                for pos, cmd in enumerate(self.lst_commands):
+                    if( cmd == last_mod and pos < len(self.lst_commands) - 1 ):
+                        next_cmd = self.lst_commands[pos + 1]
+
+                        nxt_new_item = QStandardItem(str(next_cmd))
+                        nxt_new_item.setBackground(Qt.green)
+                        nxt_new_item.setForeground(Qt.black)
+                        new_item.appendRow(nxt_new_item)
+
 
             elif new_item.idials_node.index in self.lst_idx:
                 new_item.setBackground(Qt.white)
