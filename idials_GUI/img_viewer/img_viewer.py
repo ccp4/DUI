@@ -7,7 +7,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from time import time as time_now
-test = '''
+QGLWidget_test = '''
 try:
     from PyQt4.QtOpenGL import QGLWidget
     from OpenGL import GL
@@ -96,32 +96,39 @@ class ImgPainter(MyQWidgetWithQPainter):
 
     def wheelEvent(self, event):
 
-        h_scr_bar = float(self.p_h_svar().value())
-        v_scr_bar = float(self.p_v_svar().value())
-
-        if( event.delta() > 0 ):
+        if( event.delta() > 0 and self.my_scale < 100 ):
             scale_factor = 1.1
 
-        else:
+        elif( event.delta() < 0 and self.my_scale > 0.5 ):
             scale_factor = 0.9
 
-        self.my_scale *= scale_factor
+        else:
+            scale_factor = None
+            print "reaching scale limit"
 
-        h_new_pbar_pos = int(scale_factor * h_scr_bar
-                         + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
+        if( scale_factor != None ):
 
-        v_new_pbar_pos = int(scale_factor * v_scr_bar
-                         + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
+            self.my_scale *= scale_factor
 
-        scaled_width = int(self.img_width * self.my_scale)
-        scaled_height = int(self.img_height * self.my_scale)
+            h_scr_bar = float(self.p_h_svar().value())
+            v_scr_bar = float(self.p_v_svar().value())
 
-        self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
+            h_new_pbar_pos = int(scale_factor * h_scr_bar
+                             + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
 
-        self.update()
+            v_new_pbar_pos = int(scale_factor * v_scr_bar
+                             + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
 
-        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
-        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
+            seems_to_be_no_longer_needed = '''
+            scaled_width = int(self.img_width * self.my_scale)
+            scaled_height = int(self.img_height * self.my_scale)
+            self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
+            '''
+
+            self.update()
+
+            self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
+            self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
@@ -139,10 +146,11 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.img_width = q_img.width()
         self.img_height = q_img.height()
 
+        seems_to_be_no_longer_needed = '''
         scaled_width = int(self.img_width * self.my_scale)
         scaled_height = int(self.img_height * self.my_scale)
-
         self.rec = QRect(QPoint(0, 0), QSize(scaled_width, scaled_height))
+        '''
 
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
