@@ -90,18 +90,27 @@ class TreeNavWidget(QTreeView):
 
             new_item.idials_node = child_node
 
-            new_item.idx = child_node.index
+            #new_item.idx = child_node.index # TODO consider removing this line
+
             new_item.success = child_node.success
 
             if new_item.idials_node.index == self.lst_idx[-1]:
                 new_item.setBackground(Qt.blue)
                 new_item.setForeground(Qt.white)
+
+                nxt_new_item = QStandardItem("Next ... something")
+                nxt_new_item.setBackground(Qt.green)
+                nxt_new_item.setForeground(Qt.white)
+                new_item.appendRow(nxt_new_item)
+
             elif new_item.idials_node.index in self.lst_idx:
                 new_item.setBackground(Qt.white)
                 new_item.setForeground(Qt.blue)
+
             elif new_item.idials_node.success == True:
                 new_item.setBackground(Qt.white)
                 new_item.setForeground(Qt.black)
+
             else:
                 new_item.setBackground(Qt.white)
                 new_item.setForeground(Qt.gray)
