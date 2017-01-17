@@ -298,8 +298,9 @@ class MyImgWin(QWidget):
 
         if( pckl_file_path == None ):
             print "\n\n no pickle file given \n\n"
+
         else:
-            print "[pickle file] =", pckl_file_path
+            self.ini_reflection_table(pckl_file_path)
 
         self.img_select.setCurrentIndex(0)
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
@@ -315,8 +316,44 @@ class MyImgWin(QWidget):
         self.setLayout(my_box)
         self.show()
 
-    def test(self):
-        print "\n\n YES \n\n"
+    def ini_reflection_table(self, pckl_file_path):
+
+        copy_pasted_01 = '''
+        from dials.array_family import flex
+        table = flex.reflection_table.from_pickle(pick_name)
+
+        #somewhere else
+        self.local_bbox = self.table[self.row_pos]['bbox']
+        '''
+        print "[pickle file] =", pckl_file_path
+        table = flex.reflection_table.from_pickle(pckl_file_path)
+        print "\n table =", table
+        local_bbox = table[5]['bbox']
+        print "local_bbox =", local_bbox
+        print "len(table) = ", len(table), "\n"
+
+        n_refs = len(table)
+        for i in xrange(n_refs):
+            print "table[i]['bbox'] =", table[i]['bbox']
+
+        copy_pasted_02 = '''
+        try:
+            refl_tabl = flex.reflection_table.from_pickle(pckl_file_path)
+            n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
+            print "dat.n_strng =", n_strng
+            n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
+            print "dat.n_index =", n_index
+            n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(True)
+            print "dat.n_refnd =", n_refnd
+            n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(True)
+            print "dat.n_integ_sum =", n_integ_sum
+            n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(True)
+            print "dat.n_integ_prf =", n_integ_prf
+
+        except:
+            print "failed to find reflections"
+
+        '''
 
     def ini_datablock(self, json_file_path):
 
@@ -429,12 +466,5 @@ if( __name__ == "__main__" ):
     sys.exit(app.exec_())
     app.exec_()
 
-    copy_pasted_01 = '''
-    from dials.array_family import flex
-    table = flex.reflection_table.from_pickle(pick_name)
 
-    #somewhere else
-    self.local_bbox = self.table[self.row_pos]['bbox']
-
-    '''
 
