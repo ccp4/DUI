@@ -26,16 +26,9 @@ class InfoWidget( QWidget):
     def __init__(self, parent = None):
         super(InfoWidget, self).__init__()
 
-        #self.super_parent = parent.super_parent
-        try:
-            self.my_json_path = str(sys.argv[1])
-        except:
-            self.my_json_path = None
-
         empty_str = "__________"
 
         beam_group =  QGroupBox(" Beam ")
-
         bm_v_layout = QVBoxLayout()
 
         xb_label = QLabel("  X (mm) ")
@@ -323,8 +316,25 @@ class InfoWidget( QWidget):
         my_main_box = QVBoxLayout()
         my_main_box.addLayout(inner_main_box)
         my_main_box.addStretch()
+        if( parent == None ):
 
-        self.update_data(exp_json_path = self.my_json_path)
+            try:
+                self.my_json_path = str(sys.argv[1])
+                try:
+                    self.my_pikl_path = str(sys.argv[2])
+
+                except:
+                    self.my_pikl_path = None
+
+            except:
+                self.my_json_path = None
+
+        else:
+            self.my_json_path = None
+            self.my_pikl_path = None
+            print "updating outputs_widget"
+
+        self.update_data(exp_json_path = self.my_json_path, refl_pikl_path = self.my_pikl_path)
 
         self.setLayout(my_main_box)
         self.show()
