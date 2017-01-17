@@ -415,3 +415,12 @@ if( __name__ == "__main__" ):
     sys.exit(app.exec_())
     app.exec_()
 
+    copy_pasted_01 = '''
+    from dials.array_family import flex
+    table = flex.reflection_table.from_pickle(pick_name)
+
+    #somewhere else
+    self.local_bbox = self.table[self.row_pos]['bbox']
+
+    '''
+
