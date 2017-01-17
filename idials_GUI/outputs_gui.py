@@ -23,7 +23,7 @@ copyright (c) CCP4 - DLS
 
 import sys
 from python_qt_bind import *
-from img_viewer.img_viewer import MyImgWin
+from outputs_n_viewers.img_viewer import MyImgWin
 from dynamic_reindex_gui import MyReindexOpts
 from dxtbx.model.experiment.experiment_list import ExperimentListFactory
 from dxtbx.model.experiment.experiment_list import ExperimentList, Experiment
