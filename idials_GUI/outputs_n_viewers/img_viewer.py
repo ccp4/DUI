@@ -239,7 +239,7 @@ class PopImgTreat(QMenu):
         self.show()
 
 class MyImgWin(QWidget):
-    def __init__(self, json_file_path = None):
+    def __init__(self, json_file_path = None, pckl_file_path = None):
         super(MyImgWin, self).__init__()
         my_box = QVBoxLayout()
         top_box = QHBoxLayout()
@@ -295,6 +295,11 @@ class MyImgWin(QWidget):
 
         else:
             self.ini_datablock(json_file_path)
+
+        if( pckl_file_path == None ):
+            print "\n\n no pickle file given \n\n"
+        else:
+            print "[pickle file] =", pckl_file_path
 
         self.img_select.setCurrentIndex(0)
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
@@ -404,14 +409,23 @@ if( __name__ == "__main__" ):
 
     app = QApplication(sys.argv)
     print "sys.argv =", sys.argv
+    print "len(sys.argv) =", len(sys.argv)
+
     if( len(sys.argv) > 1 ):
         img_path = sys.argv[1]
+        if( len(sys.argv) > 2 ):
+            pckl_file_path = sys.argv[2]
+
+        else:
+            pckl_file_path = None
+
     else:
         img_path = None
 
     print "img_path =", img_path
+    print "pckl_file_path =", pckl_file_path
 
-    diag = MyImgWin(img_path)
+    diag = MyImgWin(img_path, pckl_file_path)
     sys.exit(app.exec_())
     app.exec_()
 
