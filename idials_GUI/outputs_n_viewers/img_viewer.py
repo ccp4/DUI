@@ -333,10 +333,22 @@ class MyImgWin(QWidget):
         print "len(table) = ", len(table), "\n"
 
         n_refs = len(table)
+
+        tmp_lst = []
+
         for i in xrange(n_refs):
             print "table[i]['bbox'] =", table[i]['bbox']
             local_bbox = table[i]['bbox']
-            print "type(local_bbox) =", type(local_bbox)
+            z_boud = local_bbox[4:6]
+
+            if( self.img_num <= z_boud[0] and self.img_num >= z_boud[0] ):
+                x_ini = local_bbox[0]
+                y_ini = local_bbox[2]
+                tmp_lst.append([x_ini, y_ini])
+
+        for coord in tmp_lst:
+            print "coord =", coord
+
 
         copy_pasted_02 = '''
         try:
