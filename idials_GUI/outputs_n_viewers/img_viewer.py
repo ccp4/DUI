@@ -287,6 +287,8 @@ class MyImgWin(QWidget):
         img_pal_but.setMenu(PopImgTreat(self))
 
         self.img_num = 0
+        self.my_sweep = None
+        self.boxes_lst = None
         self.current_qimg = build_qimg()
 
         if( json_file_path == None ):
@@ -316,6 +318,27 @@ class MyImgWin(QWidget):
         self.setLayout(my_box)
         self.show()
 
+    def ini_datablock(self, json_file_path):
+
+        datablocks = DataBlockFactory.from_json_file(json_file_path)
+        #TODO check length of datablock for safety
+
+        db = datablocks[0]
+        self.my_sweep = db.extract_sweeps()[0]
+        self.img_select.clear()
+        print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
+        print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
+        n_of_imgs = len(self.my_sweep.indices())
+        print "n_of_imgs =", n_of_imgs
+
+        self.img_select.setMaxCount(n_of_imgs)
+        for num in xrange(n_of_imgs):
+            labl = "img#" + str(num + 1)
+            self.img_select.addItem(labl)
+
+        self.set_img()
+
+
     def ini_reflection_table(self, pckl_file_path):
 
         copy_pasted_01 = '''
@@ -334,21 +357,22 @@ class MyImgWin(QWidget):
 
         n_refs = len(table)
 
-        tmp_lst = []
+        self.boxes_lst = []
+        print "self.img_select.maxCount() =", self.img_select.maxCount()
+        if( self.img_select.maxCount() > 0 ):
+            for img_num in xrange(self.img_select.maxCount()):
+                tmp_lst = []
 
-        for i in xrange(n_refs):
-            print "table[i]['bbox'] =", table[i]['bbox']
-            local_bbox = table[i]['bbox']
-            z_boud = local_bbox[4:6]
+                for i in xrange(n_refs):
+                    local_bbox = table[i]['bbox']
+                    z_boud = local_bbox[4:6]
 
-            if( self.img_num <= z_boud[0] and self.img_num >= z_boud[0] ):
-                x_ini = local_bbox[0]
-                y_ini = local_bbox[2]
-                tmp_lst.append([x_ini, y_ini])
+                    if( img_num <= z_boud[0] and img_num >= z_boud[0] ):
+                        x_ini = local_bbox[0]
+                        y_ini = local_bbox[2]
+                        tmp_lst.append([x_ini, y_ini])
 
-        for coord in tmp_lst:
-            print "coord =", coord
-
+                self.boxes_lst.append(tmp_lst)
 
         copy_pasted_02 = '''
         try:
@@ -369,26 +393,6 @@ class MyImgWin(QWidget):
 
         '''
 
-    def ini_datablock(self, json_file_path):
-
-        datablocks = DataBlockFactory.from_json_file(json_file_path)
-        #TODO check length of datablock for safety
-
-        db = datablocks[0]
-        self.my_sweep = db.extract_sweeps()[0]
-        self.img_select.clear()
-        print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
-        print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
-        print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
-        n_of_imgs = len(self.my_sweep.indices())
-        print "n_of_imgs =", n_of_imgs
-
-        self.img_select.setMaxCount(n_of_imgs)
-        for num in xrange(n_of_imgs):
-            labl = "img#" + str(num + 1)
-            self.img_select.addItem(labl)
-
-        self.set_img()
 
     def set_img(self):
 
