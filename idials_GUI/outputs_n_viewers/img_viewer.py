@@ -168,12 +168,12 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             painter.drawPixmap(rect, pixmap)
 
-            if( self.boxes_lst != [None] ):
+            if( self.boxes_lst != None ):
                 for box in self.boxes_lst:
                     x = float(box[0])
                     y = float(box[1])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                       20.0 * self.my_scale, 30.0 * self.my_scale)
+                                       5.0 * self.my_scale, 5.0 * self.my_scale)
 
                     painter.drawRect(rectangle)
             #painter.drawLine(0, 0, 1000, 1000)
@@ -377,9 +377,6 @@ class MyImgWin(QWidget):
                         tmp_lst.append([x_ini, y_ini])
 
                 self.boxes_lst.append(tmp_lst)
-
-
-        print "\n self.boxes_lst =", self.boxes_lst, "\n"
 
         copy_pasted_02 = '''
         try:
