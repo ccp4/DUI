@@ -6,6 +6,10 @@ from dials_viewer_ext import rgb_img
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+from dxtbx.model.experiment.experiment_list import ExperimentListFactory
+from dxtbx.model.experiment.experiment_list import ExperimentList, Experiment
+from dxtbx.datablock import DataBlockFactory
+
 from time import time as time_now
 QGLWidget_test = '''
 try:
@@ -326,11 +330,58 @@ class MyImgWin(QWidget):
 
     def ini_datablock(self, json_file_path):
 
-        datablocks = DataBlockFactory.from_json_file(json_file_path)
-        #TODO check length of datablock for safety
+        try:
+            datablocks = DataBlockFactory.from_json_file(json_file_path)
+            ##TODO check length of datablock for safety
+            datablock = datablocks[0]
 
-        db = datablocks[0]
-        self.my_sweep = db.extract_sweeps()[0]
+        except:
+                tmp_off = '''
+            try:
+                experiments = ExperimentListFactory.from_json_file(
+                              json_file_path, check_format=False)
+                print "\n\n __________________ tst \n\n"
+
+            except:
+
+                '''
+
+                try:
+                    # FIXME here only take the first datablock. What if there are more?
+                    datablock = DataBlockFactory.from_serialized_format(json_file_path, check_format=False)[0]
+
+                    print "\n\n__________tst 02\n\n"
+
+                    # FIXME here only take the first model from each
+                    beam = datablock.unique_beams()[0]
+                    detector = datablock.unique_detectors()[0]
+                    scan = datablock.unique_scans()[0]
+
+                    # build a pseudo ExperimentList (with empty crystals)
+                    experiments=ExperimentList()
+                    experiments.append(Experiment(
+                        beam=beam, detector=detector, scan=scan))
+
+                except ValueError:
+                    print "failed to read json file"
+
+
+        print "Here 01 \n"
+
+        '''
+        try:
+            datablocks = DataBlockFactory.from_json_file(json_file_path)
+            #TODO check length of datablock for safety
+            datablock = datablocks[0]
+
+        except:
+
+            # FIXME here only take the first datablock. What if there are more?
+            datablock = DataBlockFactory.from_serialized_format(json_file_path, check_format=False)[0]
+        '''
+
+
+        self.my_sweep = datablock.extract_sweeps()[0]
         self.img_select.clear()
         print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
         print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()

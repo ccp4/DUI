@@ -435,9 +435,19 @@ class MainWidget(QMainWindow):
 
             print "\n images from:", json_file_path, "\n"
             self.output_wg.img_view.ini_datablock(json_file_path)
-
         except:
             print "no datablock.json found"
+
+        this_need_to_be_fixed_maybe_from_the_img_viewer = '''
+        try:
+            pckl_file_path = str(self.idials_widget.controller.get_current().reflections)
+
+            print "\n\n reflections in IMG from:", pckl_file_path, "\n\n"
+            self.output_wg.img_view.ini_reflection_table(pckl_file_path)
+
+        except:
+            print "\n\n no pickle file found \n\n\n"
+        '''
 
 
     def update_report(self, report_path):
