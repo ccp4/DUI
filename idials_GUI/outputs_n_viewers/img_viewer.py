@@ -132,9 +132,10 @@ class ImgPainter(MyQWidgetWithQPainter):
         if( new_pos != None ):
             scrollBar.setValue(new_pos)
 
-    def set_img_pix(self, q_img = None):
+    def set_img_pix(self, q_img = None, boxes_lst_in = None):
 
         self.img = q_img
+        self.boxes_lst = boxes_lst_in
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
@@ -164,14 +165,17 @@ class ImgPainter(MyQWidgetWithQPainter):
             rect = QRect(0, 0, scaled_width, scaled_height)
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
-            painter.drawPixmap(rect, pixmap)
-            for times in xrange(10):
-                x = 750.0 + float(times) * 40.0
-                y = 880.0 + float(times) * 30.0
-                rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                   20.0 * self.my_scale, 30.0 * self.my_scale)
 
-                painter.drawRect(rectangle)
+            painter.drawPixmap(rect, pixmap)
+
+            if( self.boxes_lst != [None] ):
+                for box in self.boxes_lst:
+                    x = float(box[0])
+                    y = float(box[1])
+                    rectangle = QRectF(x * self.my_scale, y * self.my_scale,
+                                       20.0 * self.my_scale, 30.0 * self.my_scale)
+
+                    painter.drawRect(rectangle)
             #painter.drawLine(0, 0, 1000, 1000)
 
             painter.end()
@@ -288,7 +292,7 @@ class MyImgWin(QWidget):
 
         self.img_num = 0
         self.my_sweep = None
-        self.boxes_lst = None
+        self.boxes_lst = [None]
         self.current_qimg = build_qimg()
 
         if( json_file_path == None ):
@@ -350,10 +354,10 @@ class MyImgWin(QWidget):
         '''
         print "[pickle file] =", pckl_file_path
         table = flex.reflection_table.from_pickle(pckl_file_path)
-        print "\n table =", table
+        print "table =", table
         local_bbox = table[5]['bbox']
         print "local_bbox =", local_bbox
-        print "len(table) = ", len(table), "\n"
+        print "len(table) = ", len(table)
 
         n_refs = len(table)
 
@@ -373,6 +377,9 @@ class MyImgWin(QWidget):
                         tmp_lst.append([x_ini, y_ini])
 
                 self.boxes_lst.append(tmp_lst)
+
+
+        print "\n self.boxes_lst =", self.boxes_lst, "\n"
 
         copy_pasted_02 = '''
         try:
@@ -400,7 +407,10 @@ class MyImgWin(QWidget):
 
         firts_time = time_now()
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
-        self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette, self.i_min, self.i_max))
+        self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                      self.i_min, self.i_max),
+                                                      self.boxes_lst[self.img_num])
+
         print "diff time =", time_now() - firts_time, "\n"
 
     def min_changed_by_user(self):
