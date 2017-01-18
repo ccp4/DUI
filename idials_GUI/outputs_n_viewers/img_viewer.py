@@ -335,6 +335,8 @@ class MyImgWin(QWidget):
         n_refs = len(table)
         for i in xrange(n_refs):
             print "table[i]['bbox'] =", table[i]['bbox']
+            local_bbox = table[i]['bbox']
+            print "type(local_bbox) =", type(local_bbox)
 
         copy_pasted_02 = '''
         try:
