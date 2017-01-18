@@ -172,8 +172,10 @@ class ImgPainter(MyQWidgetWithQPainter):
                 for box in self.boxes_lst:
                     x = float(box[0])
                     y = float(box[1])
+                    width = float(box[2])
+                    height = float(box[3])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                       5.0 * self.my_scale, 5.0 * self.my_scale)
+                                       width * self.my_scale, height * self.my_scale)
 
                     painter.drawRect(rectangle)
             #painter.drawLine(0, 0, 1000, 1000)
@@ -374,7 +376,9 @@ class MyImgWin(QWidget):
                     if( img_num <= z_boud[0] and img_num >= z_boud[0] ):
                         x_ini = local_bbox[0]
                         y_ini = local_bbox[2]
-                        tmp_lst.append([x_ini, y_ini])
+                        width = local_bbox[1] - local_bbox[0]
+                        height = local_bbox[3] - local_bbox[2]
+                        tmp_lst.append([x_ini, y_ini, width, height])
 
                 self.boxes_lst.append(tmp_lst)
 
