@@ -371,6 +371,8 @@ class MyImgWin(QWidget):
             if( self.img_select.maxCount() > 0 ):
                 firts_time = time_now()
 
+                swow_ver = '''
+
                 for img_num in xrange(self.img_select.maxCount()):
                     tmp_lst = []
 
@@ -386,6 +388,28 @@ class MyImgWin(QWidget):
                             tmp_lst.append([x_ini, y_ini, width, height])
 
                     self.boxes_lst.append(tmp_lst)
+                '''
+
+
+
+                for img_num in xrange(self.img_select.maxCount()):
+                    tmp_lst = []
+                    self.boxes_lst.append(tmp_lst)
+
+                for i in xrange(n_refs):
+                    local_bbox = table[i]['bbox']
+                    z_boud = local_bbox[4:6]
+                    x_ini = local_bbox[0]
+                    y_ini = local_bbox[2]
+                    width = local_bbox[1] - local_bbox[0]
+                    height = local_bbox[3] - local_bbox[2]
+
+                    for idx in xrange(int(z_boud[0]), int(z_boud[1]) ):
+                        self.boxes_lst[idx].append([x_ini, y_ini, width, height])
+
+
+
+
 
                 print "\n\n building boxes_lst (diff time) =", time_now() - firts_time, "\n"
 
