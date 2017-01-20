@@ -169,9 +169,8 @@ class ImgPainter(MyQWidgetWithQPainter):
             rect = QRect(0, 0, scaled_width, scaled_height)
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
-
+            painter.setPen(Qt.blue)
             painter.drawPixmap(rect, pixmap)
-
             if( self.boxes_lst != None ):
                 for box in self.boxes_lst:
                     x = float(box[0])
@@ -180,6 +179,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                     height = float(box[3])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
+
 
                     painter.drawRect(rectangle)
             #painter.drawLine(0, 0, 1000, 1000)
@@ -404,7 +404,7 @@ class MyImgWin(QWidget):
                     width = local_bbox[1] - local_bbox[0]
                     height = local_bbox[3] - local_bbox[2]
 
-                    for idx in xrange(int(z_boud[0]), int(z_boud[1]) ):
+                    for idx in xrange( int(z_boud[0]), int(z_boud[1]) ):
                         self.boxes_lst[idx].append([x_ini, y_ini, width, height])
 
 
