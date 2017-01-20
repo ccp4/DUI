@@ -440,7 +440,7 @@ class WebTab(QWidget):
         QWebSettings.JavascriptEnabled = True
 
         self.web =  QWebView()
-        print "\n\n No need to load HTML file yet\n\n"
+        print "No need to load HTML file yet\n"
 
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)

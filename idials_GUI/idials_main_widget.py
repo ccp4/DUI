@@ -217,7 +217,7 @@ class MainWidget(QMainWindow):
         print "self.idials_widget.controller.get_current().index =", ini_index
 
         if( ini_index == 0 ):
-            print "some default begin"
+            print "\n\n Running for first time in this dir \n\n\n"
             self._gray_unwanted()
 
             #TODO Think a bit if you are going a bit
@@ -225,7 +225,9 @@ class MainWidget(QMainWindow):
             self.idials_widget.update_info()
 
         else:
+            print "\n\n Already run at least one command here \n\n\n"
             self.idials_widget.goto(ini_index)
+
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -427,27 +429,56 @@ class MainWidget(QMainWindow):
 
     def update_img(self):
         print "attempting to update imgs"
+        json_file_path = None
+        refl_pikl_path = None
 
         try:
             json_file_path = str(self.idials_widget.controller.get_current().datablock)
-
-            #TODO consider  json_file_path = self.idials_widget.controller.get_current().workspace ... hardcoded rute
-
             print "\n images from:", json_file_path, "\n"
-            self.output_wg.img_view.ini_datablock(json_file_path)
-        except:
-            print "no datablock.json found"
 
-        this_need_to_be_fixed_maybe_from_the_img_viewer = '''
+        except:
+            print "\n\n ______________________________________________________ <<< trying deeper search for datablock.json"
+
+            try:
+                #current = self.controller.get_current()
+                #previous = current.parent
+                current = self.idials_widget.controller.get_current()
+                for times in xrange(50):
+                    previous = current.parent
+                    if( str(previous.name) =="import"  ):
+                        print "found <<< import >>> "
+
+                        json_file_path = str(previous.datablock)
+                        print "\n images from:", json_file_path, "\n\n"
+                        break
+
+                    else:
+                        print "tmp step = ", current.name
+                        current = previous
+
+            except:
+                print "<<<  failed to find datablock.json  >>>"
+
         try:
-            pckl_file_path = str(self.idials_widget.controller.get_current().reflections)
-
-            print "\n\n reflections in IMG from:", pckl_file_path, "\n\n"
-            self.output_wg.img_view.ini_reflection_table(pckl_file_path)
+            refl_pikl_path = self.idials_widget.controller.get_current().reflections
 
         except:
-            print "\n\n no pickle file found \n\n\n"
+            print "failed to find << refl_pikl_path >>"
+
+        self.output_wg.img_view.ini_datablock(json_file_path)
+        self.output_wg.img_view.ini_reflection_table(refl_pikl_path)
+
+        to_work_on_in_the_future = '''
+
+        try:
+            exp_json_path = self.idials_widget.controller.get_current().experiments
+            print "exp_json_path =", exp_json_path
+
+        except:
+            print "failed to find << exp_json_path >>"
+
         '''
+
 
 
     def update_report(self, report_path):
@@ -491,7 +522,7 @@ class MainWidget(QMainWindow):
                 self.btn_go_clicked()
             else:
                 next_command = self._find_next(current_command)
-                print "\n\n next_command =", next_command, "\n\n"
+                print "next_command =", next_command, "\n"
 
                 for btn in self.btn_lst:
                     print btn.command
@@ -503,7 +534,6 @@ class MainWidget(QMainWindow):
 
         #TODO cmd_name does not have any use any more
         if( self.running == False ):
-            #print "\n Tree swishing to", cmd_name, "\n\n"
             if new_url != None:
                 self.update_report(new_url)
 

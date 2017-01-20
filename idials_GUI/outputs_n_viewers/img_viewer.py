@@ -330,128 +330,64 @@ class MyImgWin(QWidget):
 
     def ini_datablock(self, json_file_path):
 
-        try:
-            datablocks = DataBlockFactory.from_json_file(json_file_path)
-            ##TODO check length of datablock for safety
-            datablock = datablocks[0]
+        if( json_file_path != None ):
 
-        except:
-                tmp_off = '''
             try:
-                experiments = ExperimentListFactory.from_json_file(
-                              json_file_path, check_format=False)
-                print "\n\n __________________ tst \n\n"
+                datablocks = DataBlockFactory.from_json_file(json_file_path)
+                ##TODO check length of datablock for safety
+                datablock = datablocks[0]
+                self.my_sweep = datablock.extract_sweeps()[0]
+                self.img_select.clear()
+                print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
+                print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
+                n_of_imgs = len(self.my_sweep.indices())
+                print "n_of_imgs =", n_of_imgs
+
+                self.img_select.setMaxCount(n_of_imgs)
+                for num in xrange(n_of_imgs):
+                    labl = "img#" + str(num + 1)
+                    self.img_select.addItem(labl)
+
+                self.set_img()
 
             except:
-
-                '''
-
-                try:
-                    # FIXME here only take the first datablock. What if there are more?
-                    datablock = DataBlockFactory.from_serialized_format(json_file_path, check_format=False)[0]
-
-                    print "\n\n__________tst 02\n\n"
-
-                    # FIXME here only take the first model from each
-                    beam = datablock.unique_beams()[0]
-                    detector = datablock.unique_detectors()[0]
-                    scan = datablock.unique_scans()[0]
-
-                    # build a pseudo ExperimentList (with empty crystals)
-                    experiments=ExperimentList()
-                    experiments.append(Experiment(
-                        beam=beam, detector=detector, scan=scan))
-
-                except ValueError:
-                    print "failed to read json file"
-
-
-        print "Here 01 \n"
-
-        '''
-        try:
-            datablocks = DataBlockFactory.from_json_file(json_file_path)
-            #TODO check length of datablock for safety
-            datablock = datablocks[0]
-
-        except:
-
-            # FIXME here only take the first datablock. What if there are more?
-            datablock = DataBlockFactory.from_serialized_format(json_file_path, check_format=False)[0]
-        '''
-
-
-        self.my_sweep = datablock.extract_sweeps()[0]
-        self.img_select.clear()
-        print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
-        print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
-        n_of_imgs = len(self.my_sweep.indices())
-        print "n_of_imgs =", n_of_imgs
-
-        self.img_select.setMaxCount(n_of_imgs)
-        for num in xrange(n_of_imgs):
-            labl = "img#" + str(num + 1)
-            self.img_select.addItem(labl)
-
-        self.set_img()
+                print "Failed to load images from  datablock.json"
 
 
     def ini_reflection_table(self, pckl_file_path):
+        if( pckl_file_path != None ):
 
-        copy_pasted_01 = '''
-        from dials.array_family import flex
-        table = flex.reflection_table.from_pickle(pick_name)
+            print "[pickle file] =", pckl_file_path
+            table = flex.reflection_table.from_pickle(pckl_file_path)
+            print "table =", table
+            local_bbox = table[5]['bbox']
+            print "local_bbox =", local_bbox
+            print "len(table) = ", len(table)
 
-        #somewhere else
-        self.local_bbox = self.table[self.row_pos]['bbox']
-        '''
-        print "[pickle file] =", pckl_file_path
-        table = flex.reflection_table.from_pickle(pckl_file_path)
-        print "table =", table
-        local_bbox = table[5]['bbox']
-        print "local_bbox =", local_bbox
-        print "len(table) = ", len(table)
+            n_refs = len(table)
 
-        n_refs = len(table)
+            self.boxes_lst = []
+            print "self.img_select.maxCount() =", self.img_select.maxCount()
+            if( self.img_select.maxCount() > 0 ):
+                firts_time = time_now()
 
-        self.boxes_lst = []
-        print "self.img_select.maxCount() =", self.img_select.maxCount()
-        if( self.img_select.maxCount() > 0 ):
-            for img_num in xrange(self.img_select.maxCount()):
-                tmp_lst = []
+                for img_num in xrange(self.img_select.maxCount()):
+                    tmp_lst = []
 
-                for i in xrange(n_refs):
-                    local_bbox = table[i]['bbox']
-                    z_boud = local_bbox[4:6]
+                    for i in xrange(n_refs):
+                        local_bbox = table[i]['bbox']
+                        z_boud = local_bbox[4:6]
 
-                    if( img_num <= z_boud[0] and img_num >= z_boud[0] ):
-                        x_ini = local_bbox[0]
-                        y_ini = local_bbox[2]
-                        width = local_bbox[1] - local_bbox[0]
-                        height = local_bbox[3] - local_bbox[2]
-                        tmp_lst.append([x_ini, y_ini, width, height])
+                        if( img_num >= z_boud[0] and img_num <= z_boud[1] ):
+                            x_ini = local_bbox[0]
+                            y_ini = local_bbox[2]
+                            width = local_bbox[1] - local_bbox[0]
+                            height = local_bbox[3] - local_bbox[2]
+                            tmp_lst.append([x_ini, y_ini, width, height])
 
-                self.boxes_lst.append(tmp_lst)
+                    self.boxes_lst.append(tmp_lst)
 
-        copy_pasted_02 = '''
-        try:
-            refl_tabl = flex.reflection_table.from_pickle(pckl_file_path)
-            n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
-            print "dat.n_strng =", n_strng
-            n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
-            print "dat.n_index =", n_index
-            n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(True)
-            print "dat.n_refnd =", n_refnd
-            n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(True)
-            print "dat.n_integ_sum =", n_integ_sum
-            n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(True)
-            print "dat.n_integ_prf =", n_integ_prf
-
-        except:
-            print "failed to find reflections"
-
-        '''
-
+                print "\n\n building boxes_lst (diff time) =", time_now() - firts_time, "\n"
 
     def set_img(self):
 
