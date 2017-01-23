@@ -169,8 +169,33 @@ class ImgPainter(MyQWidgetWithQPainter):
             rect = QRect(0, 0, scaled_width, scaled_height)
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
-            painter.setPen(Qt.blue)
+            #painter.setPen(Qt.blue)
+
+
+            pen = QPen()  # creates a default pen
+            pen.setBrush(Qt.green)
+            pen.setStyle(Qt.DashDotLine)
+            pen.setWidth(3)
+            painter.setPen(pen)
+
             painter.drawPixmap(rect, pixmap)
+
+
+
+
+
+            '''
+painter = QPainter(self)
+pen = QPen()  # creates a default pen
+pen.setBrush(Qt.green)
+pen.setStyle(Qt.DashDotLine)
+pen.setWidth(3)
+painter.setPen(pen)
+            '''
+
+
+
+
             if( self.boxes_lst != None ):
                 for box in self.boxes_lst:
                     x = float(box[0])
