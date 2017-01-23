@@ -173,28 +173,22 @@ class ImgPainter(MyQWidgetWithQPainter):
 
 
             pen = QPen()  # creates a default pen
-            pen.setBrush(Qt.green)
-            pen.setStyle(Qt.DashDotLine)
-            pen.setWidth(3)
+            pen.setBrush(Qt.blue)
+
+            if( self.my_scale >= 5.0 ):
+                #pen.setStyle(Qt.DashDotLine)
+                pen.setStyle(Qt.DotLine)
+                pen.setWidth(self.my_scale / 3.0)
+
+            else:
+                pen.setStyle(Qt.SolidLine)
+                pen.setWidth(0.5)
+
             painter.setPen(pen)
 
             painter.drawPixmap(rect, pixmap)
 
-
-
-
-
-            '''
-painter = QPainter(self)
-pen = QPen()  # creates a default pen
-pen.setBrush(Qt.green)
-pen.setStyle(Qt.DashDotLine)
-pen.setWidth(3)
-painter.setPen(pen)
-            '''
-
-
-
+            print "self.my_scale =", self.my_scale
 
             if( self.boxes_lst != None ):
                 for box in self.boxes_lst:
@@ -205,12 +199,9 @@ painter.setPen(pen)
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
 
-
                     painter.drawRect(rectangle)
-            #painter.drawLine(0, 0, 1000, 1000)
 
             painter.end()
-
 
 
 class build_qimg(object):
