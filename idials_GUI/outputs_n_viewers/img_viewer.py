@@ -70,7 +70,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.setMouseTracking(True)
         self.show()
 
-        self.my_scale = 1
+        self.my_scale = 1.0
 
         self.img_width = 247
         self.img_height = 253
@@ -99,10 +99,10 @@ class ImgPainter(MyQWidgetWithQPainter):
 
     def wheelEvent(self, event):
 
-        if( event.delta() > 0 and self.my_scale < 100 ):
+        if( event.delta() > 0.0 and self.my_scale < 100.0 ):
             scale_factor = 1.1
 
-        elif( event.delta() < 0 and self.my_scale > 0.333 ):
+        elif( event.delta() < 0.0 and self.my_scale > 0.333 ):
             scale_factor = 0.9
 
         else:
@@ -177,8 +177,9 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             if( self.my_scale >= 5.0 ):
                 #pen.setStyle(Qt.DashDotLine)
-                pen.setStyle(Qt.DotLine)
-                pen.setWidth(self.my_scale / 3.0)
+                #pen.setStyle(Qt.DotLine)
+                pen.setStyle(Qt.SolidLine)
+                pen.setWidth(self.my_scale / 3.5)
 
             else:
                 pen.setStyle(Qt.SolidLine)
@@ -188,7 +189,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             painter.drawPixmap(rect, pixmap)
 
-            print "self.my_scale =", self.my_scale
+            #print "self.my_scale =", self.my_scale
 
             if( self.boxes_lst != None ):
                 for box in self.boxes_lst:
