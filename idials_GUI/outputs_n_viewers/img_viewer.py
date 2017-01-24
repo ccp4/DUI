@@ -207,6 +207,13 @@ class ImgPainter(MyQWidgetWithQPainter):
 
                     painter.drawRect(rectangle)
 
+                    if( reflection.hkl !=None ):
+                        rectangle = QRectF((x + width) * self.my_scale, y * self.my_scale,
+                                           20 * self.my_scale, 10 * self.my_scale)
+
+                        painter.drawText(rectangle, Qt.AlignCenter, reflection.hkl)
+
+
             painter.end()
 
 
@@ -410,12 +417,9 @@ class MyImgWin(QWidget):
 
                     try:
                         local_hkl = str(table[i]['miller_index'])
-                        print "miller_index Done"
 
                     except:
                         local_hkl = None
-                        print "NO miller_index provided"
-
 
                     for idx in xrange( int(z_boud[0]), int(z_boud[1]) ):
                         reflection_data = flat_data()
