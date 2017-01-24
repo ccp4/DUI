@@ -208,11 +208,12 @@ class ImgPainter(MyQWidgetWithQPainter):
                     painter.drawRect(rectangle)
 
                     if( reflection.hkl !=None ):
-                        rectangle = QRectF((x + width) * self.my_scale, y * self.my_scale,
+
+                        old_way = '''rectangle = QRectF((x + width) * self.my_scale, y * self.my_scale,
                                            20 * self.my_scale, 10 * self.my_scale)
+                        painter.drawText(rectangle, Qt.AlignCenter, reflection.hkl)'''
 
-                        painter.drawText(rectangle, Qt.AlignCenter, reflection.hkl)
-
+                        painter.drawText( QPoint(int((x + width) * self.my_scale), int(y * self.my_scale)),  reflection.hkl)
 
             painter.end()
 
