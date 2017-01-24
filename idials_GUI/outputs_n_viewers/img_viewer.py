@@ -408,9 +408,21 @@ class MyImgWin(QWidget):
                     width = local_bbox[1] - local_bbox[0]
                     height = local_bbox[3] - local_bbox[2]
 
+                    try:
+                        local_hkl = str(table[i]['miller_index'])
+                        print "miller_index Done"
+
+                    except:
+                        local_hkl = None
+                        print "NO miller_index provided"
+
+
                     for idx in xrange( int(z_boud[0]), int(z_boud[1]) ):
                         reflection_data = flat_data()
                         reflection_data.box = [x_ini, y_ini, width, height]
+
+                        reflection_data.hkl = local_hkl
+
                         self.flat_data_lst[idx].append(reflection_data)
 
                 print "\n\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
