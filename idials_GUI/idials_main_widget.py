@@ -551,6 +551,9 @@ class MainWidget(QMainWindow):
             self._gray_unwanted()
 
     def opt_picked(self, opt_num):
+
+
+
         if( self.running == False ):
             print "\n opt_num =", opt_num, " \n"
             self.idials_widget.change_mode("reindex")
@@ -560,6 +563,12 @@ class MainWidget(QMainWindow):
 
             if( not(self.embedded_reindex) ):
                 self.tmp_reindex_widg.update_opt()
+
+            if( self.old_opnum == opt_num ):
+                print "\n\n Supposed to run reindex NOW \n\n"
+                self.btn_go_clicked()
+
+            self.old_opnum = opt_num
 
 
 if __name__ == '__main__':

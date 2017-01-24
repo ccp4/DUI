@@ -163,6 +163,9 @@ class ReindexTable(QTableWidget):
     def __init__(self, parent=None):
         super(ReindexTable, self).__init__(parent)
         self.super_parent = parent.super_parent
+
+        self.super_parent.old_opnum = None
+
         self.cellClicked.connect(self.opt_clicked)
 
         self.v_sliderBar = self.verticalScrollBar()
