@@ -24,6 +24,11 @@ except:
 
 MyQWidgetWithQPainter = QWidget
 
+class flat_data(object):
+    box = None
+    hkl = None
+
+
 class img_w_cpp(object):
     def __init__(self):
         self.wx_bmp_arr = rgb_img()
@@ -136,10 +141,10 @@ class ImgPainter(MyQWidgetWithQPainter):
         if( new_pos != None ):
             scrollBar.setValue(new_pos)
 
-    def set_img_pix(self, q_img = None, boxes_lst_in = None):
+    def set_img_pix(self, q_img = None, flat_data_lst_in = None):
 
         self.img = q_img
-        self.boxes_lst = boxes_lst_in
+        self.flat_data_lst = flat_data_lst_in
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
@@ -191,12 +196,12 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             #print "self.my_scale =", self.my_scale
 
-            if( self.boxes_lst != None ):
-                for box in self.boxes_lst:
-                    x = float(box[0])
-                    y = float(box[1])
-                    width = float(box[2])
-                    height = float(box[3])
+            if( self.flat_data_lst != None ):
+                for reflection in self.flat_data_lst:
+                    x = float(reflection.box[0])
+                    y = float(reflection.box[1])
+                    width = float(reflection.box[2])
+                    height = float(reflection.box[3])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
 
@@ -315,7 +320,7 @@ class MyImgWin(QWidget):
 
         self.img_num = 0
         self.my_sweep = None
-        self.boxes_lst = [None]
+        self.flat_data_lst = [None]
         self.current_qimg = build_qimg()
 
         if( json_file_path == None ):
@@ -386,14 +391,14 @@ class MyImgWin(QWidget):
 
             n_refs = len(table)
 
-            self.boxes_lst = []
+            self.flat_data_lst = []
             print "self.img_select.maxCount() =", self.img_select.maxCount()
             if( self.img_select.maxCount() > 0 ):
                 firts_time = time_now()
 
                 for img_num in xrange(self.img_select.maxCount()):
                     tmp_lst = []
-                    self.boxes_lst.append(tmp_lst)
+                    self.flat_data_lst.append(tmp_lst)
 
                 for i in xrange(n_refs):
                     local_bbox = table[i]['bbox']
@@ -404,11 +409,13 @@ class MyImgWin(QWidget):
                     height = local_bbox[3] - local_bbox[2]
 
                     for idx in xrange( int(z_boud[0]), int(z_boud[1]) ):
-                        self.boxes_lst[idx].append([x_ini, y_ini, width, height])
+                        reflection_data = flat_data()
+                        reflection_data.box = [x_ini, y_ini, width, height]
+                        self.flat_data_lst[idx].append(reflection_data)
 
-                print "\n\n building boxes_lst (diff time) =", time_now() - firts_time, "\n"
+                print "\n\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
         else:
-            self.boxes_lst = [None]
+            self.flat_data_lst = [None]
 
         if( self.my_sweep != None):
             self.set_img()
@@ -421,7 +428,7 @@ class MyImgWin(QWidget):
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
         self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                       self.i_min, self.i_max),
-                                                      self.boxes_lst[self.img_num])
+                                                      self.flat_data_lst[self.img_num])
 
         print "diff time =", time_now() - firts_time, "\n"
 
