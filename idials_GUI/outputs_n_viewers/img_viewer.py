@@ -182,7 +182,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             else:
                 pen.setStyle(Qt.SolidLine)
-                pen.setWidth(0.5)
+                pen.setWidth(0.0)
 
             painter.setPen(pen)
 
@@ -330,6 +330,9 @@ class MyImgWin(QWidget):
         else:
             self.ini_reflection_table(pckl_file_path)
 
+        if( self.my_sweep != None):
+            self.set_img()
+
         self.img_select.setCurrentIndex(0)
         self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
 
@@ -364,7 +367,7 @@ class MyImgWin(QWidget):
                     labl = "img#" + str(num + 1)
                     self.img_select.addItem(labl)
 
-                self.set_img()
+
 
             except:
                 print "Failed to load images from  datablock.json"
@@ -387,27 +390,6 @@ class MyImgWin(QWidget):
             if( self.img_select.maxCount() > 0 ):
                 firts_time = time_now()
 
-                swow_ver = '''
-
-                for img_num in xrange(self.img_select.maxCount()):
-                    tmp_lst = []
-
-                    for i in xrange(n_refs):
-                        local_bbox = table[i]['bbox']
-                        z_boud = local_bbox[4:6]
-
-                        if( img_num >= z_boud[0] and img_num <= z_boud[1] ):
-                            x_ini = local_bbox[0]
-                            y_ini = local_bbox[2]
-                            width = local_bbox[1] - local_bbox[0]
-                            height = local_bbox[3] - local_bbox[2]
-                            tmp_lst.append([x_ini, y_ini, width, height])
-
-                    self.boxes_lst.append(tmp_lst)
-                '''
-
-
-
                 for img_num in xrange(self.img_select.maxCount()):
                     tmp_lst = []
                     self.boxes_lst.append(tmp_lst)
@@ -423,11 +405,12 @@ class MyImgWin(QWidget):
                     for idx in xrange( int(z_boud[0]), int(z_boud[1]) ):
                         self.boxes_lst[idx].append([x_ini, y_ini, width, height])
 
-
-
-
-
                 print "\n\n building boxes_lst (diff time) =", time_now() - firts_time, "\n"
+        else:
+            self.boxes_lst = [None]
+
+        if( self.my_sweep != None):
+            self.set_img()
 
     def set_img(self):
 
@@ -517,6 +500,7 @@ if( __name__ == "__main__" ):
 
     print "img_path =", img_path
     print "pckl_file_path =", pckl_file_path
+
 
     diag = MyImgWin(img_path, pckl_file_path)
     sys.exit(app.exec_())
