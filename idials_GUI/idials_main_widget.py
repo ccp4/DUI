@@ -250,6 +250,8 @@ class MainWidget(QMainWindow):
             self.idials_widget.change_mode(my_sender.command)
             self._refresh_stacked_widget(my_sender.par_wig)
             my_sender.setStyleSheet("background-color: lightblue")
+            print "\n\n______________________________________________________________________changing run to:", my_sender.command
+            self.btn_go.setText(str(my_sender.command))
 
     def openFile(self):
         print "openFile"
@@ -441,7 +443,7 @@ class MainWidget(QMainWindow):
             print "\n images from:", json_file_path, "\n"
 
         except:
-            print "\n\n ______________________________________________________ <<< trying deeper search for datablock.json"
+            print "\n <<< trying deeper search for datablock.json"
 
             try:
                 #current = self.controller.get_current()
@@ -494,7 +496,7 @@ class MainWidget(QMainWindow):
         self._refrech_btn_look()
         self.current_widget = new_widget
 
-        print "Tst 01"
+        print "_Tst 01"
 
         try:
             print "controller.get_current().name =", self.idials_widget.controller.get_current().name

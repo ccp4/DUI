@@ -178,7 +178,8 @@ class ImgPainter(MyQWidgetWithQPainter):
 
 
             pen = QPen()  # creates a default pen
-            pen.setBrush(Qt.blue)
+            #pen.setBrush(Qt.blue)
+            pen.setBrush(QColor(99, 99, 250))
 
             if( self.my_scale >= 5.0 ):
                 #pen.setStyle(Qt.DashDotLine)
@@ -208,11 +209,6 @@ class ImgPainter(MyQWidgetWithQPainter):
                     painter.drawRect(rectangle)
 
                     if( reflection.hkl !=None ):
-
-                        old_way = '''rectangle = QRectF((x + width) * self.my_scale, y * self.my_scale,
-                                           20 * self.my_scale, 10 * self.my_scale)
-                        painter.drawText(rectangle, Qt.AlignCenter, reflection.hkl)'''
-
                         painter.drawText( QPoint(int((x + width) * self.my_scale), int(y * self.my_scale)),  reflection.hkl)
 
             painter.end()
