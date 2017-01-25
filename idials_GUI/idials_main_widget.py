@@ -37,7 +37,11 @@ class Text_w_Bar(QProgressBar):
 
     def __init__(self, parent):
         super(Text_w_Bar,self).__init__()
-        self._text = None
+        self._text = ""
+
+        # some programmers prefer to use the next line instead,
+        # but with an empty string PyQt4 does not complain when resizing
+        #self._text = ""
 
     def setText(self, text):
         self._text = text
