@@ -443,9 +443,15 @@ class MyImgWin(QWidget):
 
         firts_time = time_now()
         self.img_arr = self.my_sweep.get_raw_data(self.img_num)[0]
-        self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                      self.i_min, self.i_max),
-                                                      self.flat_data_lst[self.img_num])
+
+        if(self.flat_data_lst == [None]):
+            self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                          self.i_min, self.i_max))
+
+        else:
+            self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                          self.i_min, self.i_max),
+                                                          self.flat_data_lst[self.img_num])
 
         print "diff time =", time_now() - firts_time, "\n"
 
