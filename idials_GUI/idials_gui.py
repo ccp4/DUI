@@ -111,6 +111,7 @@ class TreeNavWidget(QTreeView):
                         nxt_new_item = QStandardItem(str(next_cmd))
                         nxt_new_item.setBackground(Qt.white)
                         nxt_new_item.setForeground(Qt.black)
+                        nxt_new_item.idials_node = None
                         new_item.appendRow(nxt_new_item)
 
 
@@ -138,15 +139,19 @@ class TreeNavWidget(QTreeView):
             print "_____________________________________________________ <<< item_clicked"
             item = self.tmp_model.itemFromIndex(it_index)
 
-            if item.idials_node.success == True:
-                print "item.idials_node.index =", item.idials_node.index
-                index_to_jump = item.idials_node.index
+            if item.idials_node == None:
+                print "\n\n step NOT ran yet \n\n"
 
             else:
-                print "cannot jump to failed step"
-                index_to_jump = item.idials_node.parent.index
+                if item.idials_node.success == True:
+                    print "item.idials_node.index =", item.idials_node.index
+                    index_to_jump = item.idials_node.index
 
-            self.my_parent.goto(index_to_jump)
+                elif item.idials_node.success == False:
+                    print "cannot jump to failed step"
+                    index_to_jump = item.idials_node.parent.index
+
+                self.my_parent.goto(index_to_jump)
 
 
 class IdialsOuterWidget( QWidget):
