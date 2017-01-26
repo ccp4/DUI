@@ -179,7 +179,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             pen = QPen()  # creates a default pen
             #pen.setBrush(Qt.blue)
-            pen.setBrush(QColor(99, 99, 250))
+            pen.setBrush(QColor(75, 150, 200))
 
             if( self.my_scale >= 5.0 ):
                 #pen.setStyle(Qt.DashDotLine)
