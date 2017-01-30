@@ -267,6 +267,7 @@ class ParamMainWidget( QWidget):
         level_tab.addTab(self.sipler_widget, "Simple Editor")
         level_tab.addTab(self.advanced_widget, "Advanced Editor")
 
+
         label_font = QFont()
         sys_font_point_size =  label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
@@ -276,23 +277,11 @@ class ParamMainWidget( QWidget):
         hbox.addWidget(step_label)
         hbox.addWidget(level_tab)
 
+
         self.setLayout(hbox)
         self.show()
 
-    def update_lin_txt(self, str_path, str_value):
-
-        cmd_to_run = str_path + "=" + str_value
-        print "adjusting parameter: {", cmd_to_run,"}"
-
-        #TODO in a future will no longer be needed to check
-        # because this should be running only from inside
-        # the big GUI
-        if( self.super_parent == self ):
-            print"\n self.super_parent == self \n"
-
-        else:
-            print"\n self.super_parent != self \n"
-            self.super_parent.param_changed(cmd_to_run)
+    def update_advanced_widget(self, str_path, str_value):
 
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
                        self.sipler_widget.lst_wgs):
@@ -308,6 +297,28 @@ class ParamMainWidget( QWidget):
                             if( val == str_value ):
                                 print "found val, v=", val
                                 widg.setCurrentIndex(pos)
+
+    def update_lin_txt(self, str_path, str_value):
+
+        cmd_to_run = str_path + "=" + str_value
+        print "adjusting parameter: {", cmd_to_run,"}"
+
+
+        #TODO in a future will no longer be needed to check
+        # because this should be running only from inside
+        # the big GUI
+        if( self.super_parent == self ):
+            print"\n self.super_parent == self \n"
+
+        else:
+            print"\n self.super_parent != self \n"
+            try:
+                self.super_parent.param_changed(cmd_to_run)
+
+            except:
+                print "Not ready to change parameter yet"
+
+        self.update_advanced_widget(str_path, str_value)
 
 
 class StepList(object):
@@ -332,17 +343,17 @@ class StepList(object):
 
     def __init__(self, parent = None):
         self.super_parent = parent
-        self.lst_widg  = [
-                          ImportPage(parent = self),
-                          ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
-                                          parent = self, upper_label = "Find Spots"),
-                          ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab,
-                                          parent = self, upper_label = "Index"),
-                          ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = RefineSimplerParamTab,
-                                          parent = self, upper_label = "Refine"),
-                          ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab,
-                                          parent = self, upper_label = "Integrate")
-                         ]
+        self.list_of_widgets  = [
+              ImportPage(parent = self),
+              ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
+                              parent = self, upper_label = "Find Spots"),
+              ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab,
+                              parent = self, upper_label = "Index"),
+              ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = RefineSimplerParamTab,
+                              parent = self, upper_label = "Refine"),
+              ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab,
+                              parent = self, upper_label = "Integrate")
+                                 ]
 
         idials_gui_path = os.environ["IDIALS_GUI_PATH"]
         print "idials_gui_path =", idials_gui_path
@@ -352,7 +363,6 @@ class StepList(object):
         lst_icons_path.append(str(idials_gui_path + "/resources/import.png"))
         lst_icons_path.append(str(idials_gui_path + "/resources/find_spots.png"))
         lst_icons_path.append(str(idials_gui_path + "/resources/index.png"))
-        #lst_icons_path.append(str(idials_gui_path + "/resources/reindex.png"))
         lst_icons_path.append(str(idials_gui_path + "/resources/refine.png"))
         lst_icons_path.append(str(idials_gui_path + "/resources/integrate.png"))
 
@@ -362,7 +372,7 @@ class StepList(object):
             print "attempting to append:", my_icon_path
 
     def __call__(self):
-        return self.lst_lablel, self.lst_widg, self.lst_icons, self.lst_commands
+        return self.lst_lablel, self.list_of_widgets, self.lst_icons, self.lst_commands
 
 
 if __name__ == '__main__':

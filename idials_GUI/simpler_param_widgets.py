@@ -85,11 +85,11 @@ class FindspotsSimplerParameterTab( QWidget):
         #label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
 
-        box_nproc = QSpinBox()
-        box_nproc.setValue(1)
-        box_nproc.local_path = "spotfinder.mp.nproc"
-        box_nproc.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_nproc.addWidget(box_nproc)
+
+        self.box_nproc = QSpinBox()
+        self.box_nproc.local_path = "spotfinder.mp.nproc"
+        self.box_nproc.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
         localLayout.addStretch(1)
@@ -101,10 +101,11 @@ class FindspotsSimplerParameterTab( QWidget):
         self.lst_wgs.append(xds_sigma_background_spn_bx)
         self.lst_wgs.append(xds_sigma_strong_spn_bx)
         self.lst_wgs.append(xds_global_threshold_spn_bx)
-        self.lst_wgs.append(box_nproc)
+        self.lst_wgs.append(self.box_nproc)
 
         for wgdt in self.lst_wgs:
             wgdt.tmp_lst = None
+
 
     def spnbox_changed(self, value):
         sender = self.sender()
@@ -267,11 +268,11 @@ class IntegrateSimplerParamTab( QWidget):
         #label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
 
-        box_nproc = QSpinBox()
-        box_nproc.setValue(1)
-        box_nproc.local_path = "integration.mp.nproc"
-        box_nproc.valueChanged.connect(self.spnbox_changed)
-        hbox_lay_nproc.addWidget(box_nproc)
+        self.box_nproc = QSpinBox()
+        self.box_nproc.setValue(1)
+        self.box_nproc.local_path = "integration.mp.nproc"
+        self.box_nproc.valueChanged.connect(self.spnbox_changed)
+        hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
         localLayout.addStretch(1)
@@ -280,8 +281,8 @@ class IntegrateSimplerParamTab( QWidget):
         self.lst_wgs = []
         self.lst_wgs.append(PrFit_comb_bx)
         self.lst_wgs.append(box_algorithm_53)
-        box_nproc.tmp_lst = None
-        self.lst_wgs.append(box_nproc)
+        self.box_nproc.tmp_lst = None
+        self.lst_wgs.append(self.box_nproc)
 
     def combobox_changed(self, value):
         sender = self.sender()

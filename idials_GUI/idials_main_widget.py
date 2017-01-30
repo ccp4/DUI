@@ -22,6 +22,7 @@ copyright (c) CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import sys, os
+import libtbx.introspection
 
 from python_qt_bind import *
 
@@ -257,8 +258,15 @@ class MainWidget(QMainWindow):
             self.idials_widget.change_mode(my_sender.command)
             self._refresh_stacked_widget(my_sender.par_wig)
             my_sender.setStyleSheet("background-color: lightblue")
-            print "\n\n______________________________________________________________________changing run to:", my_sender.command
             self.btn_go.setText(str(my_sender.command))
+
+            if( my_sender.command == "find_spots" ):
+                cpu_max_proc = libtbx.introspection.number_of_processors()
+                self.widg_lst[1].sipler_widget.box_nproc.setValue(int(cpu_max_proc))
+
+            elif( my_sender.command == "integrate" ):
+                print "\n\n______________________________________________________________________changing run to:", my_sender.command
+
 
     def openFile(self):
         print "openFile"
