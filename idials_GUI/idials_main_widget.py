@@ -186,7 +186,14 @@ class MainWidget(QMainWindow):
         control_p_info_splitt.setOrientation(Qt.Vertical)
         self.info_widget = InfoWidget(self)
         control_p_info_splitt.addWidget(v_control_splitter)
-        control_p_info_splitt.addWidget(self.info_widget)
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(self.info_widget)
+        control_p_info_splitt.addWidget(scrollArea)
+
+
+        #scrollArea = QScrollArea()
+        #scrollArea.setWidget(self.scrollable_widget)
+
 
         h_main_splitter.addWidget(control_p_info_splitt)
         h_main_splitter.addWidget(self.output_wg)

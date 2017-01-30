@@ -116,12 +116,9 @@ def template_from_lst_build(in_str_lst):
 class FileOrDir(QFileDialog):
     def __init__(self, parent = None):
         super(FileOrDir, self).__init__(parent = None)
-
-        print "before setFileMode"
+        get_wor_dir = os.getcwd()
+        self.setDirectory(str(get_wor_dir))
         self.setFileMode(QFileDialog.Directory)
-        print "after setFileMode"
-
-
 
 
 class ImportPage(QWidget):
@@ -160,7 +157,6 @@ class ImportPage(QWidget):
         self.show()
 
         self.success_stat = False
-
 
     def __call__(self):
         print "from __call__   << import page >>"
