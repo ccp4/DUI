@@ -265,10 +265,8 @@ class MainWidget(QMainWindow):
                 self.widg_lst[1].sipler_widget.box_nproc.setValue(int(cpu_max_proc))
 
             elif( my_sender.command == "integrate" ):
-                print "\n\n______________________________________________________________________changing run to:", my_sender.command
                 cpu_max_proc = libtbx.introspection.number_of_processors()
                 self.widg_lst[4].sipler_widget.box_nproc.setValue(int(cpu_max_proc))
-                print "______________________________________________________________________ updating nproc", my_sender.command
 
 
     def openFile(self):
