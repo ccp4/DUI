@@ -126,7 +126,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
             dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
 
             sg = str(exp.crystal.get_space_group().info())
-            print "\n spgr = ", sg, "\n"
+            print "spgr = ", sg
             dat.spg_group = sg
 
             u_mat = exp.crystal.get_U()

@@ -361,7 +361,7 @@ class MainWidget(QMainWindow):
 
 
     def pop_reindex_gui(self):
-        print "\n ________________________ <<< Time to show the table \n"
+        print "  <<< Time to show the table "
         sumr_path = self.idials_widget.controller.get_summary()
         #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
         if( self.embedded_reindex ):
