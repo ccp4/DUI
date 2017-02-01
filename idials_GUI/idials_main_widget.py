@@ -385,10 +385,7 @@ class MainWidget(QMainWindow):
         self.bottom_bar_n_info.start_motion()
 
     def update_pbar_text(self, rtime_text):
-        if( len(rtime_text) < 3):
-            print "len(rtime_text) =", len(rtime_text)
-
-        else:
+        if( len(rtime_text) > 3):
             self.bottom_bar_n_info.setText(rtime_text)
             #self.bottom_bar_n_info.painted_overlay.repaint()
 

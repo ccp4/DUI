@@ -109,7 +109,7 @@ class TreeNavWidget(QTreeView):
                     if( cmd == last_mod and pos < len(self.lst_commands) - 2 ):
                         next_cmd = ">>> " + self.lst_commands[pos + 1] + " >>>"
                         nxt_new_item = QStandardItem(str(next_cmd))
-                        nxt_new_item.setBackground(Qt.white)
+                        nxt_new_item.setBackground(Qt.gray)
                         nxt_new_item.setForeground(Qt.black)
                         nxt_new_item.idials_node = None
                         new_item.appendRow(nxt_new_item)
