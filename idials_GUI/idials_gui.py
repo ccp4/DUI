@@ -91,29 +91,20 @@ class TreeNavWidget(QTreeView):
             new_item = QStandardItem(str(child_node.name))
 
             new_item.idials_node = child_node
-
-            #new_item.idx = child_node.index # TODO consider removing this line
-
             new_item.success = child_node.success
 
             if new_item.idials_node.index == self.lst_idx[-1]:
                 new_item.setBackground(Qt.blue)
                 new_item.setForeground(Qt.white)
+                nxt_cmd_str = self.my_parent.controller.get_mode()
+                next_cmd = ">> { " + nxt_cmd_str + " }"
 
-                last_mod = str(child_node.name)
-                #TODO have a think about how the next piece of code
-                #     are repeated at least 3 times almost identical
-                #     and must stay consistent and easy to maintain
+                nxt_new_item = QStandardItem(str(next_cmd))
+                nxt_new_item.setBackground(Qt.gray)
+                nxt_new_item.setForeground(Qt.black)
+                nxt_new_item.idials_node = None
 
-                for pos, cmd in enumerate(self.lst_commands):
-                    if( cmd == last_mod and pos < len(self.lst_commands) - 2 ):
-                        next_cmd = ">> { " + self.lst_commands[pos + 1] + " }"
-                        nxt_new_item = QStandardItem(str(next_cmd))
-                        nxt_new_item.setBackground(Qt.gray)
-                        nxt_new_item.setForeground(Qt.black)
-                        nxt_new_item.idials_node = None
-                        new_item.appendRow(nxt_new_item)
-
+                new_item.appendRow(nxt_new_item)
 
             elif new_item.idials_node.index in self.lst_idx:
                 new_item.setBackground(Qt.white)
