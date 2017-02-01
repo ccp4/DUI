@@ -347,11 +347,11 @@ class IdialsInnerrWidget( QWidget):
 
     def stop_clicked(self):
         import os
-        print "\n\n_______________________________________________In Stopping\n"
+        print "\n____________________________________________ << Stopping >>\n"
 
         my_process = self.thrd.to_run.state.command.external_command.command_run.process
 
-        print "\n self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process =", my_process
+        print "self.thrd.to_run.state.my_command.extr_comm_run.my_ext_cmd.cli_process =", my_process
         print "my_process.pid =", my_process.pid
 
         kill_child_processes(my_process.pid)

@@ -332,7 +332,7 @@ class StepList(object):
                   "integrate"
                   ]
 
-    lst_commands = [
+    my_command_lst = [
                     "import",
                     "find_spots",
                     "index",
@@ -372,7 +372,7 @@ class StepList(object):
             print "attempting to append:", my_icon_path
 
     def __call__(self):
-        return self.lst_lablel, self.list_of_widgets, self.lst_icons, self.lst_commands
+        return self.lst_lablel, self.list_of_widgets, self.lst_icons, self.my_command_lst
 
 
 if __name__ == '__main__':
