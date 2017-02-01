@@ -406,7 +406,6 @@ class MainWidget(QMainWindow):
 
             if( current_command == "import" ):
                 self.current_widget.success_stat = True
-                self.update_img()
 
             elif( current_command == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
@@ -433,6 +432,7 @@ class MainWidget(QMainWindow):
                 print "Time to update html << report >>"
 
             self._gray_unwanted()
+            self._update_img()
 
             #TODO Think a bit if you are going a bit
             #back and forward with the next line
@@ -446,7 +446,7 @@ class MainWidget(QMainWindow):
         self.check_next(current_command)
 
 
-    def update_img(self):
+    def _update_img(self):
         print "attempting to update imgs"
         json_file_path = None
         refl_pikl_path = None
@@ -509,8 +509,6 @@ class MainWidget(QMainWindow):
         self._refrech_btn_look()
         self.current_widget = new_widget
 
-        print "_Tst 01"
-
         try:
             print "controller.get_current().name =", self.idials_widget.controller.get_current().name
             self.current_widget()
@@ -518,8 +516,6 @@ class MainWidget(QMainWindow):
 
         except:
             print "\n no __call__ in ", self.current_widget, "\n"
-
-        self.update_img()
 
     def btn_clicked(self):
         if( self.running == False ):
@@ -568,6 +564,8 @@ class MainWidget(QMainWindow):
                 self.check_next(self.idials_widget.controller.get_current().name)
 
             self._gray_unwanted()
+
+        self._update_img()
 
     def opt_picked(self, opt_num):
 
