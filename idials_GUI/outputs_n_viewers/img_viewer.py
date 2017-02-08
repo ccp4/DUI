@@ -87,6 +87,9 @@ class ImgPainter(MyQWidgetWithQPainter):
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             self.x_pos, self.y_pos = event.x(), event.y()
+            pix_col = int(self.x_pos / self.my_scale)
+            pix_row = int(self.y_pos / self.my_scale)
+            print "I(x,y) =",self.my_parent.img_arr[pix_row, pix_col]
 
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
