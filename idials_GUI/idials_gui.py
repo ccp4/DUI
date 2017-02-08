@@ -31,6 +31,7 @@ import os
 import signal
 import subprocess
 
+from outputs_n_viewers.info_handler import update_all_data
 
 def kill_2nd_level_child_processes(parent_pid, sig=signal.SIGTERM):
 
@@ -88,7 +89,16 @@ class TreeNavWidget(QTreeView):
     def recursive_node(self, root_node, item_in):
 
         for child_node in root_node.children:
-            new_item = QStandardItem(str(child_node.name))
+
+            if( str(child_node.name) == "reindex" ):
+                tmp_dat = update_all_data(experiments_path = str(child_node.experiments))
+                sp_grp = tmp_dat.spg_group
+                child_node_name = "reindex { " + sp_grp + " }"
+
+            else:
+                child_node_name = str(child_node.name)
+
+            new_item = QStandardItem(child_node_name)
 
             new_item.idials_node = child_node
             new_item.success = child_node.success
