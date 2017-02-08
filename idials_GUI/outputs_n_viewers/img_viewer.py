@@ -89,7 +89,15 @@ class ImgPainter(MyQWidgetWithQPainter):
             self.x_pos, self.y_pos = event.x(), event.y()
             pix_col = int(self.x_pos / self.my_scale)
             pix_row = int(self.y_pos / self.my_scale)
-            print "I(x,y) =",self.my_parent.img_arr[pix_row, pix_col]
+
+            try:
+                new_label_txt = "Intensity at X:" + str(pix_col) + " Y:" + str(pix_row) \
+                                + " = " + str(self.my_parent.img_arr[pix_row, pix_col])
+
+                self.my_parent.info_label.setText(new_label_txt)
+
+            except:
+                print "failed to update i(x,y) label"
 
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
@@ -352,10 +360,11 @@ class MyImgWin(QWidget):
         top_box.addWidget(img_select_but)
         top_box.addWidget(img_pal_but)
 
+        self.info_label = QLabel("I(x, y) = ?")
 
         my_box.addLayout(top_box)
-
         my_box.addWidget(self.my_scrollable)
+        my_box.addWidget(self.info_label)
 
         self.setLayout(my_box)
         self.show()
