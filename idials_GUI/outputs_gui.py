@@ -3,6 +3,7 @@ from python_qt_bind import *
 from outputs_n_viewers.img_viewer import MyImgWin
 from outputs_n_viewers.info_handler import InfoData, update_all_data
 from dynamic_reindex_gui import MyReindexOpts
+from outputs_n_viewers.web_page_view import WebTab
 
 def update_data_label(data_label, data_info):
 
@@ -430,30 +431,6 @@ class TextOut( QTextBrowser):
         return self.content_lst
 
 
-class WebTab(QWidget):
-
-    def __init__(self):
-        super(WebTab, self).__init__()
-
-        print " QWebSettings.JavascriptEnabled =",  QWebSettings.JavascriptEnabled
-
-        QWebSettings.JavascriptEnabled = True
-
-        self.web =  QWebView()
-        print "No need to load HTML file yet\n"
-
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.web)
-
-        #self.setGeometry(1100, 200, 550, 250)
-        self.setLayout(hbox)
-        self.show()
-
-    def update_page(self, new_path):
-        print "update_page(", new_path, ")"
-        new_path = "file://" + new_path
-        print "new_path:", new_path
-        self.web.load(QUrl(new_path))
 
 
 class outputs_widget( QWidget):
@@ -484,8 +461,6 @@ class outputs_widget( QWidget):
             self.reindex_tool = MyReindexOpts(parent)
 
             #self.my_tabs.addTab(self.reindex_tool, "Re-index table")
-
-
 
 
         my_box.addWidget(self.my_tabs)
