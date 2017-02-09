@@ -298,3 +298,20 @@ class IntegrateSimplerParamTab( QWidget):
         self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
+
+class TmpTstWidget( QWidget):
+
+    def __init__(self, parent = None):
+        super(TmpTstWidget, self).__init__()
+        self.param_widget_parent = self
+        my_widget = FindspotsSimplerParameterTab(self)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(my_widget)
+        self.setLayout(my_box)
+        self.show()
+
+if( __name__ == "__main__" ):
+    app =  QApplication(sys.argv)
+    ex = TmpTstWidget()
+    sys.exit(app.exec_())

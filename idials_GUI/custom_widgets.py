@@ -246,14 +246,22 @@ class ParamMainWidget( QWidget):
         #TODO remove this << if >> and run directly the
         # second shoice
 
+        testing_off = '''
         if parent == None:
             self.super_parent = self
             my_phl_obj = phil_scope_index
             simp_widg = IndexSimplerParamTab
 
         else:
+
+        '''
+        try:
             self.super_parent = parent.super_parent
             my_phl_obj = phl_obj
+        except:
+            print "\n\n\n something went wrong here \n\n\n"
+
+
 
         self.param_widget_parent = self
 
@@ -375,10 +383,22 @@ class StepList(object):
         return self.lst_lablel, self.list_of_widgets, self.lst_icons, self.my_command_lst
 
 
+
+class TmpTestWidget( QWidget):
+    def __init__(self, phl_obj = None, parent = None):
+        super(TmpTestWidget, self).__init__()
+        self.super_parent = self
+        self.embedded_reindex = self
+        my_widget = ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
+                             parent = self, upper_label = "Find Spots")
+        vbox = QVBoxLayout()
+        vbox.addWidget(my_widget)
+        self.setLayout(vbox)
+        self.show()
+
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ParamMainWidget()
-    #ex = importOuterWidget()
+    ex = TmpTestWidget()
     sys.exit(app.exec_())
 
 

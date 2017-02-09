@@ -89,7 +89,7 @@ class tree_2_lineal(object):
 
 class PhilWidget( QWidget):
     item_changed = pyqtSignal()
-    def __init__(self, phl_obj, parent = None):
+    def __init__(self, phl_obj, parent = None):   #TODO fix the order of this two parameters
         super(PhilWidget, self).__init__(parent)
         self.param_widget_parent = parent.param_widget_parent
 
@@ -349,9 +349,24 @@ class PhilWidget( QWidget):
         self.param_widget_parent.update_lin_txt(str_path, str_value)
 
 
+class TstTmpWidget( QWidget):
+    item_changed = pyqtSignal()
+    def __init__(self, phl_obj = None, parent = None):
+        super(TstTmpWidget, self).__init__(parent)
+        self.param_widget_parent = self
+        self.super_parent = self
+        self.embedded_reindex = self
+        inner_widget = PhilWidget(phl_obj, self) #TODO fix the order of this two parameters
+
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(inner_widget)
+        self.setLayout(my_box)
+        self.show()
+
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = PhilWidget(phl_obj = phil_scope)
+    ex = TstTmpWidget(phil_scope)
     sys.exit(app.exec_())
 
 
