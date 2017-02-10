@@ -283,6 +283,20 @@ class PopImgTreat(QMenu):
         self.setLayout(top_box)
         self.show()
 
+
+class PopInfoTreat(QMenu):
+    def __init__(self, parent=None):
+        super(PopInfoTreat, self).__init__(parent)
+        self.my_parent = parent
+
+        top_box = QHBoxLayout()
+        top_box.addWidget(QLabel("scale threshold 1"))
+        top_box.addWidget(self.my_parent.t_hold_edit)
+
+        self.setLayout(top_box)
+        self.show()
+
+
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
         super(MyImgWin, self).__init__()
@@ -308,6 +322,14 @@ class MyImgWin(QWidget):
         self.min_edit.setText(str(self.i_min))
         self.min_edit.editingFinished.connect(self.min_changed_by_user)
 
+        self.t_hold = 3.0
+        self.t_hold_edit = QLineEdit()
+        self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
+        #self.t_hold_edit.setValidator(QFloatValidator(2.0, 20,0, self)  )
+        self.t_hold_edit.setText(str(self.t_hold))
+        #self.t_hold_edit.editingFinished.connect(self.min_changed_by_user)
+
+
         self.i_max = 100
         self.max_edit = QLineEdit()
         self.max_edit.setFixedWidth(6 * sys_font_point_size)
@@ -330,6 +352,10 @@ class MyImgWin(QWidget):
 
         img_pal_but = QPushButton('Img Palette')
         img_pal_but.setMenu(PopImgTreat(self))
+
+        info_but = QPushButton('Info Handling')
+        info_but.setMenu(PopInfoTreat(self))
+
 
         self.img_num = 0
         self.my_sweep = None
@@ -357,6 +383,7 @@ class MyImgWin(QWidget):
 
         top_box.addWidget(img_select_but)
         top_box.addWidget(img_pal_but)
+        top_box.addWidget(info_but)
 
         self.info_label = QLabel("I(x, y) = ?")
 
