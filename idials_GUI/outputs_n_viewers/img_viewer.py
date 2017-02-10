@@ -385,7 +385,7 @@ class MyImgWin(QWidget):
         top_box.addWidget(img_pal_but)
         top_box.addWidget(info_but)
 
-        self.info_label = QLabel("I(x, y) = ?")
+        self.info_label = QLabel("X, Y, I = ?,?,?")
 
         my_box.addLayout(top_box)
         my_box.addWidget(self.my_scrollable)
