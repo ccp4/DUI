@@ -216,7 +216,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                                        width * self.my_scale, height * self.my_scale)
                     painter.drawRect(rectangle)
 
-                    if( reflection.hkl !=None and self.my_scale > float(self.my_parent.t_hold) ):
+                    if( reflection.hkl !=None and self.my_scale > self.my_parent.t_hold ):
                         painter.drawText( QPoint(int((x + width) * self.my_scale),
                                           int(y * self.my_scale)),  reflection.hkl)
 
@@ -489,7 +489,7 @@ class MyImgWin(QWidget):
         print "diff time =", time_now() - firts_time, "\n"
 
     def change_scale_thold(self):
-        self.t_hold = self.t_hold_edit.text()
+        self.t_hold = float(self.t_hold_edit.text())
         print "self.t_hold =", self.t_hold
         self.set_img()
 
