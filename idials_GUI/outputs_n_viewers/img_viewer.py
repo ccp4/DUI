@@ -91,8 +91,8 @@ class ImgPainter(MyQWidgetWithQPainter):
             pix_row = int(self.y_pos / self.my_scale)
 
             try:
-                new_label_txt = "Intensity at X:" + str(pix_col) + " Y:" + str(pix_row) \
-                                + " = " + str(self.my_parent.img_arr[pix_row, pix_col])
+                new_label_txt = " X : " + str(pix_col) + ", Y : " + str(pix_row) \
+                                + ", I : " + str(self.my_parent.img_arr[pix_row, pix_col])
 
                 self.my_parent.info_label.setText(new_label_txt)
 
