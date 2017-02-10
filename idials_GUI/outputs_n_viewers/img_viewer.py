@@ -216,7 +216,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                                        width * self.my_scale, height * self.my_scale)
                     painter.drawRect(rectangle)
 
-                    if( reflection.hkl !=None and self.my_scale > 3.0 ):
+                    if( reflection.hkl !=None and self.my_scale > float(self.my_parent.t_hold) ):
                         painter.drawText( QPoint(int((x + width) * self.my_scale),
                                           int(y * self.my_scale)),  reflection.hkl)
 
@@ -322,20 +322,20 @@ class MyImgWin(QWidget):
         self.min_edit.setText(str(self.i_min))
         self.min_edit.editingFinished.connect(self.min_changed_by_user)
 
-        self.t_hold = 3.0
-        self.t_hold_edit = QLineEdit()
-        self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
-        #self.t_hold_edit.setValidator(QFloatValidator(2.0, 20,0, self)  )
-        self.t_hold_edit.setText(str(self.t_hold))
-        #self.t_hold_edit.editingFinished.connect(self.min_changed_by_user)
-
-
         self.i_max = 100
         self.max_edit = QLineEdit()
         self.max_edit.setFixedWidth(6 * sys_font_point_size)
         self.max_edit.setValidator(max_min_validator)
         self.max_edit.setText(str(self.i_max))
         self.max_edit.editingFinished.connect(self.max_changed_by_user)
+
+        self.t_hold = 3.0
+        self.t_hold_edit = QLineEdit()
+        self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
+        #self.t_hold_edit.setValidator(QFloatValidator(2.0, 20,0, self)  )
+        self.t_hold_edit.setText(str(self.t_hold))
+        #self.t_hold_edit.editingFinished.connect(self.min_changed_by_user)
+        self.t_hold_edit.editingFinished.connect(self.change_scale_thold)
 
         self.palette_select = QComboBox()
 
@@ -487,6 +487,10 @@ class MyImgWin(QWidget):
                                                           self.flat_data_lst[self.img_num])
 
         print "diff time =", time_now() - firts_time, "\n"
+
+    def change_scale_thold(self):
+        self.t_hold = self.t_hold_edit.text()
+        print "self.t_hold =", self.t_hold
 
     def min_changed_by_user(self):
         new_value = self.min_edit.text()
