@@ -206,8 +206,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             painter.drawPixmap(rect, pixmap)
 
-            #print "self.my_scale =", self.my_scale
-
             if( self.flat_data_lst != None ):
                 for reflection in self.flat_data_lst:
                     x = float(reflection.box[0])
@@ -216,11 +214,11 @@ class ImgPainter(MyQWidgetWithQPainter):
                     height = float(reflection.box[3])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
-
                     painter.drawRect(rectangle)
 
-                    if( reflection.hkl !=None ):
-                        painter.drawText( QPoint(int((x + width) * self.my_scale), int(y * self.my_scale)),  reflection.hkl)
+                    if( reflection.hkl !=None and self.my_scale > 3.0 ):
+                        painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                          int(y * self.my_scale)),  reflection.hkl)
 
             painter.end()
 
