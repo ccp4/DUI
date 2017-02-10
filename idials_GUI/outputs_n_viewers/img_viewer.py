@@ -491,6 +491,7 @@ class MyImgWin(QWidget):
     def change_scale_thold(self):
         self.t_hold = self.t_hold_edit.text()
         print "self.t_hold =", self.t_hold
+        self.set_img()
 
     def min_changed_by_user(self):
         new_value = self.min_edit.text()
