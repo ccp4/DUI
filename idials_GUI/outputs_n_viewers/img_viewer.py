@@ -204,7 +204,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter.setPen(pen)
 
             painter.drawPixmap(rect, pixmap)
-            #painter.setFont(QFont("times", 22))
+            #painter.setFont(QFont("Monospace", 22))
             #painter.setFont(QFont("FreeMono", 22))
             tmp_font = QFont()
             tmp_font.setPixelSize(int(5.5 * self.my_scale))
@@ -310,7 +310,7 @@ class MyImgWin(QWidget):
         left_top_box = QVBoxLayout()
         right_top_box = QVBoxLayout()
 
-        self.img_select = QComboBox()
+        self.img_select = QSpinBox()
         self.my_scrollable = QScrollArea()
         self.my_painter = ImgPainter(self)
         self.my_scrollable.setWidget(self.my_painter)
@@ -383,8 +383,9 @@ class MyImgWin(QWidget):
         if( self.my_sweep != None):
             self.set_img()
 
-        self.img_select.setCurrentIndex(0)
-        self.img_select.currentIndexChanged.connect(self.img_changed_by_user)
+        #self.img_select.setValue(0)
+        self.img_select.valueChanged.connect(self.img_changed_by_user)
+        #valueChanged.connect
 
         top_box.addWidget(img_select_but)
         top_box.addWidget(img_pal_but)
@@ -414,10 +415,14 @@ class MyImgWin(QWidget):
                 n_of_imgs = len(self.my_sweep.indices())
                 print "n_of_imgs =", n_of_imgs
 
+                self.img_select.setMaximum(n_of_imgs)
+
+                '''
                 self.img_select.setMaxCount(n_of_imgs)
                 for num in xrange(n_of_imgs):
                     labl = "img#" + str(num + 1)
                     self.img_select.addItem(labl)
+                '''
 
 
 
@@ -438,11 +443,11 @@ class MyImgWin(QWidget):
             n_refs = len(table)
 
             self.flat_data_lst = []
-            print "self.img_select.maxCount() =", self.img_select.maxCount()
-            if( self.img_select.maxCount() > 0 ):
+
+            if( self.img_select.maximum() > 0 ):
                 firts_time = time_now()
 
-                for img_num in xrange(self.img_select.maxCount()):
+                for img_num in xrange(self.img_select.maximum()):
                     tmp_lst = []
                     self.flat_data_lst.append(tmp_lst)
 
@@ -520,38 +525,46 @@ class MyImgWin(QWidget):
 
     def btn_first_clicked(self):
         self.img_num = 0
-        self.img_select.setCurrentIndex(self.img_num)
+        self.img_select.setValue(self.img_num)
 
     def btn_rev_clicked(self):
         self.img_num -= 10
         if( self.img_num < 0 ):
             self.img_num = 0
-        self.img_select.setCurrentIndex(self.img_num)
+
+        self.img_select.setValue(self.img_num)
 
     def btn_prev_clicked(self):
         self.img_num -= 1
         if( self.img_num < 0 ):
             self.img_num = 0
-        self.img_select.setCurrentIndex(self.img_num)
+
+        self.img_select.setValue(self.img_num)
 
     def btn_next_clicked(self):
         self.img_num += 1
-        if( self.img_num >= self.img_select.maxCount() ):
-            self.img_num = self.img_select.maxCount() - 1
-        self.img_select.setCurrentIndex(self.img_num)
+        if( self.img_num >= self.img_select.maximum() ):
+            self.img_num = self.img_select.maximum() - 1
+
+        self.img_select.setValue(self.img_num)
 
     def btn_ffw_clicked(self):
         self.img_num += 10
-        if( self.img_num >= self.img_select.maxCount() ):
-            self.img_num = self.img_select.maxCount() - 1
-        self.img_select.setCurrentIndex(self.img_num)
+        if( self.img_num >= self.img_select.maximum() ):
+            self.img_num = self.img_select.maximum() - 1
+
+        self.img_select.setValue(self.img_num)
 
     def btn_last_clicked(self):
-        self.img_num = self.img_select.maxCount() - 1
-        self.img_select.setCurrentIndex(self.img_num)
+        self.img_num = self.img_select.maximum() - 1
+        self.img_select.setValue(self.img_num)
 
     def img_changed_by_user(self, value):
         self.img_num = value
+        if( self.img_num >= self.img_select.maximum() ):
+            self.img_num = self.img_select.maximum() - 1
+            self.img_select.setValue(self.img_num)
+
         self.set_img()
 
 
