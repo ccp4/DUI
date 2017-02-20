@@ -64,7 +64,6 @@ class img_w_cpp(object):
         return img_array
 
 
-
 class ImgPainter(MyQWidgetWithQPainter):
 
     def __init__(self, parent = None):
