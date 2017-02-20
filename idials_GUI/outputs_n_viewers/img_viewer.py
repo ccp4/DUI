@@ -204,7 +204,13 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter.setPen(pen)
 
             painter.drawPixmap(rect, pixmap)
+            #painter.setFont(QFont("times", 22))
+            #painter.setFont(QFont("FreeMono", 22))
+            tmp_font = QFont()
+            tmp_font.setPixelSize(int(5.5 * self.my_scale))
+            #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
 
+            painter.setFont(tmp_font)
             if( self.flat_data_lst != None ):
                 for reflection in self.flat_data_lst:
                     x = float(reflection.box[0])
