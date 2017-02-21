@@ -516,15 +516,14 @@ class MyImgWin(QWidget):
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
-        '''
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.scrollArea.update_me)
-        self.timer.start(1)
-        '''
+
+        self.video_timer = QTimer(self)
+        self.video_timer.timeout.connect(self.btn_next_clicked)
+        self.video_timer.start(1)
 
     def btn_stop_clicked(self):
         print "B_stop_clicked(self)"
-        #self.timer.stop()
+        self.video_timer.stop()
 
     def change_scale_thold(self):
         self.t_hold = float(self.t_hold_edit.text())
@@ -572,7 +571,11 @@ class MyImgWin(QWidget):
     def btn_next_clicked(self):
         self.img_num += 1
         if( self.img_num > self.img_select.maximum() ):
-            self.img_num = self.img_select.maximum()
+            if( self.video_timer.isActive() == True ):
+                self.img_num = 1
+
+            else:
+                self.img_num = self.img_select.maximum()
 
         self.img_select.setValue(self.img_num)
 
