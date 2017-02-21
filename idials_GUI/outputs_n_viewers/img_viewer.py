@@ -211,7 +211,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
 
             painter.setFont(tmp_font)
-            if( self.flat_data_lst != None ):
+            if( self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
                 for reflection in self.flat_data_lst:
                     x = float(reflection.box[0])
                     y = float(reflection.box[1])
@@ -300,21 +300,35 @@ class PopImgTreat(QMenu):
         top_box.addWidget(self.my_parent.min_edit)
         top_box.addWidget(QLabel("I max"))
         top_box.addWidget(self.my_parent.max_edit)
-        top_box.addWidget(self.my_parent.palette_select)
-        self.setLayout(top_box)
+
+        bot_box = QHBoxLayout()
+        bot_box.addWidget(self.my_parent.palette_select)
+
+        my_box = QVBoxLayout()
+        my_box.addLayout(top_box)
+        my_box.addLayout(bot_box)
+
+        self.setLayout(my_box)
         self.show()
 
 
-class PopInfoTreat(QMenu):
+class PopInfoHandl(QMenu):
     def __init__(self, parent=None):
-        super(PopInfoTreat, self).__init__(parent)
+        super(PopInfoHandl, self).__init__(parent)
         self.my_parent = parent
 
         top_box = QHBoxLayout()
         top_box.addWidget(QLabel("scale threshold 1"))
         top_box.addWidget(self.my_parent.t_hold_edit)
 
-        self.setLayout(top_box)
+        bot_box = QHBoxLayout()
+        bot_box.addWidget(self.my_parent.chk_box_show)
+
+        my_box = QVBoxLayout()
+        my_box.addLayout(top_box)
+        my_box.addLayout(bot_box)
+
+        self.setLayout(my_box)
         self.show()
 
 
@@ -358,6 +372,8 @@ class MyImgWin(QWidget):
         #self.t_hold_edit.editingFinished.connect(self.min_changed_by_user)
         self.t_hold_edit.editingFinished.connect(self.change_scale_thold)
 
+        self.chk_box_show = QCheckBox("show shoeboxes")
+
         self.palette_select = QComboBox()
 
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
@@ -375,7 +391,7 @@ class MyImgWin(QWidget):
         img_pal_but.setMenu(PopImgTreat(self))
 
         info_but = QPushButton('Info Handling')
-        info_but.setMenu(PopInfoTreat(self))
+        info_but.setMenu(PopInfoHandl(self))
 
 
         self.img_num = 0
@@ -498,8 +514,6 @@ class MyImgWin(QWidget):
     def set_img(self):
 
         print "New self.img_num =", self.img_num
-
-        firts_time = time_now()
         self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
 
         if(self.flat_data_lst == [None]):
@@ -510,9 +524,6 @@ class MyImgWin(QWidget):
             self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                           self.i_min, self.i_max),
                                                           self.flat_data_lst[self.img_num - 1])
-
-        print "diff time =", time_now() - firts_time, "\n"
-
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
