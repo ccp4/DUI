@@ -160,12 +160,12 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.img_height = q_img.height()
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
-        print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
+        #print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
         if( self.__class__.__bases__[0].__name__ == "QWidget" ):
-            print "inherits from QWidget"
+            #print "inherits from QWidget"
             self.update()
         else:
-            print "inherits from QGLWidget"
+            #print "inherits from QGLWidget"
             self.paintEvent(None)
 
         #in future consider *self.repaint()* for the video thing instead of *self.update()*
@@ -206,12 +206,13 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter.drawPixmap(rect, pixmap)
             #painter.setFont(QFont("Monospace", 22))
             #painter.setFont(QFont("FreeMono", 22))
-            tmp_font = QFont()
-            tmp_font.setPixelSize(int(5.5 * self.my_scale))
-            #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
 
-            painter.setFont(tmp_font)
             if( self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
+                tmp_font = QFont()
+                tmp_font.setPixelSize(int(5.5 * self.my_scale))
+                #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
+                painter.setFont(tmp_font)
+
                 for reflection in self.flat_data_lst:
                     x = float(reflection.box[0])
                     y = float(reflection.box[1])
@@ -372,7 +373,7 @@ class MyImgWin(QWidget):
         #self.t_hold_edit.editingFinished.connect(self.min_changed_by_user)
         self.t_hold_edit.editingFinished.connect(self.change_scale_thold)
 
-        self.chk_box_show = QCheckBox("show shoeboxes")
+        self.chk_box_show = QCheckBox("show reflection info")
 
         self.palette_select = QComboBox()
 
