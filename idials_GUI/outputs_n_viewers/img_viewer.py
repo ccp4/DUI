@@ -270,7 +270,23 @@ class PopImgChange(QMenu):
         top_box.addWidget(btn_next)
         top_box.addWidget(btn_ffw)
         top_box.addWidget(btn_last)
-        self.setLayout(top_box)
+
+        bot_box = QHBoxLayout()
+
+        btn_play = QPushButton("Play IMGs Video")
+        btn_play.clicked.connect(self.my_parent.btn_play_clicked)
+        btn_stop = QPushButton("Stop IMGs Video")
+        btn_stop.clicked.connect(self.my_parent.btn_stop_clicked)
+
+        bot_box.addWidget(btn_play)
+        bot_box.addWidget(btn_stop)
+
+        my_layout = QVBoxLayout()
+
+        my_layout.addLayout(top_box)
+        my_layout.addLayout(bot_box)
+
+        self.setLayout(my_layout)
         self.show()
 
 
@@ -425,8 +441,6 @@ class MyImgWin(QWidget):
                     self.img_select.addItem(labl)
                 '''
 
-
-
             except:
                 print "Failed to load images from  datablock.json"
 
@@ -498,6 +512,19 @@ class MyImgWin(QWidget):
                                                           self.flat_data_lst[self.img_num - 1])
 
         print "diff time =", time_now() - firts_time, "\n"
+
+
+    def btn_play_clicked(self):
+        print "btn_play_clicked(self)"
+        '''
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.scrollArea.update_me)
+        self.timer.start(1)
+        '''
+
+    def btn_stop_clicked(self):
+        print "B_stop_clicked(self)"
+        #self.timer.stop()
 
     def change_scale_thold(self):
         self.t_hold = float(self.t_hold_edit.text())
