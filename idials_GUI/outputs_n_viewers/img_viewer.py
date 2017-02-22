@@ -477,6 +477,9 @@ class MyImgWin(QWidget):
             self.flat_data_lst = []
 
             if( self.img_select.maximum() > 0 ):
+
+
+                #old_stable_way = '''
                 firts_time = time_now()
 
                 for img_num in xrange(self.img_select.maximum()):
@@ -505,7 +508,8 @@ class MyImgWin(QWidget):
 
                         self.flat_data_lst[idx].append(reflection_data)
 
-                print "\n\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
+                print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
+                #'''
         else:
             self.flat_data_lst = [None]
 
