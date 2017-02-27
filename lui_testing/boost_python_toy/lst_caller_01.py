@@ -30,11 +30,13 @@ def ini_reflection_table(pckl_file_path = None):
         n_refs = len(table)
 
         bbox_col = map(list, table["bbox"])
-        a = lst_ext.arange_list(bbox_col)
-        #print "a =", a
 
         # in the image viewer, the img_select variable is par of the class
         n_imgs = img_select.maximum()
+        print "\n\n\n"
+
+        a = lst_ext.arange_list(bbox_col, n_imgs)
+        print "a =", a
 
         flat_data_lst = []
         if( n_imgs > 0 ):
