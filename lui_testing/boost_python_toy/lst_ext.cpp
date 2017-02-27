@@ -24,11 +24,20 @@ boost::python::list square(boost::python::list num_lst)
     return points;
 }
 
+boost::python::list arange_list(boost::python::list bbox_lst)
+{
+    boost::python::list points;
+    int three = 3;
+    points.append(three);
+    points.append(bbox_lst);
+    return points;
+
+}
 BOOST_PYTHON_MODULE(lst_ext)
 {
     using namespace boost::python;
     def("greet", greet);
     def("give_int", give_int);
-
     def("square", square);
+    def("arange_list", arange_list);
 }

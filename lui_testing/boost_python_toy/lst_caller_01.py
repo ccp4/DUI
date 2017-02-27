@@ -1,9 +1,12 @@
 from dials.array_family import flex
 from time import time as time_now
 
-import array_ext
+import lst_ext
 
-
+'''
+after converting to C++ this should go a LOT faster than:
+building flat_data_lst (diff time) = 0.0659489631653
+'''
 class flat_data(object):
     box = None
     hkl = None
@@ -25,6 +28,10 @@ def ini_reflection_table(pckl_file_path = None):
         print "len(table) = ", len(table)
 
         n_refs = len(table)
+
+        bbox_col = map(list, table["bbox"])
+        a = lst_ext.arange_list(bbox_col)
+        #print "a =", a
 
         # in the image viewer, the img_select variable is par of the class
         n_imgs = img_select.maximum()
