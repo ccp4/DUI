@@ -1,6 +1,9 @@
 from dials.array_family import flex
 from time import time as time_now
 
+import array_ext
+
+
 class flat_data(object):
     box = None
     hkl = None
@@ -23,15 +26,17 @@ def ini_reflection_table(pckl_file_path = None):
 
         n_refs = len(table)
 
-        flat_data_lst = []
+        # in the image viewer, the img_select variable is par of the class
+        n_imgs = img_select.maximum()
 
-        if( img_select.maximum() > 0 ):
+        flat_data_lst = []
+        if( n_imgs > 0 ):
 
 
             #old_stable_way = '''
             firts_time = time_now()
 
-            for img_num in xrange(img_select.maximum()):
+            for img_num in xrange(n_imgs):
                 tmp_lst = []
                 flat_data_lst.append(tmp_lst)
 
