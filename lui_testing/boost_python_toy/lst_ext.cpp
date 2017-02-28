@@ -59,11 +59,11 @@ py::list arange_list(py::list bbox_lst, int n_imgs)
     */
 
     int x_ini, y_ini, width, height;
-    py::list img_lst, ref_box, empty_lst, tmp_lst;
+    py::list img_lst, ref_box, tmp_lst, box_dat;
 
     //TODO make sure there is no way to avoid this loop
     for (int i = 0; i < n_imgs; i++){
-        img_lst.append(empty_lst);
+        img_lst.append(py::list());
     }
 
     for (int i = 0; i < len(bbox_lst); i++){
@@ -72,26 +72,20 @@ py::list arange_list(py::list bbox_lst, int n_imgs)
         y_ini = py::extract<int>(ref_box[2]);
         width = py::extract<int>(ref_box[1]) - py::extract<int>(ref_box[0]);
         height = py::extract<int>(ref_box[3]) - py::extract<int>(ref_box[2]);
-        /*
-        empty_lst.clear();
-        empty_lst.append(x_ini);
-        empty_lst.append(y_ini);
-        empty_lst.append(width);
-        empty_lst.append(height);
-        */
+
+        box_dat = py::list();
+        box_dat.append(x_ini);
+        box_dat.append(y_ini);
+        box_dat.append(width);
+        box_dat.append(height);
+
         for (int idx = py::extract<int>(ref_box[4]);
              idx < py::extract<int>(ref_box[5]);
              idx++){
-            std::cout << "limits =" << x_ini << ", " << y_ini << ", " <<
-                      width << ", " << height << "\n" << "idx[n] = " <<
-                       idx << "\n";
             tmp_lst = py::extract<py::list>(img_lst[idx]);
-            tmp_lst.append(ref_box);
+            tmp_lst.append(box_dat);
         }
     }
-
-    //img_lst[1] = bbox_lst[2];
-
 
     return img_lst;
 }
