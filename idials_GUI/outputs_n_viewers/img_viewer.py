@@ -214,17 +214,17 @@ class ImgPainter(MyQWidgetWithQPainter):
                 painter.setFont(tmp_font)
 
                 for reflection in self.flat_data_lst:
-                    x = float(reflection.box[0])
-                    y = float(reflection.box[1])
-                    width = float(reflection.box[2])
-                    height = float(reflection.box[3])
+                    x = float(reflection[0])
+                    y = float(reflection[1])
+                    width = float(reflection[2])
+                    height = float(reflection[3])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
                     painter.drawRect(rectangle)
 
-                    if( reflection.hkl !=None and self.my_scale > self.my_parent.t_hold ):
+                    if( reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
                         painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                          int(y * self.my_scale)),  reflection.hkl)
+                                          int(y * self.my_scale)),  reflection[4])
 
             painter.end()
 
@@ -464,52 +464,29 @@ class MyImgWin(QWidget):
 
     def ini_reflection_table(self, pckl_file_path):
         if( pckl_file_path != None ):
+            firts_time = time_now()
 
             print "[pickle file] =", pckl_file_path
             table = flex.reflection_table.from_pickle(pckl_file_path)
             print "table =", table
-            local_bbox = table[5]['bbox']
-            print "local_bbox =", local_bbox
             print "len(table) = ", len(table)
-
             n_refs = len(table)
 
+            import lst_ext
+            bbox_col = map(list, table["bbox"])
+            try:
+                hkl_col = map(str, table["miller_index"])
+
+            except:
+                hkl_col = []
+
+            n_imgs = self.img_select.maximum()
             self.flat_data_lst = []
+            if( n_imgs > 0 ):
+                self.flat_data_lst = lst_ext.arange_list(bbox_col, hkl_col, n_imgs)
 
-            if( self.img_select.maximum() > 0 ):
+            print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
 
-
-                #old_stable_way = '''
-                firts_time = time_now()
-
-                for img_num in xrange(self.img_select.maximum()):
-                    tmp_lst = []
-                    self.flat_data_lst.append(tmp_lst)
-
-                for i in xrange(n_refs):
-                    local_bbox = table[i]['bbox']
-                    z_boud = local_bbox[4:6]
-                    x_ini = local_bbox[0]
-                    y_ini = local_bbox[2]
-                    width = local_bbox[1] - local_bbox[0]
-                    height = local_bbox[3] - local_bbox[2]
-
-                    try:
-                        local_hkl = str(table[i]['miller_index'])
-
-                    except:
-                        local_hkl = None
-
-                    for idx in xrange( int(z_boud[0]), int(z_boud[1]) ):
-                        reflection_data = flat_data()
-                        reflection_data.box = [x_ini, y_ini, width, height]
-
-                        reflection_data.hkl = local_hkl
-
-                        self.flat_data_lst[idx].append(reflection_data)
-
-                print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
-                #'''
         else:
             self.flat_data_lst = [None]
 
