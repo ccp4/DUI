@@ -34,7 +34,7 @@ if pyhon_binding == "PyQt4":
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
     from PyQt4.QtWebKit import *
-    from PyQt4.QtOpenGL import QGLWidget
+    #from PyQt4.QtOpenGL import QGLWidget
     print "   <<<   using PyQt4"
 
 else:
