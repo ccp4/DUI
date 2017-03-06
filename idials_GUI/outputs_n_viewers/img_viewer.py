@@ -332,6 +332,39 @@ class PopInfoHandl(QMenu):
         self.setLayout(my_box)
         self.show()
 
+def PyListArange(bbox_lst, hkl_lst, n_imgs):
+
+    img_lst = []
+    for time in xrange(n_imgs):
+        img_lst.append([])
+
+    for i, ref_box in enumerate(bbox_lst):
+        x_ini = ref_box[0]
+        y_ini = ref_box[2]
+        width = ref_box[1] - ref_box[0]
+        height = ref_box[3] - ref_box[2]
+
+        box_dat = []
+        box_dat.append(x_ini)
+        box_dat.append(y_ini)
+        box_dat.append(width)
+        box_dat.append(height)
+
+        if( len(hkl_lst) <= 1 ):
+            local_hkl = ""
+            box_dat.append(local_hkl)
+
+        else:
+            local_hkl = hkl_lst[i]
+            if(local_hkl == "(0, 0, 0)"):
+                local_hkl = "NOT indexed"
+
+            box_dat.append(local_hkl)
+
+        for idx in xrange(ref_box[4], ref_box[5]):
+            img_lst[idx].append(box_dat);
+
+    return img_lst
 
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
@@ -471,8 +504,13 @@ class MyImgWin(QWidget):
             print "table =", table
             print "len(table) = ", len(table)
             n_refs = len(table)
-
-            import lst_ext
+            try:
+                import lst_ext
+                lst_arrg = lst_ext.arrange_list
+                print "\n\n Using C++ list arranging tool\n\n"
+            except:
+                lst_arrg = PyListArange
+                print "\n\n Using Python list arranging tool"
             bbox_col = map(list, table["bbox"])
             try:
                 hkl_col = map(str, table["miller_index"])
@@ -483,9 +521,9 @@ class MyImgWin(QWidget):
             n_imgs = self.img_select.maximum()
             self.flat_data_lst = []
             if( n_imgs > 0 ):
-                self.flat_data_lst = lst_ext.arange_list(bbox_col, hkl_col, n_imgs)
+                self.flat_data_lst = lst_arrg(bbox_col, hkl_col, n_imgs)
 
-            print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
+            print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n\n"
 
         else:
             self.flat_data_lst = [None]

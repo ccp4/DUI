@@ -8,7 +8,7 @@ char const* greet()
     return "hello, world";
 }
 
-py::list arange_list(py::list bbox_lst, py::list hkl_lst, int n_imgs){
+py::list arrange_list(py::list bbox_lst, py::list hkl_lst, int n_imgs){
     /*
      * from a list of shoe - box bounds and another HKL list
      * it generates a new list with lists on it with reflections arranged
@@ -65,5 +65,5 @@ BOOST_PYTHON_MODULE(lst_ext)
 {
     using namespace boost::python;
     def("greet", greet);
-    def("arange_list", &arange_list, arg("bbox_lst"), arg("hkl_lst"), arg("n_imgs"));
+    def("arrange_list", &arrange_list, arg("bbox_lst"), arg("hkl_lst"), arg("n_imgs"));
 }
