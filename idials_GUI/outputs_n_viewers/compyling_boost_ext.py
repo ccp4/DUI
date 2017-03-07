@@ -26,8 +26,14 @@ com_lin_02 = "g++ -shared " + obj_name + ".o -L" + cut_cut_lib_path + " -lboost_
 
 print "\n Compiling line 1:"
 print "cmd =", com_lin_01
-shell_call(com_lin_01, shell=True)
+err_msg_01 = shell_call(com_lin_01, shell=True)
 print "\n Compiling line 2:"
 print "cmd =", com_lin_02
-shell_call(com_lin_02, shell=True)
+err_msg_02 = shell_call(com_lin_02, shell=True)
 print "\n done compiling"
+
+if(err_msg_01 != 0 or err_msg_02 !=0 ):
+    print "Failed to compile some C++ extensions "
+    print "DUI will remain fully functional"
+    print "just navigation from one step to another"
+    print "might be slower"
