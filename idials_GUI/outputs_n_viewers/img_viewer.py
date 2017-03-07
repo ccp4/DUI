@@ -407,6 +407,9 @@ class MyImgWin(QWidget):
         self.t_hold_edit.editingFinished.connect(self.change_scale_thold)
 
         self.chk_box_show = QCheckBox("show reflection info")
+        self.chk_box_show.setChecked(True)
+
+
 
         self.palette_select = QComboBox()
 
