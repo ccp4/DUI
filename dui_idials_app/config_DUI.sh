@@ -3,7 +3,7 @@
 # Python script the generates setpath.sh script
 # with hard-codded path to runnable tools
 MY_WD = $(pwd)
-dials.python write_setpath.py $MY_WD
+dials.python write_setpath.py $(pwd)
 
 # making runnable the setpath script
 chmod +x setpath.sh
