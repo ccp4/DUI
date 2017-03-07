@@ -398,7 +398,7 @@ class MyImgWin(QWidget):
         self.max_edit.setText(str(self.i_max))
         self.max_edit.editingFinished.connect(self.max_changed_by_user)
 
-        self.t_hold = 3.0
+        self.t_hold = 1.0
         self.t_hold_edit = QLineEdit()
         self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
         #self.t_hold_edit.setValidator(QFloatValidator(2.0, 20,0, self)  )
