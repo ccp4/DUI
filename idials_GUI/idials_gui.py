@@ -337,6 +337,19 @@ class IdialsInnerrWidget( QWidget):
                                                   exp_json_path = exp_json_path,
                                                   refl_pikl_path = refl_pikl_path)
 
+        xb_p_siz = self.super_parent.info_widget.all_data.x_px_size
+        yb_p_siz = self.super_parent.info_widget.all_data.y_px_size
+        xb = self.super_parent.info_widget.all_data.xb
+        yb = self.super_parent.info_widget.all_data.yb
+        if( xb != None and yb != None and xb_p_siz != None and yb_p_siz != None ):
+            xb = xb / xb_p_siz
+            yb = yb / yb_p_siz
+
+        else:
+            xb = None
+            yb = None
+
+        self.super_parent.output_wg.img_view.update_beam_centre(xb,yb)
 
     def prv_clicked(self):
         print "prv_clicked(self)"

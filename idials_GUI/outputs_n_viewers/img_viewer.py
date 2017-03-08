@@ -72,16 +72,20 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.img = None
         self.setMouseTracking(True)
+        self.xb = None
+        self.yb = None
+
         self.show()
 
         self.my_scale = 1.0
-
         self.img_width = 247
         self.img_height = 253
+
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
         self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
+
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
@@ -170,7 +174,9 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         #in future consider *self.repaint()* for the video thing instead of *self.update()*
 
-
+    def update_my_beam_centre(self, xb, yb):
+        self.xb = xb
+        self.yb = yb
 
     def paintEvent(self, event):
         if( self.img == None ):
@@ -225,6 +231,27 @@ class ImgPainter(MyQWidgetWithQPainter):
                     if( reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
                         painter.drawText( QPoint(int((x + width) * self.my_scale),
                                           int(y * self.my_scale)),  reflection[4])
+
+
+                if( self.xb != None and self.yb != None ):
+
+                    cen_siz = 40.0
+
+                    painter.drawLine(int(self.xb * self.my_scale), int((self.yb - cen_siz) * self.my_scale),
+                                     int(self.xb * self.my_scale), int((self.yb + cen_siz) * self.my_scale))
+
+                    painter.drawLine(int((self.xb + cen_siz) * self.my_scale), int(self.yb * self.my_scale),
+                                     int((self.xb - cen_siz) * self.my_scale), int(self.yb * self.my_scale))
+
+                    '''
+                    rectangle = QRectF(self.xb * self.my_scale, self.yb * self.my_scale,
+                                           30.0 * self.my_scale, 30.0 * self.my_scale)
+                    painter.drawRect(rectangle)
+                    '''
+
+                else:
+                    print "\n\n No xb,yb provided \n"
+
 
             painter.end()
 
@@ -409,8 +436,6 @@ class MyImgWin(QWidget):
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
 
-
-
         self.palette_select = QComboBox()
 
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
@@ -487,13 +512,6 @@ class MyImgWin(QWidget):
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
 
-                '''
-                self.img_select.setMaxCount(n_of_imgs)
-                for num in xrange(n_of_imgs):
-                    labl = "img#" + str(num + 1)
-                    self.img_select.addItem(labl)
-                '''
-
             except:
                 print "Failed to load images from  datablock.json"
 
@@ -534,8 +552,12 @@ class MyImgWin(QWidget):
         if( self.my_sweep != None):
             self.set_img()
 
-    def set_img(self):
+    def update_beam_centre(self, xb, yb):
+        print "\n\n ______________________________ update_beam_centre __________________"
+        print "new x,y =", xb, yb ,"\n\n"
+        self.my_painter.update_my_beam_centre(xb, yb)
 
+    def set_img(self):
         print "New self.img_num =", self.img_num
         self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
 
