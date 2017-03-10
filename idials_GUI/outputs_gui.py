@@ -5,13 +5,13 @@ from outputs_n_viewers.info_handler import InfoData, update_all_data
 from dynamic_reindex_gui import MyReindexOpts
 from outputs_n_viewers.web_page_view import WebTab
 
-def update_data_label(data_label, data_info):
+def update_data_label(data_label, data_info, n_dec = 2):
 
     if 'int' in str(type(data_info)):
         data_label.setText(str(data_info))
 
     elif 'float' in str(type(data_info)):
-        rnd_nm = round(data_info, ndigits=2)
+        rnd_nm = round(data_info, ndigits = n_dec)
         data_label.setText(str(rnd_nm))
 
     elif 'str' in str(type(data_info)):
@@ -370,14 +370,26 @@ class InfoWidget( QWidget):
         update_data_label(self.e_time_data,   self.all_data.e_time)
 
         update_data_label(self.n_pans_data,    self.all_data.n_pans)
-        update_data_label(self.x_px_size_data, self.all_data.x_px_size)
-        update_data_label(self.y_px_size_data, self.all_data.y_px_size)
+
+        update_data_label(data_label = self.x_px_size_data,
+                          data_info = self.all_data.x_px_size,
+                          n_dec = 3)
+
+        update_data_label(data_label = self.y_px_size_data,
+                          data_info = self.all_data.y_px_size,
+                          n_dec = 3)
+
         update_data_label(self.gain_data,      self.all_data.gain)
         update_data_label(self.max_res_data,   self.all_data.max_res)
 
         update_data_label(self.xb_data,        self.all_data.xb)
         update_data_label(self.yb_data,        self.all_data.yb)
-        update_data_label(self.w_lambda_data,  self.all_data.w_lambda)
+
+        update_data_label(data_label = self.w_lambda_data,
+                          data_info = self.all_data.w_lambda,
+                          n_dec = 6)
+
+        #update_data_label(self.w_lambda_data,  self.all_data.w_lambda)
 
         update_data_label(self.d_dist_data, self.all_data.dd)
 
