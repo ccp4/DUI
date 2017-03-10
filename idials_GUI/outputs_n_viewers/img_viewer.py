@@ -236,22 +236,14 @@ class ImgPainter(MyQWidgetWithQPainter):
                 if( self.xb != None and self.yb != None ):
 
                     cen_siz = 40.0
-
                     painter.drawLine(int(self.xb * self.my_scale), int((self.yb - cen_siz) * self.my_scale),
                                      int(self.xb * self.my_scale), int((self.yb + cen_siz) * self.my_scale))
 
                     painter.drawLine(int((self.xb + cen_siz) * self.my_scale), int(self.yb * self.my_scale),
                                      int((self.xb - cen_siz) * self.my_scale), int(self.yb * self.my_scale))
 
-                    '''
-                    rectangle = QRectF(self.xb * self.my_scale, self.yb * self.my_scale,
-                                           30.0 * self.my_scale, 30.0 * self.my_scale)
-                    painter.drawRect(rectangle)
-                    '''
-
                 else:
-                    print "\n\n No xb,yb provided \n"
-
+                    print "No xb,yb provided"
 
             painter.end()
 
@@ -462,14 +454,14 @@ class MyImgWin(QWidget):
         self.current_qimg = build_qimg()
 
         if( json_file_path == None ):
-            print "\n\n no datablock given \n\n"
+            print "\n no datablock given \n"
             n_of_imgs = 1
 
         else:
             self.ini_datablock(json_file_path)
 
         if( pckl_file_path == None ):
-            print "\n\n no pickle file given \n\n"
+            print "\n no pickle file given \n"
 
         else:
             self.ini_reflection_table(pckl_file_path)
@@ -504,7 +496,7 @@ class MyImgWin(QWidget):
                 datablock = datablocks[0]
                 self.my_sweep = datablock.extract_sweeps()[0]
                 self.img_select.clear()
-                print"\n self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
+                print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
                 print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
                 n_of_imgs = len(self.my_sweep.indices())
                 print "n_of_imgs =", n_of_imgs
@@ -528,10 +520,10 @@ class MyImgWin(QWidget):
             try:
                 import lst_ext
                 lst_arrg = lst_ext.arrange_list
-                print "\n\n Using C++ list arranging tool\n\n"
+                print "\n Using C++ list arranging tool\n"
             except:
                 lst_arrg = PyListArange
-                print "\n\n Using Python list arranging tool"
+                print "\n Using Python list arranging tool \n"
             bbox_col = map(list, table["bbox"])
             try:
                 hkl_col = map(str, table["miller_index"])
@@ -544,7 +536,7 @@ class MyImgWin(QWidget):
             if( n_imgs > 0 ):
                 self.flat_data_lst = lst_arrg(bbox_col, hkl_col, n_imgs)
 
-            print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n\n"
+            print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
 
         else:
             self.flat_data_lst = [None]
@@ -553,8 +545,8 @@ class MyImgWin(QWidget):
             self.set_img()
 
     def update_beam_centre(self, xb, yb):
-        print "\n\n ______________________________ update_beam_centre __________________"
-        print "new x,y =", xb, yb ,"\n\n"
+        print " update_beam_centre"
+        print "new x,y =", xb, yb
         self.my_painter.update_my_beam_centre(xb, yb)
 
     def set_img(self):

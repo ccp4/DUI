@@ -121,19 +121,9 @@ def update_all_data(reflections_path = None, experiments_path = None):
             unit_cell = exp.crystal.get_unit_cell()
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
 
-            print "\n\n "
-
             exp_crystal = exp.crystal
             print "exp_crystal = ", exp_crystal
-            print "dir(exp_crystal) = ", dir(exp_crystal)
-
-
             b_mat = exp.crystal.get_B()
-            print "b_mat =", b_mat
-
-
-            print "b_mat[0] =", b_mat[0], " \n\n"
-
             dat.b11 = b_mat[0]
             dat.b12 = b_mat[1]
             dat.b13 = b_mat[2]
@@ -144,20 +134,12 @@ def update_all_data(reflections_path = None, experiments_path = None):
             dat.b32 = b_mat[7]
             dat.b33 = b_mat[8]
 
-
-            #dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
-
-
-
             sg = str(exp.crystal.get_space_group().info())
             print "spgr = ", sg
             dat.spg_group = sg
 
             from scitbx import matrix
             u_mat = matrix.sqr(exp.crystal.get_U())
-            #from dials.util.command_line import interactive_console; interactive_console(); 1/0
-            #dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
-            #, , , , , , , ,  = u_mat.elems
 
             dat.u11 = b_mat[0]
             dat.u12 = b_mat[1]
@@ -175,10 +157,6 @@ def update_all_data(reflections_path = None, experiments_path = None):
             print "rot_angs =", rot_angs
             dat.r1, dat.r2, dat.r3 = rot_angs
 
-        #from_david_trick = '''
-        #from dials.util.command_line import interactive_console; interactive_console(); 1/0
-        #'''
-
         # Get beam data
         dat.w_lambda = exp.beam.get_wavelength()
 
@@ -187,14 +165,12 @@ def update_all_data(reflections_path = None, experiments_path = None):
         pnl_beam_intersects, (beam_x, beam_y) = \
             exp.detector.get_ray_intersection(exp.beam.get_s0())
         pnl = exp.detector[pnl_beam_intersects]
-        print "\nbeam_x, beam_y =", beam_x, beam_y, "\n"
+        print "beam_x, beam_y =", beam_x, beam_y
 
         dat.xb = beam_x
         dat.yb = beam_y
 
         dist = pnl.get_distance()
-
-        #print dir(pnl)
 
         print "pnl_beam_intersects             ", pnl_beam_intersects
         print "dist                            ", dist
