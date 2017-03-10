@@ -120,17 +120,57 @@ def update_all_data(reflections_path = None, experiments_path = None):
         if exp.crystal is not None:
             unit_cell = exp.crystal.get_unit_cell()
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
+
+            print "\n\n "
+
+            exp_crystal = exp.crystal
+            print "exp_crystal = ", exp_crystal
+            print "dir(exp_crystal) = ", dir(exp_crystal)
+
+
             b_mat = exp.crystal.get_B()
-            dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
+            print "b_mat =", b_mat
+
+
+            print "b_mat[0] =", b_mat[0], " \n\n"
+
+            dat.b11 = b_mat[0]
+            dat.b12 = b_mat[1]
+            dat.b13 = b_mat[2]
+            dat.b21 = b_mat[3]
+            dat.b22 = b_mat[4]
+            dat.b23 = b_mat[5]
+            dat.b31 = b_mat[6]
+            dat.b32 = b_mat[7]
+            dat.b33 = b_mat[8]
+
+
+            #dat.b11, dat.b12, dat.b13, dat.b21, dat.b22, dat.b23, dat.b31, dat.b32, dat.b33 = b_mat.elems
+
+
 
             sg = str(exp.crystal.get_space_group().info())
             print "spgr = ", sg
             dat.spg_group = sg
 
-            u_mat = exp.crystal.get_U()
+            from scitbx import matrix
+            u_mat = matrix.sqr(exp.crystal.get_U())
             #from dials.util.command_line import interactive_console; interactive_console(); 1/0
-            dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+            #dat.u11, dat.u12, dat.u13, dat.u21, dat.u22, dat.u23, dat.u31, dat.u32, dat.u33 = u_mat.elems
+            #, , , , , , , ,  = u_mat.elems
+
+            dat.u11 = b_mat[0]
+            dat.u12 = b_mat[1]
+            dat.u13 = b_mat[2]
+            dat.u21 = b_mat[3]
+            dat.u22 = b_mat[4]
+            dat.u23 = b_mat[5]
+            dat.u31 = b_mat[6]
+            dat.u32 = b_mat[7]
+            dat.u33 = b_mat[8]
+
             rot_angs = u_mat.r3_rotation_matrix_as_x_y_z_angles(deg=True)
+            print "u_mat =", u_mat
 
             print "rot_angs =", rot_angs
             dat.r1, dat.r2, dat.r3 = rot_angs
