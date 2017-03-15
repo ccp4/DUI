@@ -33,13 +33,12 @@ from dynamic_reindex_gui import LeftSideTmpWidget
 from dynamic_reindex_gui import MyReindexOpts
 from outputs_gui import InfoWidget
 
-
 class Text_w_Bar(QProgressBar):
 
     def __init__(self, parent):
         super(Text_w_Bar,self).__init__()
-        self._text = ""
-
+        self.setAlignment(Qt.AlignCenter)
+        self._text = None
         # some programmers prefer to use the next line instead,
         # but with an empty string PyQt4 does not complain when resizing
         #self._text = ""
@@ -51,11 +50,12 @@ class Text_w_Bar(QProgressBar):
         return self._text
 
     def start_motion(self):
+        print "starting motion"
         self.setRange(0, 0)
-        self.setAlignment(Qt.AlignCenter)
 
     def end_motion(self):
         self.setRange(0, 1)
+        print "ending motion"
 
 
 class CentreWidget( QWidget):
@@ -389,7 +389,7 @@ class MainWidget(QMainWindow):
             self.bottom_bar_n_info.setText(rtime_text)
             #self.bottom_bar_n_info.painted_overlay.repaint()
 
-    def end_pbar_motion(self):
+    def update_after_command_end(self):
         self.bottom_bar_n_info.setText("Done")
         self.bottom_bar_n_info.end_motion()
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success

@@ -210,8 +210,8 @@ class IdialsOuterWidget( QWidget):
     def update_pbar_text(self, trim_cor_text):
         print "\n update_pbar_text <<<", trim_cor_text, ">>>"
 
-    def end_pbar_motion(self):
-        print "\n\n<<<                                                     end_pbar_motion\n\n"
+    def update_after_command_end(self):
+        print "\n\n<<<                                                     update_after_command_end\n\n"
         self.running = False
 
 class StdOut(QObject):
@@ -393,7 +393,7 @@ class IdialsInnerrWidget( QWidget):
 
     def finished_thread(self):
         self._update_tree()
-        self.super_parent.end_pbar_motion()
+        self.super_parent.update_after_command_end()
 
         to_reuse_later = '''
         print "self.controller.get_current().datablock =", str(self.controller.get_current().datablock)
