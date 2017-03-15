@@ -190,24 +190,32 @@ class ImgPainter(MyQWidgetWithQPainter):
             rect = QRect(0, 0, scaled_width, scaled_height)
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
-            #painter.setPen(Qt.blue)
 
 
-            pen = QPen()  # creates a default pen
-            #pen.setBrush(Qt.blue)
-            pen.setBrush(QColor(75, 150, 200))
+
+            indexed_pen = QPen()  # creates a default indexed_pen
+            indexed_pen.setBrush(QColor(75, 150, 200))
 
             if( self.my_scale >= 5.0 ):
-                #pen.setStyle(Qt.DashDotLine)
-                #pen.setStyle(Qt.DotLine)
-                pen.setStyle(Qt.SolidLine)
-                pen.setWidth(self.my_scale / 3.5)
+                indexed_pen.setStyle(Qt.SolidLine)
+                indexed_pen.setWidth(self.my_scale / 3.5)
 
             else:
-                pen.setStyle(Qt.SolidLine)
-                pen.setWidth(0.0)
+                indexed_pen.setStyle(Qt.SolidLine)
+                indexed_pen.setWidth(0.0)
 
-            painter.setPen(pen)
+
+            non_indexed_pen = QPen()  # creates a default non_indexed_pen
+            non_indexed_pen.setBrush(Qt.green)
+            #non_indexed_pen.setBrush(Qt.magenta)
+
+            if( self.my_scale >= 5.0 ):
+                non_indexed_pen.setStyle(Qt.DotLine)
+                non_indexed_pen.setWidth(self.my_scale / 3.5)
+
+            else:
+                non_indexed_pen.setStyle(Qt.SolidLine)
+                non_indexed_pen.setWidth(0.0)
 
             painter.drawPixmap(rect, pixmap)
             #painter.setFont(QFont("Monospace", 22))
@@ -226,11 +234,17 @@ class ImgPainter(MyQWidgetWithQPainter):
                     height = float(reflection[3])
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
-                    painter.drawRect(rectangle)
 
-                    if( reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
-                        painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                          int(y * self.my_scale)),  reflection[4])
+                    if( reflection[4] == "(0, 0, 0)" ):
+                        painter.setPen(non_indexed_pen)
+
+                    else:
+                        painter.setPen(indexed_pen)
+                        if( reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
+                            painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                              int(y * self.my_scale)),  reflection[4])
+
+                    painter.drawRect(rectangle)
 
 
                 if( self.xb != None and self.yb != None ):
@@ -375,8 +389,11 @@ def PyListArange(bbox_lst, hkl_lst, n_imgs):
 
         else:
             local_hkl = hkl_lst[i]
+
+            no_longer_needed = '''
             if(local_hkl == "(0, 0, 0)"):
                 local_hkl = "NOT indexed"
+            '''
 
             box_dat.append(local_hkl)
 
