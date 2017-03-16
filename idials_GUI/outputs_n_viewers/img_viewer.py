@@ -191,8 +191,6 @@ class ImgPainter(MyQWidgetWithQPainter):
             pixmap = QPixmap(self.img)
             painter = QPainter(self)
 
-
-
             indexed_pen = QPen()  # creates a default indexed_pen
             indexed_pen.setBrush(QColor(75, 150, 200))
 
@@ -203,7 +201,6 @@ class ImgPainter(MyQWidgetWithQPainter):
             else:
                 indexed_pen.setStyle(Qt.SolidLine)
                 indexed_pen.setWidth(0.0)
-
 
             non_indexed_pen = QPen()  # creates a default non_indexed_pen
             non_indexed_pen.setBrush(Qt.green)
