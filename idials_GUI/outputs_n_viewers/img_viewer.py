@@ -412,7 +412,7 @@ class MyImgWin(QWidget):
         self.my_painter = ImgPainter(self)
         self.my_scrollable.setWidget(self.my_painter)
 
-        max_min_validator = QIntValidator(-5, 9995, self)
+        max_min_validator = QIntValidator(-5, 999999, self)
 
         sys_font = QFont()
         sys_font_point_size =  sys_font.pointSize()
