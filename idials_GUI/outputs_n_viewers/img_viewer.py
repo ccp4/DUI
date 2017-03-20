@@ -441,7 +441,7 @@ class MyImgWin(QWidget):
 
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
-
+        self.chk_box_show.stateChanged.connect(self.set_img)
         self.palette_select = QComboBox()
 
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
@@ -480,8 +480,7 @@ class MyImgWin(QWidget):
         else:
             self.ini_reflection_table(pckl_file_path)
 
-        if( self.my_sweep != None):
-            self.set_img()
+        self.set_img()
 
         #self.img_select.setValue(0)
         self.img_select.valueChanged.connect(self.img_changed_by_user)
@@ -555,8 +554,7 @@ class MyImgWin(QWidget):
         else:
             self.flat_data_lst = [None]
 
-        if( self.my_sweep != None):
-            self.set_img()
+        self.set_img()
 
     def update_beam_centre(self, xb, yb):
         print " update_beam_centre"
@@ -564,17 +562,17 @@ class MyImgWin(QWidget):
         self.my_painter.update_my_beam_centre(xb, yb)
 
     def set_img(self):
-        print "New self.img_num =", self.img_num
-        self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
+        if( self.my_sweep != None):
 
-        if(self.flat_data_lst == [None]):
-            self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                          self.i_min, self.i_max))
+            self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
+            if(self.flat_data_lst == [None]):
+                self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                              self.i_min, self.i_max))
 
-        else:
-            self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                          self.i_min, self.i_max),
-                                                          self.flat_data_lst[self.img_num - 1])
+            else:
+                self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                              self.i_min, self.i_max),
+                                                              self.flat_data_lst[self.img_num - 1])
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
