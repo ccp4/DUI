@@ -6,8 +6,6 @@ from dials_viewer_ext import rgb_img
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from dxtbx.model.experiment.experiment_list import ExperimentListFactory
-from dxtbx.model.experiment.experiment_list import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 
 from time import time as time_now

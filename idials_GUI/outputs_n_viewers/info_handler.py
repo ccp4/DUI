@@ -21,8 +21,8 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from dxtbx.model.experiment.experiment_list import ExperimentListFactory
-from dxtbx.model.experiment.experiment_list import ExperimentList, Experiment
+from dxtbx.model.experiment_list import ExperimentListFactory
+from dxtbx.model import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
