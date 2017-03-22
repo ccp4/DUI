@@ -66,15 +66,14 @@ def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
     dst_squared = 999999.0
     hkl_result = None
-
-    for reflection in flat_data_lst:
+    for i, reflection in enumerate(flat_data_lst):
         x = float(reflection[0]) + float(reflection[2]) / 2.0
         y = float(reflection[1]) + float(reflection[3]) / 2.0
 
         tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
 
         if( tmp_dst_squared < dst_squared ):
-            hkl_result = reflection[4]
+            hkl_result = i
             dst_squared = tmp_dst_squared
 
     return hkl_result
@@ -181,8 +180,10 @@ class ImgPainter(MyQWidgetWithQPainter):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             closer_hkl = find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, self.flat_data_lst)
-            print "closer_hkl =", closer_hkl
+            print "closer_hkl =", self.flat_data_lst[closer_hkl][4]
 
+            self.num_of_closer_ref = closer_hkl
+            self.update()
 
     def set_img_pix(self, q_img = None, flat_data_lst_in = None):
 
@@ -253,7 +254,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
                 painter.setFont(tmp_font)
 
-                for reflection in self.flat_data_lst:
+                for i, reflection in enumerate(self.flat_data_lst):
                     x = float(reflection[0])
                     y = float(reflection[1])
                     width = float(reflection[2])
@@ -266,12 +267,19 @@ class ImgPainter(MyQWidgetWithQPainter):
 
                     else:
                         painter.setPen(indexed_pen)
+
+
+                        old_way = '''
                         if( reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
                             painter.drawText( QPoint(int((x + width) * self.my_scale),
                                               int(y * self.my_scale)),  reflection[4])
+                        '''
 
                     painter.drawRect(rectangle)
 
+                    if( self.num_of_closer_ref == i ):
+                        painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                          int(y * self.my_scale)),  reflection[4])
 
                 if( self.xb != None and self.yb != None ):
 
