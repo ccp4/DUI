@@ -62,6 +62,23 @@ class img_w_cpp(object):
         return img_array
 
 
+def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
+
+    dst_squared = 999999.0
+    hkl_result = None
+
+    for reflection in flat_data_lst:
+        x = float(reflection[0]) + float(reflection[2]) / 2.0
+        y = float(reflection[1]) + float(reflection[3]) / 2.0
+
+        tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
+
+        if( tmp_dst_squared < dst_squared ):
+            hkl_result = reflection[4]
+            dst_squared = tmp_dst_squared
+
+    return hkl_result
+
 class ImgPainter(MyQWidgetWithQPainter):
 
     def __init__(self, parent = None):
@@ -98,7 +115,12 @@ class ImgPainter(MyQWidgetWithQPainter):
                 self.my_parent.info_label.setText(new_label_txt)
 
             except:
+                no_longer_needed = '''
                 print "failed to update i(x,y) label"
+                '''
+
+            self.find_closer_hkl(self.x_pos, self.y_pos)
+
 
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
@@ -152,6 +174,15 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         if( new_pos != None ):
             scrollBar.setValue(new_pos)
+
+
+    def find_closer_hkl(self, x_mouse, y_mouse):
+        if( self.flat_data_lst != None ):
+            x_mouse_scaled = float(x_mouse) / self.my_scale
+            y_mouse_scaled = float(y_mouse) / self.my_scale
+            closer_hkl = find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, self.flat_data_lst)
+            print "closer_hkl =", closer_hkl
+
 
     def set_img_pix(self, q_img = None, flat_data_lst_in = None):
 
@@ -252,7 +283,9 @@ class ImgPainter(MyQWidgetWithQPainter):
                                      int((self.xb - cen_siz) * self.my_scale), int(self.yb * self.my_scale))
 
                 else:
+                    no_longer_needed = '''
                     print "No xb,yb provided"
+                    '''
 
             painter.end()
 
