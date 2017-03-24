@@ -9,18 +9,25 @@ class PopMenu(QtGui.QMenu):
         self.rb_group_box_layout = QtGui.QVBoxLayout()
         self.rb_group_box.setLayout(self.rb_group_box_layout)
 
-        self.rb_hull = QtGui.QRadioButton("Hull")
-        self.rb_group.addButton(self.rb_hull)
-        self.rb_group_box_layout.addWidget(self.rb_hull)
+        self.rb_01 = QtGui.QRadioButton("buttn 1")
+        self.rb_group.addButton(self.rb_01)
+        self.rb_01.clicked.connect(self.Action1)
+        self.rb_group_box_layout.addWidget(self.rb_01)
 
-        self.rb_minkowski = QtGui.QRadioButton("Minkowski")
-        self.rb_group.addButton(self.rb_minkowski)
-        self.rb_group_box_layout.addWidget(self.rb_minkowski)
+        self.rb_02 = QtGui.QRadioButton("buttn 2")
+        self.rb_group.addButton(self.rb_02)
+        self.rb_02.clicked.connect(self.Action2)
+        self.rb_group_box_layout.addWidget(self.rb_02)
 
         layout= QtGui.QVBoxLayout()
         layout.addWidget(self.rb_group_box)
         self.setLayout(layout)
 
+    def Action1(self):
+        print "buttn 1"
+
+    def Action2(self):
+        print "buttn 2"
 
 
 class InnerWidg(QtGui.QWidget):
