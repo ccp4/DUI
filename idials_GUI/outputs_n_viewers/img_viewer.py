@@ -180,7 +180,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             closer_hkl = find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, self.flat_data_lst)
-            print "closer_hkl =", self.flat_data_lst[closer_hkl][4]
+            #print "closer_hkl =", self.flat_data_lst[closer_hkl][4]
 
             self.num_of_closer_ref = closer_hkl
             self.update()
