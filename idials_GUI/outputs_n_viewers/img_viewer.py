@@ -387,17 +387,32 @@ class PopInfoHandl(QMenu):
         super(PopInfoHandl, self).__init__(parent)
         self.my_parent = parent
 
-        top_box = QHBoxLayout()
+        #top_box = QHBoxLayout()
         #top_box.addWidget(QLabel("scale threshold 1"))
         #top_box.addWidget(self.my_parent.t_hold_edit)
 
         bot_box = QHBoxLayout()
         bot_box.addWidget(self.my_parent.chk_box_show)
 
-        my_box = QVBoxLayout()
-        my_box.addLayout(top_box)
-        my_box.addLayout(bot_box)
+        ###################################################################
+        rb_group = QButtonGroup()
+        rb_group_box = QGroupBox()
+        rb_group_box_layout = QVBoxLayout()
+        rb_group_box.setLayout(rb_group_box_layout)
 
+        rb_group_box_layout.addWidget(self.my_parent.rb_01)
+        rb_group.addButton(self.my_parent.rb_01)
+        rb_group_box_layout.addWidget(self.my_parent.rb_02)
+        rb_group.addButton(self.my_parent.rb_02)
+        rb_group_box_layout.addWidget(self.my_parent.rb_03)
+        rb_group.addButton(self.my_parent.rb_03)
+        ##################################################################
+
+
+        my_box = QVBoxLayout()
+        #my_box.addLayout(top_box)
+        my_box.addLayout(bot_box)
+        my_box.addWidget(rb_group_box)
         self.setLayout(my_box)
         self.show()
 
@@ -482,8 +497,16 @@ class MyImgWin(QWidget):
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
-        self.palette_select = QComboBox()
 
+        self.rb_01 = QRadioButton("Show all HKLs")
+        self.rb_01.clicked.connect(self.Action1)
+        self.rb_02 = QRadioButton("Show Only Nearest HKL")
+        self.rb_02.clicked.connect(self.Action2)
+        self.rb_03 = QRadioButton("No HKL shown")
+        self.rb_03.clicked.connect(self.Action3)
+
+
+        self.palette_select = QComboBox()
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
         for plt in self.palette_lst:
@@ -613,6 +636,17 @@ class MyImgWin(QWidget):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                               self.i_min, self.i_max),
                                                               self.flat_data_lst[self.img_num - 1])
+
+
+    def Action1(self):
+        print "Action1"
+
+    def Action2(self):
+        print "Action2"
+
+    def Action3(self):
+        print "Action3"
+
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
