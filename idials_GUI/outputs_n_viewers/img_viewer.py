@@ -388,8 +388,8 @@ class PopInfoHandl(QMenu):
         self.my_parent = parent
 
         top_box = QHBoxLayout()
-        top_box.addWidget(QLabel("scale threshold 1"))
-        top_box.addWidget(self.my_parent.t_hold_edit)
+        #top_box.addWidget(QLabel("scale threshold 1"))
+        #top_box.addWidget(self.my_parent.t_hold_edit)
 
         bot_box = QHBoxLayout()
         bot_box.addWidget(self.my_parent.chk_box_show)
@@ -470,13 +470,14 @@ class MyImgWin(QWidget):
         self.max_edit.setText(str(self.i_max))
         self.max_edit.editingFinished.connect(self.max_changed_by_user)
 
-        self.t_hold = 1.0
-        self.t_hold_edit = QLineEdit()
-        self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
+        #TODO consider in the future to stop using this variable at all
+        self.t_hold = 0.001
+        #self.t_hold_edit = QLineEdit()
+        #self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
         #self.t_hold_edit.setValidator(QFloatValidator(2.0, 20,0, self)  )
-        self.t_hold_edit.setText(str(self.t_hold))
+        #self.t_hold_edit.setText(str(self.t_hold))
         #self.t_hold_edit.editingFinished.connect(self.min_changed_by_user)
-        self.t_hold_edit.editingFinished.connect(self.change_scale_thold)
+        #self.t_hold_edit.editingFinished.connect(self.change_scale_thold)
 
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
@@ -624,10 +625,12 @@ class MyImgWin(QWidget):
         print "B_stop_clicked(self)"
         self.video_timer.stop()
 
+        no_longer_needed = '''
     def change_scale_thold(self):
         self.t_hold = float(self.t_hold_edit.text())
         print "self.t_hold =", self.t_hold
         self.set_img()
+        '''
 
     def min_changed_by_user(self):
         new_value = self.min_edit.text()
