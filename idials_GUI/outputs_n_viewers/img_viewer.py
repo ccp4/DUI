@@ -268,27 +268,32 @@ class ImgPainter(MyQWidgetWithQPainter):
                     else:
                         painter.setPen(indexed_pen)
 
-
-                        old_way = '''
-                        if( reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
-                            painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                              int(y * self.my_scale)),  reflection[4])
-                        '''
-
                     painter.drawRect(rectangle)
 
-                    if( self.num_of_closer_ref == i ):
+                    if( self.my_parent.rad_but_all_hkl.isChecked() == True and
+                       reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
+
+                        painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                              int(y * self.my_scale)),  reflection[4])
+
+                    elif( self.my_parent.rad_but_near_hkl.isChecked() == True and
+                         self.num_of_closer_ref == i ):
+
                         painter.drawText( QPoint(int((x + width) * self.my_scale),
                                           int(y * self.my_scale)),  reflection[4])
 
                 if( self.xb != None and self.yb != None ):
 
                     cen_siz = 40.0
-                    painter.drawLine(int(self.xb * self.my_scale), int((self.yb - cen_siz) * self.my_scale),
-                                     int(self.xb * self.my_scale), int((self.yb + cen_siz) * self.my_scale))
+                    painter.drawLine(int(self.xb * self.my_scale),
+                                     int((self.yb - cen_siz) * self.my_scale),
+                                     int(self.xb * self.my_scale),
+                                     int((self.yb + cen_siz) * self.my_scale))
 
-                    painter.drawLine(int((self.xb + cen_siz) * self.my_scale), int(self.yb * self.my_scale),
-                                     int((self.xb - cen_siz) * self.my_scale), int(self.yb * self.my_scale))
+                    painter.drawLine(int((self.xb + cen_siz) * self.my_scale),
+                                     int(self.yb * self.my_scale),
+                                     int((self.xb - cen_siz) * self.my_scale),
+                                     int(self.yb * self.my_scale))
 
                 else:
                     no_longer_needed = '''
@@ -297,9 +302,9 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             painter.end()
 
-            print "\n self.my_parent.rad_but_all_hkl.isChecked() =", self.my_parent.rad_but_all_hkl.isChecked()
-            print " self.my_parent.rad_but_near_hkl.isChecked() =", self.my_parent.rad_but_near_hkl.isChecked()
-            print " self.my_parent.rad_but_none_hkl.isChecked() =", self.my_parent.rad_but_none_hkl.isChecked()
+            print "\n ...rad_but_all_hkl.isChecked() =", self.my_parent.rad_but_all_hkl.isChecked()
+            print " ...rad_but_near_hkl.isChecked() =", self.my_parent.rad_but_near_hkl.isChecked()
+            print " ...rad_but_none_hkl.isChecked() =", self.my_parent.rad_but_none_hkl.isChecked()
 
 
 class build_qimg(object):
