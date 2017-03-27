@@ -498,11 +498,11 @@ class MyImgWin(QWidget):
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
 
-        self.rb_01 = QRadioButton("Show all HKLs")
+        self.rb_01 = QRadioButton("All HKLs")
         self.rb_01.clicked.connect(self.Action1)
-        self.rb_02 = QRadioButton("Show Only Nearest HKL")
+        self.rb_02 = QRadioButton("Nearest HKL")
         self.rb_02.clicked.connect(self.Action2)
-        self.rb_03 = QRadioButton("No HKL shown")
+        self.rb_03 = QRadioButton("No HKL")
         self.rb_03.clicked.connect(self.Action3)
 
 
