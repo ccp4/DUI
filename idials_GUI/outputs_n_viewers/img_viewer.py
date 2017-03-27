@@ -297,6 +297,10 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             painter.end()
 
+            print "\n self.my_parent.rad_but_all_hkl.isChecked() =", self.my_parent.rad_but_all_hkl.isChecked()
+            print " self.my_parent.rad_but_near_hkl.isChecked() =", self.my_parent.rad_but_near_hkl.isChecked()
+            print " self.my_parent.rad_but_none_hkl.isChecked() =", self.my_parent.rad_but_none_hkl.isChecked()
+
 
 class build_qimg(object):
     def __init__(self):
@@ -400,12 +404,12 @@ class PopInfoHandl(QMenu):
         rb_group_box_layout = QVBoxLayout()
         rb_group_box.setLayout(rb_group_box_layout)
 
-        rb_group_box_layout.addWidget(self.my_parent.rb_01)
-        rb_group.addButton(self.my_parent.rb_01)
-        rb_group_box_layout.addWidget(self.my_parent.rb_02)
-        rb_group.addButton(self.my_parent.rb_02)
-        rb_group_box_layout.addWidget(self.my_parent.rb_03)
-        rb_group.addButton(self.my_parent.rb_03)
+        rb_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
+        rb_group.addButton(self.my_parent.rad_but_all_hkl)
+        rb_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
+        rb_group.addButton(self.my_parent.rad_but_near_hkl)
+        rb_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
+        rb_group.addButton(self.my_parent.rad_but_none_hkl)
         ##################################################################
 
 
@@ -498,12 +502,12 @@ class MyImgWin(QWidget):
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
 
-        self.rb_01 = QRadioButton("All HKLs")
-        self.rb_01.clicked.connect(self.Action1)
-        self.rb_02 = QRadioButton("Nearest HKL")
-        self.rb_02.clicked.connect(self.Action2)
-        self.rb_03 = QRadioButton("No HKL")
-        self.rb_03.clicked.connect(self.Action3)
+        self.rad_but_all_hkl = QRadioButton("All HKLs")
+        self.rad_but_all_hkl.clicked.connect(self.Action1)
+        self.rad_but_near_hkl = QRadioButton("Nearest HKL")
+        self.rad_but_near_hkl.clicked.connect(self.Action2)
+        self.rad_but_none_hkl = QRadioButton("No HKL")
+        self.rad_but_none_hkl.clicked.connect(self.Action3)
 
 
         self.palette_select = QComboBox()
