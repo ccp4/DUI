@@ -226,18 +226,17 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter = QPainter(self)
 
             indexed_pen = QPen()  # creates a default indexed_pen
-            indexed_pen.setBrush(QColor(75, 150, 200))
+            indexed_pen.setBrush(Qt.green)
+            indexed_pen.setStyle(Qt.SolidLine)
 
             if( self.my_scale >= 5.0 ):
-                indexed_pen.setStyle(Qt.SolidLine)
                 indexed_pen.setWidth(self.my_scale / 3.5)
 
             else:
-                indexed_pen.setStyle(Qt.SolidLine)
                 indexed_pen.setWidth(0.0)
 
             non_indexed_pen = QPen()  # creates a default non_indexed_pen
-            non_indexed_pen.setBrush(Qt.green)
+            non_indexed_pen.setBrush(QColor(75, 150, 200))
             #non_indexed_pen.setBrush(Qt.magenta)
 
             if( self.my_scale >= 5.0 ):
