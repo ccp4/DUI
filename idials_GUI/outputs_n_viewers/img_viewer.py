@@ -89,12 +89,12 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.xb = None
         self.yb = None
 
-        self.show()
-
+        self.num_of_closer_ref = None
         self.my_scale = 1.0
         self.img_width = 247
         self.img_height = 253
 
+        self.show()
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
@@ -118,8 +118,12 @@ class ImgPainter(MyQWidgetWithQPainter):
                 print "failed to update i(x,y) label"
                 '''
 
-            self.find_closer_hkl(self.x_pos, self.y_pos)
 
+            if( self.my_parent.rad_but_near_hkl.isChecked() == True ):
+                self.find_closer_hkl(self.x_pos, self.y_pos)
+
+            else:
+                self.num_of_closer_ref = None
 
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
@@ -301,10 +305,6 @@ class ImgPainter(MyQWidgetWithQPainter):
                     '''
 
             painter.end()
-
-            print "\n ...rad_but_all_hkl.isChecked() =", self.my_parent.rad_but_all_hkl.isChecked()
-            print " ...rad_but_near_hkl.isChecked() =", self.my_parent.rad_but_near_hkl.isChecked()
-            print " ...rad_but_none_hkl.isChecked() =", self.my_parent.rad_but_none_hkl.isChecked()
 
 
 class build_qimg(object):
@@ -629,14 +629,16 @@ class MyImgWin(QWidget):
 
 
     def Action1(self):
-        print "Action1"
+        print "rad_but_all_hkl clicked"
+        self.set_img()
 
     def Action2(self):
-        print "Action2"
+        print "rad_but_near_hkl clicked"
+        self.set_img()
 
     def Action3(self):
-        print "Action3"
-
+        print "rad_but_none_hkl clicked"
+        self.set_img()
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
@@ -670,6 +672,9 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def btn_first_clicked(self):
+        #TODO have a look at why is unable to go to
+        #TODO the very first image sometimes
+
         self.img_num = 1
         self.img_select.setValue(self.img_num)
 
