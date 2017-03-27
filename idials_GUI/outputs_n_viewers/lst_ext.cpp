@@ -45,12 +45,10 @@ py::list arrange_list(py::list bbox_lst, py::list hkl_lst, int n_imgs){
             box_dat.append(local_hkl);
         } else {
             local_hkl = py::extract<py::str>(hkl_lst[i]);
-            /*
-             * This is no longer needed
             if(local_hkl == "(0, 0, 0)"){
                 local_hkl = "NOT indexed";
             }
-            */
+
             box_dat.append(local_hkl);
         }
 

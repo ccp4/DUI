@@ -262,7 +262,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                     rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                        width * self.my_scale, height * self.my_scale)
 
-                    if( reflection[4] == "(0, 0, 0)" ):
+                    if( reflection[4] == "NOT indexed" ):
                         painter.setPen(non_indexed_pen)
 
                     else:
@@ -271,7 +271,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                     painter.drawRect(rectangle)
 
                     if( self.my_parent.rad_but_all_hkl.isChecked() == True and
-                       reflection[4] != "" and self.my_scale > self.my_parent.t_hold ):
+                       reflection[4] != "" and reflection[4] != "NOT indexed" ):
 
                         painter.drawText( QPoint(int((x + width) * self.my_scale),
                                               int(y * self.my_scale)),  reflection[4])
@@ -449,11 +449,9 @@ def PyListArange(bbox_lst, hkl_lst, n_imgs):
 
         else:
             local_hkl = hkl_lst[i]
-
-            no_longer_needed = '''
             if(local_hkl == "(0, 0, 0)"):
                 local_hkl = "NOT indexed"
-            '''
+
 
             box_dat.append(local_hkl)
 
@@ -495,7 +493,7 @@ class MyImgWin(QWidget):
         self.max_edit.editingFinished.connect(self.max_changed_by_user)
 
         #TODO consider in the future to stop using this variable at all
-        self.t_hold = 0.001
+        #self.t_hold = 0.001
         #self.t_hold_edit = QLineEdit()
         #self.t_hold_edit.setFixedWidth(6 * sys_font_point_size)
         #self.t_hold_edit.setValidator(QFloatValidator(2.0, 20,0, self)  )
