@@ -15,11 +15,14 @@ int find_closer_hkl_func(float x_mouse_scaled, float y_mouse_scaled, py::list fl
 
     int hkl_result = -1;
     float dst_squared = 999999.0;
-
+    /*
+     * Not needed for now debugging info
+     *
     std::cout << "\n x_mouse_scaled = " << x_mouse_scaled
               << "\n y_mouse_scaled = " << y_mouse_scaled
               << "\n len(flat_data_lst) = " << len(flat_data_lst)
               << "\n";
+    */
 
     py::list reflection;
     float x, y, tmp_dst_squared, dx, dy;
@@ -48,25 +51,6 @@ int find_closer_hkl_func(float x_mouse_scaled, float y_mouse_scaled, py::list fl
     return hkl_result;
 }
 
-/*
- * This should be redone in C++
-def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-
-    dst_squared = 999999.0
-    hkl_result = None
-    for i, reflection in enumerate(flat_data_lst):
-        x = float(reflection[0]) + float(reflection[2]) / 2.0
-        y = float(reflection[1]) + float(reflection[3]) / 2.0
-
-        tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
-
-        if( tmp_dst_squared < dst_squared ):
-            hkl_result = i
-            dst_squared = tmp_dst_squared
-
-    return hkl_result
-
-*/
 py::list arrange_list(py::list bbox_lst, py::list hkl_lst, int n_imgs){
     /*
      * from a list of shoe - box bounds and another HKL list
