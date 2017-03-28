@@ -16,7 +16,7 @@ int find_closer_hkl_func(float x_mouse_scaled, float y_mouse_scaled, py::list fl
     int hkl_result = -1;
     float dst_squared = 999999.0;
     /*
-     * Not needed for now debugging info
+     * Not needed for now: debugging info
      *
     std::cout << "\n x_mouse_scaled = " << x_mouse_scaled
               << "\n y_mouse_scaled = " << y_mouse_scaled

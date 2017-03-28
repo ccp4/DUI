@@ -7,8 +7,12 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from dxtbx.datablock import DataBlockFactory
+try:
+    import lst_ext
+    print "running C++ lst_ext"
 
-import lst_ext
+except:
+    print "running Python replacements of lst_ext C++ Module"
 
 from time import time as time_now
 QGLWidget_test = '''
@@ -64,21 +68,6 @@ class img_w_cpp(object):
         return img_array
 
 
-
-
-
-def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-    #import lst_ext.find_closer_hkl_func as closer_hkl
-    #TODO remember to put all imports at the beginning of this file
-    print "before calling C++ Search"
-    hkl_result = lst_ext.find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
-    print "after calling C++ Search"
-    if hkl_result == -1 :
-        hkl_result = None
-
-    return hkl_result
-
-
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
     dst_squared = 999999.0
@@ -94,6 +83,20 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
             dst_squared = tmp_dst_squared
 
     return hkl_result
+
+
+def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
+    #import lst_ext.find_closer_hkl_func as closer_hkl
+    #TODO remember to put all imports at the beginning of this file
+    try:
+        hkl_result = lst_ext.find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
+        if hkl_result == -1 :
+            hkl_result = None
+    except:
+        hkl_result = py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
+
+    return hkl_result
+
 
 class ImgPainter(MyQWidgetWithQPainter):
 
