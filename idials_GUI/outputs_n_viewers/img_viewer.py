@@ -489,6 +489,9 @@ class MyImgWin(QWidget):
 
         self.rad_but_all_hkl = QRadioButton("All HKLs")
         self.rad_but_all_hkl.clicked.connect(self.Action1)
+
+        self.rad_but_all_hkl.setChecked(True)
+
         self.rad_but_near_hkl = QRadioButton("Nearest HKL")
         self.rad_but_near_hkl.clicked.connect(self.Action2)
         self.rad_but_none_hkl = QRadioButton("No HKL")
