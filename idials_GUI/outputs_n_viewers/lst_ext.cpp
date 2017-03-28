@@ -8,14 +8,16 @@ char const* greet()
     return "hello, world";
 }
 
-int find_closer_hkl_func(int x_mouse_scaled, int y_mouse_scaled, py::list flat_data_lst){
+int find_closer_hkl_func(float x_mouse_scaled, float y_mouse_scaled, py::list flat_data_lst){
     /*
      * finding the closer reflection from an X,Y position in one image
      */
 
-    std::cout << "\n x_mouse_scaled = " << x_mouse_scaled;
-    std::cout << "\n y_mouse_scaled = " << y_mouse_scaled;
-    std::cout << "\n len(flat_data_lst) = " << len(flat_data_lst) << "\n";
+    std::cout << "\n x_mouse_scaled = " << x_mouse_scaled
+              << "\n y_mouse_scaled = " << y_mouse_scaled
+              << "\n len(flat_data_lst) = " << len(flat_data_lst)
+              << "\n";
+
     return -1;
 }
 

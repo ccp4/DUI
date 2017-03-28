@@ -8,6 +8,8 @@ from PyQt4.QtCore import *
 
 from dxtbx.datablock import DataBlockFactory
 
+import lst_ext
+
 from time import time as time_now
 QGLWidget_test = '''
 try:
@@ -62,7 +64,22 @@ class img_w_cpp(object):
         return img_array
 
 
+
+
+
 def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
+    #import lst_ext.find_closer_hkl_func as closer_hkl
+    #TODO remember to put all imports at the beginning of this file
+    print "before calling C++ Search"
+    hkl_result = lst_ext.find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
+    print "after calling C++ Search"
+    if hkl_result == -1 :
+        hkl_result = None
+
+    return hkl_result
+
+
+def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
     dst_squared = 999999.0
     hkl_result = None
@@ -586,7 +603,8 @@ class MyImgWin(QWidget):
             print "len(table) = ", len(table)
             n_refs = len(table)
             try:
-                import lst_ext
+                #TODO remember to put all the imports at the beginning of a file
+                #import lst_ext
                 lst_arrg = lst_ext.arrange_list
                 print "\n Using C++ list arranging tool\n"
             except:
