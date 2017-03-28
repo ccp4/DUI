@@ -13,12 +13,39 @@ int find_closer_hkl_func(float x_mouse_scaled, float y_mouse_scaled, py::list fl
      * finding the closer reflection from an X,Y position in one image
      */
 
+    int hkl_result = -1;
+    float dst_squared = 999999.0;
+
     std::cout << "\n x_mouse_scaled = " << x_mouse_scaled
               << "\n y_mouse_scaled = " << y_mouse_scaled
               << "\n len(flat_data_lst) = " << len(flat_data_lst)
               << "\n";
 
-    return -1;
+    py::list reflection;
+    float x, y, tmp_dst_squared, dx, dy;
+    float reflection_0, reflection_1, reflection_2, reflection_3;
+
+    for (int i = 0; i < len(flat_data_lst); i++){
+        reflection = py::extract<py::list>(flat_data_lst[i]);
+
+        reflection_0 = py::extract<float>(reflection[0]);
+        reflection_1 = py::extract<float>(reflection[1]);
+        reflection_2 = py::extract<float>(reflection[2]);
+        reflection_3 = py::extract<float>(reflection[3]);
+
+        x = reflection_0 + reflection_2 / 2.0;
+        y = reflection_1 + reflection_3 / 2.0;
+        dx = x - x_mouse_scaled;
+        dy = y - y_mouse_scaled;
+        tmp_dst_squared = dx * dx + dy * dy;
+
+        if( tmp_dst_squared < dst_squared ){
+            hkl_result = i;
+            dst_squared = tmp_dst_squared;
+        }
+    }
+
+    return hkl_result;
 }
 
 /*
