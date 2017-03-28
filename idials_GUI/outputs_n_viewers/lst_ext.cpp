@@ -23,7 +23,7 @@ int find_closer_hkl_func(float x_mouse_scaled, float y_mouse_scaled, py::list fl
               << "\n len(flat_data_lst) = " << len(flat_data_lst)
               << "\n";
     */
-
+    std::cout << "\n Using C++ search for closer reflection \n";
     py::list reflection;
     float x, y, tmp_dst_squared, dx, dy;
     float reflection_0, reflection_1, reflection_2, reflection_3;

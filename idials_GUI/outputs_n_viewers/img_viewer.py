@@ -69,7 +69,7 @@ class img_w_cpp(object):
 
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-
+    print"\n Using Python search for closer reflection \n"
     dst_squared = 999999.0
     hkl_result = None
     for i, reflection in enumerate(flat_data_lst):
@@ -86,8 +86,7 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
 
 def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-    #import lst_ext.find_closer_hkl_func as closer_hkl
-    #TODO remember to put all imports at the beginning of this file
+    #TODO Maybe if the "try" stuff is done outside this function we gain some speed
     try:
         hkl_result = lst_ext.find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
         if hkl_result == -1 :
