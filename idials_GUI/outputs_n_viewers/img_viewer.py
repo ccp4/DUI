@@ -605,8 +605,6 @@ class MyImgWin(QWidget):
             print "len(table) = ", len(table)
             n_refs = len(table)
             try:
-                #TODO remember to put all the imports at the beginning of a file
-                #import lst_ext
                 lst_arrg = lst_ext.arrange_list
                 print "\n Using C++ list arranging tool\n"
             except:
