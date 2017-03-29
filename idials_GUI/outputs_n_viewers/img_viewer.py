@@ -526,13 +526,13 @@ class MyImgWin(QWidget):
         self.palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
 
 
-        img_select_but = QPushButton('Img Select')
+        img_select_but = QPushButton('Img Select  ...')
         img_select_but.setMenu(PopImgChange(self))
 
-        img_pal_but = QPushButton('Img Palette')
+        img_pal_but = QPushButton('Img Palette  ...')
         img_pal_but.setMenu(PopImgTreat(self))
 
-        info_but = QPushButton('Info Handling')
+        info_but = QPushButton('Info Handling  ...')
         info_but.setMenu(PopInfoHandl(self))
 
 
