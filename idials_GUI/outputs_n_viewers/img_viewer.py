@@ -69,7 +69,7 @@ class img_w_cpp(object):
 
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-    print"\n Using Python search for closer reflection \n"
+    #print"\n Using Python search for closer reflection \n"
     dst_squared = 999999.0
     hkl_result = None
     for i, reflection in enumerate(flat_data_lst):
