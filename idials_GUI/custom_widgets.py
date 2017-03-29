@@ -272,9 +272,8 @@ class ParamMainWidget( QWidget):
         self.sipler_widget = simp_widg(parent = self)
         self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
 
-        level_tab.addTab(self.sipler_widget, "Simple Editor")
-        level_tab.addTab(self.advanced_widget, "Advanced Editor")
-
+        level_tab.addTab(self.sipler_widget, "Simple")
+        level_tab.addTab(self.advanced_widget, "Advanced")
 
         label_font = QFont()
         sys_font_point_size =  label_font.pointSize()
