@@ -378,10 +378,7 @@ class MainWidget(QMainWindow):
 
 
     def start_pbar_motion(self):
-        #self.bottom_bar_n_info.info_line.setText("Running")
-
         self.bottom_bar_n_info.setText("Running")
-
         self.bottom_bar_n_info.start_motion()
 
     def update_pbar_text(self, rtime_text):
@@ -390,8 +387,8 @@ class MainWidget(QMainWindow):
             #self.bottom_bar_n_info.painted_overlay.repaint()
 
     def update_after_command_end(self):
-        self.bottom_bar_n_info.setText("Done")
         self.bottom_bar_n_info.end_motion()
+        self.bottom_bar_n_info.setText("Done")
         print "controller.get_current().success =", self.idials_widget.controller.get_current().success
         self.running = False
 
