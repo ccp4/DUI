@@ -230,6 +230,12 @@ class MyThread (QThread):
         super(MyThread, self).__init__(parent)
         print "\n\n MyThread(__init__)"
 
+        to_sudy = '''
+        connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)))
+        #something like the next line
+        self.error.connect(self.how_to_hande_errors)
+        '''
+
     def set_controler(self, controller):
         #self.setTerminationEnabled(enabled = True)
         self.to_run = controller
@@ -239,11 +245,11 @@ class MyThread (QThread):
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
 
     def on_timeout(self):
-        print "on_timeout(self)"
+        print "\n\n on_timeout(self) \n\n"
 
     def terminated(self):
-        print "terminated(idials)"
-        print "dir(self.to_run) =", dir(self.to_run)
+        print "\n\n terminated(idials)"
+        print "dir(self.to_run) =", dir(self.to_run), "\n\n"
 
 
 

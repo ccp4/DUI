@@ -2,6 +2,11 @@ from python_qt_bind import *
 import sys
 import json
 
+copied_from_SymmetryExpert_d_py = '''
+lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
+                                'oF':22, 'oI':23, 'tP':75, 'tI':79,'hP':143,
+                                'hR':146, 'cP':195, 'cF':196, 'cI':197}
+'''
 
 
 def ops_list_from_json(json_path = None):
