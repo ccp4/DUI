@@ -31,16 +31,9 @@ from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
-from img_view_tools import img_w_cpp, build_qimg
-
-try:
-    import lst_ext
-    print "running C++ lst_ext"
-
-except:
-    print "running Python replacements of lst_ext C++ Module"
-
+from img_view_tools import img_w_cpp, build_qimg, find_closer_hkl_func, ListArange
 from time import time as time_now
+
 QGLWidget_test = '''
 try:
     from PyQt4.QtOpenGL import QGLWidget
@@ -53,40 +46,6 @@ except:
 #'''
 
 MyQWidgetWithQPainter = QWidget
-
-class flat_data(object):
-    box = None
-    hkl = None
-
-
-def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-    #print"\n Using Python search for closer reflection \n"
-    dst_squared = 999999.0
-    hkl_result = None
-    for i, reflection in enumerate(flat_data_lst):
-        x = float(reflection[0]) + float(reflection[2]) / 2.0
-        y = float(reflection[1]) + float(reflection[3]) / 2.0
-
-        tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
-
-        if( tmp_dst_squared < dst_squared ):
-            hkl_result = i
-            dst_squared = tmp_dst_squared
-
-    return hkl_result
-
-
-def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-    #TODO Maybe if the "try" stuff is done outside this function we gain some speed
-    try:
-        hkl_result = lst_ext.find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
-        if hkl_result == -1 :
-            hkl_result = None
-    except:
-        hkl_result = py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
-
-    return hkl_result
-
 
 class ImgPainter(MyQWidgetWithQPainter):
 
@@ -411,40 +370,6 @@ class PopInfoHandl(QMenu):
         self.setLayout(my_box)
         self.show()
 
-def PyListArange(bbox_lst, hkl_lst, n_imgs):
-
-    img_lst = []
-    for time in xrange(n_imgs):
-        img_lst.append([])
-
-    for i, ref_box in enumerate(bbox_lst):
-        x_ini = ref_box[0]
-        y_ini = ref_box[2]
-        width = ref_box[1] - ref_box[0]
-        height = ref_box[3] - ref_box[2]
-
-        box_dat = []
-        box_dat.append(x_ini)
-        box_dat.append(y_ini)
-        box_dat.append(width)
-        box_dat.append(height)
-
-        if( len(hkl_lst) <= 1 ):
-            local_hkl = ""
-            box_dat.append(local_hkl)
-
-        else:
-            local_hkl = hkl_lst[i]
-            if(local_hkl == "(0, 0, 0)"):
-                local_hkl = "NOT indexed"
-
-
-            box_dat.append(local_hkl)
-
-        for idx in xrange(ref_box[4], ref_box[5]):
-            img_lst[idx].append(box_dat);
-
-    return img_lst
 
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
@@ -580,12 +505,7 @@ class MyImgWin(QWidget):
             print "table =", table
             print "len(table) = ", len(table)
             n_refs = len(table)
-            try:
-                lst_arrg = lst_ext.arrange_list
-                print "\n Using C++ list arranging tool\n"
-            except:
-                lst_arrg = PyListArange
-                print "\n Using Python list arranging tool \n"
+            lst_arrg = ListArange
             bbox_col = map(list, table["bbox"])
             try:
                 hkl_col = map(str, table["miller_index"])

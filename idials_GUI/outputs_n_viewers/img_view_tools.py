@@ -29,6 +29,89 @@ import numpy as np
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
+def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
+    #print"\n Using Python search for closer reflection \n"
+    dst_squared = 999999.0
+    hkl_result = None
+    for i, reflection in enumerate(flat_data_lst):
+        x = float(reflection[0]) + float(reflection[2]) / 2.0
+        y = float(reflection[1]) + float(reflection[3]) / 2.0
+
+        tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
+
+        if( tmp_dst_squared < dst_squared ):
+            hkl_result = i
+            dst_squared = tmp_dst_squared
+
+    return hkl_result
+
+try:
+    import lst_ext
+    print "running C++ lst_ext"
+    find_closer_hkl = lst_ext.find_closer_hkl_func
+
+except:
+    print "running Python replacements of lst_ext C++ Module"
+    find_closer_hkl = py_find_closer_hkl_func
+
+
+
+def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
+
+    hkl_result = find_closer_hkl(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
+    if hkl_result == -1 :
+        hkl_result = None
+
+    return hkl_result
+
+
+def ListArange(bbox_lst, hkl_lst, n_imgs):
+
+    try:
+        lst_arrg = lst_ext.arrange_list
+        print "\n Using C++ list arranging tool\n"
+        img_lst = lst_arrg(bbox_lst, hkl_lst, n_imgs)
+
+    except:
+        print "\n Using Python list arranging tool \n"
+        #flat_data_lst = lst_arrg(bbox_col, hkl_col, n_imgs)
+
+        img_lst = []
+        for time in xrange(n_imgs):
+            img_lst.append([])
+
+        for i, ref_box in enumerate(bbox_lst):
+            x_ini = ref_box[0]
+            y_ini = ref_box[2]
+            width = ref_box[1] - ref_box[0]
+            height = ref_box[3] - ref_box[2]
+
+            box_dat = []
+            box_dat.append(x_ini)
+            box_dat.append(y_ini)
+            box_dat.append(width)
+            box_dat.append(height)
+
+            if( len(hkl_lst) <= 1 ):
+                local_hkl = ""
+                box_dat.append(local_hkl)
+
+            else:
+                local_hkl = hkl_lst[i]
+                if(local_hkl == "(0, 0, 0)"):
+                    local_hkl = "NOT indexed"
+
+
+                box_dat.append(local_hkl)
+
+            for idx in xrange(ref_box[4], ref_box[5]):
+                img_lst[idx].append(box_dat);
+
+    return img_lst
+
+
+
+
 class img_w_cpp(object):
     def __init__(self):
         self.wx_bmp_arr = rgb_img()
