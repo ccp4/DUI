@@ -31,7 +31,7 @@ from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
-from img_view_tools import img_w_cpp, build_qimg, find_closer_hkl_func, ListArange
+from img_view_tools import img_w_cpp, build_qimg, find_closer_hkl_func, lst_arange
 from time import time as time_now
 
 QGLWidget_test = '''
@@ -505,7 +505,6 @@ class MyImgWin(QWidget):
             print "table =", table
             print "len(table) = ", len(table)
             n_refs = len(table)
-            lst_arrg = ListArange
             bbox_col = map(list, table["bbox"])
             try:
                 hkl_col = map(str, table["miller_index"])
@@ -516,7 +515,7 @@ class MyImgWin(QWidget):
             n_imgs = self.img_select.maximum()
             self.flat_data_lst = []
             if( n_imgs > 0 ):
-                self.flat_data_lst = lst_arrg(bbox_col, hkl_col, n_imgs)
+                self.flat_data_lst = lst_arange(bbox_col, hkl_col, n_imgs)
 
             print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
 
