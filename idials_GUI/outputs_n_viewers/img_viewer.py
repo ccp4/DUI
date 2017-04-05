@@ -31,7 +31,7 @@ from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
-from img_view_tools import img_w_cpp, build_qimg, find_closer_hkl_func, lst_arange
+from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, lst_arange
 from time import time as time_now
 
 QGLWidget_test = '''
@@ -152,7 +152,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         if( self.flat_data_lst != None ):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
-            closer_hkl = find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, self.flat_data_lst)
+            closer_hkl = find_hkl_near(x_mouse_scaled, y_mouse_scaled, self.flat_data_lst)
             #print "closer_hkl =", self.flat_data_lst[closer_hkl][4]
 
             self.num_of_closer_ref = closer_hkl

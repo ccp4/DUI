@@ -82,15 +82,15 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 try:
     import lst_ext
     find_closer_hkl = lst_ext.find_closer_hkl_func
-    ListArange = lst_ext.arrange_list
+    lst_arrange = lst_ext.arrange_list
     print "running C++ lst_ext"
 
 except:
     find_closer_hkl = py_find_closer_hkl_func
-    ListArange = py_list_arange_func
+    lst_arrange = py_list_arange_func
     print "running Python replacements of lst_ext C++ Module"
 
-def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
+def find_hkl_near(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
     hkl_result = find_closer_hkl(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
     if hkl_result == -1 :
@@ -100,7 +100,7 @@ def find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
 
 def lst_arange(bbox_lst, hkl_lst, n_imgs):
-    return ListArange(bbox_lst, hkl_lst, n_imgs)
+    return lst_arrange(bbox_lst, hkl_lst, n_imgs)
 
 
 class img_w_cpp(object):
