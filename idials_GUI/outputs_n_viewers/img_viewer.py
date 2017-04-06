@@ -453,6 +453,7 @@ class MyImgWin(QWidget):
 
         self.img_num = 0
         self.img_step_val = 1
+        self.stack_size = 1
 
         self.my_sweep = None
         self.flat_data_lst = [None]
@@ -475,6 +476,7 @@ class MyImgWin(QWidget):
 
         self.img_select.valueChanged.connect(self.img_changed_by_user)
         self.img_step.valueChanged.connect(self.step_changed_by_user)
+        self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
 
         top_box.addWidget(img_select_but)
         top_box.addWidget(img_pal_but)
@@ -556,11 +558,10 @@ class MyImgWin(QWidget):
 
             self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
 
-            TODO = '''
-            n_of_imgs_to_add = self.num_of_imgs_to_add.
-            for times in xrange(n_of_imgs_to_add):
-                self.img_arr = self.img_arr + self.my_sweep.get_raw_data((self.img_num - 1) + times)[0]
-            '''
+            if( self.stack_size > 1 ):
+                for times in xrange(self.stack_size):
+                    print "times = ", times
+                    self.img_arr = self.img_arr + self.my_sweep.get_raw_data((self.img_num - 1) + times)[0]
 
             if(self.flat_data_lst == [None]):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
@@ -663,6 +664,10 @@ class MyImgWin(QWidget):
 
     def step_changed_by_user(self, value):
         self.img_step_val = value
+
+    def stack_changed_by_user(self, value):
+        self.stack_size = value
+        self.set_img()
 
     def img_changed_by_user(self, value):
         self.img_num = value
