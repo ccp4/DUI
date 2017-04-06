@@ -558,13 +558,9 @@ class MyImgWin(QWidget):
             img_pos = self.img_num - 1
             self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
 
-            print "img_pos =", img_pos
-
             if( self.stack_size > 1 ):
                 for times in xrange(1, self.stack_size):
-                    print "times = ", times
                     pos_to_add = (img_pos) + times
-                    print "pos_to_add =", pos_to_add
                     if( pos_to_add < len(self.my_sweep.indices()) ):
                         self.img_arr = self.img_arr + self.my_sweep.get_raw_data(pos_to_add)[0]
 
