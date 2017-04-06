@@ -512,7 +512,7 @@ class MyImgWin(QWidget):
                 self.img_step.setMaximum(n_of_imgs / 2)
                 self.img_step.setMinimum(1)
 
-                self.num_of_imgs_to_add.setMaximum(n_of_imgs / 2)
+                self.num_of_imgs_to_add.setMaximum(n_of_imgs)
                 self.num_of_imgs_to_add.setMinimum(1)
 
             except:
