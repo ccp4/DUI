@@ -555,13 +555,16 @@ class MyImgWin(QWidget):
     def set_img(self):
         if( self.my_sweep != None):
 
-
-            self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
+            img_pos = self.img_num - 1
+            self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
 
             if( self.stack_size > 1 ):
-                for times in xrange(self.stack_size):
+                for times in xrange(self.stack_size - 1):
                     print "times = ", times
-                    self.img_arr = self.img_arr + self.my_sweep.get_raw_data((self.img_num - 1) + times)[0]
+                    pos_to_add = (img_pos) + times
+                    print "pos_to_add =", pos_to_add
+                    if( pos_to_add < len(self.my_sweep.indices()) ):
+                        self.img_arr = self.img_arr + self.my_sweep.get_raw_data(pos_to_add)[0]
 
             if(self.flat_data_lst == [None]):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
@@ -570,7 +573,7 @@ class MyImgWin(QWidget):
             else:
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                               self.i_min, self.i_max),
-                                                              self.flat_data_lst[self.img_num - 1])
+                                                              self.flat_data_lst[img_pos])
 
 
     def Action1(self):
