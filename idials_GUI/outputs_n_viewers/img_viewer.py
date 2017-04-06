@@ -282,6 +282,9 @@ class PopImgChange(QMenu):
 
         top_box = QHBoxLayout()
 
+        #TODO try to be consistent with other two QMenus
+        #     use << self.my_parent >> for new QPushButtons
+
         btn_first =  QPushButton(' I< ')
         btn_first.clicked.connect(self.my_parent.btn_first_clicked)
         btn_rev =  QPushButton(' << ')
@@ -313,9 +316,17 @@ class PopImgChange(QMenu):
         bot_box.addWidget(btn_play)
         bot_box.addWidget(btn_stop)
 
+        mid_box = QHBoxLayout()
+
+        mid_box.addWidget(QLabel("Image Jump Step"))
+        mid_box.addWidget(self.my_parent.img_step)
+        mid_box.addWidget(QLabel("Number of Images to Add"))
+        mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
+
         my_layout = QVBoxLayout()
 
         my_layout.addLayout(top_box)
+        my_layout.addLayout(mid_box)
         my_layout.addLayout(bot_box)
 
         self.setLayout(my_layout)
@@ -380,6 +391,9 @@ class MyImgWin(QWidget):
         right_top_box = QVBoxLayout()
 
         self.img_select = QSpinBox()
+        self.img_step = QSpinBox()
+        self.num_of_imgs_to_add = QSpinBox()
+
         self.my_scrollable = QScrollArea()
         self.my_painter = ImgPainter(self)
         self.my_scrollable.setWidget(self.my_painter)
@@ -438,6 +452,8 @@ class MyImgWin(QWidget):
 
 
         self.img_num = 0
+        self.img_step_val = 1
+
         self.my_sweep = None
         self.flat_data_lst = [None]
         self.current_qimg = build_qimg()
@@ -457,9 +473,8 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
-        #self.img_select.setValue(0)
         self.img_select.valueChanged.connect(self.img_changed_by_user)
-        #valueChanged.connect
+        self.img_step.valueChanged.connect(self.step_changed_by_user)
 
         top_box.addWidget(img_select_but)
         top_box.addWidget(img_pal_but)
@@ -491,6 +506,12 @@ class MyImgWin(QWidget):
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
+
+                self.img_step.setMaximum(n_of_imgs / 2)
+                self.img_step.setMinimum(1)
+
+                self.num_of_imgs_to_add.setMaximum(n_of_imgs / 2)
+                self.num_of_imgs_to_add.setMinimum(1)
 
             except:
                 print "Failed to load images from  datablock.json"
@@ -532,7 +553,15 @@ class MyImgWin(QWidget):
     def set_img(self):
         if( self.my_sweep != None):
 
+
             self.img_arr = self.my_sweep.get_raw_data(self.img_num - 1)[0]
+
+            TODO = '''
+            n_of_imgs_to_add = self.num_of_imgs_to_add.
+            for times in xrange(n_of_imgs_to_add):
+                self.img_arr = self.img_arr + self.my_sweep.get_raw_data((self.img_num - 1) + times)[0]
+            '''
+
             if(self.flat_data_lst == [None]):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                               self.i_min, self.i_max))
@@ -544,14 +573,17 @@ class MyImgWin(QWidget):
 
 
     def Action1(self):
+        #TODO fix the name of this function
         print "rad_but_all_hkl clicked"
         self.set_img()
 
     def Action2(self):
+        #TODO fix the name of this function
         print "rad_but_near_hkl clicked"
         self.set_img()
 
     def Action3(self):
+        #TODO fix the name of this function
         print "rad_but_none_hkl clicked"
         self.set_img()
 
@@ -601,14 +633,14 @@ class MyImgWin(QWidget):
         self.img_select.setValue(self.img_num)
 
     def btn_prev_clicked(self):
-        self.img_num -= 1
+        self.img_num -= self.img_step_val
         if( self.img_num < 1 ):
             self.img_num = 1
 
         self.img_select.setValue(self.img_num)
 
     def btn_next_clicked(self):
-        self.img_num += 1
+        self.img_num += self.img_step_val
         if( self.img_num > self.img_select.maximum() ):
             if( self.video_timer.isActive() == True ):
                 self.img_num = 1
@@ -628,6 +660,9 @@ class MyImgWin(QWidget):
     def btn_last_clicked(self):
         self.img_num = self.img_select.maximum()
         self.img_select.setValue(self.img_num)
+
+    def step_changed_by_user(self, value):
+        self.img_step_val = value
 
     def img_changed_by_user(self, value):
         self.img_num = value
