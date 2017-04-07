@@ -17,7 +17,7 @@ arr2[2, 3] = 4
 arr2[3, 2] = 5
 print arr2.as_numpy_array(), "\n_____\n"
 
-arr3 = arr1 + arr2
+arr3 = arr1 * 0.5 + arr2 * 0.2
 print arr3.as_numpy_array(), "\n_____\n"
 
 '''
