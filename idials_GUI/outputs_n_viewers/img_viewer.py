@@ -158,10 +158,14 @@ class ImgPainter(MyQWidgetWithQPainter):
             self.num_of_closer_ref = closer_hkl
             self.update()
 
-    def set_img_pix(self, q_img = None, flat_data_lst_in = None):
+    def set_img_pix(self, q_img = None, flat_data_lst_in = None, pos_in_lst = None):
 
         self.img = q_img
-        self.flat_data_lst = flat_data_lst_in
+        if( flat_data_lst_in != None and pos_in_lst != None ):
+            self.flat_data_lst = flat_data_lst_in[pos_in_lst]
+
+        else:
+            self.flat_data_lst = None
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
@@ -571,7 +575,7 @@ class MyImgWin(QWidget):
             else:
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                               self.i_min, self.i_max),
-                                                              self.flat_data_lst[img_pos])
+                                                              self.flat_data_lst, img_pos)
 
 
     def Action1(self):
