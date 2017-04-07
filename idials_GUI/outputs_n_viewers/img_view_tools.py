@@ -33,17 +33,20 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
     #print"\n Using Python search for closer reflection \n"
     dst_squared = 999999.0
     hkl_result = None
-    for i, reflection in enumerate(flat_data_lst):
-        x = float(reflection[0]) + float(reflection[2]) / 2.0
-        y = float(reflection[1]) + float(reflection[3]) / 2.0
+    slice_result = None
+    for j, img_flat_data in enumerate(flat_data_lst):
+        for i, reflection in enumerate(img_flat_data):
+            x = float(reflection[0]) + float(reflection[2]) / 2.0
+            y = float(reflection[1]) + float(reflection[3]) / 2.0
 
-        tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
+            tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
 
-        if( tmp_dst_squared < dst_squared ):
-            hkl_result = i
-            dst_squared = tmp_dst_squared
+            if( tmp_dst_squared < dst_squared ):
+                hkl_result = i
+                slice_result = j
+                dst_squared = tmp_dst_squared
 
-    return hkl_result
+    return hkl_result, slice_result
 
 def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 
@@ -92,11 +95,11 @@ except:
 
 def find_hkl_near(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
-    hkl_result = find_closer_hkl(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
+    hkl_result, slice_result = find_closer_hkl(x_mouse_scaled, y_mouse_scaled, flat_data_lst)
     if hkl_result == -1 :
-        hkl_result = None
+        hkl_result, slice_result = None
 
-    return hkl_result
+    return hkl_result, slice_result
 
 
 def lst_arange(bbox_lst, hkl_lst, n_imgs):

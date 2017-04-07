@@ -58,7 +58,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.xb = None
         self.yb = None
 
-        self.num_of_closer_ref = None
+        self.closer_ref = None
         self.my_scale = 1.0
         self.img_width = 247
         self.img_height = 253
@@ -92,7 +92,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                 self.find_closer_hkl(self.x_pos, self.y_pos)
 
             else:
-                self.num_of_closer_ref = None
+                self.closer_ref = None
 
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
@@ -152,20 +152,17 @@ class ImgPainter(MyQWidgetWithQPainter):
         if( self.flat_data_lst != None ):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
-            closer_hkl = find_hkl_near(x_mouse_scaled, y_mouse_scaled, self.flat_data_lst)
-            #print "closer_hkl =", self.flat_data_lst[closer_hkl][4]
+            closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
+                                                     y_mouse_scaled,
+                                                     self.flat_data_lst)
 
-            self.num_of_closer_ref = closer_hkl
+            self.closer_ref = [closer_hkl, closer_slice]
             self.update()
 
-    def set_img_pix(self, q_img = None, flat_data_lst_in = None, pos_in_lst = None):
+    def set_img_pix(self, q_img = None, flat_data_lst_in = None):
 
         self.img = q_img
-        if( flat_data_lst_in != None and pos_in_lst != None ):
-            self.flat_data_lst = flat_data_lst_in[pos_in_lst]
-
-        else:
-            self.flat_data_lst = None
+        self.flat_data_lst = flat_data_lst_in
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
@@ -230,33 +227,37 @@ class ImgPainter(MyQWidgetWithQPainter):
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
                 painter.setFont(tmp_font)
 
-                for i, reflection in enumerate(self.flat_data_lst):
-                    x = float(reflection[0])
-                    y = float(reflection[1])
-                    width = float(reflection[2])
-                    height = float(reflection[3])
-                    rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                       width * self.my_scale, height * self.my_scale)
+                for j, img_flat_data in enumerate(self.flat_data_lst):
+                    for i, reflection in enumerate(img_flat_data):
+                        x = float(reflection[0])
+                        y = float(reflection[1])
+                        width = float(reflection[2])
+                        height = float(reflection[3])
+                        rectangle = QRectF(x * self.my_scale, y * self.my_scale,
+                                           width * self.my_scale, height * self.my_scale)
 
-                    if( reflection[4] == "NOT indexed" ):
-                        painter.setPen(non_indexed_pen)
+                        if( reflection[4] == "NOT indexed" ):
+                            painter.setPen(non_indexed_pen)
 
-                    else:
-                        painter.setPen(indexed_pen)
+                        else:
+                            painter.setPen(indexed_pen)
 
-                    painter.drawRect(rectangle)
+                        painter.drawRect(rectangle)
 
-                    if( self.my_parent.rad_but_all_hkl.isChecked() == True and
-                       reflection[4] != "" and reflection[4] != "NOT indexed" ):
 
-                        painter.drawText( QPoint(int((x + width) * self.my_scale),
+                        if( self.my_parent.rad_but_all_hkl.isChecked() == True and
+                           reflection[4] != "" and reflection[4] != "NOT indexed" ):
+
+                            painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                                  int(y * self.my_scale)),  reflection[4])
+
+                        elif( self.my_parent.rad_but_near_hkl.isChecked() == True and
+                             self.closer_ref == [i, j] ):
+
+                            painter.drawText( QPoint(int((x + width) * self.my_scale),
                                               int(y * self.my_scale)),  reflection[4])
 
-                    elif( self.my_parent.rad_but_near_hkl.isChecked() == True and
-                         self.num_of_closer_ref == i ):
 
-                        painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                          int(y * self.my_scale)),  reflection[4])
 
                 if( self.xb != None and self.yb != None ):
 
@@ -574,9 +575,11 @@ class MyImgWin(QWidget):
 
             else:
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                              self.i_min, self.i_max),
-                                                              self.flat_data_lst, img_pos)
+                                            self.i_min, self.i_max),
+                                            self.flat_data_lst[img_pos:img_pos + self.stack_size])
 
+                print "img_pos =", img_pos
+                print "img_pos + self.stack_size =", img_pos + self.stack_size
 
     def Action1(self):
         #TODO fix the name of this function
