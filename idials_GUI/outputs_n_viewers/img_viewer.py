@@ -407,6 +407,7 @@ class MyImgWin(QWidget):
 
         sys_font = QFont()
         sys_font_point_size =  sys_font.pointSize()
+        self.video_timer = QTimer(self)
 
         self.i_min = -3
         self.min_edit = QLineEdit()
@@ -559,15 +560,25 @@ class MyImgWin(QWidget):
 
     def set_img(self):
         if( self.my_sweep != None):
-
             img_pos = self.img_num - 1
-            self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
 
-            if( self.stack_size > 1 ):
-                for times in xrange(1, self.stack_size):
+            loc_stk_siz = self.stack_size
+
+            if( self.stack_size == 1 ):
+                self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
+
+            elif( self.stack_size > 1 ):
+
+                if( img_pos + loc_stk_siz > len(self.my_sweep.indices()) - 1 ):
+                    loc_stk_siz = len(self.my_sweep.indices()) - img_pos
+
+                loc_scale = 1.0 / float(loc_stk_siz)
+                self.img_arr = self.my_sweep.get_raw_data(img_pos)[0].as_double() * loc_scale
+
+                for times in xrange(1, loc_stk_siz):
                     pos_to_add = (img_pos) + times
-                    if( pos_to_add < len(self.my_sweep.indices()) ):
-                        self.img_arr = self.img_arr + self.my_sweep.get_raw_data(pos_to_add)[0]
+                    self.img_arr = self.img_arr \
+                    + self.my_sweep.get_raw_data(pos_to_add)[0].as_double() * loc_scale
 
             if(self.flat_data_lst == [None]):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
@@ -576,10 +587,7 @@ class MyImgWin(QWidget):
             else:
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                             self.i_min, self.i_max),
-                                            self.flat_data_lst[img_pos:img_pos + self.stack_size])
-
-                print "img_pos =", img_pos
-                print "img_pos + self.stack_size =", img_pos + self.stack_size
+                                            self.flat_data_lst[img_pos:img_pos + loc_stk_siz])
 
     def Action1(self):
         #TODO fix the name of this function
@@ -598,8 +606,6 @@ class MyImgWin(QWidget):
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
-
-        self.video_timer = QTimer(self)
         self.video_timer.timeout.connect(self.btn_next_clicked)
         self.video_timer.start(1)
 
