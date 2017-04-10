@@ -242,16 +242,8 @@ class MyThread (QThread):
         self.handler = StdOut()
 
     def run(self):
+        print "\n\n __ MyThread.run() __ \n\n"
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
-
-    def on_timeout(self):
-        print "\n\n on_timeout(self) \n\n"
-
-    def terminated(self):
-        print "\n\n terminated(idials)"
-        print "dir(self.to_run) =", dir(self.to_run), "\n\n"
-
-
 
 class IdialsInnerrWidget( QWidget):
     lst_commands = [
@@ -278,9 +270,6 @@ class IdialsInnerrWidget( QWidget):
 
         self.tree_nav = TreeNavWidget(self)
         big_box.addWidget(self.tree_nav)
-
-        #self.info_widget = InfoWidget(self)
-        #big_box.addWidget(self.info_widget)
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
@@ -398,17 +387,10 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent.start_pbar_motion()
 
     def finished_thread(self):
+        print "\n\n ______________________________  << IdialsInnerrWidget.finished_thread() 01 \n\n"
         self._update_tree()
         self.super_parent.update_after_command_end()
-
-        to_reuse_later = '''
-        print "self.controller.get_current().datablock =", str(self.controller.get_current().datablock)
-        print "self.controller.get_current().description =", str(self.controller.get_current().description)
-        print "self.controller.get_current().directory =", str(self.controller.get_current().directory)
-        print "self.controller.get_current().output =", str(self.controller.get_current().output)
-        print "self.controller.get_current().workspace =", str(self.controller.get_current().workspace)
-        '''
-
+        print "\n\n ______________________________  << IdialsInnerrWidget.finished_thread() 02 \n\n"
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"

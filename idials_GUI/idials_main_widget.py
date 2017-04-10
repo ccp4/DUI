@@ -395,6 +395,7 @@ class MainWidget(QMainWindow):
         current_command = self.idials_widget.controller.get_current().name
 
         if( self.idials_widget.controller.get_current().success == True ):
+            update_GUI = True
             try:
                 repr_path = self.idials_widget.controller.get_report()
                 self.update_report(repr_path)
@@ -409,6 +410,8 @@ class MainWidget(QMainWindow):
 
             elif( current_command == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")
+                print "\n\n ____________________ running << refine_bravais_settings >> \n\n"
+                update_GUI = False
                 self.btn_go_clicked()
 
             elif( current_command == "reindex" ):
@@ -420,7 +423,6 @@ class MainWidget(QMainWindow):
                     self.reindex_tool.close()
                     self.reindex_tool = None
 
-
             elif( current_command == "integrate" ):
                 self.idials_widget.change_mode("export")
                 self.btn_go_clicked()
@@ -428,19 +430,17 @@ class MainWidget(QMainWindow):
             elif(current_command != "export"):
                 print "Time to update html << report >>"
 
-            self._gray_unwanted()
-            self._update_img()
-
-            #TODO Think a bit if you are going a bit
-            #back and forward with the next line
-            self.idials_widget.update_info()
-
+            if( update_GUI == True ):
+                self._gray_unwanted()
+                self._update_img()
+                #TODO Think a bit if you are going a bit
+                #back and forward with the next line
+                self.idials_widget.update_info()
+                self.check_next(current_command)
 
         else:
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
-
-        self.check_next(current_command)
 
 
     def _update_img(self):
