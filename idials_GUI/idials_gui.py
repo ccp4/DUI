@@ -122,7 +122,7 @@ class TreeNavWidget(QTreeView):
             item = self.tmp_model.itemFromIndex(it_index)
 
             if item.idials_node == None:
-                print "\n\n step NOT ran yet \n\n"
+                print "\n step NOT ran yet \n"
 
             else:
                 if item.idials_node.success == True:
@@ -186,13 +186,13 @@ class IdialsOuterWidget( QWidget):
 
     def start_pbar_motion(self):
         self.running = True
-        print "\n\n<<<                                                     start_pbar_motion\n\n"
+        print "\n<<<                                                     start_pbar_motion\n"
 
     def update_pbar_text(self, trim_cor_text):
         print "\n update_pbar_text <<<", trim_cor_text, ">>>"
 
     def update_after_command_end(self):
-        print "\n\n<<<                                                     update_after_command_end\n\n"
+        print "\n<<<                                                     update_after_command_end\n"
         self.running = False
 
 class StdOut(QObject):
@@ -209,7 +209,7 @@ class MyThread (QThread):
 
     def __init__(self, parent = None):
         super(MyThread, self).__init__(parent)
-        print "\n\n MyThread(__init__)"
+        print "\n MyThread(__init__)"
 
         to_sudy = '''
         connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)))
@@ -223,7 +223,7 @@ class MyThread (QThread):
         self.handler = StdOut()
 
     def run(self):
-        print "\n\n __ MyThread.run() __ \n\n"
+        print "\n __ MyThread.run() __ \n"
         self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
 
 class IdialsInnerrWidget( QWidget):
@@ -337,7 +337,7 @@ class IdialsInnerrWidget( QWidget):
 
     def stop_clicked(self):
         import os
-        print "\n____________________________________________ << Stopping >>\n"
+        print "\n_____________ << Stopping >>_____________\n "
 
         my_process = self.thrd.to_run.state.command.external_command.command_run.process
 
@@ -352,7 +352,7 @@ class IdialsInnerrWidget( QWidget):
         self.controller.set_mode(self.next_cmd)
         if( self.controller.get_mode() == "import" ):
             tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
-            print "tmpl_str =", tmpl_str, "\n\n"
+            print "tmpl_str =", tmpl_str, "\n"
             self.change_parameter(tmpl_str)
 
         self.thrd.start()
@@ -368,10 +368,8 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent.start_pbar_motion()
 
     def finished_thread(self):
-        print "\n\n ______________________________  << IdialsInnerrWidget.finished_thread() 01 \n\n"
         self._update_tree()
         self.super_parent.update_after_command_end()
-        print "\n\n ______________________________  << IdialsInnerrWidget.finished_thread() 02 \n\n"
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"

@@ -229,7 +229,7 @@ class MainWidget(QMainWindow):
         print "self.idials_widget.controller.get_current().index =", ini_index
 
         if( ini_index == 0 ):
-            print "\n\n Running for first time in this dir \n\n\n"
+            print "\n Running for first time in this dir \n"
             self._gray_unwanted()
 
             #TODO Think a bit if you are going a bit
@@ -237,7 +237,7 @@ class MainWidget(QMainWindow):
             self.idials_widget.update_info()
 
         else:
-            print "\n\n Already run at least one command here \n\n\n"
+            print "\n Already run at least one command here \n"
             self.idials_widget.goto(ini_index)
 
 
@@ -410,7 +410,7 @@ class MainWidget(QMainWindow):
 
             elif( current_command == "index" ):
                 self.idials_widget.change_mode("refine_bravais_settings")
-                print "\n\n ____________________ running << refine_bravais_settings >> \n\n"
+                print "\n  running << refine_bravais_settings >> \n"
                 update_GUI = False
                 self.btn_go_clicked()
 
@@ -579,7 +579,7 @@ class MainWidget(QMainWindow):
                 self.tmp_reindex_widg.update_opt()
 
             if( self.old_opnum == opt_num ):
-                print "\n\n Supposed to run reindex NOW \n\n"
+                print "\n Supposed to run reindex NOW \n"
                 self.btn_go_clicked()
 
             self.old_opnum = opt_num

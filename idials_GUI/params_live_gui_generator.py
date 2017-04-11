@@ -83,7 +83,7 @@ class tree_2_lineal(object):
                     #pass
 
             else:
-                print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
+                print "\n _____________ <<< WARNING neither definition or scope\n"
                 #pass
 
 

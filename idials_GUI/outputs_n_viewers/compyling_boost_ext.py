@@ -3,7 +3,7 @@ from distutils import sysconfig
 
 obj_name = "lst_ext"
 inc_path = sysconfig.get_python_inc()
-print "\n\n sysconfig.get_python_inc() =", inc_path
+print "\n sysconfig.get_python_inc() =", inc_path
 for pos, single_shar in enumerate(inc_path):
     if(single_shar == "/" ):
         cut_inc_path = inc_path[0:pos]
