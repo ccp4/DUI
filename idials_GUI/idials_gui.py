@@ -33,6 +33,7 @@ import subprocess
 
 from outputs_n_viewers.info_handler import update_all_data
 
+old_way = '''
 def kill_2nd_level_child_processes(parent_pid, sig=signal.SIGTERM):
 
     ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE)
@@ -48,8 +49,20 @@ def kill_2nd_level_child_processes(parent_pid, sig=signal.SIGTERM):
 
     else:
         return -1
+'''
 
 def kill_child_processes(parent_pid, sig=signal.SIGTERM):
+
+    import psutil
+
+    #parent_pid = 30437   # my example
+    parent = psutil.Process(parent_pid)
+    for child in parent.children(recursive=True):  # or parent.children() for recursive=False
+        child.kill()
+    parent.kill()
+
+
+    old_way = '''
     ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE)
     ps_output = ps_command.stdout.read()
     retcode = ps_command.wait()
@@ -63,6 +76,7 @@ def kill_child_processes(parent_pid, sig=signal.SIGTERM):
 
     else:
         os.kill(int(ps_output), sig)
+    '''
 
 
 class TreeNavWidget(QTreeView):
