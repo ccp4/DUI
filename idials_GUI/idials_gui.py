@@ -22,62 +22,29 @@ copyright (c) CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from dials.util.idials import Controller
-import sys
-from Queue import Queue
-from python_qt_bind import *
-#from outputs_gui import InfoWidget
 from outputs_gui import TextOut
+from outputs_n_viewers.info_handler import update_all_data
+
+from Queue import Queue
+
+import sys
+from python_qt_bind import *
 import os
 import signal
 import subprocess
 
-from outputs_n_viewers.info_handler import update_all_data
 
-old_way = '''
-def kill_2nd_level_child_processes(parent_pid, sig=signal.SIGTERM):
-
-    ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE)
-    ps_output = ps_command.stdout.read()
-    retcode = ps_command.wait()
-    lst_str = ps_output.split("\n")[:-1]
-
-    if( retcode == 0 ):
-        for pid_str in lst_str:
-            os.kill(int(pid_str), sig)
-
-        return 0
-
-    else:
-        return -1
-'''
 
 def kill_child_processes(parent_pid, sig=signal.SIGTERM):
 
     import psutil
+    print "killing process(", parent_pid, ")"
 
-    #parent_pid = 30437   # my example
     parent = psutil.Process(parent_pid)
     for child in parent.children(recursive=True):  # or parent.children() for recursive=False
         child.kill()
+
     parent.kill()
-
-
-    old_way = '''
-    ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_pid, shell=True, stdout=subprocess.PIPE)
-    ps_output = ps_command.stdout.read()
-    retcode = ps_command.wait()
-    assert retcode == 0, "ps command returned %d" % retcode
-
-    kill_error = kill_2nd_level_child_processes(int(ps_output))
-
-    if( kill_error == 0 ):
-        for pid_str in ps_output.split("\n")[:-1]:
-            os.kill(int(pid_str), sig)
-
-    else:
-        os.kill(int(ps_output), sig)
-    '''
-
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
