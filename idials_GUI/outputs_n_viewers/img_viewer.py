@@ -290,17 +290,30 @@ class PopImgChange(QMenu):
         #TODO try to be consistent with other two QMenus
         #     use << self.my_parent >> for new QPushButtons
 
-        btn_first =  QPushButton(' I< ')
+        mw = 1
+
+        btn_first = QPushButton(' I< ')
+        btn_first.setMinimumWidth(mw)
         btn_first.clicked.connect(self.my_parent.btn_first_clicked)
-        btn_rev =  QPushButton(' << ')
+
+        btn_rev =   QPushButton(' << ')
+        btn_rev.setMinimumWidth(mw)
         btn_rev.clicked.connect(self.my_parent.btn_rev_clicked)
-        btn_prev = QPushButton('  < ')
+
+        btn_prev =  QPushButton(' < ')
+        btn_prev.setMinimumWidth(mw)
         btn_prev.clicked.connect(self.my_parent.btn_prev_clicked)
-        btn_next =  QPushButton(' >  ')
+
+        btn_next =  QPushButton(' > ')
+        btn_next.setMinimumWidth(mw)
         btn_next.clicked.connect(self.my_parent.btn_next_clicked)
-        btn_ffw =  QPushButton(' >> ')
+
+        btn_ffw =   QPushButton(' >> ')
+        btn_ffw.setMinimumWidth(mw)
         btn_ffw.clicked.connect(self.my_parent.btn_ffw_clicked)
-        btn_last = QPushButton('  >I ')
+
+        btn_last =  QPushButton(' >I ')
+        btn_last.setMinimumWidth(mw)
         btn_last.clicked.connect(self.my_parent.btn_last_clicked)
 
         top_box.addWidget(btn_first)
