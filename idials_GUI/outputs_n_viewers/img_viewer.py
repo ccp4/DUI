@@ -308,6 +308,8 @@ class PopImgChange(QMenu):
         mid_box.addWidget(QLabel("Number of Images to Add"))
         mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
 
+        to_be_removed = '''
+
         my_layout = QVBoxLayout()
 
         my_layout.addLayout(top_box)
@@ -318,11 +320,11 @@ class PopImgChange(QMenu):
         self.show()
 
 
-
 class PopInfoTreat(QMenu):
     def __init__(self, parent=None):
         super(PopInfoTreat, self).__init__(parent)
         self.my_parent = parent
+        '''
 
         l_top_box = QHBoxLayout()
         l_top_box.addWidget(QLabel("I min"))
@@ -356,9 +358,16 @@ class PopInfoTreat(QMenu):
         my_r_box.addLayout(r_bot_box)
         my_r_box.addWidget(r_rb_group_box)
 
-        my_box = QHBoxLayout()
+        my_box = QVBoxLayout()
         my_box.addLayout(my_l_box)
         my_box.addLayout(my_r_box)
+
+
+        my_box.addLayout(top_box)
+        my_box.addLayout(mid_box)
+        my_box.addLayout(bot_box)
+
+
         self.setLayout(my_box)
         self.show()
 
@@ -451,8 +460,8 @@ class MyImgWin(QWidget):
         img_select_but = QPushButton('Img Select  ...')
         img_select_but.setMenu(PopImgChange(self))
 
-        info_but = QPushButton('Info Treating  ...')
-        info_but.setMenu(PopInfoTreat(self))
+        #info_but = QPushButton('Info Treating  ...')
+        #info_but.setMenu(PopInfoTreat(self))
 
 
         self.img_num = 1
@@ -483,7 +492,7 @@ class MyImgWin(QWidget):
         self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
 
         top_box.addWidget(img_select_but)
-        top_box.addWidget(info_but)
+        #top_box.addWidget(info_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
