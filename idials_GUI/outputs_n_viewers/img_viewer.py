@@ -338,6 +338,53 @@ class PopImgChange(QMenu):
         self.show()
 
 
+
+class PopInfoTreat(QMenu):
+    def __init__(self, parent=None):
+        super(PopInfoTreat, self).__init__(parent)
+        self.my_parent = parent
+
+        l_top_box = QHBoxLayout()
+        l_top_box.addWidget(QLabel("I min"))
+        l_top_box.addWidget(self.my_parent.min_edit)
+        l_top_box.addWidget(QLabel("I max"))
+        l_top_box.addWidget(self.my_parent.max_edit)
+
+        l_bot_box = QHBoxLayout()
+        l_bot_box.addWidget(self.my_parent.palette_select)
+
+        my_l_box = QVBoxLayout()
+        my_l_box.addLayout(l_top_box)
+        my_l_box.addLayout(l_bot_box)
+
+        r_bot_box = QHBoxLayout()
+        r_bot_box.addWidget(self.my_parent.chk_box_show)
+
+        r_rb_group = QButtonGroup()
+        r_rb_group_box = QGroupBox()
+        r_rb_group_box_layout = QVBoxLayout()
+        r_rb_group_box.setLayout(r_rb_group_box_layout)
+
+        r_rb_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
+        r_rb_group.addButton(self.my_parent.rad_but_all_hkl)
+        r_rb_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
+        r_rb_group.addButton(self.my_parent.rad_but_near_hkl)
+        r_rb_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
+        r_rb_group.addButton(self.my_parent.rad_but_none_hkl)
+
+        my_r_box = QVBoxLayout()
+        my_r_box.addLayout(r_bot_box)
+        my_r_box.addWidget(r_rb_group_box)
+
+        my_box = QHBoxLayout()
+        my_box.addLayout(my_l_box)
+        my_box.addLayout(my_r_box)
+        self.setLayout(my_box)
+        self.show()
+
+
+old_way = '''
+
 class PopImgTreat(QMenu):
     def __init__(self, parent=None):
         super(PopImgTreat, self).__init__(parent)
@@ -385,7 +432,7 @@ class PopInfoHandl(QMenu):
         my_box.addWidget(rb_group_box)
         self.setLayout(my_box)
         self.show()
-
+'''
 
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
@@ -450,11 +497,16 @@ class MyImgWin(QWidget):
         img_select_but = QPushButton('Img Select  ...')
         img_select_but.setMenu(PopImgChange(self))
 
+        old_way = '''
         img_pal_but = QPushButton('Img Palette  ...')
         img_pal_but.setMenu(PopImgTreat(self))
 
         info_but = QPushButton('Info Handling  ...')
         info_but.setMenu(PopInfoHandl(self))
+        '''
+
+        info_but = QPushButton('Info Treating  ...')
+        info_but.setMenu(PopInfoTreat(self))
 
 
         self.img_num = 0
@@ -485,7 +537,11 @@ class MyImgWin(QWidget):
         self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
 
         top_box.addWidget(img_select_but)
+
+        old_way = '''
         top_box.addWidget(img_pal_but)
+        top_box.addWidget(info_but)
+        '''
         top_box.addWidget(info_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
