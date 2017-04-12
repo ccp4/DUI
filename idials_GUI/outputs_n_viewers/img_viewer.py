@@ -285,54 +285,21 @@ class PopImgChange(QMenu):
         super(PopImgChange, self).__init__(parent)
         self.my_parent = parent
 
+
+
         top_box = QHBoxLayout()
-
-        #TODO try to be consistent with other two QMenus
-        #     use << self.my_parent >> for new QPushButtons
-
-        mw = 1
-
-        btn_first = QPushButton(' I< ')
-        btn_first.setMinimumWidth(mw)
-        btn_first.clicked.connect(self.my_parent.btn_first_clicked)
-
-        btn_rev =   QPushButton(' << ')
-        btn_rev.setMinimumWidth(mw)
-        btn_rev.clicked.connect(self.my_parent.btn_rev_clicked)
-
-        btn_prev =  QPushButton(' < ')
-        btn_prev.setMinimumWidth(mw)
-        btn_prev.clicked.connect(self.my_parent.btn_prev_clicked)
-
-        btn_next =  QPushButton(' > ')
-        btn_next.setMinimumWidth(mw)
-        btn_next.clicked.connect(self.my_parent.btn_next_clicked)
-
-        btn_ffw =   QPushButton(' >> ')
-        btn_ffw.setMinimumWidth(mw)
-        btn_ffw.clicked.connect(self.my_parent.btn_ffw_clicked)
-
-        btn_last =  QPushButton(' >I ')
-        btn_last.setMinimumWidth(mw)
-        btn_last.clicked.connect(self.my_parent.btn_last_clicked)
-
-        top_box.addWidget(btn_first)
-        top_box.addWidget(btn_rev)
-        top_box.addWidget(btn_prev)
+        top_box.addWidget(self.my_parent.btn_first)
+        top_box.addWidget(self.my_parent.btn_rev)
+        top_box.addWidget(self.my_parent.btn_prev)
         top_box.addWidget(self.my_parent.img_select)
-        top_box.addWidget(btn_next)
-        top_box.addWidget(btn_ffw)
-        top_box.addWidget(btn_last)
+        top_box.addWidget(self.my_parent.btn_next)
+        top_box.addWidget(self.my_parent.btn_ffw)
+        top_box.addWidget(self.my_parent.btn_last)
 
         bot_box = QHBoxLayout()
 
-        btn_play = QPushButton("Play IMGs Video")
-        btn_play.clicked.connect(self.my_parent.btn_play_clicked)
-        btn_stop = QPushButton("Stop IMGs Video")
-        btn_stop.clicked.connect(self.my_parent.btn_stop_clicked)
-
-        bot_box.addWidget(btn_play)
-        bot_box.addWidget(btn_stop)
+        bot_box.addWidget(self.my_parent.btn_play)
+        bot_box.addWidget(self.my_parent.btn_stop)
 
         mid_box = QHBoxLayout()
 
@@ -455,7 +422,32 @@ class MyImgWin(QWidget):
 
         self.palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
 
+        #########################################################################
 
+        self.btn_first =  QPushButton(' I< ')
+        self.btn_first.setMinimumWidth(1)
+        self.btn_first.clicked.connect(self.btn_first_clicked)
+        self.btn_rev =   QPushButton(' << ')
+        self.btn_rev.setMinimumWidth(1)
+        self.btn_rev.clicked.connect(self.btn_rev_clicked)
+        self.btn_prev =  QPushButton(' < ')
+        self.btn_prev.setMinimumWidth(1)
+        self.btn_prev.clicked.connect(self.btn_prev_clicked)
+        self.btn_next =  QPushButton(' > ')
+        self.btn_next.setMinimumWidth(1)
+        self.btn_next.clicked.connect(self.btn_next_clicked)
+        self.btn_ffw =   QPushButton(' >> ')
+        self.btn_ffw.setMinimumWidth(1)
+        self.btn_ffw.clicked.connect(self.btn_ffw_clicked)
+        self.btn_last =  QPushButton(' >I ')
+        self.btn_last.setMinimumWidth(1)
+        self.btn_last.clicked.connect(self.btn_last_clicked)
+        self.btn_play = QPushButton("Play IMGs Video")
+        self.btn_play.clicked.connect(self.btn_play_clicked)
+        self.btn_stop = QPushButton("Stop IMGs Video")
+        self.btn_stop.clicked.connect(self.btn_stop_clicked)
+
+        #########################################################################
         img_select_but = QPushButton('Img Select  ...')
         img_select_but.setMenu(PopImgChange(self))
 
