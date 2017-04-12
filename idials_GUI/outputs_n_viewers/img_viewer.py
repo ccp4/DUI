@@ -280,9 +280,9 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter.end()
 
 
-class PopImgChange(QMenu):
+class PopBigMenu(QMenu):
     def __init__(self, parent=None):
-        super(PopImgChange, self).__init__(parent)
+        super(PopBigMenu, self).__init__(parent)
         self.my_parent = parent
 
 
@@ -308,23 +308,6 @@ class PopImgChange(QMenu):
         mid_box.addWidget(QLabel("Number of Images to Add"))
         mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
 
-        to_be_removed = '''
-
-        my_layout = QVBoxLayout()
-
-        my_layout.addLayout(top_box)
-        my_layout.addLayout(mid_box)
-        my_layout.addLayout(bot_box)
-
-        self.setLayout(my_layout)
-        self.show()
-
-
-class PopInfoTreat(QMenu):
-    def __init__(self, parent=None):
-        super(PopInfoTreat, self).__init__(parent)
-        self.my_parent = parent
-        '''
 
         l_top_box = QHBoxLayout()
         l_top_box.addWidget(QLabel("I min"))
@@ -339,7 +322,10 @@ class PopInfoTreat(QMenu):
         my_l_box.addLayout(l_top_box)
         my_l_box.addLayout(l_bot_box)
 
-        r_bot_box = QHBoxLayout()
+        colour_grp =  QGroupBox("Colour Palette Tuning ")
+        colour_grp.setLayout(my_l_box)
+
+        r_bot_box = QVBoxLayout()
         r_bot_box.addWidget(self.my_parent.chk_box_show)
 
         r_rb_group = QButtonGroup()
@@ -359,7 +345,7 @@ class PopInfoTreat(QMenu):
         my_r_box.addWidget(r_rb_group_box)
 
         my_box = QVBoxLayout()
-        my_box.addLayout(my_l_box)
+        my_box.addWidget(colour_grp)
         my_box.addLayout(my_r_box)
 
 
@@ -457,8 +443,8 @@ class MyImgWin(QWidget):
         self.btn_stop.clicked.connect(self.btn_stop_clicked)
 
         #########################################################################
-        img_select_but = QPushButton('Img Select  ...')
-        img_select_but.setMenu(PopImgChange(self))
+        img_select_but = QPushButton('( ... )')
+        img_select_but.setMenu(PopBigMenu(self))
 
         #info_but = QPushButton('Info Treating  ...')
         #info_but.setMenu(PopInfoTreat(self))
