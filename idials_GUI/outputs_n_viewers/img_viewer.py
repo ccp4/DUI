@@ -47,6 +47,72 @@ except:
 
 MyQWidgetWithQPainter = QWidget
 
+
+class PopBigMenu(QMenu):
+    def __init__(self, parent=None):
+        super(PopBigMenu, self).__init__(parent)
+        self.my_parent = parent
+
+        colour_box = QHBoxLayout()
+        colour_box.addWidget(QLabel("I min"))
+        colour_box.addWidget(self.my_parent.min_edit)
+        colour_box.addWidget(QLabel("I max"))
+        colour_box.addWidget(self.my_parent.max_edit)
+        colour_box.addWidget(self.my_parent.palette_select)
+        colour_box.addStretch()
+
+        colour_grp =  QGroupBox("Colour Palette Tuning ")
+        colour_grp.setLayout(colour_box)
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
+
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
+
+        info_grp =  QGroupBox("Reflection Info ")
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        top_box = QHBoxLayout()
+        top_box.addWidget(self.my_parent.btn_first)
+        top_box.addWidget(self.my_parent.btn_rev)
+        top_box.addWidget(self.my_parent.btn_prev)
+        top_box.addWidget(self.my_parent.img_select)
+        top_box.addWidget(self.my_parent.btn_next)
+        top_box.addWidget(self.my_parent.btn_ffw)
+        top_box.addWidget(self.my_parent.btn_last)
+
+        mid_box = QHBoxLayout()
+        mid_box.addWidget(QLabel("Image Jump Step"))
+        mid_box.addWidget(self.my_parent.img_step)
+        mid_box.addWidget(QLabel("Number of Images to Add"))
+        mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
+
+        bot_box = QHBoxLayout()
+        bot_box.addWidget(self.my_parent.btn_play)
+        bot_box.addWidget(self.my_parent.btn_stop)
+
+        img_select_box = QVBoxLayout()
+        img_select_box.addLayout(top_box)
+        img_select_box.addLayout(mid_box)
+        img_select_box.addLayout(bot_box)
+
+        img_select_group_box = QGroupBox("IMG Select")
+        img_select_group_box.setLayout(img_select_box)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(colour_grp)
+        my_box.addWidget(info_grp)
+        my_box.addWidget(img_select_group_box)
+
+        self.setLayout(my_box)
+        self.show()
+
 class ImgPainter(MyQWidgetWithQPainter):
 
     def __init__(self, parent = None):
@@ -280,110 +346,17 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter.end()
 
 
-class PopBigMenu(QMenu):
-    def __init__(self, parent=None):
-        super(PopBigMenu, self).__init__(parent)
-        self.my_parent = parent
-
-
-
-        top_box = QHBoxLayout()
-        top_box.addWidget(self.my_parent.btn_first)
-        top_box.addWidget(self.my_parent.btn_rev)
-        top_box.addWidget(self.my_parent.btn_prev)
-        top_box.addWidget(self.my_parent.img_select)
-        top_box.addWidget(self.my_parent.btn_next)
-        top_box.addWidget(self.my_parent.btn_ffw)
-        top_box.addWidget(self.my_parent.btn_last)
-
-        bot_box = QHBoxLayout()
-
-        bot_box.addWidget(self.my_parent.btn_play)
-        bot_box.addWidget(self.my_parent.btn_stop)
-
-        mid_box = QHBoxLayout()
-
-        mid_box.addWidget(QLabel("Image Jump Step"))
-        mid_box.addWidget(self.my_parent.img_step)
-        mid_box.addWidget(QLabel("Number of Images to Add"))
-        mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
-
-
-        l_top_box = QHBoxLayout()
-        l_top_box.addWidget(QLabel("I min"))
-        l_top_box.addWidget(self.my_parent.min_edit)
-        l_top_box.addWidget(QLabel("I max"))
-        l_top_box.addWidget(self.my_parent.max_edit)
-
-        l_bot_box = QHBoxLayout()
-        l_bot_box.addWidget(self.my_parent.palette_select)
-
-        my_l_box = QVBoxLayout()
-        my_l_box.addLayout(l_top_box)
-        my_l_box.addLayout(l_bot_box)
-
-        colour_grp =  QGroupBox("Colour Palette Tuning ")
-        colour_grp.setLayout(my_l_box)
-
-        r_rb_group = QButtonGroup()
-
-
-        r_rb_group_box_layout = QVBoxLayout()
-        r_rb_group_box_layout.addWidget(self.my_parent.chk_box_show)
-
-
-        r_rb_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
-        r_rb_group.addButton(self.my_parent.rad_but_all_hkl)
-        r_rb_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
-        r_rb_group.addButton(self.my_parent.rad_but_near_hkl)
-        r_rb_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
-        r_rb_group.addButton(self.my_parent.rad_but_none_hkl)
-
-
-
-        info_grp =  QGroupBox("Reflection Info ")
-        info_grp.setLayout(r_rb_group_box_layout)
-
-        my_r_box = QVBoxLayout()
-        my_r_box.addWidget(info_grp)
-
-        img_select_box = QVBoxLayout()
-        img_select_box.addLayout(top_box)
-        img_select_box.addLayout(mid_box)
-        img_select_box.addLayout(bot_box)
-
-        r_rb_group_box = QGroupBox("IMG Select")
-        r_rb_group_box.setLayout(img_select_box)
-
-        my_box = QVBoxLayout()
-        my_box.addWidget(colour_grp)
-        my_box.addLayout(my_r_box)
-        my_box.addWidget(r_rb_group_box)
-
-
-
-
-
-
-        self.setLayout(my_box)
-        self.show()
-
-
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
         super(MyImgWin, self).__init__()
-        my_box = QVBoxLayout()
-        top_box = QHBoxLayout()
-        left_top_box = QVBoxLayout()
-        right_top_box = QVBoxLayout()
-
-        self.img_select = QSpinBox()
-        self.img_step = QSpinBox()
-        self.num_of_imgs_to_add = QSpinBox()
 
         self.my_scrollable = QScrollArea()
         self.my_painter = ImgPainter(self)
         self.my_scrollable.setWidget(self.my_painter)
+
+        self.img_select = QSpinBox()
+        self.img_step = QSpinBox()
+        self.num_of_imgs_to_add = QSpinBox()
 
         max_min_validator = QIntValidator(-5, 999999, self)
 
@@ -428,8 +401,6 @@ class MyImgWin(QWidget):
 
         self.palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
 
-        #########################################################################
-
         self.btn_first =  QPushButton(' I< ')
         self.btn_first.setMinimumWidth(1)
         self.btn_first.clicked.connect(self.btn_first_clicked)
@@ -453,13 +424,8 @@ class MyImgWin(QWidget):
         self.btn_stop = QPushButton("Stop IMGs Video")
         self.btn_stop.clicked.connect(self.btn_stop_clicked)
 
-        #########################################################################
-        img_select_but = QPushButton('( ... )')
-        img_select_but.setMenu(PopBigMenu(self))
-
-        #info_but = QPushButton('Info Treating  ...')
-        #info_but.setMenu(PopInfoTreat(self))
-
+        big_menu_but = QPushButton('( ... )')
+        big_menu_but.setMenu(PopBigMenu(self))
 
         self.img_num = 1
         self.img_step_val = 1
@@ -488,11 +454,13 @@ class MyImgWin(QWidget):
         self.img_step.valueChanged.connect(self.step_changed_by_user)
         self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
 
-        top_box.addWidget(img_select_but)
-        #top_box.addWidget(info_but)
+        top_box = QHBoxLayout()
+        top_box.addWidget(big_menu_but)
+        top_box.addStretch()
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
+        my_box = QVBoxLayout()
         my_box.addLayout(top_box)
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
