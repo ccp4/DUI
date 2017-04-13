@@ -339,24 +339,30 @@ class PopBigMenu(QMenu):
         r_rb_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
         r_rb_group.addButton(self.my_parent.rad_but_none_hkl)
 
-        r_rb_group_box = QGroupBox()
-        r_rb_group_box.setLayout(r_rb_group_box_layout)
+
 
         info_grp =  QGroupBox("Reflection Info ")
         info_grp.setLayout(r_rb_group_box_layout)
 
         my_r_box = QVBoxLayout()
         my_r_box.addWidget(info_grp)
-        my_r_box.addWidget(r_rb_group_box)
+
+        img_select_box = QVBoxLayout()
+        img_select_box.addLayout(top_box)
+        img_select_box.addLayout(mid_box)
+        img_select_box.addLayout(bot_box)
+
+        r_rb_group_box = QGroupBox("IMG Select")
+        r_rb_group_box.setLayout(img_select_box)
 
         my_box = QVBoxLayout()
         my_box.addWidget(colour_grp)
         my_box.addLayout(my_r_box)
+        my_box.addWidget(r_rb_group_box)
 
 
-        my_box.addLayout(top_box)
-        my_box.addLayout(mid_box)
-        my_box.addLayout(bot_box)
+
+
 
 
         self.setLayout(my_box)
