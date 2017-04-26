@@ -146,7 +146,9 @@ class MyReindexOpts(QWidget):
             self.my_inner_table.del_opts_lst()
             self.my_inner_table.add_opts_lst(json_path = in_json_path)
 
-
+        if( self.my_inner_table.rec_col != None ):
+            my_solu = self.my_inner_table.find_best_solu()
+            self.my_inner_table.opt_clicked(my_solu, 0)
 
 
 class ReindexTable(QTableWidget):
@@ -186,6 +188,17 @@ class ReindexTable(QTableWidget):
         self.v_sliderBar.setValue(v_sliderValue)
         self.h_sliderBar.setValue(h_sliderValue)
 
+    def find_best_solu(self):
+
+        for row, row_cont in enumerate(self.list_labl):
+            print "row =", row
+            print "row_cont[0] =", row_cont[0]
+            print "row_cont[4] =", row_cont[5]
+            print "row_cont[", self.rec_col, "] =", row_cont[self.rec_col + 1]
+
+
+        return 2
+
     def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
 
         if( lst_labels == None ):
@@ -212,6 +225,8 @@ class ReindexTable(QTableWidget):
 
         self.setHorizontalHeaderLabels(header_label_lst)
 
+        self.rec_col = None
+
         for row, row_cont in enumerate(self.list_labl):
             for col, col_cont in enumerate(row_cont[1:]):
                 item = QTableWidgetItem(col_cont)
@@ -219,6 +234,7 @@ class ReindexTable(QTableWidget):
                 if(col_cont == " Y"):
                     item.setBackground(Qt.green)
                     item.setTextColor(Qt.black)
+                    self.rec_col = col
 
                 elif(col_cont == " N"):
                     item.setBackground(Qt.red)
@@ -251,6 +267,7 @@ class ReindexTable(QTableWidget):
             #remember that with is given in pixels
             self.setColumnWidth(col_n, (col_len+1) * 10)
         '''
+
 
     def del_opts_lst(self):
 
@@ -285,7 +302,6 @@ class MainWindow(QMainWindow):
         #self.my_pop = MyPopup(tbl = [[1234,"abcd"],[5678,"efgh"]])
         self.my_pop = MyReindexOpts()
         self.my_pop.set_ref(parent = self, in_json_path = str(sys.argv[1]) )
-
 
     def opt_picked(self, opt_num):
         print "\n from dynamic_reindex_gui.py MainWindow"
