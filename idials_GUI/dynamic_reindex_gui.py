@@ -189,15 +189,22 @@ class ReindexTable(QTableWidget):
         self.h_sliderBar.setValue(h_sliderValue)
 
     def find_best_solu(self):
-
+        bst_sol = -1
         for row, row_cont in enumerate(self.list_labl):
-            print "row =", row
-            print "row_cont[0] =", row_cont[0]
+            to_debug = '''
+            print "\nrow =", row
             print "row_cont[4] =", row_cont[5]
-            print "row_cont[", self.rec_col, "] =", row_cont[self.rec_col + 1]
+            print "row_cont[", self.rec_col, "] =", row_cont[self.rec_col]
+            '''
+            if( row_cont[self.rec_col] == " Y"):
+                if( row > bst_sol ):
+                    bst_sol = row
+
+        print "bst_sol = ", bst_sol
 
 
-        return 2
+
+        return bst_sol
 
     def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
 
@@ -234,7 +241,7 @@ class ReindexTable(QTableWidget):
                 if(col_cont == " Y"):
                     item.setBackground(Qt.green)
                     item.setTextColor(Qt.black)
-                    self.rec_col = col
+                    self.rec_col = col + 1
 
                 elif(col_cont == " N"):
                     item.setBackground(Qt.red)
