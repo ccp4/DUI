@@ -462,7 +462,6 @@ class outputs_widget( QWidget):
         self.in_txt_out = TextOut()
 
         self.my_tabs.addTab(self.img_view, "Image View")
-
         self.my_tabs.addTab(self.in_txt_out, "Log View")
         self.my_tabs.addTab(self.web_view, "Report View")
 
@@ -472,18 +471,21 @@ class outputs_widget( QWidget):
 
         my_box.addWidget(self.my_tabs)
 
+        to_remove = '''
         self.pref_tab_pos = self.img_view
         self.my_tabs.currentChanged.connect(self.tab_changed)
-
+        '''
 
         self.setLayout(my_box)
         self.show()
 
+        to_remove = '''
     def tab_changed(self):
         new_widg = self.my_tabs.currentWidget()
         if( new_widg != self.reindex_tool ):
             print "should update self.pref_tab_pos"
             self.pref_tab_pos = new_widg
+        '''
 
 
 if( __name__ == "__main__" ):

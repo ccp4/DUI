@@ -29,7 +29,6 @@ from python_qt_bind import *
 from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget
 from outputs_gui import outputs_widget
-#from dynamic_reindex_gui import LeftSideTmpWidget
 from dynamic_reindex_gui import MyReindexOpts
 from outputs_gui import InfoWidget
 
@@ -159,11 +158,12 @@ class MainWidget(QMainWindow):
 
         v_control_splitter = QSplitter()
 
+        '''
         v_control_splitter.setOrientation(Qt.Horizontal)
         v_control_splitter.addWidget(self.idials_widget)
         v_control_splitter.addWidget(centre_widget)
-
         '''
+
         if( self.embedded_reindex ):
             v_control_splitter.setOrientation(Qt.Vertical)
             v_control_splitter.addWidget(centre_widget)
@@ -173,7 +173,6 @@ class MainWidget(QMainWindow):
             v_control_splitter.setOrientation(Qt.Horizontal)
             v_control_splitter.addWidget(self.idials_widget)
             v_control_splitter.addWidget(centre_widget)
-        '''
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
