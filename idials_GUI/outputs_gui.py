@@ -473,32 +473,17 @@ class outputs_widget( QWidget):
         my_box.addWidget(self.my_tabs)
 
         self.pref_tab_pos = self.img_view
-
-        #self.set_pref_tab()
-
         self.my_tabs.currentChanged.connect(self.tab_changed)
 
 
         self.setLayout(my_box)
         self.show()
 
-
     def tab_changed(self):
         new_widg = self.my_tabs.currentWidget()
         if( new_widg != self.reindex_tool ):
             print "should update self.pref_tab_pos"
             self.pref_tab_pos = new_widg
-
-            to_remove = '''
-
-    def set_reindex_tab(self):
-        self.pref_tab_pos = self.my_tabs.currentWidget()
-        self.my_tabs.setCurrentWidget(self.reindex_tool)
-
-    def set_pref_tab(self):
-        self.my_tabs.setCurrentWidget(self.pref_tab_pos)
-
-            '''
 
 
 if( __name__ == "__main__" ):

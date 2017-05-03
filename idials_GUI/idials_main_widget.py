@@ -560,11 +560,6 @@ class MainWidget(QMainWindow):
             print "\n change_parameter =", str_par, "\n"
             self.idials_widget.change_parameter(str_par)
 
-            to_remove = '''
-            if( not(self.embedded_reindex) ):
-                self.tmp_reindex_widg.update_opt()
-            '''
-
             if( self.old_opnum == opt_num ):
                 print "\n Supposed to run reindex NOW \n"
                 self.btn_go_clicked()

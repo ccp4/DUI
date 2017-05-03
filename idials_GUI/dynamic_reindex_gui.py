@@ -92,25 +92,6 @@ def ops_list_from_json(json_path = None):
 
     return sorted_lst_ops
 
-to_remove = '''
-class LeftSideTmpWidget( QWidget):
-    def __init__(self, parent = None):
-        super(LeftSideTmpWidget, self).__init__()
-        #self.super_parent = parent.super_parent
-
-
-        vbox = QVBoxLayout()
-        self.my_label = QLabel("Select Indexing option  ==>")
-        vbox.addWidget(self.my_label)
-        self.setLayout(vbox)
-        self.show()
-
-    def update_opt(self):
-        self.my_label.setText("re - indexed")
-
-'''
-
-
 
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
