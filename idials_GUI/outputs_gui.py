@@ -461,25 +461,20 @@ class outputs_widget( QWidget):
         self.web_view = WebTab()
         self.in_txt_out = TextOut()
 
-
         self.my_tabs.addTab(self.img_view, "Image View")
 
         self.my_tabs.addTab(self.in_txt_out, "Log View")
         self.my_tabs.addTab(self.web_view, "Report View")
 
-
         if( self.super_parent.embedded_reindex == False ):
             #TODO make sure consistent the way to use the "super_parent" reference in the next line
             self.reindex_tool = MyReindexOpts(parent)
 
-            #self.my_tabs.addTab(self.reindex_tool, "Re-index table")
-
-
         my_box.addWidget(self.my_tabs)
 
         self.pref_tab_pos = self.img_view
-        self.set_pref_tab()
 
+        #self.set_pref_tab()
 
         self.my_tabs.currentChanged.connect(self.tab_changed)
 
@@ -494,12 +489,16 @@ class outputs_widget( QWidget):
             print "should update self.pref_tab_pos"
             self.pref_tab_pos = new_widg
 
+            to_remove = '''
+
     def set_reindex_tab(self):
         self.pref_tab_pos = self.my_tabs.currentWidget()
         self.my_tabs.setCurrentWidget(self.reindex_tool)
 
     def set_pref_tab(self):
         self.my_tabs.setCurrentWidget(self.pref_tab_pos)
+
+            '''
 
 
 if( __name__ == "__main__" ):

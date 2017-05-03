@@ -92,7 +92,7 @@ def ops_list_from_json(json_path = None):
 
     return sorted_lst_ops
 
-
+to_remove = '''
 class LeftSideTmpWidget( QWidget):
     def __init__(self, parent = None):
         super(LeftSideTmpWidget, self).__init__()
@@ -107,6 +107,8 @@ class LeftSideTmpWidget( QWidget):
 
     def update_opt(self):
         self.my_label.setText("re - indexed")
+
+'''
 
 
 
@@ -147,6 +149,9 @@ class MyReindexOpts(QWidget):
             self.my_inner_table.add_opts_lst(json_path = in_json_path)
 
         if( self.my_inner_table.rec_col != None ):
+
+            self.super_parent.old_opnum = None
+
             my_solu = self.my_inner_table.find_best_solu()
             self.my_inner_table.opt_clicked(my_solu, 0)
 
@@ -156,7 +161,6 @@ class ReindexTable(QTableWidget):
         super(ReindexTable, self).__init__(parent)
         self.super_parent = parent.super_parent
 
-        self.super_parent.old_opnum = None
 
         self.cellClicked.connect(self.opt_clicked)
 

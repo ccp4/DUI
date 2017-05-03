@@ -29,7 +29,7 @@ from python_qt_bind import *
 from custom_widgets import StepList
 from idials_gui import IdialsInnerrWidget
 from outputs_gui import outputs_widget
-from dynamic_reindex_gui import LeftSideTmpWidget
+#from dynamic_reindex_gui import LeftSideTmpWidget
 from dynamic_reindex_gui import MyReindexOpts
 from outputs_gui import InfoWidget
 
@@ -132,8 +132,8 @@ class MainWidget(QMainWindow):
         else:
             #TODO Next 2 lines needs to be tested
             self.reindex_tool = None
-            self.tmp_reindex_widg = LeftSideTmpWidget(self)
-            self.step_param_widg.addWidget(self.tmp_reindex_widg)
+            #self.tmp_reindex_widg = LeftSideTmpWidget(self)
+            #self.step_param_widg.addWidget(self.tmp_reindex_widg)
 
         idials_gui_path = os.environ["IDIALS_GUI_PATH"]
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
@@ -356,23 +356,16 @@ class MainWidget(QMainWindow):
             self.idials_widget.run_clicked()
             self.running = True
 
-
     def pop_reindex_gui(self):
         print "  <<< Time to show the table "
         sumr_path = self.idials_widget.controller.get_summary()
-        #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
         if( self.embedded_reindex ):
-            #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.step_param_widg.setCurrentWidget(self.reindex_tool)
             self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
 
         else:
-
-            #self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
             self.reindex_tool = MyReindexOpts()
-            #self.reindex_tool.add_opts_lst(in_json_path = sumr_path)
             self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
-
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.setText("Running")
@@ -381,7 +374,6 @@ class MainWidget(QMainWindow):
     def update_pbar_text(self, rtime_text):
         if( len(rtime_text) > 3):
             self.bottom_bar_n_info.setText(rtime_text)
-            #self.bottom_bar_n_info.painted_overlay.repaint()
 
     def update_after_command_end(self):
         self.bottom_bar_n_info.end_motion()
@@ -415,8 +407,6 @@ class MainWidget(QMainWindow):
                 print "Time to shrink back reindex GUI"
 
                 if( not(self.embedded_reindex) ):
-                    #self.output_wg.set_pref_tab()
-                    #self.current_widget.del_opts_lst()
                     self.reindex_tool.close()
                     self.reindex_tool = None
 
@@ -563,8 +553,6 @@ class MainWidget(QMainWindow):
 
     def opt_picked(self, opt_num):
 
-
-
         if( self.running == False ):
             print "\n opt_num =", opt_num, " \n"
             self.idials_widget.change_mode("reindex")
@@ -572,8 +560,10 @@ class MainWidget(QMainWindow):
             print "\n change_parameter =", str_par, "\n"
             self.idials_widget.change_parameter(str_par)
 
+            to_remove = '''
             if( not(self.embedded_reindex) ):
                 self.tmp_reindex_widg.update_opt()
+            '''
 
             if( self.old_opnum == opt_num ):
                 print "\n Supposed to run reindex NOW \n"

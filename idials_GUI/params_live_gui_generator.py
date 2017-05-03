@@ -355,7 +355,7 @@ class TstTmpWidget( QWidget):
         super(TstTmpWidget, self).__init__(parent)
         self.param_widget_parent = self
         self.super_parent = self
-        self.embedded_reindex = self
+        self.embedded_reindex = False
         inner_widget = PhilWidget(phl_obj, self) #TODO fix the order of this two parameters
 
 
