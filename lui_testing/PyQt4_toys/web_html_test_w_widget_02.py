@@ -43,7 +43,7 @@ class MainWidget( QtGui.QWidget):
         hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.btn_go)
         self.web = WebWidget()
-        #hbox.addWidget(self.web)
+        hbox.addWidget(self.web)
 
         self.setGeometry(1100, 200, 550, 250)
         self.setLayout(hbox)
