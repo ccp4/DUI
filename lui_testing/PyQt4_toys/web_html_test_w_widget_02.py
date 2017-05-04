@@ -21,11 +21,12 @@ class MainWidget( QtGui.QWidget):
         self.btn_go = QtGui.QPushButton('\n      Go   \n', self)
         self.btn_go.clicked.connect(self.B_go_clicked)
         hbox.addWidget(self.btn_go)
+
         self.web = WebWidget()
         hbox.addWidget(self.web)
 
         self.setLayout(hbox)
-        self.setWindowTitle('Shell dialog')
+        self.setWindowTitle('web View test')
         self.show()
 
     def B_go_clicked(self):
