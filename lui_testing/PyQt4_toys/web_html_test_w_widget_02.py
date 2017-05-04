@@ -25,10 +25,10 @@ class inner_widg( QtGui.QWidget):
         print"\n Ok    from inner_widg \n"
         self.parent_widget.to_be_caled_from_son_widg(4)
 
-class MainWidget( QtWebKit.QWebView):
+class WebWidget( QtWebKit.QWebView):
 
     def __init__(self):
-        super(MainWidget, self).__init__()
+        super(WebWidget, self).__init__()
 
         self.load(QtCore.QUrl("file:///scratch/dui/dui_test/X4_wide/dui_idials_test_01/dials-1/3_index/report.html"))
         #self.load(QtCore.QUrl("http://google.co.uk"))
@@ -42,6 +42,7 @@ class MainWidget( QtGui.QWidget):
 
         hbox =  QtGui.QHBoxLayout()
         hbox.addWidget(self.btn_go)
+        self.web = WebWidget()
         #hbox.addWidget(self.web)
 
         self.setGeometry(1100, 200, 550, 250)
