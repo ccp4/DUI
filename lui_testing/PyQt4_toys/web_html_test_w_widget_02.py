@@ -38,14 +38,14 @@ class MainWidget( QtGui.QWidget):
     def __init__(self):
         super(MainWidget, self).__init__()
 
-        self.btn_go = inner_widg(self)
-
         hbox =  QtGui.QHBoxLayout()
+
+        self.btn_go = inner_widg(self)
         hbox.addWidget(self.btn_go)
         self.web = WebWidget()
         hbox.addWidget(self.web)
 
-        self.setGeometry(1100, 200, 550, 250)
+        #self.setGeometry(1100, 200, 550, 250)
         self.setLayout(hbox)
         self.setWindowTitle('Shell dialog')
         self.show()
