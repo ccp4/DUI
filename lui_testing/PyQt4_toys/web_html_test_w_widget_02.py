@@ -10,6 +10,13 @@ class WebWidget( QtWebKit.QWebView):
 
         self.load(QtCore.QUrl("file:///scratch/dui/dui_test/X4_wide/dui_idials_test_01/dials-1/3_index/report.html"))
         #self.load(QtCore.QUrl("http://google.co.uk"))
+        self.selectionChanged.connect(self.selection_changed)
+
+    def selection_changed(self):
+        print "\n self.selection_changed "
+
+    def some_action(self):
+        print "\n self.some_action "
 
 class MainWidget( QtGui.QWidget):
 
@@ -30,8 +37,9 @@ class MainWidget( QtGui.QWidget):
         self.show()
 
     def B_go_clicked(self):
-        print"\n go clicked \n"
-
+        print"\n go clicked "
+        self.web.some_action()
+        self.web.selectionChanged(self)
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

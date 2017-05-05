@@ -205,6 +205,19 @@ class StdOut(QObject):
     def flush(self):
         pass
 
+class StdErr(QObject):
+
+    #TODO maybe we can remove this class and reuse StdOut again
+
+    write_signal = pyqtSignal(str)
+
+    def write(self,string):
+        print "\n\n ERROR \n\n"
+        self.write_signal.emit(string)
+
+    def flush(self):
+        pass
+
 class MyThread (QThread):
 
     def __init__(self, parent = None):
@@ -220,11 +233,12 @@ class MyThread (QThread):
     def set_controler(self, controller):
         #self.setTerminationEnabled(enabled = True)
         self.to_run = controller
-        self.handler = StdOut()
+        self.std_handler = StdOut()
+        self.err_handler = StdErr()
 
     def run(self):
         print "\n __ MyThread.run() __ \n"
-        self.to_run.run(stdout=self.handler, stderr=self.handler).wait()
+        self.to_run.run(stdout = self.std_handler, stderr = self.err_handler).wait()
 
 class IdialsInnerrWidget( QWidget):
     lst_commands = [
@@ -254,7 +268,8 @@ class IdialsInnerrWidget( QWidget):
 
         self.thrd = MyThread(self)#, self.controller)
         self.thrd.set_controler(self.controller)
-        self.thrd.handler.write_signal.connect(self.append_text)
+        self.thrd.std_handler.write_signal.connect(self.append_text)
+        self.thrd.err_handler.write_signal.connect(self.err_append_text)
         self.thrd.started.connect(self.started_thread)
         self.thrd.finished.connect(self.finished_thread)
 
@@ -357,12 +372,22 @@ class IdialsInnerrWidget( QWidget):
 
         self.thrd.start()
 
-    def append_text(self,text):
+    def append_text(self, text):
         trim_cor_text = text[0:len(text) - 1]
         self.super_parent.txt_out.append_green(trim_cor_text)
 
         if( self.rtime_txt_on == True ):
             self.super_parent.update_pbar_text(trim_cor_text)
+
+    def err_append_text(self, text):
+        trim_cor_text = text[0:len(text) - 1]
+        self.super_parent.txt_out.append_red(trim_cor_text)
+
+        if( self.rtime_txt_on == True ):
+            self.super_parent.update_pbar_text(trim_cor_text)
+
+
+
 
     def started_thread(self):
         self.super_parent.start_pbar_motion()
