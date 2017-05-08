@@ -125,7 +125,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.yb = None
 
         self.closer_ref = None
-        self.my_scale = 1.0
+        self.my_scale = 0.333
         self.img_width = 247
         self.img_height = 253
 
@@ -179,7 +179,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         if( event.delta() > 0.0 and self.my_scale < 100.0 ):
             scale_factor = 1.1
 
-        elif( event.delta() < 0.0 and self.my_scale > 0.333 ):
+        elif( event.delta() < 0.0 and self.my_scale > 0.2 ):
             scale_factor = 0.9
 
         else:
