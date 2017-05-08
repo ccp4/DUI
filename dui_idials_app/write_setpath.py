@@ -34,7 +34,7 @@ def write_script(self_path):
     lst_lin.append( "echo \" \"\n")
 
     line_x_tut = "echo \"type "
-    line_x_tut = line_x_tut + "\\" + "\"" + "dui_idials" + "\\" + "\""
+    line_x_tut = line_x_tut + "\\" + "\"" + "dui" + "\\" + "\""
     line_x_tut = line_x_tut + " (without quotes) to launch DUI/iDIALS\" \n"
     lst_lin.append(line_x_tut)
 
