@@ -201,11 +201,12 @@ class StdOut(QObject):
 
     def write(self,string):
         self.write_signal.emit(string)
-        print "\n\n Standard OUTPUT \"tst\"\n\n"
 
     def flush(self):
         pass
 
+
+to_remove = '''
 class StdErr(QObject):
 
     #TODO maybe we can remove this class and reuse StdOut again
@@ -218,6 +219,7 @@ class StdErr(QObject):
 
     def flush(self):
         pass
+'''
 
 class MyThread (QThread):
 
@@ -226,7 +228,7 @@ class MyThread (QThread):
         print "\n MyThread(__init__)"
 
         self.std_handler = StdOut()
-        self.err_handler = StdErr()
+        self.err_handler = StdOut()# StdErr()
 
         to_sudy = '''
         connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)))
