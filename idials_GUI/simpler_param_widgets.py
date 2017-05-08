@@ -258,7 +258,7 @@ class IntegrateSimplerParamTab( QWidget):
 
         for lst_itm in box_algorithm_53.tmp_lst:
             box_algorithm_53.addItem(lst_itm)
-        box_algorithm_53.setCurrentIndex(2)
+        box_algorithm_53.setCurrentIndex(4)
         box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
