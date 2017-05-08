@@ -382,6 +382,8 @@ class MainWidget(QMainWindow):
 
         current_command = self.idials_widget.controller.get_current().name
 
+        print "\n\n current_command ==", current_command, "\n\n"
+
         if( self.idials_widget.controller.get_current().success == True ):
             update_GUI = True
             try:
@@ -390,7 +392,10 @@ class MainWidget(QMainWindow):
             except:
                 print "Not supposed to update report"
 
-            if( current_command == "import" ):
+            if( current_command == "clean" ):
+                print "\n\n <<< failed to import  >>> \n\n"
+
+            elif( current_command == "import" ):
                 self.current_widget.success_stat = True
 
             elif( current_command == "refine_bravais_settings" ):
@@ -515,9 +520,19 @@ class MainWidget(QMainWindow):
     def check_next(self, current_command = "clean"):
         print "\n check_next(self)"
         print "current_command =", current_command, "\n"
+
+        print "self.next_step_on =", self.next_step_on
+
+
         if( self.next_step_on == True ):
-            if( current_command == "clean" ):
-                self.btn_go_clicked()
+            if( current_command == "clean"):
+                print "self.idials_widget.failed =", self.idials_widget.failed
+                if( self.idials_widget.failed == None ):
+                   self.btn_go_clicked()
+
+                else:
+                    print "\n\n Failed to import \n\n"
+
             else:
                 next_command = self._find_next(current_command)
                 print "next_command =", next_command, "\n"

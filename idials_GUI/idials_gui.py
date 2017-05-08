@@ -201,6 +201,7 @@ class StdOut(QObject):
 
     def write(self,string):
         self.write_signal.emit(string)
+        print "\n\n Standard OUTPUT \"tst\"\n\n"
 
     def flush(self):
         pass
@@ -212,8 +213,8 @@ class StdErr(QObject):
     write_signal = pyqtSignal(str)
 
     def write(self,string):
-        print "\n\n ERROR \n\n"
         self.write_signal.emit(string)
+        print "\n\n Standard ERROR \"tst\" \n\n"
 
     def flush(self):
         pass
@@ -224,6 +225,9 @@ class MyThread (QThread):
         super(MyThread, self).__init__(parent)
         print "\n MyThread(__init__)"
 
+        self.std_handler = StdOut()
+        self.err_handler = StdErr()
+
         to_sudy = '''
         connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)))
         #something like the next line
@@ -233,8 +237,7 @@ class MyThread (QThread):
     def set_controler(self, controller):
         #self.setTerminationEnabled(enabled = True)
         self.to_run = controller
-        self.std_handler = StdOut()
-        self.err_handler = StdErr()
+
 
     def run(self):
         print "\n __ MyThread.run() __ \n"
@@ -257,6 +260,7 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent = parent
         self.controller = Controller(".")
         self.next_cmd = "import"
+        self.failed = None
 
         if( self.super_parent.embedded_reindex):
             big_box =  QHBoxLayout()
@@ -362,8 +366,9 @@ class IdialsInnerrWidget( QWidget):
         kill_child_processes(my_process.pid)
 
     def run_clicked(self):
-        print "run_clicked(self)"
-        print "Running ", self.next_cmd
+        self.failed = None
+        print "\n run_clicked(self)"
+        print "Running ", self.next_cmd, "\n"
         self.controller.set_mode(self.next_cmd)
         if( self.controller.get_mode() == "import" ):
             tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
@@ -384,8 +389,8 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent.txt_out.append_red(trim_cor_text)
 
         if( self.rtime_txt_on == True ):
+            self.failed = True
             self.super_parent.update_pbar_text(trim_cor_text)
-
 
 
 
