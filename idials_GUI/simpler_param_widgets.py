@@ -24,6 +24,9 @@ copyright (c) CCP4 - DLS
 from python_qt_bind import *
 import os, sys
 
+import libtbx.introspection
+
+
 class FindspotsSimplerParameterTab( QWidget):
     '''
     This widget is the tool for tunning the simpler and most common parameters
@@ -88,6 +91,10 @@ class FindspotsSimplerParameterTab( QWidget):
 
         self.box_nproc = QSpinBox()
         self.box_nproc.local_path = "spotfinder.mp.nproc"
+
+        cpu_max_proc = libtbx.introspection.number_of_processors()
+        self.box_nproc.setValue(int(cpu_max_proc))
+
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
@@ -269,7 +276,16 @@ class IntegrateSimplerParamTab( QWidget):
         hbox_lay_nproc.addWidget(label_nproc)
 
         self.box_nproc = QSpinBox()
-        self.box_nproc.setValue(1)
+
+
+
+        #self.box_nproc.setValue(1)
+
+        cpu_max_proc = libtbx.introspection.number_of_processors()
+        self.box_nproc.setValue(int(cpu_max_proc))
+
+
+
         self.box_nproc.local_path = "integration.mp.nproc"
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
