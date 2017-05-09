@@ -161,10 +161,14 @@ class PhilWidget( QWidget):
         something_else = False
         self.lst_wgs = []
 
+        print "\n"
+
         for nm, obj in enumerate(lst_phil_obj):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
-                tmp_widg = QLabel(" " * int(obj.indent * inde_step) + str(obj.name))
+                tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
+                print tmp_str
+                tmp_widg = QLabel(tmp_str)
                 tmp_widg.setAutoFillBackground(True)
                 tmp_widg.setPalette(self.plt_scp)
                 tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
@@ -185,7 +189,8 @@ class PhilWidget( QWidget):
                     tmp_h_box = QHBoxLayout()
 
                     indent = str(obj.full_path()).count('.')
-                    tmp_label  = QLabel(" " * indent * inde_step + str(obj.name))
+                    tmp_str = " " * indent * inde_step + str(obj.name)
+                    tmp_label  = QLabel(tmp_str)
                     tmp_label.setAutoFillBackground(True)
                     tmp_label.setPalette(self.plt_obj)
                     tmp_label.setFont(QFont("Monospace", sys_font_point_size))
@@ -211,11 +216,13 @@ class PhilWidget( QWidget):
                         if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
 
                             if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
-                                #print "TODO fix the libtbx.AutoType in double Phil parameter"
-                                pass
+                                #TODO fix the libtbx.AutoType in double Phil parameter"
+                                tmp_str = None
 
                             else:
                                 tmp_widg.setValue(obj.extract())
+                                tmp_str += "                          " + str(obj.extract())
+
 
                         tmp_widg.local_path = str(obj.full_path())
                         tmp_widg.tmp_lst = None
@@ -239,6 +246,10 @@ class PhilWidget( QWidget):
 
                         if( str(obj.extract()) == "False" ):
                             tmp_widg.setCurrentIndex(1)
+                            tmp_str += "                          False"
+
+                        else:
+                            tmp_str += "                          True"
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -253,6 +264,7 @@ class PhilWidget( QWidget):
                             if( opt[0] == "*" ):
                                 opt = opt[1:]
                                 pos = num
+                                tmp_str += "                          " + opt
 
                             tmp_widg.tmp_lst.append(opt)
 
@@ -261,6 +273,7 @@ class PhilWidget( QWidget):
 
                         tmp_widg.setCurrentIndex(pos)
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+
 
                     tmp_disabled = '''
 
@@ -316,9 +329,11 @@ class PhilWidget( QWidget):
 
                 if( something_else == False ):
                     if(multiple_index == False):
-                        tmp_h_box.addWidget(tmp_widg)
-                        self.bg_box.addLayout(tmp_h_box)
-                        self.lst_wgs.append(tmp_widg)
+                        if(tmp_str != None):
+                            tmp_h_box.addWidget(tmp_widg)
+                            self.bg_box.addLayout(tmp_h_box)
+                            self.lst_wgs.append(tmp_widg)
+                            print tmp_str
 
                     else:
                         for indx in range(obj.type.size_max):
