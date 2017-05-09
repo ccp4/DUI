@@ -243,18 +243,7 @@ class ParamMainWidget( QWidget):
     def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
         super(ParamMainWidget, self).__init__()
 
-        #TODO remove this << if >> and run directly the
-        # second shoice
 
-        testing_off = '''
-        if parent == None:
-            self.super_parent = self
-            my_phl_obj = phil_scope_index
-            simp_widg = IndexSimplerParamTab
-
-        else:
-
-        '''
         try:
             self.super_parent = parent.super_parent
             my_phl_obj = phl_obj
@@ -268,6 +257,8 @@ class ParamMainWidget( QWidget):
         vbox = QVBoxLayout()
 
         level_tab = QTabWidget()
+
+        self.reset_btn = QPushButton("Reset to Default", self)
 
         self.sipler_widget = simp_widg(parent = self)
         self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
@@ -283,7 +274,7 @@ class ParamMainWidget( QWidget):
 
         vbox.addWidget(step_label)
         vbox.addWidget(level_tab)
-
+        vbox.addWidget(self.reset_btn)
 
         self.setLayout(vbox)
         self.show()
