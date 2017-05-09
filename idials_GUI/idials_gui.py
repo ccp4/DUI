@@ -423,6 +423,11 @@ class IdialsInnerrWidget( QWidget):
     def change_parameter(self, par_str):
         self.controller.set_parameters(par_str, short_syntax=True)
 
+    def param_reset(self):
+        print "\n reset_param for iDIALS \n\n"
+        self.controller.reset_parameters()
+        #print dir(self.controller), "\n"
+
     def _update_tree(self):
 
         history = self.controller.get_history()

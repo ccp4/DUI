@@ -343,6 +343,9 @@ class MainWidget(QMainWindow):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
         self.idials_widget.change_parameter(new_par_str)
 
+    def reset_param(self):
+        self.idials_widget.param_reset()
+
     def btn_stop_clicked(self):
         if( self.running == True ):
             #self._gray_unwanted()

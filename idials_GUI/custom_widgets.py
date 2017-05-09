@@ -246,38 +246,60 @@ class ParamMainWidget( QWidget):
 
         try:
             self.super_parent = parent.super_parent
-            my_phl_obj = phl_obj
+            self.my_phl_obj = phl_obj
+            self.my_simp_widg = simp_widg
         except:
-            print "\n\n\n something went wrong here \n\n\n"
+            print "\n\n\n something went wrong here tiht the phil object \n\n\n"
 
 
 
         self.param_widget_parent = self
 
-        vbox = QVBoxLayout()
+        self._vbox = QVBoxLayout()
 
-        level_tab = QTabWidget()
+        self.build_param_widget()
 
         self.reset_btn = QPushButton("Reset to Default", self)
-
-        self.sipler_widget = simp_widg(parent = self)
-        self.advanced_widget = ParamAdvancedWidget(phl_obj = my_phl_obj, parent = self)
-
-        level_tab.addTab(self.sipler_widget, "Simple")
-        level_tab.addTab(self.advanced_widget, "Advanced")
+        self.reset_btn.clicked.connect(self.reset_par)
 
         label_font = QFont()
         sys_font_point_size =  label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str(upper_label))
-        step_label.setFont(label_font)
+        self.step_label = QLabel(str(upper_label))
+        self.step_label.setFont(label_font)
 
-        vbox.addWidget(step_label)
-        vbox.addWidget(level_tab)
-        vbox.addWidget(self.reset_btn)
+        self._vbox.addWidget(self.step_label)
+        self._vbox.addWidget(self.dual_level_tab)
+        self._vbox.addWidget(self.reset_btn)
 
-        self.setLayout(vbox)
+        self.setLayout(self._vbox)
         self.show()
+
+    def build_param_widget(self):
+        self.dual_level_tab = QTabWidget()
+        self.sipler_widget = self.my_simp_widg(parent = self)
+        self.advanced_widget = ParamAdvancedWidget(phl_obj = self.my_phl_obj, parent = self)
+        self.dual_level_tab.addTab(self.sipler_widget, "Simple")
+        self.dual_level_tab.addTab(self.advanced_widget, "Advanced")
+
+
+    def reset_par(self):
+        print "Reseting"
+
+
+        for i in reversed(range(self._vbox.count())):
+            widgetToRemove = self._vbox.itemAt( i ).widget()
+            self._vbox.removeWidget( widgetToRemove )
+            widgetToRemove.setParent( None )
+
+
+        self.build_param_widget()
+
+        self._vbox.addWidget(self.step_label)
+        self._vbox.addWidget(self.dual_level_tab)
+        self._vbox.addWidget(self.reset_btn)
+
+        self.super_parent.reset_param()
 
     def update_advanced_widget(self, str_path, str_value):
 
@@ -385,6 +407,9 @@ class TmpTestWidget( QWidget):
         vbox.addWidget(my_widget)
         self.setLayout(vbox)
         self.show()
+
+    def reset_param(self):
+        print "\n\n param_changed from TmpTestWidget \n\n"
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
