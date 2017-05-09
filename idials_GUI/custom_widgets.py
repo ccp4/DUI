@@ -265,7 +265,7 @@ class ParamMainWidget( QWidget):
 
         self.param_widget_parent = self
 
-        hbox = QVBoxLayout()
+        vbox = QVBoxLayout()
 
         level_tab = QTabWidget()
 
@@ -281,11 +281,11 @@ class ParamMainWidget( QWidget):
         step_label = QLabel(str(upper_label))
         step_label.setFont(label_font)
 
-        hbox.addWidget(step_label)
-        hbox.addWidget(level_tab)
+        vbox.addWidget(step_label)
+        vbox.addWidget(level_tab)
 
 
-        self.setLayout(hbox)
+        self.setLayout(vbox)
         self.show()
 
     def update_advanced_widget(self, str_path, str_value):

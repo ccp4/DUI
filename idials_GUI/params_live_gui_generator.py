@@ -350,7 +350,9 @@ class PhilWidget( QWidget):
 
 
 class TstTmpWidget( QWidget):
-    item_changed = pyqtSignal()
+
+    item_changed = pyqtSignal() #TODO check if this line is needed
+
     def __init__(self, phl_obj = None, parent = None):
         super(TstTmpWidget, self).__init__(parent)
         self.param_widget_parent = self
@@ -363,6 +365,12 @@ class TstTmpWidget( QWidget):
         my_box.addWidget(inner_widget)
         self.setLayout(my_box)
         self.show()
+
+    def update_lin_txt(self, new_path, new_value):
+        print "new_path =", new_path
+        print "new_value =", new_value
+        print "from update_lin_txt(self)"
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
