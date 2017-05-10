@@ -424,7 +424,7 @@ class MyImgWin(QWidget):
         self.btn_stop = QPushButton("Stop IMGs Video")
         self.btn_stop.clicked.connect(self.btn_stop_clicked)
 
-        big_menu_but = QPushButton('( ... )')
+        big_menu_but = QPushButton('Viewing Tools  ...  ')
         big_menu_but.setMenu(PopBigMenu(self))
 
         self.img_num = 1
