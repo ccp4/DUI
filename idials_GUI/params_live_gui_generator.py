@@ -162,7 +162,9 @@ class PhilWidget( QWidget):
         something_else = False
         self.lst_wgs = []
 
-        print "\n"
+        print "\n advanced parameters GUI:\n"
+
+        non_added_lst = []
 
         for nm, obj in enumerate(lst_phil_obj):
 
@@ -207,23 +209,38 @@ class PhilWidget( QWidget):
 
                         if( obj.type.phil_type == 'float' ):
                             tmp_widg = QDoubleSpinBox()
+                            tmp_widg.setDecimals(3)
 
                         elif( obj.type.phil_type == 'int' ):
                             tmp_widg = QSpinBox()
 
                         elif( obj.type.phil_type == 'str' ):
                             tmp_widg = QLineEdit()
+                            #TODO iclude the asignation of this one too
+
+                        tmp_widg.str_defl = None
 
                         if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
 
+                            par_min = 0.0
+                            par_max = 5000.0
+                            tmp_widg.setRange(par_min, par_max)
+                            #if( type(obj.extract()) is str ): TODO test why this line does NOT works
                             if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
-                                #TODO fix the libtbx.AutoType in double Phil parameter"
-                                tmp_str = None
+                                par_def = str(obj.extract())
+                                tmp_widg.setSpecialValueText(par_def)
+                                tmp_widg.str_defl = par_def
 
                             else:
-                                tmp_widg.setValue(obj.extract())
-                                tmp_str += "                          " + str(obj.extract())
+                                par_def = obj.extract()
+                                if( float(par_def) != 0.0  ):
+                                    par_max = abs(par_def * 100.0)
+                                    tmp_widg.setRange(par_min, par_max)
+                                    tmp_widg.setSingleStep(abs(par_def /10))
 
+                                tmp_widg.setValue(par_def)
+
+                            tmp_str += "                          " + str(obj.extract())
 
                         tmp_widg.local_path = str(obj.full_path())
                         tmp_widg.tmp_lst = None
@@ -251,7 +268,7 @@ class PhilWidget( QWidget):
 
                         elif( str(obj.extract()) == "True" ):
                             tmp_str += "                          True"
-                            tmp_str += "                          True"
+
 
                         else:
                             tmp_str = None
@@ -285,11 +302,14 @@ class PhilWidget( QWidget):
 
                         if( found_choise == False ):
                             tmp_str = None
-
-                    tmp_disabled = '''
+                            non_added_lst.append(str(obj.full_path()))
 
                 elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
+                    tmp_str = None
+                    non_added_lst.append(str(obj.full_path()))
+                    something_else = True
 
+                    to_rebiew_later = '''
                     if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
                         obj.type.size_max == obj.type.size_min and obj.type.size_max != None ):
                         tmp_h_box_lst = []
@@ -327,6 +347,7 @@ class PhilWidget( QWidget):
                         something_else = True
                     '''
 
+
                 else:
                     debugging = '''
                     print
@@ -350,14 +371,23 @@ class PhilWidget( QWidget):
                         for indx in range(obj.type.size_max):
                             tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
                             self.bg_box.addLayout(tmp_h_box_lst[indx])
+        print "\n\n Non added parameters:"
+        for lin_to_print in non_added_lst:
+            print lin_to_print
+        print "\n\n"
 
 
     def spnbox_changed(self, value):
         sender = self.sender()
+        if( sender.str_defl != None and float(value) == 0.0 ):
+            str_value = sender.str_defl
+
+        else:
+            str_value = str(value)
+
         print "sender =", sender
         print "spnbox_changed to:",
-        str_value = str(value)
-        print value
+        print str_value
         print "local_path =",
         str_path = str(sender.local_path)
         print "local_path =", str_path

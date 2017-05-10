@@ -10,7 +10,7 @@ class Example(QWidget):
     def __init__(self):
         super(Example, self).__init__()
 
-        percentSpinBox =  QSpinBox()
+        percentSpinBox = QDoubleSpinBox()
         percentSpinBox.setRange(0, 1000)
         percentSpinBox.setSingleStep(10)
         percentSpinBox.setSuffix("%")
