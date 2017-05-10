@@ -1,5 +1,5 @@
 '''
-DUI's command line control stacked widgets
+DUI's command simple stacked widgets
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams

@@ -6,6 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
 #as published by the Free Software Foundation; either version 2
@@ -248,8 +249,13 @@ class PhilWidget( QWidget):
                             tmp_widg.setCurrentIndex(1)
                             tmp_str += "                          False"
 
-                        else:
+                        elif( str(obj.extract()) == "True" ):
                             tmp_str += "                          True"
+                            tmp_str += "                          True"
+
+                        else:
+                            tmp_str = None
+
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -259,14 +265,17 @@ class PhilWidget( QWidget):
                         tmp_widg.local_path = str(obj.full_path())
                         tmp_widg.tmp_lst=[]
                         pos = 0
+                        found_choise = False
                         for num, opt in enumerate(obj.words):
                             opt = str(opt)
                             if( opt[0] == "*" ):
+                                found_choise = True
                                 opt = opt[1:]
                                 pos = num
                                 tmp_str += "                          " + opt
 
                             tmp_widg.tmp_lst.append(opt)
+
 
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
@@ -274,6 +283,8 @@ class PhilWidget( QWidget):
                         tmp_widg.setCurrentIndex(pos)
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
+                        if( found_choise == False ):
+                            tmp_str = None
 
                     tmp_disabled = '''
 
