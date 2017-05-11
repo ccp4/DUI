@@ -78,7 +78,8 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
             box_dat.append(local_hkl)
 
         for idx in xrange(ref_box[4], ref_box[5]):
-            img_lst[idx].append(box_dat);
+            if(idx >= 0 and idx < n_imgs):
+                img_lst[idx].append(box_dat);
 
     return img_lst
 

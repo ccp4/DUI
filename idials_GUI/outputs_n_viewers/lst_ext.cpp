@@ -62,6 +62,7 @@ py::list arrange_list(py::list bbox_lst, py::list hkl_lst, int n_imgs){
 
     int x_ini, y_ini, width, height;
     py::list img_lst, ref_box, tmp_lst, box_dat;
+    std::cout << "\n__________________________________________________________shoeboxes arrange_list START \n";
 
     //TODO make sure there is no way to avoid this loop
     for (int i = 0; i < n_imgs; i++){
@@ -98,10 +99,14 @@ py::list arrange_list(py::list bbox_lst, py::list hkl_lst, int n_imgs){
         for (int idx = py::extract<int>(ref_box[4]);
              idx < py::extract<int>(ref_box[5]);
              idx++){
-            tmp_lst = py::extract<py::list>(img_lst[idx]);
-            tmp_lst.append(box_dat);
+            if( idx >= 0 && idx < n_imgs ){
+                tmp_lst = py::extract<py::list>(img_lst[idx]);
+                tmp_lst.append(box_dat);
+            }
         }
     }
+
+    std::cout << "\n__________________________________________________________shoeboxes arrange_list END \n";
 
     return img_lst;
 }
