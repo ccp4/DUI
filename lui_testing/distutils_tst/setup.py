@@ -1,5 +1,6 @@
 from distutils.core import setup
 setup(name='hi_tst',
+      py_modules=['h_w'],
       version='1.0',
       description='test with simple Hello w...',
       author='Luiso',
