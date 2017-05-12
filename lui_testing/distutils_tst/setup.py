@@ -9,9 +9,3 @@ to_add_latter = '''
     url='https://www.python.org/sigs/distutils-sig/',
     packages=['distutils', 'distutils.command'],
     '''
-
-old_test = '''
-    (name='hi_tst',
-    version='0.90',
-    py_modules=['h_w'],
-    )'''
