@@ -1,4 +1,5 @@
-setup(name='hi_tst',
+from distutils.core import setup
+setup(name='tst_01',
       py_modules=['python_qt_bind',
                   'custom_widgets',
                   'dynamic_reindex_gui',
@@ -13,7 +14,7 @@ setup(name='hi_tst',
                   'outputs_n_viewers.web_page_view',
                   'params_live_gui_generator'],
       version='1.0',
-      description='test with simple Hello w...',
+      description='test with python source files only',
       author='Luiso',
       author_email='luis.fuentes-montero@diamond.ac.uk',
      )

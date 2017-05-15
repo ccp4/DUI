@@ -5,6 +5,14 @@ setup(name='hi_tst',
       description='test with simple Hello w...',
       author='Luiso',
       author_email='luis.fuentes-montero@diamond.ac.uk',
+
+
+
+
+      data_files=[('logos', ['lg/b1.gif', 'lg/b2.gif'])]
+
+
+
      )
 to_add_latter = '''
     url='https://www.python.org/sigs/distutils-sig/',
