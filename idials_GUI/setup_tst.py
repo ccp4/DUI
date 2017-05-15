@@ -18,7 +18,7 @@ setup(name='tst_01',
                    'resources/import.png', 'resources/index.png',
                    'resources/integrate.png', 'resources/refine.png',
                    'resources/refine_v_sets.png',
-                   'resources/reindex.png'])]
+                   'resources/reindex.png'])],
       version='1.0',
       description='test with python source files only',
       author='Luiso',
