@@ -6,12 +6,7 @@ setup(name='hi_tst',
       author='Luiso',
       author_email='luis.fuentes-montero@diamond.ac.uk',
 
-
-
-
-      data_files=[('logos', ['lg/b1.gif', 'lg/b2.gif'])]
-
-
+      data_files=[('logos', ['logo_png/dials_logo_scaled.png', 'logo_png/dials_logo_scaled_gray.png'])]
 
      )
 to_add_latter = '''
