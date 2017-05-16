@@ -25,7 +25,7 @@ import sys, os
 
 from python_qt_bind import *
 
-from custom_widgets import StepList
+from custom_widgets import StepList, TmpRedinexWidget
 from idials_gui import IdialsInnerrWidget
 from outputs_gui import outputs_widget
 from dynamic_reindex_gui import MyReindexOpts
@@ -128,10 +128,9 @@ class MainWidget(QMainWindow):
             self.step_param_widg.addWidget(self.reindex_tool)
 
         else:
-            #TODO Next 2 lines needs to be tested
             self.reindex_tool = None
-            #self.tmp_reindex_widg = LeftSideTmpWidget(self)
-            #self.step_param_widg.addWidget(self.tmp_reindex_widg)
+            self.tmp_reindex_widg = TmpRedinexWidget(self)
+            self.step_param_widg.addWidget(self.tmp_reindex_widg)
 
         idials_gui_path = os.environ["IDIALS_GUI_PATH"]
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
@@ -369,6 +368,7 @@ class MainWidget(QMainWindow):
 
         else:
             self.reindex_tool = MyReindexOpts()
+            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
             self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
 
     def start_pbar_motion(self):

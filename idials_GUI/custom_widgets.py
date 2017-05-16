@@ -112,6 +112,20 @@ def template_from_lst_build(in_str_lst):
 
     return out_str
 
+class TmpRedinexWidget(QWidget):
+    '''
+    This stacked widget stays in the GUI when th user is supposed to do
+    reindexing, there is no auto-generated GUI form Phil parameters
+    in use withing this widget.
+    '''
+    def __init__(self, parent = None):
+        super(TmpRedinexWidget, self).__init__(parent = None)
+        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        main_vbox =  QVBoxLayout()
+        main_vbox.addWidget(QLabel("Click Best Bravais Settings From Table"))
+        self.setLayout(main_vbox)
+        self.show()
+
 
 class FileOrDir(QFileDialog):
     def __init__(self, parent = None):
@@ -249,7 +263,7 @@ class ParamMainWidget( QWidget):
             self.my_phl_obj = phl_obj
             self.my_simp_widg = simp_widg
         except:
-            print "\n\n\n something went wrong here tiht the phil object \n\n\n"
+            print "\n\n\n something went wrong here wiht the phil object \n\n\n"
 
 
 
