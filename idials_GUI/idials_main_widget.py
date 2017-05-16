@@ -254,18 +254,6 @@ class MainWidget(QMainWindow):
             my_sender.setStyleSheet("background-color: lightblue")
             self.btn_go.setText(str(my_sender.command))
 
-            to_remove = '''
-
-            if( my_sender.command == "find_spots" ):
-                cpu_max_proc = libtbx.introspection.number_of_processors()
-                self.widg_lst[1].sipler_widget.box_nproc.setValue(int(cpu_max_proc))
-
-            elif( my_sender.command == "integrate" ):
-                cpu_max_proc = libtbx.introspection.number_of_processors()
-                self.widg_lst[4].sipler_widget.box_nproc.setValue(int(cpu_max_proc))
-            '''
-
-
     def openFile(self):
         print "openFile"
         if( self.running == False ):
@@ -284,6 +272,11 @@ class MainWidget(QMainWindow):
 
         elif( current_command == "clean" ):
             cmd_next = "import"
+
+            failed_attempt = '''
+        elif( current_command == "refine_bravais_settings" ):
+            cmd_next = "reindex"
+            '''
 
         else:
             cmd_next = None
@@ -370,6 +363,8 @@ class MainWidget(QMainWindow):
             self.reindex_tool = MyReindexOpts()
             self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
             self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
+
+        self.btn_go.setText("reindex")
 
     def start_pbar_motion(self):
         self.bottom_bar_n_info.setText("Running")
