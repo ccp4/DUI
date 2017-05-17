@@ -28,6 +28,24 @@ import numpy as np
 
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
+import sys
+
+class ProgBarInShell(object):
+    def __init__(self, max_val = 100, min_val = 0, text = "Working"):
+        if( max_val > min_val ):
+            self.my_max = max_val
+            self.my_min = min_val
+
+        self.my_delta = max_val - min_val
+        self.my_txt = text
+
+    def __call__(self, updated_val):
+        prog_psent = float(updated_val - self.my_min) / self.my_delta
+
+        sys.stdout.write('\r' + self.my_txt + " " + str(prog_psent))
+
+        #print self.my_txt, " ", prog_psent
+
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
     #print"\n Using Python search for closer reflection \n"
@@ -54,7 +72,10 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
     for time in xrange(n_imgs):
         img_lst.append([])
 
+    my_bar = ProgBarInShell(min_val = 0, max_val = len(bbox_lst), text = "updating Image/Reflections Data:")
+
     for i, ref_box in enumerate(bbox_lst):
+        my_bar(i)
         x_ini = ref_box[0]
         y_ini = ref_box[2]
         width = ref_box[1] - ref_box[0]
