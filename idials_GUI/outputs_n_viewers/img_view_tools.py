@@ -30,8 +30,10 @@ from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 import sys
 
-class ProgBarInShell(object):
+class ProgBarInShell(QProgressDialog):
     def __init__(self, max_val = 100, min_val = 0, text = "Working"):
+        super(ProgBarInShell, self).__init__(None)
+
         if( max_val > min_val ):
             self.my_max = max_val
             self.my_min = min_val
@@ -39,12 +41,18 @@ class ProgBarInShell(object):
         self.my_delta = max_val - min_val
         self.my_txt = text
 
+        self.setWindowModality(Qt.WindowModal)
+        self.show()
+
     def __call__(self, updated_val):
         prog_psent = float(updated_val - self.my_min) / self.my_delta
 
         sys.stdout.write('\r' + self.my_txt + " " + str(prog_psent))
+        self.setValue(prog_psent * 100)
 
-        #print self.my_txt, " ", prog_psent
+    def ended(self):
+        self.setValue(100)
+
 
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
