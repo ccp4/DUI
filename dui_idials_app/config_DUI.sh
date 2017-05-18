@@ -8,5 +8,8 @@ dials.python ${MY_WD}/write_setpath.py ${MY_WD}
 
 #Attemplting to compile list C++ extension
 cd ${MY_WD}/../idials_GUI/outputs_n_viewers
-dials.python compyling_boost_ext.py
+
+#temporary skipping
+#dials.python compyling_boost_ext.py
+
 cd ${MY_WD}
