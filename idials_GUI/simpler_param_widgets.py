@@ -92,8 +92,6 @@ class FindspotsSimplerParameterTab( QWidget):
         self.box_nproc = QSpinBox()
         self.box_nproc.local_path = "spotfinder.mp.nproc"
 
-        cpu_max_proc = libtbx.introspection.number_of_processors()
-        self.box_nproc.setValue(int(cpu_max_proc))
 
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
@@ -120,6 +118,11 @@ class FindspotsSimplerParameterTab( QWidget):
         print value
         str_path = str(sender.local_path)
         self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+    def set_max_nproc(self):
+        cpu_max_proc = libtbx.introspection.number_of_processors()
+        self.box_nproc.setValue(int(cpu_max_proc))
+
 
 
 class IndexSimplerParamTab( QWidget):
@@ -277,15 +280,6 @@ class IntegrateSimplerParamTab( QWidget):
 
         self.box_nproc = QSpinBox()
 
-
-
-        #self.box_nproc.setValue(1)
-
-        cpu_max_proc = libtbx.introspection.number_of_processors()
-        self.box_nproc.setValue(int(cpu_max_proc))
-
-
-
         self.box_nproc.local_path = "integration.mp.nproc"
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
@@ -312,6 +306,12 @@ class IntegrateSimplerParamTab( QWidget):
         print value
         str_path = str(sender.local_path)
         self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+    def set_max_nproc(self):
+        cpu_max_proc = libtbx.introspection.number_of_processors()
+        self.box_nproc.setValue(int(cpu_max_proc))
+
+
 
 
 

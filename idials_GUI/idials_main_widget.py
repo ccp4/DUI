@@ -249,10 +249,19 @@ class MainWidget(QMainWindow):
         self.close()
 
     def _active_btn(self, my_sender):
-            self.idials_widget.change_mode(my_sender.command)
-            self._refresh_stacked_widget(my_sender.par_wig)
-            my_sender.setStyleSheet("background-color: lightblue")
-            self.btn_go.setText(str(my_sender.command))
+        self.idials_widget.change_mode(my_sender.command)
+        self._refresh_stacked_widget(my_sender.par_wig)
+        my_sender.setStyleSheet("background-color: lightblue")
+        self.btn_go.setText(str(my_sender.command))
+
+        try:
+            my_sender.par_wig.sipler_widget.set_max_nproc()
+            print "\n Tunning nproc to maximum \n"
+
+        except:
+            print "\n This step runs as fas as it can with nproc = 1 \n"
+
+
 
     def openFile(self):
         print "openFile"
