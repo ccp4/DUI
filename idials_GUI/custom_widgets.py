@@ -315,6 +315,15 @@ class ParamMainWidget( QWidget):
 
         self.super_parent.reset_param()
 
+
+        try:
+            self.sipler_widget.set_max_nproc()
+            print "\n Tunning nproc to maximum \n"
+
+        except:
+            print "\n This step runs as fas as it can with nproc = 1 \n"
+
+
     def update_advanced_widget(self, str_path, str_value):
 
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
