@@ -206,7 +206,7 @@ class StdOut(QObject):
         pass
 
 
-to_remove = '''
+#to_remove = '''
 class StdErr(QObject):
 
     #TODO maybe we can remove this class and reuse StdOut again
@@ -214,12 +214,13 @@ class StdErr(QObject):
     write_signal = pyqtSignal(str)
 
     def write(self,string):
-        self.write_signal.emit(string)
-        print "\n\n Standard ERROR \"tst\" \n\n"
+        if(len(string) > 2):
+            self.write_signal.emit(string)
+            print "\n\n Standard ERROR \"tst\" \n\n"
 
     def flush(self):
         pass
-'''
+#'''
 
 class MyThread (QThread):
 
@@ -228,7 +229,7 @@ class MyThread (QThread):
         print "\n MyThread(__init__)"
 
         self.std_handler = StdOut()
-        self.err_handler = StdOut()# StdErr()
+        self.err_handler = StdErr()
 
         to_sudy = '''
         connect(worker, SIGNAL(error(QString)), this, SLOT(errorString(QString)))
@@ -290,7 +291,7 @@ class IdialsInnerrWidget( QWidget):
 
     def goto(self, idx):
         print "goto: ", idx
-
+        self.failed = None
         self.controller.goto(idx)
         #self._set_current_mode()
         self._update_tree()
@@ -391,17 +392,21 @@ class IdialsInnerrWidget( QWidget):
         self.super_parent.txt_out.append_red(trim_cor_text)
 
         if( self.rtime_txt_on == True ):
+            print "\n _____________________________________________________ err_append_text\n"
+            print "text =<<", text, ">>"
             self.failed = True
             self.super_parent.update_pbar_text(trim_cor_text)
-
-
 
     def started_thread(self):
         self.super_parent.start_pbar_motion()
 
     def finished_thread(self):
         self._update_tree()
+
+        print "\n_____________\n _____________________________________________________finished_thread(self) \n_____________\n"
+
         self.super_parent.update_after_command_end()
+
 
     def nxt_clicked(self):
         print "nxt_clicked(self)"

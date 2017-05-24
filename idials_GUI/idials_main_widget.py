@@ -358,7 +358,12 @@ class MainWidget(QMainWindow):
             self.running = False
 
     def btn_go_clicked(self):
-        if( self.running == False ):
+
+        print "self.running =", self.running
+        print "self.idials_widget.failed =", self.idials_widget.failed
+
+        if( self.running == False and self.idials_widget.failed == None ):
+
             self._gray_unwanted()
             self.idials_widget.run_clicked()
             self.running = True
