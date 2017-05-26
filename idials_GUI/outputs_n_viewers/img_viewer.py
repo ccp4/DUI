@@ -153,7 +153,6 @@ class ImgPainter(MyQWidgetWithQPainter):
                 print "failed to update i(x,y) label"
                 '''
 
-
             if( self.my_parent.rad_but_near_hkl.isChecked() == True ):
                 self.find_closer_hkl(self.x_pos, self.y_pos)
 
@@ -193,17 +192,34 @@ class ImgPainter(MyQWidgetWithQPainter):
             h_scr_bar = float(self.p_h_svar().value())
             v_scr_bar = float(self.p_v_svar().value())
 
+            border_dx = float(event.x() - h_scr_bar)
+            border_dy = float(event.y() - v_scr_bar)
+
+            print "border_dx, border_dy =", border_dx, border_dy
+
+
+            h_new_pbar_pos = int(scale_factor * h_scr_bar +  (scale_factor - 1.0) * border_dx )
+
+            v_new_pbar_pos = int(scale_factor * v_scr_bar +  (scale_factor - 1.0) * border_dy )
+
+            old_way = '''
             h_new_pbar_pos = int(scale_factor * h_scr_bar
                              + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
 
             v_new_pbar_pos = int(scale_factor * v_scr_bar
                              + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
+            '''
+
 
             self.update()
 
             self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
             self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
+        #print " event.x(),  event.y() =", event.x(), event.y()
+        #print "{h_pbar, v_pbar} (old) =", h_scr_bar, v_scr_bar
+        #print "{h_pbar, v_pbar} (new) =", h_new_pbar_pos, v_new_pbar_pos
+        print "\n\n"
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
         if( dst != None ):
