@@ -284,7 +284,6 @@ class IdialsInnerrWidget( QWidget):
         self.show()
 
     def _set_current_mode(self):
-
         print "...current.mode =", self.controller.get_current().name
         self.next_cmd = self.controller.get_current().name
         self.controller.set_mode(self.next_cmd)

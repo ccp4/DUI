@@ -226,6 +226,9 @@ class ImportPage(QWidget):
         else:
             print "Failed to pick dir"
 
+        print "\ncalling:\n self.super_parent.idials_widget.failed == None\n"
+        self.super_parent.idials_widget.failed = None
+
         self.super_parent.check_next()
 
 

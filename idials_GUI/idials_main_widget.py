@@ -361,6 +361,12 @@ class MainWidget(QMainWindow):
 
         print "self.running =", self.running
         print "self.idials_widget.failed =", self.idials_widget.failed
+        print "...controller.get_current().success", self.idials_widget.controller.get_current().success
+
+        unstable_if_test = '''
+        if( self.running == False and
+            self.idials_widget.controller.get_current().success == True ):
+        '''
 
         if( self.running == False and self.idials_widget.failed == None ):
 
@@ -543,6 +549,9 @@ class MainWidget(QMainWindow):
         if( self.next_step_on == True ):
             if( current_command == "clean"):
                 print "self.idials_widget.failed =", self.idials_widget.failed
+
+                print "...controller.get_current().success", self.idials_widget.controller.get_current().success
+
                 if( self.idials_widget.failed == None ):
                    self.btn_go_clicked()
 
