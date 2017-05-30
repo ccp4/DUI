@@ -112,10 +112,11 @@ class MainWidget(QMainWindow):
 
         print "\n MainWidget(ID) =", self.winId(), "\n"
 
+        print "sys.argv =", sys.argv, "\n"
+
         do_continue = check_previous_runs()
         if( do_continue == False ):
             sys.exit()
-
 
         # This flag will define the layout orientation of the left side
         # area of the GUI and therefore needs to be taking into account when
