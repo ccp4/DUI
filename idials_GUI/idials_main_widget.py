@@ -83,26 +83,11 @@ def check_previous_runs():
     #print "\n\n", dir(os), "\n\n"
     print "os.path.exists(\"dials.state\") =", os.path.exists("dials.state")
 
-    example = '''
-    >>> print os.path.isfile("/etc/password.txt")
-    True
-    >>> print os.path.isfile("/etc")
-    False
-    >>> print os.path.isfile("/does/not/exist")
-    False
-    >>> print os.path.exists("/etc/password.txt")
-    True
-    >>> print os.path.exists("/etc")
-    True
-    >>> print os.path.exists("/does/not/exist")
-    False
-    '''
-
     if( os.path.exists("dials.state") ):
         msgBox = QMessageBox()
         msgBox.setText("DUI Already ran from same dir")
         msgBox.setInformativeText("Reload?")
-        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
         msgBox.setDefaultButton(QMessageBox.Save)
         ret = msgBox.exec_()
 
@@ -110,9 +95,15 @@ def check_previous_runs():
         if( ret == QMessageBox.Yes ):
             print "Clicked YES \n"
 
+        elif( ret ==  QMessageBox.Cancel ):
+            print "Clicked CANCEL \n"
+            return False
+
         else:
             print "Clicked NO \n"
+            os.rename("dials.state", "dials.state.old")
 
+    return True
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -121,7 +112,9 @@ class MainWidget(QMainWindow):
 
         print "\n MainWidget(ID) =", self.winId(), "\n"
 
-        check_previous_runs()
+        do_continue = check_previous_runs()
+        if( do_continue == False ):
+            sys.exit()
 
 
         # This flag will define the layout orientation of the left side
