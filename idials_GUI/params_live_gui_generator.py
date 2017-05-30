@@ -371,9 +371,11 @@ class PhilWidget( QWidget):
                         for indx in range(obj.type.size_max):
                             tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
                             self.bg_box.addLayout(tmp_h_box_lst[indx])
+
         print "\n\n Non added parameters:"
         for lin_to_print in non_added_lst:
             print lin_to_print
+
         print "\n\n"
 
 

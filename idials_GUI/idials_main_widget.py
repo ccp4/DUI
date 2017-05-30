@@ -79,12 +79,50 @@ class CentreWidget( QWidget):
         self.show()
 
 
+def check_previous_runs():
+    #print "\n\n", dir(os), "\n\n"
+    print "os.path.exists(\"dials.state\") =", os.path.exists("dials.state")
+
+    example = '''
+    >>> print os.path.isfile("/etc/password.txt")
+    True
+    >>> print os.path.isfile("/etc")
+    False
+    >>> print os.path.isfile("/does/not/exist")
+    False
+    >>> print os.path.exists("/etc/password.txt")
+    True
+    >>> print os.path.exists("/etc")
+    True
+    >>> print os.path.exists("/does/not/exist")
+    False
+    '''
+
+    if( os.path.exists("dials.state") ):
+        msgBox = QMessageBox()
+        msgBox.setText("DUI Already ran from same dir")
+        msgBox.setInformativeText("Reload?")
+        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msgBox.setDefaultButton(QMessageBox.Save)
+        ret = msgBox.exec_()
+
+        print "\n ret =\n", ret, "\n"
+        if( ret == QMessageBox.Yes ):
+            print "Clicked YES \n"
+
+        else:
+            print "Clicked NO \n"
+
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
         self.super_parent = self
 
-        print "\n\n MainWidget(ID) =", self.winId(), "\n\n"
+        print "\n MainWidget(ID) =", self.winId(), "\n"
+
+        check_previous_runs()
+
 
         # This flag will define the layout orientation of the left side
         # area of the GUI and therefore needs to be taking into account when
