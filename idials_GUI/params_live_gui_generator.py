@@ -162,7 +162,7 @@ class PhilWidget( QWidget):
         something_else = False
         self.lst_wgs = []
 
-        print "\n advanced parameters GUI:\n"
+        #print "\n advanced parameters GUI:\n"
 
         non_added_lst = []
 
@@ -170,7 +170,7 @@ class PhilWidget( QWidget):
 
             if( str(type(obj))[-11:-2] == "ScopeData"):
                 tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
-                print tmp_str
+                #print tmp_str
                 tmp_widg = QLabel(tmp_str)
                 tmp_widg.setAutoFillBackground(True)
                 tmp_widg.setPalette(self.plt_scp)
@@ -365,7 +365,7 @@ class PhilWidget( QWidget):
                             tmp_h_box.addWidget(tmp_widg)
                             self.bg_box.addLayout(tmp_h_box)
                             self.lst_wgs.append(tmp_widg)
-                            print tmp_str
+                            #print tmp_str
 
                     else:
                         for indx in range(obj.type.size_max):
