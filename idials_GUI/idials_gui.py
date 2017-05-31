@@ -357,7 +357,7 @@ class IdialsInnerrWidget( QWidget):
         self._update_tree()
 
     def stop_clicked(self):
-        import os
+        #import os
         print "\n_____________ << Stopping >>_____________\n "
 
         my_process = self.thrd.to_run.state.command.external_command.command_run.process
@@ -402,7 +402,7 @@ class IdialsInnerrWidget( QWidget):
     def finished_thread(self):
         self._update_tree()
 
-        print "\n_____________\n _____________________________________________________finished_thread(self) \n_____________\n"
+        print "\n _____________________________________________________finished_thread(self) \n"
 
         self.super_parent.update_after_command_end()
 

@@ -116,7 +116,7 @@ class MainWidget(QMainWindow):
 
         ini_template_path = None
         if( len(sys.argv) > 1 ):
-            ini_template_path = sys.argv[1]
+            ini_template_path = str(sys.argv[1])
             print "must import with template:", ini_template_path, "\n"
             if( os.path.exists("dials.state") ):
                 os.rename("dials.state", "dials.state.old")
@@ -277,14 +277,18 @@ class MainWidget(QMainWindow):
             self.idials_widget.goto(ini_index)
 
 
-        self.main_widget = QWidget()
-        self.main_widget.setLayout(main_box)
-        self.setCentralWidget(self.main_widget)
-
         if( ini_template_path != None ):
             print "\n\n Time to import with template:"
             print ini_template_path, "\n"
+            self.idials_widget.change_mode("import")
+            self.widg_lst[0].templ_lin.setText(ini_template_path)
+            self.widg_lst[0].done_import = True
+            self._refresh_stacked_widget(self.widg_lst[0])
+            self.btn_go_clicked()
 
+        self.main_widget = QWidget()
+        self.main_widget.setLayout(main_box)
+        self.setCentralWidget(self.main_widget)
 
     def closeEvent(self, event):
         try:
@@ -458,7 +462,7 @@ class MainWidget(QMainWindow):
                 print "\n\n <<< failed to import  >>> \n\n"
 
             elif( current_command == "import" ):
-                self.current_widget.success_stat = True
+                self.current_widget.done_import = True
 
             elif( current_command == "refine_bravais_settings" ):
                 self.pop_reindex_gui()

@@ -170,14 +170,13 @@ class ImportPage(QWidget):
         self.setLayout(big_layout)
         self.show()
 
-        self.success_stat = False
+        self.done_import = False
 
     def __call__(self):
         print "from __call__   << import page >>"
-
-        if( self.success_stat == False ):
+        if( self.done_import == False ):
             self.find_my_img_dir()
-            print "( self.success_stat == False )  == False"
+            print "( self.done_import == False )"
 
     def find_my_img_dir(self, event = None):
 
