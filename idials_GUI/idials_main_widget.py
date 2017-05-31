@@ -114,9 +114,17 @@ class MainWidget(QMainWindow):
 
         print "sys.argv =", sys.argv, "\n"
 
-        do_continue = check_previous_runs()
-        if( do_continue == False ):
-            sys.exit()
+        ini_template_path = None
+        if( len(sys.argv) > 1 ):
+            ini_template_path = sys.argv[1]
+            print "must import with template:", ini_template_path, "\n"
+            if( os.path.exists("dials.state") ):
+                os.rename("dials.state", "dials.state.old")
+
+        else:
+            do_continue = check_previous_runs()
+            if( do_continue == False ):
+                sys.exit()
 
         # This flag will define the layout orientation of the left side
         # area of the GUI and therefore needs to be taking into account when
@@ -273,6 +281,11 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
+        if( ini_template_path != None ):
+            print "\n\n Time to import with template:"
+            print ini_template_path, "\n"
+
+
     def closeEvent(self, event):
         try:
             self.reindex_tool.close()
@@ -315,11 +328,6 @@ class MainWidget(QMainWindow):
 
         elif( current_command == "clean" ):
             cmd_next = "import"
-
-            failed_attempt = '''
-        elif( current_command == "refine_bravais_settings" ):
-            cmd_next = "reindex"
-            '''
 
         else:
             cmd_next = None
