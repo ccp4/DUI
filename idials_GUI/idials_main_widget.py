@@ -485,7 +485,7 @@ class MainWidget(QMainWindow):
                         self._active_btn(btn)
 
 
-    def jump(self, cmd_name = None, new_url = None):
+    def jump(self, new_url = None):
 
         #TODO cmd_name does not have any use any more
         if( self.running == False ):

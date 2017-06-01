@@ -177,7 +177,7 @@ class IdialsOuterWidget( QWidget):
         self.setWindowTitle('iDIALS dialog')
         self.show()
 
-    def jump(self, cmd_name = None, new_url = None):
+    def jump(self, new_url = None):
         print "\n MainWidget swishing to", cmd_name, "\n\n"
         self.txt_out.append_green("something green")
 
@@ -299,7 +299,7 @@ class IdialsInnerrWidget( QWidget):
         except:
             html_rep = None
 
-        self.super_parent.jump(self.next_cmd, html_rep)
+        self.super_parent.jump(html_rep)
         self.update_info()
         # this is NOT the only place where self.update_info gets called
 
