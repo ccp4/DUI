@@ -290,14 +290,6 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-    def closeEvent(self, event):
-        try:
-            self.reindex_tool.close()
-            self.reindex_tool = None
-        except:
-            print "no need to close reindex tool"
-
-        self.close()
 
     def _active_btn(self, my_sender):
         self.idials_widget.change_mode(my_sender.command)
@@ -415,28 +407,6 @@ class MainWidget(QMainWindow):
         else:
             self.idials_widget.failed = None
 
-    def pop_reindex_gui(self):
-        print "  <<< Time to show the table "
-        sumr_path = self.idials_widget.controller.get_summary()
-        if( self.embedded_reindex ):
-            self.step_param_widg.setCurrentWidget(self.reindex_tool)
-            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
-
-        else:
-            self.reindex_tool = MyReindexOpts()
-            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
-            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
-
-        self.btn_go.setText("reindex")
-
-    def start_pbar_motion(self):
-        self.bottom_bar_n_info.setText("Running")
-        self.bottom_bar_n_info.start_motion()
-
-    def update_pbar_text(self, rtime_text):
-        if( len(rtime_text) > 3):
-            self.bottom_bar_n_info.setText(rtime_text)
-
     def update_after_command_end(self):
         self.bottom_bar_n_info.end_motion()
         self.bottom_bar_n_info.setText("Done")
@@ -497,75 +467,6 @@ class MainWidget(QMainWindow):
             #TODO show in the GUI that something went WRONG
 
 
-    def _update_img(self):
-        print "attempting to update imgs"
-        json_file_path = None
-        refl_pikl_path = None
-
-        try:
-            json_file_path = str(self.idials_widget.controller.get_current().datablock)
-            print "\n images from:", json_file_path, "\n"
-
-        except:
-            print "\n <<< trying deeper search for datablock.json"
-
-            try:
-                #current = self.controller.get_current()
-                #previous = current.parent
-                current = self.idials_widget.controller.get_current()
-                for times in xrange(50):
-                    previous = current.parent
-                    if( str(previous.name) =="import"  ):
-                        print "found <<< import >>> "
-
-                        json_file_path = str(previous.datablock)
-                        print "\n images from:", json_file_path, "\n\n"
-                        break
-
-                    else:
-                        print "tmp step = ", current.name
-                        current = previous
-
-            except:
-                print "<<<  failed to find datablock.json  >>>"
-
-        try:
-            refl_pikl_path = self.idials_widget.controller.get_current().reflections
-
-        except:
-            print "failed to find << refl_pikl_path >>"
-
-        self.output_wg.img_view.ini_datablock(json_file_path)
-        self.output_wg.img_view.ini_reflection_table(refl_pikl_path)
-
-        to_work_on_in_the_future = '''
-
-        try:
-            exp_json_path = self.idials_widget.controller.get_current().experiments
-            print "exp_json_path =", exp_json_path
-
-        except:
-            print "failed to find << exp_json_path >>"
-
-        '''
-
-
-
-    def update_report(self, report_path):
-        print "\n MainWidget update report with:", report_path
-        self.output_wg.web_view.update_page(report_path)
-
-    def _refresh_stacked_widget(self, new_widget):
-        self.step_param_widg.setCurrentWidget(new_widget)
-        self._refrech_btn_look()
-        self.current_widget = new_widget
-
-        try:
-            self.current_widget()
-            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
-
-        except:
-            print "\n no __call__ in ", self.current_widget, "\n"
 
     def btn_clicked(self):
         if( self.running == False ):
@@ -644,6 +545,114 @@ class MainWidget(QMainWindow):
                 self.btn_go_clicked()
 
             self.old_opnum = opt_num
+
+
+    def pop_reindex_gui(self):
+        print "  <<< Time to show the table "
+        sumr_path = self.idials_widget.controller.get_summary()
+        if( self.embedded_reindex ):
+            self.step_param_widg.setCurrentWidget(self.reindex_tool)
+            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
+
+        else:
+            self.reindex_tool = MyReindexOpts()
+            self.step_param_widg.setCurrentWidget(self.tmp_reindex_widg)
+            self.reindex_tool.set_ref(parent = self , in_json_path = sumr_path)
+
+        self.btn_go.setText("reindex")
+
+
+
+    def _update_img(self):
+        print "attempting to update imgs"
+        json_file_path = None
+        refl_pikl_path = None
+
+        try:
+            json_file_path = str(self.idials_widget.controller.get_current().datablock)
+            print "\n images from:", json_file_path, "\n"
+
+        except:
+            print "\n <<< trying deeper search for datablock.json"
+
+            try:
+                #current = self.controller.get_current()
+                #previous = current.parent
+                current = self.idials_widget.controller.get_current()
+                for times in xrange(50):
+                    previous = current.parent
+                    if( str(previous.name) =="import"  ):
+                        print "found <<< import >>> "
+
+                        json_file_path = str(previous.datablock)
+                        print "\n images from:", json_file_path, "\n\n"
+                        break
+
+                    else:
+                        print "tmp step = ", current.name
+                        current = previous
+
+            except:
+                print "<<<  failed to find datablock.json  >>>"
+
+        try:
+            refl_pikl_path = self.idials_widget.controller.get_current().reflections
+
+        except:
+            print "failed to find << refl_pikl_path >>"
+
+        self.output_wg.img_view.ini_datablock(json_file_path)
+        self.output_wg.img_view.ini_reflection_table(refl_pikl_path)
+
+        to_work_on_in_the_future = '''
+
+        try:
+            exp_json_path = self.idials_widget.controller.get_current().experiments
+            print "exp_json_path =", exp_json_path
+
+        except:
+            print "failed to find << exp_json_path >>"
+
+        '''
+
+
+
+    def update_report(self, report_path):
+        print "\n MainWidget update report with:", report_path
+        self.output_wg.web_view.update_page(report_path)
+
+    def _refresh_stacked_widget(self, new_widget):
+        self.step_param_widg.setCurrentWidget(new_widget)
+        self._refrech_btn_look()
+        self.current_widget = new_widget
+
+        try:
+            self.current_widget()
+            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
+
+        except:
+            print "\n no __call__ in ", self.current_widget, "\n"
+
+
+
+
+    def closeEvent(self, event):
+        try:
+            self.reindex_tool.close()
+            self.reindex_tool = None
+        except:
+            print "no need to close reindex tool"
+
+        self.close()
+
+    def start_pbar_motion(self):
+        self.bottom_bar_n_info.setText("Running")
+        self.bottom_bar_n_info.start_motion()
+
+    def update_pbar_text(self, rtime_text):
+        if( len(rtime_text) > 3):
+            self.bottom_bar_n_info.setText(rtime_text)
+
 
 
 if __name__ == '__main__':
