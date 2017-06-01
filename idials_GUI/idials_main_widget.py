@@ -407,16 +407,13 @@ class MainWidget(QMainWindow):
         print "self.idials_widget.failed =", self.idials_widget.failed
         print "...controller.get_current().success", self.idials_widget.controller.get_current().success
 
-        unstable_if_test = '''
-        if( self.running == False and
-            self.idials_widget.controller.get_current().success == True ):
-        '''
-
         if( self.running == False and self.idials_widget.failed == None ):
-
             self._gray_unwanted()
             self.idials_widget.run_clicked()
             self.running = True
+
+        else:
+            self.idials_widget.failed = None
 
     def pop_reindex_gui(self):
         print "  <<< Time to show the table "
@@ -459,7 +456,7 @@ class MainWidget(QMainWindow):
                 print "Not supposed to update report"
 
             if( current_command == "clean" ):
-                print "\n\n <<< failed to import  >>> \n\n"
+                print "\n <<< NO success on import yet  >>> \n"
 
             elif( current_command == "import" ):
                 self.current_widget.done_import = True
@@ -564,7 +561,6 @@ class MainWidget(QMainWindow):
         self.current_widget = new_widget
 
         try:
-            print "controller.get_current().name =", self.idials_widget.controller.get_current().name
             self.current_widget()
             print "controller.get_current().success =", self.idials_widget.controller.get_current().success
 

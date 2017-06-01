@@ -143,12 +143,6 @@ class ImportPage(QWidget):
     this widget.
     '''
 
-    # FIXME when the user enters a path without images dials fails to import
-    # but does not raises an error consequently there is no red output in the GUI
-
-    # FIXME study the file:
-    # Dxtbx/sweep_filenames.py
-
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
         self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
