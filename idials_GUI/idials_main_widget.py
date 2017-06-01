@@ -291,6 +291,13 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
 
+    def openFile(self):
+        print "openFile"
+        if( self.running == False ):
+            my_sender = self.btn_lst[0]
+            # this is not the only place where _active_btn gets called
+            self._active_btn(my_sender)
+
     def _active_btn(self, my_sender):
         self.idials_widget.change_mode(my_sender.command)
         self._refresh_stacked_widget(my_sender.par_wig)
@@ -306,16 +313,6 @@ class MainWidget(QMainWindow):
 
 
 
-    def openFile(self):
-        print "openFile"
-        if( self.running == False ):
-            my_sender = self.btn_lst[0]
-            # this is not the only place where _active_btn gets called
-            self._active_btn(my_sender)
-
-    def quit(self):
-        print "quit"
-        self.closeEvent(QCloseEvent)
 
     def _find_next(self, current_command = None):
 
@@ -349,36 +346,6 @@ class MainWidget(QMainWindow):
                 else:
                     btn.setEnabled(False)
 
-    def togle_auto_next_step(self):
-        if( self.next_step_on == True):
-            self.next_step_on = False
-
-        else:
-            self.next_step_on = True
-
-        print "self.next_step_on =", self.next_step_on
-
-
-    def togle_text_rt(self):
-        print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
-        if( self.idials_widget.rtime_txt_on == True):
-            self.idials_widget.rtime_txt_on = False
-
-        else:
-            self.idials_widget.rtime_txt_on = True
-
-        print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
-
-    def togle_gray_out(self):
-        print "self.grayed_out_buttons =", self.grayed_out_buttons
-        if( self.grayed_out_buttons == True):
-            self.grayed_out_buttons = False
-
-        else:
-            self.grayed_out_buttons = True
-
-        print "self.grayed_out_buttons =", self.grayed_out_buttons
-        self._gray_unwanted()
 
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
@@ -633,7 +600,39 @@ class MainWidget(QMainWindow):
         except:
             print "\n no __call__ in ", self.current_widget, "\n"
 
+    def togle_auto_next_step(self):
+        if( self.next_step_on == True):
+            self.next_step_on = False
 
+        else:
+            self.next_step_on = True
+
+        print "self.next_step_on =", self.next_step_on
+
+    def togle_text_rt(self):
+        print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
+        if( self.idials_widget.rtime_txt_on == True):
+            self.idials_widget.rtime_txt_on = False
+
+        else:
+            self.idials_widget.rtime_txt_on = True
+
+        print "self.idials_widget.rtime_txt_on =", self.idials_widget.rtime_txt_on
+
+    def togle_gray_out(self):
+        print "self.grayed_out_buttons =", self.grayed_out_buttons
+        if( self.grayed_out_buttons == True):
+            self.grayed_out_buttons = False
+
+        else:
+            self.grayed_out_buttons = True
+
+        print "self.grayed_out_buttons =", self.grayed_out_buttons
+        self._gray_unwanted()
+
+    def quit(self):
+        print "quit"
+        self.closeEvent(QCloseEvent)
 
 
     def closeEvent(self, event):
