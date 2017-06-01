@@ -298,6 +298,24 @@ class MainWidget(QMainWindow):
             # this is not the only place where _active_btn gets called
             self._active_btn(my_sender)
 
+    def _refrech_btn_look(self):
+        for btn in self.btn_lst:
+            btn.setStyleSheet("background-color: lightgray")
+
+
+    def _refresh_stacked_widget(self, new_widget):
+        self.step_param_widg.setCurrentWidget(new_widget)
+        self._refrech_btn_look()
+        self.current_widget = new_widget
+
+        try:
+            self.current_widget()
+            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
+
+        except:
+            print "\n no __call__ in ", self.current_widget, "\n"
+
+
     def _active_btn(self, my_sender):
         self.idials_widget.change_mode(my_sender.command)
         self._refresh_stacked_widget(my_sender.par_wig)
@@ -346,13 +364,18 @@ class MainWidget(QMainWindow):
                 else:
                     btn.setEnabled(False)
 
-
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
         self.idials_widget.change_parameter(new_par_str)
 
     def reset_param(self):
         self.idials_widget.param_reset()
+
+    def btn_clicked(self):
+        if( self.running == False ):
+            my_sender = self.sender()
+            # this is not the only place where _active_btn gets called
+            self._active_btn(my_sender)
 
     def btn_stop_clicked(self):
         if( self.running == True ):
@@ -432,20 +455,6 @@ class MainWidget(QMainWindow):
         else:
             print "\n\n something went WRONG \n"
             #TODO show in the GUI that something went WRONG
-
-
-
-    def btn_clicked(self):
-        if( self.running == False ):
-            my_sender = self.sender()
-            # this is not the only place where _active_btn gets called
-            self._active_btn(my_sender)
-
-
-    def _refrech_btn_look(self):
-        for btn in self.btn_lst:
-            btn.setStyleSheet("background-color: lightgray")
-
 
     def check_next(self, current_command = "clean"):
         print "\n check_next(self)"
@@ -588,17 +597,6 @@ class MainWidget(QMainWindow):
         print "\n MainWidget update report with:", report_path
         self.output_wg.web_view.update_page(report_path)
 
-    def _refresh_stacked_widget(self, new_widget):
-        self.step_param_widg.setCurrentWidget(new_widget)
-        self._refrech_btn_look()
-        self.current_widget = new_widget
-
-        try:
-            self.current_widget()
-            print "controller.get_current().success =", self.idials_widget.controller.get_current().success
-
-        except:
-            print "\n no __call__ in ", self.current_widget, "\n"
 
     def togle_auto_next_step(self):
         if( self.next_step_on == True):
