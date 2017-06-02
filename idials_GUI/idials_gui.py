@@ -373,6 +373,7 @@ class IdialsInnerrWidget( QWidget):
         print "Running ", self.next_cmd, "\n"
         self.controller.set_mode(self.next_cmd)
         if( self.controller.get_mode() == "import" ):
+            self.controller.reset_parameters()
             tmpl_str = "template=" + str(self.super_parent.widg_lst[0].templ_lin.text())
             print "tmpl_str =", tmpl_str, "\n"
             self.change_parameter(tmpl_str)

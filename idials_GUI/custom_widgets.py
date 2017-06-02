@@ -164,13 +164,21 @@ class ImportPage(QWidget):
         self.setLayout(big_layout)
         self.show()
 
-        self.done_import = False
+        #TODO remove next commented stuff if appliable
+        #self.done_import = False
 
     def __call__(self):
         print "from __call__   << import page >>"
+        if( str(self.templ_lin.text()) == "template = ?" ):
+            self.find_my_img_dir()
+
+
+        #TODO remove next commented stuff if appliable
+        Deprecated = '''
         if( self.done_import == False ):
             self.find_my_img_dir()
             print "( self.done_import == False )"
+        '''
 
     def find_my_img_dir(self, event = None):
 
@@ -222,7 +230,7 @@ class ImportPage(QWidget):
         print "\ncalling:\n self.super_parent.idials_widget.failed == None\n"
         self.super_parent.idials_widget.failed = None
 
-        self.super_parent.check_next()
+        #self.super_parent.check_next()
 
 
 class ParamAdvancedWidget( QWidget):
