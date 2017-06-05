@@ -114,18 +114,19 @@ def check_previous_runs():
     print "os.path.exists(\"dials.state\") =", os.path.exists("dials.state")
 
     if( os.path.exists("dials.state") ):
+        #print "\n\n dir(QMessageBox):", dir(QMessageBox), "\n\n"
+
         msgBox = QMessageBox()
         msgBox.setText("Dui has already been run in this directory.   \n\nWould you like to resume your session?")
         msgBox.setInformativeText("Reload?")
-        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No | QMessageBox.Close)
         msgBox.setDefaultButton(QMessageBox.Save)
         ret = msgBox.exec_()
-
         print "\n ret =\n", ret, "\n"
         if( ret == QMessageBox.Yes ):
             print "Clicked YES \n"
 
-        elif( ret ==  QMessageBox.Cancel ):
+        elif( ret ==  QMessageBox.Close ):
             print "Clicked CANCEL \n"
             return False
 
