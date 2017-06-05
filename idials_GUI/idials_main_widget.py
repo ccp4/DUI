@@ -101,7 +101,35 @@ def check_previous_runs():
 
         else:
             print "Clicked NO \n"
-            os.rename("dials.state", "dials.state.old")
+
+            import json
+            with open("dials.state") as infile:
+                info = json.load(infile)
+
+            #print "\n json obj:\n", info, "\n"
+            inf_wsp = str(info['workspace'])
+            print "info'workspace' = <<", inf_wsp, ">>"
+
+            found_flag = False
+            try:
+                for pos in xrange(len(inf_wsp) - 6):
+                    str_tmp = inf_wsp[pos:pos + 6]
+                    if( str_tmp == "dials-" ):
+                        num_str = ".old-" + inf_wsp[pos + 6:]
+                        print "string to add to dials.state = <<", num_str, ">>"
+                        found_flag = True
+
+            except:
+                found_flag = False
+                print "found_flag = False"
+
+            if( found_flag == True ):
+                old_state_str = "dials.state" + num_str
+
+            else:
+                old_state_str = "dials.state.old"
+
+            os.rename("dials.state", old_state_str)
 
     return True
 
