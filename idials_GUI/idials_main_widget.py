@@ -78,6 +78,36 @@ class CentreWidget( QWidget):
         self.setLayout(main_box)
         self.show()
 
+def find_state_str():
+    import json
+    with open("dials.state") as infile:
+        info = json.load(infile)
+
+    #print "\n json obj:\n", info, "\n"
+    inf_wsp = str(info['workspace'])
+    print "info'workspace' = <<", inf_wsp, ">>"
+
+    found_flag = False
+    try:
+        for pos in xrange(len(inf_wsp) - 6):
+            str_tmp = inf_wsp[pos:pos + 6]
+            if( str_tmp == "dials-" ):
+                num_str = ".old-" + inf_wsp[pos + 6:]
+                print "string to add to dials.state = <<", num_str, ">>"
+                found_flag = True
+
+    except:
+        found_flag = False
+        print "found_flag = False"
+
+    if( found_flag == True ):
+        state_str = "dials.state" + num_str
+
+    else:
+        state_str = "dials.state.old"
+
+    return state_str
+
 
 def check_previous_runs():
     #print "\n\n", dir(os), "\n\n"
@@ -101,34 +131,7 @@ def check_previous_runs():
 
         else:
             print "Clicked NO \n"
-
-            import json
-            with open("dials.state") as infile:
-                info = json.load(infile)
-
-            #print "\n json obj:\n", info, "\n"
-            inf_wsp = str(info['workspace'])
-            print "info'workspace' = <<", inf_wsp, ">>"
-
-            found_flag = False
-            try:
-                for pos in xrange(len(inf_wsp) - 6):
-                    str_tmp = inf_wsp[pos:pos + 6]
-                    if( str_tmp == "dials-" ):
-                        num_str = ".old-" + inf_wsp[pos + 6:]
-                        print "string to add to dials.state = <<", num_str, ">>"
-                        found_flag = True
-
-            except:
-                found_flag = False
-                print "found_flag = False"
-
-            if( found_flag == True ):
-                old_state_str = "dials.state" + num_str
-
-            else:
-                old_state_str = "dials.state.old"
-
+            old_state_str = find_state_str()
             os.rename("dials.state", old_state_str)
 
     return True
@@ -147,7 +150,8 @@ class MainWidget(QMainWindow):
             ini_template_path = str(sys.argv[1])
             print "must import with template:", ini_template_path, "\n"
             if( os.path.exists("dials.state") ):
-                os.rename("dials.state", "dials.state.old")
+                old_state_str = find_state_str()
+                os.rename("dials.state", old_state_str)
 
         else:
             do_continue = check_previous_runs()
