@@ -505,7 +505,7 @@ class MyImgWin(QWidget):
                 print "tst_sample =",  tst_sample
 
                 i_mean = flex.mean(tst_sample)
-                tst_new_max = (i_mean + 1) * 15
+                tst_new_max = (i_mean + 1) * 25
 
                 print "flex.mean(tst_sample) =", i_mean
                 print "tst_new_max =", tst_new_max
