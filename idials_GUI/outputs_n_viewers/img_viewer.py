@@ -444,6 +444,8 @@ class MyImgWin(QWidget):
         self.flat_data_lst = [None]
         self.current_qimg = build_qimg()
 
+        self.contrast_initiated = False
+
         if( json_file_path == None ):
             print "\n no datablock given \n"
             n_of_imgs = 1
@@ -458,6 +460,9 @@ class MyImgWin(QWidget):
             self.ini_reflection_table(pckl_file_path)
 
         self.set_img()
+
+        #TODO Find a better way to call this function only onse
+        self.ini_contrast()
 
         self.img_select.valueChanged.connect(self.img_changed_by_user)
         self.img_step.valueChanged.connect(self.step_changed_by_user)
@@ -477,10 +482,42 @@ class MyImgWin(QWidget):
         self.setLayout(my_box)
         self.show()
 
+
+    def ini_contrast(self):
+        if( self.contrast_initiated == False ):
+            try:
+
+                n_of_imgs = len(self.my_sweep.indices())
+                print "n_of_imgs(ini_contrast) =", n_of_imgs
+
+                x_size, y_size = self.my_sweep.get_image_size()
+                print "x_size, y_size =", x_size, y_size
+
+                img_arr_n0 = self.my_sweep.get_raw_data(0)[0]
+                img_arr_n1 = self.my_sweep.get_raw_data(1)[0]
+                img_arr_n2 = self.my_sweep.get_raw_data(2)[0]
+
+                tst_sample = (
+                              img_arr_n0[0:25,0:25].as_double()
+                            + img_arr_n1[0:25,0:25].as_double()
+                            + img_arr_n2[0:25,0:25].as_double()
+                              ) / 3.0
+                print "tst_sample =",  tst_sample
+
+                i_mean = flex.mean(tst_sample)
+                tst_new_max = (i_mean + 1) * 15
+
+                print "flex.mean(tst_sample) =", i_mean
+                print "tst_new_max =", tst_new_max
+                self.max_edit.setText(str(int(tst_new_max)))
+                self.try_change_max(tst_new_max)
+                self.contrast_initiated = True
+
+            except:
+                print "\n unable to calculate mean and adjust contrast \n"
+
     def ini_datablock(self, json_file_path):
-
         if( json_file_path != None ):
-
             try:
                 datablocks = DataBlockFactory.from_json_file(json_file_path)
                 ##TODO check length of datablock for safety
@@ -501,8 +538,12 @@ class MyImgWin(QWidget):
                 self.num_of_imgs_to_add.setMaximum(n_of_imgs)
                 self.num_of_imgs_to_add.setMinimum(1)
 
+
             except:
                 print "Failed to load images from  datablock.json"
+
+        #TODO Find a better way to call this function only onse
+        self.ini_contrast()
 
 
     def ini_reflection_table(self, pckl_file_path):
@@ -569,6 +610,7 @@ class MyImgWin(QWidget):
                                             self.i_min, self.i_max),
                                             self.flat_data_lst[img_pos:img_pos + loc_stk_siz])
 
+
     def Action1(self):
         #TODO fix the name of this function
         print "rad_but_all_hkl clicked"
@@ -602,11 +644,15 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def max_changed_by_user(self):
-        new_value = self.max_edit.text()
+        self.try_change_max(self.max_edit.text())
+
+    def try_change_max(self, new_value):
         try:
             self.i_max = int(new_value)
+
         except:
             self.i_max = 0
+
         self.set_img()
 
     def palette_changed_by_user(self, new_palette_num):
