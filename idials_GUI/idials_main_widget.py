@@ -92,7 +92,7 @@ def find_state_str():
         for pos in xrange(len(inf_wsp) - 6):
             str_tmp = inf_wsp[pos:pos + 6]
             if( str_tmp == "dials-" ):
-                num_str = ".old-" + inf_wsp[pos + 6:]
+                num_str = "-" + inf_wsp[pos + 6:]
                 print "string to add to dials.state = <<", num_str, ">>"
                 found_flag = True
 
@@ -101,7 +101,7 @@ def find_state_str():
         print "found_flag = False"
 
     if( found_flag == True ):
-        state_str = "dials.state" + num_str
+        state_str = "dials" + num_str + ".state"
 
     else:
         state_str = "dials.state.old"
@@ -460,13 +460,6 @@ class MainWidget(QMainWindow):
 
             if( current_command == "clean" ):
                 print "\n <<< NO success on import yet  >>> \n"
-
-                Deprecated = '''
-
-            elif( current_command == "import" ):
-                self.current_widget.done_import = True
-
-                '''
 
             elif( current_command == "refine_bravais_settings" ):
                 self.pop_reindex_gui()
