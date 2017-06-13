@@ -29,7 +29,6 @@ import numpy as np
 
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
-from dxtbx.datablock import DataBlockFactory
 
 from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, lst_arange
 from time import time as time_now

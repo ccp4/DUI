@@ -22,6 +22,7 @@ copyright (c) CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import sys, os
+import json
 
 from python_qt_bind import *
 
@@ -30,6 +31,8 @@ from idials_gui import IdialsInnerrWidget
 from outputs_gui import outputs_widget
 from dynamic_reindex_gui import MyReindexOpts
 from outputs_gui import InfoWidget
+from outputs_n_viewers.info_handler import update_all_data
+
 
 class Text_w_Bar(QProgressBar):
 
@@ -78,8 +81,43 @@ class CentreWidget( QWidget):
         self.setLayout(main_box)
         self.show()
 
+def from_path_to_dnum(inf_wsp):
+
+    found_flag = False
+    num_str = -1
+    try:
+        for pos in xrange(len(inf_wsp) - 6):
+            str_tmp = inf_wsp[pos:pos + 6]
+            if( str_tmp == "dials-" ):
+                num_str = "-" + inf_wsp[pos + 6:]
+                print "num in workspase = <<", num_str, ">>"
+                found_flag = True
+
+    except:
+        found_flag = False
+        print "found_flag = False"
+
+    return found_flag, num_str
+
+Deprecated = '''
+def find_mtz_name(refl_pikl_path = None, expr_json_path = None):
+    tmp_dat = update_all_data( reflections_path = refl_pikl_path, experiments_path = expr_json_path )
+    outp_sp_grp = tmp_dat.spg_group
+    print "refl_pikl_path =", refl_pikl_path
+    print "outp_sp_grp =", outp_sp_grp
+    found_flag, num_str = from_path_to_dnum(refl_pikl_path)
+
+    if(found_flag == True ):
+        out_mtz_str = "integrated_" + outp_sp_grp+ "from_dials_" + num_str + ".mtz"
+
+    else:
+        out_mtz_str = "integrated_" + outp_sp_grp + ".mtz"
+
+    print "out_mtz_str =", out_mtz_str, "\n\n"
+    #refl_pikl_path = "/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_01/dials-2/22_integrate/reflections.pickle"
+'''
+
 def find_state_str():
-    import json
     with open("dials.state") as infile:
         info = json.load(infile)
 
@@ -87,6 +125,9 @@ def find_state_str():
     inf_wsp = str(info['workspace'])
     print "info'workspace' = <<", inf_wsp, ">>"
 
+    found_flag, num_str = from_path_to_dnum(inf_wsp)
+
+    moving = '''
     found_flag = False
     try:
         for pos in xrange(len(inf_wsp) - 6):
@@ -99,6 +140,7 @@ def find_state_str():
     except:
         found_flag = False
         print "found_flag = False"
+    '''
 
     if( found_flag == True ):
         state_str = "dials" + num_str + ".state"
@@ -173,7 +215,7 @@ class MainWidget(QMainWindow):
         label_lst, self.widg_lst, icon_lst, self.command_lst = my_lst()
 
         #My_style = Qt.ToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        self.setWindowTitle('DUI / idials')
+        self.setWindowTitle('DUI/idials')
 
         self.btn_lst = []
         for pos, step_data in enumerate(label_lst):
@@ -478,6 +520,15 @@ class MainWidget(QMainWindow):
                     self.reindex_tool = None
 
             elif( current_command == "integrate" ):
+
+                print "\n\n     <<<  Generating data for MTZ naming \n\n"
+
+                Deprecated = '''
+                pikl_path = self.idials_widget.controller.get_current().reflections
+                json_path = self.idials_widget.controller.get_current().experiments
+                find_mtz_name(refl_pikl_path = pikl_path, expr_json_path = json_path)
+                '''
+
                 self.idials_widget.change_mode("export")
                 self.btn_go_clicked()
 

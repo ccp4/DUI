@@ -338,6 +338,16 @@ class IdialsInnerrWidget( QWidget):
         yb_p_siz = self.super_parent.info_widget.all_data.y_px_size
         xb = self.super_parent.info_widget.all_data.xb
         yb = self.super_parent.info_widget.all_data.yb
+
+        try:
+            tmpl_str = self.super_parent.info_widget.all_data.tmpl_str
+            print "\ntemplate ( from info_widget ) =", tmpl_str, "\n"
+            title_str = "DUI/idials: " + tmpl_str
+            self.super_parent.setWindowTitle(title_str)
+
+        except:
+            print "failed to << setWindowTitle >>"
+
         if( xb != None and yb != None and xb_p_siz != None and yb_p_siz != None ):
             xb = xb / xb_p_siz
             yb = yb / yb_p_siz

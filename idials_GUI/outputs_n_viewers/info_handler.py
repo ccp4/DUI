@@ -25,6 +25,7 @@ from dxtbx.model.experiment_list import ExperimentListFactory
 from dxtbx.model import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
+import json
 
 class InfoData(object):
     def __init__(self):
@@ -64,6 +65,8 @@ class InfoData(object):
         self.n_refnd = None
         self.n_integ_sum = None
         self.n_integ_prf = None
+
+        self.tmpl_str = None
 
 def update_all_data(reflections_path = None, experiments_path = None):
     dat = InfoData()
@@ -188,6 +191,31 @@ def update_all_data(reflections_path = None, experiments_path = None):
         dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
         dat.gain = pnl.get_gain()
         dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
+
+
+        # manually finding template from experiments_path
+
+        try:
+            with open(experiments_path) as infile:
+                json_info = json.load(infile)
+
+
+            if( type(json_info) is dict ):
+                print "found Dictionary"
+                imageset = json_info['imageset']
+
+            elif( type(json_info) is list ):
+                print "found List"
+                imageset = json_info[0]['imageset']
+
+            dat.tmpl_str = imageset[0]['template']
+
+            print "dat.tmpl_str =", dat.tmpl_str
+
+        except:
+            print "failed to find template in JSON file"
+
+
 
     return dat
 
