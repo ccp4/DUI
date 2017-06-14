@@ -100,24 +100,6 @@ def from_path_to_dnum(inf_wsp):
     return found_flag, num_str
 
 
-Deprecated = '''
-def find_mtz_name(refl_pikl_path = None, expr_json_path = None):
-    tmp_dat = update_all_data( reflections_path = refl_pikl_path, experiments_path = expr_json_path )
-    outp_sp_grp = tmp_dat.spg_group
-    print "refl_pikl_path =", refl_pikl_path
-    print "outp_sp_grp =", outp_sp_grp
-    found_flag, num_str = from_path_to_dnum(refl_pikl_path)
-
-    if(found_flag == True ):
-        out_mtz_str = "integrated_" + outp_sp_grp+ "from_dials_" + num_str + ".mtz"
-
-    else:
-        out_mtz_str = "integrated_" + outp_sp_grp + ".mtz"
-
-    print "out_mtz_str =", out_mtz_str, "\n\n"
-    #refl_pikl_path = "/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_01/dials-2/22_integrate/reflections.pickle"
-'''
-
 
 def build_mtz_str(str_in):
     str_out = str_in
@@ -135,7 +117,6 @@ def build_mtz_str(str_in):
             str_out = str_out[:pos] + "n" + str_out[pos + 1:]
 
     str_out = str_out[last_fwsl + 1:last_point] + "_hkl_out"
-
     print "str_out(mtz_name) =", str_out
 
     return str_out
@@ -149,21 +130,6 @@ def find_state_str():
     print "info'workspace' = <<", inf_wsp, ">>"
 
     found_flag, num_str = from_path_to_dnum(inf_wsp)
-
-    moving = '''
-    found_flag = False
-    try:
-        for pos in xrange(len(inf_wsp) - 6):
-            str_tmp = inf_wsp[pos:pos + 6]
-            if( str_tmp == "dials-" ):
-                num_str = "-" + inf_wsp[pos + 6:]
-                print "string to add to dials.state = <<", num_str, ">>"
-                found_flag = True
-
-    except:
-        found_flag = False
-        print "found_flag = False"
-    '''
 
     if( found_flag == True ):
         state_str = "dials" + num_str + ".state"
@@ -438,7 +404,17 @@ class MainWidget(QMainWindow):
             print "\n This step runs as fas as it can with nproc = 1 \n"
 
 
+        try:
+            self.mtz_name = build_mtz_str(self.info_widget.all_data.tmpl_str) + ".mtz"
 
+        except:
+            self.mtz_name = "hkl_out.mtz"
+
+        try:
+            my_sender.par_wig.sipler_widget.mtz_name_lin.setText(self.mtz_name)
+
+        except:
+            print "failed to update mtz_name"
 
     def _find_next(self, current_command = None):
 
@@ -472,6 +448,9 @@ class MainWidget(QMainWindow):
                 else:
                     btn.setEnabled(False)
 
+    def mtz_name_changed(self, new_value):
+        self.mtz_name = str(new_value)
+        #self.widg_lst[  ...  ]  .sipler_widget.mtz_name_lin.setText(self.mtz_name)
     def param_changed(self, new_par_str):
         print "\n MainWidget, param_changed, new_par_str =", new_par_str
         self.idials_widget.change_parameter(new_par_str)
@@ -544,25 +523,11 @@ class MainWidget(QMainWindow):
 
             elif( current_command == "integrate" ):
 
-                print "\n\n     <<<  Generating data for MTZ naming \n\n"
 
-                Deprecated = '''
-                pikl_path = self.idials_widget.controller.get_current().reflections
-                json_path = self.idials_widget.controller.get_current().experiments
-                find_mtz_name(refl_pikl_path = pikl_path, expr_json_path = json_path)
-                '''
-
-                try:
-                    mtz_name = build_mtz_str(self.info_widget.all_data.tmpl_str)
-
-                except:
-                    mtz_name = "hkl_out"
-
-                print "\n\n mtz OUT =", mtz_name, "\n\n"
+                print "mtz OUT =", self.mtz_name
 
                 self.idials_widget.change_mode("export")
-                self.idials_widget.change_parameter("mtz.hklout=" + mtz_name + ".mtz")
-                #self.idials_widget.change_parameter("mtz.hklout=th_8_2_nnnn_hkl_out.mtz")
+                self.idials_widget.change_parameter("mtz.hklout=" + self.mtz_name)
 
                 self.btn_go_clicked()
 

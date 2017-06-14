@@ -286,6 +286,13 @@ class IntegrateSimplerParamTab( QWidget):
         localLayout.addLayout(hbox_lay_nproc)
 
         localLayout.addStretch(1)
+
+        self.mtz_name_lin =   QLineEdit(self)
+        self.mtz_name_lin.setText("hkl_out.mtz")
+        localLayout.addWidget(QLabel("mtz output name:"))
+        localLayout.addWidget(self.mtz_name_lin)
+        self.mtz_name_lin.textChanged.connect(self.mtz_name_changed)
+
         self.setLayout(localLayout)
 
         self.lst_wgs = []
@@ -311,9 +318,8 @@ class IntegrateSimplerParamTab( QWidget):
         cpu_max_proc = libtbx.introspection.number_of_processors()
         self.box_nproc.setValue(int(cpu_max_proc))
 
-
-
-
+    def mtz_name_changed(self, value):
+        self.param_widget_parent.super_parent.mtz_name_changed(value)
 
 class TmpTstWidget( QWidget):
 
