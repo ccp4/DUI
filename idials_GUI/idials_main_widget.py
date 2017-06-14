@@ -99,6 +99,7 @@ def from_path_to_dnum(inf_wsp):
 
     return found_flag, num_str
 
+
 Deprecated = '''
 def find_mtz_name(refl_pikl_path = None, expr_json_path = None):
     tmp_dat = update_all_data( reflections_path = refl_pikl_path, experiments_path = expr_json_path )
@@ -116,6 +117,28 @@ def find_mtz_name(refl_pikl_path = None, expr_json_path = None):
     print "out_mtz_str =", out_mtz_str, "\n\n"
     #refl_pikl_path = "/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_01/dials-2/22_integrate/reflections.pickle"
 '''
+
+
+def build_mtz_str(str_in):
+    str_out = str_in
+    last_fwsl = -1
+    last_point = len(str_out) - 1
+
+    for pos, singe_shar in enumerate(str_in):
+        if( singe_shar == "/" ):
+            last_fwsl = pos
+
+        if( singe_shar == "." ):
+            last_point = pos
+
+        if( singe_shar == "#" ):
+            str_out = str_out[:pos] + "n" + str_out[pos + 1:]
+
+    str_out = str_out[last_fwsl + 1:last_point] + "_hkl_out"
+
+    print "str_out(mtz_name) =", str_out
+
+    return str_out
 
 def find_state_str():
     with open("dials.state") as infile:
@@ -529,7 +552,18 @@ class MainWidget(QMainWindow):
                 find_mtz_name(refl_pikl_path = pikl_path, expr_json_path = json_path)
                 '''
 
+                try:
+                    mtz_name = build_mtz_str(self.info_widget.all_data.tmpl_str)
+
+                except:
+                    mtz_name = "hkl_out"
+
+                print "\n\n mtz OUT =", mtz_name, "\n\n"
+
                 self.idials_widget.change_mode("export")
+                self.idials_widget.change_parameter("mtz.hklout=" + mtz_name + ".mtz")
+                #self.idials_widget.change_parameter("mtz.hklout=th_8_2_nnnn_hkl_out.mtz")
+
                 self.btn_go_clicked()
 
             elif(current_command != "export"):

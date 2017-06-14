@@ -13,8 +13,6 @@ def build_mtz_str(str_in):
         if( singe_shar == "#" ):
             str_out = str_out[:pos] + "n" + str_out[pos + 1:]
 
-
-
     str_out = str_out[last_fwsl + 1:last_point] + "_hkl_out"
 
     print "str_out(mtz_name) =", str_out
