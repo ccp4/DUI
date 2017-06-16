@@ -3,8 +3,8 @@ import sys
 def prin_lst(lst, curr):
     for uni in lst:
         stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm) + " nxt: " + str(uni.nxt_com)
-        if( uni.nxt_com is not None ):
-            stp_str += " nxt lin: " + str(uni.nxt_com.lin_num)
+        if( uni.nxt_com is not [None] ):
+            stp_str += " nxt lin: " + str(uni.nxt_com[1].lin_num)
 
         if( curr == uni.lin_num ):
             stp_str += " <<< here I am <<<"
@@ -13,7 +13,7 @@ def prin_lst(lst, curr):
 
 class uni_step(object):
     lin_num = 0
-    nxt_com = None
+    nxt_com = [None]
     def __init__(self, parent):
         self.parent = parent
         self.my_comm = None
@@ -21,7 +21,7 @@ class uni_step(object):
     def __call__(self, cmd_lst):
         print "<< running >>", cmd_lst
         self.my_comm = cmd_lst
-        self.nxt_com = uni_step(self)
+        self.nxt_com.append(uni_step(self))
 
 class runner(object):
     commands = ['ls', 'echo', 'cat']
@@ -41,7 +41,7 @@ class runner(object):
             self.step_lst[self.current](cmd_lst)
 
             #creating new empty node
-            new_step = self.step_lst[self.current].nxt_com
+            new_step = self.step_lst[self.current].nxt_com[1]
             self.bigger_lin += 1
             new_step.lin_num = self.bigger_lin
             self.step_lst.append(new_step)
