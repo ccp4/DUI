@@ -3,8 +3,10 @@ import sys
 def prin_lst(lst, curr):
     for uni in lst:
         stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm) + " nxt: " + str(uni.nxt_com)
+        '''
         if( uni.nxt_com is not [None] ):
             stp_str += " nxt lin: " + str(uni.nxt_com[1].lin_num)
+        '''
 
         if( curr == uni.lin_num ):
             stp_str += " <<< here I am <<<"
@@ -12,9 +14,9 @@ def prin_lst(lst, curr):
         print stp_str
 
 class uni_step(object):
-    lin_num = 0
-    nxt_com = [None]
     def __init__(self, parent):
+        self.lin_num = 0
+        self.nxt_com = [None]
         self.parent = parent
         self.my_comm = None
 
