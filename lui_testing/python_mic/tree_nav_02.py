@@ -1,6 +1,14 @@
-def prin_lst(lst):
-    for u_stp in lst:
-        print u_stp.lin_num, "my_comm:", u_stp.my_comm, "nxt_com:", u_stp.nxt_com
+def prin_lst(lst, curr):
+    for uni_stp in lst:
+        stp_str = str(uni_stp.lin_num) + " my_comm: " \
+        + str(uni_stp.my_comm) + " nxt_com: " + str(uni_stp.nxt_com)
+        if( uni_stp.nxt_com is not None ):
+            stp_str += " nxt lin: " + str(uni_stp.nxt_com.lin_num)
+
+        if( curr == uni_stp.lin_num ):
+            stp_str += " <<< here I am <<<"
+
+        print stp_str
 
 class uni_step(object):
     lin_num = 0
@@ -23,18 +31,23 @@ class controler(object):
         self.current = self.bigger_lin
 
     def __call__(self, command):
-        self.bigger_lin += 1
+        #running "command"
         self.step_lst[self.current](command)
+
+        #creating new empty node
         new_step = self.step_lst[self.current].nxt_com
+        self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
+        self.step_lst.append(new_step)
+
+        #doing automatic "goto" to new empty node
         self.current = new_step.lin_num
 
-        self.step_lst.append(new_step)
-        prin_lst(self.step_lst)
-        print "current =", self.current
+        #printing new list of steps
+        prin_lst(self.step_lst, self.current)
 
 if( __name__ == "__main__"):
     uni_contr = controler()
-    for times in xrange(5):
+    for times in xrange(4):
         command = str(raw_input(">>> "))
         uni_contr(command)
