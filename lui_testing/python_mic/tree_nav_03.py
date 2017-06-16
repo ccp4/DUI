@@ -1,3 +1,5 @@
+import sys
+
 def prin_lst(lst, curr):
     for uni in lst:
         stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm) + " nxt: " + str(uni.nxt_com)
@@ -21,7 +23,7 @@ class uni_step(object):
         self.my_comm = command
         self.nxt_com = uni_step(self)
 
-class controler(object):
+class runner(object):
     commands = ['ls', 'echo', 'cat']
 
     def __init__(self):
@@ -40,13 +42,23 @@ class controler(object):
         self.step_lst.append(new_step)
 
         #doing automatic "goto" to new empty node
-        self.current = new_step.lin_num
+        self.goto(new_step.lin_num)
 
-        #printing new list of steps
-        prin_lst(self.step_lst, self.current)
+    def goto(self, new_lin):
+        self.current = new_lin
 
 if( __name__ == "__main__"):
-    uni_contr = controler()
-    for times in xrange(4):
-        command = str(raw_input(">>> "))
+    uni_contr = runner()
+    for times in xrange(9999):
+        try:
+            command = str(raw_input(">>> "))
+
+        except:
+            print "quitting"
+            sys.exit(0)
+
         uni_contr.run(command)
+
+
+        #printing new list of steps
+        prin_lst(uni_contr.step_lst, uni_contr.current)
