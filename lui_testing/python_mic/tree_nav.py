@@ -2,6 +2,8 @@ def prin_lst(lst):
     for u_stp in lst:
         print u_stp.lin_num, "my_comm:", u_stp.my_comm
 
+
+
 class uni_step(object):
     lin_num = 0
     nxt_com = None
@@ -31,9 +33,10 @@ class controler(object):
 
         self.step_lst.append(new_step)
         prin_lst(self.step_lst)
+        print "current =", self.current
 
 if( __name__ == "__main__"):
     uni_contr = controler()
     for times in xrange(5):
-        command = str(raw_input(">>>"))
+        command = str(raw_input(">>> "))
         uni_contr(command)
