@@ -34,16 +34,20 @@ class runner(object):
     def run(self, command):
         #running "command"
         cmd_lst = command.split()
-        self.step_lst[self.current](cmd_lst)
+        if( cmd_lst[0] == "goto" ):
+            self.goto(int(cmd_lst[1]))
 
-        #creating new empty node
-        new_step = self.step_lst[self.current].nxt_com
-        self.bigger_lin += 1
-        new_step.lin_num = self.bigger_lin
-        self.step_lst.append(new_step)
+        else:
+            self.step_lst[self.current](cmd_lst)
 
-        #doing automatic "goto" to new empty node
-        self.goto(new_step.lin_num)
+            #creating new empty node
+            new_step = self.step_lst[self.current].nxt_com
+            self.bigger_lin += 1
+            new_step.lin_num = self.bigger_lin
+            self.step_lst.append(new_step)
+
+            #doing automatic "goto" to new empty node
+            self.goto(new_step.lin_num)
 
     def goto(self, new_lin):
         self.current = new_lin
