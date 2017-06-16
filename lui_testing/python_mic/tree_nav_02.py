@@ -30,7 +30,7 @@ class controler(object):
         self.bigger_lin = 0
         self.current = self.bigger_lin
 
-    def __call__(self, command):
+    def run(self, command):
         #running "command"
         self.step_lst[self.current](command)
 
@@ -50,4 +50,4 @@ if( __name__ == "__main__"):
     uni_contr = controler()
     for times in xrange(4):
         command = str(raw_input(">>> "))
-        uni_contr(command)
+        uni_contr.run(command)
