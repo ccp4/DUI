@@ -1,6 +1,7 @@
 import sys
 
 def prin_lst(lst, curr):
+    print "__________________________listing:"
     for uni in lst:
         stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm) + " nxt: " + str(uni.nxt_com)
 
@@ -18,7 +19,7 @@ class uni_step(object):
         self.my_comm = None
 
     def __call__(self, cmd_lst):
-        print "<< running >>", cmd_lst
+        print "____________________________________\n << running >>", cmd_lst
         self.my_comm = cmd_lst
 
 class runner(object):
@@ -51,17 +52,17 @@ class runner(object):
         self.current = new_lin
 
 if( __name__ == "__main__"):
-    uni_contr = runner()
-    for times in xrange(9999):
+    uni_controler = runner()
+    command = ""
+    while command.strip() != 'exit':
         try:
             command = str(raw_input(">>> "))
 
         except:
-            print "no good input? ... quitting"
+            print "no good input ... quitting"
             sys.exit(0)
 
-        uni_contr.run(command)
-
+        uni_controler.run(command)
 
         #printing new list of steps
-        prin_lst(uni_contr.step_lst, uni_contr.current)
+        prin_lst(uni_controler.step_lst, uni_controler.current)
