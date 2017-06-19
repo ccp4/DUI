@@ -3,27 +3,23 @@ import sys
 def prin_lst(lst, curr):
     for uni in lst:
         stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm) + " nxt: " + str(uni.nxt_com)
-        '''
-        if( uni.nxt_com is not [None] ):
-            stp_str += " nxt lin: " + str(uni.nxt_com[1].lin_num)
-        '''
+
 
         if( curr == uni.lin_num ):
-            stp_str += " <<< here I am <<<"
+            stp_str += "                           <<< here I am <<<"
 
         print stp_str
 
 class uni_step(object):
     def __init__(self, parent):
         self.lin_num = 0
-        self.nxt_com = [None]
+        self.nxt_com = None
         self.parent = parent
         self.my_comm = None
 
     def __call__(self, cmd_lst):
         print "<< running >>", cmd_lst
         self.my_comm = cmd_lst
-        self.nxt_com.append(uni_step(self))
 
 class runner(object):
     commands = ['ls', 'echo', 'cat']
@@ -40,16 +36,16 @@ class runner(object):
             self.goto(int(cmd_lst[1]))
 
         else:
-            self.step_lst[self.current](cmd_lst)
 
-            #creating new empty node
-            new_step = self.step_lst[self.current].nxt_com[1]
+            new_step = uni_step(self.step_lst[self.current])
+
             self.bigger_lin += 1
             new_step.lin_num = self.bigger_lin
             self.step_lst.append(new_step)
+            new_step(cmd_lst)
 
             #doing automatic "goto" to new empty node
-            self.goto(new_step.lin_num)
+            self.goto(self.bigger_lin)
 
     def goto(self, new_lin):
         self.current = new_lin
@@ -61,7 +57,7 @@ if( __name__ == "__main__"):
             command = str(raw_input(">>> "))
 
         except:
-            print "no good input? , quitting"
+            print "no good input? ... quitting"
             sys.exit(0)
 
         uni_contr.run(command)
