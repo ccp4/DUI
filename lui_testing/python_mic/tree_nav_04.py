@@ -3,8 +3,19 @@ import sys
 def prin_lst(lst, curr):
     print "__________________________listing:"
     for uni in lst:
-        stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm) + " nxt: " + str(uni.nxt_com)
+        stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm)
 
+        try:
+            stp_str += " prev: " + str(uni.parent.lin_num)
+
+        except:
+            stp_str += " prev: None"
+
+        try:
+            stp_str += " nxt: " + str(uni.nxt_com.lin_num)
+
+        except:
+            stp_str += " nxt: empty"
 
         if( curr == uni.lin_num ):
             stp_str += "                           <<< here I am <<<"
@@ -38,23 +49,31 @@ class runner(object):
 
         else:
 
-            new_step = uni_step(self.step_lst[self.current])
+            if( self.step_lst[self.current].my_comm != None ):
+                self.create_step(self.step_lst[self.current].parent)
 
-            self.bigger_lin += 1
-            new_step.lin_num = self.bigger_lin
-            self.step_lst.append(new_step)
-            new_step(cmd_lst)
+            self.step_lst[self.current](cmd_lst)
+            self.create_step(self.step_lst[self.current])
 
-            #doing automatic "goto" to new empty node
-            self.goto(self.bigger_lin)
+    def create_step(self, parent):
+        new_step = uni_step(parent)
+        self.bigger_lin += 1
+        new_step.lin_num = self.bigger_lin
+        self.step_lst.append(new_step)
+        self.step_lst[self.current].nxt_com = new_step
+        self.goto(self.bigger_lin)
+
 
     def goto(self, new_lin):
         self.current = new_lin
 
 if( __name__ == "__main__"):
     uni_controler = runner()
+
     command = ""
     while command.strip() != 'exit':
+        #printing new list of steps
+        prin_lst(uni_controler.step_lst, uni_controler.current)
         try:
             command = str(raw_input(">>> "))
 
@@ -64,5 +83,3 @@ if( __name__ == "__main__"):
 
         uni_controler.run(command)
 
-        #printing new list of steps
-        prin_lst(uni_controler.step_lst, uni_controler.current)
