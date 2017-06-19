@@ -45,7 +45,7 @@ class runner(object):
         self.current = self.bigger_lin
 
     def run(self, command):
-        #running "command"
+
         cmd_lst = command.split()
         if( cmd_lst[0] == "goto" ):
             self.goto(int(cmd_lst[1]))
@@ -54,7 +54,11 @@ class runner(object):
 
             if( self.step_list[self.current].my_comm != None ):
                 self.create_step(self.step_list[self.current].prev_step)
-                self.step_list[self.current].prev_step.next_step_list.append(self.step_list[self.current])
+                try:
+                    self.step_list[self.current].prev_step.next_step_list.append(self.step_list[self.current])
+
+                except:
+                    print "failed to append to previous step"
 
             self.step_list[self.current](cmd_lst)
             self.create_step(self.step_list[self.current])
