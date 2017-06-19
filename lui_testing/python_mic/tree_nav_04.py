@@ -11,11 +11,14 @@ def prin_lst(lst, curr):
         except:
             stp_str += " prev: None"
 
+        stp_str += " nxt: "
         try:
-            stp_str += " nxt: " + str(uni.nxt_com.lin_num)
+            for nxt_uni in uni.nxt_com:
+
+                stp_str += "  " + str(nxt_uni.lin_num)
 
         except:
-            stp_str += " nxt: empty"
+            stp_str += "empty"
 
         if( curr == uni.lin_num ):
             stp_str += "                           <<< here I am <<<"
@@ -51,6 +54,7 @@ class runner(object):
 
             if( self.step_lst[self.current].my_comm != None ):
                 self.create_step(self.step_lst[self.current].parent)
+                self.step_lst[self.current].parent.nxt_com.append(self.step_lst[self.current])
 
             self.step_lst[self.current](cmd_lst)
             self.create_step(self.step_lst[self.current])
@@ -60,7 +64,9 @@ class runner(object):
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         self.step_lst.append(new_step)
-        self.step_lst[self.current].nxt_com = new_step
+
+        self.step_lst[self.current].nxt_com = [new_step]
+
         self.goto(self.bigger_lin)
 
 
