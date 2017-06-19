@@ -6,14 +6,14 @@ def prin_lst(lst, curr):
         stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm)
 
         try:
-            stp_str += " prev: " + str(uni.parent.lin_num)
+            stp_str += " prev: " + str(uni.prev_step.lin_num)
 
         except:
             stp_str += " prev: None"
 
         stp_str += " nxt: "
         try:
-            for nxt_uni in uni.nxt_com:
+            for nxt_uni in uni.next_step_list:
 
                 stp_str += "  " + str(nxt_uni.lin_num)
 
@@ -26,10 +26,10 @@ def prin_lst(lst, curr):
         print stp_str
 
 class uni_step(object):
-    def __init__(self, parent):
+    def __init__(self, prev_step):
         self.lin_num = 0
-        self.nxt_com = None
-        self.parent = parent
+        self.next_step_list = None
+        self.prev_step = prev_step
         self.my_comm = None
 
     def __call__(self, cmd_lst):
@@ -40,7 +40,7 @@ class runner(object):
     commands = ['ls', 'echo', 'cat']
 
     def __init__(self):
-        self.step_lst = [uni_step(None)]
+        self.step_list = [uni_step(None)]
         self.bigger_lin = 0
         self.current = self.bigger_lin
 
@@ -52,20 +52,20 @@ class runner(object):
 
         else:
 
-            if( self.step_lst[self.current].my_comm != None ):
-                self.create_step(self.step_lst[self.current].parent)
-                self.step_lst[self.current].parent.nxt_com.append(self.step_lst[self.current])
+            if( self.step_list[self.current].my_comm != None ):
+                self.create_step(self.step_list[self.current].prev_step)
+                self.step_list[self.current].prev_step.next_step_list.append(self.step_list[self.current])
 
-            self.step_lst[self.current](cmd_lst)
-            self.create_step(self.step_lst[self.current])
+            self.step_list[self.current](cmd_lst)
+            self.create_step(self.step_list[self.current])
 
-    def create_step(self, parent):
-        new_step = uni_step(parent)
+    def create_step(self, prev_step):
+        new_step = uni_step(prev_step)
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
-        self.step_lst.append(new_step)
+        self.step_list.append(new_step)
 
-        self.step_lst[self.current].nxt_com = [new_step]
+        self.step_list[self.current].next_step_list = [new_step]
 
         self.goto(self.bigger_lin)
 
@@ -79,7 +79,7 @@ if( __name__ == "__main__"):
     command = ""
     while command.strip() != 'exit':
         #printing new list of steps
-        prin_lst(uni_controler.step_lst, uni_controler.current)
+        prin_lst(uni_controler.step_list, uni_controler.current)
         try:
             command = str(raw_input(">>> "))
 
