@@ -28,7 +28,7 @@ def prin_lst(lst, curr):
 def show_tree(step = None, curr = None, indent = 1):
     stp_prn = "  " * indent
     try:
-        stp_prn += step.my_comm
+        stp_prn += str(step.my_comm)
 
     except:
         stp_prn += "None"
@@ -38,7 +38,7 @@ def show_tree(step = None, curr = None, indent = 1):
     print stp_prn
     try:
         for line in step.next_step_list:
-            show_tree(step = step.step_list, curr = curr, indent = indent + 1)
+            show_tree(step = line, curr = curr, indent = indent + 1)
 
     except:
         pass
@@ -102,7 +102,7 @@ if( __name__ == "__main__"):
     command = ""
     while command.strip() != 'exit':
         # printing new list of steps
-        #prin_lst(uni_controler.step_list, uni_controler.current)
+        prin_lst(uni_controler.step_list, uni_controler.current)
 
         # showing showing tree
         show_tree(step = uni_controler.step_list[0], curr = uni_controler.current, indent = 1)
