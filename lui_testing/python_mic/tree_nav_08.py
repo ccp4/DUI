@@ -36,8 +36,9 @@ def show_tree(step = None, curr = None, indent = 1):
     else:
         stp_prn = " N "
 
-    #TODO add format to lin_num string to make it fix width
-    stp_prn += str(step.lin_num) + "     " * indent + "└───"
+    str_lin_num = "{:3}".format(step.lin_num)
+
+    stp_prn += str_lin_num + "     " * indent + " └──"
     try:
         stp_prn += str(step.command)
 
@@ -45,7 +46,7 @@ def show_tree(step = None, curr = None, indent = 1):
         stp_prn += "None"
 
     if( step.lin_num == curr ):
-        stp_prn += "            <<<  "
+        stp_prn += "            <<< here "
 
     print stp_prn
     try:
