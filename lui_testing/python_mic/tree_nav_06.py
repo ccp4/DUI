@@ -71,9 +71,13 @@ class runner(object):
             self.goto(int(cmd_lst[1]))
 
         else:
-            self.create_step(self.step_list[self.current])
-            self.step_list[self.current](cmd_lst)
 
+            if( self.step_list[self.current].my_comm != None ):
+                self.goto_prev()
+                self.create_step(self.step_list[self.current])
+
+            self.step_list[self.current](cmd_lst)
+            self.create_step(self.step_list[self.current])
 
     def create_step(self, prev_step):
         new_step = uni_step(prev_step)
@@ -92,6 +96,14 @@ class runner(object):
 
         self.step_list.append(new_step)
         self.goto(self.bigger_lin)
+
+    def goto_prev(self):
+        print "forking"
+        try:
+            self.goto(self.step_list[self.current].prev_step.lin_num)
+
+        except:
+            print "can NOT fork <None> node "
 
     def goto(self, new_lin):
         self.current = new_lin
