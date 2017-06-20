@@ -42,7 +42,7 @@ def show_tree(step = None, curr = None, indent = 1):
             show_tree(step = line, curr = curr, indent = indent + 1)
 
     except:
-        print "FAILED NODE"
+        print
 
 
 class uni_step(object):
@@ -71,28 +71,27 @@ class runner(object):
             self.goto(int(cmd_lst[1]))
 
         else:
-
-            if( self.step_list[self.current].my_comm != None ):
-                self.create_step(self.step_list[self.current].prev_step)
-                try:
-                    self.step_list[self.current].prev_step.next_step_list.append(self.step_list[self.current])
-
-                except:
-                    print "failed to append to previous step"
-
-            self.step_list[self.current](cmd_lst)
             self.create_step(self.step_list[self.current])
+            self.step_list[self.current](cmd_lst)
+
 
     def create_step(self, prev_step):
         new_step = uni_step(prev_step)
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
+        try:
+            if( self.step_list[self.current].next_step_list == None ):
+                self.step_list[self.current].next_step_list = [new_step]
+
+            else:
+                self.step_list[self.current].next_step_list.append(new_step)
+
+        except:
+            print "failed to append to previous step"
+
+
         self.step_list.append(new_step)
-
-        self.step_list[self.current].next_step_list = [new_step]
-
         self.goto(self.bigger_lin)
-
 
     def goto(self, new_lin):
         self.current = new_lin
@@ -106,14 +105,14 @@ if( __name__ == "__main__"):
         prin_lst(uni_controler.step_list, uni_controler.current)
 
         # showing showing tree
-        show_tree(step = uni_controler.step_list[0], curr = uni_controler.current, indent = 1)
+        #show_tree(step = uni_controler.step_list[0], curr = uni_controler.current, indent = 1)
 
 
         try:
             command = str(raw_input(">>> "))
 
         except:
-            print "no good input ... quitting"
+            print "tweak key pressed ... quitting"
             sys.exit(0)
 
         uni_controler.run(command)
