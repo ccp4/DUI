@@ -1,5 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import sys
-
 def prin_lst(lst, curr):
     print "__________________________listing:"
     for uni in lst:
@@ -26,7 +27,7 @@ def prin_lst(lst, curr):
         print stp_str
 
 def show_tree(step = None, curr = None, indent = 1):
-    stp_prn = str(step.lin_num) + "  " * indent
+    stp_prn = str(step.lin_num) + "     " * indent + "└───"
     try:
         stp_prn += str(step.my_comm)
 
@@ -42,7 +43,7 @@ def show_tree(step = None, curr = None, indent = 1):
             show_tree(step = line, curr = curr, indent = indent + 1)
 
     except:
-        print
+        print "indent =", indent
 
 
 class uni_step(object):
@@ -114,7 +115,7 @@ if( __name__ == "__main__"):
     command = ""
     while command.strip() != 'exit':
         # printing new list of steps
-        prin_lst(uni_controler.step_list, uni_controler.current)
+        #prin_lst(uni_controler.step_list, uni_controler.current)
 
         # showing showing tree
         print "________ showing steps tree:"
