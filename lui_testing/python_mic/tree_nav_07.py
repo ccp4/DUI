@@ -35,7 +35,7 @@ def show_tree(step = None, curr = None, indent = 1):
         stp_prn += "None"
 
     if( step.lin_num == curr ):
-        stp_prn += "   <<<<<  "
+        stp_prn += "            <<<  "
 
     print stp_prn
     try:
@@ -75,7 +75,6 @@ class runner(object):
             self.goto(int(cmd_lst[1]))
 
         else:
-
             if( self.step_list[self.current].success == True ):
                 self.goto_prev()
                 self.create_step(self.step_list[self.current])
