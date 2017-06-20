@@ -58,7 +58,7 @@ def show_tree(step = None, curr = None, indent = 1):
 
 
 class uni_step(object):
-    com_lst = ["goto", "fail", "reset"]
+    com_lst = ["goto", "fail", "reset", "ls", "cat", "echo"]
     def __init__(self, prev_step):
         self.lin_num = 0
         self.next_step_list = None
