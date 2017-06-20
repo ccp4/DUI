@@ -92,12 +92,20 @@ class runner(object):
             self.goto(int(cmd_lst[1]))
 
         else:
-            if( self.step_list[self.current].success == True ):
-                self.goto_prev()
-                self.create_step(self.step_list[self.current])
+            if( self.step_list[self.current].success != False ):
+                if( self.step_list[self.current].success == True ):
+                    self.goto_prev()
+                    self.create_step(self.step_list[self.current])
 
-            self.step_list[self.current](cmd_lst)
-            self.create_step(self.step_list[self.current])
+                self.step_list[self.current](cmd_lst)
+                if( self.step_list[self.current].success == True ):
+                    self.create_step(self.step_list[self.current])
+
+                else:
+                    print "failed step"
+
+            else:
+                print "cannot run from failed step"
 
     def create_step(self, prev_step):
         new_step = uni_step(prev_step)
