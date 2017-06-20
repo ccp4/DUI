@@ -4,7 +4,7 @@ import sys
 def prin_lst(lst, curr):
     print "__________________________listing:"
     for uni in lst:
-        stp_str = str(uni.lin_num) + " comm: " + str(uni.my_comm)
+        stp_str = str(uni.lin_num) + " comm: " + str(uni.command)
 
         try:
             stp_str += " prev: " + str(uni.prev_step.lin_num)
@@ -29,7 +29,7 @@ def prin_lst(lst, curr):
 def show_tree(step = None, curr = None, indent = 1):
     stp_prn = str(step.lin_num) + "     " * indent + "└───"
     try:
-        stp_prn += str(step.my_comm)
+        stp_prn += str(step.command)
 
     except:
         stp_prn += "None"
@@ -43,7 +43,8 @@ def show_tree(step = None, curr = None, indent = 1):
             show_tree(step = line, curr = curr, indent = indent + 1)
 
     except:
-        print "indent =", indent
+        #print "last indent =", indent
+        pass
 
 
 class uni_step(object):
@@ -51,11 +52,13 @@ class uni_step(object):
         self.lin_num = 0
         self.next_step_list = None
         self.prev_step = prev_step
-        self.my_comm = None
+        self.command = None
+        self.success = None
 
     def __call__(self, cmd_lst):
         print "____________________________________\n << running >>", cmd_lst
-        self.my_comm = cmd_lst
+        self.command = cmd_lst
+        self.success = True
 
 class runner(object):
     commands = ['ls', 'echo', 'cat']
@@ -73,7 +76,7 @@ class runner(object):
 
         else:
 
-            if( self.step_list[self.current].my_comm != None ):
+            if( self.step_list[self.current].success == True ):
                 self.goto_prev()
                 self.create_step(self.step_list[self.current])
 
