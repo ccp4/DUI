@@ -34,14 +34,15 @@ def show_tree(step = None, curr = None, indent = 1):
         stp_prn += "None"
 
     if( step.lin_num == curr ):
-        stp_prn += "<<<<<<<<"
+        stp_prn += "   <<<<<  "
+
     print stp_prn
     try:
         for line in step.next_step_list:
             show_tree(step = line, curr = curr, indent = indent + 1)
 
     except:
-        pass
+        print "FAILED NODE"
 
 
 class uni_step(object):
