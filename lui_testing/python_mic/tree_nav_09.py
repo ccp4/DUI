@@ -92,6 +92,9 @@ class runner(object):
         if( cmd_lst[0] == "goto" ):
             self.goto(int(cmd_lst[1]))
 
+        elif( cmd_lst[0] == "slist" ):
+            self.slist()
+
         else:
             if( self.step_list[self.current].success != False ):
                 if( self.step_list[self.current].success == True ):
@@ -136,6 +139,10 @@ class runner(object):
 
     def goto(self, new_lin):
         self.current = new_lin
+
+    def slist(self):
+        print "printing in steps list mode: \n"
+        prin_lst(self.step_list, self.current)
 
 if( __name__ == "__main__"):
     uni_controler = runner()
