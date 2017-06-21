@@ -68,6 +68,23 @@ class uni_step(object):
     dials.refine experiments.json indexed.pickle
     dials.integrate refined_experiments.json refined.pickle
     dials.export integrated_experiments.json integrated.pickle
+
+    dials.import ../*.cbf output.datablock=test_02.json
+
+    dials.find_spots input.datablock=datablock.json    \
+     output.reflections=reflections_tst_01.pickle
+
+    dials.index input.datablock=datablock.json input.reflections=reflections_tst_01.pickle \
+     output.experiments=experiments_tst_01.json output.reflections=indexed_tst_01.pickle
+
+    dials.refine input.experiments=experiments_tst_01.json input.reflections=indexed_tst_01.pickle \
+     output.experiments=refined_experiment_tst_01.json output.reflections=refined_tst_01.pickle
+
+    dials.integrate input.experiments=refined_experiment_tst_01.json input.reflections=refined_tst_01.pickle \
+     output.experiments=integrated_experiments_tst_01.json output.reflections=integrated_refletions_tst_01.pickle
+
+    dials.export integrated_experiments_tst_01.json integrated_refletions_tst_01.pickle
+
     '''
 
     dials_com_lst = [
@@ -85,6 +102,8 @@ class uni_step(object):
         self.prev_step = prev_step
         self.command = None
         self.success = None
+        self.files_in = None
+        self.json_file_out = None
 
     def __call__(self, cmd_lst):
         if( cmd_lst[0] == "fail" ):
@@ -100,19 +119,22 @@ class uni_step(object):
             print "self.dials_com_lst", self.dials_com_lst
 
             if( cmd_lst[0] in self.dials_com_lst ):
-                cmd_lst_to_run = []
-                cmd_lst_to_run.append("dials." + cmd_lst[0])
-                for tmp_par in cmd_lst[1:]:
-                    cmd_lst_to_run.append(tmp_par)
-
-                print "running ", cmd_lst[0], "with dials"
-                print "cmd_lst_to_run =", cmd_lst_to_run
-                shell_func(cmd_lst_to_run)
+                self.build_command(cmd_lst)
+                shell_func(self.cmd_lst_to_run)
                 self.success = True
 
             else:
                 print "NOT dials command"
                 self.success = False
+
+    def build_command(self, cmd_lst):
+        self.cmd_lst_to_run = []
+        self.cmd_lst_to_run.append("dials." + cmd_lst[0])
+        for tmp_par in cmd_lst[1:]:
+            self.cmd_lst_to_run.append(tmp_par)
+
+        print "running ", cmd_lst[0], "with dials"
+        print "self.cmd_lst_to_run =", self.cmd_lst_to_run
 
 class runner(object):
 
