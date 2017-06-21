@@ -104,6 +104,7 @@ class uni_step(object):
         self.success = None
         self.pickle_file_out = None
         self.json_file_out = None
+        self.phil_file_out = None
 
     def __call__(self, cmd_lst):
         if( cmd_lst[0] == "fail" ):
@@ -183,6 +184,13 @@ class uni_step(object):
             output_str = "output.reflections=" + self.pickle_file_out
             self.cmd_lst_to_run.append(output_str)
 
+        elif( cmd_lst[0] == "export" ):
+            self.cmd_lst_to_run.append(self.prev_step.json_file_out)
+            self.cmd_lst_to_run.append(self.prev_step.pickle_file_out)
+
+            file_out = str(self.lin_num) + "_integrated.mtz"
+            output_str = "mtz.hklout=" + file_out
+            self.cmd_lst_to_run.append(output_str)
 
         print "\n self.cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
 
