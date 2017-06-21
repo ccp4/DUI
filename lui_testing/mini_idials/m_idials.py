@@ -102,7 +102,7 @@ class uni_step(object):
         self.prev_step = prev_step
         self.command = None
         self.success = None
-        self.files_in = None
+        self.pickle_file_out = None
         self.json_file_out = None
 
     def __call__(self, cmd_lst):
@@ -130,14 +130,34 @@ class uni_step(object):
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = []
         self.cmd_lst_to_run.append("dials." + cmd_lst[0])
+        for tmp_par in cmd_lst[1:]:
+            self.cmd_lst_to_run.append(tmp_par)
 
         if( cmd_lst[0] == "import" ):
-            for tmp_par in cmd_lst[1:]:
-                self.cmd_lst_to_run.append(tmp_par)
+            self.json_file_out = str(self.lin_num) + "_datablock.json"
+            output_str = "output.datablock=" + self.json_file_out
+            self.cmd_lst_to_run.append(output_str)
+
+        elif( cmd_lst[0] == "find_spots" ):
+
+            json_file_in = self.prev_step.json_file_out
+            input_str = "input.datablock=" + json_file_in
+            self.cmd_lst_to_run.append(input_str)
 
             self.json_file_out = str(self.lin_num) + "_datablock.json"
             output_str = "output.datablock=" + self.json_file_out
             self.cmd_lst_to_run.append(output_str)
+
+            self.pickle_file_out = str(self.lin_num) + "_reflections.pickle"
+            output_str = "output.reflections=" + self.pickle_file_out
+            self.cmd_lst_to_run.append(output_str)
+
+            example ='''
+    dials.find_spots input.datablock=0_datablock.json \
+     output.datablock=1_datablock.json output.reflections=1_reflections.pickle
+            '''
+
+
 
         print "\n self.cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
 
