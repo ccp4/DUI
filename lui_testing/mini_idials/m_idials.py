@@ -115,8 +115,6 @@ class uni_step(object):
         else:
             print "____________________________________\n << running >>", cmd_lst
             self.command = cmd_lst
-            print "cmd_lst[0] =", cmd_lst[0]
-            print "self.dials_com_lst", self.dials_com_lst
 
             if( cmd_lst[0] in self.dials_com_lst ):
                 self.build_command(cmd_lst)
@@ -139,7 +137,6 @@ class uni_step(object):
             self.cmd_lst_to_run.append(output_str)
 
         elif( cmd_lst[0] == "find_spots" ):
-
             json_file_in = self.prev_step.json_file_out
             input_str = "input.datablock=" + json_file_in
             self.cmd_lst_to_run.append(input_str)
@@ -152,11 +149,39 @@ class uni_step(object):
             output_str = "output.reflections=" + self.pickle_file_out
             self.cmd_lst_to_run.append(output_str)
 
-            example ='''
-    dials.find_spots input.datablock=0_datablock.json \
-     output.datablock=1_datablock.json output.reflections=1_reflections.pickle
-            '''
+        elif( cmd_lst[0] == "index" ):
+            json_file_in = self.prev_step.json_file_out
+            input_str = "input.datablock=" + json_file_in
+            self.cmd_lst_to_run.append(input_str)
 
+            pickle_file_in = self.prev_step.pickle_file_out
+            input_str = "input.reflections=" + pickle_file_in
+            self.cmd_lst_to_run.append(input_str)
+
+            self.json_file_out = str(self.lin_num) + "_experiments.json"
+            output_str = "output.experiments=" + self.json_file_out
+            self.cmd_lst_to_run.append(output_str)
+
+            self.pickle_file_out = str(self.lin_num) + "_reflections.pickle"
+            output_str = "output.reflections=" + self.pickle_file_out
+            self.cmd_lst_to_run.append(output_str)
+
+        elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
+            json_file_in = self.prev_step.json_file_out
+            input_str = "input.experiments=" + json_file_in
+            self.cmd_lst_to_run.append(input_str)
+
+            pickle_file_in = self.prev_step.pickle_file_out
+            input_str = "input.reflections=" + pickle_file_in
+            self.cmd_lst_to_run.append(input_str)
+
+            self.json_file_out = str(self.lin_num) + "_experiments.json"
+            output_str = "output.experiments=" + self.json_file_out
+            self.cmd_lst_to_run.append(output_str)
+
+            self.pickle_file_out = str(self.lin_num) + "_reflections.pickle"
+            output_str = "output.reflections=" + self.pickle_file_out
+            self.cmd_lst_to_run.append(output_str)
 
 
         print "\n self.cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
