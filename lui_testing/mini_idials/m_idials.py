@@ -61,32 +61,6 @@ def show_tree(step = None, curr = None, indent = 1):
 
 
 class uni_step(object):
-    example = '''
-    dials.import ../*.cbf
-    dials.find_spots datablock.json
-    dials.index datablock.json strong.pickle
-    dials.refine experiments.json indexed.pickle
-    dials.integrate refined_experiments.json refined.pickle
-    dials.export integrated_experiments.json integrated.pickle
-
-    dials.import ../*.cbf output.datablock=test_02.json
-
-    dials.find_spots input.datablock=datablock.json    \
-     output.reflections=reflections_tst_01.pickle
-
-    dials.index input.datablock=datablock.json input.reflections=reflections_tst_01.pickle \
-     output.experiments=experiments_tst_01.json output.reflections=indexed_tst_01.pickle
-
-    dials.refine input.experiments=experiments_tst_01.json input.reflections=indexed_tst_01.pickle \
-     output.experiments=refined_experiment_tst_01.json output.reflections=refined_tst_01.pickle
-
-    dials.integrate input.experiments=refined_experiment_tst_01.json input.reflections=refined_tst_01.pickle \
-     output.experiments=integrated_experiments_tst_01.json output.reflections=integrated_refletions_tst_01.pickle
-
-    dials.export integrated_experiments_tst_01.json integrated_refletions_tst_01.pickle
-
-    '''
-
     dials_com_lst = [
     'import',
     'find_spots',
