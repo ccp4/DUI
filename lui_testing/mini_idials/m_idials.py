@@ -130,11 +130,16 @@ class uni_step(object):
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = []
         self.cmd_lst_to_run.append("dials." + cmd_lst[0])
-        for tmp_par in cmd_lst[1:]:
-            self.cmd_lst_to_run.append(tmp_par)
 
-        print "running ", cmd_lst[0], "with dials"
-        print "self.cmd_lst_to_run =", self.cmd_lst_to_run
+        if( cmd_lst[0] == "import" ):
+            for tmp_par in cmd_lst[1:]:
+                self.cmd_lst_to_run.append(tmp_par)
+
+            self.json_file_out = str(self.lin_num) + "_datablock.json"
+            output_str = "output.datablock=" + self.json_file_out
+            self.cmd_lst_to_run.append(output_str)
+
+        print "\n self.cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
 
 class runner(object):
 
