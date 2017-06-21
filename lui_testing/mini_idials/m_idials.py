@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import sys
+from subprocess import call as shell_func
+
 def prin_lst(lst, curr):
     print "__________________________listing:"
     for uni in lst:
@@ -40,7 +42,7 @@ def show_tree(step = None, curr = None, indent = 1):
 
     stp_prn += str_lin_num + "     " * indent + " └──"
     try:
-        stp_prn += str(step.command)
+        stp_prn += str(step.command[0])
 
     except:
         stp_prn += "None"
@@ -59,6 +61,24 @@ def show_tree(step = None, curr = None, indent = 1):
 
 
 class uni_step(object):
+    example = '''
+    dials.import ../*.cbf
+    dials.find_spots datablock.json
+    dials.index datablock.json strong.pickle
+    dials.refine experiments.json indexed.pickle
+    dials.integrate refined_experiments.json refined.pickle
+    dials.export integrated_experiments.json integrated.pickle
+    '''
+
+    dials_com_lst = [
+    'import',
+    'find_spots',
+    'index',
+    'refine',
+    'integrate',
+    'export',
+    ]
+
     def __init__(self, prev_step):
         self.lin_num = 0
         self.next_step_list = None
@@ -69,17 +89,33 @@ class uni_step(object):
     def __call__(self, cmd_lst):
         if( cmd_lst[0] == "fail" ):
             #testing virtual failed step
-            print "\n FAILED \n"
+            print "\n intentionally FAILED for testing \n"
             self.command = cmd_lst
             self.success = False
 
         else:
             print "____________________________________\n << running >>", cmd_lst
             self.command = cmd_lst
-            self.success = True
+            print "cmd_lst[0] =", cmd_lst[0]
+            print "self.dials_com_lst", self.dials_com_lst
+
+            if( cmd_lst[0] in self.dials_com_lst ):
+                cmd_lst_to_run = []
+                cmd_lst_to_run.append("dials." + cmd_lst[0])
+                for tmp_par in cmd_lst[1:]:
+                    cmd_lst_to_run.append(tmp_par)
+
+                print "running ", cmd_lst[0], "with dials"
+                print "cmd_lst_to_run =", cmd_lst_to_run
+                shell_func(cmd_lst_to_run)
+                self.success = True
+
+            else:
+                print "NOT dials command"
+                self.success = False
 
 class runner(object):
-    sh_com_lst = ['ls', 'echo', 'cat']
+
     ctrl_com_lst = ["goto", "fail", "slist","reset"]
     def __init__(self):
         self.step_list = [uni_step(None)]
