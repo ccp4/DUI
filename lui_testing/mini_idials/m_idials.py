@@ -225,7 +225,6 @@ class tree_show(object):
             print out_tup[0]
             nice_tree.append(out_tup)
 
-        on_going = '''
         print "\n"
 
         for pos, loc_tup in enumerate( nice_tree ):
@@ -238,13 +237,13 @@ class tree_show(object):
                     for up_pos in xrange(pos - 1, 0, -1):
                         if( nice_tree[up_pos][1] > loc_tup[1] ):
                             pos_in_str = loc_tup[1] * 5 + 7
-                            left_side = nice_tree[up_pos][0][0:pos_in_str]
+                            left_side = nice_tree[up_pos][0][0:pos_in_str - 1]
                             right_side = nice_tree[up_pos][0][pos_in_str:]
                             nice_tree[up_pos][0] = left_side + "│" + right_side
 
                         elif( nice_tree[up_pos][1] == loc_tup[1] ):
                             pos_in_str = loc_tup[1] * 5 + 7
-                            left_side = nice_tree[up_pos][0][0:pos_in_str]
+                            left_side = nice_tree[up_pos][0][0:pos_in_str - 1]
                             right_side = nice_tree[up_pos][0][pos_in_str:]
                             nice_tree[up_pos][0] = left_side + "├" + right_side
 
@@ -252,7 +251,6 @@ class tree_show(object):
         for prn_str in nice_tree:
             print "prn_str[0]", prn_str[0]
 
-        '''
 
     def show_tree(self, step = None, curr = None, indent = None):
         if( step.success == True ):
