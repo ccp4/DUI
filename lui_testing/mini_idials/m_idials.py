@@ -235,17 +235,15 @@ class tree_show(object):
                 if( loc_tup[1] < nice_tree[pos - 1][1] ):
 
                     for up_pos in xrange(pos - 1, 0, -1):
+                        pos_in_str = loc_tup[1] * 5 + 7
+                        left_side = nice_tree[up_pos][0][0:pos_in_str]
+                        right_side = nice_tree[up_pos][0][pos_in_str + 1:]
                         if( nice_tree[up_pos][1] > loc_tup[1] ):
-                            pos_in_str = loc_tup[1] * 5 + 7
-                            left_side = nice_tree[up_pos][0][0:pos_in_str - 1]
-                            right_side = nice_tree[up_pos][0][pos_in_str:]
                             nice_tree[up_pos][0] = left_side + "│" + right_side
-
+                        tmp_off = '''
                         elif( nice_tree[up_pos][1] == loc_tup[1] ):
-                            pos_in_str = loc_tup[1] * 5 + 7
-                            left_side = nice_tree[up_pos][0][0:pos_in_str - 1]
-                            right_side = nice_tree[up_pos][0][pos_in_str:]
                             nice_tree[up_pos][0] = left_side + "├" + right_side
+                        '''
 
 
         for prn_str in nice_tree:
