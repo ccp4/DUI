@@ -204,36 +204,6 @@ def prin_lst(lst, curr):
 
         print stp_str
 
-def show_tree(step = None, curr = None, indent = 1):
-    if( step.success == True ):
-        stp_prn = " T "
-
-    elif( step.success == False ):
-        stp_prn = " F "
-
-    else:
-        stp_prn = " N "
-
-    str_lin_num = "{:3}".format(step.lin_num)
-
-    stp_prn += str_lin_num + "     " * indent + " └──"
-    try:
-        stp_prn += str(step.command[0])
-
-    except:
-        stp_prn += "None"
-
-    if( step.lin_num == curr ):
-        stp_prn += "            <<< here "
-
-    print stp_prn
-    try:
-        for line in step.next_step_list:
-            show_tree(step = line, curr = curr, indent = indent + 1)
-
-    except:
-        #print "last indent =", indent
-        pass
 
 
 class tree_show(object):
@@ -243,8 +213,45 @@ class tree_show(object):
 
     def __call__(self, my_runner):
         print "\nsuccess, lin num,  nav tree:\n"
-        show_tree(step = my_runner.step_list[0],
+        self.str_lst = []
+        self.show_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 1)
+
+        for out_str in self.str_lst:
+            print out_str
+
+    def show_tree(self, step = None, curr = None, indent = 1):
+        if( step.success == True ):
+            stp_prn = " T "
+
+        elif( step.success == False ):
+            stp_prn = " F "
+
+        else:
+            stp_prn = " N "
+
+        str_lin_num = "{:3}".format(step.lin_num)
+
+        stp_prn += str_lin_num + "     " * indent + " └──"
+        try:
+            stp_prn += str(step.command[0])
+
+        except:
+            stp_prn += "None"
+
+        if( step.lin_num == curr ):
+            stp_prn += "            <<< here "
+
+        self.str_lst.append(stp_prn)
+        try:
+            for line in step.next_step_list:
+                new_indent = indent + 1
+                self.show_tree(step = line, curr = curr, indent = new_indent)
+
+        except:
+            print "last indent =", indent, "\n"
+            #print "new_indent =", new_indent
+            #pass
 
 
 if( __name__ == "__main__"):
