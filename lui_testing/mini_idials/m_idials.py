@@ -241,9 +241,10 @@ class tree_show(object):
     def __init__(self):
         print "__init__"
 
-    def __call__(self, step_in = None, current_in = None):
+    def __call__(self, my_runner):
         print "\nsuccess, lin num,  nav tree:\n"
-        show_tree(step = step_in, curr = current_in, indent = 1)
+        show_tree(step = my_runner.step_list[0],
+                  curr = my_runner.current, indent = 1)
 
 
 if( __name__ == "__main__"):
@@ -252,8 +253,7 @@ if( __name__ == "__main__"):
 
     command = ""
     while command.strip() != 'exit':
-        tree_output(step_in = uni_controler.step_list[0],
-                    current_in = uni_controler.current)
+        tree_output(uni_controler)
 
         try:
             inp_str = "\nlin [" + str(uni_controler.current) + "] >>> "
