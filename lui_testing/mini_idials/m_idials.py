@@ -217,6 +217,9 @@ class tree_show(object):
         self.show_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 1)
 
+        self.nice_tree_print()
+
+    def nice_tree_print(self):
         for out_str in self.str_lst:
             print out_str
 
