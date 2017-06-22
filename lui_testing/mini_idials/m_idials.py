@@ -3,63 +3,6 @@
 import sys
 from subprocess import call as shell_func
 
-def prin_lst(lst, curr):
-    print "__________________________listing:"
-    for uni in lst:
-        stp_str = str(uni.lin_num) + " comm: " + str(uni.command)
-
-        try:
-            stp_str += " prev: " + str(uni.prev_step.lin_num)
-
-        except:
-            stp_str += " prev: None"
-
-        stp_str += " nxt: "
-        try:
-            for nxt_uni in uni.next_step_list:
-
-                stp_str += "  " + str(nxt_uni.lin_num)
-
-        except:
-            stp_str += "empty"
-
-        if( curr == uni.lin_num ):
-            stp_str += "                           <<< here I am <<<"
-
-        print stp_str
-
-def show_tree(step = None, curr = None, indent = 1):
-    if( step.success == True ):
-        stp_prn = " T "
-
-    elif( step.success == False ):
-        stp_prn = " F "
-
-    else:
-        stp_prn = " N "
-
-    str_lin_num = "{:3}".format(step.lin_num)
-
-    stp_prn += str_lin_num + "     " * indent + " └──"
-    try:
-        stp_prn += str(step.command[0])
-
-    except:
-        stp_prn += "None"
-
-    if( step.lin_num == curr ):
-        stp_prn += "            <<< here "
-
-    print stp_prn
-    try:
-        for line in step.next_step_list:
-            show_tree(step = line, curr = curr, indent = indent + 1)
-
-    except:
-        #print "last indent =", indent
-        pass
-
-
 class uni_step(object):
     dials_com_lst = [
     'import',
@@ -172,9 +115,14 @@ class runner(object):
 
     ctrl_com_lst = ["goto", "fail", "slist","reset"]
     def __init__(self):
-        self.step_list = [uni_step(None)]
+
+        root_node = uni_step(None)
+        root_node.success = True
+        root_node.command = ["Root"]
+        self.step_list = [root_node]
         self.bigger_lin = 0
         self.current = self.bigger_lin
+        self.create_step(root_node)
 
     def run(self, command):
 
@@ -186,20 +134,17 @@ class runner(object):
             self.slist()
 
         else:
-            if( self.step_list[self.current].success != False ):
-                if( self.step_list[self.current].success == True ):
-                    self.goto_prev()
-                    self.create_step(self.step_list[self.current])
+            if( self.step_list[self.current].success == True ):
+                self.goto_prev()
+                self.create_step(self.step_list[self.current])
 
-                self.step_list[self.current](cmd_lst)
-                if( self.step_list[self.current].success == True ):
-                    self.create_step(self.step_list[self.current])
-
-                else:
-                    print "failed step"
+            self.step_list[self.current](cmd_lst)
+            if( self.step_list[self.current].success == True ):
+                self.create_step(self.step_list[self.current])
 
             else:
-                print "cannot run from failed step"
+                print "failed step"
+
 
     def create_step(self, prev_step):
         new_step = uni_step(prev_step)
@@ -234,24 +179,92 @@ class runner(object):
         print "printing in steps list mode: \n"
         prin_lst(self.step_list, self.current)
 
+def prin_lst(lst, curr):
+    print "__________________________listing:"
+    for uni in lst:
+        stp_str = str(uni.lin_num) + " comm: " + str(uni.command)
+
+        try:
+            stp_str += " prev: " + str(uni.prev_step.lin_num)
+
+        except:
+            stp_str += " prev: None"
+
+        stp_str += " nxt: "
+        try:
+            for nxt_uni in uni.next_step_list:
+
+                stp_str += "  " + str(nxt_uni.lin_num)
+
+        except:
+            stp_str += "empty"
+
+        if( curr == uni.lin_num ):
+            stp_str += "                           <<< here I am <<<"
+
+        print stp_str
+
+def show_tree(step = None, curr = None, indent = 1):
+    if( step.success == True ):
+        stp_prn = " T "
+
+    elif( step.success == False ):
+        stp_prn = " F "
+
+    else:
+        stp_prn = " N "
+
+    str_lin_num = "{:3}".format(step.lin_num)
+
+    stp_prn += str_lin_num + "     " * indent + " └──"
+    try:
+        stp_prn += str(step.command[0])
+
+    except:
+        stp_prn += "None"
+
+    if( step.lin_num == curr ):
+        stp_prn += "            <<< here "
+
+    print stp_prn
+    try:
+        for line in step.next_step_list:
+            show_tree(step = line, curr = curr, indent = indent + 1)
+
+    except:
+        #print "last indent =", indent
+        pass
+
+
+class tree_show(object):
+
+    def __init__(self):
+        print "__init__"
+
+    def __call__(self, step_in = None, current_in = None):
+        print "\nsuccess, lin num,  nav tree:\n"
+        show_tree(step = step_in, curr = current_in, indent = 1)
+
+
 if( __name__ == "__main__"):
     uni_controler = runner()
+    tree_output = tree_show()
 
     command = ""
     while command.strip() != 'exit':
-        # printing new list of steps
-        #prin_lst(uni_controler.step_list, uni_controler.current)
-
-        # showing showing tree
-        print "________ showing steps tree:"
-        show_tree(step = uni_controler.step_list[0], curr = uni_controler.current, indent = 1)
+        tree_output(step_in = uni_controler.step_list[0],
+                    current_in = uni_controler.current)
 
         try:
-            command = str(raw_input(">>> "))
+            inp_str = "\nlin [" + str(uni_controler.current) + "] >>> "
+            command = str(raw_input(inp_str))
 
         except:
-            print "tweak key pressed ... quitting"
+            print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command)
+        if( command == "" ):
+            print "converting empty line in self.slist()"
+            command = "slist"
 
+        uni_controler.run(command)
