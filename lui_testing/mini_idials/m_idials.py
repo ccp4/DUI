@@ -215,15 +215,46 @@ class tree_show(object):
         print "\nsuccess, lin num,  nav tree:\n"
         self.str_lst = []
         self.show_tree(step = my_runner.step_list[0],
-                  curr = my_runner.current, indent = 1)
+                  curr = my_runner.current, indent = 0)
 
         self.nice_tree_print()
 
     def nice_tree_print(self):
-        for out_str in self.str_lst:
-            print out_str
+        nice_tree = []
+        for out_tup in self.str_lst:
+            print out_tup[0]
+            nice_tree.append(out_tup)
 
-    def show_tree(self, step = None, curr = None, indent = 1):
+        on_going = '''
+        print "\n"
+
+        for pos, loc_tup in enumerate( nice_tree ):
+            if(pos == 0):
+                print "skipping first line"
+
+            else:
+                if( loc_tup[1] < nice_tree[pos - 1][1] ):
+
+                    for up_pos in xrange(pos - 1, 0, -1):
+                        if( nice_tree[up_pos][1] > loc_tup[1] ):
+                            pos_in_str = loc_tup[1] * 5 + 7
+                            left_side = nice_tree[up_pos][0][0:pos_in_str]
+                            right_side = nice_tree[up_pos][0][pos_in_str:]
+                            nice_tree[up_pos][0] = left_side + "│" + right_side
+
+                        elif( nice_tree[up_pos][1] == loc_tup[1] ):
+                            pos_in_str = loc_tup[1] * 5 + 7
+                            left_side = nice_tree[up_pos][0][0:pos_in_str]
+                            right_side = nice_tree[up_pos][0][pos_in_str:]
+                            nice_tree[up_pos][0] = left_side + "├" + right_side
+
+
+        for prn_str in nice_tree:
+            print "prn_str[0]", prn_str[0]
+
+        '''
+
+    def show_tree(self, step = None, curr = None, indent = None):
         if( step.success == True ):
             stp_prn = " T "
 
@@ -245,7 +276,7 @@ class tree_show(object):
         if( step.lin_num == curr ):
             stp_prn += "            <<< here "
 
-        self.str_lst.append(stp_prn)
+        self.str_lst.append([stp_prn, indent])
         try:
             for line in step.next_step_list:
                 new_indent = indent + 1
