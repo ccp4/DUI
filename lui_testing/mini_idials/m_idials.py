@@ -308,12 +308,10 @@ if( __name__ == "__main__"):
             inp_str = "lin [" + str(uni_controler.current) + "] >>> "
             command = str(raw_input(inp_str))
 
-        except:
-
-            #to write:
             with open('bkp.pickle', 'wb') as bkp_out:
                 pickle.dump(uni_controler, bkp_out)
 
+        except:
             print " ... interrupting"
             sys.exit(0)
 
