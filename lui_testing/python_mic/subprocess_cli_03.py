@@ -21,6 +21,7 @@ p = subprocess.Popen(cmd_std_n_err,
 
 while True:
     out_str = p.stdout.readline()
+
     print " :) >>> ", out_str
     out_msg = p.poll()
     if( out_msg != None ):

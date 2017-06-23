@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
-from subprocess import call as shell_func
+#from subprocess import call as shell_func
+import subprocess
 
 class uni_step(object):
     dials_com_lst = [
@@ -36,9 +37,18 @@ class uni_step(object):
             if( cmd_lst[0] in self.dials_com_lst ):
                 self.build_command(cmd_lst)
                 try:
-                    shell_func(self.cmd_lst_to_run)
                     self.success = True
                     print "\n success call"
+
+                    my_process = subprocess.Popen(self.cmd_lst_to_run)
+                    my_process.wait()
+                    if( my_process.poll() == 0 ):
+                        self.success = True
+
+                    else:
+                        self.success = False
+
+                    #shell_func(self.cmd_lst_to_run)
 
                 except:
                     self.success = False
