@@ -213,7 +213,7 @@ class tree_show(object):
     def __call__(self, my_runner):
         print "\nsuccess, lin num,  nav tree:\n"
         self.str_lst = []
-        self.show_tree(step = my_runner.step_list[0],
+        self.add_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 0)
 
         self.tree_print()
@@ -236,11 +236,10 @@ class tree_show(object):
                         elif( tree_dat[up_pos][1] == loc_lst[1] ):
                             break
 
-        print "\n Steps Tree:"
         for prn_str in tree_dat:
             print prn_str[0]
 
-    def show_tree(self, step = None, curr = None, indent = None):
+    def add_tree(self, step = None, curr = None, indent = None):
         if( step.success == True ):
             stp_prn = " T "
 
@@ -266,13 +265,12 @@ class tree_show(object):
         try:
             for line in step.next_step_list:
                 new_indent = indent + 1
-                self.show_tree(step = line, curr = curr, indent = new_indent)
+                self.add_tree(step = line, curr = curr, indent = new_indent)
 
         except:
-            print "last indent =", indent, "\n"
+            #print "last indent =", indent, "\n"
             #print "new_indent =", new_indent
-            #pass
-
+            pass
 
 if( __name__ == "__main__"):
     uni_controler = runner()
