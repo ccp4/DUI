@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 import subprocess
-
+import pickle
 class uni_step(object):
     dials_com_lst = [
     'import',
@@ -213,18 +213,17 @@ def prin_lst(lst, curr):
 
         print stp_str
 
-
-
 class tree_show(object):
     ind_spc = "      "
     def __init__(self):
         print "__init__"
 
     def __call__(self, my_runner):
+        print
         print "status "
         print " |  lin num "
-        print " |   |  nav tree "
-        print " |   |   |       "
+        print " |   |  command "
+        print " |   |   | "
         self.str_lst = []
         self.add_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 0)
@@ -285,8 +284,15 @@ class tree_show(object):
             #print "new_indent =", new_indent
             pass
 
+
 if( __name__ == "__main__"):
-    uni_controler = runner()
+    try:
+        with open ('bkp.pickle', 'rb') as bkp_in:
+            uni_controler = pickle.load(bkp_in)
+
+    except:
+        uni_controler = runner()
+
     tree_output = tree_show()
 
     command = ""
@@ -298,6 +304,11 @@ if( __name__ == "__main__"):
             command = str(raw_input(inp_str))
 
         except:
+
+            #to write:
+            with open('bkp.pickle', 'wb') as bkp_out:
+                pickle.dump(uni_controler, bkp_out)
+
             print " ... interrupting"
             sys.exit(0)
 
@@ -306,3 +317,16 @@ if( __name__ == "__main__"):
             command = "slist"
 
         uni_controler.run(command)
+
+'''
+#to write:
+with open('outfile', 'wb') as fp:
+    pickle.dump(itemlist, fp)
+
+
+#To read it back:
+
+with open ('outfile', 'rb') as fp:
+    itemlist = pickle.load(fp)
+
+'''
