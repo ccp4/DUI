@@ -216,35 +216,29 @@ class tree_show(object):
         self.show_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 0)
 
-        self.nice_tree_print()
+        self.tree_print()
 
-    def nice_tree_print(self):
-        nice_tree = []
-        for out_tup in self.str_lst:
-            print out_tup[0]
-            nice_tree.append(out_tup)
+    def tree_print(self):
+        tree_dat = []
+        for tmp_lst in self.str_lst:
+            tree_dat.append(tmp_lst)
 
-        print "\n"
-
-        for pos, loc_tup in enumerate( nice_tree ):
-            if(pos == 0):
-                print "skipping first line"
-
-            else:
-                if( loc_tup[1] < nice_tree[pos - 1][1] ):
+        for pos, loc_lst in enumerate(tree_dat):
+            if(pos > 0):
+                if( loc_lst[1] < tree_dat[pos - 1][1] ):
                     for up_pos in xrange(pos - 1, 0, -1):
-                        pos_in_str = loc_tup[1] * len(self.ind_spc) + 6
-                        left_side = nice_tree[up_pos][0][0:pos_in_str]
-                        right_side = nice_tree[up_pos][0][pos_in_str + 1:]
-                        if( nice_tree[up_pos][1] > loc_tup[1] ):
-                            nice_tree[up_pos][0] = left_side + "|" + right_side
-                        elif( nice_tree[up_pos][1] == loc_tup[1] ):
+                        pos_in_str = loc_lst[1] * len(self.ind_spc) + 6
+                        left_side = tree_dat[up_pos][0][0:pos_in_str]
+                        right_side = tree_dat[up_pos][0][pos_in_str + 1:]
+                        if( tree_dat[up_pos][1] > loc_lst[1] ):
+                            tree_dat[up_pos][0] = left_side + "|" + right_side
+
+                        elif( tree_dat[up_pos][1] == loc_lst[1] ):
                             break
 
-
-        for prn_str in nice_tree:
+        print "\n Steps Tree:"
+        for prn_str in tree_dat:
             print prn_str[0]
-
 
     def show_tree(self, step = None, curr = None, indent = None):
         if( step.success == True ):
