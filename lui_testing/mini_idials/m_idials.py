@@ -34,6 +34,9 @@ class uni_step(object):
             self.command = cmd_lst
 
             if( cmd_lst[0] in self.dials_com_lst ):
+
+                #TODO make sure new step is compatible with previous
+
                 self.build_command(cmd_lst)
                 try:
                     my_process = subprocess.Popen(self.cmd_lst_to_run)
@@ -214,9 +217,9 @@ def prin_lst(lst, curr):
         print stp_str
 
 class tree_show(object):
-    ind_spc = "      "
     def __init__(self):
-        print "__init__"
+        self.ind_spc = "      "
+        self.ind_lin = "------"
 
     def __call__(self, my_runner):
         print
@@ -224,11 +227,13 @@ class tree_show(object):
         print " |  lin num "
         print " |   |  command "
         print " |   |   | "
+        print "----------------"
+        self.max_indent = 0
         self.str_lst = []
         self.add_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 0)
-
         self.tree_print()
+        print "---------------------" + self.max_indent * self.ind_lin
 
     def tree_print(self):
         tree_dat = []
@@ -280,9 +285,9 @@ class tree_show(object):
                 self.add_tree(step = line, curr = curr, indent = new_indent)
 
         except:
-            #print "last indent =", indent, "\n"
-            #print "new_indent =", new_indent
-            pass
+            new_indent = int(new_indent)
+            if( new_indent > self.max_indent ):
+                self.max_indent = new_indent
 
 
 if( __name__ == "__main__"):
@@ -300,7 +305,7 @@ if( __name__ == "__main__"):
         tree_output(uni_controler)
 
         try:
-            inp_str = "\nlin [" + str(uni_controler.current) + "] >>> "
+            inp_str = "lin [" + str(uni_controler.current) + "] >>> "
             command = str(raw_input(inp_str))
 
         except:
