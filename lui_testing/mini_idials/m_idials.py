@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 import sys
 from subprocess import call as shell_func
 
@@ -207,7 +206,7 @@ def prin_lst(lst, curr):
 
 
 class tree_show(object):
-
+    ind_spc = "      "
     def __init__(self):
         print "__init__"
 
@@ -234,23 +233,17 @@ class tree_show(object):
             else:
                 if( loc_tup[1] < nice_tree[pos - 1][1] ):
                     for up_pos in xrange(pos - 1, 0, -1):
-                        pos_in_str = loc_tup[1] * 5 + 7
+                        pos_in_str = loc_tup[1] * len(self.ind_spc) + 6
                         left_side = nice_tree[up_pos][0][0:pos_in_str]
                         right_side = nice_tree[up_pos][0][pos_in_str + 1:]
                         if( nice_tree[up_pos][1] > loc_tup[1] ):
-                            nice_tree[up_pos][0] = left_side + "│" + right_side
+                            nice_tree[up_pos][0] = left_side + "|" + right_side
                         elif( nice_tree[up_pos][1] == loc_tup[1] ):
                             break
 
-                        tmp_off = '''
-                        elif( nice_tree[up_pos][1] == loc_tup[1] ):
-                            nice_tree[up_pos][0] = left_side + "├" + right_side
-                        '''
-
-
 
         for prn_str in nice_tree:
-            print "prn_str[0]", prn_str[0]
+            print prn_str[0]
 
 
     def show_tree(self, step = None, curr = None, indent = None):
@@ -265,7 +258,7 @@ class tree_show(object):
 
         str_lin_num = "{:3}".format(step.lin_num)
 
-        stp_prn += str_lin_num + "     " * indent + " └──"
+        stp_prn += str_lin_num + self.ind_spc * indent + "\___"
         try:
             stp_prn += str(step.command[0])
 
