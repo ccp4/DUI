@@ -35,8 +35,14 @@ class uni_step(object):
 
             if( cmd_lst[0] in self.dials_com_lst ):
                 self.build_command(cmd_lst)
-                shell_func(self.cmd_lst_to_run)
-                self.success = True
+                try:
+                    shell_func(self.cmd_lst_to_run)
+                    self.success = True
+                    print "\n success call"
+
+                except:
+                    self.success = False
+                    print "\n FAIL call"
 
             else:
                 print "NOT dials command"
