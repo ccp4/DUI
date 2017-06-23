@@ -221,7 +221,10 @@ class tree_show(object):
         print "__init__"
 
     def __call__(self, my_runner):
-        print "\nsuccess, lin num,  nav tree:\n"
+        print "status "
+        print " |  lin num "
+        print " |   |  nav tree "
+        print " |   |   |       "
         self.str_lst = []
         self.add_tree(step = my_runner.step_list[0],
                   curr = my_runner.current, indent = 0)
@@ -237,7 +240,7 @@ class tree_show(object):
             if(pos > 0):
                 if( loc_lst[1] < tree_dat[pos - 1][1] ):
                     for up_pos in xrange(pos - 1, 0, -1):
-                        pos_in_str = loc_lst[1] * len(self.ind_spc) + 6
+                        pos_in_str = loc_lst[1] * len(self.ind_spc) + 9
                         left_side = tree_dat[up_pos][0][0:pos_in_str]
                         right_side = tree_dat[up_pos][0][pos_in_str + 1:]
                         if( tree_dat[up_pos][1] > loc_lst[1] ):
@@ -251,7 +254,7 @@ class tree_show(object):
 
     def add_tree(self, step = None, curr = None, indent = None):
         if( step.success == True ):
-            stp_prn = " T "
+            stp_prn = " S "
 
         elif( step.success == False ):
             stp_prn = " F "
@@ -261,7 +264,7 @@ class tree_show(object):
 
         str_lin_num = "{:3}".format(step.lin_num)
 
-        stp_prn += str_lin_num + self.ind_spc * indent + "\___"
+        stp_prn += str_lin_num + self.ind_spc * indent + "   \___"
         try:
             stp_prn += str(step.command[0])
 
