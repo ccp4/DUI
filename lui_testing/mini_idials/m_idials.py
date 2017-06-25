@@ -296,10 +296,11 @@ if( __name__ == "__main__"):
     try:
         with open ('bkp.pickle', 'rb') as bkp_in:
             uni_controler = pickle.load(bkp_in)
-            tree_output(uni_controler)
 
     except:
         uni_controler = runner()
+
+    tree_output(uni_controler)
 
     command = ""
     while( command.strip() != 'exit' and command.strip() != 'quit' ):
