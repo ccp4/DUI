@@ -230,12 +230,12 @@ class tree_show(object):
         print "----------------"
         self.max_indent = 0
         self.str_lst = []
-        self.add_tree(step = my_runner.step_list[0],
-                  curr = my_runner.current, indent = 0)
-        self.tree_print()
+        self.add_tree(step = my_runner.step_list[0], indent = 0)
+        self.tree_print(my_runner.current)
+
         print "---------------------" + self.max_indent * self.ind_lin
 
-    def tree_print(self):
+    def tree_print(self, curr):
         tree_dat = []
         for tmp_lst in self.str_lst:
             tree_dat.append(tmp_lst)
@@ -253,10 +253,14 @@ class tree_show(object):
                         elif( tree_dat[up_pos][1] == loc_lst[1] ):
                             break
 
+            if( loc_lst[2] == curr ):
+                tree_dat[pos][0] += "            <<< here "
+
+
         for prn_str in tree_dat:
             print prn_str[0]
 
-    def add_tree(self, step = None, curr = None, indent = None):
+    def add_tree(self, step = None, indent = None):
         if( step.success == True ):
             stp_prn = " S "
 
@@ -275,14 +279,11 @@ class tree_show(object):
         except:
             stp_prn += "None"
 
-        if( step.lin_num == curr ):
-            stp_prn += "            <<< here "
-
-        self.str_lst.append([stp_prn, indent])
+        self.str_lst.append([stp_prn, indent, int(step.lin_num)])
         try:
             for line in step.next_step_list:
                 new_indent = indent + 1
-                self.add_tree(step = line, curr = curr, indent = new_indent)
+                self.add_tree(step = line, indent = new_indent)
 
         except:
             new_indent = int(new_indent)
