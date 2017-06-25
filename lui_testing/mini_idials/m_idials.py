@@ -227,12 +227,11 @@ class tree_show(object):
         print " |  lin num "
         print " |   |  command "
         print " |   |   | "
-        print "----------------"
+        print "------------------"
         self.max_indent = 0
         self.str_lst = []
         self.add_tree(step = my_runner.step_list[0], indent = 0)
         self.tree_print(my_runner.current)
-
         print "---------------------" + self.max_indent * self.ind_lin
 
     def tree_print(self, curr):
@@ -254,12 +253,10 @@ class tree_show(object):
                             break
 
             if( loc_lst[2] == curr ):
-                lng = len(self.ind_spc) * self.max_indent + 21
+                lng = len(self.ind_spc) * self.max_indent + 22
                 lng_lft = lng - len(tree_dat[pos][0])
                 str_here = lng_lft * " "
                 tree_dat[pos][0] += str_here + "   <<< here "
-
-
 
         for prn_str in tree_dat:
             print prn_str[0]
@@ -293,7 +290,6 @@ class tree_show(object):
             new_indent = int(new_indent)
             if( new_indent > self.max_indent ):
                 self.max_indent = new_indent
-
 
 if( __name__ == "__main__"):
     tree_output = tree_show()
