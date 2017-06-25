@@ -291,45 +291,32 @@ class tree_show(object):
 
 
 if( __name__ == "__main__"):
+    tree_output = tree_show()
+
     try:
         with open ('bkp.pickle', 'rb') as bkp_in:
             uni_controler = pickle.load(bkp_in)
+            tree_output(uni_controler)
 
     except:
         uni_controler = runner()
 
-    tree_output = tree_show()
-
     command = ""
-    while command.strip() != 'exit':
-        tree_output(uni_controler)
+    while( command.strip() != 'exit' and command.strip() != 'quit' ):
 
         try:
             inp_str = "lin [" + str(uni_controler.current) + "] >>> "
             command = str(raw_input(inp_str))
-
-            with open('bkp.pickle', 'wb') as bkp_out:
-                pickle.dump(uni_controler, bkp_out)
+            if( command == "" ):
+                print "converting empty line in self.slist()"
+                command = "slist"
 
         except:
             print " ... interrupting"
             sys.exit(0)
 
-        if( command == "" ):
-            print "converting empty line in self.slist()"
-            command = "slist"
-
         uni_controler.run(command)
+        tree_output(uni_controler)
 
-'''
-#to write:
-with open('outfile', 'wb') as fp:
-    pickle.dump(itemlist, fp)
-
-
-#To read it back:
-
-with open ('outfile', 'rb') as fp:
-    itemlist = pickle.load(fp)
-
-'''
+        with open('bkp.pickle', 'wb') as bkp_out:
+            pickle.dump(uni_controler, bkp_out)
