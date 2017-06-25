@@ -254,9 +254,12 @@ class tree_show(object):
                             break
 
             if( loc_lst[2] == curr ):
-                str_here = (len(self.ind_spc) * self.max_indent +
-                            - len(tree_dat[pos][0]) + 5 ) * " "
+                lng = len(self.ind_spc) * self.max_indent + 21
+                lng_lft = lng - len(tree_dat[pos][0])
+                str_here = lng_lft * " "
                 tree_dat[pos][0] += str_here + "   <<< here "
+
+
 
         for prn_str in tree_dat:
             print prn_str[0]
