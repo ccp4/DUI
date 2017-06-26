@@ -66,7 +66,13 @@ class LongRunningThing(QObject):
 class MyApp(QWidget):
     def __init__(self):
         super(MyApp, self).__init__()
-        #QWidget.__init__(self,*args,**kwargs)
+        # Create thread that will listen on the other end of the queue, and send the text to the textedit in our application
+        thread = QThread()
+        my_receiver = MyReceiver(queue)
+        my_receiver.mysignal.connect(self.append_text)
+        my_receiver.moveToThread(thread)
+        thread.started.connect(my_receiver.run)
+        thread.start()
 
         self.layout = QVBoxLayout(self)
         self.textedit = QTextEdit()
@@ -97,12 +103,6 @@ if( __name__ == "__main__" ):
     app = MyApp()
     app.show()
 
-    # Create thread that will listen on the other end of the queue, and send the text to the textedit in our application
-    thread = QThread()
-    my_receiver = MyReceiver(queue)
-    my_receiver.mysignal.connect(app.append_text)
-    my_receiver.moveToThread(thread)
-    thread.started.connect(my_receiver.run)
-    thread.start()
+
 
     qapp.exec_()
