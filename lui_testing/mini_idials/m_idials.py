@@ -2,14 +2,12 @@
 import sys
 import subprocess
 import pickle
-
-
+from cli_utils import prin_lst
 class DialsCommand(object):
     def __init__(self):
         print "creating new DialsCommand (obj)"
 
     def __call__(self, lst_cmd_to_run):
-        #TODO make sure new step is compatible with previous
         try:
             print "\n << running >>", lst_cmd_to_run
             my_process = subprocess.Popen(lst_cmd_to_run)
@@ -25,7 +23,6 @@ class DialsCommand(object):
             print "\n FAIL call"
 
         return local_success
-
 
 class uni_step(object):
     dials_com_lst = [
@@ -66,6 +63,7 @@ class uni_step(object):
                 self.success = False
 
     def build_command(self, cmd_lst):
+        #TODO make sure new step is compatible with previous
         self.cmd_lst_to_run = []
         self.cmd_lst_to_run.append("dials." + cmd_lst[0])
         for tmp_par in cmd_lst[1:]:
@@ -200,31 +198,6 @@ class runner(object):
     def slist(self):
         print "printing in steps list mode: \n"
         prin_lst(self.step_list, self.current)
-
-def prin_lst(lst, curr):
-    print "__________________________listing:"
-    for uni in lst:
-        stp_str = str(uni.lin_num) + " comm: " + str(uni.command)
-
-        try:
-            stp_str += " prev: " + str(uni.prev_step.lin_num)
-
-        except:
-            stp_str += " prev: None"
-
-        stp_str += " nxt: "
-        try:
-            for nxt_uni in uni.next_step_list:
-
-                stp_str += "  " + str(nxt_uni.lin_num)
-
-        except:
-            stp_str += "empty"
-
-        if( curr == uni.lin_num ):
-            stp_str += "                           <<< here I am <<<"
-
-        print stp_str
 
 class tree_show(object):
     def __init__(self):
