@@ -13,7 +13,7 @@ class UniStep(object):
     'export',
     ]
 
-    def __init__(self, prev_step):
+    def __init__(self, prev_step = None, gui_tool = None):
         self.lin_num = 0
         self.next_step_list = None
         self.prev_step = prev_step
@@ -22,7 +22,13 @@ class UniStep(object):
         self.pickle_file_out = None
         self.json_file_out = None
         self.phil_file_out = None
-        self.dials_comand = DialsCommand()
+
+        if( gui_tool == None ):
+            self.dials_comand = DialsCommand()
+
+        else:
+            self.dials_comand = gui_tool
+
     def __call__(self, cmd_lst):
         if( cmd_lst[0] == "fail" ):
             #testing virtual failed step
@@ -113,9 +119,9 @@ class UniStep(object):
 class Runner(object):
 
     ctrl_com_lst = ["goto", "fail", "slist","reset"]
-    def __init__(self):
-
-        root_node = UniStep(None)
+    def __init__(self, gui_tool):
+        self.gui_tool = gui_tool
+        root_node = UniStep(prev_step = None, gui_tool = self.gui_tool)
         root_node.success = True
         root_node.command = ["Root"]
         self.step_list = [root_node]
@@ -146,7 +152,7 @@ class Runner(object):
 
 
     def create_step(self, prev_step):
-        new_step = UniStep(prev_step)
+        new_step = UniStep(prev_step = prev_step, gui_tool = self.gui_tool)
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         try:
@@ -186,7 +192,7 @@ if( __name__ == "__main__"):
             uni_controler = pickle.load(bkp_in)
 
     except:
-        uni_controler = Runner()
+        uni_controler = Runner(None)
 
     tree_output(uni_controler)
 

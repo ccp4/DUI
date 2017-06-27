@@ -6,6 +6,29 @@ import sys
 import pickle
 from cli_utils import TreeShow
 from m_idials import Runner
+import subprocess
+
+class DialsCommandGUI(object):
+    def __init__(self):
+        print "creating new DialsCommand (PyQt4 obj)"
+
+    def __call__(self, lst_cmd_to_run):
+        try:
+            print "\n << running >>", lst_cmd_to_run, "from GUI class"
+            my_process = subprocess.Popen(lst_cmd_to_run)
+            my_process.wait()
+            if( my_process.poll() == 0 ):
+                local_success = True
+
+            else:
+                local_success = False
+
+        except:
+            local_success = False
+            print "\n FAIL call"
+
+        return local_success
+
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -18,7 +41,9 @@ class MainWidget(QMainWindow):
                 self.uni_controler = pickle.load(bkp_in)
 
         except:
-            self.uni_controler = Runner()
+
+            gui_runner = DialsCommandGUI()
+            self.uni_controler = Runner(gui_runner)
 
         self.cli_tree_output(self.uni_controler)
 
