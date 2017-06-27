@@ -11,10 +11,6 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
         self.super_parent = self
-
-        ###############################################################################################
-
-
         self.cli_tree_output = TreeShow()
 
         try:
@@ -25,8 +21,6 @@ class MainWidget(QMainWindow):
             self.uni_controler = Runner()
 
         self.cli_tree_output(self.uni_controler)
-
-        ###############################################################################################
 
         main_box = QHBoxLayout()
         main_box.addWidget(QLabel("DIALS command: "))
@@ -45,6 +39,7 @@ class MainWidget(QMainWindow):
         print "command entered:", new_cmd
 
         self.uni_controler.run(new_cmd)
+        self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
 
         with open('bkp.pickle', 'wb') as bkp_out:
@@ -58,40 +53,3 @@ if __name__ == '__main__':
     ex.show()
     sys.exit(app.exec_())
 
-
-
-'''
-
-if( __name__ == "__main__"):
-    tree_output = TreeShow()
-
-    try:
-        with open ('bkp.pickle', 'rb') as bkp_in:
-            uni_controler = pickle.load(bkp_in)
-
-    except:
-        uni_controler = Runner()
-
-    tree_output(uni_controler)
-
-    command = ""
-    while( command.strip() != 'exit' and command.strip() != 'quit' ):
-        try:
-            inp_str = "lin [" + str(uni_controler.current) + "] >>> "
-            command = str(raw_input(inp_str))
-            if( command == "" ):
-                print "converting empty line in self.slist()"
-                command = "slist"
-
-        except:
-            print " ... interrupting"
-            sys.exit(0)
-
-        uni_controler.run(command)
-        tree_output(uni_controler)
-
-        with open('bkp.pickle', 'wb') as bkp_out:
-            pickle.dump(uni_controler, bkp_out)
-
-
-'''
