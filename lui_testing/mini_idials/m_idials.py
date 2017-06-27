@@ -11,9 +11,7 @@ class DialsCommand(object):
     def __call__(self, lst_cmd_to_run):
         #TODO make sure new step is compatible with previous
         try:
-
             print "\n << running >>", lst_cmd_to_run
-
             my_process = subprocess.Popen(lst_cmd_to_run)
             my_process.wait()
             if( my_process.poll() == 0 ):
