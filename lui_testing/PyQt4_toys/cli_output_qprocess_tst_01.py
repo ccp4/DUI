@@ -1,9 +1,9 @@
-gpl = '''
+#gpl = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "wprks with PyQt4"
 #'''
-#py_side = '''
+py_side = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
 print "works with PySide"
