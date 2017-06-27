@@ -9,32 +9,6 @@ from m_idials import Runner
 import subprocess
 
 
-
-class MyQProcess(QProcess):
-    def __init__(self, parent = None):
-        super(MyQProcess, self).__init__()
-        self.run_stat = False
-        self.started.connect(self.local_start)
-        self.readyReadStandardOutput.connect(self.readStdOutput)
-        self.readyReadStandardError.connect(self.readStdError)
-        self.finished.connect(self.local_finished)
-
-    def local_start(self):
-        self.run_stat = True
-
-    def readStdOutput(self):
-        line_string = str(self.readAllStandardOutput())
-        single_line = line_string[0:len(line_string) - 1]
-        print ">>: ", single_line
-
-    def readStdError(self):
-        line_string = str(self.readAllStandardError())
-        single_line = line_string[0:len(line_string) - 1]
-        print "<< err : ", single_line
-
-    def local_finished(self):
-        self.run_stat = False
-
 class DialsCommandGUI(object):
     def __init__(self):
         print "creating new DialsCommand (PyQt4 obj)"
