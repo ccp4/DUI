@@ -28,7 +28,8 @@ class DialsCommandGUI(object):
         cmd_par = lst_cmd_to_run[1:]
         self.qProcess.start(cmd_nam, cmd_par)
         local_success = True
-
+        self.qProcess.waitForFinished()
+        self.qProcess.close()
         '''
         print "\n << running >>", lst_cmd_to_run, "from GUI class"
         my_process = subprocess.Popen(lst_cmd_to_run)
