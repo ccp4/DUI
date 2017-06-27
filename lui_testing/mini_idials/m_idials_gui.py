@@ -6,6 +6,7 @@ import sys
 import pickle
 from cli_utils import TreeShow
 from m_idials import Runner
+from gui_utils import MyQProcess
 import subprocess
 
 
@@ -13,20 +14,37 @@ class DialsCommandGUI(object):
     def __init__(self):
         print "creating new DialsCommand (PyQt4 obj)"
 
+        #try:
+        self.qProcess  = MyQProcess(self)
+        #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels);
+        print "MyQProcess() ready"
+        #except:
+        #    print "Failed to create MyQProcess()"
+
     def __call__(self, lst_cmd_to_run):
-        try:
-            print "\n << running >>", lst_cmd_to_run, "from GUI class"
-            my_process = subprocess.Popen(lst_cmd_to_run)
-            my_process.wait()
-            if( my_process.poll() == 0 ):
-                local_success = True
+        #try:
 
-            else:
-                local_success = False
+        cmd_nam = lst_cmd_to_run[0]
+        cmd_par = lst_cmd_to_run[1:]
+        self.qProcess.start(cmd_nam, cmd_par)
+        local_success = True
 
+        '''
+        print "\n << running >>", lst_cmd_to_run, "from GUI class"
+        my_process = subprocess.Popen(lst_cmd_to_run)
+        my_process.wait()
+        if( my_process.poll() == 0 ):
+            local_success = True
+
+        else:
+            local_success = False
+        '''
+
+        '''
         except:
             local_success = False
             print "\n FAIL call"
+        '''
 
         return local_success
 
@@ -36,15 +54,16 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
         self.super_parent = self
         self.cli_tree_output = TreeShow()
-
+        '''
         try:
             with open ('bkp.pickle', 'rb') as bkp_in:
                 self.uni_controler = pickle.load(bkp_in)
 
         except:
+        '''
+        gui_runner = DialsCommandGUI()
+        self.uni_controler = Runner(gui_runner)
 
-            gui_runner = DialsCommandGUI()
-            self.uni_controler = Runner(gui_runner)
 
         self.cli_tree_output(self.uni_controler)
 
@@ -67,9 +86,10 @@ class MainWidget(QMainWindow):
         self.uni_controler.run(new_cmd)
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
-
+        '''
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
+        '''
 
 
 

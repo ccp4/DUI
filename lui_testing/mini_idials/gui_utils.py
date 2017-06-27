@@ -28,6 +28,7 @@ class MyQProcess(QProcess):
 
     def local_finished(self):
         self.run_stat = False
+        print "\n ended \n"
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -35,9 +36,20 @@ class MainWidget(QMainWindow):
         main_box = QHBoxLayout()
         main_box.addWidget(QLabel("DIALS command: "))
 
+
+        try:
+            self.qProcess  = MyQProcess(self)
+            #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels);
+            print "MyQProcess() ready"
+        except:
+            print "Failed to create MyQProcess()"
+
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+
+        self.qProcess.start("../PyQt4_toys/sec_interval.sh")
+
 
 
 if __name__ == '__main__':
