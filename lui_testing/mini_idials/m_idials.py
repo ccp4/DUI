@@ -1,28 +1,7 @@
 #!/usr/bin/python
 import sys
-import subprocess
 import pickle
-from cli_utils import print_list, TreeShow
-class DialsCommand(object):
-    def __init__(self):
-        print "creating new DialsCommand (obj)"
-
-    def __call__(self, lst_cmd_to_run):
-        try:
-            print "\n << running >>", lst_cmd_to_run
-            my_process = subprocess.Popen(lst_cmd_to_run)
-            my_process.wait()
-            if( my_process.poll() == 0 ):
-                local_success = True
-
-            else:
-                local_success = False
-
-        except:
-            local_success = False
-            print "\n FAIL call"
-
-        return local_success
+from cli_utils import print_list, TreeShow, DialsCommand
 
 class UniStep(object):
     dials_com_lst = [
