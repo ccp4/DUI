@@ -2,6 +2,33 @@
 import sys
 import subprocess
 import pickle
+
+
+class DialsCommand(object):
+    def __init__(self):
+        print "creating new DialsCommand (obj)"
+
+    def __call__(self, lst_cmd_to_run):
+        #TODO make sure new step is compatible with previous
+        try:
+
+            print "\n << running >>", lst_cmd_to_run
+
+            my_process = subprocess.Popen(lst_cmd_to_run)
+            my_process.wait()
+            if( my_process.poll() == 0 ):
+                local_success = True
+
+            else:
+                local_success = False
+
+        except:
+            local_success = False
+            print "\n FAIL call"
+
+        return local_success
+
+
 class uni_step(object):
     dials_com_lst = [
     'import',
@@ -21,7 +48,7 @@ class uni_step(object):
         self.pickle_file_out = None
         self.json_file_out = None
         self.phil_file_out = None
-
+        self.dials_comand = DialsCommand()
     def __call__(self, cmd_lst):
         if( cmd_lst[0] == "fail" ):
             #testing virtual failed step
@@ -30,26 +57,11 @@ class uni_step(object):
             self.success = False
 
         else:
-            print "____________________________________\n << running >>", cmd_lst
             self.command = cmd_lst
 
             if( cmd_lst[0] in self.dials_com_lst ):
-
-                #TODO make sure new step is compatible with previous
-
                 self.build_command(cmd_lst)
-                try:
-                    my_process = subprocess.Popen(self.cmd_lst_to_run)
-                    my_process.wait()
-                    if( my_process.poll() == 0 ):
-                        self.success = True
-
-                    else:
-                        self.success = False
-
-                except:
-                    self.success = False
-                    print "\n FAIL call"
+                self.success = self.dials_comand(self.cmd_lst_to_run)
 
             else:
                 print "NOT dials command"
@@ -271,7 +283,7 @@ class tree_show(object):
         else:
             stp_prn = " N "
 
-        str_lin_num = "{:3}".format(step.lin_num)
+        str_lin_num = "{0:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + "   \___"
         try:
