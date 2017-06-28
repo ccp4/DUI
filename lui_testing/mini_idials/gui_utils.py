@@ -9,63 +9,25 @@ class CliOutView(QTextBrowser):
         self.main_app = app
         self.setCurrentFont( QFont("Monospace"))
 
-        replazing = '''
-    def add_txt(self, str_to_add):
-        self.append(str_to_add)
-        '''
-
     def add_txt(self, str_to_print):
         self.append(str_to_print)
         self.main_app.processEvents()
 
-'''
-class MyQProcess(QProcess):
-    def __init__(self, parent = None):
-        super(MyQProcess, self).__init__()
-        self.run_stat = False
-        self.started.connect(self.local_start)
-        self.readyReadStandardOutput.connect(self.readStdOutput)
-        self.readyReadStandardError.connect(self.readStdError)
-        self.finished.connect(self.local_finished)
-
-    def local_start(self):
-        print "\n << started >> \n"
-        self.run_stat = True
-
-    def readStdOutput(self):
-        line_string = str(self.readAllStandardOutput())
-        single_line = line_string[0:len(line_string) - 1]
-        print ">>: ", single_line
-
-    def readStdError(self):
-        line_string = str(self.readAllStandardError())
-        single_line = line_string[0:len(line_string) - 1]
-        print "<< err : ", single_line
-
-    def local_finished(self):
-        self.run_stat = False
-        print "\n >> ended << \n"
-
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
-        main_box = QHBoxLayout()
-        main_box.addWidget(QLabel("DIALS command: "))
+        main_box = QVBoxLayout()
+        main_box.addWidget(QLabel("Test dummy GUI"))
 
-
-        try:
-            self.qProcess  = MyQProcess(self)
-            #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels)
-            print "MyQProcess() ready"
-        except:
-            print "Failed to create MyQProcess()"
+        self.tst_view = CliOutView(app = app)
+        main_box.addWidget(self.tst_view)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.qProcess.start("dials.find_spots", "datablock.json")
-
+        for n in xrange(5):
+            self.tst_view.add_txt("aaaaaaaaaaaaaaaaaaaa")
 
 
 if __name__ == '__main__':
@@ -74,4 +36,4 @@ if __name__ == '__main__':
     ex.show()
     sys.exit(app.exec_())
 
-'''
+

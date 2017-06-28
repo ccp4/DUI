@@ -12,7 +12,7 @@ import subprocess
 
 class DialsCommandGUI(QObject):
 
-    mysignal = pyqtSignal(str)
+    str_print_signal = pyqtSignal(str)
 
     def __init__(self, parent = None):
         super(DialsCommandGUI, self).__init__()
@@ -31,8 +31,8 @@ class DialsCommandGUI(QObject):
             for line in iter(my_process.stdout.readline, b''):
                 single_line = line[0:len(line)-1]
                 #print single_line
-                self.mysignal.emit(single_line)
-                #self.mysignal.emit(line)
+                self.str_print_signal.emit(single_line)
+                #self.str_print_signal.emit(line)
 
             my_process.wait()
             my_process.stdout.close()
@@ -79,7 +79,7 @@ class MainWidget(QMainWindow):
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_entr)
 
-        gui_runner.mysignal.connect(self.textedit.add_txt)
+        gui_runner.str_print_signal.connect(self.textedit.add_txt)
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
 
