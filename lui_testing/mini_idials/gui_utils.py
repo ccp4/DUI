@@ -10,8 +10,12 @@ class CliOutView(QTextBrowser):
         self.setCurrentFont( QFont("Monospace"))
 
     def add_txt(self, str_to_print):
-        self.append(str_to_print)
-        self.main_app.processEvents()
+        try:
+            self.append(str_to_print)
+            self.main_app.processEvents()
+
+        except:
+            self.append(str_to_print[0])
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -28,7 +32,6 @@ class MainWidget(QMainWindow):
 
         for n in xrange(5):
             self.tst_view.add_txt("aaaaaaaaaaaaaaaaaaaa")
-
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

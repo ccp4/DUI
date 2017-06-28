@@ -64,32 +64,6 @@ class TreeShow(object):
         self.tree_print(my_runner.current)
         print "---------------------" + self.max_indent * self.ind_lin
 
-    def tree_print(self, curr):
-        tree_dat = []
-        for tmp_lst in self.str_lst:
-            tree_dat.append(tmp_lst)
-
-        for pos, loc_lst in enumerate(tree_dat):
-            if(pos > 0):
-                if( loc_lst[1] < tree_dat[pos - 1][1] ):
-                    for up_pos in xrange(pos - 1, 0, -1):
-                        pos_in_str = loc_lst[1] * len(self.ind_spc) + 9
-                        left_side = tree_dat[up_pos][0][0:pos_in_str]
-                        right_side = tree_dat[up_pos][0][pos_in_str + 1:]
-                        if( tree_dat[up_pos][1] > loc_lst[1] ):
-                            tree_dat[up_pos][0] = left_side + "|" + right_side
-
-                        elif( tree_dat[up_pos][1] == loc_lst[1] ):
-                            break
-
-            if( loc_lst[2] == curr ):
-                lng = len(self.ind_spc) * self.max_indent + 22
-                lng_lft = lng - len(tree_dat[pos][0])
-                str_here = lng_lft * " "
-                tree_dat[pos][0] += str_here + "   <<< here "
-
-        for prn_str in tree_dat:
-            print prn_str[0]
 
     def add_tree(self, step = None, indent = None):
         if( step.success == True ):
@@ -120,4 +94,32 @@ class TreeShow(object):
             new_indent = int(new_indent)
             if( new_indent > self.max_indent ):
                 self.max_indent = new_indent
+
+
+    def tree_print(self, curr):
+        self.tree_dat = []
+        for tmp_lst in self.str_lst:
+            self.tree_dat.append(tmp_lst)
+
+        for pos, loc_lst in enumerate(self.tree_dat):
+            if(pos > 0):
+                if( loc_lst[1] < self.tree_dat[pos - 1][1] ):
+                    for up_pos in xrange(pos - 1, 0, -1):
+                        pos_in_str = loc_lst[1] * len(self.ind_spc) + 9
+                        left_side = self.tree_dat[up_pos][0][0:pos_in_str]
+                        right_side = self.tree_dat[up_pos][0][pos_in_str + 1:]
+                        if( self.tree_dat[up_pos][1] > loc_lst[1] ):
+                            self.tree_dat[up_pos][0] = left_side + "|" + right_side
+
+                        elif( self.tree_dat[up_pos][1] == loc_lst[1] ):
+                            break
+
+            if( loc_lst[2] == curr ):
+                lng = len(self.ind_spc) * self.max_indent + 22
+                lng_lft = lng - len(self.tree_dat[pos][0])
+                str_here = lng_lft * " "
+                self.tree_dat[pos][0] += str_here + "   <<< here "
+
+        for prn_str in self.tree_dat:
+            print prn_str[0]
 

@@ -20,12 +20,12 @@ class DialsCommandGUI(QObject):
 
     def __call__(self, lst_cmd_to_run):
         try:
-            #TODO give a try to QProcess and sse if it behaves better
+            #TODO give a try to QProcess and see if it behaves better
             print "before subprocess"
             my_process = subprocess.Popen(lst_cmd_to_run,
-                                            stdout = subprocess.PIPE,
-                                            stderr = subprocess.STDOUT,
-                                            bufsize = 1)
+                                          stdout = subprocess.PIPE,
+                                          stderr = subprocess.STDOUT,
+                                          bufsize = 1)
             print "after subprocess"
 
             for line in iter(my_process.stdout.readline, b''):
@@ -73,13 +73,16 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        self.textedit = CliOutView(app = app)
-        main_box.addWidget(self.textedit)
+        self.tree_out = CliOutView(app = app)
+        main_box.addWidget(self.tree_out)
+
+        self.cli_out = CliOutView(app = app)
+        main_box.addWidget(self.cli_out)
 
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_entr)
 
-        gui_runner.str_print_signal.connect(self.textedit.add_txt)
+        gui_runner.str_print_signal.connect(self.cli_out.add_txt)
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
 
@@ -96,6 +99,9 @@ class MainWidget(QMainWindow):
         self.uni_controler.run(new_cmd)
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
+
+        for lin_to_prn in self.cli_tree_output.tree_dat:
+            self.tree_out.add_txt(lin_to_prn)
 
         #TODO try to make this object/pickle compatible with C.L.I. app
         #with open('bkp.pickle', 'wb') as bkp_out:
