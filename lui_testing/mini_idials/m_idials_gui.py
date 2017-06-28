@@ -20,7 +20,7 @@ class DialsCommandGUI(QObject):
 
     def __call__(self, lst_cmd_to_run):
         try:
-
+            #TODO give atry to QProcess and sse if it behave better
             print "before subprocess"
             my_process = subprocess.Popen(lst_cmd_to_run,
                                             stdout = subprocess.PIPE,
@@ -31,8 +31,8 @@ class DialsCommandGUI(QObject):
             for line in iter(my_process.stdout.readline, b''):
                 single_line = line[0:len(line)-1]
                 #print single_line
-                #self.mysignal.emit(single_line)
-                self.mysignal.emit(line)
+                self.mysignal.emit(single_line)
+                #self.mysignal.emit(line)
 
             #my_process.wait()
             my_process.stdout.close()
@@ -53,7 +53,7 @@ class DialsCommandGUI(QObject):
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
-        self.super_parent = self
+        #self.super_parent = self
         self.cli_tree_output = TreeShow()
 
         #TODO try to make this object/pickle compatible with C.L.I. app
@@ -72,7 +72,8 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        self.textedit = QTextEdit()
+        self.textedit = QTextBrowser()
+        self.textedit.setCurrentFont( QFont("Monospace"))
         main_box.addWidget(self.textedit)
 
         self.cmd_edit = QLineEdit()
@@ -90,9 +91,10 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
     def out_put_str(self, str_to_print):
-        self.textedit.moveCursor(QTextCursor.End)
-        str_w_new_lin = str_to_print + "\n"
-        self.textedit.insertPlainText(str_to_print)
+        #self.textedit.moveCursor(QTextCursor.End)
+        str_w_new_lin = str_to_print
+        #self.textedit.insertPlainText(str_to_print)
+        self.textedit.append(str_w_new_lin)
         app.processEvents()
 
     def cmd_entr(self):
