@@ -10,13 +10,13 @@ from gui_utils import MyQProcess
 import subprocess
 
 
-class DialsCommandGUI(object):
+class DialsCommandGUI(QObject):
     def __init__(self):
         print "creating new DialsCommand (PyQt4 obj)"
 
         #try:
         self.qProcess  = MyQProcess(self)
-        self.qProcess.setProcessChannelMode(QProcess.SeparateChannels)
+        #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels)
         print "MyQProcess() ready"
         #except:
         #    print "Failed to create MyQProcess()"
@@ -28,6 +28,7 @@ class DialsCommandGUI(object):
         cmd_par = lst_cmd_to_run[1:]
         self.qProcess.start(cmd_nam, cmd_par)
         local_success = True
+        self.qProcess.write ("exit\n")
         self.qProcess.waitForFinished()
         self.qProcess.close()
         '''

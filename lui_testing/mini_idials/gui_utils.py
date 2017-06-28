@@ -49,7 +49,7 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.qProcess.start("../PyQt4_toys/sec_interval.sh")
+        self.qProcess.start("dials.find_spots", "datablock.json")
 
 
 
