@@ -6,7 +6,7 @@ import sys
 import pickle
 from cli_utils import TreeShow
 from m_idials import Runner
-from gui_utils import MyQProcess
+from gui_utils import CliOutView
 import subprocess
 
 
@@ -20,7 +20,7 @@ class DialsCommandGUI(QObject):
 
     def __call__(self, lst_cmd_to_run):
         try:
-            #TODO give atry to QProcess and sse if it behave better
+            #TODO give a try to QProcess and sse if it behaves better
             print "before subprocess"
             my_process = subprocess.Popen(lst_cmd_to_run,
                                             stdout = subprocess.PIPE,
@@ -34,7 +34,7 @@ class DialsCommandGUI(QObject):
                 self.mysignal.emit(single_line)
                 #self.mysignal.emit(line)
 
-            #my_process.wait()
+            my_process.wait()
             my_process.stdout.close()
             print "after ...close()"
             if( my_process.poll() == 0 ):
@@ -50,6 +50,8 @@ class DialsCommandGUI(QObject):
         return local_success
 
 
+
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -63,7 +65,6 @@ class MainWidget(QMainWindow):
         #
         #except:
 
-
         gui_runner = DialsCommandGUI()
         self.uni_controler = Runner(gui_runner)
 
@@ -72,30 +73,19 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        self.textedit = QTextBrowser()
-        self.textedit.setCurrentFont( QFont("Monospace"))
+        self.textedit = CliOutView(app = app)
         main_box.addWidget(self.textedit)
 
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_entr)
-        '''
-        outer_thread = QThread()
-        gui_runner.moveToThread(outer_thread)
-        '''
-        gui_runner.mysignal.connect(self.out_put_str)
+
+        gui_runner.mysignal.connect(self.textedit.add_txt)
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
-
-    def out_put_str(self, str_to_print):
-        #self.textedit.moveCursor(QTextCursor.End)
-        str_w_new_lin = str_to_print
-        #self.textedit.insertPlainText(str_to_print)
-        self.textedit.append(str_w_new_lin)
-        app.processEvents()
 
     def cmd_entr(self):
         new_cmd = str(self.cmd_edit.text())
@@ -110,7 +100,6 @@ class MainWidget(QMainWindow):
         #TODO try to make this object/pickle compatible with C.L.I. app
         #with open('bkp.pickle', 'wb') as bkp_out:
         #    pickle.dump(self.uni_controler, bkp_out)
-
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
