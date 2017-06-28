@@ -14,6 +14,7 @@ class MyQProcess(QProcess):
         self.finished.connect(self.local_finished)
 
     def local_start(self):
+        print "\n << started >> \n"
         self.run_stat = True
 
     def readStdOutput(self):
@@ -28,7 +29,7 @@ class MyQProcess(QProcess):
 
     def local_finished(self):
         self.run_stat = False
-        print "\n ended \n"
+        print "\n >> ended << \n"
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -39,7 +40,7 @@ class MainWidget(QMainWindow):
 
         try:
             self.qProcess  = MyQProcess(self)
-            #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels);
+            #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels)
             print "MyQProcess() ready"
         except:
             print "Failed to create MyQProcess()"

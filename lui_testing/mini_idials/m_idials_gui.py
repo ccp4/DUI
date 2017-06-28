@@ -16,7 +16,7 @@ class DialsCommandGUI(object):
 
         #try:
         self.qProcess  = MyQProcess(self)
-        #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels);
+        self.qProcess.setProcessChannelMode(QProcess.SeparateChannels)
         print "MyQProcess() ready"
         #except:
         #    print "Failed to create MyQProcess()"
