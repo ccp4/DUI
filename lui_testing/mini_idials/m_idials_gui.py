@@ -15,15 +15,15 @@ class DialsCommandGUI(QObject):
         print "creating new DialsCommand (PyQt4 obj)"
 
         #try:
-        self.qProcess  = MyQProcess(self)
+        #self.qProcess  = MyQProcess(self)
         #self.qProcess.setProcessChannelMode(QProcess.SeparateChannels)
-        print "MyQProcess() ready"
+        #print "MyQProcess() ready"
         #except:
         #    print "Failed to create MyQProcess()"
 
     def __call__(self, lst_cmd_to_run):
-        #try:
 
+        '''
         cmd_nam = lst_cmd_to_run[0]
         cmd_par = lst_cmd_to_run[1:]
         self.qProcess.start(cmd_nam, cmd_par)
@@ -32,21 +32,19 @@ class DialsCommandGUI(QObject):
         self.qProcess.waitForFinished()
         self.qProcess.close()
         '''
-        print "\n << running >>", lst_cmd_to_run, "from GUI class"
-        my_process = subprocess.Popen(lst_cmd_to_run)
-        my_process.wait()
-        if( my_process.poll() == 0 ):
-            local_success = True
+        try:
+            print "\n << running >>", lst_cmd_to_run, "from GUI class"
+            my_process = subprocess.Popen(lst_cmd_to_run)
+            my_process.wait()
+            if( my_process.poll() == 0 ):
+                local_success = True
 
-        else:
-            local_success = False
-        '''
+            else:
+                local_success = False
 
-        '''
         except:
             local_success = False
             print "\n FAIL call"
-        '''
 
         return local_success
 
@@ -84,6 +82,8 @@ class MainWidget(QMainWindow):
     def cmd_entr(self):
         new_cmd = str(self.cmd_edit.text())
         print "command entered:", new_cmd
+        if( new_cmd == "" ):
+            new_cmd = "slist"
 
         self.uni_controler.run(new_cmd)
         self.cmd_edit.setText("")
