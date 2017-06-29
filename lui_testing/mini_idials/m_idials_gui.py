@@ -99,7 +99,7 @@ class MainWidget(QMainWindow):
         self.uni_controler.run(new_cmd)
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
-
+        self.tree_out.clear()
         for lin_to_prn in self.cli_tree_output.tree_dat:
             self.tree_out.add_txt(lin_to_prn)
 
