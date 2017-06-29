@@ -2,6 +2,8 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
+from outputs_n_viewers.web_page_view import WebTab
+
 import sys
 import pickle
 from cli_utils import TreeShow
@@ -48,6 +50,27 @@ class DialsCommandGUI(QObject):
 
         return local_success
 
+img_view_exp = '''
+class TmpTstWidget( QWidget):
+
+    #dials.python outputs_n_viewers/web_page_view.py
+
+    def __init__(self, parent = None):
+        super(TmpTstWidget, self).__init__()
+        #self.param_widget_parent = self
+        self.my_widget = WebTab()
+        self.btn1 = QPushButton("Click me", self)
+        self.btn1.clicked.connect(self.load_page)
+        my_box = QVBoxLayout()
+        my_box.addWidget(self.my_widget)
+        my_box.addWidget(self.btn1)
+        self.setLayout(my_box)
+        self.show()
+
+    def load_page(self):
+        #self.my_widget.update_page("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_03/dials-1/9_integrate/report.html")
+        self.my_widget.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
+'''
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -75,7 +98,14 @@ class MainWidget(QMainWindow):
         top_hbox.addWidget(self.tree_out)
 
         self.cli_out = CliOutView(app = app)
-        top_hbox.addWidget(self.cli_out)
+        self.web_view = WebTab()
+
+        self.my_tabs = QTabWidget()
+        self.my_tabs.addTab(self.cli_out, "CLI OutPut")
+        self.my_tabs.addTab(self.web_view, "Report View")
+
+        top_hbox.addWidget(self.my_tabs)
+
 
         main_box.addLayout(top_hbox)
 
@@ -102,6 +132,8 @@ class MainWidget(QMainWindow):
         self.tree_out.clear()
         for lin_to_prn in self.cli_tree_output.tree_dat:
             self.tree_out.add_txt(lin_to_prn)
+
+        self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
 
         #TODO try to make this object/pickle compatible with C.L.I. app
         #with open('bkp.pickle', 'wb') as bkp_out:

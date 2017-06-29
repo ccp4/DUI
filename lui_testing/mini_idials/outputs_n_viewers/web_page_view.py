@@ -42,8 +42,8 @@ class TmpTstWidget( QWidget):
         self.show()
 
     def load_page(self):
-        self.my_widget.update_page("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_03/dials-1/9_integrate/report.html")
-
+        #self.my_widget.update_page("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_03/dials-1/9_integrate/report.html")
+        self.my_widget.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
 
 if( __name__ == "__main__" ):
     app =  QApplication(sys.argv)
