@@ -56,7 +56,6 @@ class DialsCommandGUI(QObject):
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
         super(TreeNavWidget, self).__init__()
-        #self.clicked[QModelIndex].connect(self.item_clicked)
         print "TreeNavWidget(__init__)"
 
     def update_me(self, root_node, lst_path_idx):
@@ -78,17 +77,16 @@ class TreeNavWidget(QTreeView):
             for child_node in root_node.next_step_list:
                 try:
                     child_node_name = str(child_node.command)
+                    #child_node_name = str(child_node.command[0])
 
                 except:
                     child_node_name = "None"
 
                 new_item = QStandardItem(child_node_name)
-
                 new_item.idials_node = child_node
                 #new_item.success = child_node.success
                 new_item.setBackground(Qt.white)
                 new_item.setForeground(Qt.blue)
-
                 new_item.setEditable(False)      # not letting the user edit it
 
                 self.recursive_node(child_node, new_item)
@@ -98,29 +96,12 @@ class TreeNavWidget(QTreeView):
             print "end of node"
 
 
-    def item_clicked(self, it_index):
+    def item_clicked(self):
         print "TreeNavWidget(item_clicked)"
-        tmp_off = '''
-        print "self.my_parent.super_parent.running =", self.my_parent.super_parent.running
-        if( self.my_parent.super_parent.running == False ):
-            print "_____________________________________________________ <<< item_clicked"
-            item = self.tmp_model.itemFromIndex(it_index)
 
-            if item.idials_node == None:
-                print "\n step NOT ran yet \n"
 
-            else:
-                if item.idials_node.success == True:
-                    print "item.idials_node.index =", item.idials_node.index
-                    index_to_jump = item.idials_node.index
-
-                elif item.idials_node.success == False:
-                    print "cannot jump to failed step"
-                    index_to_jump = item.idials_node.parent.index
-
-                self.my_parent.goto(index_to_jump)
-        '''
-
+    def inner_clicked(self):
+        print "TreeNavWidget.inner_clicked"
 
 
 
@@ -149,6 +130,7 @@ class MainWidget(QMainWindow):
         top_hbox = QHBoxLayout()
 
         self.tree_out =TreeNavWidget()
+        self.tree_out.clicked[QModelIndex].connect(self.tree_out.item_clicked)
         top_hbox.addWidget(self.tree_out)
 
         self.cli_out = CliOutView(app = app)
