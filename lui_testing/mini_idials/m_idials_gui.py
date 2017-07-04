@@ -50,49 +50,29 @@ class DialsCommandGUI(QObject):
 
         return local_success
 
-img_view_exp = '''
-class TmpTstWidget( QWidget):
 
-    #dials.python outputs_n_viewers/web_page_view.py
-
-    def __init__(self, parent = None):
-        super(TmpTstWidget, self).__init__()
-        #self.param_widget_parent = self
-        self.my_widget = WebTab()
-        self.btn1 = QPushButton("Click me", self)
-        self.btn1.clicked.connect(self.load_page)
-        my_box = QVBoxLayout()
-        my_box.addWidget(self.my_widget)
-        my_box.addWidget(self.btn1)
-        self.setLayout(my_box)
-        self.show()
-
-    def load_page(self):
-        #self.my_widget.update_page("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_03/dials-1/9_integrate/report.html")
-        self.my_widget.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
-'''
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
         #self.super_parent = self
         self.cli_tree_output = TreeShow()
 
+        ######################################################################
         #TODO try to make this object/pickle compatible with C.L.I. app
         #try:
         #    with open ('bkp.pickle', 'rb') as bkp_in:
         #        self.uni_controler = pickle.load(bkp_in)
         #
         #except:
+        ######################################################################
 
         gui_runner = DialsCommandGUI()
         self.uni_controler = Runner(gui_runner)
-
 
         self.cli_tree_output(self.uni_controler)
 
         main_box = QVBoxLayout()
         top_hbox = QHBoxLayout()
-
 
         self.tree_out = CliOutView(app = app)
         top_hbox.addWidget(self.tree_out)
@@ -133,11 +113,13 @@ class MainWidget(QMainWindow):
         for lin_to_prn in self.cli_tree_output.tree_dat:
             self.tree_out.add_txt(lin_to_prn)
 
-        self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
+        #self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
+        self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
 
         #TODO try to make this object/pickle compatible with C.L.I. app
         #with open('bkp.pickle', 'wb') as bkp_out:
         #    pickle.dump(self.uni_controler, bkp_out)
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

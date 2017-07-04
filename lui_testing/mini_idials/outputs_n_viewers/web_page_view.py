@@ -21,9 +21,9 @@ class WebTab(QWidget):
         self.show()
 
     def update_page(self, new_path):
-        print "update_page(", new_path, ")"
+        print " >> update_page(", new_path, ")"
         new_path = "file://" + new_path
-        print "new_path:", new_path
+        print " >> new_path:", new_path
         self.web.load(QUrl(new_path))
 
 
@@ -43,7 +43,8 @@ class TmpTstWidget( QWidget):
 
     def load_page(self):
         #self.my_widget.update_page("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_03/dials-1/9_integrate/report.html")
-        self.my_widget.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
+        #self.my_widget.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
+        self.my_widget.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
 
 if( __name__ == "__main__" ):
     app =  QApplication(sys.argv)
