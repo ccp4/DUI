@@ -51,6 +51,80 @@ class DialsCommandGUI(QObject):
         return local_success
 
 
+
+
+class TreeNavWidget(QTreeView):
+    def __init__(self, parent = None):
+        super(TreeNavWidget, self).__init__()
+        #self.clicked[QModelIndex].connect(self.item_clicked)
+        print "TreeNavWidget(__init__)"
+
+    def update_me(self, root_node, lst_path_idx):
+        self.lst_idx = lst_path_idx
+
+        print self.lst_idx
+
+        self.tmp_model = QStandardItemModel(self)
+        self.recursive_node(root_node, self.tmp_model)
+
+        self.tmp_model.setHorizontalHeaderLabels(["History Tree"])
+        self.setModel(self.tmp_model)
+        self.expandAll()
+
+    def recursive_node(self, root_node, item_in):
+
+        #for child_node in root_node.children:
+        try:
+            for child_node in root_node.next_step_list:
+                try:
+                    child_node_name = str(child_node.command)
+
+                except:
+                    child_node_name = "None"
+
+                new_item = QStandardItem(child_node_name)
+
+                new_item.idials_node = child_node
+                #new_item.success = child_node.success
+                new_item.setBackground(Qt.white)
+                new_item.setForeground(Qt.blue)
+
+                new_item.setEditable(False)      # not letting the user edit it
+
+                self.recursive_node(child_node, new_item)
+                item_in.appendRow(new_item)
+
+        except:
+            print "end of node"
+
+
+    def item_clicked(self, it_index):
+        print "TreeNavWidget(item_clicked)"
+        tmp_off = '''
+        print "self.my_parent.super_parent.running =", self.my_parent.super_parent.running
+        if( self.my_parent.super_parent.running == False ):
+            print "_____________________________________________________ <<< item_clicked"
+            item = self.tmp_model.itemFromIndex(it_index)
+
+            if item.idials_node == None:
+                print "\n step NOT ran yet \n"
+
+            else:
+                if item.idials_node.success == True:
+                    print "item.idials_node.index =", item.idials_node.index
+                    index_to_jump = item.idials_node.index
+
+                elif item.idials_node.success == False:
+                    print "cannot jump to failed step"
+                    index_to_jump = item.idials_node.parent.index
+
+                self.my_parent.goto(index_to_jump)
+        '''
+
+
+
+
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -74,7 +148,7 @@ class MainWidget(QMainWindow):
         main_box = QVBoxLayout()
         top_hbox = QHBoxLayout()
 
-        self.tree_out = CliOutView(app = app)
+        self.tree_out =TreeNavWidget()
         top_hbox.addWidget(self.tree_out)
 
         self.cli_out = CliOutView(app = app)
@@ -109,12 +183,10 @@ class MainWidget(QMainWindow):
         self.uni_controler.run(new_cmd)
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
-        self.tree_out.clear()
-        for lin_to_prn in self.cli_tree_output.tree_dat:
-            self.tree_out.add_txt(lin_to_prn)
-
         #self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
         self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
+        self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
+
 
         #TODO try to make this object/pickle compatible with C.L.I. app
         #with open('bkp.pickle', 'wb') as bkp_out:

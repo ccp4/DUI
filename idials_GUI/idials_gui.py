@@ -51,7 +51,9 @@ class TreeNavWidget(QTreeView):
         super(TreeNavWidget, self).__init__()
         self.my_parent = parent
 
+        #TODO make sure next line is needed (self.lst_commands NOT used anywhere)
         self.lst_commands = self.my_parent.lst_commands
+
         self.clicked[QModelIndex].connect(self.item_clicked)
 
     def update_me(self, root_node, lst_path_idx):
