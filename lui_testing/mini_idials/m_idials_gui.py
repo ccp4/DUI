@@ -63,11 +63,11 @@ class TreeNavWidget(QTreeView):
 
         print self.lst_idx
 
-        self.tmp_model = QStandardItemModel(self)
-        self.recursive_node(root_node, self.tmp_model)
+        self.std_mod = QStandardItemModel(self)
+        self.recursive_node(root_node, self.std_mod)
 
-        self.tmp_model.setHorizontalHeaderLabels(["History Tree"])
-        self.setModel(self.tmp_model)
+        self.std_mod.setHorizontalHeaderLabels(["History Tree"])
+        self.setModel(self.std_mod)
         self.expandAll()
 
     def recursive_node(self, root_node, item_in):
@@ -131,7 +131,6 @@ class MainWidget(QMainWindow):
 
         top_hbox.addWidget(self.my_tabs)
 
-
         main_box.addLayout(top_hbox)
 
         self.cmd_edit = QLineEdit()
@@ -169,9 +168,9 @@ class MainWidget(QMainWindow):
 
     def item_clicked(self, it_index):
         print "TreeNavWidget(item_clicked)"
-        item = self.tree_out.tmp_model.itemFromIndex(it_index)
+        item = self.tree_out.std_mod.itemFromIndex(it_index)
         lin_num = item.idials_node.lin_num
-        print "clicked item lin_num (self.tree_out.tmp_model) =", lin_num
+        print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_entr(cmd_ovr)
 
