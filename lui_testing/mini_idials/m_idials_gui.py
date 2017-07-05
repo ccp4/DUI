@@ -95,15 +95,12 @@ class TreeNavWidget(QTreeView):
         except:
             print "end of node"
 
-
-    def item_clicked(self):
+    def item_clicked(self, it_index):
         print "TreeNavWidget(item_clicked)"
-
-
-    def inner_clicked(self):
-        print "TreeNavWidget.inner_clicked"
-
-
+        item = self.tmp_model.itemFromIndex(it_index)
+        print "clicked item =", item
+        lin_num = item.idials_node.lin_num
+        print "clicked item lin_num =", lin_num
 
 
 class MainWidget(QMainWindow):
