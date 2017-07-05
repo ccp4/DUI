@@ -76,8 +76,8 @@ class TreeNavWidget(QTreeView):
         try:
             for child_node in root_node.next_step_list:
                 try:
-                    child_node_name = str(child_node.command)
-                    #child_node_name = str(child_node.command[0])
+                    #child_node_name = str(child_node.command)
+                    child_node_name = str(child_node.command[0])
 
                 except:
                     child_node_name = "None"
@@ -94,14 +94,6 @@ class TreeNavWidget(QTreeView):
 
         except:
             print "end of node"
-
-    def item_clicked(self, it_index):
-        print "TreeNavWidget(item_clicked)"
-        item = self.tmp_model.itemFromIndex(it_index)
-        print "clicked item =", item
-        lin_num = item.idials_node.lin_num
-        print "clicked item lin_num =", lin_num
-
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -127,7 +119,7 @@ class MainWidget(QMainWindow):
         top_hbox = QHBoxLayout()
 
         self.tree_out =TreeNavWidget()
-        self.tree_out.clicked[QModelIndex].connect(self.tree_out.item_clicked)
+        self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
         top_hbox.addWidget(self.tree_out)
 
         self.cli_out = CliOutView(app = app)
@@ -153,8 +145,13 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-    def cmd_entr(self):
-        new_cmd = str(self.cmd_edit.text())
+    def cmd_entr(self, command_overwrite = None):
+        if( command_overwrite == None ):
+            new_cmd = str(self.cmd_edit.text())
+
+        else:
+            new_cmd = command_overwrite
+
         print "command entered:", new_cmd
         if( new_cmd == "" ):
             new_cmd = "slist"
@@ -166,10 +163,17 @@ class MainWidget(QMainWindow):
         self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
-
         #TODO try to make this object/pickle compatible with C.L.I. app
         #with open('bkp.pickle', 'wb') as bkp_out:
         #    pickle.dump(self.uni_controler, bkp_out)
+
+    def item_clicked(self, it_index):
+        print "TreeNavWidget(item_clicked)"
+        item = self.tree_out.tmp_model.itemFromIndex(it_index)
+        lin_num = item.idials_node.lin_num
+        print "clicked item lin_num (self.tree_out.tmp_model) =", lin_num
+        cmd_ovr = "goto " + str(lin_num)
+        self.cmd_entr(cmd_ovr)
 
 
 if __name__ == '__main__':
