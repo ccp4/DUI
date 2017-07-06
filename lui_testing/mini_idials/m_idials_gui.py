@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
 from outputs_n_viewers.web_page_view import WebTab
+from outputs_n_viewers.img_viewer import MyImgWin
 
 import sys
 import pickle
@@ -10,7 +11,6 @@ from cli_utils import TreeShow
 from m_idials import Runner
 from gui_utils import CliOutView
 import subprocess
-
 class DialsCommandGUI(QObject):
 
     str_print_signal = pyqtSignal(str)
@@ -76,13 +76,17 @@ class TreeNavWidget(QTreeView):
         try:
             for child_node in root_node.next_step_list:
                 try:
-                    #child_node_name = str(child_node.command)
                     child_node_name = str(child_node.command[0])
-
                 except:
                     child_node_name = "None"
 
+                try:
+                    child_node_tip = str(child_node.command[1:])
+                except:
+                    child_node_tip = "None"
+
                 new_item = QStandardItem(child_node_name)
+                new_item.setToolTip(child_node_tip)
                 new_item.idials_node = child_node
                 #new_item.success = child_node.success
                 new_item.setBackground(Qt.white)
@@ -125,7 +129,11 @@ class MainWidget(QMainWindow):
         self.cli_out = CliOutView(app = app)
         self.web_view = WebTab()
 
+        diag = MyImgWin("1_datablock.json")
+
+
         self.my_tabs = QTabWidget()
+        self.my_tabs.addTab(diag, "Image View")
         self.my_tabs.addTab(self.cli_out, "CLI OutPut")
         self.my_tabs.addTab(self.web_view, "Report View")
 
