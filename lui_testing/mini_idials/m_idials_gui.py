@@ -17,7 +17,6 @@ class DialsCommandGUI(QObject):
 
     def __init__(self, parent = None):
         super(DialsCommandGUI, self).__init__()
-        self.my_parent = parent
 
     def __call__(self, lst_cmd_to_run):
         try:
