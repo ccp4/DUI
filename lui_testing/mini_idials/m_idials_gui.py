@@ -120,26 +120,35 @@ class MainWidget(QMainWindow):
         self.cli_tree_output(self.uni_controler)
 
         main_box = QVBoxLayout()
-        top_hbox = QHBoxLayout()
+        #top_hbox = QHBoxLayout()
+
+        ##################################################################
+        h_main_splitter = QSplitter()
+        h_main_splitter.setOrientation(Qt.Horizontal)
+        '''
+        h_main_splitter.addWidget( ...  )
+        '''
+        ##################################################################
 
         self.tree_out =TreeNavWidget()
         self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
-        top_hbox.addWidget(self.tree_out)
+        #top_hbox.addWidget(self.tree_out)
+        h_main_splitter.addWidget(self.tree_out)
 
         self.cli_out = CliOutView(app = app)
         self.web_view = WebTab()
-
-        diag = MyImgWin("1_datablock.json")
-
+        self.img_view = MyImgWin("1_datablock.json")
 
         self.my_tabs = QTabWidget()
-        self.my_tabs.addTab(diag, "Image View")
+        self.my_tabs.addTab(self.img_view, "Image View")
         self.my_tabs.addTab(self.cli_out, "CLI OutPut")
         self.my_tabs.addTab(self.web_view, "Report View")
 
-        top_hbox.addWidget(self.my_tabs)
+        #top_hbox.addWidget(self.my_tabs)
+        h_main_splitter.addWidget(self.my_tabs)
 
-        main_box.addLayout(top_hbox)
+        #main_box.addLayout(top_hbox)
+        main_box.addWidget(h_main_splitter)
 
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_entr)
