@@ -28,7 +28,6 @@ class MyThread (QThread):
 
         for line in iter(p.stdout.readline, b''):
             single_line = line[0:len(line)-1]
-            print ">>", single_line
             self.str_print_signal.emit(single_line)
 
         p.wait()
@@ -47,7 +46,6 @@ class Example(QWidget):
         self.thrd.finished.connect(self.tell_finished)
         main_box = QHBoxLayout()
 
-
         self.thrd.str_print_signal.connect(self.cli_out)
 
         self.textedit = QTextEdit()
@@ -55,14 +53,10 @@ class Example(QWidget):
 
         self.pushbutton = QPushButton('Click Me')
         main_box.addWidget(self.pushbutton)
-        self.pushbutton.clicked.connect(self.start_thread)
+        self.pushbutton.clicked.connect(self.thrd.start)
 
         self.setLayout(main_box)
         self.show()
-
-    def start_thread(self):
-        print "Staring thread"
-        self.thrd.start()
 
     def tell_finished(self):
         print "finished thread"
