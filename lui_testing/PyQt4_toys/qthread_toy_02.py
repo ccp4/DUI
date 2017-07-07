@@ -68,7 +68,8 @@ class Example(QWidget):
         print "finished thread"
 
     def cli_out(self, lin_to_prn):
-        print lin_to_prn, " <<"
+        #print lin_to_prn, " <<"
+        self.textedit.append(lin_to_prn)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
