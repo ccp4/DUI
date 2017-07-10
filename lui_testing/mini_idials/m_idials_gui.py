@@ -11,6 +11,8 @@ from cli_utils import TreeShow
 from m_idials import Runner
 from gui_utils import CliOutView
 import subprocess
+
+'''
 class DialsCommandGUI(QObject):
 
     str_print_signal = pyqtSignal(str)
@@ -48,8 +50,7 @@ class DialsCommandGUI(QObject):
             print "\n FAIL call"
 
         return local_success
-
-
+'''
 
 
 class TreeNavWidget(QTreeView):
@@ -113,8 +114,9 @@ class MainWidget(QMainWindow):
         #except:
         ######################################################################
 
-        gui_runner = DialsCommandGUI()
-        self.uni_controler = Runner(gui_runner)
+        #gui_runner = DialsCommandGUI()
+
+        self.uni_controler = Runner(None)
 
         self.cli_tree_output(self.uni_controler)
 
@@ -143,7 +145,7 @@ class MainWidget(QMainWindow):
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_entr)
 
-        gui_runner.str_print_signal.connect(self.cli_out.add_txt)
+        #gui_runner.str_print_signal.connect(self.cli_out.add_txt)
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
 
