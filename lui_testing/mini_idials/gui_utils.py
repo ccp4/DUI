@@ -4,25 +4,6 @@ from PyQt4.QtWebKit import *
 
 import sys
 
-old_way = '''
-class CliOutView(QTextEdit):
-    def __init__(self, parent = None, app = None):
-        super(CliOutView, self).__init__()
-        self.main_app = app
-        self.setCurrentFont( QFont("Monospace"))
-
-    def add_txt(self, str_to_print):
-
-        #TODO reconcider how elegant is this
-
-        try:
-            self.append(str_to_print)
-            self.main_app.processEvents()
-
-        except:
-            self.append(str_to_print[0])
-'''
-
 class CliOutView(QTextEdit):
     def __init__(self):
         super(CliOutView, self).__init__()

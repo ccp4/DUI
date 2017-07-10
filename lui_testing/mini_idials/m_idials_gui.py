@@ -19,15 +19,13 @@ class MyThread (QThread):
     def __init__(self, parent = None):
         super(MyThread, self).__init__()
 
-    def __call__(self, cmd_to_run, ref_to_node):
+    def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
-        self.ref_to_node = ref_to_node
+        self.ref_to_controler = ref_to_controler
         self.start()
 
     def run(self):
-        print "Hi from QThread(run)"
-        self.ref_to_node.run(command = self.cmd_to_run, ref_to_class = self)
-        print "after ...close()"
+        self.ref_to_controler.run(command = self.cmd_to_run, ref_to_class = self)
 
     def emit_print_signal(self, str_lin):
         #print str_lin, "... Yes"
@@ -136,7 +134,7 @@ class MainWidget(QMainWindow):
             new_cmd = "slist"
 
         self.custom_thread(new_cmd, self.uni_controler)
-        #self.uni_controler.run(new_cmd, self.custom_thread)
+
     def update_after_finished(self):
 
         self.cmd_edit.setText("")

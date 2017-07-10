@@ -18,7 +18,6 @@ class DialsCommand(object):
                     ref_to_class.emit_print_signal(single_line)
 
                 except:
-                    print "<< test >>"
                     print single_line
 
             my_process.wait()
