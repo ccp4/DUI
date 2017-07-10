@@ -13,7 +13,7 @@ class UniStep(object):
     'export',
     ]
 
-    def __init__(self, prev_step = None, gui_tool = None):
+    def __init__(self, prev_step = None):
         self.lin_num = 0
         self.next_step_list = None
         self.prev_step = prev_step
@@ -22,14 +22,10 @@ class UniStep(object):
         self.pickle_file_out = None
         self.json_file_out = None
         self.phil_file_out = None
+        self.dials_comand = DialsCommand()
 
-        if( gui_tool == None ):
-            self.dials_comand = DialsCommand()
 
-        else:
-            self.dials_comand = gui_tool
-
-    def __call__(self, cmd_lst):
+    def __call__(self, cmd_lst, ref_to_class):
         if( cmd_lst[0] == "fail" ):
             #testing virtual failed step
             print "\n intentionally FAILED for testing \n"
@@ -41,7 +37,8 @@ class UniStep(object):
 
             if( cmd_lst[0] in self.dials_com_lst ):
                 self.build_command(cmd_lst)
-                self.success = self.dials_comand(self.cmd_lst_to_run)
+                self.success = self.dials_comand( lst_cmd_to_run = self.cmd_lst_to_run,
+                                                 ref_to_class = ref_to_class)
 
             else:
                 print "NOT dials command"
@@ -119,9 +116,8 @@ class UniStep(object):
 class Runner(object):
 
     ctrl_com_lst = ["goto", "fail", "slist","reset"]
-    def __init__(self, gui_tool):
-        self.gui_tool = gui_tool
-        root_node = UniStep(prev_step = None, gui_tool = self.gui_tool)
+    def __init__(self):
+        root_node = UniStep(prev_step = None)
         root_node.success = True
         root_node.command = ["Root"]
         self.step_list = [root_node]
@@ -129,7 +125,7 @@ class Runner(object):
         self.current = self.bigger_lin
         self.create_step(root_node)
 
-    def run(self, command):
+    def run(self, command, ref_to_class):
 
         cmd_lst = command.split()
         if( cmd_lst[0] == "goto" ):
@@ -143,16 +139,15 @@ class Runner(object):
                 self.goto_prev()
                 self.create_step(self.step_list[self.current])
 
-            self.step_list[self.current](cmd_lst)
+            self.step_list[self.current](cmd_lst, ref_to_class)
             if( self.step_list[self.current].success == True ):
                 self.create_step(self.step_list[self.current])
 
             else:
                 print "failed step"
 
-
     def create_step(self, prev_step):
-        new_step = UniStep(prev_step = prev_step, gui_tool = self.gui_tool)
+        new_step = UniStep(prev_step = prev_step)
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         try:
@@ -192,7 +187,7 @@ if( __name__ == "__main__"):
             uni_controler = pickle.load(bkp_in)
 
     except:
-        uni_controler = Runner(None)
+        uni_controler = Runner()
 
     tree_output(uni_controler)
 
@@ -209,7 +204,7 @@ if( __name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command)
+        uni_controler.run(command, None)
         tree_output(uni_controler)
 
         with open('bkp.pickle', 'wb') as bkp_out:

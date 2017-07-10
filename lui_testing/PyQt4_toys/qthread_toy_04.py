@@ -40,8 +40,8 @@ class MyThread (QThread):
         self.cmd_to_run = "./sec_interval.sh"
         print "Hi from QThread(run)"
 
-        #run_cli_prss(cmd_to_run = self.cmd_to_run, ref_to_class = self)
-        run_cli_prss(cmd_to_run = self.cmd_to_run)
+        run_cli_prss(cmd_to_run = self.cmd_to_run, ref_to_class = self)
+        #run_cli_prss(cmd_to_run = self.cmd_to_run)
 
         print "after ...close()"
 

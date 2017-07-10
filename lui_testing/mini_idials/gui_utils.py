@@ -3,6 +3,8 @@ from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
 import sys
+
+old_way = '''
 class CliOutView(QTextEdit):
     def __init__(self, parent = None, app = None):
         super(CliOutView, self).__init__()
@@ -19,6 +21,21 @@ class CliOutView(QTextEdit):
 
         except:
             self.append(str_to_print[0])
+'''
+
+class CliOutView(QTextEdit):
+    def __init__(self):
+        super(CliOutView, self).__init__()
+        self.setCurrentFont(QFont("Monospace"))
+
+    def add_txt(self, str_to_print):
+
+        #TODO reconcider how elegant is this
+        try:
+            self.append(str_to_print)
+
+        except:
+            self.append(str_to_print[0])
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -32,8 +49,6 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
-
-
 
         for n in xrange(5):
             self.tst_view.add_txt("aaaaaaaaaaaaaaaaaaaa")

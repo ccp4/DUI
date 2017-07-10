@@ -4,11 +4,25 @@ class DialsCommand(object):
     def __init__(self):
         print "creating new DialsCommand (obj)"
 
-    def __call__(self, lst_cmd_to_run):
+    def __call__(self, lst_cmd_to_run = None, ref_to_class = None):
         try:
             print "\n << running >>", lst_cmd_to_run
-            my_process = subprocess.Popen(lst_cmd_to_run)
+            my_process = subprocess.Popen(lst_cmd_to_run,
+                                          stdout = subprocess.PIPE,
+                                          stderr = subprocess.STDOUT,
+                                          bufsize = 1)
+
+            for line in iter(my_process.stdout.readline, b''):
+                single_line = line[0:len(line)-1]
+                try:
+                    ref_to_class.emit_print_signal(single_line)
+
+                except:
+                    print "<< test >>"
+                    print single_line
+
             my_process.wait()
+            my_process.stdout.close()
             if( my_process.poll() == 0 ):
                 local_success = True
 
@@ -20,6 +34,7 @@ class DialsCommand(object):
             print "\n FAIL call"
 
         return local_success
+
 
 def print_list(lst, curr):
     print "__________________________listing:"

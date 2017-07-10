@@ -12,45 +12,26 @@ from m_idials import Runner
 from gui_utils import CliOutView
 import subprocess
 
-'''
-class DialsCommandGUI(QObject):
+class MyThread (QThread):
 
     str_print_signal = pyqtSignal(str)
 
     def __init__(self, parent = None):
-        super(DialsCommandGUI, self).__init__()
+        super(MyThread, self).__init__()
 
-    def __call__(self, lst_cmd_to_run):
-        try:
-            #TODO give a try to QProcess and see if it behaves better
-            print "Subprocess Start"
-            my_process = subprocess.Popen(lst_cmd_to_run,
-                                          stdout = subprocess.PIPE,
-                                          stderr = subprocess.STDOUT,
-                                          bufsize = 1)
-            print "Subprocess Popen"
+    def __call__(self, cmd_to_run, ref_to_node):
+        self.cmd_to_run = cmd_to_run
+        self.ref_to_node = ref_to_node
+        self.start()
 
-            for line in iter(my_process.stdout.readline, b''):
-                single_line = line[0:len(line)-1]
-                #print single_line
-                self.str_print_signal.emit(single_line)
-                #self.str_print_signal.emit(line)
+    def run(self):
+        print "Hi from QThread(run)"
+        self.ref_to_node.run(command = self.cmd_to_run, ref_to_class = self)
+        print "after ...close()"
 
-            my_process.wait()
-            my_process.stdout.close()
-            print "Subprocess close()"
-            if( my_process.poll() == 0 ):
-                local_success = True
-
-            else:
-                local_success = False
-
-        except:
-            local_success = False
-            print "\n FAIL call"
-
-        return local_success
-'''
+    def emit_print_signal(self, str_lin):
+        #print str_lin, "... Yes"
+        self.str_print_signal.emit(str_lin)
 
 
 class TreeNavWidget(QTreeView):
@@ -102,22 +83,9 @@ class TreeNavWidget(QTreeView):
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
-        #self.super_parent = self
+
+        self.uni_controler = Runner()
         self.cli_tree_output = TreeShow()
-
-        ######################################################################
-        #TODO try to make this object/pickle compatible with C.L.I. app
-        #try:
-        #    with open ('bkp.pickle', 'rb') as bkp_in:
-        #        self.uni_controler = pickle.load(bkp_in)
-        #
-        #except:
-        ######################################################################
-
-        #gui_runner = DialsCommandGUI()
-
-        self.uni_controler = Runner(None)
-
         self.cli_tree_output(self.uni_controler)
 
         main_box = QVBoxLayout()
@@ -129,7 +97,7 @@ class MainWidget(QMainWindow):
         self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
         h_main_splitter.addWidget(self.tree_out)
 
-        self.cli_out = CliOutView(app = app)
+        self.cli_out = CliOutView()
         self.web_view = WebTab()
         self.img_view = MyImgWin("1_datablock.json")
 
@@ -142,10 +110,13 @@ class MainWidget(QMainWindow):
 
         main_box.addWidget(h_main_splitter)
 
+        self.custom_thread = MyThread()
+        self.custom_thread.finished.connect(self.update_after_finished)
+        self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
+
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_entr)
 
-        #gui_runner.str_print_signal.connect(self.cli_out.add_txt)
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
 
@@ -164,7 +135,10 @@ class MainWidget(QMainWindow):
         if( new_cmd == "" ):
             new_cmd = "slist"
 
-        self.uni_controler.run(new_cmd)
+        self.custom_thread(new_cmd, self.uni_controler)
+        #self.uni_controler.run(new_cmd, self.custom_thread)
+    def update_after_finished(self):
+
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
         #self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
