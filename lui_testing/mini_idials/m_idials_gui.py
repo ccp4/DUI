@@ -68,8 +68,15 @@ class TreeNavWidget(QTreeView):
                 new_item.setToolTip(child_node_tip)
                 new_item.idials_node = child_node
                 #new_item.success = child_node.success
-                new_item.setBackground(Qt.white)
-                new_item.setForeground(Qt.blue)
+
+                if( self.lst_idx == child_node.lin_num ):
+                    new_item.setBackground(Qt.blue)
+                    new_item.setForeground(Qt.white)
+
+                else:
+                    new_item.setBackground(Qt.white)
+                    new_item.setForeground(Qt.blue)
+
                 new_item.setEditable(False)      # not letting the user edit it
 
                 self.recursive_node(child_node, new_item)
@@ -82,7 +89,13 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
 
-        self.uni_controler = Runner()
+        try:
+            with open ('bkp.pickle', 'rb') as bkp_in:
+                self.uni_controler = pickle.load(bkp_in)
+
+        except:
+            self.uni_controler = Runner()
+
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.uni_controler)
 
@@ -93,6 +106,8 @@ class MainWidget(QMainWindow):
 
         self.tree_out =TreeNavWidget()
         self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
+        self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
+
         h_main_splitter.addWidget(self.tree_out)
 
         self.cli_out = CliOutView()
@@ -143,9 +158,8 @@ class MainWidget(QMainWindow):
         self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
-        #TODO try to make this object/pickle compatible with C.L.I. app
-        #with open('bkp.pickle', 'wb') as bkp_out:
-        #    pickle.dump(self.uni_controler, bkp_out)
+        with open('bkp.pickle', 'wb') as bkp_out:
+            pickle.dump(self.uni_controler, bkp_out)
 
     def item_clicked(self, it_index):
         print "TreeNavWidget(item_clicked)"
