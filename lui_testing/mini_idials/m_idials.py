@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 import pickle
+import subprocess
 from cli_utils import print_list, TreeShow, DialsCommand
 
 class UniStep(object):
@@ -39,6 +40,26 @@ class UniStep(object):
                 self.build_command(cmd_lst)
                 self.success = self.dials_comand( lst_cmd_to_run = self.cmd_lst_to_run,
                                                  ref_to_class = ref_to_class)
+
+
+                if( self.success == True ):
+                    rep_cmd = None
+                    try:
+                        rep_cmd = ["dials.report", self.json_file_out, self.pickle_file_out]
+                        print "rep_cmd =", rep_cmd
+
+                    except:
+                        print "something went wrong at report command generation"
+
+                    if( rep_cmd != None ):
+                        try:
+                            gen_rep_proc = subprocess.Popen(rep_cmd)
+                            gen_rep_proc.wait()
+
+                        except:
+                            print "someting went wrong at running << dials.report >>"
+
+
 
             else:
                 print "NOT dials command"
