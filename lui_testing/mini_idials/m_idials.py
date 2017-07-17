@@ -48,16 +48,16 @@ class UniStep(object):
                         rep_cmd = ["dials.report", self.json_file_out, self.pickle_file_out]
                         print "rep_cmd =", rep_cmd
 
-                    except:
-                        print "something went wrong at report command generation"
-
-                    if( rep_cmd != None ):
                         try:
                             gen_rep_proc = subprocess.Popen(rep_cmd)
                             gen_rep_proc.wait()
 
+
                         except:
                             print "someting went wrong at running << dials.report >>"
+
+                    except:
+                        print "something went wrong at report command generation"
 
 
 
