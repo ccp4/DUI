@@ -154,8 +154,8 @@ class MainWidget(QMainWindow):
 
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
-        #self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
-        self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
+        self.web_view.update_page("/scratch/dui/dui_test/only_20_img_X4_wide/dui_tst_02/dials-2/6_refine/report.html")
+        #self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
         with open('bkp.pickle', 'wb') as bkp_out:
