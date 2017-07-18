@@ -1,5 +1,43 @@
 import subprocess
 
+def generate_report(uni_step_obj):
+    rep_out = None
+    try:
+        if( uni_step_obj.command[0] in uni_step_obj.dials_com_lst[1:-1] ):
+            current_lin = uni_step_obj.lin_num
+            refl_inp = uni_step_obj.pickle_file_out
+            deps_outp = "output.external_dependencies=local"
+            htm_fil = str(current_lin) + "_report.html"
+            html_outp = "output.html=" + htm_fil
+            if( uni_step_obj.command[0] == "find_spots" ):
+                rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
+
+            else:
+                exp_inp = uni_step_obj.json_file_out
+                rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
+
+            print "rep_cmd =", rep_cmd
+
+            try:
+                gen_rep_proc = subprocess.Popen(rep_cmd)
+                gen_rep_proc.wait()
+                rep_out = uni_step_obj.work_dir + "/" + htm_fil
+                print "generated report at: ", rep_out
+
+            except:
+                rep_out = None
+                print "Someting went wrong in report level 2"
+
+        else:
+            print "NO report needed for this step"
+            rep_out = None
+
+    except:
+        rep_out = None
+        print "Someting went wrong in report level 1"
+
+    return rep_out
+
 class DialsCommand(object):
     def __init__(self):
         print "creating new DialsCommand (obj)"
