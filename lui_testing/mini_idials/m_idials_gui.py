@@ -154,7 +154,8 @@ class MainWidget(QMainWindow):
 
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
-        new_html = self.uni_controler.step_list[self.uni_controler.current].report_out
+        new_html = self.uni_controler.get_html_report()
+
         print "new_html =", new_html
 
         try:

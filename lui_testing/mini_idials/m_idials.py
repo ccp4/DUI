@@ -223,6 +223,19 @@ class Runner(object):
     def goto(self, new_lin):
         self.current = new_lin
 
+    def get_html_report(self):
+        if( self.step_list[self.current].success == True ):
+            html_rep = self.step_list[self.current].report_out
+
+        else:
+            try:
+                html_rep = self.step_list[self.current].prev_step.report_out
+
+            except:
+                html_rep = None
+
+        return html_rep
+
     def slist(self):
         print "printing in steps list mode: \n"
         print_list(self.step_list, self.current)
