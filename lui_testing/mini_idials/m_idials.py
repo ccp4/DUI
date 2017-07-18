@@ -3,6 +3,7 @@ import sys
 import pickle
 import subprocess
 from cli_utils import print_list, TreeShow, DialsCommand
+import os
 
 def generate_report(uni_step_obj):
     rep_out = None
@@ -25,10 +26,12 @@ def generate_report(uni_step_obj):
             try:
                 gen_rep_proc = subprocess.Popen(rep_cmd)
                 gen_rep_proc.wait()
-                rep_out = htm_fil
+                rep_out = uni_step_obj.work_dir + "/" + htm_fil
+                print "generated report at: ", rep_out
 
             except:
                 rep_out = None
+                print "Someting went wrong in report level 2"
 
         else:
             print "NO report needed for this step"
@@ -36,6 +39,7 @@ def generate_report(uni_step_obj):
 
     except:
         rep_out = None
+        print "Someting went wrong in report level 1"
 
     return rep_out
 
@@ -61,6 +65,9 @@ class UniStep(object):
         self.phil_file_out = None
         self.report_out = None
         self.dials_comand = DialsCommand()
+
+        self.work_dir = os.getcwd()
+
 
     def __call__(self, cmd_lst, ref_to_class):
         if( cmd_lst[0] == "fail" ):
