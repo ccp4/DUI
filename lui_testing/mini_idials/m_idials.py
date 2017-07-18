@@ -4,6 +4,42 @@ import pickle
 import subprocess
 from cli_utils import print_list, TreeShow, DialsCommand
 
+def generate_report(uni_step_obj):
+    rep_out = None
+    try:
+        if( uni_step_obj.command[0] in uni_step_obj.dials_com_lst[1:-1] ):
+            current_lin = uni_step_obj.lin_num
+            refl_inp = uni_step_obj.pickle_file_out
+            deps_outp = "output.external_dependencies=local"
+            htm_fil = str(current_lin) + "_report.html"
+            html_outp = "output.html=" + htm_fil
+            if( uni_step_obj.command[0] == "find_spots" ):
+                rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
+
+            else:
+                exp_inp = uni_step_obj.json_file_out
+                rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
+
+            print "rep_cmd =", rep_cmd
+
+            try:
+                gen_rep_proc = subprocess.Popen(rep_cmd)
+                gen_rep_proc.wait()
+                rep_out = htm_fil
+
+            except:
+                rep_out = None
+
+        else:
+            print "NO report needed for this step"
+            rep_out = None
+
+    except:
+        rep_out = None
+
+    return rep_out
+
+
 class UniStep(object):
     dials_com_lst = [
     'import',
@@ -23,8 +59,8 @@ class UniStep(object):
         self.pickle_file_out = None
         self.json_file_out = None
         self.phil_file_out = None
+        self.report_out = None
         self.dials_comand = DialsCommand()
-
 
     def __call__(self, cmd_lst, ref_to_class):
         if( cmd_lst[0] == "fail" ):
@@ -41,25 +77,9 @@ class UniStep(object):
                 self.success = self.dials_comand( lst_cmd_to_run = self.cmd_lst_to_run,
                                                  ref_to_class = ref_to_class)
 
-
                 if( self.success == True ):
-                    rep_cmd = None
-                    try:
-                        rep_cmd = ["dials.report", self.json_file_out, self.pickle_file_out]
-                        print "rep_cmd =", rep_cmd
-
-                        try:
-                            gen_rep_proc = subprocess.Popen(rep_cmd)
-                            gen_rep_proc.wait()
-
-
-                        except:
-                            print "someting went wrong at running << dials.report >>"
-
-                    except:
-                        print "something went wrong at report command generation"
-
-
+                    #print "#generate_report(self)"
+                    self.report_out = generate_report(self)
 
             else:
                 print "NOT dials command"
