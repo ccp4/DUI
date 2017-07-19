@@ -155,6 +155,9 @@ class MainWidget(QMainWindow):
         self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
         new_html = self.uni_controler.get_html_report()
+        new_img_json = self.uni_controler.get_datablock_path()
+
+        print "\n new_img_json =", new_img_json , "\n"
 
         print "new_html =", new_html
 

@@ -133,6 +133,29 @@ class Runner(object):
 
         return html_rep
 
+    def get_datablock_path(self):
+
+        tmp_cur = self.step_list[self.current]
+        path_to_json = None
+
+        while True:
+            if( tmp_cur.command == None ):
+                tmp_cur = tmp_cur.prev_step
+
+            elif( tmp_cur.success == True and tmp_cur.command[0] == "import" ):
+                path_to_json = tmp_cur.json_file_out
+                break
+
+            elif( tmp_cur.command[0] == "Root" or tmp_cur.success == False ):
+                break
+
+            else:
+                tmp_cur = tmp_cur.prev_step
+
+
+        return path_to_json
+
+
     def slist(self):
         print "printing in steps list mode: \n"
         print_list(self.step_list, self.current)
