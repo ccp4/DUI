@@ -112,7 +112,7 @@ class MainWidget(QMainWindow):
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
-        self.img_view = MyImgWin("1_datablock.json")
+        self.img_view = MyImgWin()
 
         self.my_tabs = QTabWidget()
         self.my_tabs.addTab(self.img_view, "Image View")
@@ -166,6 +166,8 @@ class MainWidget(QMainWindow):
 
         except:
             print "No HTML here"
+
+        self.img_view.ini_datablock(new_img_json)
 
         #self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
