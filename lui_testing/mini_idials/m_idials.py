@@ -1,8 +1,9 @@
 #!/usr/bin/python
+import os
 import sys
 import pickle
-from cli_utils import print_list, TreeShow, DialsCommand, generate_report
-import os
+from cli_utils import print_list, TreeShow, DialsCommand, \
+     generate_report, build_command_lst
 
 class UniStep(object):
     dials_com_lst = [
@@ -53,73 +54,9 @@ class UniStep(object):
                 self.success = False
 
     def build_command(self, cmd_lst):
-        #TODO make sure new step is compatible with previous
-        self.cmd_lst_to_run = []
-        self.cmd_lst_to_run.append("dials." + cmd_lst[0])
-        for tmp_par in cmd_lst[1:]:
-            self.cmd_lst_to_run.append(tmp_par)
 
-        if( cmd_lst[0] == "import" ):
-            self.json_file_out = str(self.lin_num) + "_datablock.json"
-            output_str = "output.datablock=" + self.json_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-        elif( cmd_lst[0] == "find_spots" ):
-            json_file_in = self.prev_step.json_file_out
-            input_str = "input.datablock=" + json_file_in
-            self.cmd_lst_to_run.append(input_str)
-
-            self.json_file_out = str(self.lin_num) + "_datablock.json"
-            output_str = "output.datablock=" + self.json_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-            self.pickle_file_out = str(self.lin_num) + "_reflections.pickle"
-            output_str = "output.reflections=" + self.pickle_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-        elif( cmd_lst[0] == "index" ):
-            json_file_in = self.prev_step.json_file_out
-            input_str = "input.datablock=" + json_file_in
-            self.cmd_lst_to_run.append(input_str)
-
-            pickle_file_in = self.prev_step.pickle_file_out
-            input_str = "input.reflections=" + pickle_file_in
-            self.cmd_lst_to_run.append(input_str)
-
-            self.json_file_out = str(self.lin_num) + "_experiments.json"
-            output_str = "output.experiments=" + self.json_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-            self.pickle_file_out = str(self.lin_num) + "_reflections.pickle"
-            output_str = "output.reflections=" + self.pickle_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-        elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
-            json_file_in = self.prev_step.json_file_out
-            input_str = "input.experiments=" + json_file_in
-            self.cmd_lst_to_run.append(input_str)
-
-            pickle_file_in = self.prev_step.pickle_file_out
-            input_str = "input.reflections=" + pickle_file_in
-            self.cmd_lst_to_run.append(input_str)
-
-            self.json_file_out = str(self.lin_num) + "_experiments.json"
-            output_str = "output.experiments=" + self.json_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-            self.pickle_file_out = str(self.lin_num) + "_reflections.pickle"
-            output_str = "output.reflections=" + self.pickle_file_out
-            self.cmd_lst_to_run.append(output_str)
-
-        elif( cmd_lst[0] == "export" ):
-            self.cmd_lst_to_run.append(self.prev_step.json_file_out)
-            self.cmd_lst_to_run.append(self.prev_step.pickle_file_out)
-
-            file_out = str(self.lin_num) + "_integrated.mtz"
-            output_str = "mtz.hklout=" + file_out
-            self.cmd_lst_to_run.append(output_str)
-
-        print "\n self.cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
+        self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
+        print "\n cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
 
 class Runner(object):
 

@@ -1,4 +1,75 @@
+#!/usr/bin/python
 import subprocess
+
+def build_command_lst(uni_step_obj, cmd_lst):
+
+    #TODO make sure new step is compatible with previous
+    cmd_lst_to_run = []
+    cmd_lst_to_run.append("dials." + cmd_lst[0])
+    for tmp_par in cmd_lst[1:]:
+        cmd_lst_to_run.append(tmp_par)
+
+    if( cmd_lst[0] == "import" ):
+        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
+        output_str = "output.datablock=" + uni_step_obj.json_file_out
+        cmd_lst_to_run.append(output_str)
+
+    elif( cmd_lst[0] == "find_spots" ):
+        json_file_in = uni_step_obj.prev_step.json_file_out
+        input_str = "input.datablock=" + json_file_in
+        cmd_lst_to_run.append(input_str)
+
+        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
+        output_str = "output.datablock=" + uni_step_obj.json_file_out
+        cmd_lst_to_run.append(output_str)
+
+        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        cmd_lst_to_run.append(output_str)
+
+    elif( cmd_lst[0] == "index" ):
+        json_file_in = uni_step_obj.prev_step.json_file_out
+        input_str = "input.datablock=" + json_file_in
+        cmd_lst_to_run.append(input_str)
+
+        pickle_file_in = uni_step_obj.prev_step.pickle_file_out
+        input_str = "input.reflections=" + pickle_file_in
+        cmd_lst_to_run.append(input_str)
+
+        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_experiments.json"
+        output_str = "output.experiments=" + uni_step_obj.json_file_out
+        cmd_lst_to_run.append(output_str)
+
+        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        cmd_lst_to_run.append(output_str)
+
+    elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
+        json_file_in = uni_step_obj.prev_step.json_file_out
+        input_str = "input.experiments=" + json_file_in
+        cmd_lst_to_run.append(input_str)
+
+        pickle_file_in = uni_step_obj.prev_step.pickle_file_out
+        input_str = "input.reflections=" + pickle_file_in
+        cmd_lst_to_run.append(input_str)
+
+        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_experiments.json"
+        output_str = "output.experiments=" + uni_step_obj.json_file_out
+        cmd_lst_to_run.append(output_str)
+
+        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        cmd_lst_to_run.append(output_str)
+
+    elif( cmd_lst[0] == "export" ):
+        cmd_lst_to_run.append(uni_step_obj.prev_step.json_file_out)
+        cmd_lst_to_run.append(uni_step_obj.prev_step.pickle_file_out)
+
+        file_out = str(uni_step_obj.lin_num) + "_integrated.mtz"
+        output_str = "mtz.hklout=" + file_out
+        cmd_lst_to_run.append(output_str)
+
+    return cmd_lst_to_run
 
 def generate_report(uni_step_obj):
     rep_out = None
