@@ -541,9 +541,10 @@ class MyImgWin(QWidget):
             except:
                 print "Failed to load images from  datablock.json"
 
+        self.btn_first_clicked()
         #TODO Find a better way to call this function only onse
         self.ini_contrast()
-
+        self.set_img()
 
     def ini_reflection_table(self, pckl_file_path):
         if( pckl_file_path != None ):

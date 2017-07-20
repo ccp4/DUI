@@ -13,6 +13,7 @@ def build_command_lst(uni_step_obj, cmd_lst):
         uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + uni_step_obj.json_file_out
         cmd_lst_to_run.append(output_str)
+        #TODO make sure import without arguments does NOT run
 
     elif( cmd_lst[0] == "find_spots" ):
         json_file_in = uni_step_obj.prev_step.json_file_out
