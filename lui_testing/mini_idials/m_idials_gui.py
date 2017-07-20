@@ -99,6 +99,10 @@ class MainWidget(QMainWindow):
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.uni_controler)
 
+        self.cur_html = None
+        self.cur_pick = None
+        self.cur_json = None
+
         main_box = QVBoxLayout()
 
         h_main_splitter = QSplitter()
@@ -156,20 +160,30 @@ class MainWidget(QMainWindow):
         self.cli_tree_output(self.uni_controler)
         new_html = self.uni_controler.get_html_report()
         new_img_json = self.uni_controler.get_datablock_path()
+        new_ref_pikl = self.uni_controler.get_reflections_path()
 
-        print "\n new_img_json =", new_img_json , "\n"
+        print "\n new_html =", new_html , "\n"
+        print " new_img_json =", new_img_json , "\n"
+        print " new_ref_pikl =", new_ref_pikl , "\n"
 
-        print "new_html =", new_html
+        if( self.cur_html != new_html ):
+            self.cur_html = new_html
+            try:
+                self.web_view.update_page(new_html)
 
-        try:
-            self.web_view.update_page(new_html)
+            except:
+                print "No HTML here"
 
-        except:
-            print "No HTML here"
+        if( self.cur_pick != new_ref_pikl ):
+            self.cur_pick = new_ref_pikl
+            self.img_view.ini_reflection_table(self.cur_pick)
 
-        self.img_view.ini_datablock(new_img_json)
+        if( self.cur_json != new_img_json ):
+            self.cur_json = new_img_json
+            self.img_view.ini_datablock(self.cur_json)
 
-        #self.web_view.update_page("/home/luiso/dui/dui_test/X4_wide/dui_idials_tst_05/dials-1/5_reindex/report.html")
+
+
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
         with open('bkp.pickle', 'wb') as bkp_out:

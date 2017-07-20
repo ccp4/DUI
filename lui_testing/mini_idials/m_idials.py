@@ -155,6 +155,27 @@ class Runner(object):
 
         return path_to_json
 
+    def get_reflections_path(self):
+        tmp_cur = self.step_list[self.current]
+        if( tmp_cur.command == None ):
+           tmp_cur = tmp_cur.prev_step
+
+        if( tmp_cur.command[0] == "Root" or
+             tmp_cur.command[0] == "import" or
+             tmp_cur.success == False ):
+
+            path_to_pickle = None
+
+        try:
+            path_to_pickle = tmp_cur.pickle_file_out
+
+        except:
+            path_to_pickle = None
+            print "no pickle file available"
+
+        return path_to_pickle
+
+
 
     def slist(self):
         print "printing in steps list mode: \n"
