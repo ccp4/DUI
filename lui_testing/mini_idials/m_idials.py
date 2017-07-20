@@ -5,6 +5,38 @@ import pickle
 from cli_utils import print_list, TreeShow, DialsCommand, \
      generate_report, build_command_lst
 
+def get_next_step(uni_step_obj):
+    if( uni_step_obj.prev_step.lin_num == 0 ):
+        return "import"
+
+    elif(uni_step_obj.command == None):
+        for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
+            print "pos, stp: ", pos, stp
+            try:
+                if( stp == uni_step_obj.prev_step.command[0] ):
+                    nxt_str = uni_step_obj.dials_com_lst[pos + 1]
+                    print "returning ", nxt_str
+                    return nxt_str
+
+            except:
+                pass
+
+        return None
+
+    else:
+        for pos, stp in enumerate(uni_step_obj.dials_com_lst):
+            print "pos, stp: ", pos, stp
+            try:
+                if( stp == uni_step_obj.command[0] ):
+                    nxt_str = uni_step_obj.command[0]
+                    print "returning ", nxt_str
+                    return nxt_str
+
+            except:
+                pass
+
+        return None
+
 class UniStep(object):
     dials_com_lst = [
     'import',
@@ -57,6 +89,9 @@ class UniStep(object):
 
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
         print "\n cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
+
+    def get_next_step(self):
+        return get_next_step(self)
 
 class Runner(object):
 
@@ -175,7 +210,8 @@ class Runner(object):
 
         return path_to_pickle
 
-
+    def get_next_step(self):
+        return self.step_list[self.current].get_next_step()
 
     def slist(self):
         print "printing in steps list mode: \n"
@@ -208,6 +244,8 @@ if( __name__ == "__main__"):
 
         uni_controler.run(command, None)
         tree_output(uni_controler)
+        nxt_str = uni_controler.get_next_step()
+        print "\n next to run:\n ", nxt_str
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(uni_controler, bkp_out)
