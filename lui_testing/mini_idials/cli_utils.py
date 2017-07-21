@@ -1,6 +1,40 @@
 #!/usr/bin/python
 import subprocess
 
+
+def get_next_step(uni_step_obj):
+    if( uni_step_obj.prev_step.lin_num == 0 ):
+        return "import"
+
+    elif(uni_step_obj.command == None):
+        for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
+            print "pos, stp: ", pos, stp
+            try:
+                if( stp == uni_step_obj.prev_step.command[0] ):
+                    nxt_str = uni_step_obj.dials_com_lst[pos + 1]
+                    print "returning ", nxt_str
+                    return nxt_str
+
+            except:
+                pass
+
+        return None
+
+    else:
+        for pos, stp in enumerate(uni_step_obj.dials_com_lst):
+            print "pos, stp: ", pos, stp
+            try:
+                if( stp == uni_step_obj.command[0] ):
+                    nxt_str = uni_step_obj.command[0]
+                    print "returning ", nxt_str
+                    return nxt_str
+
+            except:
+                pass
+
+        return None
+
+
 def build_command_lst(uni_step_obj, cmd_lst):
 
     #TODO make sure new step is compatible with previous

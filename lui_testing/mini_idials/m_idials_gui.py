@@ -7,7 +7,7 @@ from outputs_n_viewers.img_viewer import MyImgWin
 
 import sys
 import pickle
-from cli_utils import TreeShow
+from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
 from gui_utils import CliOutView
 import subprocess
@@ -57,7 +57,8 @@ class TreeNavWidget(QTreeView):
                 try:
                     child_node_name = str(child_node.command[0])
                 except:
-                    child_node_name = "None"
+                    child_node_name = "* " + get_next_step(child_node) + " *"
+                    #child_node_name = "None"
 
                 try:
                     child_node_tip = str(child_node.command[1:])
@@ -71,11 +72,19 @@ class TreeNavWidget(QTreeView):
 
                 if( self.lst_idx == child_node.lin_num ):
                     new_item.setBackground(Qt.blue)
-                    new_item.setForeground(Qt.white)
+                    if( child_node_name[0:2] == "* " ):
+                        new_item.setForeground(Qt.green)
+
+                    else:
+                        new_item.setForeground(Qt.white)
 
                 else:
                     new_item.setBackground(Qt.white)
-                    new_item.setForeground(Qt.blue)
+                    if( child_node_name[0:2] == "* " ):
+                        new_item.setForeground(Qt.green)
+
+                    else:
+                        new_item.setForeground(Qt.blue)
 
                 new_item.setEditable(False)      # not letting the user edit it
 
