@@ -217,3 +217,6 @@ if( __name__ == "__main__"):
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(uni_controler, bkp_out)
+
+        #testing:
+        print str(uni_controler.step_list)
