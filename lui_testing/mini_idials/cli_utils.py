@@ -37,6 +37,17 @@ def get_next_step(uni_step_obj):
 
 def build_command_lst(uni_step_obj, cmd_lst):
 
+    to_re_use = '''
+    dials.import ../*.cbf
+    dials.find_spots datablock.json spotfinder.mp.nproc=4
+    dials.index datablock.json strong.pickle
+    dials.refine_bravais_settings experiments.json indexed.pickle
+
+    dials.reindex indexed.pickle change_of_basis_op=b-c,b+c,a bravais_setting_6.json
+    dials.refine reindexed_experiments.json reindexed_reflections.pickle
+    dials.integrate integration.mp.nproc=4 refined_experiments.json refined.pickle
+    '''
+
     #TODO make sure new step is compatible with previous
     cmd_lst_to_run = []
     cmd_lst_to_run.append("dials." + cmd_lst[0])
