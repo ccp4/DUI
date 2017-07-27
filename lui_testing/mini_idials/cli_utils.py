@@ -112,20 +112,29 @@ def build_command_lst(uni_step_obj, cmd_lst):
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        uni_step_obj.prefix_out = "lin_" + str(uni_step_obj.lin_num) + "_"
+        prefix_str = "lin_" + str(uni_step_obj.lin_num) + "_"
+        uni_step_obj.prefix_out = prefix_str
         output_str = "output.prefix=" + uni_step_obj.prefix_out
         cmd_lst_to_run.append(output_str)
 
-        '''
-        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_experiments.json"
-        output_str = "output.experiments=" + uni_step_obj.json_file_out
-        cmd_lst_to_run.append(output_str)
+        uni_step_obj.json_file_out = prefix_str + "_bravais_summary.json"
 
 
-        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
-        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
-        cmd_lst_to_run.append(output_str)
+
+
         '''
+        import json
+
+        with open("lin_7_bravais_summary.json") as summary_file:
+            j_obj = json.load(summary_file)
+            #solution = max(map(int, j_obj.keys()))
+
+        #change_of_basis_op = j_obj[str(solution)]['cb_op']
+        change_of_basis_op = j_obj["2"]['cb_op']
+
+        print "change_of_basis_op =", change_of_basis_op
+        '''
+
 
     elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
         json_file_in = uni_step_obj.prev_step.json_file_out
