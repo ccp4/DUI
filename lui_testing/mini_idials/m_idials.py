@@ -10,6 +10,8 @@ class UniStep(object):
     'import',
     'find_spots',
     'index',
+    'refine_bravais_settings',
+    'reindex',
     'refine',
     'integrate',
     'export',

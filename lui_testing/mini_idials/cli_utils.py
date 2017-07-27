@@ -99,6 +99,34 @@ def build_command_lst(uni_step_obj, cmd_lst):
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
+        '''
+    dials.refine_bravais_settings input.experiments=experiments.json input.reflections=indexed.pickle output.prefix=tst_prefix
+    dials.reindex input.reflections=indexed.pickle input.experiments=tst_prefixbravais_setting_6.json change_of_basis_op=b-c,b+c,a output.experiments=tst_n_reindexed_experiments.json output.reflections=tst_n_reindexed_experiments.pickle
+        '''
+    elif( cmd_lst[0] == "refine_bravais_settings" ):
+        json_file_in = uni_step_obj.prev_step.json_file_out
+        input_str = "input.experiments=" + json_file_in
+        cmd_lst_to_run.append(input_str)
+
+        pickle_file_in = uni_step_obj.prev_step.pickle_file_out
+        input_str = "input.reflections=" + pickle_file_in
+        cmd_lst_to_run.append(input_str)
+
+        uni_step_obj.prefix_out = "lin_" + str(uni_step_obj.lin_num) + "_"
+        output_str = "output.prefix=" + uni_step_obj.prefix_out
+        cmd_lst_to_run.append(output_str)
+
+        '''
+        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_experiments.json"
+        output_str = "output.experiments=" + uni_step_obj.json_file_out
+        cmd_lst_to_run.append(output_str)
+
+
+        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        cmd_lst_to_run.append(output_str)
+        '''
+
     elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
         json_file_in = uni_step_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
