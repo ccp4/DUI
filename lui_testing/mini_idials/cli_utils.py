@@ -41,9 +41,18 @@ def build_command_lst(uni_step_obj, cmd_lst):
     dials.import ../*.cbf
     dials.find_spots datablock.json spotfinder.mp.nproc=4
     dials.index datablock.json strong.pickle
-    dials.refine_bravais_settings experiments.json indexed.pickle
 
+    opt:
+
+    dials.refine_bravais_settings input.experiments=experiments.json input.reflections=indexed.pickle output.prefix=tst_prefix
+    dials.reindex input.reflections=indexed.pickle input.experiments=tst_prefixbravais_setting_6.json change_of_basis_op=b-c,b+c,a output.experiments=tst_n_reindexed_experiments.json output.reflections=tst_n_reindexed_experiments.pickle
+
+    "or"
+
+    dials.refine_bravais_settings experiments.json indexed.pickle
     dials.reindex indexed.pickle change_of_basis_op=b-c,b+c,a bravais_setting_6.json
+    .
+
     dials.refine reindexed_experiments.json reindexed_reflections.pickle
     dials.integrate integration.mp.nproc=4 refined_experiments.json refined.pickle
     '''
