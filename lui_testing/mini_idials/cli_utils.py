@@ -42,17 +42,17 @@ def build_command_lst(uni_step_obj, cmd_lst):
     dials.find_spots input.datablock=1_datablock.json output.datablock=2_datablock.json utput.reflections=2_reflections.pickle
     dials.index input.datablock=2_datablock.json input.reflections=2_reflections.pickle output.experiments=3_experiments.json output.reflections=3_reflections.pickle
     dials.refine_bravais_settings input.experiments=3_experiments.json input.reflections=3_reflections.pickle output.prefix=lin_4_
-    dials.reindex input.reflections=3_reflections.pickle  change_of_basis_op=a,b,c
     dials.reindex input.reflections=3_reflections.pickle  change_of_basis_op=a,b,c output.reflections=4_reflections.pickle
     dials.refine input.experiments=lin_4_bravais_setting_3.json input.reflections=4_reflections.pickle output.reflections=5_reflections.pickle output.experiments=5_experiments.json
-
     '''
 
     #TODO make sure new step is compatible with previous
     cmd_lst_to_run = []
     cmd_lst_to_run.append("dials." + cmd_lst[0])
-    for tmp_par in cmd_lst[1:]:
-        cmd_lst_to_run.append(tmp_par)
+    if( cmd_lst[0] != "reindex" ):
+        for tmp_par in cmd_lst[1:]:
+            cmd_lst_to_run.append(tmp_par)
+
 
     if( cmd_lst[0] == "import" ):
         uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
@@ -107,21 +107,15 @@ def build_command_lst(uni_step_obj, cmd_lst):
 
         uni_step_obj.json_file_out = prefix_str + "bravais_summary.json"
 
-        '''
-        dials.import ../*.cbf output.datablock=1_datablock.json
-        dials.find_spots input.datablock=1_datablock.json output.datablock=2_datablock.json utput.reflections=2_reflections.pickle
-        dials.index input.datablock=2_datablock.json input.reflections=2_reflections.pickle output.experiments=3_experiments.json output.reflections=3_reflections.pickle
-        dials.refine_bravais_settings input.experiments=3_experiments.json input.reflections=3_reflections.pickle output.prefix=lin_4_
-
-        dials.reindex input.reflections=3_reflections.pickle  change_of_basis_op=a,b,c output.reflections=4_reflections.pickle
-
-        dials.refine input.experiments=lin_4_bravais_setting_3.json input.reflections=4_reflections.pickle output.reflections=5_reflections.pickle output.experiments=5_experiments.json
-        '''
 
     elif( cmd_lst[0] == "reindex" ):
+        print "cmd_lst =", cmd_lst
 
-        #TODO UnHadcod this "2"
-        num = 2
+        if( cmd_lst[1][0:9] == "solution=" ):
+            num = int(cmd_lst[1][9:])
+
+        else:
+            num = 2
 
         pickle_file_in = uni_step_obj.prev_step.prev_step.pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
