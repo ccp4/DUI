@@ -37,14 +37,6 @@ def get_next_step(uni_step_obj):
 
 def build_command_lst(uni_step_obj, cmd_lst):
 
-    to_re_use = '''
-    dials.import ../*.cbf output.datablock=1_datablock.json
-    dials.find_spots input.datablock=1_datablock.json output.datablock=2_datablock.json utput.reflections=2_reflections.pickle
-    dials.index input.datablock=2_datablock.json input.reflections=2_reflections.pickle output.experiments=3_experiments.json output.reflections=3_reflections.pickle
-    dials.refine_bravais_settings input.experiments=3_experiments.json input.reflections=3_reflections.pickle output.prefix=lin_4_
-    dials.reindex input.reflections=3_reflections.pickle  change_of_basis_op=a,b,c output.reflections=4_reflections.pickle
-    dials.refine input.experiments=lin_4_bravais_setting_3.json input.reflections=4_reflections.pickle output.reflections=5_reflections.pickle output.experiments=5_experiments.json
-    '''
 
     #TODO make sure new step is compatible with previous
     cmd_lst_to_run = []
@@ -52,7 +44,6 @@ def build_command_lst(uni_step_obj, cmd_lst):
     if( cmd_lst[0] != "reindex" ):
         for tmp_par in cmd_lst[1:]:
             cmd_lst_to_run.append(tmp_par)
-
 
     if( cmd_lst[0] == "import" ):
         uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
@@ -90,7 +81,6 @@ def build_command_lst(uni_step_obj, cmd_lst):
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-
     elif( cmd_lst[0] == "refine_bravais_settings" ):
         json_file_in = uni_step_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
@@ -107,15 +97,14 @@ def build_command_lst(uni_step_obj, cmd_lst):
 
         uni_step_obj.json_file_out = prefix_str + "bravais_summary.json"
 
-
     elif( cmd_lst[0] == "reindex" ):
-        print "cmd_lst =", cmd_lst
-
-        if( cmd_lst[1][0:9] == "solution=" ):
-            num = int(cmd_lst[1][9:])
-
-        else:
-            num = 2
+        try:
+            if( cmd_lst[1][0:9] == "solution=" ):
+                sol_num = int(cmd_lst[1][9:])
+            else:
+                sol_num = 1
+        except:
+            sol_num = 1
 
         pickle_file_in = uni_step_obj.prev_step.prev_step.pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
@@ -124,23 +113,16 @@ def build_command_lst(uni_step_obj, cmd_lst):
         json_file_tmp = uni_step_obj.prev_step.json_file_out
         with open(json_file_tmp) as summary_file:
             j_obj = json.load(summary_file)
-        change_of_basis_op = j_obj[str(num)]['cb_op']
+        change_of_basis_op = j_obj[str(sol_num)]['cb_op']
 
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
         cmd_lst_to_run.append(input_str)
 
-
-        uni_step_obj.json_file_out = uni_step_obj.prev_step.prefix_out + "bravais_setting_" + str(num) + ".json"
+        uni_step_obj.json_file_out = uni_step_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
 
         uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
-
-        print "\n cmd_lst_to_run =", cmd_lst_to_run
-        '''
-dials.reindex', 'input.reflections=3_reflections.pickle', 'change_of_basis_op=-a,-c,-b', .... , 'output.reflections=5_reflections.pickle'
-
-        '''
 
     elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
         json_file_in = uni_step_obj.prev_step.json_file_out
