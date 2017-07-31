@@ -92,7 +92,7 @@ class TreeNavWidget(QTreeView):
                 item_in.appendRow(new_item)
 
         except:
-            print "end of node"
+            pass
 
 class MainWidget(QMainWindow):
     def __init__(self):

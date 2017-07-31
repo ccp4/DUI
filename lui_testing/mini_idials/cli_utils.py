@@ -8,11 +8,11 @@ def get_next_step(uni_step_obj):
 
     elif(uni_step_obj.command == None):
         for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
-            print "pos, stp: ", pos, stp
+            #print "pos, stp: ", pos, stp
             try:
                 if( stp == uni_step_obj.prev_step.command[0] ):
                     nxt_str = uni_step_obj.dials_com_lst[pos + 1]
-                    print "returning ", nxt_str
+                    #print "returning ", nxt_str
                     return nxt_str
 
             except:
@@ -22,11 +22,11 @@ def get_next_step(uni_step_obj):
 
     else:
         for pos, stp in enumerate(uni_step_obj.dials_com_lst):
-            print "pos, stp: ", pos, stp
+            #print "pos, stp: ", pos, stp
             try:
                 if( stp == uni_step_obj.command[0] ):
                     nxt_str = uni_step_obj.command[0]
-                    print "returning ", nxt_str
+                    #print "returning ", nxt_str
                     return nxt_str
 
             except:
