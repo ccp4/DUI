@@ -220,12 +220,11 @@ def print_list(lst, curr):
             stp_str += " prev: None"
 
         stp_str += " nxt: "
-        try:
+        if( type(uni.next_step_list) is list ):
             for nxt_uni in uni.next_step_list:
-
                 stp_str += "  " + str(nxt_uni.lin_num)
 
-        except:
+        else:
             stp_str += "empty"
 
         if( curr == uni.lin_num ):

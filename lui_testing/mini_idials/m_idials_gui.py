@@ -50,9 +50,7 @@ class TreeNavWidget(QTreeView):
         self.expandAll()
 
     def recursive_node(self, root_node, item_in):
-
-        #for child_node in root_node.children:
-        try:
+        if( type(root_node.next_step_list) is list ):
             for child_node in root_node.next_step_list:
                 if( child_node.command != [None] ):
                     child_node_name = str(child_node.command[0])
@@ -89,9 +87,6 @@ class TreeNavWidget(QTreeView):
 
                 self.recursive_node(child_node, new_item)
                 item_in.appendRow(new_item)
-
-        except:
-            pass
 
 class MainWidget(QMainWindow):
     def __init__(self):
