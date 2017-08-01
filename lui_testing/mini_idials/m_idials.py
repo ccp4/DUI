@@ -21,7 +21,7 @@ class UniStep(object):
         self.lin_num = 0
         self.next_step_list = None
         self.prev_step = prev_step
-        self.command = None
+        self.command = [None]
         self.success = None
         self.pickle_file_out = None
         self.json_file_out = None
@@ -33,15 +33,13 @@ class UniStep(object):
 
 
     def __call__(self, cmd_lst, ref_to_class):
+        self.command = cmd_lst
         if( cmd_lst[0] == "fail" ):
             #testing virtual failed step
             print "\n intentionally FAILED for testing \n"
-            self.command = cmd_lst
             self.success = False
 
         else:
-            self.command = cmd_lst
-
             if( cmd_lst[0] in self.dials_com_lst ):
                 self.build_command(cmd_lst)
                 self.success = self.dials_comand( lst_cmd_to_run = self.cmd_lst_to_run,
@@ -84,10 +82,10 @@ class Runner(object):
         elif( cmd_lst[0] == "slist" ):
             self.slist()
 
-        elif( cmd_lst[0] == "mksn" ):
+        elif( cmd_lst[0] == "mkchi" ):
             self.create_step(self.step_list[self.current])
 
-        elif( cmd_lst[0] == "mkbr" ):
+        elif( cmd_lst[0] == "mksib" ):
             self.goto_prev()
             print "forking"
             self.create_step(self.step_list[self.current])
@@ -153,7 +151,7 @@ class Runner(object):
         path_to_json = None
 
         while True:
-            if( tmp_cur.command == None ):
+            if( tmp_cur.command == [None] ):
                 tmp_cur = tmp_cur.prev_step
 
             elif( tmp_cur.success == True and tmp_cur.command[0] == "import" ):
@@ -171,7 +169,7 @@ class Runner(object):
 
     def get_reflections_path(self):
         tmp_cur = self.step_list[self.current]
-        if( tmp_cur.command == None ):
+        if( tmp_cur.command == [None] ):
            tmp_cur = tmp_cur.prev_step
 
         if( tmp_cur.command[0] == "Root" or
@@ -221,7 +219,7 @@ if( __name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command, None, mk_nxt = False)
+        uni_controler.run(command, None, mk_nxt = True)
         tree_output(uni_controler)
         nxt_str = uni_controler.get_next_from_here()
         print "\n next to run:\n ", nxt_str
@@ -229,5 +227,3 @@ if( __name__ == "__main__"):
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(uni_controler, bkp_out)
 
-        #testing:
-        #print str(uni_controler.step_list)

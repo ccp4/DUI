@@ -6,31 +6,19 @@ def get_next_step(uni_step_obj):
     if( uni_step_obj.prev_step.lin_num == 0 ):
         return "import"
 
-    elif(uni_step_obj.command == None):
+    elif(uni_step_obj.command == [None]):
         for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
-            #print "pos, stp: ", pos, stp
-            try:
-                if( stp == uni_step_obj.prev_step.command[0] ):
-                    nxt_str = uni_step_obj.dials_com_lst[pos + 1]
-                    #print "returning ", nxt_str
-                    return nxt_str
-
-            except:
-                pass
+            if( stp == uni_step_obj.prev_step.command[0] ):
+                nxt_str = uni_step_obj.dials_com_lst[pos + 1]
+                return nxt_str
 
         return None
 
-    else:
+    else:             #TODO think if this ELSE is needed
         for pos, stp in enumerate(uni_step_obj.dials_com_lst):
-            #print "pos, stp: ", pos, stp
-            try:
-                if( stp == uni_step_obj.command[0] ):
-                    nxt_str = uni_step_obj.command[0]
-                    #print "returning ", nxt_str
-                    return nxt_str
-
-            except:
-                pass
+            if( stp == uni_step_obj.command[0] ):
+                nxt_str = uni_step_obj.command[0]
+                return nxt_str
 
         return None
 
@@ -153,39 +141,35 @@ def build_command_lst(uni_step_obj, cmd_lst):
 
 def generate_report(uni_step_obj):
     rep_out = None
-    try:
-        if( uni_step_obj.command[0] in uni_step_obj.dials_com_lst[1:-1] ):
-            current_lin = uni_step_obj.lin_num
-            refl_inp = uni_step_obj.pickle_file_out
-            deps_outp = "output.external_dependencies=local"
-            htm_fil = str(current_lin) + "_report.html"
-            html_outp = "output.html=" + htm_fil
-            if( uni_step_obj.command[0] == "find_spots" ):
-                rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
 
-            else:
-                exp_inp = uni_step_obj.json_file_out
-                rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
-
-            print "rep_cmd =", rep_cmd
-
-            try:
-                gen_rep_proc = subprocess.Popen(rep_cmd)
-                gen_rep_proc.wait()
-                rep_out = uni_step_obj.work_dir + "/" + htm_fil
-                print "generated report at: ", rep_out
-
-            except:
-                rep_out = None
-                print "Someting went wrong in report level 2"
+    if( uni_step_obj.command[0] in uni_step_obj.dials_com_lst[1:-1] ):
+        current_lin = uni_step_obj.lin_num
+        refl_inp = uni_step_obj.pickle_file_out
+        deps_outp = "output.external_dependencies=local"
+        htm_fil = str(current_lin) + "_report.html"
+        html_outp = "output.html=" + htm_fil
+        if( uni_step_obj.command[0] == "find_spots" ):
+            rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
 
         else:
-            print "NO report needed for this step"
-            rep_out = None
+            exp_inp = uni_step_obj.json_file_out
+            rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
 
-    except:
+        print "rep_cmd =", rep_cmd
+
+        try:
+            gen_rep_proc = subprocess.Popen(rep_cmd)
+            gen_rep_proc.wait()
+            rep_out = uni_step_obj.work_dir + "/" + htm_fil
+            print "generated report at: ", rep_out
+
+        except:
+            rep_out = None
+            print "Someting went wrong in report level 2"
+
+    else:
+        print "NO report needed for this step"
         rep_out = None
-        print "Someting went wrong in report level 1"
 
     return rep_out
 
@@ -281,12 +265,7 @@ class TreeShow(object):
         str_lin_num = "{0:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + "   \___"
-
-        if( type(step.command) is list  ):
-            stp_prn += str(step.command[0])
-
-        else:
-            stp_prn += "None"
+        stp_prn += str(step.command[0])
 
         self.str_lst.append([stp_prn, indent, int(step.lin_num)])
         new_indent = indent
@@ -299,26 +278,6 @@ class TreeShow(object):
             new_indent = int(new_indent)
             if( new_indent > self.max_indent ):
                 self.max_indent = new_indent
-
-        old_way = '''
-        try:
-            stp_prn += str(step.command[0])
-
-        except:
-            stp_prn += "None"
-
-        self.str_lst.append([stp_prn, indent, int(step.lin_num)])
-        try:
-            for line in step.next_step_list:
-                new_indent = indent + 1
-                self.add_tree(step = line, indent = new_indent)
-
-        except:
-            new_indent = int(new_indent)
-            if( new_indent > self.max_indent ):
-                self.max_indent = new_indent
-        '''
-
 
     def tree_print(self, curr):
         self.tree_dat = []
