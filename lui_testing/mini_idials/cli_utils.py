@@ -281,6 +281,26 @@ class TreeShow(object):
         str_lin_num = "{0:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + "   \___"
+
+        if( type(step.command) is list  ):
+            stp_prn += str(step.command[0])
+
+        else:
+            stp_prn += "None"
+
+        self.str_lst.append([stp_prn, indent, int(step.lin_num)])
+        new_indent = indent
+        if( type(step.next_step_list) is list ):
+            for line in step.next_step_list:
+                new_indent = indent + 1
+                self.add_tree(step = line, indent = new_indent)
+
+        else:
+            new_indent = int(new_indent)
+            if( new_indent > self.max_indent ):
+                self.max_indent = new_indent
+
+        old_way = '''
         try:
             stp_prn += str(step.command[0])
 
@@ -297,6 +317,7 @@ class TreeShow(object):
             new_indent = int(new_indent)
             if( new_indent > self.max_indent ):
                 self.max_indent = new_indent
+        '''
 
 
     def tree_print(self, curr):

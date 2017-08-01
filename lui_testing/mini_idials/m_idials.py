@@ -75,7 +75,7 @@ class Runner(object):
         self.current = self.bigger_lin
         self.create_step(root_node)
 
-    def run(self, command, ref_to_class):
+    def run(self, command, ref_to_class, mk_nxt = True):
 
         cmd_lst = command.split()
         if( cmd_lst[0] == "goto" ):
@@ -84,13 +84,22 @@ class Runner(object):
         elif( cmd_lst[0] == "slist" ):
             self.slist()
 
+        elif( cmd_lst[0] == "mksn" ):
+            self.create_step(self.step_list[self.current])
+
+        elif( cmd_lst[0] == "mkbr" ):
+            self.goto_prev()
+            print "forking"
+            self.create_step(self.step_list[self.current])
+
         else:
             if( self.step_list[self.current].success == True ):
                 self.goto_prev()
+                print "forking"
                 self.create_step(self.step_list[self.current])
 
             self.step_list[self.current](cmd_lst, ref_to_class)
-            if( self.step_list[self.current].success == True ):
+            if( self.step_list[self.current].success == True and mk_nxt == True):
                 self.create_step(self.step_list[self.current])
 
             else:
@@ -101,21 +110,21 @@ class Runner(object):
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         try:
-            if( self.step_list[self.current].next_step_list == None ):
-                self.step_list[self.current].next_step_list = [new_step]
+            if( prev_step.next_step_list == None ):
+                prev_step.next_step_list = [new_step]
+                print "converting None in [new_step]"
 
             else:
-                self.step_list[self.current].next_step_list.append(new_step)
+                prev_step.next_step_list.append(new_step)
+                print "appending step"
 
         except:
             print "failed to append to previous step"
-
 
         self.step_list.append(new_step)
         self.goto(self.bigger_lin)
 
     def goto_prev(self):
-        print "forking"
         try:
             self.goto(self.step_list[self.current].prev_step.lin_num)
 
@@ -212,7 +221,7 @@ if( __name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command, None)
+        uni_controler.run(command, None, mk_nxt = False)
         tree_output(uni_controler)
         nxt_str = uni_controler.get_next_from_here()
         print "\n next to run:\n ", nxt_str
@@ -221,4 +230,4 @@ if( __name__ == "__main__"):
             pickle.dump(uni_controler, bkp_out)
 
         #testing:
-        print str(uni_controler.step_list)
+        #print str(uni_controler.step_list)
