@@ -1,12 +1,12 @@
 import sys
 
-PyQt4_ver = '''
+#PyQt4_ver = '''
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 print "using PyQt4"
 #'''
 
-#PySide_ver = '''
+PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
 print "using PySide"
@@ -56,11 +56,11 @@ class MainWidget(QWidget):
             param_widg_lst.append(param_widg)
             self.step_param_widg.addWidget(param_widg)
 
-        bing_h_box = QHBoxLayout()
-        bing_h_box.addLayout(v_left_box)
-        bing_h_box.addWidget(self.step_param_widg)
+        big_h_box = QHBoxLayout()
+        big_h_box.addLayout(v_left_box)
+        big_h_box.addWidget(self.step_param_widg)
 
-        self.setLayout(bing_h_box)
+        self.setLayout(big_h_box)
         self.setWindowTitle('Shell dialog')
         self.show()
 

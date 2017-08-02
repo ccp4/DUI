@@ -12,6 +12,9 @@ from m_idials import Runner
 from gui_utils import CliOutView
 import subprocess
 
+#TODO import properly all parameter widgets
+widg_lst = ["import", "find_spots", "index", "refine", "integrate"]
+
 class MyThread(QThread):
 
     str_print_signal = pyqtSignal(str)
@@ -91,6 +94,62 @@ class TreeNavWidget(QTreeView):
                 self.recursive_node(child_node, new_item)
                 item_in.appendRow(new_item)
 
+class ParamWidget(QWidget):
+    def __init__(self, label_str):
+        super(ParamWidget, self).__init__()
+        v_left_box =  QVBoxLayout()
+        v_left_box.addWidget(QLabel(label_str))
+
+        if( label_str == "import" ):
+            self.command = "import ../*.cbf"
+
+        else:
+            self.command = label_str
+
+        self.setLayout(v_left_box)
+        self.show()
+
+class CentreWidget(QWidget):
+    def __init__(self, parent = None):
+        super(CentreWidget, self).__init__()
+
+        #param_widg_lst = []
+
+        self.btn_lst = []
+        top_box =  QHBoxLayout()
+        self.step_param_widg =  QStackedWidget()
+        for step_name in widg_lst:
+            new_btn = QPushButton("\n" + step_name + "\n", self)
+            new_btn.clicked.connect(self.btn_clicked)
+            top_box.addWidget(new_btn)
+
+            param_widg = ParamWidget(step_name)
+            new_btn.pr_widg = param_widg
+            self.btn_lst.append(new_btn)
+            self.step_param_widg.addWidget(param_widg)
+            #param_widg_lst.append(param_widg)
+
+        big_v_box = QVBoxLayout()
+        big_v_box.addLayout(top_box)
+
+        ctrl_box = QHBoxLayout()
+        self.run_btn = QPushButton("\n   Run   \n", self)
+        self.stop_btn = QPushButton("\n   Stop   \n", self)
+        ctrl_box.addWidget(self.run_btn)
+        ctrl_box.addWidget(self.stop_btn)
+        big_v_box.addLayout(ctrl_box)
+
+        big_v_box.addWidget(self.step_param_widg)
+
+        self.setLayout(big_v_box)
+        self.show()
+
+
+    def btn_clicked(self):
+        print "btn_clicked"
+        my_sender = self.sender()
+        self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -114,11 +173,17 @@ class MainWidget(QMainWindow):
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
 
-        self.tree_out =TreeNavWidget()
+        self.tree_out = TreeNavWidget()
         self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
         h_main_splitter.addWidget(self.tree_out)
+
+        self.centre_widget = CentreWidget()
+        self.centre_widget.run_btn.clicked.connect(self.run_clicked)
+        h_main_splitter.addWidget(self.centre_widget)
+
+
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
@@ -146,6 +211,13 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+
+    def run_clicked(self):
+        print "run_clicked"
+        print "...currentWidget(ref) =", self.centre_widget.step_param_widg.currentWidget()
+        self.cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command
+        print "self.cmd_tmp =", self.cmd_tmp
+        self.cmd_entr(self.cmd_tmp)
 
     def cmd_entr(self, command_overwrite = None):
         if( command_overwrite == None ):
