@@ -198,7 +198,7 @@ class MainWidget(QMainWindow):
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
 
         self.cmd_edit = QLineEdit()
-        self.cmd_edit.editingFinished.connect(self.cmd_entr)
+        self.cmd_edit.editingFinished.connect(self.cmd_launch)
 
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
@@ -210,11 +210,11 @@ class MainWidget(QMainWindow):
     def run_clicked(self):
         print "run_clicked"
         print "...currentWidget(ref) =", self.centre_widget.step_param_widg.currentWidget()
-        self.cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command
-        print "self.cmd_tmp =", self.cmd_tmp
-        self.cmd_entr(self.cmd_tmp)
+        cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command
+        print "cmd_tmp =", cmd_tmp
+        self.cmd_launch(cmd_tmp)
 
-    def cmd_entr(self, command_overwrite = None):
+    def cmd_launch(self, command_overwrite = None):
         if( command_overwrite == None ):
             new_cmd = str(self.cmd_edit.text())
 
@@ -255,7 +255,10 @@ class MainWidget(QMainWindow):
             self.cur_json = new_img_json
             self.img_view.ini_datablock(self.cur_json)
 
-
+        #TODO find a more robust way to do the next if
+        if( self.custom_thread.cmd_to_run[0:5] == "index" ):
+            print "\n\n Time to run << refine_bravais_settings >> \n\n"
+            self.cmd_launch("refine_bravais_settings")
 
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
@@ -268,7 +271,7 @@ class MainWidget(QMainWindow):
         lin_num = item.idials_node.lin_num
         print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
         cmd_ovr = "goto " + str(lin_num)
-        self.cmd_entr(cmd_ovr)
+        self.cmd_launch(cmd_ovr)
 
 
 if __name__ == '__main__':
