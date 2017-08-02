@@ -12,20 +12,23 @@ from m_idials import Runner
 from gui_utils import CliOutView
 import subprocess
 
-class MyThread (QThread):
+class MyThread(QThread):
 
     str_print_signal = pyqtSignal(str)
 
     def __init__(self, parent = None):
         super(MyThread, self).__init__()
 
-    def __call__(self, cmd_to_run, ref_to_controler):
+    def __call__(self, cmd_to_run, ref_to_controler, mk_nxt = True):
         self.cmd_to_run = cmd_to_run
         self.ref_to_controler = ref_to_controler
+        self.make_next = mk_nxt
         self.start()
 
     def run(self):
-        self.ref_to_controler.run(command = self.cmd_to_run, ref_to_class = self)
+        # {mk_nxt = False} changes the GUI to "explicit" mode
+        self.ref_to_controler.run(command = self.cmd_to_run,
+                                  ref_to_class = self, mk_nxt = self.make_next)
 
     def emit_print_signal(self, str_lin):
         #print str_lin, "... Yes"
@@ -155,7 +158,7 @@ class MainWidget(QMainWindow):
         if( new_cmd == "" ):
             new_cmd = "slist"
 
-        self.custom_thread(new_cmd, self.uni_controler)
+        self.custom_thread(new_cmd, self.uni_controler, mk_nxt = True)
 
     def update_after_finished(self):
 
