@@ -113,9 +113,6 @@ class CentreWidget(QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
 
-        #param_widg_lst = []
-
-        self.btn_lst = []
         top_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
         for step_name in widg_lst:
@@ -125,9 +122,7 @@ class CentreWidget(QWidget):
 
             param_widg = ParamWidget(step_name)
             new_btn.pr_widg = param_widg
-            self.btn_lst.append(new_btn)
             self.step_param_widg.addWidget(param_widg)
-            #param_widg_lst.append(param_widg)
 
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
