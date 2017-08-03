@@ -10,6 +10,8 @@ import pickle
 from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
 from gui_utils import CliOutView
+
+from dynamic_reindex_gui import MyReindexOpts
 import subprocess
 
 #TODO import properly all parameter widgets
@@ -273,18 +275,20 @@ class MainWidget(QMainWindow):
             self.cur_json = new_img_json
             self.img_view.ini_datablock(self.cur_json)
 
-        nxt_cmd = get_next_step(
-                  self.uni_controler.step_list[self.uni_controler.current]
-                  )
+        tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
+        nxt_cmd = get_next_step(tmp_curr)
+        cur_success = tmp_curr.success
 
-        cur_success = self.uni_controler.step_list[self.uni_controler.current].success
         print "\n\ncur_success =", cur_success, "\n\n"
 
         if( nxt_cmd == "refine_bravais_settings" and cur_success == None):
             self.cmd_launch("refine_bravais_settings")
 
         elif( nxt_cmd == "reindex" ):
-            self.temporal_reindex.show()
+
+            self.my_pop = MyReindexOpts()
+            self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
+
 
         self.tree_out.update_me(self.uni_controler.step_list[0],
                                 self.uni_controler.current)
