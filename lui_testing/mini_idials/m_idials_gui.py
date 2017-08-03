@@ -210,11 +210,13 @@ class MainWidget(QMainWindow):
         self.temporal_reindex = TemporalReindex()
         self.temporal_reindex.new_btn.clicked.connect(self.reindex_clicked)
 
+        old_way = '''
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_launch)
 
         main_box.addWidget(QLabel("DIALS command: "))
         main_box.addWidget(self.cmd_edit)
+        '''
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -228,6 +230,7 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
 
     def cmd_launch(self, command_overwrite = None):
+        old_way = '''
         if( command_overwrite == None ):
             new_cmd = str(self.cmd_edit.text())
 
@@ -237,12 +240,14 @@ class MainWidget(QMainWindow):
         print "command entered:", new_cmd
         if( new_cmd == "" ):
             new_cmd = "slist"
+        '''
 
+        new_cmd = command_overwrite
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = True)
 
     def update_after_finished(self):
 
-        self.cmd_edit.setText("")
+        #self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
         new_html = self.uni_controler.get_html_report()
         new_img_json = self.uni_controler.get_datablock_path()
