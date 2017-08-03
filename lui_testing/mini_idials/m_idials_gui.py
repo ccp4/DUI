@@ -267,16 +267,21 @@ class MainWidget(QMainWindow):
             self.cur_json = new_img_json
             self.img_view.ini_datablock(self.cur_json)
 
-        #TODO find a more robust way to do the next if block
-        if( self.custom_thread.cmd_to_run[0:5] == "index" ):
-            print "\n\n Time to run << refine_bravais_settings >> \n\n"
+        nxt_cmd = get_next_step(
+                  self.uni_controler.step_list[self.uni_controler.current]
+                  )
+
+        cur_success = self.uni_controler.step_list[self.uni_controler.current].success
+        print "\n\ncur_success =", cur_success, "\n\n"
+
+        if( nxt_cmd == "refine_bravais_settings" and cur_success == None):
             self.cmd_launch("refine_bravais_settings")
 
-        elif( self.custom_thread.cmd_to_run[0:14] == "refine_bravais" ):
-            print "\n\n Time to run << reindex >> \n\n"
+        elif( nxt_cmd == "reindex" ):
             self.temporal_reindex.show()
 
-        self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
+        self.tree_out.update_me(self.uni_controler.step_list[0],
+                                self.uni_controler.current)
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
