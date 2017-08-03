@@ -109,6 +109,15 @@ class ParamWidget(QWidget):
         self.setLayout(v_left_box)
         self.show()
 
+class TemporalReindex(QWidget):
+    def __init__(self, parent = None):
+        super(TemporalReindex, self).__init__()
+        only_box = QHBoxLayout()
+        new_btn = QPushButton("\n             click me           \n")
+        only_box.addWidget(new_btn)
+        self.setLayout(only_box)
+
+
 class CentreWidget(QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
@@ -197,6 +206,9 @@ class MainWidget(QMainWindow):
         self.custom_thread.finished.connect(self.update_after_finished)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
 
+
+        self.temporal_reindex = TemporalReindex()
+
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_launch)
 
@@ -255,10 +267,14 @@ class MainWidget(QMainWindow):
             self.cur_json = new_img_json
             self.img_view.ini_datablock(self.cur_json)
 
-        #TODO find a more robust way to do the next if
+        #TODO find a more robust way to do the next if block
         if( self.custom_thread.cmd_to_run[0:5] == "index" ):
             print "\n\n Time to run << refine_bravais_settings >> \n\n"
             self.cmd_launch("refine_bravais_settings")
+
+        elif( self.custom_thread.cmd_to_run[0:14] == "refine_bravais" ):
+            print "\n\n Time to run << reindex >> \n\n"
+            self.temporal_reindex.show()
 
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
