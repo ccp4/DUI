@@ -113,8 +113,8 @@ class TemporalReindex(QWidget):
     def __init__(self, parent = None):
         super(TemporalReindex, self).__init__()
         only_box = QHBoxLayout()
-        new_btn = QPushButton("\n             click me           \n")
-        only_box.addWidget(new_btn)
+        self.new_btn = QPushButton("\n             click me           \n")
+        only_box.addWidget(self.new_btn)
         self.setLayout(only_box)
 
 
@@ -208,6 +208,7 @@ class MainWidget(QMainWindow):
 
 
         self.temporal_reindex = TemporalReindex()
+        self.temporal_reindex.new_btn.clicked.connect(self.reindex_clicked)
 
         self.cmd_edit = QLineEdit()
         self.cmd_edit.editingFinished.connect(self.cmd_launch)
@@ -285,6 +286,11 @@ class MainWidget(QMainWindow):
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
+
+    def reindex_clicked(self):
+        print "\n\n Reindexing \n\n"
+
+        self.cmd_launch("reindex")
 
     def item_clicked(self, it_index):
         print "TreeNavWidget(item_clicked)"
