@@ -110,15 +110,6 @@ class ParamWidget(QWidget):
 
         self.setLayout(v_left_box)
         self.show()
-'''
-class TemporalReindex(QWidget):
-    def __init__(self, parent = None):
-        super(TemporalReindex, self).__init__()
-        only_box = QHBoxLayout()
-        self.new_btn = QPushButton("\n             click me           \n")
-        only_box.addWidget(self.new_btn)
-        self.setLayout(only_box)
-'''
 
 
 class CentreWidget(QWidget):
@@ -209,19 +200,6 @@ class MainWidget(QMainWindow):
         self.custom_thread.finished.connect(self.update_after_finished)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
 
-        to_remove = '''
-        self.temporal_reindex = TemporalReindex()
-        self.temporal_reindex.new_btn.clicked.connect(self.reindex_clicked)
-        '''
-
-        old_way = '''
-        self.cmd_edit = QLineEdit()
-        self.cmd_edit.editingFinished.connect(self.cmd_launch)
-
-        main_box.addWidget(QLabel("DIALS command: "))
-        main_box.addWidget(self.cmd_edit)
-        '''
-
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
@@ -233,20 +211,7 @@ class MainWidget(QMainWindow):
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
 
-    def cmd_launch(self, command_overwrite = None):
-        old_way = '''
-        if( command_overwrite == None ):
-            new_cmd = str(self.cmd_edit.text())
-
-        else:
-            new_cmd = command_overwrite
-
-        print "command entered:", new_cmd
-        if( new_cmd == "" ):
-            new_cmd = "slist"
-        '''
-
-        new_cmd = command_overwrite
+    def cmd_launch(self, new_cmd):
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = True)
 
     def update_after_finished(self):
@@ -307,12 +272,6 @@ class MainWidget(QMainWindow):
         print "Solution clicked =", re_idx
         cmd_tmp = "reindex solution=" + str(re_idx)
         self.cmd_launch(cmd_tmp)
-
-        to_remove = '''
-    def reindex_clicked(self):
-        print "\n\n Reindexing \n\n"
-        self.cmd_launch("reindex")
-        '''
 
     def item_clicked(self, it_index):
         print "TreeNavWidget(item_clicked)"
