@@ -259,8 +259,12 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
-        if( nxt_cmd == "refine_bravais_settings" and cur_success == None):
-            self.cmd_launch("refine_bravais_settings")
+        if( nxt_cmd == "refine_bravais_settings" ):
+           if( cur_success == None):
+               self.cmd_launch("refine_bravais_settings")
+
+           else:
+               self.centre_widget.set_widget("refine")
 
         elif( nxt_cmd == "reindex" ):
             self.my_pop = MyReindexOpts()
@@ -272,7 +276,6 @@ class MainWidget(QMainWindow):
 
         self.tree_out.update_me(self.uni_controler.step_list[0],
                                 self.uni_controler.current)
-
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
