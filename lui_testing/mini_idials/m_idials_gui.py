@@ -15,7 +15,7 @@ from dynamic_reindex_gui import MyReindexOpts
 import subprocess
 
 #TODO import properly all parameter widgets
-widg_lst = ["import", "find_spots", "index", "refine", "integrate"]
+widg_name_list = ["import", "find_spots", "index", "refine", "integrate"]
 
 class MyThread(QThread):
 
@@ -101,6 +101,7 @@ class ParamWidget(QWidget):
         super(ParamWidget, self).__init__()
         v_left_box =  QVBoxLayout()
         v_left_box.addWidget(QLabel(label_str))
+        self.my_label = label_str
 
         if( label_str == "import" ):
             self.command = "import ../*.cbf"
@@ -118,7 +119,8 @@ class CentreWidget(QWidget):
 
         top_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
-        for step_name in widg_lst:
+        self.widg_lst = []
+        for step_name in widg_name_list:
             new_btn = QPushButton("\n" + step_name + "\n", self)
             new_btn.clicked.connect(self.btn_clicked)
             top_box.addWidget(new_btn)
@@ -126,6 +128,7 @@ class CentreWidget(QWidget):
             param_widg = ParamWidget(step_name)
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
+            self.widg_lst.append(param_widg)
 
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
@@ -141,6 +144,11 @@ class CentreWidget(QWidget):
 
         self.setLayout(big_v_box)
         self.show()
+
+    def set_widget(self, nxt_cmd):
+        for widget in self.widg_lst:
+            if( widget.my_label == nxt_cmd ):
+                self.step_param_widg.setCurrentWidget(widget)
 
 
     def btn_clicked(self):
@@ -215,8 +223,6 @@ class MainWidget(QMainWindow):
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = True)
 
     def update_after_finished(self):
-
-        #self.cmd_edit.setText("")
         self.cli_tree_output(self.uni_controler)
         new_html = self.uni_controler.get_html_report()
         new_img_json = self.uni_controler.get_datablock_path()
@@ -246,7 +252,7 @@ class MainWidget(QMainWindow):
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
 
-        if(tmp_curr != "reindex"):
+        if(tmp_curr.command[0] != "reindex"):
             try:
                 self.my_pop.close()
 
@@ -261,8 +267,12 @@ class MainWidget(QMainWindow):
             self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
             self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
 
+        else:
+            self.centre_widget.set_widget(nxt_cmd)
+
         self.tree_out.update_me(self.uni_controler.step_list[0],
                                 self.uni_controler.current)
+
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
