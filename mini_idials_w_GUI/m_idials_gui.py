@@ -218,6 +218,7 @@ class MainWidget(QMainWindow):
         cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
+        #TODO think about how to prevent launches from happening when is busy
 
     def cmd_launch(self, new_cmd):
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = True)
