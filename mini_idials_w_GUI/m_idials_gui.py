@@ -119,11 +119,27 @@ class CentreWidget(QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
 
+
+        idials_gui_path = str(os.environ["IDIALS_GUI_PATH"])
+        print "idials_gui_path =", idials_gui_path
+
+
+        lst_icons_path = []
+        lst_icons_path.append(idials_gui_path + "/resources/import.png")
+        lst_icons_path.append(idials_gui_path + "/resources/find_spots.png")
+        lst_icons_path.append(idials_gui_path + "/resources/index.png")
+        lst_icons_path.append(idials_gui_path + "/resources/refine.png")
+        lst_icons_path.append(idials_gui_path + "/resources/integrate.png")
+
+
         top_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
         self.widg_lst = []
-        for step_name in widg_name_list:
-            new_btn = QPushButton("\n" + step_name + "\n", self)
+        for num, step_name in enumerate(widg_name_list):
+            #new_btn = QPushButton("\n" + step_name + "\n", self)
+            new_btn = QPushButton(self)
+            new_btn.setIcon(QIcon(lst_icons_path[num]))
+            new_btn.setIconSize(QSize(38, 38))
             new_btn.clicked.connect(self.btn_clicked)
             top_box.addWidget(new_btn)
 
@@ -136,15 +152,16 @@ class CentreWidget(QWidget):
         big_v_box.addLayout(top_box)
 
 
-        idials_gui_path = os.environ["IDIALS_GUI_PATH"]
-        print "idials_gui_path =", idials_gui_path
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
         ctrl_box = QHBoxLayout()
         self.run_btn = QPushButton("\n   Run   \n", self)
         self.run_btn.setIcon(QIcon(dials_logo_path))
-
+        self.run_btn.setIconSize(QSize(80, 48))
         self.stop_btn = QPushButton("\n   Stop   \n", self)
+        self.stop_btn.setIcon(QIcon.fromTheme("process-stop"))
+        self.stop_btn.setIconSize(QSize(28, 28))
+
         ctrl_box.addWidget(self.run_btn)
         ctrl_box.addWidget(self.stop_btn)
         big_v_box.addLayout(ctrl_box)
