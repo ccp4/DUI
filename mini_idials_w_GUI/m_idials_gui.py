@@ -5,7 +5,7 @@ from PyQt4.QtWebKit import *
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
 
-import sys
+import sys, os
 import pickle
 from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
@@ -109,6 +109,8 @@ class ParamWidget(QWidget):
         else:
             self.command = label_str
 
+
+
         self.setLayout(v_left_box)
         self.show()
 
@@ -133,8 +135,15 @@ class CentreWidget(QWidget):
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
 
+
+        idials_gui_path = os.environ["IDIALS_GUI_PATH"]
+        print "idials_gui_path =", idials_gui_path
+        dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
+
         ctrl_box = QHBoxLayout()
         self.run_btn = QPushButton("\n   Run   \n", self)
+        self.run_btn.setIcon(QIcon(dials_logo_path))
+
         self.stop_btn = QPushButton("\n   Stop   \n", self)
         ctrl_box.addWidget(self.run_btn)
         ctrl_box.addWidget(self.stop_btn)
