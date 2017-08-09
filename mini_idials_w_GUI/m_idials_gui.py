@@ -96,23 +96,7 @@ class TreeNavWidget(QTreeView):
 
                 self.recursive_node(child_node, new_item)
                 item_in.appendRow(new_item)
-'''
-class ParamWidget(QWidget):
-    def __init__(self, label_str):
-        super(ParamWidget, self).__init__()
-        v_left_box =  QVBoxLayout()
-        v_left_box.addWidget(QLabel(label_str))
-        self.my_label = label_str
 
-        if( label_str == "import" ):
-            self.command = "import ../*.cbf"
-
-        else:
-            self.command = label_str
-
-        self.setLayout(v_left_box)
-        self.show()
-'''
 
 class CentreWidget(QWidget):
     def __init__(self, parent = None):

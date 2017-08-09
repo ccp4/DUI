@@ -384,7 +384,7 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ParamWidget()
+    ex = ParamWidget("find_spots")
     sys.exit(app.exec_())
 
 
