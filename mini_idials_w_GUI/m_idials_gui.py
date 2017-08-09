@@ -109,8 +109,6 @@ class ParamWidget(QWidget):
         else:
             self.command = label_str
 
-
-
         self.setLayout(v_left_box)
         self.show()
 
