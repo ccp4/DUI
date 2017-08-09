@@ -352,60 +352,6 @@ class ParamMainWidget( QWidget):
         self.update_advanced_widget(str_path, str_value)
 
 
-class StepList(object):
-
-    lst_lablel = [
-                  " import",
-                  "find spots",
-                  "index",
-                  #"refine bravais settings",
-                  "refine",
-                  "integrate"
-                  ]
-
-    my_command_lst = [
-                    "import",
-                    "find_spots",
-                    "index",
-                    #"refine_bravais_settings",
-                    "refine",
-                    "integrate"
-                   ]
-
-    def __init__(self, parent = None):
-        #self.super_parent = parent
-        self.list_of_widgets  = [
-              ImportPage(parent = self),
-              ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
-                              parent = self, upper_label = "Find Spots"),
-              ParamMainWidget(phl_obj = phil_scope_index, simp_widg = IndexSimplerParamTab,
-                              parent = self, upper_label = "Index"),
-              ParamMainWidget(phl_obj = phil_scope_refine, simp_widg = RefineSimplerParamTab,
-                              parent = self, upper_label = "Refine"),
-              ParamMainWidget(phl_obj = phil_scope_integrate, simp_widg = IntegrateSimplerParamTab,
-                              parent = self, upper_label = "Integrate")
-                                 ]
-
-        idials_gui_path = os.environ["IDIALS_GUI_PATH"]
-        print "idials_gui_path =", idials_gui_path
-
-        lst_icons_path = []
-
-        lst_icons_path.append(str(idials_gui_path + "/resources/import.png"))
-        lst_icons_path.append(str(idials_gui_path + "/resources/find_spots.png"))
-        lst_icons_path.append(str(idials_gui_path + "/resources/index.png"))
-        lst_icons_path.append(str(idials_gui_path + "/resources/refine.png"))
-        lst_icons_path.append(str(idials_gui_path + "/resources/integrate.png"))
-
-        self.lst_icons = []
-        for my_icon_path in lst_icons_path:
-            self.lst_icons.append(QIcon(my_icon_path))
-            print "attempting to append:", my_icon_path
-
-    def __call__(self):
-        return self.lst_lablel, self.list_of_widgets, self.lst_icons, self.my_command_lst
-
-
 
 class TmpTestWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
