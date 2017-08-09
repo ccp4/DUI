@@ -33,7 +33,7 @@ class MyThread(QThread):
 
     def run(self):
         # {mk_nxt = False} changes the GUI to "explicit" mode
-        self.ref_to_controler.run(command = self.cmd_to_run,
+        self.ref_to_controler.run(command_str = self.cmd_to_run,
                                   ref_to_class = self, mk_nxt = self.make_next)
 
     def emit_print_signal(self, str_lin):
@@ -61,13 +61,13 @@ class TreeNavWidget(QTreeView):
     def recursive_node(self, root_node, item_in):
         if( type(root_node.next_step_list) is list ):
             for child_node in root_node.next_step_list:
-                if( child_node.command != [None] ):
-                    child_node_name = str(child_node.command[0])
+                if( child_node.command_lst != [None] ):
+                    child_node_name = str(child_node.command_lst[0])
                 else:
                     child_node_name = "* " + get_next_step(child_node) + " *"
 
                 try:
-                    child_node_tip = str(child_node.command[1:])
+                    child_node_tip = str(child_node.command_lst[1:])
                 except:
                     child_node_tip = "None"
 
@@ -220,7 +220,7 @@ class MainWidget(QMainWindow):
     def run_clicked(self):
         print "run_clicked"
         print "...currentWidget(ref) =", self.centre_widget.step_param_widg.currentWidget()
-        cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command
+        cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command_str
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
         #TODO think about how to prevent launches from happening when is busy
@@ -258,7 +258,7 @@ class MainWidget(QMainWindow):
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
 
-        if(tmp_curr.command[0] != "reindex"):
+        if(tmp_curr.command_lst[0] != "reindex"):
             try:
                 self.my_pop.close()
 

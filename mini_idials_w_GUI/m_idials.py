@@ -21,7 +21,7 @@ class UniStep(object):
         self.lin_num = 0
         self.next_step_list = None
         self.prev_step = prev_step
-        self.command = [None]
+        self.command_lst = [None]
         self.success = None
         self.pickle_file_out = None
         self.json_file_out = None
@@ -33,7 +33,7 @@ class UniStep(object):
 
 
     def __call__(self, cmd_lst, ref_to_class):
-        self.command = cmd_lst
+        self.command_lst = cmd_lst
         if( cmd_lst[0] == "fail" ):
             #testing virtual failed step
             print "\n intentionally FAILED for testing \n"
@@ -67,15 +67,15 @@ class Runner(object):
     def __init__(self):
         root_node = UniStep(prev_step = None)
         root_node.success = True
-        root_node.command = ["Root"]
+        root_node.command_lst = ["Root"]
         self.step_list = [root_node]
         self.bigger_lin = 0
         self.current = self.bigger_lin
         self.create_step(root_node)
 
-    def run(self, command, ref_to_class, mk_nxt = True):
+    def run(self, command_str, ref_to_class, mk_nxt = True):
 
-        cmd_lst = command.split()
+        cmd_lst = command_str.split()
         if( cmd_lst[0] == "goto" ):
             self.goto(int(cmd_lst[1]))
 
@@ -151,14 +151,14 @@ class Runner(object):
         path_to_json = None
 
         while True:
-            if( tmp_cur.command == [None] ):
+            if( tmp_cur.command_lst == [None] ):
                 tmp_cur = tmp_cur.prev_step
 
-            elif( tmp_cur.success == True and tmp_cur.command[0] == "import" ):
+            elif( tmp_cur.success == True and tmp_cur.command_lst[0] == "import" ):
                 path_to_json = tmp_cur.json_file_out
                 break
 
-            elif( tmp_cur.command[0] == "Root" or tmp_cur.success == False ):
+            elif( tmp_cur.command_lst[0] == "Root" or tmp_cur.success == False ):
                 break
 
             else:
@@ -169,11 +169,11 @@ class Runner(object):
 
     def get_reflections_path(self):
         tmp_cur = self.step_list[self.current]
-        if( tmp_cur.command == [None] ):
+        if( tmp_cur.command_lst == [None] ):
            tmp_cur = tmp_cur.prev_step
 
-        if( tmp_cur.command[0] == "Root" or
-             tmp_cur.command[0] == "import" or
+        if( tmp_cur.command_lst[0] == "Root" or
+             tmp_cur.command_lst[0] == "import" or
              tmp_cur.success == False ):
 
             path_to_pickle = None
@@ -219,7 +219,7 @@ if( __name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command, None, mk_nxt = False)
+        uni_controler.run(command, None, mk_nxt = True)
         tree_output(uni_controler)
         nxt_str = uni_controler.get_next_from_here()
         print "\n next to run:\n ", nxt_str

@@ -6,9 +6,9 @@ def get_next_step(uni_step_obj):
     if( uni_step_obj.prev_step.lin_num == 0 ):
         return "import"
 
-    elif(uni_step_obj.command == [None]):
+    elif(uni_step_obj.command_lst == [None]):
         for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
-            if( stp == uni_step_obj.prev_step.command[0] ):
+            if( stp == uni_step_obj.prev_step.command_lst[0] ):
                 nxt_str = uni_step_obj.dials_com_lst[pos + 1]
                 return nxt_str
 
@@ -16,8 +16,8 @@ def get_next_step(uni_step_obj):
 
     else:             #TODO think if this ELSE is needed
         for pos, stp in enumerate(uni_step_obj.dials_com_lst):
-            if( stp == uni_step_obj.command[0] ):
-                nxt_str = uni_step_obj.command[0]
+            if( stp == uni_step_obj.command_lst[0] ):
+                nxt_str = uni_step_obj.command_lst[0]
                 return nxt_str
 
         return None
@@ -142,13 +142,13 @@ def build_command_lst(uni_step_obj, cmd_lst):
 def generate_report(uni_step_obj):
     rep_out = None
 
-    if( uni_step_obj.command[0] in uni_step_obj.dials_com_lst[1:-1] ):
+    if( uni_step_obj.command_lst[0] in uni_step_obj.dials_com_lst[1:-1] ):
         current_lin = uni_step_obj.lin_num
         refl_inp = uni_step_obj.pickle_file_out
         deps_outp = "output.external_dependencies=local"
         htm_fil = str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
-        if( uni_step_obj.command[0] == "find_spots" ):
+        if( uni_step_obj.command_lst[0] == "find_spots" ):
             rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
 
         else:
@@ -211,7 +211,7 @@ class DialsCommand(object):
 def print_list(lst, curr):
     print "__________________________listing:"
     for uni in lst:
-        stp_str = str(uni.lin_num) + " comm: " + str(uni.command)
+        stp_str = str(uni.lin_num) + " comm: " + str(uni.command_lst)
 
         try:
             stp_str += " prev: " + str(uni.prev_step.lin_num)
@@ -264,7 +264,7 @@ class TreeShow(object):
         str_lin_num = "{0:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + "   \___"
-        stp_prn += str(step.command[0])
+        stp_prn += str(step.command_lst[0])
 
         self.str_lst.append([stp_prn, indent, int(step.lin_num)])
         new_indent = indent
