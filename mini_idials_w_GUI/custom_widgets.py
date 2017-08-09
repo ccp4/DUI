@@ -365,8 +365,6 @@ class TmpTestWidget( QWidget):
         self.setLayout(vbox)
         self.show()
 
-    def reset_param(self):
-        print "\n\n param_changed from TmpTestWidget \n\n"
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

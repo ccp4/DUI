@@ -11,6 +11,14 @@ from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
 from gui_utils import CliOutView
 
+from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
+from dials.command_line.index import phil_scope as phil_scope_index
+from dials.command_line.refine import phil_scope as phil_scope_refine
+from dials.command_line.integrate import phil_scope as phil_scope_integrate
+from dials.command_line.export import phil_scope as phil_scope_export
+
+from custom_widgets import ParamMainWidget, FindspotsSimplerParameterTab
+
 from dynamic_reindex_gui import MyReindexOpts
 import subprocess
 
@@ -100,8 +108,19 @@ class ParamWidget(QWidget):
     def __init__(self, label_str):
         super(ParamWidget, self).__init__()
         v_left_box =  QVBoxLayout()
+
+
         v_left_box.addWidget(QLabel(label_str))
+        my_widget = ParamMainWidget(phl_obj = phil_scope_find_spots,
+                                    simp_widg = FindspotsSimplerParameterTab,
+                                    parent = self, upper_label = "Find Spots")
+
+        v_left_box.addWidget(my_widget)
         self.my_label = label_str
+
+
+
+
 
         if( label_str == "import" ):
             self.command = "import ../*.cbf"
@@ -111,6 +130,12 @@ class ParamWidget(QWidget):
 
         self.setLayout(v_left_box)
         self.show()
+        '''
+        vbox = QVBoxLayout()
+        vbox.addWidget(my_widget)
+        self.setLayout(vbox)
+        '''
+
 
 
 class CentreWidget(QWidget):
