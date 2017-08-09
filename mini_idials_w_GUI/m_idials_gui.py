@@ -119,10 +119,8 @@ class CentreWidget(QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
 
-
         idials_gui_path = str(os.environ["IDIALS_GUI_PATH"])
         print "idials_gui_path =", idials_gui_path
-
 
         lst_icons_path = []
         lst_icons_path.append(idials_gui_path + "/resources/import.png")
@@ -131,13 +129,12 @@ class CentreWidget(QWidget):
         lst_icons_path.append(idials_gui_path + "/resources/refine.png")
         lst_icons_path.append(idials_gui_path + "/resources/integrate.png")
 
-
         top_box =  QHBoxLayout()
         self.step_param_widg =  QStackedWidget()
         self.widg_lst = []
         for num, step_name in enumerate(widg_name_list):
-            #new_btn = QPushButton("\n" + step_name + "\n", self)
             new_btn = QPushButton(self)
+            new_btn.setToolTip(step_name)
             new_btn.setIcon(QIcon(lst_icons_path[num]))
             new_btn.setIconSize(QSize(38, 38))
             new_btn.clicked.connect(self.btn_clicked)
@@ -150,7 +147,6 @@ class CentreWidget(QWidget):
 
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
-
 
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
