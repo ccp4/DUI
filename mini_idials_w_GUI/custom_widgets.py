@@ -352,23 +352,39 @@ class ParamMainWidget( QWidget):
         self.update_advanced_widget(str_path, str_value)
 
 
+class ParamWidget(QWidget):
+    def __init__(self, label_str):
+        super(ParamWidget, self).__init__()
+        self.my_label = label_str
 
-class TmpTestWidget( QWidget):
-    def __init__(self, phl_obj = None, parent = None):
-        super(TmpTestWidget, self).__init__()
-        #self.super_parent = self
-        self.embedded_reindex = self
-        my_widget = ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
-                             parent = self, upper_label = "Find Spots")
-        vbox = QVBoxLayout()
-        vbox.addWidget(my_widget)
-        self.setLayout(vbox)
+        inner_widgs = {
+                       "find_spots": [phil_scope_find_spots , FindspotsSimplerParameterTab ],
+                       "index"     : [phil_scope_index      , IndexSimplerParamTab         ],
+                       "refine"    : [phil_scope_refine     , RefineSimplerParamTab        ],
+                       "integrate" : [phil_scope_integrate  , IntegrateSimplerParamTab     ],
+                        }
+
+        if( label_str == "import" ):
+            self.command = "import ../*.cbf"
+            self.my_widget = QLabel("TMP \n Import Widget")
+
+        else:
+            self.command = label_str
+
+            self.my_widget = ParamMainWidget(phl_obj = inner_widgs[label_str][0],
+                                             simp_widg = inner_widgs[label_str][1],
+                                             parent = self, upper_label = label_str)
+
+        v_left_box =  QVBoxLayout()
+        v_left_box.addWidget(self.my_widget)
+
+        self.setLayout(v_left_box)
         self.show()
 
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = TmpTestWidget()
+    ex = ParamWidget()
     sys.exit(app.exec_())
 
 
