@@ -323,7 +323,8 @@ class IntegrateSimplerParamTab( QWidget):
         self.box_nproc.setValue(int(cpu_max_proc))
 
     def mtz_name_changed(self, value):
-        self.param_widget_parent.super_parent.mtz_name_changed(value)
+        print "used to run"
+        print "self.param_widget_parent.super_parent.mtz_name_changed(value)"
 
 class TmpTstWidget( QWidget):
 

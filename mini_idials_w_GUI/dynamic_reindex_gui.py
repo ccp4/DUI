@@ -120,7 +120,6 @@ def ops_list_from_json(json_path = None):
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
-        #self.super_parent = None
         self.setWindowTitle("Reindex")
 
     def set_ref(self, in_json_path):
@@ -285,7 +284,6 @@ class ReindexTable(QTableWidget):
 class MainWindow(QMainWindow):
     def __init__(self, parent = None):
         super(MainWindow, self).__init__(parent)
-        #self.super_parent = self
 
         self.btn1 = QPushButton("Click me", self)
 

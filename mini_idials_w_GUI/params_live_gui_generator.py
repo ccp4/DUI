@@ -98,8 +98,7 @@ class PhilWidget( QWidget):
         super(PhilWidget, self).__init__(parent)
         self.param_widget_parent = parent.param_widget_parent
 
-        self.super_parent = parent.super_parent
-        #self.super_parent = self.param_widget_parent.super_parent
+        #self.super_parent = parent.super_parent
 
         self.win_pal = QPalette()
         self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
@@ -155,11 +154,12 @@ class PhilWidget( QWidget):
         sys_font = QFont()
         sys_font_point_size =  sys_font.pointSize()
         print "sys_font_point_size =", sys_font_point_size
-
+        to_remove = '''
         if( self.super_parent.embedded_reindex ):
             inde_step = 7
         else:
-            inde_step = 2
+        '''
+        inde_step = 4
 
         #lst_widg = self.lst_phil_obj
         self.lst_widg = []
@@ -418,7 +418,7 @@ class TstTmpWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(TstTmpWidget, self).__init__(parent)
         self.param_widget_parent = self
-        self.super_parent = self
+        #self.super_parent = self
         self.embedded_reindex = False
         inner_widget = PhilWidget(phl_obj, self) #TODO fix the order of this two parameters
 

@@ -21,28 +21,20 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 import os, sys
 
 from params_live_gui_generator import PhilWidget
-from simpler_param_widgets import IndexSimplerParamTab, FindspotsSimplerParameterTab, \
+from simpler_param_widgets import FindspotsSimplerParameterTab, IndexSimplerParamTab, \
                                    RefineSimplerParamTab, IntegrateSimplerParamTab
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
-
-#from dials.command_line.refine_bravais_settings import phil_scope as phil_scope_refine_br_st
-
 from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
-
-try:
-    from dials.command_line.export import phil_scope as phil_scope_export
-except:
-    from dials.command_line.export_mtz import phil_scope as phil_scope_export
+from dials.command_line.export import phil_scope as phil_scope_export
 
 def template_right_side_build(in_str_tmp, dir_path):
 
@@ -113,20 +105,6 @@ def template_from_lst_build(in_str_lst):
 
     return out_str
 
-class TmpRedinexWidget(QWidget):
-    '''
-    This stacked widget stays in the GUI when th user is supposed to do
-    reindexing, there is no auto-generated GUI form Phil parameters
-    in use withing this widget.
-    '''
-    def __init__(self, parent = None):
-        super(TmpRedinexWidget, self).__init__(parent = None)
-        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
-        main_vbox =  QVBoxLayout()
-        main_vbox.addWidget(QLabel("Click Best Bravais Settings From Table"))
-        self.setLayout(main_vbox)
-        self.show()
-
 
 class FileOrDir(QFileDialog):
     def __init__(self, parent = None):
@@ -146,7 +124,7 @@ class ImportPage(QWidget):
 
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
-        self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
+        #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
         template_grp =  QGroupBox("Import Template ")
         template_vbox =  QHBoxLayout()
@@ -228,16 +206,15 @@ class ImportPage(QWidget):
         else:
             print "Failed to pick dir"
 
-        print "\ncalling:\n self.super_parent.idials_widget.failed == None\n"
-        self.super_parent.idials_widget.failed = None
+        #print "\ncalling:\n self.super_parent.idials_widget.failed == None\n"
+        #self.super_parent.idials_widget.failed = None
 
-        #self.super_parent.check_next()
 
 
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
-        self.super_parent = parent.super_parent
+        #self.super_parent = parent.super_parent
         self.param_widget_parent = parent.param_widget_parent
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
@@ -264,7 +241,7 @@ class ParamMainWidget( QWidget):
 
 
         try:
-            self.super_parent = parent.super_parent
+            #self.super_parent = parent.super_parent
             self.my_phl_obj = phl_obj
             self.my_simp_widg = simp_widg
         except:
@@ -318,7 +295,7 @@ class ParamMainWidget( QWidget):
         self._vbox.addWidget(self.dual_level_tab)
         self._vbox.addWidget(self.reset_btn)
 
-        self.super_parent.reset_param()
+        #self.super_parent.reset_param()
 
 
         try:
@@ -359,6 +336,7 @@ class ParamMainWidget( QWidget):
         #TODO in a future will no longer be needed to check
         # because this should be running only from inside
         # the big GUI
+        to_redo = '''
         if( self.super_parent == self ):
             print"\n self.super_parent == self \n"
 
@@ -369,6 +347,7 @@ class ParamMainWidget( QWidget):
 
             except:
                 print "Not ready to change parameter yet"
+        '''
 
         self.update_advanced_widget(str_path, str_value)
 
@@ -394,7 +373,7 @@ class StepList(object):
                    ]
 
     def __init__(self, parent = None):
-        self.super_parent = parent
+        #self.super_parent = parent
         self.list_of_widgets  = [
               ImportPage(parent = self),
               ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
@@ -431,7 +410,7 @@ class StepList(object):
 class TmpTestWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(TmpTestWidget, self).__init__()
-        self.super_parent = self
+        #self.super_parent = self
         self.embedded_reindex = self
         my_widget = ParamMainWidget(phl_obj = phil_scope_find_spots, simp_widg = FindspotsSimplerParameterTab,
                              parent = self, upper_label = "Find Spots")
