@@ -227,7 +227,7 @@ class MainWidget(QMainWindow):
     def run_clicked(self):
         print "run_clicked"
         print "...currentWidget(ref) =", self.centre_widget.step_param_widg.currentWidget()
-        cmd_tmp = self.centre_widget.step_param_widg.currentWidget().command_str
+        cmd_tmp = self.centre_widget.step_param_widg.currentWidget().my_widget.command_lst
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
         #TODO think about how to prevent launches from happening when is busy

@@ -77,6 +77,8 @@ class Runner(object):
 
         if( type(command) is str ):
             cmd_lst = command.split()
+        else:
+            cmd_lst = command
 
         if( cmd_lst[0] == "goto" ):
             self.goto(int(cmd_lst[1]))

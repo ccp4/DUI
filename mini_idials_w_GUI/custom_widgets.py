@@ -314,7 +314,6 @@ class ParamMainWidget( QWidget):
             for widg in bg_widg:
                 if( widg.local_path == str_path ):
                     if( widg.tmp_lst == None ):
-                        print "Number widget"
                         try:
                             num_val = float(str_value)
                             widg.setValue(num_val)
@@ -334,6 +333,8 @@ class ParamMainWidget( QWidget):
         print "adjusting parameter: {", cmd_to_run,"}"
         self.update_advanced_widget(str_path, str_value)
 
+        print "self.command_lst =", self.command_lst
+
         self.str_param_signal.emit(cmd_to_run)
 
 
@@ -350,15 +351,18 @@ class ParamWidget(QWidget):
                         }
 
         if( label_str == "import" ):
-            self.command_str = "import ../*.cbf"
+            #self.command = ["import", "../*.cbf"]
             self.my_widget = QLabel("TMP \n Import Widget")
+            self.my_widget.command_lst = ["import", "../*.cbf"]
 
         else:
-            self.command_str = label_str
+            #self.command = [label_str]
 
             self.my_widget = ParamMainWidget(phl_obj = inner_widgs[label_str][0],
                                              simp_widg = inner_widgs[label_str][1],
                                              parent = self, upper_label = label_str)
+
+            self.my_widget.command_lst = [label_str]
 
         v_left_box =  QVBoxLayout()
         v_left_box.addWidget(self.my_widget)
