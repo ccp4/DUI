@@ -33,7 +33,7 @@ class MyThread(QThread):
 
     def run(self):
         # {mk_nxt = False} changes the GUI to "explicit" mode
-        self.ref_to_controler.run(command_str = self.cmd_to_run,
+        self.ref_to_controler.run(command = self.cmd_to_run,
                                   ref_to_class = self, mk_nxt = self.make_next)
 
     def emit_print_signal(self, str_lin):
@@ -127,6 +127,11 @@ class CentreWidget(QWidget):
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
+            try:
+                param_widg.my_widget.str_param_signal.connect(self.param_changed)
+
+            except:
+                print "Tmp off connection"
 
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
@@ -155,6 +160,8 @@ class CentreWidget(QWidget):
             if( widget.my_label == nxt_cmd ):
                 self.step_param_widg.setCurrentWidget(widget)
 
+    def param_changed(self, param_str):
+        print "param_changed() ", param_str
 
     def btn_clicked(self):
         print "btn_clicked"

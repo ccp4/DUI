@@ -236,6 +236,7 @@ class ParamAdvancedWidget( QWidget):
 
 
 class ParamMainWidget( QWidget):
+    str_param_signal = pyqtSignal(str)
     def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
         super(ParamMainWidget, self).__init__()
 
@@ -331,25 +332,9 @@ class ParamMainWidget( QWidget):
 
         cmd_to_run = str_path + "=" + str_value
         print "adjusting parameter: {", cmd_to_run,"}"
-
-
-        #TODO in a future will no longer be needed to check
-        # because this should be running only from inside
-        # the big GUI
-        to_redo = '''
-        if( self.super_parent == self ):
-            print"\n self.super_parent == self \n"
-
-        else:
-            print"\n self.super_parent != self \n"
-            try:
-                self.super_parent.param_changed(cmd_to_run)
-
-            except:
-                print "Not ready to change parameter yet"
-        '''
-
         self.update_advanced_widget(str_path, str_value)
+
+        self.str_param_signal.emit(cmd_to_run)
 
 
 class ParamWidget(QWidget):

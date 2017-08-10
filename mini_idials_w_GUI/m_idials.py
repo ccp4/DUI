@@ -73,9 +73,11 @@ class Runner(object):
         self.current = self.bigger_lin
         self.create_step(root_node)
 
-    def run(self, command_str, ref_to_class, mk_nxt = True):
+    def run(self, command, ref_to_class, mk_nxt = True):
 
-        cmd_lst = command_str.split()
+        if( type(command) is str ):
+            cmd_lst = command.split()
+
         if( cmd_lst[0] == "goto" ):
             self.goto(int(cmd_lst[1]))
 
