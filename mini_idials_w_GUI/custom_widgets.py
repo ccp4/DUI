@@ -404,8 +404,11 @@ class ParamMainWidget( QWidget):
             print "self.lst_pair =", self.lst_pair
             self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
 
-        for pair in self.lst_pair:
-            self.update_advanced_widget(pair[0], pair[1])
+            for pair in self.lst_pair:
+                self.update_advanced_widget(pair[0], pair[1])
+        else:
+            self.lst_pair = []
+            self.command_lst = [self.command_lst[0]]
 
 class ParamWidget(QWidget):
     def __init__(self, label_str):
