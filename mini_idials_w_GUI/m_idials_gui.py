@@ -158,14 +158,15 @@ class CentreWidget(QWidget):
         self.setLayout(big_v_box)
         self.show()
 
-    def set_widget(self, nxt_cmd):
+    def set_widget(self, nxt_cmd, curr_step = None):
         for widget in self.widg_lst:
             if( widget.my_label == nxt_cmd ):
                 self.step_param_widg.setCurrentWidget(widget)
-        '''
-    def param_changed(self, param_str):
-        print "param_changed() ", param_str
-        '''
+                try:
+                    widget.update_param(curr_step)
+
+                except:
+                    print "\n\n Unable to update params\n\n"
 
     def btn_clicked(self):
         print "btn_clicked"
@@ -281,7 +282,7 @@ class MainWidget(QMainWindow):
                self.cmd_launch("refine_bravais_settings")
 
            else:
-               self.centre_widget.set_widget("refine")
+               self.centre_widget.set_widget("refine", tmp_curr)
 
         elif( nxt_cmd == "reindex" ):
             self.my_pop = MyReindexOpts()
@@ -289,7 +290,7 @@ class MainWidget(QMainWindow):
             self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
 
         else:
-            self.centre_widget.set_widget(nxt_cmd)
+            self.centre_widget.set_widget(nxt_cmd, tmp_curr)
 
         self.tree_out.update_me(self.uni_controler.step_list[0],
                                 self.uni_controler.current)

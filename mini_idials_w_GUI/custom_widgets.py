@@ -406,6 +406,9 @@ class ParamWidget(QWidget):
         self.setLayout(v_left_box)
         self.show()
 
+    def update_param(self, curr_step):
+        print "curr_step.command_lst = ", curr_step.command_lst
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
