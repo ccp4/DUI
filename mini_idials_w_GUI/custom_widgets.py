@@ -234,12 +234,43 @@ class ParamAdvancedWidget( QWidget):
         self.setLayout(vbox)
         self.show()
 
+def update_lst_pair(lst_ini, str_path, str_value):
+    new_lst = []
+    found = False
+    for pos, pair in enumerate(lst_ini):
+        if( pair[0] == str_path ):
+            new_pair = [str_path, str_value]
+            found = True
+
+        else:
+            new_pair = pair
+
+        new_lst.append(new_pair)
+
+    if(found == False):
+        new_lst.append([str_path, str_value])
+
+    return new_lst
+
+def pair2string(str_path, str_value):
+    str_out = str(str_path) + "=" + str(str_value)
+    return str_out
+
+def build_lst_str(cmd_0, lst_pair):
+    lst_str = [cmd_0]
+    for pair in lst_pair:
+        str_cmd = pair2string(pair[0], pair[1])
+        lst_str.append(str_cmd)
+
+    return lst_str
 
 class ParamMainWidget( QWidget):
-    str_param_signal = pyqtSignal(str)
+    #str_param_signal = pyqtSignal(str)
     def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
         super(ParamMainWidget, self).__init__()
 
+        self.command_lst = [None]
+        self.lst_pair = []
 
         try:
             #self.super_parent = parent.super_parent
@@ -329,13 +360,18 @@ class ParamMainWidget( QWidget):
 
     def update_lin_txt(self, str_path, str_value):
 
+        print "self.command_lst =", self.command_lst
+
         cmd_to_run = str_path + "=" + str_value
         print "adjusting parameter: {", cmd_to_run,"}"
         self.update_advanced_widget(str_path, str_value)
 
-        print "self.command_lst =", self.command_lst
+        self.lst_pair = update_lst_pair(self.lst_pair, str_path, str_value)
+        self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
 
-        self.str_param_signal.emit(cmd_to_run)
+        print "self.command_lst =", self.command_lst, "\n"
+
+        #self.str_param_signal.emit(cmd_to_run)
 
 
 class ParamWidget(QWidget):

@@ -127,11 +127,14 @@ class CentreWidget(QWidget):
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
+
+            '''
             try:
                 param_widg.my_widget.str_param_signal.connect(self.param_changed)
 
             except:
                 print "Tmp off connection"
+            '''
 
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
@@ -159,9 +162,10 @@ class CentreWidget(QWidget):
         for widget in self.widg_lst:
             if( widget.my_label == nxt_cmd ):
                 self.step_param_widg.setCurrentWidget(widget)
-
+        '''
     def param_changed(self, param_str):
         print "param_changed() ", param_str
+        '''
 
     def btn_clicked(self):
         print "btn_clicked"
