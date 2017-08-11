@@ -394,6 +394,7 @@ class ParamMainWidget( QWidget):
         #self.str_param_signal.emit(cmd_to_run)
 
     def update_param(self, lst_in):
+        self.reset_par()
         print "self.command_lst =", self.command_lst
         print "lst_in =", lst_in
         if( len(lst_in) > 1 ):
@@ -402,6 +403,9 @@ class ParamMainWidget( QWidget):
             self.lst_pair = new_lst_pair
             print "self.lst_pair =", self.lst_pair
             self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
+
+        for pair in self.lst_pair:
+            self.update_advanced_widget(pair[0], pair[1])
 
 class ParamWidget(QWidget):
     def __init__(self, label_str):
