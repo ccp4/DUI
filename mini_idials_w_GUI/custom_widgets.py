@@ -264,6 +264,25 @@ def build_lst_str(cmd_0, lst_pair):
 
     return lst_str
 
+def string2pair(str_in):
+    pair = None
+    for pos, single_char in enumerate(str_in):
+        if( single_char == "=" ):
+            eq_pos = pos
+            pair = [str_in[0:pos], str_in[pos+1:]]
+            return pair
+
+
+def buils_lst_pair(lst_in):
+    lst_pair = []
+    for par_str in lst_in[1:len(lst_in)]:
+        print "par_str =", par_str
+        pair = string2pair(par_str)
+        print "pair =", pair
+        lst_pair.append(pair)
+
+    return lst_pair
+
 class ParamMainWidget( QWidget):
     #str_param_signal = pyqtSignal(str)
     def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
@@ -367,12 +386,22 @@ class ParamMainWidget( QWidget):
         self.update_advanced_widget(str_path, str_value)
 
         self.lst_pair = update_lst_pair(self.lst_pair, str_path, str_value)
+        print "self.lst_pair =", self.lst_pair
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
 
         print "self.command_lst =", self.command_lst, "\n"
 
         #self.str_param_signal.emit(cmd_to_run)
 
+    def update_param(self, lst_in):
+        print "self.command_lst =", self.command_lst
+        print "lst_in =", lst_in
+        if( len(lst_in) > 1 ):
+            new_lst_pair = buils_lst_pair(lst_in)
+            print "new_lst_pair =", new_lst_pair
+            self.lst_pair = new_lst_pair
+            print "self.lst_pair =", self.lst_pair
+            self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
 
 class ParamWidget(QWidget):
     def __init__(self, label_str):
@@ -408,6 +437,7 @@ class ParamWidget(QWidget):
 
     def update_param(self, curr_step):
         print "curr_step.command_lst = ", curr_step.command_lst
+        self.my_widget.update_param(curr_step.command_lst)
 
 
 if __name__ == '__main__':

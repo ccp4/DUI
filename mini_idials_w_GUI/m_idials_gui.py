@@ -162,11 +162,12 @@ class CentreWidget(QWidget):
         for widget in self.widg_lst:
             if( widget.my_label == nxt_cmd ):
                 self.step_param_widg.setCurrentWidget(widget)
-                try:
-                    widget.update_param(curr_step)
+                #try:
 
-                except:
-                    print "\n\n Unable to update params\n\n"
+                widget.update_param(curr_step)
+
+                #except:
+                #    print "\n\n Unable to update params\n\n"
 
     def btn_clicked(self):
         print "btn_clicked"
