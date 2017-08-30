@@ -47,7 +47,7 @@ def template_right_side_build(in_str_tmp, dir_path):
     #for i, e in reversed(list(enumerate(a))):
     #for pos, single_char in enumerate(in_str_tmp):
     for pos, single_char in reversed(list(enumerate(in_str_tmp))):
-        if( single_char == "." ):
+        if(single_char == "."):
             pos_sep = pos
 
     left_sd_name = in_str_tmp[:pos_sep]
@@ -71,7 +71,7 @@ def template_right_side_build(in_str_tmp, dir_path):
                 out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
 
         #print "new out_str =", out_str
-        if( prev_str == out_str ):
+        if(prev_str == out_str):
             #print "found non num char"
             break
 
@@ -92,7 +92,7 @@ def template_from_lst_build(in_str_lst):
         all_equal = True
         single_char = str_lst[0][pos]
         for single_string in str_lst:
-            if( single_string[pos] != single_char ):
+            if(single_string[pos] != single_char):
                 all_equal = False
 
         if(all_equal == True):
@@ -148,13 +148,13 @@ class ImportPage(QWidget):
 
     def __call__(self):
         print "from __call__   << import page >>"
-        if( str(self.templ_lin.text()) == "template = ?" ):
+        if(str(self.templ_lin.text()) == "template = ?"):
             self.find_my_img_dir()
 
 
         #TODO remove next commented stuff if appliable
         Deprecated = '''
-        if( self.done_import == False ):
+        if(self.done_import == False):
             self.find_my_img_dir()
             print "( self.done_import == False )"
         '''
@@ -172,18 +172,18 @@ class ImportPage(QWidget):
         for single_string in lst_file_path:
             print "single_string =", single_string
 
-        if( lst_file_path and len(lst_file_path) == 1 ):
+        if(lst_file_path and len(lst_file_path) == 1):
             selected_file_path = str(lst_file_path[0])
 
             print "\n selected_file_path =", selected_file_path, "\n"
             print "type(selected_file_path) =", type(selected_file_path)
 
             for pos, single_char in enumerate(selected_file_path):
-                if( single_char == "/" or single_char == "\\" ):
+                if(single_char == "/" or single_char == "\\"):
                     pos_sep = pos
 
             dir_name = selected_file_path[:pos_sep]
-            if( dir_name[0:3] == "(u\'" ):
+            if(dir_name[0:3] == "(u\'"):
                 print "dir_name[0:3] == \"(u\'\""
                 dir_name = dir_name[3:]
 
@@ -197,7 +197,7 @@ class ImportPage(QWidget):
             templ_str_final = dir_name + templ_r_side
             self.templ_lin.setText(templ_str_final)
 
-        elif( len(lst_file_path) > 1 ):
+        elif(len(lst_file_path) > 1):
             print "time to handle multiple files selected"
             templ_str_final = template_from_lst_build(lst_file_path)
             print "templ_str_final =", templ_str_final
@@ -238,7 +238,7 @@ def update_lst_pair(lst_ini, str_path, str_value):
     new_lst = []
     found = False
     for pos, pair in enumerate(lst_ini):
-        if( pair[0] == str_path ):
+        if(pair[0] == str_path):
             new_pair = [str_path, str_value]
             found = True
 
@@ -267,7 +267,7 @@ def build_lst_str(cmd_0, lst_pair):
 def string2pair(str_in):
     pair = None
     for pos, single_char in enumerate(str_in):
-        if( single_char == "=" ):
+        if(single_char == "="):
             eq_pos = pos
             pair = [str_in[0:pos], str_in[pos+1:]]
             return pair
@@ -362,8 +362,8 @@ class ParamMainWidget( QWidget):
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
                        self.sipler_widget.lst_wgs):
             for widg in bg_widg:
-                if( widg.local_path == str_path ):
-                    if( widg.tmp_lst == None ):
+                if(widg.local_path == str_path):
+                    if(widg.tmp_lst == None):
                         try:
                             num_val = float(str_value)
                             widg.setValue(num_val)
@@ -373,7 +373,7 @@ class ParamMainWidget( QWidget):
 
                     else:
                         for pos, val in enumerate(widg.tmp_lst):
-                            if( val == str_value ):
+                            if(val == str_value):
                                 print "found val, v=", val
                                 widg.setCurrentIndex(pos)
 
@@ -397,7 +397,7 @@ class ParamMainWidget( QWidget):
         self.reset_par()
         print "self.command_lst =", self.command_lst
         print "lst_in =", lst_in
-        if( len(lst_in) > 1 ):
+        if(len(lst_in) > 1):
             new_lst_pair = buils_lst_pair(lst_in)
             print "new_lst_pair =", new_lst_pair
             self.lst_pair = new_lst_pair
@@ -422,7 +422,7 @@ class ParamWidget(QWidget):
                        "integrate" : [phil_scope_integrate  , IntegrateSimplerParamTab     ],
                         }
 
-        if( label_str == "import" ):
+        if(label_str == "import"):
             #self.command = ["import", "../*.cbf"]
             self.my_widget = QLabel("TMP \n Import Widget")
             self.my_widget.command_lst = ["import", "../*.cbf"]

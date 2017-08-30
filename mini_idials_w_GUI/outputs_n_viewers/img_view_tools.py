@@ -48,7 +48,7 @@ class ProgBarInShell(QProgressDialog):
 
         '''
 
-        if( max_val > min_val ):
+        if(max_val > min_val):
             self.my_max = max_val
             self.my_min = min_val
 
@@ -83,7 +83,7 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
             tmp_dst_squared = (x - x_mouse_scaled) ** 2.0 + (y - y_mouse_scaled) ** 2.0
 
-            if( tmp_dst_squared < dst_squared ):
+            if(tmp_dst_squared < dst_squared):
                 hkl_result = i
                 slice_result = j
                 dst_squared = tmp_dst_squared
@@ -111,7 +111,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
         box_dat.append(width)
         box_dat.append(height)
 
-        if( len(hkl_lst) <= 1 ):
+        if(len(hkl_lst) <= 1):
             local_hkl = ""
             box_dat.append(local_hkl)
 

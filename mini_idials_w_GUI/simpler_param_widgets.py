@@ -338,7 +338,7 @@ class TmpTstWidget( QWidget):
         self.setLayout(my_box)
         self.show()
 
-if( __name__ == "__main__" ):
+if(__name__ == "__main__"):
     app =  QApplication(sys.argv)
     ex = TmpTstWidget()
     sys.exit(app.exec_())

@@ -3,12 +3,12 @@ import subprocess
 import json
 
 def get_next_step(uni_step_obj):
-    if( uni_step_obj.prev_step.lin_num == 0 ):
+    if(uni_step_obj.prev_step.lin_num == 0):
         return "import"
 
     elif(uni_step_obj.command_lst == [None]):
         for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
-            if( stp == uni_step_obj.prev_step.command_lst[0] ):
+            if(stp == uni_step_obj.prev_step.command_lst[0]):
                 nxt_str = uni_step_obj.dials_com_lst[pos + 1]
                 return nxt_str
 
@@ -16,7 +16,7 @@ def get_next_step(uni_step_obj):
 
     else:             #TODO think if this ELSE is needed
         for pos, stp in enumerate(uni_step_obj.dials_com_lst):
-            if( stp == uni_step_obj.command_lst[0] ):
+            if(stp == uni_step_obj.command_lst[0]):
                 nxt_str = uni_step_obj.command_lst[0]
                 return nxt_str
 
@@ -29,17 +29,17 @@ def build_command_lst(uni_step_obj, cmd_lst):
     #TODO make sure new step is compatible with previous
     cmd_lst_to_run = []
     cmd_lst_to_run.append("dials." + cmd_lst[0])
-    if( cmd_lst[0] != "reindex" ):
+    if(cmd_lst[0] != "reindex"):
         for tmp_par in cmd_lst[1:]:
             cmd_lst_to_run.append(tmp_par)
 
-    if( cmd_lst[0] == "import" ):
+    if(cmd_lst[0] == "import"):
         uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + uni_step_obj.json_file_out
         cmd_lst_to_run.append(output_str)
         #TODO make sure import without arguments does NOT run
 
-    elif( cmd_lst[0] == "find_spots" ):
+    elif(cmd_lst[0] == "find_spots"):
         json_file_in = uni_step_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
@@ -52,7 +52,7 @@ def build_command_lst(uni_step_obj, cmd_lst):
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-    elif( cmd_lst[0] == "index" ):
+    elif(cmd_lst[0] == "index"):
         json_file_in = uni_step_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
@@ -69,7 +69,7 @@ def build_command_lst(uni_step_obj, cmd_lst):
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-    elif( cmd_lst[0] == "refine_bravais_settings" ):
+    elif(cmd_lst[0] == "refine_bravais_settings"):
         json_file_in = uni_step_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
@@ -85,9 +85,9 @@ def build_command_lst(uni_step_obj, cmd_lst):
 
         uni_step_obj.json_file_out = prefix_str + "bravais_summary.json"
 
-    elif( cmd_lst[0] == "reindex" ):
+    elif(cmd_lst[0] == "reindex"):
         try:
-            if( cmd_lst[1][0:9] == "solution=" ):
+            if(cmd_lst[1][0:9] == "solution="):
                 sol_num = int(cmd_lst[1][9:])
             else:
                 sol_num = 1
@@ -112,7 +112,7 @@ def build_command_lst(uni_step_obj, cmd_lst):
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-    elif( cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" ):
+    elif(cmd_lst[0] == "refine" or cmd_lst[0] == "integrate"):
         json_file_in = uni_step_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
@@ -129,7 +129,7 @@ def build_command_lst(uni_step_obj, cmd_lst):
         output_str = "output.reflections=" + uni_step_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-    elif( cmd_lst[0] == "export" ):
+    elif(cmd_lst[0] == "export"):
         cmd_lst_to_run.append(uni_step_obj.prev_step.json_file_out)
         cmd_lst_to_run.append(uni_step_obj.prev_step.pickle_file_out)
 
@@ -142,13 +142,13 @@ def build_command_lst(uni_step_obj, cmd_lst):
 def generate_report(uni_step_obj):
     rep_out = None
 
-    if( uni_step_obj.command_lst[0] in uni_step_obj.dials_com_lst[1:-1] ):
+    if(uni_step_obj.command_lst[0] in uni_step_obj.dials_com_lst[1:-1]):
         current_lin = uni_step_obj.lin_num
         refl_inp = uni_step_obj.pickle_file_out
         deps_outp = "output.external_dependencies=local"
         htm_fil = str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
-        if( uni_step_obj.command_lst[0] == "find_spots" ):
+        if(uni_step_obj.command_lst[0] == "find_spots"):
             rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
 
         else:
@@ -195,7 +195,7 @@ class DialsCommand(object):
 
             my_process.wait()
             my_process.stdout.close()
-            if( my_process.poll() == 0 ):
+            if(my_process.poll() == 0):
                 local_success = True
 
             else:
@@ -220,14 +220,14 @@ def print_list(lst, curr):
             stp_str += " prev: None"
 
         stp_str += " nxt: "
-        if( type(uni.next_step_list) is list ):
+        if(type(uni.next_step_list) is list):
             for nxt_uni in uni.next_step_list:
                 stp_str += "  " + str(nxt_uni.lin_num)
 
         else:
             stp_str += "empty"
 
-        if( curr == uni.lin_num ):
+        if(curr == uni.lin_num):
             stp_str += "                           <<< here I am <<<"
 
         print stp_str
@@ -252,10 +252,10 @@ class TreeShow(object):
 
 
     def add_tree(self, step = None, indent = None):
-        if( step.success == True ):
+        if(step.success == True):
             stp_prn = " S "
 
-        elif( step.success == False ):
+        elif(step.success == False):
             stp_prn = " F "
 
         else:
@@ -268,14 +268,14 @@ class TreeShow(object):
 
         self.str_lst.append([stp_prn, indent, int(step.lin_num)])
         new_indent = indent
-        if( type(step.next_step_list) is list ):
+        if(type(step.next_step_list) is list):
             for line in step.next_step_list:
                 new_indent = indent + 1
                 self.add_tree(step = line, indent = new_indent)
 
         else:
             new_indent = int(new_indent)
-            if( new_indent > self.max_indent ):
+            if(new_indent > self.max_indent):
                 self.max_indent = new_indent
 
     def tree_print(self, curr):
@@ -285,18 +285,18 @@ class TreeShow(object):
 
         for pos, loc_lst in enumerate(self.tree_dat):
             if(pos > 0):
-                if( loc_lst[1] < self.tree_dat[pos - 1][1] ):
+                if(loc_lst[1] < self.tree_dat[pos - 1][1]):
                     for up_pos in xrange(pos - 1, 0, -1):
                         pos_in_str = loc_lst[1] * len(self.ind_spc) + 9
                         left_side = self.tree_dat[up_pos][0][0:pos_in_str]
                         right_side = self.tree_dat[up_pos][0][pos_in_str + 1:]
-                        if( self.tree_dat[up_pos][1] > loc_lst[1] ):
+                        if(self.tree_dat[up_pos][1] > loc_lst[1]):
                             self.tree_dat[up_pos][0] = left_side + "|" + right_side
 
-                        elif( self.tree_dat[up_pos][1] == loc_lst[1] ):
+                        elif(self.tree_dat[up_pos][1] == loc_lst[1]):
                             break
 
-            if( loc_lst[2] == curr ):
+            if(loc_lst[2] == curr):
                 lng = len(self.ind_spc) * self.max_indent + 22
                 lng_lft = lng - len(self.tree_dat[pos][0])
                 str_here = lng_lft * " "

@@ -59,9 +59,9 @@ class TreeNavWidget(QTreeView):
         self.expandAll()
 
     def recursive_node(self, root_node, item_in):
-        if( type(root_node.next_step_list) is list ):
+        if(type(root_node.next_step_list) is list):
             for child_node in root_node.next_step_list:
-                if( child_node.command_lst != [None] ):
+                if(child_node.command_lst != [None]):
                     child_node_name = str(child_node.command_lst[0])
                 else:
                     child_node_name = "* " + get_next_step(child_node) + " *"
@@ -76,9 +76,9 @@ class TreeNavWidget(QTreeView):
                 new_item.idials_node = child_node
                 #new_item.success = child_node.success
 
-                if( self.lst_idx == child_node.lin_num ):
+                if(self.lst_idx == child_node.lin_num):
                     new_item.setBackground(Qt.blue)
-                    if( child_node_name[0:2] == "* " ):
+                    if(child_node_name[0:2] == "* "):
                         new_item.setForeground(Qt.green)
 
                     else:
@@ -86,7 +86,7 @@ class TreeNavWidget(QTreeView):
 
                 else:
                     new_item.setBackground(Qt.white)
-                    if( child_node_name[0:2] == "* " ):
+                    if(child_node_name[0:2] == "* "):
                         new_item.setForeground(Qt.green)
 
                     else:
@@ -160,7 +160,7 @@ class CentreWidget(QWidget):
 
     def set_widget(self, nxt_cmd, curr_step = None):
         for widget in self.widg_lst:
-            if( widget.my_label == nxt_cmd ):
+            if(widget.my_label == nxt_cmd):
                 self.step_param_widg.setCurrentWidget(widget)
                 #try:
 
@@ -251,7 +251,7 @@ class MainWidget(QMainWindow):
         print " new_img_json =", new_img_json , "\n"
         print " new_ref_pikl =", new_ref_pikl , "\n"
 
-        if( self.cur_html != new_html ):
+        if(self.cur_html != new_html):
             self.cur_html = new_html
             try:
                 self.web_view.update_page(new_html)
@@ -259,11 +259,11 @@ class MainWidget(QMainWindow):
             except:
                 print "No HTML here"
 
-        if( self.cur_pick != new_ref_pikl ):
+        if(self.cur_pick != new_ref_pikl):
             self.cur_pick = new_ref_pikl
             self.img_view.ini_reflection_table(self.cur_pick)
 
-        if( self.cur_json != new_img_json ):
+        if(self.cur_json != new_img_json):
             self.cur_json = new_img_json
             self.img_view.ini_datablock(self.cur_json)
 
@@ -278,14 +278,14 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
-        if( nxt_cmd == "refine_bravais_settings" ):
-           if( cur_success == None):
+        if(nxt_cmd == "refine_bravais_settings"):
+           if(cur_success == None):
                self.cmd_launch("refine_bravais_settings")
 
            else:
                self.centre_widget.set_widget("refine", tmp_curr)
 
-        elif( nxt_cmd == "reindex" ):
+        elif(nxt_cmd == "reindex"):
             self.my_pop = MyReindexOpts()
             self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
             self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)

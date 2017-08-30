@@ -34,18 +34,18 @@ class UniStep(object):
 
     def __call__(self, cmd_lst, ref_to_class):
         self.command_lst = cmd_lst
-        if( cmd_lst[0] == "fail" ):
+        if(cmd_lst[0] == "fail"):
             #testing virtual failed step
             print "\n intentionally FAILED for testing \n"
             self.success = False
 
         else:
-            if( cmd_lst[0] in self.dials_com_lst ):
+            if(cmd_lst[0] in self.dials_com_lst):
                 self.build_command(cmd_lst)
                 self.success = self.dials_comand( lst_cmd_to_run = self.cmd_lst_to_run,
                                                  ref_to_class = ref_to_class)
 
-                if( self.success == True ):
+                if(self.success == True):
                     #print "#generate_report(self)"
                     self.report_out = generate_report(self)
 
@@ -75,33 +75,33 @@ class Runner(object):
 
     def run(self, command, ref_to_class, mk_nxt = True):
 
-        if( type(command) is str ):
+        if(type(command) is str):
             cmd_lst = command.split()
         else:
             cmd_lst = command
 
-        if( cmd_lst[0] == "goto" ):
+        if(cmd_lst[0] == "goto"):
             self.goto(int(cmd_lst[1]))
 
-        elif( cmd_lst[0] == "slist" ):
+        elif(cmd_lst[0] == "slist"):
             self.slist()
 
-        elif( cmd_lst[0] == "mkchi" ):
+        elif(cmd_lst[0] == "mkchi"):
             self.create_step(self.step_list[self.current])
 
-        elif( cmd_lst[0] == "mksib" ):
+        elif(cmd_lst[0] == "mksib"):
             self.goto_prev()
             print "forking"
             self.create_step(self.step_list[self.current])
 
         else:
-            if( self.step_list[self.current].success == True ):
+            if(self.step_list[self.current].success == True):
                 self.goto_prev()
                 print "forking"
                 self.create_step(self.step_list[self.current])
 
             self.step_list[self.current](cmd_lst, ref_to_class)
-            if( self.step_list[self.current].success == True and mk_nxt == True):
+            if(self.step_list[self.current].success == True and mk_nxt == True):
                 self.create_step(self.step_list[self.current])
 
             else:
@@ -112,7 +112,7 @@ class Runner(object):
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         try:
-            if( prev_step.next_step_list == None ):
+            if(prev_step.next_step_list == None):
                 prev_step.next_step_list = [new_step]
                 print "converting None in [new_step]"
 
@@ -137,7 +137,7 @@ class Runner(object):
         self.current = new_lin
 
     def get_html_report(self):
-        if( self.step_list[self.current].success == True ):
+        if(self.step_list[self.current].success == True):
             html_rep = self.step_list[self.current].report_out
 
         else:
@@ -155,14 +155,14 @@ class Runner(object):
         path_to_json = None
 
         while True:
-            if( tmp_cur.command_lst == [None] ):
+            if(tmp_cur.command_lst == [None]):
                 tmp_cur = tmp_cur.prev_step
 
-            elif( tmp_cur.success == True and tmp_cur.command_lst[0] == "import" ):
+            elif(tmp_cur.success == True and tmp_cur.command_lst[0] == "import"):
                 path_to_json = tmp_cur.json_file_out
                 break
 
-            elif( tmp_cur.command_lst[0] == "Root" or tmp_cur.success == False ):
+            elif(tmp_cur.command_lst[0] == "Root" or tmp_cur.success == False):
                 break
 
             else:
@@ -173,12 +173,12 @@ class Runner(object):
 
     def get_reflections_path(self):
         tmp_cur = self.step_list[self.current]
-        if( tmp_cur.command_lst == [None] ):
+        if(tmp_cur.command_lst == [None]):
            tmp_cur = tmp_cur.prev_step
 
-        if( tmp_cur.command_lst[0] == "Root" or
+        if(tmp_cur.command_lst[0] == "Root" or
              tmp_cur.command_lst[0] == "import" or
-             tmp_cur.success == False ):
+             tmp_cur.success == False):
 
             path_to_pickle = None
 
@@ -198,7 +198,7 @@ class Runner(object):
         print "printing in steps list mode: \n"
         print_list(self.step_list, self.current)
 
-if( __name__ == "__main__"):
+if(__name__ == "__main__"):
     tree_output = TreeShow()
 
     try:
@@ -211,11 +211,11 @@ if( __name__ == "__main__"):
     tree_output(uni_controler)
 
     command = ""
-    while( command.strip() != 'exit' and command.strip() != 'quit' ):
+    while(command.strip() != 'exit' and command.strip() != 'quit'):
         try:
             inp_str = "lin [" + str(uni_controler.current) + "] >>> "
             command = str(raw_input(inp_str))
-            if( command == "" ):
+            if(command == ""):
                 print "converting empty line in self.slist()"
                 command = "slist"
 

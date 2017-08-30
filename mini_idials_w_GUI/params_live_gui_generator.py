@@ -66,11 +66,11 @@ class tree_2_lineal(object):
     def deep_in_rec(self, phl_obj):
 
         for single_obj in phl_obj:
-            if( single_obj.is_definition ):
+            if(single_obj.is_definition):
                 self.lst_obj.append(single_obj)
 
-            elif( single_obj.is_scope ):
-                if( single_obj.name != "output" ):
+            elif(single_obj.is_scope):
+                if(single_obj.name != "output"):
                     scope_info = ScopeData()
                     scope_info.name = str(single_obj.name)
                     scope_info.f_path = str(single_obj.full_path())
@@ -137,14 +137,14 @@ class PhilWidget( QWidget):
         for nm, labl_obj in enumerate(self.lst_widg):
             labl_obj.setPalette(labl_obj.palette_orig)
 
-        if( len(value) > 1 ):
+        if(len(value) > 1):
             print "user searching for:", value
             pos_str = None
             print "len =", len(value)
 
             for nm, labl_obj in enumerate(self.lst_widg):
                 labl_text = labl_obj.text()
-                if( value in labl_text ):
+                if(value in labl_text):
                     labl_obj.setPalette(self.plt_fnd)
                     print "pos_str =", nm
 
@@ -155,7 +155,7 @@ class PhilWidget( QWidget):
         sys_font_point_size =  sys_font.pointSize()
         print "sys_font_point_size =", sys_font_point_size
         to_remove = '''
-        if( self.super_parent.embedded_reindex ):
+        if(self.super_parent.embedded_reindex):
             inde_step = 7
         else:
         '''
@@ -172,7 +172,7 @@ class PhilWidget( QWidget):
 
         for nm, obj in enumerate(lst_phil_obj):
 
-            if( str(type(obj))[-11:-2] == "ScopeData"):
+            if(str(type(obj))[-11:-2] == "ScopeData"):
                 tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
                 #print tmp_str
                 tmp_widg = QLabel(tmp_str)
@@ -191,7 +191,7 @@ class PhilWidget( QWidget):
                    obj.type.phil_type == 'int'   or
                    obj.type.phil_type == 'str'   or
                    obj.type.phil_type == 'bool'  or
-                   obj.type.phil_type == 'choice' ):
+                   obj.type.phil_type == 'choice'):
 
                     tmp_h_box = QHBoxLayout()
 
@@ -209,35 +209,35 @@ class PhilWidget( QWidget):
                     something_else = False
                     if(obj.type.phil_type == 'float' or
                        obj.type.phil_type == 'int'   or
-                       obj.type.phil_type == 'str'     ):
+                       obj.type.phil_type == 'str'   ):
 
-                        if( obj.type.phil_type == 'float' ):
+                        if(obj.type.phil_type == 'float'):
                             tmp_widg = QDoubleSpinBox()
                             tmp_widg.setDecimals(3)
 
-                        elif( obj.type.phil_type == 'int' ):
+                        elif(obj.type.phil_type == 'int'):
                             tmp_widg = QSpinBox()
 
-                        elif( obj.type.phil_type == 'str' ):
+                        elif(obj.type.phil_type == 'str'):
                             tmp_widg = QLineEdit()
                             #TODO iclude the asignation of this one too
 
                         tmp_widg.str_defl = None
 
-                        if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float'  ):
+                        if(obj.type.phil_type == 'int' or obj.type.phil_type == 'float'):
 
                             par_min = 0.0
                             par_max = 5000.0
                             tmp_widg.setRange(par_min, par_max)
-                            #if( type(obj.extract()) is str ): TODO test why this line does NOT works
-                            if( str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
+                            #if(type(obj.extract()) is str): TODO test why this line does NOT works
+                            if(str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
                                 par_def = str(obj.extract())
                                 tmp_widg.setSpecialValueText(par_def)
                                 tmp_widg.str_defl = par_def
 
                             else:
                                 par_def = obj.extract()
-                                if( float(par_def) != 0.0  ):
+                                if(float(par_def) != 0.0):
                                     par_max = abs(par_def * 100.0)
                                     tmp_widg.setRange(par_min, par_max)
                                     tmp_widg.setSingleStep(abs(par_def /10))
@@ -249,12 +249,12 @@ class PhilWidget( QWidget):
                         tmp_widg.local_path = str(obj.full_path())
                         tmp_widg.tmp_lst = None
 
-                        if( obj.type.phil_type == 'int' or obj.type.phil_type == 'float' ):
+                        if(obj.type.phil_type == 'int' or obj.type.phil_type == 'float'):
                             tmp_widg.valueChanged.connect(self.spnbox_changed)
                         else:
                             tmp_widg.textChanged.connect(self.spnbox_changed)
 
-                    elif( obj.type.phil_type == 'bool' ):
+                    elif(obj.type.phil_type == 'bool'):
 
                         tmp_widg = QComboBox()
 
@@ -266,11 +266,11 @@ class PhilWidget( QWidget):
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
 
-                        if( str(obj.extract()) == "False" ):
+                        if(str(obj.extract()) == "False"):
                             tmp_widg.setCurrentIndex(1)
                             tmp_str += "                          False"
 
-                        elif( str(obj.extract()) == "True" ):
+                        elif(str(obj.extract()) == "True"):
                             tmp_str += "                          True"
 
 
@@ -280,7 +280,7 @@ class PhilWidget( QWidget):
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                    elif( obj.type.phil_type == 'choice' ):
+                    elif(obj.type.phil_type == 'choice'):
 
                         tmp_widg = QComboBox()
                         tmp_widg.local_path = str(obj.full_path())
@@ -289,7 +289,7 @@ class PhilWidget( QWidget):
                         found_choise = False
                         for num, opt in enumerate(obj.words):
                             opt = str(opt)
-                            if( opt[0] == "*" ):
+                            if(opt[0] == "*"):
                                 found_choise = True
                                 opt = opt[1:]
                                 pos = num
@@ -304,18 +304,18 @@ class PhilWidget( QWidget):
                         tmp_widg.setCurrentIndex(pos)
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        if( found_choise == False ):
+                        if(found_choise == False):
                             tmp_str = None
                             non_added_lst.append(str(obj.full_path()))
 
-                elif( obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats' ):
+                elif(obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats'):
                     tmp_str = None
                     non_added_lst.append(str(obj.full_path()))
                     something_else = True
 
                     to_rebiew_later = '''
-                    if( obj.type.size_min >= 2 and obj.type.size_max <= 6 and
-                        obj.type.size_max == obj.type.size_min and obj.type.size_max != None ):
+                    if(obj.type.size_min >= 2 and obj.type.size_max <= 6 and
+                        obj.type.size_max == obj.type.size_min and obj.type.size_max != None):
                         tmp_h_box_lst = []
                         tmp_label_lst = []
                         multi_widg_lst = []
@@ -338,7 +338,7 @@ class PhilWidget( QWidget):
                             if(obj.type.phil_type == 'ints'):
                                 new_widg = QSpinBox()
 
-                            elif( obj.type.phil_type == 'floats' ):
+                            elif(obj.type.phil_type == 'floats'):
                                 new_widg = QDoubleSpinBox()
 
                             new_widg.local_path = str(obj.full_path())
@@ -363,7 +363,7 @@ class PhilWidget( QWidget):
                     '''
                     something_else = True
 
-                if( something_else == False ):
+                if(something_else == False):
                     if(multiple_index == False):
                         if(tmp_str != None):
                             tmp_h_box.addWidget(tmp_widg)
@@ -385,7 +385,7 @@ class PhilWidget( QWidget):
 
     def spnbox_changed(self, value):
         sender = self.sender()
-        if( sender.str_defl != None and float(value) == 0.0 ):
+        if(sender.str_defl != None and float(value) == 0.0):
             str_value = sender.str_defl
 
         else:

@@ -34,7 +34,7 @@ lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
 
 
 def ops_list_from_json(json_path = None):
-    if( json_path == None ):
+    if(json_path == None):
         #json_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
         return None
 
@@ -45,15 +45,15 @@ def ops_list_from_json(json_path = None):
     for key, value in json_data.iteritems():
         recommended_str = "  "
         for inner_key in value:
-            if( inner_key == "rmsd" ):
+            if(inner_key == "rmsd"):
                 rmsd_val = value["rmsd"]
                 rmsd_str = " {:7.4}".format(rmsd_val)
 
-            elif( inner_key ==  "min_cc" ):
+            elif(inner_key ==  "min_cc"):
                 min_cc_val = value["min_cc"]
                 min_cc_str = " {:7.3}".format(min_cc_val)
 
-                if( "Non" in min_cc_str ):
+                if("Non" in min_cc_str):
                     min_cc_str = "    - "
 
                 #print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
@@ -61,11 +61,11 @@ def ops_list_from_json(json_path = None):
 
                 #TODO think about someting like: "aa = list(round(i, ndigits=6) for i in aa)"
 
-            elif( inner_key ==  "max_cc" ):
+            elif(inner_key ==  "max_cc"):
                 max_cc_val = value["max_cc"]
                 max_cc_str = " {:7.3}".format(max_cc_val)
 
-                if( "Non" in max_cc_str ):
+                if("Non" in max_cc_str):
                     max_cc_str = "    - "
 
                 #print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
@@ -74,19 +74,19 @@ def ops_list_from_json(json_path = None):
                 #TODO think about someting like: "aa = list(round(i, ndigits=6) for i in aa)"
 
 
-            elif( inner_key == "bravais" ):
+            elif(inner_key == "bravais"):
                 bravais_val = value["bravais"]
                 bravais_str = " " + str(bravais_val).ljust(3)
 
-            elif( inner_key ==  "max_angular_difference" ):
+            elif(inner_key ==  "max_angular_difference"):
                 angular_diff_val = value["max_angular_difference"]
                 angular_diff_str = " {:7.4} ".format(angular_diff_val)
 
-            elif( inner_key ==  "correlation_coefficients" ):
+            elif(inner_key ==  "correlation_coefficients"):
                 corr_coeff_val = value["correlation_coefficients"]
                 corr_coeff_str =str(corr_coeff_val)
 
-            elif( inner_key ==  "unit_cell" ):
+            elif(inner_key ==  "unit_cell"):
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
                 uc_a = unit_cell_val[3:6]
@@ -99,9 +99,9 @@ def ops_list_from_json(json_path = None):
                 unit_cell_str_gam = "{:7.4}".format(uc_a[2])
 
 
-            elif( inner_key ==  "recommended" ):
+            elif(inner_key ==  "recommended"):
                 recommended_val = value["recommended"]
-                if( recommended_val == True ):
+                if(recommended_val == True):
                     recommended_str = " Y"
                 else:
                     recommended_str = " N"
@@ -147,7 +147,7 @@ class MyReindexOpts(QWidget):
         #self.adjustSize()
         self.show()
 
-        if( self.my_inner_table.rec_col != None ):
+        if(self.my_inner_table.rec_col != None):
             my_solu = self.my_inner_table.find_best_solu()
             self.my_inner_table.opt_clicked(my_solu, 0)
 
@@ -192,8 +192,8 @@ class ReindexTable(QTableWidget):
             print "row_cont[4] =", row_cont[5]
             print "row_cont[", self.rec_col, "] =", row_cont[self.rec_col]
             '''
-            if( row_cont[self.rec_col] == " Y"):
-                if( row > bst_sol ):
+            if(row_cont[self.rec_col] == " Y"):
+                if(row > bst_sol):
                     bst_sol = row
 
         print "bst_sol = ", bst_sol
@@ -204,7 +204,7 @@ class ReindexTable(QTableWidget):
 
     def add_opts_lst(self, lst_labels = None, json_path = None, selected_pos = None):
 
-        if( lst_labels == None ):
+        if(lst_labels == None):
             print "json_path =", json_path
             self.list_labl = ops_list_from_json(json_path)
 
@@ -259,7 +259,7 @@ class ReindexTable(QTableWidget):
                 item.setFont(QFont("Monospace", self.sys_font_point_size))#, QFont.Bold))
                 self.setItem(row, col, item)
                 '''
-                if( width_lst[col] < len(col_cont) ):
+                if(width_lst[col] < len(col_cont)):
                     width_lst[col] = len(col_cont)
                 '''
 
@@ -311,7 +311,7 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         print "<< closeEvent ( from QMainWindow) >>"
-        if( self.my_pop != None ):
+        if(self.my_pop != None):
             self.my_pop.close()
 
 

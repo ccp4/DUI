@@ -152,7 +152,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                 print "failed to update i(x,y) label"
                 '''
 
-            if( self.my_parent.rad_but_near_hkl.isChecked() == True ):
+            if(self.my_parent.rad_but_near_hkl.isChecked() == True):
                 self.find_closer_hkl(self.x_pos, self.y_pos)
 
             else:
@@ -174,17 +174,17 @@ class ImgPainter(MyQWidgetWithQPainter):
 
     def wheelEvent(self, event):
 
-        if( event.delta() > 0.0 and self.my_scale < 100.0 ):
+        if(event.delta() > 0.0 and self.my_scale < 100.0):
             scale_factor = 1.1
 
-        elif( event.delta() < 0.0 and self.my_scale > 0.2 ):
+        elif(event.delta() < 0.0 and self.my_scale > 0.2):
             scale_factor = 0.9
 
         else:
             scale_factor = None
             print "reaching scale limit"
 
-        if( scale_factor != None ):
+        if(scale_factor != None):
 
             self.my_scale *= scale_factor
 
@@ -214,16 +214,16 @@ class ImgPainter(MyQWidgetWithQPainter):
             self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
-        if( dst != None ):
+        if(dst != None):
             old_val = scrollBar.value()
             scrollBar.setValue(old_val - dst)
 
-        if( new_pos != None ):
+        if(new_pos != None):
             scrollBar.setValue(new_pos)
 
 
     def find_closer_hkl(self, x_mouse, y_mouse):
-        if( self.flat_data_lst != None ):
+        if(self.flat_data_lst != None):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
@@ -243,7 +243,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
         #print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
-        if( self.__class__.__bases__[0].__name__ == "QWidget" ):
+        if(self.__class__.__bases__[0].__name__ == "QWidget"):
             #print "inherits from QWidget"
             self.update()
         else:
@@ -257,7 +257,7 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.yb = yb
 
     def paintEvent(self, event):
-        if( self.img == None ):
+        if(self.img == None):
             return
 
         else:
@@ -273,7 +273,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             indexed_pen.setBrush(Qt.green)
             indexed_pen.setStyle(Qt.SolidLine)
 
-            if( self.my_scale >= 5.0 ):
+            if(self.my_scale >= 5.0):
                 indexed_pen.setWidth(self.my_scale / 3.5)
 
             else:
@@ -283,7 +283,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             non_indexed_pen.setBrush(QColor(75, 150, 200))
             #non_indexed_pen.setBrush(Qt.magenta)
 
-            if( self.my_scale >= 5.0 ):
+            if(self.my_scale >= 5.0):
                 non_indexed_pen.setStyle(Qt.DotLine)
                 non_indexed_pen.setWidth(self.my_scale / 3.5)
 
@@ -295,7 +295,7 @@ class ImgPainter(MyQWidgetWithQPainter):
             #painter.setFont(QFont("Monospace", 22))
             #painter.setFont(QFont("FreeMono", 22))
 
-            if( self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
+            if(self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
                 tmp_font = QFont()
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
@@ -310,7 +310,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                         rectangle = QRectF(x * self.my_scale, y * self.my_scale,
                                            width * self.my_scale, height * self.my_scale)
 
-                        if( reflection[4] == "NOT indexed" ):
+                        if(reflection[4] == "NOT indexed"):
                             painter.setPen(non_indexed_pen)
 
                         else:
@@ -319,21 +319,21 @@ class ImgPainter(MyQWidgetWithQPainter):
                         painter.drawRect(rectangle)
 
 
-                        if( self.my_parent.rad_but_all_hkl.isChecked() == True and
-                           reflection[4] != "" and reflection[4] != "NOT indexed" ):
+                        if(self.my_parent.rad_but_all_hkl.isChecked() == True and
+                           reflection[4] != "" and reflection[4] != "NOT indexed"):
 
                             painter.drawText( QPoint(int((x + width) * self.my_scale),
                                                   int(y * self.my_scale)),  reflection[4])
 
-                        elif( self.my_parent.rad_but_near_hkl.isChecked() == True and
-                             self.closer_ref == [i, j] ):
+                        elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
+                             self.closer_ref == [i, j]):
 
                             painter.drawText( QPoint(int((x + width) * self.my_scale),
                                               int(y * self.my_scale)),  reflection[4])
 
 
 
-                if( self.xb != None and self.yb != None ):
+                if(self.xb != None and self.yb != None):
 
                     cen_siz = 40.0
                     painter.drawLine(int(self.xb * self.my_scale),
@@ -445,14 +445,14 @@ class MyImgWin(QWidget):
 
         self.contrast_initiated = False
 
-        if( json_file_path == None ):
+        if(json_file_path == None):
             print "\n no datablock given \n"
             n_of_imgs = 1
 
         else:
             self.ini_datablock(json_file_path)
 
-        if( pckl_file_path == None ):
+        if(pckl_file_path == None):
             print "\n no pickle file given \n"
 
         else:
@@ -483,7 +483,7 @@ class MyImgWin(QWidget):
 
 
     def ini_contrast(self):
-        if( self.contrast_initiated == False ):
+        if(self.contrast_initiated == False):
             try:
 
                 n_of_imgs = len(self.my_sweep.indices())
@@ -516,7 +516,7 @@ class MyImgWin(QWidget):
                 print "\n unable to calculate mean and adjust contrast \n"
 
     def ini_datablock(self, json_file_path):
-        if( json_file_path != None ):
+        if(json_file_path != None):
             try:
                 datablocks = DataBlockFactory.from_json_file(json_file_path)
                 ##TODO check length of datablock for safety
@@ -547,7 +547,7 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def ini_reflection_table(self, pckl_file_path):
-        if( pckl_file_path != None ):
+        if(pckl_file_path != None):
             firts_time = time_now()
 
             print "[pickle file] =", pckl_file_path
@@ -564,7 +564,7 @@ class MyImgWin(QWidget):
 
             n_imgs = self.img_select.maximum()
             self.flat_data_lst = []
-            if( n_imgs > 0 ):
+            if(n_imgs > 0):
                 self.flat_data_lst = lst_arange(bbox_col, hkl_col, n_imgs)
 
             print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
@@ -580,17 +580,17 @@ class MyImgWin(QWidget):
         self.my_painter.update_my_beam_centre(xb, yb)
 
     def set_img(self):
-        if( self.my_sweep != None):
+        if(self.my_sweep != None):
             img_pos = self.img_num - 1
 
             loc_stk_siz = self.stack_size
 
-            if( self.stack_size == 1 ):
+            if(self.stack_size == 1):
                 self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
 
-            elif( self.stack_size > 1 ):
+            elif(self.stack_size > 1):
 
-                if( img_pos + loc_stk_siz > len(self.my_sweep.indices()) - 1 ):
+                if(img_pos + loc_stk_siz > len(self.my_sweep.indices()) - 1):
                     loc_stk_siz = len(self.my_sweep.indices()) - img_pos
 
                 loc_scale = 1.0 / float(loc_stk_siz)
@@ -668,22 +668,22 @@ class MyImgWin(QWidget):
 
     def btn_rev_clicked(self):
         self.img_num -= 10
-        if( self.img_num < 1 ):
+        if(self.img_num < 1):
             self.img_num = 1
 
         self.img_select.setValue(self.img_num)
 
     def btn_prev_clicked(self):
         self.img_num -= self.img_step_val
-        if( self.img_num < 1 ):
+        if(self.img_num < 1):
             self.img_num = 1
 
         self.img_select.setValue(self.img_num)
 
     def btn_next_clicked(self):
         self.img_num += self.img_step_val
-        if( self.img_num > self.img_select.maximum() ):
-            if( self.video_timer.isActive() == True ):
+        if(self.img_num > self.img_select.maximum()):
+            if(self.video_timer.isActive() == True):
                 self.img_num = 1
 
             else:
@@ -693,7 +693,7 @@ class MyImgWin(QWidget):
 
     def btn_ffw_clicked(self):
         self.img_num += 10
-        if( self.img_num > self.img_select.maximum() ):
+        if(self.img_num > self.img_select.maximum()):
             self.img_num = self.img_select.maximum()
 
         self.img_select.setValue(self.img_num)
@@ -711,22 +711,22 @@ class MyImgWin(QWidget):
 
     def img_changed_by_user(self, value):
         self.img_num = value
-        if( self.img_num > self.img_select.maximum() ):
+        if(self.img_num > self.img_select.maximum()):
             self.img_num = self.img_select.maximum()
             self.img_select.setValue(self.img_num)
 
         self.set_img()
 
 
-if( __name__ == "__main__" ):
+if(__name__ == "__main__"):
 
     app = QApplication(sys.argv)
     print "sys.argv =", sys.argv
     print "len(sys.argv) =", len(sys.argv)
 
-    if( len(sys.argv) > 1 ):
+    if(len(sys.argv) > 1):
         img_path = sys.argv[1]
-        if( len(sys.argv) > 2 ):
+        if(len(sys.argv) > 2):
             pckl_file_path = sys.argv[2]
 
         else:
