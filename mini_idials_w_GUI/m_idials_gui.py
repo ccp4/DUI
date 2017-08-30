@@ -63,11 +63,13 @@ class TreeNavWidget(QTreeView):
             for child_node in root_node.next_step_list:
                 if(child_node.command_lst != [None]):
                     child_node_name = str(child_node.command_lst[0])
+
                 else:
                     child_node_name = "* " + get_next_step(child_node) + " *"
 
                 try:
                     child_node_tip = str(child_node.command_lst[1:])
+
                 except:
                     child_node_tip = "None"
 
@@ -182,8 +184,18 @@ class MainWidget(QMainWindow):
             with open ('bkp.pickle', 'rb') as bkp_in:
                 self.uni_controler = pickle.load(bkp_in)
 
-        except:
+            #TODO sometimes the following error appears
+            '''
+            Attribute not found
+            'module' object has no attribute 'UniStep'
+            '''
+
+        except Exception as e:
+
             self.uni_controler = Runner()
+            print e.__doc__
+            print e.message
+
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.uni_controler)
