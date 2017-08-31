@@ -184,18 +184,16 @@ class MainWidget(QMainWindow):
             with open ('bkp.pickle', 'rb') as bkp_in:
                 self.uni_controler = pickle.load(bkp_in)
 
-            #TODO sometimes the following error appears
             '''
+            TODO sometimes the following error appears
             Attribute not found
             'module' object has no attribute 'UniStep'
             '''
 
         except Exception as e:
-
-            self.uni_controler = Runner()
             print e.__doc__
             print e.message
-
+            self.uni_controler = Runner()
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.uni_controler)
