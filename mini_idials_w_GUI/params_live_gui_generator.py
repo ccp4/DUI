@@ -206,10 +206,14 @@ class PhilWidget( QWidget):
                        obj.type.phil_type == 'str'   ):
 
                         if(obj.type.phil_type == 'float'):
+                            par_min = 0.0
+                            par_max = 5000.0
                             tmp_widg = QDoubleSpinBox()
                             tmp_widg.setDecimals(3)
 
                         elif(obj.type.phil_type == 'int'):
+                            par_min = 0
+                            par_max = 5000
                             tmp_widg = QSpinBox()
 
                         elif(obj.type.phil_type == 'str'):
@@ -220,8 +224,6 @@ class PhilWidget( QWidget):
 
                         if(obj.type.phil_type == 'int' or obj.type.phil_type == 'float'):
 
-                            par_min = 0.0
-                            par_max = 5000.0
                             tmp_widg.setRange(par_min, par_max)
                             #if(type(obj.extract()) is str): TODO test why this line does NOT works
                             if(str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
@@ -231,9 +233,8 @@ class PhilWidget( QWidget):
 
                             else:
                                 par_def = obj.extract()
-                                if(float(par_def) != 0.0):
+                                if(float(par_def) != 0.0 and obj.type.phil_type == 'float' ):
                                     par_max = abs(par_def * 100.0)
-                                    tmp_widg.setRange(par_min, par_max)
                                     tmp_widg.setSingleStep(abs(par_def /10))
 
                                 tmp_widg.setValue(par_def)
