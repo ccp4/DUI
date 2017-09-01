@@ -37,9 +37,10 @@ class FindspotsSimplerParameterTab( QWidget):
     in the spot-finder, this widget is the first to appear once the button
     "Find Sots" at the left side of the GUI is clicked
     '''
+    item_changed = pyqtSignal(str, str)
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__()
-        self.param_widget_parent = parent.param_widget_parent
+        #self.param_widget_parent = parent.param_widget_parent
 
         xds_gain_label = QLabel("spotfinder.threshold.xds.gain")
         xds_gain_spn_bx = QDoubleSpinBox()
@@ -121,12 +122,13 @@ class FindspotsSimplerParameterTab( QWidget):
         str_value = str(value)
         print value
         str_path = str(sender.local_path)
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = libtbx.introspection.number_of_processors()
         self.box_nproc.setValue(int(cpu_max_proc))
-
 
 
 class IndexSimplerParamTab( QWidget):
@@ -135,9 +137,10 @@ class IndexSimplerParamTab( QWidget):
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
     '''
+    item_changed = pyqtSignal(str, str)
     def __init__(self, phl_obj = None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
-        self.param_widget_parent = parent.param_widget_parent
+        #self.param_widget_parent = parent.param_widget_parent
 
         hbox_lay_scan_varying =  QHBoxLayout()
         label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
@@ -186,7 +189,9 @@ class IndexSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
 
 class RefineSimplerParamTab( QWidget):
@@ -195,9 +200,10 @@ class RefineSimplerParamTab( QWidget):
     in the refiner, this widget is the first to appear once the button
     "Refine" at the left side of the GUI is clicked
     '''
+    item_changed = pyqtSignal(str, str)
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__()
-        self.param_widget_parent = parent.param_widget_parent
+        #self.param_widget_parent = parent.param_widget_parent
 
         hbox_lay_scan_varying =  QHBoxLayout()
         localLayout = QVBoxLayout()
@@ -227,7 +233,9 @@ class RefineSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
 
 class IntegrateSimplerParamTab( QWidget):
@@ -236,9 +244,10 @@ class IntegrateSimplerParamTab( QWidget):
     in the integrate algorithm, this widget is the first to appear once the button
     "Integrate" at the left side of the GUI is clicked
     '''
+    item_changed = pyqtSignal(str, str)
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
-        self.param_widget_parent = parent.param_widget_parent
+        #self.param_widget_parent = parent.param_widget_parent
 
         localLayout = QVBoxLayout()
         PrFit_lay_out =  QHBoxLayout()
@@ -309,14 +318,18 @@ class IntegrateSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
         print value
         str_path = str(sender.local_path)
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = libtbx.introspection.number_of_processors()
@@ -324,13 +337,13 @@ class IntegrateSimplerParamTab( QWidget):
 
     def mtz_name_changed(self, value):
         print "used to run"
-        print "self.param_widget_parent.super_parent.mtz_name_changed(value)"
+        #print "self.param_widget_parent.super_parent.mtz_name_changed(value)"
 
 class TmpTstWidget( QWidget):
 
     def __init__(self, parent = None):
         super(TmpTstWidget, self).__init__()
-        self.param_widget_parent = self
+        #self.param_widget_parent = self
         my_widget = FindspotsSimplerParameterTab(self)
 
         my_box = QVBoxLayout()

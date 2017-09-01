@@ -93,12 +93,10 @@ class tree_2_lineal(object):
 
 
 class PhilWidget( QWidget):
-    item_changed = pyqtSignal()
+    item_changed = pyqtSignal(str, str)
     def __init__(self, phl_obj, parent = None):   #TODO fix the order of this two parameters
         super(PhilWidget, self).__init__(parent)
-        self.param_widget_parent = parent.param_widget_parent
-
-        #self.super_parent = parent.super_parent
+        #self.param_widget_parent = parent.param_widget_parent
 
         self.win_pal = QPalette()
         self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
@@ -154,11 +152,7 @@ class PhilWidget( QWidget):
         sys_font = QFont()
         sys_font_point_size =  sys_font.pointSize()
         print "sys_font_point_size =", sys_font_point_size
-        to_remove = '''
-        if(self.super_parent.embedded_reindex):
-            inde_step = 7
-        else:
-        '''
+
         inde_step = 4
 
         #lst_widg = self.lst_phil_obj
@@ -397,8 +391,9 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print "local_path =", str_path
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -408,37 +403,31 @@ class PhilWidget( QWidget):
         print "local_path =",
         str_path = str(sender.local_path)
         print str_path
-        self.param_widget_parent.update_lin_txt(str_path, str_value)
 
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
 class TstTmpWidget( QWidget):
-
-    item_changed = pyqtSignal() #TODO check if this line is needed
-
     def __init__(self, phl_obj = None, parent = None):
         super(TstTmpWidget, self).__init__(parent)
-        self.param_widget_parent = self
-        #self.super_parent = self
-        self.embedded_reindex = False
+        #self.param_widget_parent = self
         inner_widget = PhilWidget(phl_obj, self) #TODO fix the order of this two parameters
-
+        inner_widget.item_changed.connect(self.update_lin_txt)
 
         my_box = QVBoxLayout()
         my_box.addWidget(inner_widget)
         self.setLayout(my_box)
         self.show()
 
+
     def update_lin_txt(self, new_path, new_value):
         print "new_path =", new_path
         print "new_value =", new_value
-        print "from update_lin_txt(self)"
+        print "from update_lin_txt(self) in TstTmpWidget"
 
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = TstTmpWidget(phil_scope)
     sys.exit(app.exec_())
-
-
-
 

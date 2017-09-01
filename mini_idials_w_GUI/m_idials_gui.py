@@ -191,8 +191,9 @@ class MainWidget(QMainWindow):
             '''
 
         except Exception as e:
-            print e.__doc__
-            print e.message
+            print "str(e) =", str(e)
+            print "e.__doc__ =", e.__doc__
+            print "e.message =", e.message
             self.uni_controler = Runner()
 
         self.cli_tree_output = TreeShow()

@@ -214,8 +214,10 @@ class ImportPage(QWidget):
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
+
         #self.super_parent = parent.super_parent
-        self.param_widget_parent = parent.param_widget_parent
+        #self.param_widget_parent = parent.param_widget_parent
+
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
@@ -224,6 +226,7 @@ class ParamAdvancedWidget( QWidget):
         search_label = QLabel("search:")
         search_edit = QLineEdit("type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
+
 
         hbox = QHBoxLayout()
         hbox.addWidget(search_label)
@@ -294,13 +297,13 @@ class ParamMainWidget( QWidget):
         try:
             #self.super_parent = parent.super_parent
             self.my_phl_obj = phl_obj
-            self.my_simp_widg = simp_widg
+            self.simp_widg_in = simp_widg
         except:
             print "\n\n\n something went wrong here wiht the phil object \n\n\n"
 
 
 
-        self.param_widget_parent = self
+        #self.param_widget_parent = self
 
         self._vbox = QVBoxLayout()
 
@@ -324,8 +327,17 @@ class ParamMainWidget( QWidget):
 
     def build_param_widget(self):
         self.dual_level_tab = QTabWidget()
-        self.sipler_widget = self.my_simp_widg(parent = self)
+        self.sipler_widget = self.simp_widg_in(parent = self) #TODO make sure you need to do: parent = self
+
         self.advanced_widget = ParamAdvancedWidget(phl_obj = self.my_phl_obj, parent = self)
+
+        self.advanced_widget.scrollable_widget.item_changed.connect(self.update_lin_txt)
+        try:
+            self.sipler_widget.item_changed.connect(self.update_advanced_widget)
+
+        except:
+            print "found self.sipler_widget without << item_changed >> signal"
+
         self.dual_level_tab.addTab(self.sipler_widget, "Simple")
         self.dual_level_tab.addTab(self.advanced_widget, "Advanced")
 
@@ -390,8 +402,8 @@ class ParamMainWidget( QWidget):
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
 
         print "self.command_lst =", self.command_lst, "\n"
+        print "running update_lin_txt from: custom_widgets.py"
 
-        #self.str_param_signal.emit(cmd_to_run)
 
     def update_param(self, lst_in):
         self.reset_par()
