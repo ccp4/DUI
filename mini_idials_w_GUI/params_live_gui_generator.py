@@ -268,10 +268,8 @@ class PhilWidget( QWidget):
                         elif(str(obj.extract()) == "True"):
                             tmp_str += "                          True"
 
-
                         else:
                             tmp_str = None
-
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -291,7 +289,6 @@ class PhilWidget( QWidget):
                                 tmp_str += "                          " + opt
 
                             tmp_widg.tmp_lst.append(opt)
-
 
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
