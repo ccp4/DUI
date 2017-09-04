@@ -2,6 +2,11 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
+from pycallgraph import PyCallGraph
+from pycallgraph.output import GraphvizOutput
+from pycallgraph import Config
+from pycallgraph import GlobbingFilter
+
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
 
@@ -324,10 +329,31 @@ class MainWidget(QMainWindow):
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_launch(cmd_ovr)
 
-
+default_way = '''
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = MainWidget()
     ex.show()
     sys.exit(app.exec_())
+'''
+if __name__ == '__main__':
+    graphviz = GraphvizOutput(output_file='many_filters.png')
+
+    conf = Config()
+    conf.trace_filter = GlobbingFilter(exclude=[
+        'pycallgraph.*',
+        'libtbx.*',
+        'dxtbx.*',
+        'scitbx.*',
+        'cctbx.*',
+        'PyQt4.*',
+        'dials.*'
+
+    ])
+
+    with PyCallGraph(output=graphviz, config=conf):
+        app =  QApplication(sys.argv)
+        ex = MainWidget()
+        ex.show()
+        sys.exit(app.exec_())
 
