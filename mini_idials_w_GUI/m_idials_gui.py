@@ -146,15 +146,31 @@ class CentreWidget(QWidget):
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
         ctrl_box = QHBoxLayout()
-        self.run_btn = QPushButton("\n   Run   \n", self)
-        self.run_btn.setIcon(QIcon(dials_logo_path))
-        self.run_btn.setIconSize(QSize(80, 48))
-        self.stop_btn = QPushButton("\n   Stop   \n", self)
+
+        self.repeat_btn = QPushButton("\n Re Try \n", self)
+        self.repeat_btn.setIcon(QIcon.fromTheme("edit-redo"))
+        self.repeat_btn.setIconSize(QSize(28, 28))
+
+        self.run_btn = QPushButton("\n  Run  \n", self)
+        #self.run_btn.setIcon(QIcon(dials_logo_path))
+        #self.run_btn.setIconSize(QSize(80, 48))
+        self.run_btn.setIcon(QIcon.fromTheme("system-run"))
+        self.run_btn.setIconSize(QSize(28, 28))
+
+        self.stop_btn = QPushButton("\n  Stop  \n", self)
         self.stop_btn.setIcon(QIcon.fromTheme("process-stop"))
         self.stop_btn.setIconSize(QSize(28, 28))
 
+        self.next_btn = QPushButton("\n  Next  \n", self)
+        self.next_btn.setIcon(QIcon.fromTheme("go-next"))
+        #self.next_btn.setIcon(QIcon.fromTheme("media-seek-forward"))
+        self.next_btn.setIconSize(QSize(28, 28))
+
+        ctrl_box.addWidget(self.repeat_btn)
         ctrl_box.addWidget(self.run_btn)
         ctrl_box.addWidget(self.stop_btn)
+        ctrl_box.addWidget(self.next_btn)
+
         big_v_box.addLayout(ctrl_box)
 
         big_v_box.addWidget(self.step_param_widg)
@@ -218,9 +234,9 @@ class MainWidget(QMainWindow):
 
         self.centre_widget = CentreWidget()
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
+        self.centre_widget.next_btn.clicked.connect(self.next_clicked)
+
         h_main_splitter.addWidget(self.centre_widget)
-
-
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
@@ -250,6 +266,12 @@ class MainWidget(QMainWindow):
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
         #TODO think about how to prevent launches from happening when is busy
+
+    def next_clicked(self):
+        print "next_clicked"
+        cmd_tmp = ["mkchi"]
+        print "cmd_tmp =", cmd_tmp
+        self.cmd_launch(cmd_tmp)
 
     def cmd_launch(self, new_cmd):
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = self.make_next)
@@ -281,7 +303,14 @@ class MainWidget(QMainWindow):
             self.img_view.ini_datablock(self.cur_json)
 
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
-        nxt_cmd = get_next_step(tmp_curr)
+
+        #TODO make sure this << if >> is needed
+        if(self.make_next == True):
+            nxt_cmd = get_next_step(tmp_curr)
+
+        else:
+            nxt_cmd = tmp_curr.command_lst[0]
+
         cur_success = tmp_curr.success
 
         if(tmp_curr.command_lst[0] != "reindex"):

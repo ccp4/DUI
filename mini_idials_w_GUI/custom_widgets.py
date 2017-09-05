@@ -422,6 +422,18 @@ class ParamMainWidget( QWidget):
             self.lst_pair = []
             self.command_lst = [self.command_lst[0]]
 
+class TmpImportWidget(QLabel):
+    def __init__(self):
+        super(TmpImportWidget, self).__init__()
+        self.setText("TMP \n Import Widget")
+        self.command_lst = ["import", "../*.cbf"]
+        self.show()
+
+    def update_param(self, dummy_cmd_lst = None):
+        print "\n Nothing to update here \n"
+
+
+
 class ParamWidget(QWidget):
     def __init__(self, label_str):
         super(ParamWidget, self).__init__()
@@ -435,9 +447,11 @@ class ParamWidget(QWidget):
                         }
 
         if(label_str == "import"):
-            #self.command = ["import", "../*.cbf"]
+            old_test_way = '''
             self.my_widget = QLabel("TMP \n Import Widget")
             self.my_widget.command_lst = ["import", "../*.cbf"]
+            '''
+            self.my_widget = TmpImportWidget()
 
         else:
             #self.command = [label_str]
