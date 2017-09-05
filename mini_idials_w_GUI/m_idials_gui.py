@@ -234,7 +234,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.my_tabs)
 
         main_box.addWidget(h_main_splitter)
-
+        self.make_next = True
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
@@ -252,7 +252,7 @@ class MainWidget(QMainWindow):
         #TODO think about how to prevent launches from happening when is busy
 
     def cmd_launch(self, new_cmd):
-        self.custom_thread(new_cmd, self.uni_controler, mk_nxt = True)
+        self.custom_thread(new_cmd, self.uni_controler, mk_nxt = self.make_next)
 
     def update_after_finished(self):
         self.cli_tree_output(self.uni_controler)
