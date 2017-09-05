@@ -303,14 +303,7 @@ class MainWidget(QMainWindow):
             self.img_view.ini_datablock(self.cur_json)
 
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
-
-        #TODO make sure this << if >> is needed
-        if(self.make_next == True):
-            nxt_cmd = get_next_step(tmp_curr)
-
-        else:
-            nxt_cmd = tmp_curr.command_lst[0]
-
+        nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
 
         if(tmp_curr.command_lst[0] != "reindex"):
