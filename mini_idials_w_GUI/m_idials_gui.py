@@ -63,11 +63,11 @@ class TreeNavWidget(QTreeView):
     def recursive_node(self, root_node, item_in):
         if(type(root_node.next_step_list) is list):
             for child_node in root_node.next_step_list:
-                if(child_node.command_lst != [None]):
-                    child_node_name = str(child_node.command_lst[0])
-
-                elif(child_node.success == None):
+                if(child_node.success == None):
                     child_node_name = "* " + get_next_step(child_node) + " *"
+
+                elif(child_node.command_lst != [None]):
+                    child_node_name = str(child_node.command_lst[0])
 
                 else:
                     child_node_name = " ? None ? "

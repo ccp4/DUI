@@ -211,7 +211,7 @@ class DialsCommand(object):
 def print_list(lst, curr):
     print "__________________________listing:"
     for uni in lst:
-        stp_str = str(uni.lin_num) + " comm: " + str(uni.command_lst)
+        stp_str = str(uni.lin_num) + " " + str(uni.success) + " comm: " + str(uni.command_lst)
 
         try:
             stp_str += " prev: " + str(uni.prev_step.lin_num)
