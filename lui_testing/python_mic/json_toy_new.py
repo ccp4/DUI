@@ -17,22 +17,17 @@ class UniStep(object):
         '''
 class MyClass:
     def __init__(self,x,y,z):
-       self.x = x
-       self.y = y
-       self.z = z
+        self.x = x
+        self.y = y
+        self.z = z
+
     def __iter__(self): #overridding this to return tuples of (key,value)
-       return iter([('x',self.x),('y',self.y),('z',self.z)])
+        return iter([('x',self.x),('y',self.y),('z',self.z)])
 
-tst = dict(MyClass(5,6,7))
-'''
-d1 = UniStep()
-d2 = UniStep()
-d1.lst1 = [1,2]
-d1.lst2 = [2,3]
-data = [d1, d2]
 
-data = UniStep()
-'''
+a1 = MyClass(1,2,3)
+
+tst = dict(a1)
 
 with open('data.json', 'w') as outfile:
     json.dump(tst, outfile)

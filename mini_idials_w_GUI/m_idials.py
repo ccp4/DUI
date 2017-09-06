@@ -228,7 +228,7 @@ if(__name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command, None, mk_nxt = True)
+        uni_controler.run(command, None, mk_nxt = False)
         tree_output(uni_controler)
         nxt_str = uni_controler.get_next_from_here()
         print "\n next to run:\n ", nxt_str
