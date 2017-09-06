@@ -233,6 +233,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.tree_out)
 
         self.centre_widget = CentreWidget()
+        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.next_btn.clicked.connect(self.next_clicked)
 
@@ -250,7 +251,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.my_tabs)
 
         main_box.addWidget(h_main_splitter)
-        self.make_next = True
+        self.make_next = False
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
@@ -258,6 +259,12 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+
+    def rep_clicked(self):
+        print "rep_clicked"
+        cmd_tmp = ["mksib"]
+        print "cmd_tmp =", cmd_tmp
+        self.cmd_launch(cmd_tmp)
 
     def run_clicked(self):
         print "run_clicked"
