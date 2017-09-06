@@ -53,6 +53,9 @@ class UniStep(object):
                 print "NOT dials command"
                 self.success = False
 
+    def edit_list(self, cmd_lst):
+        self.command_lst = cmd_lst
+
     def build_command(self, cmd_lst):
 
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
@@ -90,9 +93,11 @@ class Runner(object):
             self.create_step(self.step_list[self.current])
 
         elif(cmd_lst[0] == "mksib"):
+            old_command_lst = self.step_list[self.current].command_lst
             self.goto_prev()
             print "forking"
             self.create_step(self.step_list[self.current])
+            self.step_list[self.current].edit_list(old_command_lst)
 
         else:
             if(self.step_list[self.current].success == True):

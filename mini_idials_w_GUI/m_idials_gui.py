@@ -66,8 +66,11 @@ class TreeNavWidget(QTreeView):
                 if(child_node.command_lst != [None]):
                     child_node_name = str(child_node.command_lst[0])
 
-                else:
+                elif(child_node.success == None):
                     child_node_name = "* " + get_next_step(child_node) + " *"
+
+                else:
+                    child_node_name = " ? None ? "
 
                 try:
                     child_node_tip = str(child_node.command_lst[1:])
