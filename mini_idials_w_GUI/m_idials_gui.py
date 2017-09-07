@@ -20,6 +20,18 @@ from custom_widgets import  ParamWidget
 
 widg_name_list = ["import", "find_spots", "index", "refine", "integrate"]
 
+
+def build_command_tip(command_lst):
+    if(command_lst == [None]):
+        str_tip = "?"
+
+    else:
+        str_tip = "dials."+ str(command_lst[0])
+        for new_cmd in command_lst[1:]:
+            str_tip += "\n  " + str(new_cmd)
+
+    return str_tip
+
 class MyThread(QThread):
 
     str_print_signal = pyqtSignal(str)
@@ -73,7 +85,8 @@ class TreeNavWidget(QTreeView):
                     child_node_name = " ? None ? "
 
                 try:
-                    child_node_tip = str(child_node.command_lst[1:])
+                    child_node_tip = build_command_tip(child_node.command_lst)
+                    #child_node_tip = str(child_node.command_lst[:])
 
                 except:
                     child_node_tip = "None"
@@ -151,10 +164,10 @@ class CentreWidget(QWidget):
         ctrl_box = QHBoxLayout()
 
         self.run_btn = QPushButton("\n  Run  \n", self)
-        #self.run_btn.setIcon(QIcon(dials_logo_path))
-        #self.run_btn.setIconSize(QSize(80, 48))
-        self.run_btn.setIcon(QIcon.fromTheme("system-run"))
-        self.run_btn.setIconSize(QSize(28, 28))
+        self.run_btn.setIcon(QIcon(dials_logo_path))
+        self.run_btn.setIconSize(QSize(80, 48))
+        #self.run_btn.setIcon(QIcon.fromTheme("system-run"))
+        #self.run_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.run_btn)
 
 
@@ -163,7 +176,7 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
-        self.make_next = True
+        self.make_next = False
 
         if(self.make_next == False):
             self.repeat_btn = QPushButton("\n Re Try \n", self)
