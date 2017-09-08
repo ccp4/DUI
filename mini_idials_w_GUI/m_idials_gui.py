@@ -184,6 +184,11 @@ class CentreWidget(QWidget):
 
         ctrl_box = QHBoxLayout()
 
+        self.repeat_btn = QPushButton("\n Re Try \n", self)
+        self.repeat_btn.setIcon(QIcon.fromTheme("edit-redo"))
+        self.repeat_btn.setIconSize(QSize(28, 28))
+        ctrl_box.addWidget(self.repeat_btn)
+
         self.run_btn = QPushButton("\n  Run  \n", self)
         self.run_btn.setIcon(QIcon(dials_logo_path))
         self.run_btn.setIconSize(QSize(80, 48))
@@ -191,25 +196,16 @@ class CentreWidget(QWidget):
         #self.run_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.run_btn)
 
-
         self.stop_btn = QPushButton("\n  Stop  \n", self)
         self.stop_btn.setIcon(QIcon.fromTheme("process-stop"))
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
-        self.make_next = False
-
-        if(self.make_next == False):
-            self.repeat_btn = QPushButton("\n Re Try \n", self)
-            self.repeat_btn.setIcon(QIcon.fromTheme("edit-redo"))
-            self.repeat_btn.setIconSize(QSize(28, 28))
-            ctrl_box.addWidget(self.repeat_btn)
-
-            self.next_btn = QPushButton("\n  Next  \n", self)
-            self.next_btn.setIcon(QIcon.fromTheme("go-next"))
-            #self.next_btn.setIcon(QIcon.fromTheme("media-seek-forward"))
-            self.next_btn.setIconSize(QSize(28, 28))
-            ctrl_box.addWidget(self.next_btn)
+        self.next_btn = QPushButton("\n  Next  \n", self)
+        self.next_btn.setIcon(QIcon.fromTheme("go-next"))
+        #self.next_btn.setIcon(QIcon.fromTheme("media-seek-forward"))
+        self.next_btn.setIconSize(QSize(28, 28))
+        ctrl_box.addWidget(self.next_btn)
 
         big_v_box.addLayout(ctrl_box)
 
@@ -272,13 +268,12 @@ class MainWidget(QMainWindow):
 
         h_main_splitter.addWidget(self.tree_out)
         self.centre_widget = CentreWidget()
+
+        self.make_next = False
+        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
-
-        self.make_next = self.centre_widget.make_next
-        if(self.make_next == False):
-            self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
-            self.centre_widget.next_btn.clicked.connect(self.next_clicked)
+        self.centre_widget.next_btn.clicked.connect(self.next_clicked)
 
         h_main_splitter.addWidget(self.centre_widget)
 
