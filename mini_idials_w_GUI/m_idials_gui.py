@@ -269,7 +269,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.tree_out)
         self.centre_widget = CentreWidget()
 
-        self.make_next = False
+        self.make_next = True
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
@@ -302,7 +302,7 @@ class MainWidget(QMainWindow):
         print "rep_clicked"
         cmd_tmp = ["mksib"]
         print "cmd_tmp =", cmd_tmp
-        self.cmd_launch(cmd_tmp)
+        self.cmd_exe(cmd_tmp)
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
@@ -319,9 +319,17 @@ class MainWidget(QMainWindow):
         print "next_clicked"
         cmd_tmp = ["mkchi"]
         print "cmd_tmp =", cmd_tmp
-        self.cmd_launch(cmd_tmp)
+        self.cmd_exe(cmd_tmp)
+
+    def cmd_exe(self, new_cmd):
+        #Running in NOT in parallel
+        self.uni_controler.run(command = new_cmd, ref_to_class = None,
+                               mk_nxt = self.make_next)
+
+        self.update_after_finished()
 
     def cmd_launch(self, new_cmd):
+        #Running WITH theading
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = self.make_next)
 
     def update_after_finished(self):
@@ -394,7 +402,7 @@ class MainWidget(QMainWindow):
         lin_num = item.idials_node.lin_num
         print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
         cmd_ovr = "goto " + str(lin_num)
-        self.cmd_launch(cmd_ovr)
+        self.cmd_exe(cmd_ovr)
 
 #default_way = '''
 if __name__ == '__main__':
