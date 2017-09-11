@@ -53,6 +53,33 @@ def build_command_tip(command_lst):
 
     return str_tip
 
+def update_info(main_obj):
+    main_obj.cli_tree_output(main_obj.uni_controler)
+    new_html = main_obj.uni_controler.get_html_report()
+    new_img_json = main_obj.uni_controler.get_datablock_path()
+    new_ref_pikl = main_obj.uni_controler.get_reflections_path()
+
+    print "\n new_html =", new_html , "\n"
+    print " new_img_json =", new_img_json , "\n"
+    print " new_ref_pikl =", new_ref_pikl , "\n"
+
+    if(main_obj.cur_html != new_html):
+        main_obj.cur_html = new_html
+        try:
+            main_obj.web_view.update_page(new_html)
+
+        except:
+            print "No HTML here"
+
+    if(main_obj.cur_pick != new_ref_pikl):
+        main_obj.cur_pick = new_ref_pikl
+        main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
+
+    if(main_obj.cur_json != new_img_json):
+        main_obj.cur_json = new_img_json
+        main_obj.img_view.ini_datablock(main_obj.cur_json)
+
+
 class MyThread(QThread):
 
     str_print_signal = pyqtSignal(str)
@@ -272,7 +299,9 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.tree_out)
         self.centre_widget = CentreWidget()
 
-        self.make_next = False
+        #This flag makes the behaviour switch (automatic / explicit)
+        self.make_next = True
+
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
@@ -336,30 +365,9 @@ class MainWidget(QMainWindow):
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = self.make_next)
 
     def update_after_finished(self):
-        self.cli_tree_output(self.uni_controler)
-        new_html = self.uni_controler.get_html_report()
-        new_img_json = self.uni_controler.get_datablock_path()
-        new_ref_pikl = self.uni_controler.get_reflections_path()
 
-        print "\n new_html =", new_html , "\n"
-        print " new_img_json =", new_img_json , "\n"
-        print " new_ref_pikl =", new_ref_pikl , "\n"
+        update_info(self)
 
-        if(self.cur_html != new_html):
-            self.cur_html = new_html
-            try:
-                self.web_view.update_page(new_html)
-
-            except:
-                print "No HTML here"
-
-        if(self.cur_pick != new_ref_pikl):
-            self.cur_pick = new_ref_pikl
-            self.img_view.ini_reflection_table(self.cur_pick)
-
-        if(self.cur_json != new_img_json):
-            self.cur_json = new_img_json
-            self.img_view.ini_datablock(self.cur_json)
 
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
         nxt_cmd = get_next_step(tmp_curr)
