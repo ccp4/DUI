@@ -40,7 +40,7 @@ import subprocess
 from custom_widgets import  ParamWidget
 
 
-widg_name_list = ["import", "find_spots", "index", "refine", "integrate"]
+widg_name_list = ["import", "find_spots", "index", "reindex", "refine", "integrate"]
 
 def build_command_tip(command_lst):
     if(command_lst == [None]):
@@ -124,7 +124,8 @@ class TreeNavWidget(QTreeView):
         if(type(root_node.next_step_list) is list):
             for child_node in root_node.next_step_list:
                 if(child_node.success == None):
-                    child_node_name = "* " + get_next_step(child_node) + " *"
+                    #child_node_name = "* " + get_next_step(child_node) + " *"
+                    child_node_name = "* None *"
 
                 elif(child_node.command_lst != [None]):
                     child_node_name = str(child_node.command_lst[0])
@@ -177,14 +178,14 @@ class CentreWidget(QWidget):
         lst_icons_path.append(idials_gui_path + "/resources/import.png")
         lst_icons_path.append(idials_gui_path + "/resources/find_spots.png")
         lst_icons_path.append(idials_gui_path + "/resources/index.png")
-        lst_icons_path.append(idials_gui_path + "/resources/refine_v_sets.png")
         lst_icons_path.append(idials_gui_path + "/resources/reindex.png")
+        #lst_icons_path.append(idials_gui_path + "/resources/refine_v_sets.png")
 
         lst_icons_path.append(idials_gui_path + "/resources/refine.png")
         lst_icons_path.append(idials_gui_path + "/resources/integrate.png")
 
         top_box =  QHBoxLayout()
-        self.step_param_widg =  QStackedWidget()
+        self.step_param_widg = QStackedWidget()
         self.widg_lst = []
         for num, step_name in enumerate(widg_name_list):
             new_btn = QPushButton(self)
@@ -231,11 +232,13 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
+        '''
         self.next_btn = QPushButton("\n  Next  \n", self)
         self.next_btn.setIcon(QIcon.fromTheme("go-next"))
         #self.next_btn.setIcon(QIcon.fromTheme("media-seek-forward"))
         self.next_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.next_btn)
+        '''
 
         big_v_box.addLayout(ctrl_box)
 
@@ -305,7 +308,10 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
-        self.centre_widget.next_btn.clicked.connect(self.next_clicked)
+        #self.centre_widget.next_btn.clicked.connect(self.next_clicked)
+
+        self.centre_widget.step_param_widg.currentChanged.connect(
+                                           self.centre_widget_changed)
 
         h_main_splitter.addWidget(self.centre_widget)
 
@@ -329,6 +335,9 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+
+    def centre_widget_changed(self):
+        print "centre_widget_changed()"
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -367,36 +376,38 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
 
         update_info(self)
-
-
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
+        if(self.make_next == True):
+            if(tmp_curr.command_lst[0] != "reindex"):
+                try:
+                    self.my_pop.close()
 
-        if(tmp_curr.command_lst[0] != "reindex"):
-            try:
-                self.my_pop.close()
+                except:
+                    print "no need to close reindex table"
 
-            except:
-                print "no need to close reindex table"
+            if(nxt_cmd == "refine_bravais_settings"):
+                if(cur_success == None):
+                    self.cmd_launch("refine_bravais_settings")
 
-        if(nxt_cmd == "refine_bravais_settings"):
-           if(cur_success == None):
-               self.cmd_launch("refine_bravais_settings")
+                else:
+                    self.centre_widget.set_widget("refine", tmp_curr)
 
-           else:
-               self.centre_widget.set_widget("refine", tmp_curr)
+            elif(nxt_cmd == "reindex"):
+                self.my_pop = MyReindexOpts()
+                self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
+                self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
 
-        elif(nxt_cmd == "reindex"):
-            self.my_pop = MyReindexOpts()
-            self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
-            self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+            else:
+                self.centre_widget.set_widget(nxt_cmd, tmp_curr)
 
         else:
             self.centre_widget.set_widget(nxt_cmd, tmp_curr)
 
         self.tree_out.update_me(self.uni_controler.step_list[0],
                                 self.uni_controler.current)
+
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)

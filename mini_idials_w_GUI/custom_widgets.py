@@ -432,6 +432,16 @@ class TmpImportWidget(QLabel):
     def update_param(self, dummy_cmd_lst = None):
         print "\n Nothing to update here \n"
 
+class TmpReindexWidget(QLabel):
+    def __init__(self):
+        super(TmpReindexWidget, self).__init__()
+        self.setText("TMP \n Reindex Widget")
+        self.command_lst = ["reindex"]
+        self.show()
+
+    def update_param(self, dummy_cmd_lst = None):
+        print "\n TMP off \n"
+
 
 
 class ParamWidget(QWidget):
@@ -452,6 +462,10 @@ class ParamWidget(QWidget):
             self.my_widget.command_lst = ["import", "../*.cbf"]
             '''
             self.my_widget = TmpImportWidget()
+
+        elif(label_str == "reindex"):
+
+            self.my_widget = TmpReindexWidget()
 
         else:
             #self.command = [label_str]
