@@ -150,6 +150,9 @@ class CentreWidget(QWidget):
         lst_icons_path.append(idials_gui_path + "/resources/import.png")
         lst_icons_path.append(idials_gui_path + "/resources/find_spots.png")
         lst_icons_path.append(idials_gui_path + "/resources/index.png")
+        lst_icons_path.append(idials_gui_path + "/resources/refine_v_sets.png")
+        lst_icons_path.append(idials_gui_path + "/resources/reindex.png")
+
         lst_icons_path.append(idials_gui_path + "/resources/refine.png")
         lst_icons_path.append(idials_gui_path + "/resources/integrate.png")
 
@@ -269,7 +272,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(self.tree_out)
         self.centre_widget = CentreWidget()
 
-        self.make_next = True
+        self.make_next = False
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
