@@ -168,6 +168,8 @@ class TreeNavWidget(QTreeView):
 
 
 class CentreWidget(QWidget):
+    user_changed_signal = pyqtSignal()
+
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
 
@@ -262,6 +264,7 @@ class CentreWidget(QWidget):
         print "btn_clicked"
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
+        self.user_changed_signal.emit()
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -310,7 +313,7 @@ class MainWidget(QMainWindow):
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
         #self.centre_widget.next_btn.clicked.connect(self.next_clicked)
 
-        self.centre_widget.step_param_widg.currentChanged.connect(
+        self.centre_widget.user_changed_signal.connect(
                                            self.centre_widget_changed)
 
         h_main_splitter.addWidget(self.centre_widget)
