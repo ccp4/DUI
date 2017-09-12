@@ -314,7 +314,7 @@ class MainWidget(QMainWindow):
 
 
         self.centre_widget.user_changed_signal.connect(
-                                           self.centre_widget_changed)
+                                           self.cmd_changed_by_user)
 
         h_main_splitter.addWidget(self.centre_widget)
 
@@ -339,8 +339,8 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-    def centre_widget_changed(self):
-        print "centre_widget_changed()"
+    def cmd_changed_by_user(self):
+        print "cmd_changed_by_user()"
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
         if(self.make_next == False and
             tmp_curr.next_step_list == None and
