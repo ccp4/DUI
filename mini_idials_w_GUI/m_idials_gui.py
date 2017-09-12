@@ -433,6 +433,11 @@ class MainWidget(QMainWindow):
             pickle.dump(self.uni_controler, bkp_out)
 
     def opt_clicked(self, row, col):
+        if(self.make_next == False):
+            self.uni_controler.run(command = ["mkchi"],
+                                   ref_to_class = None,
+                                   mk_nxt = self.make_next)
+
         re_idx = row + 1
         print "Solution clicked =", re_idx
         cmd_tmp = "reindex solution=" + str(re_idx)
