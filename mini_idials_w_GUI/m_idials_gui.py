@@ -311,7 +311,7 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
-        #self.centre_widget.next_btn.clicked.connect(self.next_clicked)
+
 
         self.centre_widget.user_changed_signal.connect(
                                            self.centre_widget_changed)
@@ -343,10 +343,16 @@ class MainWidget(QMainWindow):
         print "centre_widget_changed()"
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
         if(self.make_next == False and
-           tmp_curr.next_step_list == None and
-           tmp_curr.success == True):
+            tmp_curr.next_step_list == None and
+            tmp_curr.success == True):
 
-            self.next_clicked()
+            self.uni_controler.run(command = ["mkchi"],
+                                   ref_to_class = None,
+                                   mk_nxt = self.make_next)
+
+            self.tree_out.update_me(self.uni_controler.step_list[0],
+                                    self.uni_controler.current)
+
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -364,12 +370,6 @@ class MainWidget(QMainWindow):
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
         #TODO think about how to prevent launches from happening when is busy
-
-    def next_clicked(self):
-        print "next_clicked"
-        cmd_tmp = ["mkchi"]
-        print "cmd_tmp =", cmd_tmp
-        self.cmd_exe(cmd_tmp)
 
     def cmd_exe(self, new_cmd):
         #Running in NOT in parallel
@@ -410,6 +410,7 @@ class MainWidget(QMainWindow):
 
             else:
                 self.centre_widget.set_widget(nxt_cmd, tmp_curr)
+
 
         else:
             self.centre_widget.set_widget(nxt_cmd, tmp_curr)
