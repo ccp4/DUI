@@ -436,7 +436,7 @@ class TmpReindexWidget(QLabel):
     def __init__(self):
         super(TmpReindexWidget, self).__init__()
         self.setText("TMP \n Reindex Widget")
-        self.command_lst = ["reindex"]
+        self.command_lst = ["refine_bravais_settings"]
         self.show()
 
     def update_param(self, dummy_cmd_lst = None):

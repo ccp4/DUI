@@ -168,7 +168,7 @@ class TreeNavWidget(QTreeView):
 
 
 class CentreWidget(QWidget):
-    user_changed_signal = pyqtSignal()
+    user_changed = pyqtSignal()
 
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
@@ -264,7 +264,7 @@ class CentreWidget(QWidget):
         print "btn_clicked"
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
-        self.user_changed_signal.emit()
+        self.user_changed.emit()
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -313,7 +313,7 @@ class MainWidget(QMainWindow):
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
 
 
-        self.centre_widget.user_changed_signal.connect(
+        self.centre_widget.user_changed.connect(
                                            self.cmd_changed_by_user)
 
         h_main_splitter.addWidget(self.centre_widget)
@@ -413,6 +413,16 @@ class MainWidget(QMainWindow):
 
 
         else:
+            if(tmp_curr.command_lst[0] == "refine_bravais_settings"):
+                print
+                #'''
+                self.my_pop = MyReindexOpts()
+                self.my_pop.set_ref(in_json_path = tmp_curr.json_file_out)
+                self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+                #'''
+
+
+
             self.centre_widget.set_widget(nxt_cmd, tmp_curr)
 
         self.tree_out.update_me(self.uni_controler.step_list[0],
