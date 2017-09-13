@@ -413,15 +413,20 @@ class MainWidget(QMainWindow):
 
 
         else:
-            if(tmp_curr.command_lst[0] == "refine_bravais_settings"):
+            if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
+               tmp_curr.success == True):
                 print
                 #'''
                 self.my_pop = MyReindexOpts()
                 self.my_pop.set_ref(in_json_path = tmp_curr.json_file_out)
                 self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
                 #'''
+            else:
+                try:
+                    self.my_pop.close()
 
-
+                except:
+                    print "no need to close reindex table"
 
             self.centre_widget.set_widget(nxt_cmd, tmp_curr)
 
