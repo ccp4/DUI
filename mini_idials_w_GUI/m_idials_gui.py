@@ -33,7 +33,7 @@ import pickle
 from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
 from gui_utils import CliOutView
-
+from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
 import subprocess
 
@@ -318,6 +318,9 @@ class MainWidget(QMainWindow):
 
         h_main_splitter.addWidget(self.centre_widget)
 
+
+
+
         self.cli_out = CliOutView()
         self.web_view = WebTab()
         self.img_view = MyImgWin()
@@ -329,7 +332,11 @@ class MainWidget(QMainWindow):
 
         h_main_splitter.addWidget(self.my_tabs)
 
+
         main_box.addWidget(h_main_splitter)
+
+        self.info_widget = InfoWidget()
+        main_box.addWidget(self.info_widget)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
