@@ -295,14 +295,14 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        h_main_splitter = QSplitter()
-        h_main_splitter.setOrientation(Qt.Horizontal)
+        h_left_splitter = QSplitter()
+        h_left_splitter.setOrientation(Qt.Horizontal)
 
         self.tree_out = TreeNavWidget()
         self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
         self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
-        h_main_splitter.addWidget(self.tree_out)
+        h_left_splitter.addWidget(self.tree_out)
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
@@ -316,10 +316,20 @@ class MainWidget(QMainWindow):
         self.centre_widget.user_changed.connect(
                                            self.cmd_changed_by_user)
 
-        h_main_splitter.addWidget(self.centre_widget)
+        h_left_splitter.addWidget(self.centre_widget)
 
 
+        v_left_splitter = QSplitter()
+        v_left_splitter.setOrientation(Qt.Vertical)
+        v_left_splitter.addWidget(h_left_splitter)
 
+        self.info_widget = InfoWidget()
+        v_left_splitter.addWidget(self.info_widget)
+
+
+        h_main_splitter = QSplitter()
+        h_main_splitter.setOrientation(Qt.Horizontal)
+        h_main_splitter.addWidget(v_left_splitter)
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
@@ -335,8 +345,6 @@ class MainWidget(QMainWindow):
 
         main_box.addWidget(h_main_splitter)
 
-        self.info_widget = InfoWidget()
-        main_box.addWidget(self.info_widget)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
