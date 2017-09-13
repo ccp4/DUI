@@ -306,7 +306,7 @@ class MainWidget(QMainWindow):
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = False
+        self.make_next = True
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
@@ -400,17 +400,10 @@ class MainWidget(QMainWindow):
                 if(cur_success == None):
                     self.cmd_launch("refine_bravais_settings")
 
-                else:
-                    self.centre_widget.set_widget("refine", tmp_curr)
-
             elif(nxt_cmd == "reindex"):
                 self.my_pop = MyReindexOpts()
                 self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
                 self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
-
-            else:
-                self.centre_widget.set_widget(nxt_cmd, tmp_curr)
-
 
         else:
             if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
@@ -428,11 +421,9 @@ class MainWidget(QMainWindow):
                 except:
                     print "no need to close reindex table"
 
-            self.centre_widget.set_widget(nxt_cmd, tmp_curr)
-
+        self.centre_widget.set_widget(nxt_cmd, tmp_curr)
         self.tree_out.update_me(self.uni_controler.step_list[0],
                                 self.uni_controler.current)
-
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
