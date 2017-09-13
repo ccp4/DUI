@@ -58,6 +58,7 @@ def update_info(main_obj):
     new_html = main_obj.uni_controler.get_html_report()
     new_img_json = main_obj.uni_controler.get_datablock_path()
     new_ref_pikl = main_obj.uni_controler.get_reflections_path()
+    new_exp_json = main_obj.uni_controler.get_experiment_path()
 
     print "\n new_html =", new_html , "\n"
     print " new_img_json =", new_img_json , "\n"
@@ -78,6 +79,11 @@ def update_info(main_obj):
     if(main_obj.cur_json != new_img_json):
         main_obj.cur_json = new_img_json
         main_obj.img_view.ini_datablock(main_obj.cur_json)
+
+
+    main_obj.info_widget.update_data(dblock_json_path = new_img_json,
+                                     exp_json_path = new_exp_json,
+                                     refl_pikl_path = new_ref_pikl)
 
 
 class MyThread(QThread):

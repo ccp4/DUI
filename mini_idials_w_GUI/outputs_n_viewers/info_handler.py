@@ -125,7 +125,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
 
             exp_crystal = exp.crystal
-            #print "exp_crystal = ", exp_crystal
+            print "exp_crystal = ", exp_crystal
             b_mat = exp.crystal.get_B()
             dat.b11 = b_mat[0]
             dat.b12 = b_mat[1]

@@ -344,26 +344,6 @@ class InfoWidget( QWidget):
         my_main_box.addLayout(inner_main_box)
         my_main_box.addStretch()
 
-        tmp_off = '''
-        if( parent == None ):
-
-            try:
-                self.my_json_path = str(sys.argv[1])
-                try:
-                    self.my_pikl_path = str(sys.argv[2])
-
-                except:
-                    self.my_pikl_path = None
-
-            except:
-                self.my_json_path = None
-
-        else:
-            self.my_json_path = None
-            self.my_pikl_path = None
-            print "updating OutputsWidget"
-        '''
-
         self.my_json_path = None
         self.my_pikl_path = None
 
@@ -374,7 +354,9 @@ class InfoWidget( QWidget):
 
     def update_data(self, dblock_json_path = None, exp_json_path = None, refl_pikl_path = None):
 
-        print "\nrefl_pikl_path =", refl_pikl_path,"\n"
+        print "\n\nrefl_pikl_path =", refl_pikl_path,"\n"
+        print "\nexp_json_path =", exp_json_path,"\n"
+        print "\ndblock_json_path =", dblock_json_path,"\n\n"
 
         if( dblock_json_path != None ):
             exp_json_path = dblock_json_path

@@ -199,6 +199,27 @@ class Runner(object):
 
         return path_to_json
 
+    def get_experiment_path(self):
+        path_to_json = None
+        tmp_cur = self.step_list[self.current]
+        if(tmp_cur.command_lst == [None]):
+           tmp_cur = tmp_cur.prev_step
+
+        if(tmp_cur.command_lst[0] != "Root" and
+          tmp_cur.command_lst[0] != "import" and
+          tmp_cur.command_lst[0] != "find_spots" and
+          tmp_cur.success == True):
+
+            try:
+                path_to_json = tmp_cur.json_file_out
+
+            except:
+                print "no experimet json file available"
+
+        return path_to_json
+
+
+
     def get_reflections_path(self):
         tmp_cur = self.step_list[self.current]
         if(tmp_cur.command_lst == [None]):
