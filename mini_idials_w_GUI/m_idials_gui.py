@@ -121,8 +121,10 @@ class TreeNavWidget(QTreeView):
         super(TreeNavWidget, self).__init__()
         print "TreeNavWidget(__init__)"
 
-    def update_me(self, root_node, lst_path_idx):
+    def update_me(self, root_node, lst_path_idx, curr_step_name):
         self.lst_idx = lst_path_idx
+
+        self.step_name_now = curr_step_name
 
         print self.lst_idx
 
@@ -153,6 +155,11 @@ class TreeNavWidget(QTreeView):
                 except:
                     child_node_tip = "None"
 
+                if(self.lst_idx == child_node.lin_num and
+                   child_node.success == None):
+
+                    child_node_name = "* " + self.step_name_now + " *"
+
                 new_item = QStandardItem(child_node_name)
                 new_item.setToolTip(child_node_tip)
                 new_item.idials_node = child_node
@@ -165,6 +172,8 @@ class TreeNavWidget(QTreeView):
 
                     else:
                         new_item.setForeground(Qt.white)
+
+
 
                 else:
                     new_item.setBackground(Qt.white)
@@ -305,6 +314,7 @@ class MainWidget(QMainWindow):
         self.cur_html = None
         self.cur_pick = None
         self.cur_json = None
+        self.cur_cmd_name = "None"
 
         main_box = QVBoxLayout()
 
@@ -370,11 +380,6 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-    def update_nav_tree(self):
-        self.tree_out.update_me(self.uni_controler.step_list[0],
-                                self.uni_controler.current)
-
-
     def cmd_changed_by_user(self):
         print "cmd_changed_by_user()"
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
@@ -391,7 +396,7 @@ class MainWidget(QMainWindow):
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
-        print "\n\nself.cur_cmd_name =", self.cur_cmd_name, "\n\n"
+        self.update_nav_tree()
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -465,6 +470,11 @@ class MainWidget(QMainWindow):
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
+
+    def update_nav_tree(self):
+        self.tree_out.update_me(self.uni_controler.step_list[0],
+                                self.uni_controler.current,
+                                self.cur_cmd_name)
 
     def opt_clicked(self, row, col):
         if(self.make_next == False):
