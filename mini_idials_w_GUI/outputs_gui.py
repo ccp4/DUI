@@ -32,8 +32,8 @@ from dynamic_reindex_gui import MyReindexOpts
 from outputs_n_viewers.web_page_view import WebTab
 
 def update_data_label(data_label, data_info, n_dec = 2):
-    data_label.setStyleSheet("background-color: silver")
-    #data_label.setStyleSheet("background-color: lightGray")
+    #data_label.setStyleSheet("background-color: silver")
+    data_label.setStyleSheet("background-color: lightGray")
 
     if 'int' in str(type(data_info)):
         data_label.setText(str(data_info))

@@ -61,7 +61,12 @@ def update_info(main_obj):
     #new_exp_json = main_obj.uni_controler.get_experiment_path()
 
     tmp_curr = main_obj.uni_controler.step_list[main_obj.uni_controler.current]
+    if(tmp_curr.success == None):
+        tmp_curr = tmp_curr.prev_step
+
     uni_json = tmp_curr.json_file_out
+
+
 
     print "\n new_html =", new_html , "\n"
     print " new_img_json =", new_img_json , "\n"
@@ -308,9 +313,10 @@ class MainWidget(QMainWindow):
 
         self.tree_out = TreeNavWidget()
         self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
-        self.tree_out.update_me(self.uni_controler.step_list[0], self.uni_controler.current)
 
         h_left_splitter.addWidget(self.tree_out)
+        self.update_nav_tree()
+
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
@@ -321,8 +327,10 @@ class MainWidget(QMainWindow):
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
 
 
-        self.centre_widget.user_changed.connect(
-                                           self.cmd_changed_by_user)
+        self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
+
+        self.centre_widget.step_param_widg.currentChanged.connect(
+                                          self.cmd_changed_by_any)
 
         h_left_splitter.addWidget(self.centre_widget)
 
@@ -362,6 +370,11 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
+    def update_nav_tree(self):
+        self.tree_out.update_me(self.uni_controler.step_list[0],
+                                self.uni_controler.current)
+
+
     def cmd_changed_by_user(self):
         print "cmd_changed_by_user()"
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
@@ -373,8 +386,12 @@ class MainWidget(QMainWindow):
                                    ref_to_class = None,
                                    mk_nxt = self.make_next)
 
-            self.tree_out.update_me(self.uni_controler.step_list[0],
-                                    self.uni_controler.current)
+            self.update_nav_tree()
+
+    def cmd_changed_by_any(self):
+        tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
+        self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
+        print "\n\nself.cur_cmd_name =", self.cur_cmd_name, "\n\n"
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -444,8 +461,7 @@ class MainWidget(QMainWindow):
                     print "no need to close reindex table"
 
         self.centre_widget.set_widget(nxt_cmd, tmp_curr)
-        self.tree_out.update_me(self.uni_controler.step_list[0],
-                                self.uni_controler.current)
+        self.update_nav_tree()
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.uni_controler, bkp_out)
