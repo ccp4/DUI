@@ -352,6 +352,8 @@ class InfoWidget( QWidget):
         self.setLayout(my_main_box)
         self.show()
 
+        bkp_old = '''
+
     def update_data(self, dblock_json_path = None, exp_json_path = None, refl_pikl_path = None):
 
         print "\n\nrefl_pikl_path =", refl_pikl_path,"\n"
@@ -361,8 +363,18 @@ class InfoWidget( QWidget):
         if( dblock_json_path != None ):
             exp_json_path = dblock_json_path
 
-        self.all_data = update_all_data(experiments_path = exp_json_path,
-                                        reflections_path = refl_pikl_path)
+            '''
+
+    def update_data(self, exp_json_path = None, refl_pikl_path = None):
+        try:
+
+            self.all_data = update_all_data(experiments_path = exp_json_path,
+                                            reflections_path = refl_pikl_path)
+
+        except:
+            print "unable to update data panel"
+            self.all_data = update_all_data(experiments_path = None,
+                                            reflections_path = None)
 
         update_data_label(self.a_data, self.all_data.a)
         update_data_label(self.b_data, self.all_data.b)
