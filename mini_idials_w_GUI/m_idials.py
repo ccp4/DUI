@@ -147,6 +147,7 @@ class Runner(object):
 
         lst_to_rm = []
 
+        '''
         for node in self.step_list:
             if(node != self.current_node and node.success == None):
                 lst_to_rm.append(node.lin_num)
@@ -156,6 +157,18 @@ class Runner(object):
         for n_lin in lst_to_rm:
             self.step_list[n_lin].prev_step.next_step_list.remove(self.step_list[n_lin])
             self.step_list.remove(self.step_list[n_lin])
+
+        '''
+
+        for node in self.step_list:
+            if(node != self.current_node and node.success == None):
+                lst_to_rm.append(node)
+
+        #print "lst_to_rm:\n", lst_to_rm
+
+        for node in lst_to_rm:
+            node.prev_step.next_step_list.remove(node)
+            self.step_list.remove(node)
 
         print "self.current_line =", self.current_line, "\n"
 
