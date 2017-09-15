@@ -58,9 +58,9 @@ def update_info(main_obj):
     new_html = main_obj.uni_controler.get_html_report()
     new_img_json = main_obj.uni_controler.get_datablock_path()
     new_ref_pikl = main_obj.uni_controler.get_reflections_path()
-    #new_exp_json = main_obj.uni_controler.get_experiment_path()
 
-    tmp_curr = main_obj.uni_controler.step_list[main_obj.uni_controler.current_line]
+    #tmp_curr = main_obj.uni_controler.step_list[main_obj.uni_controler.current_line]
+    tmp_curr = main_obj.uni_controler.current_node
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
 
@@ -382,7 +382,8 @@ class MainWidget(QMainWindow):
 
     def cmd_changed_by_user(self):
         print "cmd_changed_by_user()"
-        tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
+        #tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
+        tmp_curr = self.uni_controler.current_node
         if(self.make_next == False and
             len(tmp_curr.next_step_list) == 0 and
             tmp_curr.success == True):
@@ -390,7 +391,6 @@ class MainWidget(QMainWindow):
             self.uni_controler.run(command = ["mkchi"],
                                    ref_to_class = None,
                                    mk_nxt = self.make_next)
-
             self.update_nav_tree()
 
     def cmd_changed_by_any(self):
@@ -427,9 +427,9 @@ class MainWidget(QMainWindow):
         self.custom_thread(new_cmd, self.uni_controler, mk_nxt = self.make_next)
 
     def update_after_finished(self):
-
         update_info(self)
-        tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
+        #tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
+        tmp_curr = self.uni_controler.current_node
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
         if(self.make_next == True):
