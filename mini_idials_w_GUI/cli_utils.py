@@ -243,7 +243,7 @@ def print_list(lst, curr):
             stp_str += " prev: None"
 
         stp_str += " nxt: "
-        if(type(uni.next_step_list) is list):
+        if(len(uni.next_step_list) > 0):
             for nxt_uni in uni.next_step_list:
                 stp_str += "  " + str(nxt_uni.lin_num)
 
@@ -291,7 +291,7 @@ class TreeShow(object):
 
         self.str_lst.append([stp_prn, indent, int(step.lin_num)])
         new_indent = indent
-        if(type(step.next_step_list) is list):
+        if(len(step.next_step_list) > 0):
             for line in step.next_step_list:
                 new_indent = indent + 1
                 self.add_tree(step = line, indent = new_indent)

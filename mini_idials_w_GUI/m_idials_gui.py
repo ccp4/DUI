@@ -136,7 +136,7 @@ class TreeNavWidget(QTreeView):
         self.expandAll()
 
     def recursive_node(self, root_node, item_in):
-        if(type(root_node.next_step_list) is list):
+        if(len(root_node.next_step_list) > 0):
             for child_node in root_node.next_step_list:
                 if(child_node.success == None):
                     #child_node_name = "* " + get_next_step(child_node) + " *"
@@ -384,7 +384,7 @@ class MainWidget(QMainWindow):
         print "cmd_changed_by_user()"
         tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
         if(self.make_next == False and
-            tmp_curr.next_step_list == None and
+            len(tmp_curr.next_step_list) == 0 and
             tmp_curr.success == True):
 
             self.uni_controler.run(command = ["mkchi"],
