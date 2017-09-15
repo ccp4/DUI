@@ -60,7 +60,7 @@ def update_info(main_obj):
     new_ref_pikl = main_obj.uni_controler.get_reflections_path()
     #new_exp_json = main_obj.uni_controler.get_experiment_path()
 
-    tmp_curr = main_obj.uni_controler.step_list[main_obj.uni_controler.current]
+    tmp_curr = main_obj.uni_controler.step_list[main_obj.uni_controler.current_line]
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
 
@@ -330,7 +330,7 @@ class MainWidget(QMainWindow):
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = False
+        self.make_next = True
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
@@ -382,7 +382,7 @@ class MainWidget(QMainWindow):
 
     def cmd_changed_by_user(self):
         print "cmd_changed_by_user()"
-        tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
+        tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
         if(self.make_next == False and
             len(tmp_curr.next_step_list) == 0 and
             tmp_curr.success == True):
@@ -429,7 +429,7 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
 
         update_info(self)
-        tmp_curr = self.uni_controler.step_list[self.uni_controler.current]
+        tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
         if(self.make_next == True):
@@ -473,7 +473,7 @@ class MainWidget(QMainWindow):
 
     def update_nav_tree(self):
         self.tree_out.update_me(self.uni_controler.step_list[0],
-                                self.uni_controler.current,
+                                self.uni_controler.current_line,
                                 self.cur_cmd_name)
 
     def opt_clicked(self, row, col):

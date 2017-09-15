@@ -95,7 +95,7 @@ class Runner(object):
         root_node.command_lst = ["Root"]
         self.step_list = [root_node]
         self.bigger_lin = 0
-        self.current = self.bigger_lin
+        self.current_line = self.bigger_lin
         self.create_step(root_node)
 
     def run(self, command, ref_to_class, mk_nxt = True):
@@ -115,36 +115,36 @@ class Runner(object):
             self.clean()
 
         elif(cmd_lst[0] == "mkchi"):
-            self.create_step(self.step_list[self.current])
+            self.create_step(self.step_list[self.current_line])
 
         elif(cmd_lst[0] == "mksib"):
-            old_command_lst = self.step_list[self.current].command_lst
+            old_command_lst = self.step_list[self.current_line].command_lst
             self.goto_prev()
             print "forking"
-            self.create_step(self.step_list[self.current])
-            self.step_list[self.current].edit_list(old_command_lst)
+            self.create_step(self.step_list[self.current_line])
+            self.step_list[self.current_line].edit_list(old_command_lst)
 
         else:
-            if(self.step_list[self.current].success == True):
+            if(self.step_list[self.current_line].success == True):
                 self.goto_prev()
                 print "forking"
-                self.create_step(self.step_list[self.current])
+                self.create_step(self.step_list[self.current_line])
 
-            self.step_list[self.current](cmd_lst, ref_to_class)
-            if(self.step_list[self.current].success == True and mk_nxt == True):
-                self.create_step(self.step_list[self.current])
+            self.step_list[self.current_line](cmd_lst, ref_to_class)
+            if(self.step_list[self.current_line].success == True and mk_nxt == True):
+                self.create_step(self.step_list[self.current_line])
 
             else:
                 print "failed step"
 
     def clean(self):
         print "\n Cleaning"
-        print "self.current =", self.current
+        print "self.current_line =", self.current_line
 
         lst_to_rm = []
 
         for node in self.step_list:
-            if(node != self.step_list[self.current] and node.success == None):
+            if(node != self.step_list[self.current_line] and node.success == None):
                 lst_to_rm.append(node.lin_num)
 
         print "lst_to_rm:\n", lst_to_rm
@@ -153,7 +153,7 @@ class Runner(object):
             self.step_list[n_lin].prev_step.next_step_list.remove(self.step_list[n_lin])
             self.step_list.remove(self.step_list[n_lin])
 
-        print "self.current =", self.current, "\n"
+        print "self.current_line =", self.current_line, "\n"
 
     def create_step(self, prev_step):
         new_step = UniStep(prev_step = prev_step)
@@ -165,21 +165,21 @@ class Runner(object):
 
     def goto_prev(self):
         try:
-            self.goto(self.step_list[self.current].prev_step.lin_num)
+            self.goto(self.step_list[self.current_line].prev_step.lin_num)
 
         except:
             print "can NOT fork <None> node "
 
     def goto(self, new_lin):
-        self.current = new_lin
+        self.current_line = new_lin
 
     def get_html_report(self):
-        if(self.step_list[self.current].success == True):
-            html_rep = self.step_list[self.current].report_out
+        if(self.step_list[self.current_line].success == True):
+            html_rep = self.step_list[self.current_line].report_out
 
         else:
             try:
-                html_rep = self.step_list[self.current].prev_step.report_out
+                html_rep = self.step_list[self.current_line].prev_step.report_out
 
             except:
                 html_rep = None
@@ -188,7 +188,7 @@ class Runner(object):
 
     def get_datablock_path(self):
 
-        tmp_cur = self.step_list[self.current]
+        tmp_cur = self.step_list[self.current_line]
         path_to_json = None
 
         while True:
@@ -210,7 +210,7 @@ class Runner(object):
 
     def get_experiment_path(self):
         path_to_json = None
-        tmp_cur = self.step_list[self.current]
+        tmp_cur = self.step_list[self.current_line]
         if(tmp_cur.command_lst == [None]):
            tmp_cur = tmp_cur.prev_step
 
@@ -230,7 +230,7 @@ class Runner(object):
 
 
     def get_reflections_path(self):
-        tmp_cur = self.step_list[self.current]
+        tmp_cur = self.step_list[self.current_line]
         if(tmp_cur.command_lst == [None]):
            tmp_cur = tmp_cur.prev_step
 
@@ -250,11 +250,11 @@ class Runner(object):
         return path_to_pickle
 
     def get_next_from_here(self):
-        return self.step_list[self.current].get_next_step()
+        return self.step_list[self.current_line].get_next_step()
 
     def slist(self):
         print "printing in steps list mode: \n"
-        print_list(self.step_list, self.current)
+        print_list(self.step_list, self.current_line)
 
 if(__name__ == "__main__"):
     tree_output = TreeShow()
@@ -271,7 +271,7 @@ if(__name__ == "__main__"):
     command = ""
     while(command.strip() != 'exit' and command.strip() != 'quit'):
         try:
-            inp_str = "lin [" + str(uni_controler.current) + "] >>> "
+            inp_str = "lin [" + str(uni_controler.current_line) + "] >>> "
             command = str(raw_input(inp_str))
             if(command == ""):
                 print "converting empty line in self.slist()"

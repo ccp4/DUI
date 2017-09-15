@@ -270,7 +270,7 @@ class TreeShow(object):
         self.max_indent = 0
         self.str_lst = []
         self.add_tree(step = my_runner.step_list[0], indent = 0)
-        self.tree_print(my_runner.current)
+        self.tree_print(my_runner.current_line)
         print "---------------------" + self.max_indent * self.ind_lin
 
 
