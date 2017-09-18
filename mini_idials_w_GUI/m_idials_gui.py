@@ -406,6 +406,7 @@ class MainWidget(QMainWindow):
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
+        self.cmd_exe(["clean"])
 
     def run_clicked(self):
         print "run_clicked"
