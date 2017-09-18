@@ -391,7 +391,7 @@ class MainWidget(QMainWindow):
             self.uni_controler.run(command = ["mkchi"],
                                    ref_to_class = None,
                                    mk_nxt = self.make_next)
-            self.update_nav_tree()
+            self.cmd_exe(["clean"])
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
@@ -400,13 +400,11 @@ class MainWidget(QMainWindow):
 
     def rep_clicked(self):
         print "rep_clicked"
-        cmd_tmp = ["mksib"]
-        print "cmd_tmp =", cmd_tmp
-        self.cmd_exe(cmd_tmp)
+        self.cmd_exe(["mksib"], update_after = False)
+        self.cmd_exe(["clean"])
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
-        self.cmd_exe(["clean"])
 
     def run_clicked(self):
         print "run_clicked"
@@ -416,12 +414,13 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
         #TODO think about how to prevent launches from happening when is busy
 
-    def cmd_exe(self, new_cmd):
+    def cmd_exe(self, new_cmd, update_after = True):
         #Running in NOT in parallel
         self.uni_controler.run(command = new_cmd, ref_to_class = None,
                                mk_nxt = self.make_next)
 
-        self.update_after_finished()
+        if(update_after == True):
+            self.update_after_finished()
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
