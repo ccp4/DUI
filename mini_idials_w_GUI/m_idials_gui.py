@@ -54,13 +54,13 @@ def build_command_tip(command_lst):
     return str_tip
 
 def update_info(main_obj):
-    main_obj.cli_tree_output(main_obj.uni_controler)
-    new_html = main_obj.uni_controler.get_html_report()
-    new_img_json = main_obj.uni_controler.get_datablock_path()
-    new_ref_pikl = main_obj.uni_controler.get_reflections_path()
+    main_obj.cli_tree_output(main_obj.idials_runner)
+    new_html = main_obj.idials_runner.get_html_report()
+    new_img_json = main_obj.idials_runner.get_datablock_path()
+    new_ref_pikl = main_obj.idials_runner.get_reflections_path()
 
-    #tmp_curr = main_obj.uni_controler.step_list[main_obj.uni_controler.current_line]
-    tmp_curr = main_obj.uni_controler.current_node
+    #tmp_curr = main_obj.idials_runner.step_list[main_obj.idials_runner.current_line]
+    tmp_curr = main_obj.idials_runner.current_node
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
 
@@ -294,22 +294,22 @@ class MainWidget(QMainWindow):
 
         try:
             with open ('bkp.pickle', 'rb') as bkp_in:
-                self.uni_controler = pickle.load(bkp_in)
+                self.idials_runner = pickle.load(bkp_in)
 
             '''
             TODO sometimes the following error appears
             Attribute not found
-            'module' object has no attribute 'UniStep'
+            'module' object has no attribute 'CommandNode'
             '''
 
         except Exception as e:
             print "str(e) =", str(e)
             print "e.__doc__ =", e.__doc__
             print "e.message =", e.message
-            self.uni_controler = Runner()
+            self.idials_runner = Runner()
 
         self.cli_tree_output = TreeShow()
-        self.cli_tree_output(self.uni_controler)
+        self.cli_tree_output(self.idials_runner)
 
         self.cur_html = None
         self.cur_pick = None
@@ -330,7 +330,7 @@ class MainWidget(QMainWindow):
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = False
+        self.make_next = True
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
@@ -382,13 +382,13 @@ class MainWidget(QMainWindow):
 
     def cmd_changed_by_user(self):
         print "cmd_changed_by_user()"
-        #tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
-        tmp_curr = self.uni_controler.current_node
+        #tmp_curr = self.idials_runner.step_list[self.idials_runner.current_line]
+        tmp_curr = self.idials_runner.current_node
         if(self.make_next == False and
             len(tmp_curr.next_step_list) == 0 and
             tmp_curr.success == True):
 
-            self.uni_controler.run(command = ["mkchi"],
+            self.idials_runner.run(command = ["mkchi"],
                                    ref_to_class = None,
                                    mk_nxt = self.make_next)
             self.cmd_exe(["clean"])
@@ -416,7 +416,7 @@ class MainWidget(QMainWindow):
 
     def cmd_exe(self, new_cmd, update_after = True):
         #Running in NOT in parallel
-        self.uni_controler.run(command = new_cmd, ref_to_class = None,
+        self.idials_runner.run(command = new_cmd, ref_to_class = None,
                                mk_nxt = self.make_next)
 
         if(update_after == True):
@@ -424,12 +424,12 @@ class MainWidget(QMainWindow):
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
-        self.custom_thread(new_cmd, self.uni_controler, mk_nxt = self.make_next)
+        self.custom_thread(new_cmd, self.idials_runner, mk_nxt = self.make_next)
 
     def update_after_finished(self):
         update_info(self)
-        #tmp_curr = self.uni_controler.step_list[self.uni_controler.current_line]
-        tmp_curr = self.uni_controler.current_node
+        #tmp_curr = self.idials_runner.step_list[self.idials_runner.current_line]
+        tmp_curr = self.idials_runner.current_node
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
         if(self.make_next == True):
@@ -469,16 +469,16 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
 
         with open('bkp.pickle', 'wb') as bkp_out:
-            pickle.dump(self.uni_controler, bkp_out)
+            pickle.dump(self.idials_runner, bkp_out)
 
     def update_nav_tree(self):
-        self.tree_out.update_me(self.uni_controler.step_list[0],
-                                self.uni_controler.current_line,
+        self.tree_out.update_me(self.idials_runner.step_list[0],
+                                self.idials_runner.current_line,
                                 self.cur_cmd_name)
 
     def opt_clicked(self, row, col):
         if(self.make_next == False):
-            self.uni_controler.run(command = ["mkchi"],
+            self.idials_runner.run(command = ["mkchi"],
                                    ref_to_class = None,
                                    mk_nxt = self.make_next)
 

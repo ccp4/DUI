@@ -28,7 +28,7 @@ import pickle
 from cli_utils import print_list, TreeShow, DialsCommand, \
      generate_report, build_command_lst, get_next_step
 
-class UniStep(object):
+class CommandNode(object):
     dials_com_lst = [
     'import',
     'find_spots',
@@ -90,7 +90,7 @@ class UniStep(object):
 class Runner(object):
 
     def __init__(self):
-        root_node = UniStep(prev_step = None)
+        root_node = CommandNode(prev_step = None)
         root_node.success = True
         root_node.command_lst = ["Root"]
         self.step_list = [root_node]
@@ -173,7 +173,7 @@ class Runner(object):
         print "self.current_line =", self.current_line, "\n"
 
     def create_step(self, prev_step):
-        new_step = UniStep(prev_step = prev_step)
+        new_step = CommandNode(prev_step = prev_step)
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         prev_step.next_step_list.append(new_step)
@@ -285,17 +285,17 @@ if(__name__ == "__main__"):
 
     try:
         with open ('bkp.pickle', 'rb') as bkp_in:
-            uni_controler = pickle.load(bkp_in)
+            idials_runner = pickle.load(bkp_in)
 
     except:
-        uni_controler = Runner()
+        idials_runner = Runner()
 
-    tree_output(uni_controler)
+    tree_output(idials_runner)
 
     command = ""
     while(command.strip() != 'exit' and command.strip() != 'quit'):
         try:
-            inp_str = "lin [" + str(uni_controler.current_line) + "] >>> "
+            inp_str = "lin [" + str(idials_runner.current_line) + "] >>> "
             command = str(raw_input(inp_str))
             if(command == ""):
                 print "converting empty line in self.slist()"
@@ -305,11 +305,11 @@ if(__name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        uni_controler.run(command, None, mk_nxt = True)
-        tree_output(uni_controler)
-        nxt_str = uni_controler.get_next_from_here()
+        idials_runner.run(command, None, mk_nxt = True)
+        tree_output(idials_runner)
+        nxt_str = idials_runner.get_next_from_here()
         print "\n next to run:\n ", nxt_str
 
         with open('bkp.pickle', 'wb') as bkp_out:
-            pickle.dump(uni_controler, bkp_out)
+            pickle.dump(idials_runner, bkp_out)
 
