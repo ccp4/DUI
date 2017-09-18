@@ -25,28 +25,34 @@ copyright (c) CCP4 - DLS
 import subprocess
 import json
 
-def get_next_step(uni_step_obj):
-    if(uni_step_obj.prev_step.lin_num == 0):
+def get_next_step(node_obj):
+    if(node_obj.prev_step.lin_num == 0):
         return "import"
 
-    elif(uni_step_obj.command_lst == [None]):
-        for pos, stp in enumerate(uni_step_obj.dials_com_lst[0:-1]):
-            if(stp == uni_step_obj.prev_step.command_lst[0]):
-                nxt_str = uni_step_obj.dials_com_lst[pos + 1]
+    else:
+        to_remove = '''
+    elif(node_obj.command_lst == [None]):
+        '''
+        for pos, stp in enumerate(node_obj.dials_com_lst[0:-1]):
+            if(stp == node_obj.prev_step.command_lst[0]):
+                nxt_str = node_obj.dials_com_lst[pos + 1]
                 return nxt_str
 
-        return None
+    print "\n\n Defaulting to << None >> in automatic << get_next_step >> \n\n"
+    return None
 
+to_remove = '''
     else:             #TODO think if this ELSE is needed
-        for pos, stp in enumerate(uni_step_obj.dials_com_lst):
-            if(stp == uni_step_obj.command_lst[0]):
-                nxt_str = uni_step_obj.command_lst[0]
+        for pos, stp in enumerate(node_obj.dials_com_lst):
+            if(stp == node_obj.command_lst[0]):
+                nxt_str = node_obj.command_lst[0]
                 return nxt_str
 
         return None
+'''
 
 
-def build_command_lst(uni_step_obj, cmd_lst):
+def build_command_lst(node_obj, cmd_lst):
 
 
     #TODO make sure new step is compatible with previous
@@ -57,56 +63,56 @@ def build_command_lst(uni_step_obj, cmd_lst):
             cmd_lst_to_run.append(tmp_par)
 
     if(cmd_lst[0] == "import"):
-        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + uni_step_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
+        output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
         #TODO make sure import without arguments does NOT run
 
     elif(cmd_lst[0] == "find_spots"):
-        json_file_in = uni_step_obj.prev_step.json_file_out
+        json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
 
-        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + uni_step_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
+        output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
-        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        node_obj.pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
     elif(cmd_lst[0] == "index"):
-        json_file_in = uni_step_obj.prev_step.json_file_out
+        json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
 
-        pickle_file_in = uni_step_obj.prev_step.pickle_file_out
+        pickle_file_in = node_obj.prev_step.pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_experiments.json"
-        output_str = "output.experiments=" + uni_step_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
+        output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
-        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        node_obj.pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
     elif(cmd_lst[0] == "refine_bravais_settings"):
-        json_file_in = uni_step_obj.prev_step.json_file_out
+        json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
 
-        pickle_file_in = uni_step_obj.prev_step.pickle_file_out
+        pickle_file_in = node_obj.prev_step.pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        prefix_str = "lin_" + str(uni_step_obj.lin_num) + "_"
-        uni_step_obj.prefix_out = prefix_str
-        output_str = "output.prefix=" + uni_step_obj.prefix_out
+        prefix_str = "lin_" + str(node_obj.lin_num) + "_"
+        node_obj.prefix_out = prefix_str
+        output_str = "output.prefix=" + node_obj.prefix_out
         cmd_lst_to_run.append(output_str)
 
-        uni_step_obj.json_file_out = prefix_str + "bravais_summary.json"
+        node_obj.json_file_out = prefix_str + "bravais_summary.json"
 
     elif(cmd_lst[0] == "reindex"):
         try:
@@ -117,11 +123,11 @@ def build_command_lst(uni_step_obj, cmd_lst):
         except:
             sol_num = 1
 
-        pickle_file_in = uni_step_obj.prev_step.prev_step.pickle_file_out
+        pickle_file_in = node_obj.prev_step.prev_step.pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        json_file_tmp = uni_step_obj.prev_step.json_file_out
+        json_file_tmp = node_obj.prev_step.json_file_out
         with open(json_file_tmp) as summary_file:
             j_obj = json.load(summary_file)
         change_of_basis_op = j_obj[str(sol_num)]['cb_op']
@@ -129,53 +135,53 @@ def build_command_lst(uni_step_obj, cmd_lst):
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
         cmd_lst_to_run.append(input_str)
 
-        uni_step_obj.json_file_out = uni_step_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
+        node_obj.json_file_out = node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
 
-        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
-        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        node_obj.pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
     elif(cmd_lst[0] == "refine" or cmd_lst[0] == "integrate"):
-        json_file_in = uni_step_obj.prev_step.json_file_out
+        json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
 
-        pickle_file_in = uni_step_obj.prev_step.pickle_file_out
+        pickle_file_in = node_obj.prev_step.pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        uni_step_obj.json_file_out = str(uni_step_obj.lin_num) + "_experiments.json"
-        output_str = "output.experiments=" + uni_step_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
+        output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        uni_step_obj.pickle_file_out = str(uni_step_obj.lin_num) + "_reflections.pickle"
-        output_str = "output.reflections=" + uni_step_obj.pickle_file_out
+        node_obj.pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
     elif(cmd_lst[0] == "export"):
-        cmd_lst_to_run.append(uni_step_obj.prev_step.json_file_out)
-        cmd_lst_to_run.append(uni_step_obj.prev_step.pickle_file_out)
+        cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
+        cmd_lst_to_run.append(node_obj.prev_step.pickle_file_out)
 
-        file_out = str(uni_step_obj.lin_num) + "_integrated.mtz"
+        file_out = str(node_obj.lin_num) + "_integrated.mtz"
         output_str = "mtz.hklout=" + file_out
         cmd_lst_to_run.append(output_str)
 
     return cmd_lst_to_run
 
-def generate_report(uni_step_obj):
+def generate_report(node_obj):
     rep_out = None
 
-    if(uni_step_obj.command_lst[0] in uni_step_obj.dials_com_lst[1:-1]):
-        current_lin = uni_step_obj.lin_num
-        refl_inp = uni_step_obj.pickle_file_out
+    if(node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]):
+        current_lin = node_obj.lin_num
+        refl_inp = node_obj.pickle_file_out
         deps_outp = "output.external_dependencies=local"
         htm_fil = str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
-        if(uni_step_obj.command_lst[0] == "find_spots"):
+        if(node_obj.command_lst[0] == "find_spots"):
             rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
 
         else:
-            exp_inp = uni_step_obj.json_file_out
+            exp_inp = node_obj.json_file_out
             rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
 
         print "rep_cmd =", rep_cmd
@@ -183,7 +189,7 @@ def generate_report(uni_step_obj):
         try:
             gen_rep_proc = subprocess.Popen(rep_cmd)
             gen_rep_proc.wait()
-            rep_out = uni_step_obj.work_dir + "/" + htm_fil
+            rep_out = node_obj.work_dir + "/" + htm_fil
             print "generated report at: ", rep_out
 
         except:

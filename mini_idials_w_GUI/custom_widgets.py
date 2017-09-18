@@ -463,8 +463,7 @@ class ParamWidget(QWidget):
             '''
             self.my_widget = TmpImportWidget()
 
-        elif(label_str == "reindex"):
-
+        elif(label_str == "refine_bravais_settings"):
             self.my_widget = TmpReindexWidget()
 
         else:

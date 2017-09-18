@@ -40,7 +40,7 @@ import subprocess
 from custom_widgets import  ParamWidget
 
 
-widg_name_list = ["import", "find_spots", "index", "reindex", "refine", "integrate"]
+widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
 def build_command_tip(command_lst):
     if(command_lst == [None]):
@@ -330,7 +330,7 @@ class MainWidget(QMainWindow):
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = True
+        self.make_next = False
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
@@ -388,10 +388,9 @@ class MainWidget(QMainWindow):
             len(tmp_curr.next_step_list) == 0 and
             tmp_curr.success == True):
 
-            self.idials_runner.run(command = ["mkchi"],
-                                   ref_to_class = None,
-                                   mk_nxt = self.make_next)
-            self.cmd_exe(["clean"])
+            self.cmd_exe(["mkchi"], update_after = False)
+            self.cmd_exe(["clean"], update_after = False)
+            self.update_nav_tree()
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
@@ -401,7 +400,8 @@ class MainWidget(QMainWindow):
     def rep_clicked(self):
         print "rep_clicked"
         self.cmd_exe(["mksib"], update_after = False)
-        self.cmd_exe(["clean"])
+        self.cmd_exe(["clean"], update_after = False)
+        self.update_nav_tree()
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
@@ -428,7 +428,6 @@ class MainWidget(QMainWindow):
 
     def update_after_finished(self):
         update_info(self)
-        #tmp_curr = self.idials_runner.step_list[self.idials_runner.current_line]
         tmp_curr = self.idials_runner.current_node
         nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
@@ -440,11 +439,7 @@ class MainWidget(QMainWindow):
                 except:
                     print "no need to close reindex table"
 
-            if(nxt_cmd == "refine_bravais_settings"):
-                if(cur_success == None):
-                    self.cmd_launch("refine_bravais_settings")
-
-            elif(nxt_cmd == "reindex"):
+            if(nxt_cmd == "reindex"):
                 self.my_pop = MyReindexOpts()
                 self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
                 self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
