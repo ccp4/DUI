@@ -330,7 +330,7 @@ class MainWidget(QMainWindow):
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = True
+        self.make_next = False
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
