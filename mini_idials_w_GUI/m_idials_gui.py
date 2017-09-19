@@ -424,8 +424,7 @@ class MainWidget(QMainWindow):
         self.custom_thread(new_cmd, self.idials_runner, mk_nxt = self.make_next)
 
     def update_after_finished(self):
-        #TODO fix the next line
-        #update_info(self)
+        update_info(self)
 
         tmp_curr = self.idials_runner.current_node
         cur_success = tmp_curr.success
@@ -491,6 +490,7 @@ class MainWidget(QMainWindow):
                                       curr_step = self.idials_runner.current_node)
 
         self.check_reindex_pop()
+        update_info(self)
 
 #default_way = '''
 if __name__ == '__main__':
