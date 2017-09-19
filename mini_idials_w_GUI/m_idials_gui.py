@@ -275,12 +275,11 @@ class CentreWidget(QWidget):
         for widget in self.widg_lst:
             if(widget.my_label == nxt_cmd):
                 self.step_param_widg.setCurrentWidget(widget)
-                #try:
+                try:
+                    widget.update_param(curr_step)
 
-                widget.update_param(curr_step)
-
-                #except:
-                #    print "\n\n Unable to update params\n\n"
+                except:
+                    print "\n\n Unable to update params\n\n"
 
     def btn_clicked(self):
         print "btn_clicked"
@@ -322,7 +321,7 @@ class MainWidget(QMainWindow):
         h_left_splitter.setOrientation(Qt.Horizontal)
 
         self.tree_out = TreeNavWidget()
-        self.tree_out.clicked[QModelIndex].connect(self.item_clicked)
+        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
 
         h_left_splitter.addWidget(self.tree_out)
         self.update_nav_tree()
@@ -388,9 +387,8 @@ class MainWidget(QMainWindow):
             len(tmp_curr.next_step_list) == 0 and
             tmp_curr.success == True):
 
-            self.cmd_exe(["mkchi"], update_after = False)
-            self.cmd_exe(["clean"], update_after = False)
-            self.update_nav_tree()
+            self.cmd_exe(["mkchi"])
+            self.cmd_exe(["clean"])
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
@@ -399,9 +397,8 @@ class MainWidget(QMainWindow):
 
     def rep_clicked(self):
         print "rep_clicked"
-        self.cmd_exe(["mksib"], update_after = False)
-        self.cmd_exe(["clean"], update_after = False)
-        self.update_nav_tree()
+        self.cmd_exe(["mksib"])
+        self.cmd_exe(["clean"])
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
@@ -414,57 +411,63 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
         #TODO think about how to prevent launches from happening when is busy
 
-    def cmd_exe(self, new_cmd, update_after = True):
+    def cmd_exe(self, new_cmd):
         #Running in NOT in parallel
         self.idials_runner.run(command = new_cmd, ref_to_class = None,
                                mk_nxt = self.make_next)
 
-        if(update_after == True):
-            self.update_after_finished()
+        self.update_nav_tree()
+        self.check_reindex_pop()
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
         self.custom_thread(new_cmd, self.idials_runner, mk_nxt = self.make_next)
 
     def update_after_finished(self):
-        update_info(self)
+        #TODO fix the next line
+        #update_info(self)
+
         tmp_curr = self.idials_runner.current_node
-        nxt_cmd = get_next_step(tmp_curr)
         cur_success = tmp_curr.success
-        if(self.make_next == True):
-            if(tmp_curr.command_lst[0] != "reindex"):
-                try:
-                    self.my_pop.close()
+        if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
+          tmp_curr.success == True):
 
-                except:
-                    print "no need to close reindex table"
+            self.idials_runner.run(command = ["mkchi"],
+                                    ref_to_class = None,
+                                    mk_nxt = self.make_next)
+            self.idials_runner.current_node.command_lst[0] = "reindex"
 
-            if(nxt_cmd == "reindex"):
-                self.my_pop = MyReindexOpts()
-                self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
-                self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+        elif(tmp_curr.command_lst[0] == "reindex" and
+          tmp_curr.success == True):
+            try:
+                self.my_pop.close()
 
-        else:
-            if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
-               tmp_curr.success == True):
-                print
-                #'''
-                self.my_pop = MyReindexOpts()
-                self.my_pop.set_ref(in_json_path = tmp_curr.json_file_out)
-                self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
-                #'''
-            else:
-                try:
-                    self.my_pop.close()
+            except:
+                print "no need to close reindex table"
 
-                except:
-                    print "no need to close reindex table"
-
-        self.centre_widget.set_widget(nxt_cmd, tmp_curr)
         self.update_nav_tree()
+        self.check_reindex_pop()
+
+        #TODO use next line for automatic mode
+        #nxt_cmd = get_next_step(tmp_curr)
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
+
+    def check_reindex_pop(self):
+        tmp_curr = self.idials_runner.current_node
+        if(tmp_curr.command_lst[0] == "reindex"):
+            self.my_pop = MyReindexOpts()
+            self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
+            self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+
+        else:
+            try:
+                self.my_pop.close()
+
+            except:
+                print "no need to close reindex table"
+
 
     def update_nav_tree(self):
         self.tree_out.update_me(self.idials_runner.step_list[0],
@@ -472,23 +475,22 @@ class MainWidget(QMainWindow):
                                 self.cur_cmd_name)
 
     def opt_clicked(self, row, col):
-        if(self.make_next == False):
-            self.idials_runner.run(command = ["mkchi"],
-                                   ref_to_class = None,
-                                   mk_nxt = self.make_next)
-
         re_idx = row + 1
         print "Solution clicked =", re_idx
         cmd_tmp = "reindex solution=" + str(re_idx)
         self.cmd_launch(cmd_tmp)
 
-    def item_clicked(self, it_index):
-        print "TreeNavWidget(item_clicked)"
+    def node_clicked(self, it_index):
+        print "TreeNavWidget(node_clicked)"
         item = self.tree_out.std_mod.itemFromIndex(it_index)
         lin_num = item.idials_node.lin_num
         print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
+        self.centre_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
+                                      curr_step = self.idials_runner.current_node)
+
+        self.check_reindex_pop()
 
 #default_way = '''
 if __name__ == '__main__':
