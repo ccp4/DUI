@@ -426,14 +426,20 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
         update_info(self)
 
-        tmp_curr = self.idials_runner.current_node
-        cur_success = tmp_curr.success
+        if(self.make_next == True):
+            tmp_curr = self.idials_runner.current_node.prev_step
+
+        else:
+            tmp_curr = self.idials_runner.current_node
+
+
         if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
           tmp_curr.success == True):
+            if(self.make_next == False):
+                self.idials_runner.run(command = ["mkchi"],
+                                        ref_to_class = None,
+                                        mk_nxt = self.make_next)
 
-            self.idials_runner.run(command = ["mkchi"],
-                                    ref_to_class = None,
-                                    mk_nxt = self.make_next)
             self.idials_runner.current_node.command_lst[0] = "reindex"
 
         elif(tmp_curr.command_lst[0] == "reindex" and
