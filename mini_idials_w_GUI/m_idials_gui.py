@@ -335,7 +335,6 @@ class MainWidget(QMainWindow):
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
 
-
         self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
 
         self.centre_widget.step_param_widg.currentChanged.connect(
@@ -343,14 +342,12 @@ class MainWidget(QMainWindow):
 
         h_left_splitter.addWidget(self.centre_widget)
 
-
         v_left_splitter = QSplitter()
         v_left_splitter.setOrientation(Qt.Vertical)
         v_left_splitter.addWidget(h_left_splitter)
 
         self.info_widget = InfoWidget()
         v_left_splitter.addWidget(self.info_widget)
-
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
@@ -367,9 +364,7 @@ class MainWidget(QMainWindow):
 
         h_main_splitter.addWidget(self.my_tabs)
 
-
         main_box.addWidget(h_main_splitter)
-
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
