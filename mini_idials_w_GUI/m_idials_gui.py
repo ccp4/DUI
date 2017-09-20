@@ -429,9 +429,26 @@ class MainWidget(QMainWindow):
 
         self.update_nav_tree()
         self.check_reindex_pop()
+        self.check_gray_outs(tmp_curr)
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
+
+    def check_gray_outs(self, tmp_curr):
+        print "tmp_curr.command_lst=", tmp_curr.command_lst
+        #widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
+        cmd_connects = {"import"                  : ["find_spots"] ,
+                        "find_spots"              : ["index"] ,
+                        "index"                   : ["refine_bravais_settings", "refine", "integrate"] ,
+                        "refine_bravais_settings" : [None] ,
+                        "reindex"                 : ["refine", "integrate"] ,
+                        "refine"                  : ["refine", "integrate"] ,
+                        "integrate"               : [None] ,
+                        "None"                    : [None] }
+
+
+        lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
+        print "lst_nxt =", lst_nxt
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
