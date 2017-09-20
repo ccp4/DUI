@@ -59,7 +59,6 @@ def update_info(main_obj):
     new_img_json = main_obj.idials_runner.get_datablock_path()
     new_ref_pikl = main_obj.idials_runner.get_reflections_path()
 
-    #tmp_curr = main_obj.idials_runner.step_list[main_obj.idials_runner.current_line]
     tmp_curr = main_obj.idials_runner.current_node
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
@@ -163,7 +162,6 @@ class TreeNavWidget(QTreeView):
                 new_item = QStandardItem(child_node_name)
                 new_item.setToolTip(child_node_tip)
                 new_item.idials_node = child_node
-                #new_item.success = child_node.success
 
                 if(self.lst_idx == child_node.lin_num):
                     new_item.setBackground(Qt.blue)
@@ -172,8 +170,6 @@ class TreeNavWidget(QTreeView):
 
                     else:
                         new_item.setForeground(Qt.white)
-
-
 
                 else:
                     new_item.setBackground(Qt.white)
@@ -203,8 +199,6 @@ class CentreWidget(QWidget):
         lst_icons_path.append(idials_gui_path + "/resources/find_spots.png")
         lst_icons_path.append(idials_gui_path + "/resources/index.png")
         lst_icons_path.append(idials_gui_path + "/resources/reindex.png")
-        #lst_icons_path.append(idials_gui_path + "/resources/refine_v_sets.png")
-
         lst_icons_path.append(idials_gui_path + "/resources/refine.png")
         lst_icons_path.append(idials_gui_path + "/resources/integrate.png")
 
@@ -224,14 +218,6 @@ class CentreWidget(QWidget):
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
 
-            '''
-            try:
-                param_widg.my_widget.str_param_signal.connect(self.param_changed)
-
-            except:
-                print "Tmp off connection"
-            '''
-
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
 
@@ -247,22 +233,13 @@ class CentreWidget(QWidget):
         self.run_btn = QPushButton("\n  Run  \n", self)
         self.run_btn.setIcon(QIcon(dials_logo_path))
         self.run_btn.setIconSize(QSize(80, 48))
-        #self.run_btn.setIcon(QIcon.fromTheme("system-run"))
-        #self.run_btn.setIconSize(QSize(28, 28))
+
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
         self.stop_btn.setIcon(QIcon.fromTheme("process-stop"))
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
-
-        '''
-        self.next_btn = QPushButton("\n  Next  \n", self)
-        self.next_btn.setIcon(QIcon.fromTheme("go-next"))
-        #self.next_btn.setIcon(QIcon.fromTheme("media-seek-forward"))
-        self.next_btn.setIconSize(QSize(28, 28))
-        ctrl_box.addWidget(self.next_btn)
-        '''
 
         big_v_box.addLayout(ctrl_box)
 
@@ -329,7 +306,7 @@ class MainWidget(QMainWindow):
         self.centre_widget = CentreWidget()
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = False
+        self.make_next = True
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)

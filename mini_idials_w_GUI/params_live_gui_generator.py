@@ -37,9 +37,9 @@ except ImportError, e:
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-
-
 from dials.command_line.find_spots import phil_scope
+#from dials.command_line.refine_bravais_settings import phil_scope
+
 import sys
 
 class ScopeData(object):

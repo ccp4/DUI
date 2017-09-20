@@ -194,6 +194,45 @@ class IndexSimplerParamTab( QWidget):
         self.item_changed.emit(str_path, str_value)
 
 
+class RefineBravaiSimplerParamTab(QWidget):
+    #TODO some doc string here
+    item_changed = pyqtSignal(str, str)
+    def __init__(self, parent = None):
+        super(RefineBravaiSimplerParamTab, self).__init__()
+
+        hbox_lay_scan_varying =  QHBoxLayout()
+        localLayout = QVBoxLayout()
+        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
+
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
+
+        box_scan_varying = QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.setCurrentIndex(1)
+
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
+        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
+
+        self.lst_wgs = []
+        self.lst_wgs.append(box_scan_varying)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        str_value = str(sender.tmp_lst[value])
+        str_path = str(sender.local_path)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
+
+
 class RefineSimplerParamTab( QWidget):
     '''
     This widget is the tool for tunning the simpler and most common parameters
@@ -201,7 +240,7 @@ class RefineSimplerParamTab( QWidget):
     "Refine" at the left side of the GUI is clicked
     '''
     item_changed = pyqtSignal(str, str)
-    def __init__(self, parent=None):
+    def __init__(self, parent = None):
         super(RefineSimplerParamTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
 

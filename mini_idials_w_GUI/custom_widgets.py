@@ -28,10 +28,14 @@ import os, sys
 
 from params_live_gui_generator import PhilWidget
 from simpler_param_widgets import FindspotsSimplerParameterTab, IndexSimplerParamTab, \
-                                   RefineSimplerParamTab, IntegrateSimplerParamTab
+                                  RefineBravaiSimplerParamTab, RefineSimplerParamTab, \
+                                  IntegrateSimplerParamTab
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
+
+from dials.command_line.refine_bravais_settings import phil_scope as phil_scope_r_b_settings
+
 from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 from dials.command_line.export import phil_scope as phil_scope_export
@@ -327,7 +331,9 @@ class ParamMainWidget( QWidget):
 
     def build_param_widget(self):
         self.dual_level_tab = QTabWidget()
-        self.sipler_widget = self.simp_widg_in(parent = self) #TODO make sure you need to do: parent = self
+
+        #self.sipler_widget = self.simp_widg_in(parent = self) #TODO make sure you need to do: parent = self
+        self.sipler_widget = self.simp_widg_in()
 
         self.advanced_widget = ParamAdvancedWidget(phl_obj = self.my_phl_obj, parent = self)
 
@@ -432,17 +438,6 @@ class TmpImportWidget(QLabel):
     def update_param(self, dummy_cmd_lst = None):
         print "\n Nothing to update here \n"
 
-class TmpReindexWidget(QLabel):
-    def __init__(self):
-        super(TmpReindexWidget, self).__init__()
-        self.setText("TMP \n Reindex Widget")
-        self.command_lst = ["refine_bravais_settings"]
-        self.show()
-
-    def update_param(self, dummy_cmd_lst = None):
-        print "\n TMP off \n"
-
-
 
 class ParamWidget(QWidget):
     def __init__(self, label_str):
@@ -450,10 +445,11 @@ class ParamWidget(QWidget):
         self.my_label = label_str
 
         inner_widgs = {
-                       "find_spots": [phil_scope_find_spots , FindspotsSimplerParameterTab ],
-                       "index"     : [phil_scope_index      , IndexSimplerParamTab         ],
-                       "refine"    : [phil_scope_refine     , RefineSimplerParamTab        ],
-                       "integrate" : [phil_scope_integrate  , IntegrateSimplerParamTab     ],
+                       "find_spots":              [phil_scope_find_spots   , FindspotsSimplerParameterTab ],
+                       "index"     :              [phil_scope_index        , IndexSimplerParamTab         ],
+                       "refine_bravais_settings": [phil_scope_r_b_settings , RefineBravaiSimplerParamTab  ],
+                       "refine"    :              [phil_scope_refine       , RefineSimplerParamTab        ],
+                       "integrate" :              [phil_scope_integrate    , IntegrateSimplerParamTab     ],
                         }
 
         if(label_str == "import"):
@@ -462,9 +458,6 @@ class ParamWidget(QWidget):
             self.my_widget.command_lst = ["import", "../*.cbf"]
             '''
             self.my_widget = TmpImportWidget()
-
-        elif(label_str == "refine_bravais_settings"):
-            self.my_widget = TmpReindexWidget()
 
         else:
             #self.command = [label_str]
@@ -488,7 +481,8 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ParamWidget("find_spots")
+    #ex = ParamWidget("find_spots")
+    ex = ParamWidget("refine_bravais_settings")
     sys.exit(app.exec_())
 
 
