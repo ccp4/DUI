@@ -470,36 +470,6 @@ class TextOut( QTextBrowser):
         return self.content_lst
 
 
-class OutputsWidget( QWidget):
-    def __init__(self, parent = None):
-        super(OutputsWidget, self).__init__()
-        self.super_parent = parent
-
-        #FIXME remember the upper case convention with class names
-
-        my_box = QVBoxLayout()
-        self.my_tabs = QTabWidget()
-
-        #self.img_view = MyImgWin("/home/luiso/dui/dui_test/only_9_img/dui_idials_tst_01/dials-1/1_import/datablock.json")
-        self.img_view = MyImgWin()
-
-        self.web_view = WebTab()
-        self.in_txt_out = TextOut()
-
-        self.my_tabs.addTab(self.img_view, "Image View")
-        self.my_tabs.addTab(self.in_txt_out, "Log View")
-        self.my_tabs.addTab(self.web_view, "Report View")
-
-        if( self.super_parent.embedded_reindex == False ):
-            #TODO make sure consistent the way to use the "super_parent" reference in the next line
-            self.reindex_tool = MyReindexOpts(parent)
-
-        my_box.addWidget(self.my_tabs)
-
-        self.setLayout(my_box)
-        self.show()
-
-
 if( __name__ == "__main__" ):
 
     app =  QApplication(sys.argv)

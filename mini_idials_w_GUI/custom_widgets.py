@@ -453,15 +453,9 @@ class ParamWidget(QWidget):
                         }
 
         if(label_str == "import"):
-            old_test_way = '''
-            self.my_widget = QLabel("TMP \n Import Widget")
-            self.my_widget.command_lst = ["import", "../*.cbf"]
-            '''
             self.my_widget = TmpImportWidget()
 
         else:
-            #self.command = [label_str]
-
             self.my_widget = ParamMainWidget(phl_obj = inner_widgs[label_str][0],
                                              simp_widg = inner_widgs[label_str][1],
                                              parent = self, upper_label = label_str)

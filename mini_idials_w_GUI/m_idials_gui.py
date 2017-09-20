@@ -334,12 +334,12 @@ class MainWidget(QMainWindow):
         self.web_view = WebTab()
         self.img_view = MyImgWin()
 
-        self.my_tabs = QTabWidget()
-        self.my_tabs.addTab(self.img_view, "Image View")
-        self.my_tabs.addTab(self.cli_out, "CLI OutPut")
-        self.my_tabs.addTab(self.web_view, "Report View")
+        self.output_info_tabs = QTabWidget()
+        self.output_info_tabs.addTab(self.img_view, "Image View")
+        self.output_info_tabs.addTab(self.cli_out, "CLI OutPut")
+        self.output_info_tabs.addTab(self.web_view, "Report View")
 
-        h_main_splitter.addWidget(self.my_tabs)
+        h_main_splitter.addWidget(self.output_info_tabs)
 
         main_box.addWidget(h_main_splitter)
 
