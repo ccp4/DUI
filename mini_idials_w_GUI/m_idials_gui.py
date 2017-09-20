@@ -308,6 +308,9 @@ class MainWidget(QMainWindow):
         self.cur_json = None
         self.cur_cmd_name = "None"
 
+        #This flag makes the behaviour switch (automatic / explicit)
+        self.make_next = True
+
         main_box = QVBoxLayout()
 
         h_left_splitter = QSplitter()
@@ -321,8 +324,6 @@ class MainWidget(QMainWindow):
 
         self.centre_widget = CentreWidget()
 
-        #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = True
 
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
@@ -485,6 +486,23 @@ class MainWidget(QMainWindow):
         self.tree_out.update_me(self.idials_runner.step_list[0],
                                 self.idials_runner.current_line,
                                 self.cur_cmd_name)
+
+        tmp_cur_nod = self.idials_runner.current_node
+        if(self.make_next == False and
+          len(tmp_cur_nod.next_step_list) == 0 and
+          tmp_cur_nod.success == True):
+
+            nod_ref = tmp_cur_nod
+
+        else:
+            nod_ref = tmp_cur_nod.prev_step
+
+        try:
+            self.check_gray_outs(nod_ref)
+
+        except:
+            print "failed to << check_gray_outs() >>"
+
 
     def opt_clicked(self, row, col):
         re_idx = row + 1
