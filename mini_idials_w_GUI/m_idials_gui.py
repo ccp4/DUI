@@ -205,6 +205,7 @@ class CentreWidget(QWidget):
         top_box =  QHBoxLayout()
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []
+        self.btn_lst = []
         for num, step_name in enumerate(widg_name_list):
             new_btn = QPushButton(self)
             new_btn.setToolTip(step_name)
@@ -217,6 +218,8 @@ class CentreWidget(QWidget):
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
+
+            self.btn_lst.append(new_btn)
 
         big_v_box = QVBoxLayout()
         big_v_box.addLayout(top_box)
@@ -248,6 +251,7 @@ class CentreWidget(QWidget):
         self.setLayout(big_v_box)
         self.show()
 
+
     def set_widget(self, nxt_cmd, curr_step = None):
         for widget in self.widg_lst:
             if(widget.my_label == nxt_cmd):
@@ -263,6 +267,18 @@ class CentreWidget(QWidget):
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
         self.user_changed.emit()
+
+    def gray_outs_from_lst(self, lst_nxt):
+        print "lst_nxt =", lst_nxt
+        #widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
+
+        for btn in self.btn_lst:
+            btn.setEnabled(False)
+
+        for btn in self.btn_lst:
+            for cmd_str in lst_nxt:
+                if(str(btn.toolTip()) == cmd_str):
+                    btn.setEnabled(True)
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -435,8 +451,8 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
 
     def check_gray_outs(self, tmp_curr):
-        print "tmp_curr.command_lst=", tmp_curr.command_lst
-        #widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
+        #print "tmp_curr.command_lst=", tmp_curr.command_lst
+
         cmd_connects = {"import"                  : ["find_spots"] ,
                         "find_spots"              : ["index"] ,
                         "index"                   : ["refine_bravais_settings", "refine", "integrate"] ,
@@ -448,7 +464,7 @@ class MainWidget(QMainWindow):
 
 
         lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
-        print "lst_nxt =", lst_nxt
+        self.centre_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
