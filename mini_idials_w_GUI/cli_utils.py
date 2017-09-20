@@ -26,31 +26,17 @@ import subprocess
 import json
 
 def get_next_step(node_obj):
-    if(node_obj.prev_step.lin_num == 0):
+    if(node_obj.lin_num == 0):
         return "import"
 
     else:
-        to_remove = '''
-    elif(node_obj.command_lst == [None]):
-        '''
         for pos, stp in enumerate(node_obj.dials_com_lst[0:-1]):
-            if(stp == node_obj.prev_step.command_lst[0]):
+            if(stp == node_obj.command_lst[0]):
                 nxt_str = node_obj.dials_com_lst[pos + 1]
                 return nxt_str
 
     print "\n\n Defaulting to << None >> in automatic << get_next_step >> \n\n"
     return None
-
-to_remove = '''
-    else:             #TODO think if this ELSE is needed
-        for pos, stp in enumerate(node_obj.dials_com_lst):
-            if(stp == node_obj.command_lst[0]):
-                nxt_str = node_obj.command_lst[0]
-                return nxt_str
-
-        return None
-'''
-
 
 def build_command_lst(node_obj, cmd_lst):
 

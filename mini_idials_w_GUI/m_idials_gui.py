@@ -412,7 +412,7 @@ class MainWidget(QMainWindow):
         #TODO think about how to prevent launches from happening when is busy
 
     def cmd_exe(self, new_cmd):
-        #Running in NOT in parallel
+        #Running NOT in parallel
         self.idials_runner.run(command = new_cmd, ref_to_class = None,
                                mk_nxt = self.make_next)
 
@@ -428,6 +428,11 @@ class MainWidget(QMainWindow):
 
         if(self.make_next == True):
             tmp_curr = self.idials_runner.current_node.prev_step
+            #TODO use next line for automatic mode
+            nxt_cmd = get_next_step(tmp_curr)
+            print "get_next_step(tmp_curr) =", nxt_cmd
+            if(nxt_cmd != "reindex" and tmp_curr.success == True):
+                self.centre_widget.set_widget(nxt_cmd = nxt_cmd)
 
         else:
             tmp_curr = self.idials_runner.current_node
@@ -452,9 +457,6 @@ class MainWidget(QMainWindow):
 
         self.update_nav_tree()
         self.check_reindex_pop()
-
-        #TODO use next line for automatic mode
-        #nxt_cmd = get_next_step(tmp_curr)
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
