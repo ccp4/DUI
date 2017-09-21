@@ -267,13 +267,27 @@ class Runner(object):
 
 if(__name__ == "__main__"):
     tree_output = TreeShow()
-
+    tmp_off = '''
     try:
         with open ('bkp.pickle', 'rb') as bkp_in:
             idials_runner = pickle.load(bkp_in)
 
     except:
-        idials_runner = Runner()
+    '''
+
+    if(len(sys.argv) <= 1):
+        mk_nxt_in = True
+        print "Defaulting to << automatic >> mode"
+
+    elif(str(sys.argv[1]) == "e"):
+        mk_nxt_in = False
+        print "Running in << explicit >> mode"
+
+    else:
+        mk_nxt_in = True
+        print "Running in << automatic >> mode"
+
+    idials_runner = Runner()
 
     tree_output(idials_runner)
 
@@ -290,11 +304,12 @@ if(__name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        idials_runner.run(command, None, mk_nxt = True)
+        idials_runner.run(command, None, mk_nxt = mk_nxt_in)
         tree_output(idials_runner)
         nxt_str = idials_runner.get_next_from_here()
         print "\n next to run:\n ", nxt_str
-
+        tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(idials_runner, bkp_out)
+        '''
 

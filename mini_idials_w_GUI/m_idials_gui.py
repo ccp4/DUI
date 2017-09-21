@@ -284,21 +284,22 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
 
+        tmp_off = '''
         try:
             with open ('bkp.pickle', 'rb') as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
-            '''
-            TODO sometimes the following error appears
-            Attribute not found
-            'module' object has no attribute 'CommandNode'
-            '''
+            #TODO sometimes the following error appears
+            #Attribute not found
+            #'module' object has no attribute 'CommandNode'
 
         except Exception as e:
             print "str(e) =", str(e)
             print "e.__doc__ =", e.__doc__
             print "e.message =", e.message
-            self.idials_runner = Runner()
+        '''
+        #if you reactivate the recovery thing, remeber to "tab" the next line
+        self.idials_runner = Runner()
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
@@ -309,7 +310,19 @@ class MainWidget(QMainWindow):
         self.cur_cmd_name = "None"
 
         #This flag makes the behaviour switch (automatic / explicit)
-        self.make_next = True
+
+
+        if(len(sys.argv) <= 1):
+            self.make_next = True
+            print "Defaulting to << automatic >> mode"
+
+        elif(str(sys.argv[1]) == "e"):
+            self.make_next = False
+            print "Running in << explicit >> mode"
+
+        else:
+            self.make_next = True
+            print "Running in << automatic >> mode"
 
         main_box = QVBoxLayout()
 
@@ -448,12 +461,12 @@ class MainWidget(QMainWindow):
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
 
+        tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
+        '''
 
     def check_gray_outs(self, tmp_curr):
-        #print "tmp_curr.command_lst=", tmp_curr.command_lst
-
         cmd_connects = {"import"                  : ["find_spots"] ,
                         "find_spots"              : ["index"] ,
                         "index"                   : ["refine_bravais_settings", "refine", "integrate"] ,
@@ -463,6 +476,7 @@ class MainWidget(QMainWindow):
                         "integrate"               : [None] ,
                         "None"                    : [None] }
 
+        #TODO Consider if it worth using this dictionary instead of the fuction get_next_item()
 
         lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
         self.centre_widget.gray_outs_from_lst(lst_nxt)
