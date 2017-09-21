@@ -488,7 +488,7 @@ class MainWidget(QMainWindow):
                         "integrate"               : [None] ,
                         "None"                    : [None] }
 
-        #TODO Consider if it worth using this dictionary instead of the fuction get_next_item()
+        #TODO Consider if it worth using this dictionary instead of the function get_next_item()
 
         lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
         self.centre_widget.gray_outs_from_lst(lst_nxt)
