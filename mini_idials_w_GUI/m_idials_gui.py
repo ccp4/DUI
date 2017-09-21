@@ -32,7 +32,7 @@ import sys, os
 import pickle
 from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
-from gui_utils import CliOutView
+from gui_utils import CliOutView, Text_w_Bar
 from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
 import subprocess
@@ -356,9 +356,15 @@ class MainWidget(QMainWindow):
         self.info_widget = InfoWidget()
         v_left_splitter.addWidget(self.info_widget)
 
+        self.txt_bar = Text_w_Bar()
+        v_left_splitter.addWidget(self.txt_bar)
+
+
+
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
         h_main_splitter.addWidget(v_left_splitter)
+
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
@@ -371,11 +377,14 @@ class MainWidget(QMainWindow):
 
         h_main_splitter.addWidget(self.output_info_tabs)
 
+
+
         main_box.addWidget(h_main_splitter)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
+        self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -423,10 +432,17 @@ class MainWidget(QMainWindow):
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
+
+        self.txt_bar.start_motion()
+        self.txt_bar.setText("Running")
+
         self.custom_thread(new_cmd, self.idials_runner, mk_nxt = self.make_next)
 
     def update_after_finished(self):
         update_info(self)
+
+        self.txt_bar.setText("Idle")
+        self.txt_bar.end_motion()
 
         if(self.make_next == True):
             tmp_curr = self.idials_runner.current_node.prev_step
