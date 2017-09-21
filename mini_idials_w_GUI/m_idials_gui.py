@@ -356,11 +356,6 @@ class MainWidget(QMainWindow):
         self.info_widget = InfoWidget()
         v_left_splitter.addWidget(self.info_widget)
 
-        self.txt_bar = Text_w_Bar()
-        v_left_splitter.addWidget(self.txt_bar)
-
-
-
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
         h_main_splitter.addWidget(v_left_splitter)
@@ -377,9 +372,10 @@ class MainWidget(QMainWindow):
 
         h_main_splitter.addWidget(self.output_info_tabs)
 
-
-
         main_box.addWidget(h_main_splitter)
+
+        self.txt_bar = Text_w_Bar()
+        main_box.addWidget(self.txt_bar)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
