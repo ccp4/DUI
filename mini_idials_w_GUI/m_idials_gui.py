@@ -356,10 +356,12 @@ class MainWidget(QMainWindow):
         self.info_widget = InfoWidget()
         v_left_splitter.addWidget(self.info_widget)
 
+        my_scrollable = QScrollArea()
+        my_scrollable.setWidget(v_left_splitter)
+
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
-        h_main_splitter.addWidget(v_left_splitter)
-
+        h_main_splitter.addWidget(my_scrollable)
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
