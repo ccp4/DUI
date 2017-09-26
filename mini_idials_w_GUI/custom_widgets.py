@@ -174,7 +174,7 @@ class ImportPage(QWidget):
         template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
         self.templ_lin.setText(" ? ")
-        opn_fil_btn = QPushButton("open File(s)")
+        opn_fil_btn = QPushButton("\n\n open File(s)\n\n")
 
         template_vbox.addWidget(self.templ_lin)
         template_vbox.addWidget(opn_fil_btn)
@@ -195,9 +195,6 @@ class ImportPage(QWidget):
 
     def open_files(self):
         print "from open_files  << import page >>"
-        self.find_my_img_dir()
-
-    def find_my_img_dir(self, event = None):
 
         selector = FileOrDir(self)
         #selected_file_path = str(selector.getOpenFileName(self, "Open IMG Dir"))
