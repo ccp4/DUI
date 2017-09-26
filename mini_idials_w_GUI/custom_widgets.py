@@ -170,8 +170,6 @@ class ImportPage(QWidget):
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
 
-
-
         template_grp =  QGroupBox(" Import from File(s) ")
         template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
