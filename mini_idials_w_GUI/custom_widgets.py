@@ -117,9 +117,50 @@ class FileOrDir(QFileDialog):
         self.setDirectory(str(get_wor_dir))
         self.setFileMode(QFileDialog.Directory)
 
+'''
+
+
+class RefineBravaiSimplerParamTab(QWidget):
+    #TODO some doc string here
+    item_changed = pyqtSignal(str, str)
+    def __init__(self, parent = None):
+        super(RefineBravaiSimplerParamTab, self).__init__()
+
+        hbox_lay_scan_varying =  QHBoxLayout()
+        localLayout = QVBoxLayout()
+        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
+
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
+
+        box_scan_varying = QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.setCurrentIndex(1)
+
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
+        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
+
+        self.lst_wgs = []
+        self.lst_wgs.append(box_scan_varying)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        str_value = str(sender.tmp_lst[value])
+        str_path = str(sender.local_path)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
+
+'''
 
 class ImportPage(QWidget):
-
     '''
     This stacked widget basically helps the user to browse the input images
     path, there is no auto-generated GUI form Phil parameters in use withing
@@ -128,21 +169,23 @@ class ImportPage(QWidget):
 
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
-        #self.super_parent = parent.super_parent # reference across the hole GUI to MyMainDialog
 
-        template_grp =  QGroupBox("Import Template ")
-        template_vbox =  QHBoxLayout()
+        template_grp =  QGroupBox(" Import from File(s) ")
+        template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
-        self.templ_lin.setText("template = ?")
+        self.templ_lin.setText(" ? ")
+        opn_fil_btn = QPushButton("open File(s)")
+
         template_vbox.addWidget(self.templ_lin)
+        template_vbox.addWidget(opn_fil_btn)
+
         template_grp.setLayout(template_vbox)
 
-        mainLayout =  QVBoxLayout()
-        #mainLayout.addWidget(import_path_group)
-        mainLayout.addWidget(template_grp)
-
         big_layout =  QHBoxLayout()
-        big_layout.addLayout(mainLayout)
+        big_layout.addWidget(template_grp)
+
+        opn_fil_btn.clicked.connect(self.open_files)
+        self.templ_lin.textChanged.connect(self.intro_changed)
 
         self.setLayout(big_layout)
         self.show()
@@ -150,18 +193,9 @@ class ImportPage(QWidget):
         #TODO remove next commented stuff if appliable
         #self.done_import = False
 
-    def __call__(self):
-        print "from __call__   << import page >>"
-        if(str(self.templ_lin.text()) == "template = ?"):
-            self.find_my_img_dir()
-
-
-        #TODO remove next commented stuff if appliable
-        Deprecated = '''
-        if(self.done_import == False):
-            self.find_my_img_dir()
-            print "( self.done_import == False )"
-        '''
+    def open_files(self):
+        print "from open_files  << import page >>"
+        self.find_my_img_dir()
 
     def find_my_img_dir(self, event = None):
 
@@ -213,7 +247,13 @@ class ImportPage(QWidget):
         #print "\ncalling:\n self.super_parent.idials_widget.failed == None\n"
         #self.super_parent.idials_widget.failed = None
 
+    def intro_changed(self, value):
+        print "txt(value) =", value
+        str_path = "template="
+        str_value = str(value)
 
+        my_cmd = str_path + str_value
+        self.command_lst = ["import", my_cmd]
 
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
@@ -299,7 +339,6 @@ class ParamMainWidget( QWidget):
         self.lst_pair = []
 
         try:
-            #self.super_parent = parent.super_parent
             self.my_phl_obj = phl_obj
             self.simp_widg_in = simp_widg
         except:
@@ -428,16 +467,6 @@ class ParamMainWidget( QWidget):
             self.lst_pair = []
             self.command_lst = [self.command_lst[0]]
 
-class TmpImportWidget(QLabel):
-    def __init__(self):
-        super(TmpImportWidget, self).__init__()
-        self.setText("TMP \n Import Widget")
-        self.command_lst = ["import", "../*.cbf"]
-        self.show()
-
-    def update_param(self, dummy_cmd_lst = None):
-        print "\n Nothing to update here \n"
-
 
 class ParamWidget(QWidget):
     def __init__(self, label_str):
@@ -453,14 +482,16 @@ class ParamWidget(QWidget):
                         }
 
         if(label_str == "import"):
-            self.my_widget = TmpImportWidget()
+            #self.my_widget = TmpImportWidget()
+            self.my_widget = ImportPage()
+
 
         else:
             self.my_widget = ParamMainWidget(phl_obj = inner_widgs[label_str][0],
                                              simp_widg = inner_widgs[label_str][1],
                                              parent = self, upper_label = label_str)
 
-            self.my_widget.command_lst = [label_str]
+        self.my_widget.command_lst = [label_str]
 
         v_left_box =  QVBoxLayout()
         v_left_box.addWidget(self.my_widget)
@@ -476,7 +507,7 @@ class ParamWidget(QWidget):
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     #ex = ParamWidget("find_spots")
-    ex = ParamWidget("refine_bravais_settings")
+    ex = ParamWidget("import")
     sys.exit(app.exec_())
 
 
