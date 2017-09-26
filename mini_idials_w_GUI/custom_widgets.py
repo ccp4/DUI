@@ -194,23 +194,30 @@ class ImportPage(QWidget):
 
         big_layout =  QVBoxLayout()
         big_layout.addWidget(template_grp)
+        big_layout.addWidget(QLabel("\n\n                                 Or \n\n"))
         big_layout.addWidget(dir_grp)
 
         opn_fil_btn.clicked.connect(self.open_files)
         self.templ_lin.textChanged.connect(self.intro_changed)
 
-        #opn_dir_btn.clicked.connect(self.open_dir)
+        opn_dir_btn.clicked.connect(self.open_dir)
         #self.dir_lin.textChanged.connect(self.intro_changed)
 
         self.setLayout(big_layout)
         self.show()
 
-        #TODO remove next commented stuff if appliable
-        #self.done_import = False
+    def open_dir(self):
+        print "open_dir"
+        file_dialog = QFileDialog()
+        get_wor_dir = str(os.getcwd())
+        print "workig dir =", get_wor_dir
+        file_dialog.setDirectory(get_wor_dir)
+        end_dir = file_dialog.getExistingDirectory()
 
     def open_files(self):
         print "from open_files  << import page >>"
 
+        #TODO looks like making a class for FileOrDir did NOT solved the path issue
         selector = FileOrDir(self)
         #selected_file_path = str(selector.getOpenFileName(self, "Open IMG Dir"))
         lst_file_path = selector.getOpenFileNames(self, "Open IMG Dir")
