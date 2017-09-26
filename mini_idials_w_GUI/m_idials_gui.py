@@ -221,8 +221,6 @@ class CentreWidget(QWidget):
 
             self.btn_lst.append(new_btn)
 
-        big_v_box = QVBoxLayout()
-        big_v_box.addLayout(top_box)
 
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
@@ -244,7 +242,10 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
+        big_v_box = QVBoxLayout()
+
         big_v_box.addLayout(ctrl_box)
+        big_v_box.addLayout(top_box)
 
         big_v_box.addWidget(self.step_param_widg)
 
@@ -356,12 +357,10 @@ class MainWidget(QMainWindow):
         self.info_widget = InfoWidget()
         v_left_splitter.addWidget(self.info_widget)
 
-        my_scrollable = QScrollArea()
-        my_scrollable.setWidget(v_left_splitter)
-
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
-        h_main_splitter.addWidget(my_scrollable)
+        h_main_splitter.addWidget(v_left_splitter)
+
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
