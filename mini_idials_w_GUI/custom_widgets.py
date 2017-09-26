@@ -170,6 +170,8 @@ class ImportPage(QWidget):
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
 
+
+
         template_grp =  QGroupBox(" Import from File(s) ")
         template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
@@ -181,11 +183,26 @@ class ImportPage(QWidget):
 
         template_grp.setLayout(template_vbox)
 
-        big_layout =  QHBoxLayout()
+        dir_grp =  QGroupBox(" Import from Dir ")
+        dir_vbox =  QVBoxLayout()
+        self.dir_lin =   QLineEdit(self)
+        self.dir_lin.setText(" ? ")
+        opn_dir_btn = QPushButton("\n\n open Dir\n\n")
+
+        dir_vbox.addWidget(self.dir_lin)
+        dir_vbox.addWidget(opn_dir_btn)
+
+        dir_grp.setLayout(dir_vbox)
+
+        big_layout =  QVBoxLayout()
         big_layout.addWidget(template_grp)
+        big_layout.addWidget(dir_grp)
 
         opn_fil_btn.clicked.connect(self.open_files)
         self.templ_lin.textChanged.connect(self.intro_changed)
+
+        #opn_dir_btn.clicked.connect(self.open_dir)
+        #self.dir_lin.textChanged.connect(self.intro_changed)
 
         self.setLayout(big_layout)
         self.show()
