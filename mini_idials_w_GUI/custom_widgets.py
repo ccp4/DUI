@@ -109,57 +109,6 @@ def template_from_lst_build(in_str_lst):
 
     return out_str
 
-
-class FileOrDir(QFileDialog):
-    def __init__(self, parent = None):
-        super(FileOrDir, self).__init__(parent = None)
-        get_wor_dir = os.getcwd()
-        self.setDirectory(str(get_wor_dir))
-        self.setFileMode(QFileDialog.Directory)
-
-'''
-
-
-class RefineBravaiSimplerParamTab(QWidget):
-    #TODO some doc string here
-    item_changed = pyqtSignal(str, str)
-    def __init__(self, parent = None):
-        super(RefineBravaiSimplerParamTab, self).__init__()
-
-        hbox_lay_scan_varying =  QHBoxLayout()
-        localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
-
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
-
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
-
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        localLayout.addLayout(hbox_lay_scan_varying)
-        localLayout.addStretch(1)
-        self.setLayout(localLayout)
-
-        self.lst_wgs = []
-        self.lst_wgs.append(box_scan_varying)
-
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
-
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-'''
-
 class ImportPage(QWidget):
     '''
     This stacked widget basically helps the user to browse the input images
@@ -216,12 +165,11 @@ class ImportPage(QWidget):
 
     def open_files(self):
         print "from open_files  << import page >>"
+        get_wor_dir = str(os.getcwd())
 
-        #TODO looks like making a class for FileOrDir did NOT solved the path issue
-        selector = FileOrDir(self)
-        #selected_file_path = str(selector.getOpenFileName(self, "Open IMG Dir"))
-        lst_file_path = selector.getOpenFileNames(self, "Open IMG Dir")
-        #getOpenFileNamesAndFilter
+        lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
+                                                      get_wor_dir,
+                                                      "All Files (*.*)")
 
         print "[ file path selected ] =", lst_file_path
         print "len(lst_file_path) =", len(lst_file_path)
