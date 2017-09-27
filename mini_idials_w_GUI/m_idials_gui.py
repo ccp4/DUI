@@ -252,6 +252,8 @@ class CentreWidget(QWidget):
         self.setLayout(big_v_box)
         self.show()
 
+    def get_arg_obj(self, sys_arg_in):
+        self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
 
     def set_widget(self, nxt_cmd, curr_step = None):
         for widget in self.widg_lst:
@@ -281,9 +283,22 @@ class CentreWidget(QWidget):
                 if(str(btn.toolTip()) == cmd_str):
                     btn.setEnabled(True)
 
+
+class SysArgvData(object):
+    make_next = True
+    template = None
+    directory = None
+
 class MainWidget(QMainWindow):
-    def __init__(self):
+    def __init__(self, sys_arg_in = None):
         super(MainWidget, self).__init__()
+
+        #This flag makes the behaviour switch (automatic / explicit)
+        if(sys_arg_in == None):
+            sys_arg_in = SysArgvData()
+
+        self.make_next = sys_arg_in.make_next
+
 
         tmp_off = '''
         try:
@@ -310,21 +325,6 @@ class MainWidget(QMainWindow):
         self.cur_json = None
         self.cur_cmd_name = "None"
 
-        #This flag makes the behaviour switch (automatic / explicit)
-
-
-        if(len(sys.argv) <= 1):
-            self.make_next = True
-            print "Defaulting to << automatic >> mode"
-
-        elif(str(sys.argv[1]) == "e"):
-            self.make_next = False
-            print "Running in << explicit >> mode"
-
-        else:
-            self.make_next = True
-            print "Running in << automatic >> mode"
-
         main_box = QVBoxLayout()
 
         h_left_splitter = QSplitter()
@@ -347,6 +347,10 @@ class MainWidget(QMainWindow):
 
         self.centre_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
+
+        self.centre_widget.get_arg_obj(sys_arg_in)
+
+        #self.centre_widget.widg_lst[0].my_widget.sys_arg_in = sys_arg_in
 
         h_left_splitter.addWidget(self.centre_widget)
 
@@ -550,10 +554,39 @@ class MainWidget(QMainWindow):
         self.check_reindex_pop()
         update_info(self)
 
+
+
 #default_way = '''
 if __name__ == '__main__':
-    app =  QApplication(sys.argv)
-    ex = MainWidget()
+
+    sys_arg = SysArgvData()
+    call_arg = sys.argv
+
+    if(len(call_arg) > 1):
+        for par_str in call_arg[1:]:
+            if(par_str == "e" or par_str == "-e" or
+              par_str == "explicit" or par_str == "--explicit"):
+
+                sys_arg.make_next = False
+                print "Running in << explicit >> mode"
+
+            elif(par_str == "a" or par_str == "-a" or
+                 par_str == "automatic" or par_str == "--automatic"):
+
+                sys_arg.make_next = True
+                print "Running in << automatic >> mode"
+
+            elif(par_str[0:9] == "template="):
+                sys_arg.template = par_str[9:]
+
+            elif(par_str[0:10] == "directory="):
+                sys_arg.directory = par_str[10:]
+
+
+    print "sys_arg.template=", sys_arg.template
+    print "sys_arg.directory=", sys_arg.directory
+    app =  QApplication(call_arg)
+    ex = MainWidget(sys_arg_in = sys_arg)
     ex.show()
     sys.exit(app.exec_())
 #'''

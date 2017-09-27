@@ -155,6 +155,12 @@ class ImportPage(QWidget):
         self.setLayout(big_layout)
         self.show()
 
+    def get_arg_obj(self, sys_arg_in):
+        print "\n sys_arg_in =", sys_arg_in, "\n"
+        self.dir_lin.setText(str(sys_arg_in.directory))
+        self.templ_lin.setText(str(sys_arg_in.template))
+
+
     def intro_file_changed(self, value):
         print "txt(value) =", value
         str_path = "template="
@@ -173,6 +179,8 @@ class ImportPage(QWidget):
 
     def open_dir(self):
         print "open_dir"
+        print "self.sys_arg_in =", self.sys_arg_in
+
         file_dialog = QFileDialog()
         get_wor_dir = str(os.getcwd())
 
