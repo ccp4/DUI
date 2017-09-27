@@ -159,9 +159,18 @@ class ImportPage(QWidget):
         print "open_dir"
         file_dialog = QFileDialog()
         get_wor_dir = str(os.getcwd())
+
+        '''
         print "workig dir =", get_wor_dir
         file_dialog.setDirectory(get_wor_dir)
         end_dir = file_dialog.getExistingDirectory()
+        '''
+
+        end_dir =  QFileDialog.getExistingDirectory(self, "Open Dir",
+                                                      get_wor_dir)
+
+        print "end_dir =", end_dir
+
 
     def open_files(self):
         print "from open_files  << import page >>"
