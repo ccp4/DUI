@@ -157,8 +157,11 @@ class ImportPage(QWidget):
 
     def get_arg_obj(self, sys_arg_in):
         print "\n sys_arg_in =", sys_arg_in, "\n"
-        self.dir_lin.setText(str(sys_arg_in.directory))
-        self.templ_lin.setText(str(sys_arg_in.template))
+        if(sys_arg_in.directory != None):
+            self.dir_lin.setText(str(sys_arg_in.directory))
+
+        elif(sys_arg_in.template != None):
+            self.templ_lin.setText(str(sys_arg_in.template))
 
 
     def intro_file_changed(self, value):
