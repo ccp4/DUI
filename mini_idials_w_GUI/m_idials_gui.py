@@ -156,6 +156,7 @@ class TreeNavWidget(QTreeView):
 
                 if(self.lst_idx == child_node.lin_num and
                         child_node.success == None):
+
                     child_node_name = "* " + self.name_now + " *"
 
                 new_item = QStandardItem(child_node_name)
@@ -442,13 +443,12 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
         update_info(self)
 
-        self.txt_bar.setText("Idle")
+        self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
         self.just_reindexed = False
 
         if(self.make_next == True):
             tmp_curr = self.idials_runner.current_node.prev_step
-            #TODO use next line for automatic mode
             nxt_cmd = get_next_step(tmp_curr)
             print "get_next_step(tmp_curr) =", nxt_cmd
             if(nxt_cmd != "reindex" and tmp_curr.success == True):
