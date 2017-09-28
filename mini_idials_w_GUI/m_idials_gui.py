@@ -444,6 +444,7 @@ class MainWidget(QMainWindow):
 
         self.txt_bar.setText("Idle")
         self.txt_bar.end_motion()
+        self.just_reindexed = False
 
         if(self.make_next == True):
             tmp_curr = self.idials_runner.current_node.prev_step
@@ -470,6 +471,7 @@ class MainWidget(QMainWindow):
         elif(tmp_curr.command_lst[0] == "reindex" and
                 tmp_curr.success == True):
 
+            self.just_reindexed = True
             try:
                 self.my_pop.close()
 
@@ -503,7 +505,9 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        if(tmp_curr.command_lst[0] == "reindex"):
+        if(tmp_curr.command_lst[0] == "reindex" and
+                self.just_reindexed == False):
+
             self.my_pop = MyReindexOpts()
             self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
             self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
@@ -515,6 +519,7 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
+        self.just_reindexed = False
 
     def update_nav_tree(self):
         self.tree_out.update_me(self.idials_runner.step_list[0],
