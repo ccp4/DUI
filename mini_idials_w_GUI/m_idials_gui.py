@@ -390,6 +390,7 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+        self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
     def cmd_changed_by_user(self):
         print "cmd_changed_by_user()"
@@ -484,7 +485,8 @@ class MainWidget(QMainWindow):
         '''
 
     def check_gray_outs(self, tmp_curr):
-        cmd_connects = {"import"                  : ["find_spots"] ,
+        cmd_connects = {"Root"                    : ["import"] ,
+                        "import"                  : ["find_spots"] ,
                         "find_spots"              : ["index"] ,
                         "index"                   : ["refine_bravais_settings", "refine", "integrate"] ,
                         "refine_bravais_settings" : [None] ,
