@@ -123,7 +123,7 @@ class TreeNavWidget(QTreeView):
     def update_me(self, root_node, lst_path_idx, curr_step_name):
         self.lst_idx = lst_path_idx
 
-        self.step_name_now = curr_step_name
+        self.name_now = curr_step_name
 
         print self.lst_idx
 
@@ -155,9 +155,8 @@ class TreeNavWidget(QTreeView):
                     child_node_tip = "None"
 
                 if(self.lst_idx == child_node.lin_num and
-                   child_node.success == None):
-
-                    child_node_name = "* " + self.step_name_now + " *"
+                        child_node.success == None):
+                    child_node_name = "* " + self.name_now + " *"
 
                 new_item = QStandardItem(child_node_name)
                 new_item.setToolTip(child_node_tip)
@@ -397,8 +396,8 @@ class MainWidget(QMainWindow):
         #tmp_curr = self.idials_runner.step_list[self.idials_runner.current_line]
         tmp_curr = self.idials_runner.current_node
         if(self.make_next == False and
-            len(tmp_curr.next_step_list) == 0 and
-            tmp_curr.success == True):
+                len(tmp_curr.next_step_list) == 0 and
+                tmp_curr.success == True):
 
             self.cmd_exe(["mkchi"])
             self.cmd_exe(["clean"])
@@ -459,7 +458,8 @@ class MainWidget(QMainWindow):
 
 
         if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
-          tmp_curr.success == True):
+                tmp_curr.success == True):
+
             if(self.make_next == False):
                 self.idials_runner.run(command = ["mkchi"],
                                         ref_to_class = None,
@@ -468,7 +468,8 @@ class MainWidget(QMainWindow):
             self.idials_runner.current_node.command_lst[0] = "reindex"
 
         elif(tmp_curr.command_lst[0] == "reindex" and
-          tmp_curr.success == True):
+                tmp_curr.success == True):
+
             try:
                 self.my_pop.close()
 
@@ -522,8 +523,8 @@ class MainWidget(QMainWindow):
 
         tmp_cur_nod = self.idials_runner.current_node
         if(self.make_next == False and
-          len(tmp_cur_nod.next_step_list) == 0 and
-          tmp_cur_nod.success == True):
+                len(tmp_cur_nod.next_step_list) == 0 and
+                tmp_cur_nod.success == True):
 
             nod_ref = tmp_cur_nod
 
@@ -567,7 +568,7 @@ if __name__ == '__main__':
     if(len(call_arg) > 1):
         for par_str in call_arg[1:]:
             if(par_str == "e" or par_str == "-e" or
-              par_str == "explicit" or par_str == "--explicit"):
+                    par_str == "explicit" or par_str == "--explicit"):
 
                 sys_arg.make_next = False
                 print "Running in << explicit >> mode"
