@@ -119,7 +119,6 @@ class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
         super(TreeNavWidget, self).__init__()
         print "TreeNavWidget(__init__)"
-        self.setMinimumHeight(200)
 
     def update_me(self, root_node, lst_path_idx, curr_step_name):
         self.lst_idx = lst_path_idx
@@ -360,7 +359,11 @@ class MainWidget(QMainWindow):
         v_left_splitter.addWidget(h_left_splitter)
 
         self.info_widget = InfoWidget()
-        v_left_splitter.addWidget(self.info_widget)
+
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(self.info_widget)
+
+        v_left_splitter.addWidget(scrollArea)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
