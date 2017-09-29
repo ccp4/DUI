@@ -123,7 +123,7 @@ class ImportPage(QWidget):
         template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
         self.templ_lin.setText(" ? ")
-        opn_fil_btn = QPushButton("\n\n open File(s)\n\n")
+        opn_fil_btn = QPushButton("\n open File(s)\n")
 
         template_vbox.addWidget(self.templ_lin)
         template_vbox.addWidget(opn_fil_btn)
@@ -135,7 +135,7 @@ class ImportPage(QWidget):
         dir_vbox =  QVBoxLayout()
         self.dir_lin =   QLineEdit(self)
         self.dir_lin.setText(" ? ")
-        opn_dir_btn = QPushButton("\n\n open Dir\n\n")
+        opn_dir_btn = QPushButton("\n open Dir\n")
         dir_vbox.addWidget(self.dir_lin)
         dir_vbox.addWidget(opn_dir_btn)
         dir_grp.setLayout(dir_vbox)
