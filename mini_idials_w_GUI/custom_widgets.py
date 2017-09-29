@@ -130,38 +130,45 @@ class ImportPage(QWidget):
 
         template_grp.setLayout(template_vbox)
 
+        to_maybe_remove = '''
         dir_grp =  QGroupBox(" Import from Dir ")
         dir_vbox =  QVBoxLayout()
         self.dir_lin =   QLineEdit(self)
         self.dir_lin.setText(" ? ")
         opn_dir_btn = QPushButton("\n\n open Dir\n\n")
-
         dir_vbox.addWidget(self.dir_lin)
         dir_vbox.addWidget(opn_dir_btn)
-
         dir_grp.setLayout(dir_vbox)
+        '''
 
         big_layout =  QVBoxLayout()
         big_layout.addWidget(template_grp)
+
+        to_maybe_remove = '''
         big_layout.addWidget(QLabel("\n\n                                 Or \n\n"))
         big_layout.addWidget(dir_grp)
+        '''
 
         opn_fil_btn.clicked.connect(self.open_files)
         self.templ_lin.textChanged.connect(self.intro_file_changed)
 
+        to_maybe_remove = '''
         opn_dir_btn.clicked.connect(self.open_dir)
         self.dir_lin.textChanged.connect(self.intro_dir_changed)
+        '''
 
         self.setLayout(big_layout)
         self.show()
 
     def get_arg_obj(self, sys_arg_in):
         print "\n sys_arg_in =", sys_arg_in, "\n"
-        if(sys_arg_in.directory != None):
-            self.dir_lin.setText(str(sys_arg_in.directory))
-
-        elif(sys_arg_in.template != None):
+        if(sys_arg_in.template != None):
             self.templ_lin.setText(str(sys_arg_in.template))
+
+        to_maybe_remove = '''
+        elif(sys_arg_in.directory != None):
+            self.dir_lin.setText(str(sys_arg_in.directory))
+        '''
 
 
     def intro_file_changed(self, value):
@@ -180,10 +187,9 @@ class ImportPage(QWidget):
         my_cmd = str_path + str_value
         self.command_lst = ["import", my_cmd]
 
+        to_maybe_remove = '''
     def open_dir(self):
         print "open_dir"
-        print "self.sys_arg_in =", self.sys_arg_in
-
         file_dialog = QFileDialog()
         get_wor_dir = str(os.getcwd())
 
@@ -192,6 +198,7 @@ class ImportPage(QWidget):
 
         print "end_dir =", end_dir
         self.dir_lin.setText(end_dir)
+        '''
 
     def open_files(self):
         print "from open_files  << import page >>"
