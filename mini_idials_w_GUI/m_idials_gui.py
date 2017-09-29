@@ -119,6 +119,7 @@ class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
         super(TreeNavWidget, self).__init__()
         print "TreeNavWidget(__init__)"
+        self.setMinimumHeight(200)
 
     def update_me(self, root_node, lst_path_idx, curr_step_name):
         self.lst_idx = lst_path_idx
