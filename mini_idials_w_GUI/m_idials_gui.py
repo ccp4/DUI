@@ -150,15 +150,6 @@ class TreeNavWidget(QTreeView):
                 except:
                     child_node_tip = "None"
 
-                to_remove = '''
-                if(self.lst_idx == child_node.lin_num and
-                        child_node_name == "* None *" and
-                        self.name_now != None):
-
-                    child_node_name = self.name_now + " << "
-
-                '''
-
                 new_item = QStandardItem(child_node_name)
                 new_item.setToolTip(child_node_tip)
                 new_item.idials_node = child_node
