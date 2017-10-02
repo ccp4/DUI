@@ -156,7 +156,7 @@ class TreeNavWidget(QTreeView):
                 if(self.lst_idx == child_node.lin_num and
                         child_node.success == None):
 
-                    child_node_name = "* " + self.name_now + " *"
+                    child_node_name = self.name_now + " << "
 
                 new_item = QStandardItem(child_node_name)
                 new_item.setToolTip(child_node_tip)
@@ -185,7 +185,7 @@ class TreeNavWidget(QTreeView):
 
 
 class CentreWidget(QWidget):
-    user_changed = pyqtSignal()
+    user_changed = pyqtSignal(str)
 
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
@@ -268,7 +268,7 @@ class CentreWidget(QWidget):
         print "btn_clicked"
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
-        self.user_changed.emit()
+        self.user_changed.emit(my_sender.pr_widg.my_label)
 
     def gray_outs_from_lst(self, lst_nxt):
         print "lst_nxt =", lst_nxt
@@ -395,9 +395,8 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
-    def cmd_changed_by_user(self):
+    def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
-        #tmp_curr = self.idials_runner.step_list[self.idials_runner.current_line]
         tmp_curr = self.idials_runner.current_node
         if(self.make_next == False and
                 len(tmp_curr.next_step_list) == 0 and
@@ -405,6 +404,7 @@ class MainWidget(QMainWindow):
 
             self.cmd_exe(["mkchi"])
             self.cmd_exe(["clean"])
+            self.idials_runner.current_node.command_lst = [str(my_label)]
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
