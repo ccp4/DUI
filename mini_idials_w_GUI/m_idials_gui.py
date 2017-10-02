@@ -154,7 +154,8 @@ class TreeNavWidget(QTreeView):
                     child_node_tip = "None"
 
                 if(self.lst_idx == child_node.lin_num and
-                        child_node.success == None):
+                        child_node_name == "* None *" and
+                        self.name_now != None):
 
                     child_node_name = self.name_now + " << "
 
@@ -333,7 +334,7 @@ class MainWidget(QMainWindow):
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
 
         h_left_splitter.addWidget(self.tree_out)
-        self.update_nav_tree()
+        self.update_nav_tree("import")
 
         self.centre_widget = CentreWidget()
 
@@ -483,7 +484,7 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
-        self.update_nav_tree()
+        self.update_nav_tree(self.cur_cmd_name)
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
 
@@ -526,10 +527,10 @@ class MainWidget(QMainWindow):
 
         self.just_reindexed = False
 
-    def update_nav_tree(self):
+    def update_nav_tree(self, cmd_name = None):
         self.tree_out.update_me(self.idials_runner.step_list[0],
                                 self.idials_runner.current_line,
-                                self.cur_cmd_name)
+                                cmd_name)
 
         tmp_cur_nod = self.idials_runner.current_node
         if(self.make_next == False and
