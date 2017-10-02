@@ -137,12 +137,11 @@ class TreeNavWidget(QTreeView):
     def recursive_node(self, root_node, item_in):
         if(len(root_node.next_step_list) > 0):
             for child_node in root_node.next_step_list:
-                if(child_node.success == None):
-                    #child_node_name = "* " + get_next_step(child_node) + " *"
-                    child_node_name = "* None *"
-
-                elif(child_node.command_lst != [None]):
+                if(child_node.command_lst != [None]):
                     child_node_name = str(child_node.command_lst[0])
+
+                elif(child_node.success == None):
+                    child_node_name = "* None *"
 
                 else:
                     child_node_name = " ? None ? "
@@ -165,7 +164,7 @@ class TreeNavWidget(QTreeView):
 
                 if(self.lst_idx == child_node.lin_num):
                     new_item.setBackground(Qt.blue)
-                    if(child_node_name[0:2] == "* "):
+                    if(child_node.success == None):
                         new_item.setForeground(Qt.green)
 
                     else:
@@ -173,7 +172,7 @@ class TreeNavWidget(QTreeView):
 
                 else:
                     new_item.setBackground(Qt.white)
-                    if(child_node_name[0:2] == "* "):
+                    if(child_node.success == None):
                         new_item.setForeground(Qt.green)
 
                     else:
@@ -457,6 +456,8 @@ class MainWidget(QMainWindow):
             print "get_next_step(tmp_curr) =", nxt_cmd
             if(nxt_cmd != "reindex" and tmp_curr.success == True):
                 self.centre_widget.set_widget(nxt_cmd = nxt_cmd)
+
+            self.idials_runner.current_node.command_lst[0] = nxt_cmd
 
         else:
             tmp_curr = self.idials_runner.current_node

@@ -26,6 +26,7 @@ import subprocess
 import json
 
 def get_next_step(node_obj):
+    print "\n\n\n <<< get_next_step >>> \n\n\n"
     if(node_obj.lin_num == 0):
         return "import"
 
