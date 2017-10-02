@@ -396,7 +396,14 @@ class MainWidget(QMainWindow):
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
+
+            #self.centre_widget.step_param_widg.currentWidget.reset_par()
+
             self.cmd_exe(["clean"])
+
+        elif(tmp_curr.success == None):
+            self.idials_runner.current_node.command_lst = [str(my_label)]
+            self.update_nav_tree()
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()

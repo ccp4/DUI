@@ -396,9 +396,6 @@ class ParamMainWidget( QWidget):
         self._vbox.addWidget(self.dual_level_tab)
         self._vbox.addWidget(self.reset_btn)
 
-        #self.super_parent.reset_param()
-
-
         try:
             self.sipler_widget.set_max_nproc()
             print "\n Tunning nproc to maximum \n"
