@@ -120,10 +120,8 @@ class TreeNavWidget(QTreeView):
         super(TreeNavWidget, self).__init__()
         print "TreeNavWidget(__init__)"
 
-    def update_me(self, root_node, lst_path_idx, curr_step_name):
+    def update_me(self, root_node, lst_path_idx):
         self.lst_idx = lst_path_idx
-
-        self.name_now = curr_step_name
 
         print self.lst_idx
 
@@ -148,16 +146,18 @@ class TreeNavWidget(QTreeView):
 
                 try:
                     child_node_tip = build_command_tip(child_node.command_lst)
-                    #child_node_tip = str(child_node.command_lst[:])
 
                 except:
                     child_node_tip = "None"
 
+                to_remove = '''
                 if(self.lst_idx == child_node.lin_num and
                         child_node_name == "* None *" and
                         self.name_now != None):
 
                     child_node_name = self.name_now + " << "
+
+                '''
 
                 new_item = QStandardItem(child_node_name)
                 new_item.setToolTip(child_node_tip)
@@ -404,8 +404,8 @@ class MainWidget(QMainWindow):
                 tmp_curr.success == True):
 
             self.cmd_exe(["mkchi"])
-            self.cmd_exe(["clean"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
+            self.cmd_exe(["clean"])
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
@@ -529,8 +529,7 @@ class MainWidget(QMainWindow):
 
     def update_nav_tree(self, cmd_name = None):
         self.tree_out.update_me(self.idials_runner.step_list[0],
-                                self.idials_runner.current_line,
-                                cmd_name)
+                                self.idials_runner.current_line)
 
         tmp_cur_nod = self.idials_runner.current_node
         if(self.make_next == False and
