@@ -267,13 +267,6 @@ class Runner(object):
 
 if(__name__ == "__main__"):
     tree_output = TreeShow()
-    tmp_off = '''
-    try:
-        with open ('bkp.pickle', 'rb') as bkp_in:
-            idials_runner = pickle.load(bkp_in)
-
-    except:
-    '''
 
     if(len(sys.argv) <= 1):
         mk_nxt_in = True
@@ -287,9 +280,18 @@ if(__name__ == "__main__"):
         mk_nxt_in = True
         print "Running in << automatic >> mode"
 
-    idials_runner = Runner()
+    #tmp_off = '''
+    try:
+        with open ('bkp.pickle', 'rb') as bkp_in:
+            idials_runner = pickle.load(bkp_in)
 
+    except:
+        print "unable to recover previous run"
+        idials_runner = Runner()
+        #'''
     tree_output(idials_runner)
+
+
 
     command = ""
     while(command.strip() != 'exit' and command.strip() != 'quit'):
@@ -308,8 +310,8 @@ if(__name__ == "__main__"):
         tree_output(idials_runner)
         nxt_str = idials_runner.get_next_from_here()
         print "\n next to run:\n ", nxt_str
-        tmp_off = '''
+        #tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(idials_runner, bkp_out)
-        '''
+            #'''
 

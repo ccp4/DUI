@@ -291,7 +291,7 @@ class MainWidget(QMainWindow):
         self.make_next = sys_arg_in.make_next
 
 
-        tmp_off = '''
+        #tmp_off = '''
         try:
             with open ('bkp.pickle', 'rb') as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
@@ -304,9 +304,9 @@ class MainWidget(QMainWindow):
             print "str(e) =", str(e)
             print "e.__doc__ =", e.__doc__
             print "e.message =", e.message
-        '''
-        #if you reactivate the recovery thing, remeber to "tab" the next line
-        self.idials_runner = Runner()
+            #'''
+            #if you reactivate the recovery thing, remeber to "tab" the next line
+            self.idials_runner = Runner()
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
@@ -486,10 +486,10 @@ class MainWidget(QMainWindow):
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
 
-        tmp_off = '''
+        #tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
-        '''
+        #'''
 
     def check_gray_outs(self, tmp_curr):
         cmd_connects = {"Root"                    : ["import"] ,
