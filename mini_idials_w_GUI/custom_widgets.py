@@ -157,6 +157,28 @@ class ImportPage(QWidget):
         self.dir_lin.textChanged.connect(self.intro_dir_changed)
         '''
 
+
+        self.rb_group = QButtonGroup()
+        self.rb_group_box = QGroupBox()
+        self.rb_group_box_layout = QVBoxLayout()
+        self.rb_group_box.setLayout(self.rb_group_box_layout)
+
+        self.rb_01 = QRadioButton("Fully Automatic")
+        self.rb_group.addButton(self.rb_01)
+        self.rb_group_box_layout.addWidget(self.rb_01)
+
+        self.rb_02 = QRadioButton("Semi Automatic")
+        self.rb_group.addButton(self.rb_02)
+        self.rb_group_box_layout.addWidget(self.rb_02)
+
+        self.rb_03 = QRadioButton("Expert")
+        self.rb_group.addButton(self.rb_03)
+        self.rb_group_box_layout.addWidget(self.rb_03)
+
+        big_layout.addWidget(self.rb_group_box)
+
+
+
         self.setLayout(big_layout)
         self.show()
 

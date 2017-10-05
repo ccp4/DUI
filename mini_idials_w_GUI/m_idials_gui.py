@@ -233,25 +233,7 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
-
-        self.rb_group = QButtonGroup()
-        self.rb_group_box = QGroupBox()
-        self.rb_group_box_layout = QVBoxLayout()
-        self.rb_group_box.setLayout(self.rb_group_box_layout)
-
-        self.rb_01 = QRadioButton("Fully Automatic")
-        self.rb_group.addButton(self.rb_01)
-        self.rb_group_box_layout.addWidget(self.rb_01)
-
-        self.rb_02 = QRadioButton("Semi Automatic")
-        self.rb_group.addButton(self.rb_02)
-        self.rb_group_box_layout.addWidget(self.rb_02)
-
-        self.rb_03 = QRadioButton("Expert")
-        self.rb_group.addButton(self.rb_03)
-        self.rb_group_box_layout.addWidget(self.rb_03)
-
-        ctrl_box.addWidget(self.rb_group_box)
+        #mode radio buttons (old)
 
 
         big_v_box = QVBoxLayout()
@@ -362,9 +344,16 @@ class MainWidget(QMainWindow):
 
         self.centre_widget.get_arg_obj(sys_arg_in)
 
+        self.centre_widget.widg_lst[0].my_widget.rb_01.clicked.connect(self.tmp_action1)
+        self.centre_widget.widg_lst[0].my_widget.rb_02.clicked.connect(self.tmp_action2)
+        self.centre_widget.widg_lst[0].my_widget.rb_03.clicked.connect(self.tmp_action3)
+
+        '''
         self.centre_widget.rb_01.clicked.connect(self.tmp_action1)
         self.centre_widget.rb_02.clicked.connect(self.tmp_action2)
         self.centre_widget.rb_03.clicked.connect(self.tmp_action3)
+        '''
+
         self.run_all = False
 
 
