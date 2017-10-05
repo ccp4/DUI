@@ -241,17 +241,14 @@ class CentreWidget(QWidget):
 
         self.rb_01 = QRadioButton("Fully Automatic")
         self.rb_group.addButton(self.rb_01)
-        self.rb_01.clicked.connect(self.tmp_action1)
         self.rb_group_box_layout.addWidget(self.rb_01)
 
         self.rb_02 = QRadioButton("Semi Automatic")
         self.rb_group.addButton(self.rb_02)
-        self.rb_02.clicked.connect(self.tmp_action2)
         self.rb_group_box_layout.addWidget(self.rb_02)
 
         self.rb_03 = QRadioButton("Expert")
         self.rb_group.addButton(self.rb_03)
-        self.rb_03.clicked.connect(self.tmp_action3)
         self.rb_group_box_layout.addWidget(self.rb_03)
 
         ctrl_box.addWidget(self.rb_group_box)
@@ -266,15 +263,6 @@ class CentreWidget(QWidget):
 
         self.setLayout(big_v_box)
         self.show()
-
-    def tmp_action1(self):
-        print "Switching to fully automatic mode"
-
-    def tmp_action2(self):
-        print "Switching to semi automatic mode"
-
-    def tmp_action3(self):
-        print "Switching to expert mode"
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
@@ -374,7 +362,11 @@ class MainWidget(QMainWindow):
 
         self.centre_widget.get_arg_obj(sys_arg_in)
 
-        #self.centre_widget.widg_lst[0].my_widget.sys_arg_in = sys_arg_in
+        self.centre_widget.rb_01.clicked.connect(self.tmp_action1)
+        self.centre_widget.rb_02.clicked.connect(self.tmp_action2)
+        self.centre_widget.rb_03.clicked.connect(self.tmp_action3)
+        self.run_all = False
+
 
         h_left_splitter.addWidget(self.centre_widget)
 
@@ -419,6 +411,22 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
+
+
+    def tmp_action1(self):
+        print "Switching to fully automatic mode"
+        self.make_next = True
+        self.run_all = True
+
+    def tmp_action2(self):
+        print "Switching to semi automatic mode"
+        self.make_next = True
+        self.run_all = False
+
+    def tmp_action3(self):
+        print "Switching to expert mode"
+        self.make_next = False
+        self.run_all = False
 
     def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
@@ -519,15 +527,11 @@ class MainWidget(QMainWindow):
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
 
-        #testing autorun feature START
-
         if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
-                tmp_curr.command_lst[0] != "integrate"):
+                tmp_curr.command_lst[0] != "integrate" and
+                self.run_all == True):
 
             self.run_clicked()
-
-
-        #testing autorun feature FINISH
 
 
         #tmp_off = '''
