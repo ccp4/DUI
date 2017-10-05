@@ -233,6 +233,27 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
+        #Here 1
+
+        self.rb_group = QButtonGroup()
+        self.rb_group_box = QGroupBox()
+        self.rb_group_box_layout = QVBoxLayout()
+        self.rb_group_box.setLayout(self.rb_group_box_layout)
+
+        self.rb_01 = QRadioButton("buttn 1")
+        self.rb_group.addButton(self.rb_01)
+        self.rb_01.clicked.connect(self.tmp_action1)
+        self.rb_group_box_layout.addWidget(self.rb_01)
+
+        self.rb_02 = QRadioButton("buttn 2")
+        self.rb_group.addButton(self.rb_02)
+        self.rb_02.clicked.connect(self.tmp_action2)
+        self.rb_group_box_layout.addWidget(self.rb_02)
+
+        ctrl_box.addWidget(self.rb_group_box)
+
+        #Here 2
+
         big_v_box = QVBoxLayout()
 
         big_v_box.addLayout(ctrl_box)
@@ -242,6 +263,12 @@ class CentreWidget(QWidget):
 
         self.setLayout(big_v_box)
         self.show()
+
+    def tmp_action1(self):
+        print "tmp_action1"
+
+    def tmp_action2(self):
+        print "tmp_action2"
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
@@ -485,6 +512,17 @@ class MainWidget(QMainWindow):
         self.update_nav_tree(self.cur_cmd_name)
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
+
+        #testing autorun feature START
+
+        if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
+                tmp_curr.command_lst[0] != "integrate"):
+
+            self.run_clicked()
+
+
+        #testing autorun feature FINISH
+
 
         #tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
