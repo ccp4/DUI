@@ -233,26 +233,29 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
-        #Here 1
 
         self.rb_group = QButtonGroup()
         self.rb_group_box = QGroupBox()
         self.rb_group_box_layout = QVBoxLayout()
         self.rb_group_box.setLayout(self.rb_group_box_layout)
 
-        self.rb_01 = QRadioButton("buttn 1")
+        self.rb_01 = QRadioButton("Fully Automatic")
         self.rb_group.addButton(self.rb_01)
         self.rb_01.clicked.connect(self.tmp_action1)
         self.rb_group_box_layout.addWidget(self.rb_01)
 
-        self.rb_02 = QRadioButton("buttn 2")
+        self.rb_02 = QRadioButton("Semi Automatic")
         self.rb_group.addButton(self.rb_02)
         self.rb_02.clicked.connect(self.tmp_action2)
         self.rb_group_box_layout.addWidget(self.rb_02)
 
+        self.rb_03 = QRadioButton("Expert")
+        self.rb_group.addButton(self.rb_03)
+        self.rb_03.clicked.connect(self.tmp_action3)
+        self.rb_group_box_layout.addWidget(self.rb_03)
+
         ctrl_box.addWidget(self.rb_group_box)
 
-        #Here 2
 
         big_v_box = QVBoxLayout()
 
@@ -265,10 +268,13 @@ class CentreWidget(QWidget):
         self.show()
 
     def tmp_action1(self):
-        print "tmp_action1"
+        print "Switching to fully automatic mode"
 
     def tmp_action2(self):
-        print "tmp_action2"
+        print "Switching to semi automatic mode"
+
+    def tmp_action3(self):
+        print "Switching to expert mode"
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
