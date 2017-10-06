@@ -163,17 +163,17 @@ class ImportPage(QWidget):
         self.rb_group_box_layout = QVBoxLayout()
         self.rb_group_box.setLayout(self.rb_group_box_layout)
 
-        self.rb_01 = QRadioButton("Fully Automatic")
-        self.rb_group.addButton(self.rb_01)
-        self.rb_group_box_layout.addWidget(self.rb_01)
+        self.rb_full_auto = QRadioButton("Fully Automatic")
+        self.rb_group.addButton(self.rb_full_auto)
+        self.rb_group_box_layout.addWidget(self.rb_full_auto)
 
-        self.rb_02 = QRadioButton("Semi Automatic")
-        self.rb_group.addButton(self.rb_02)
-        self.rb_group_box_layout.addWidget(self.rb_02)
+        self.rb_semi_auto = QRadioButton("Semi Automatic")
+        self.rb_group.addButton(self.rb_semi_auto)
+        self.rb_group_box_layout.addWidget(self.rb_semi_auto)
 
-        self.rb_03 = QRadioButton("Expert")
-        self.rb_group.addButton(self.rb_03)
-        self.rb_group_box_layout.addWidget(self.rb_03)
+        self.rb_expert = QRadioButton("Expert")
+        self.rb_group.addButton(self.rb_expert)
+        self.rb_group_box_layout.addWidget(self.rb_expert)
 
         big_layout.addWidget(self.rb_group_box)
 

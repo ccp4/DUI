@@ -342,18 +342,11 @@ class MainWidget(QMainWindow):
 
         self.centre_widget.get_arg_obj(sys_arg_in)
 
-        self.centre_widget.widg_lst[0].my_widget.rb_01.clicked.connect(self.tmp_action1)
-        self.centre_widget.widg_lst[0].my_widget.rb_02.clicked.connect(self.tmp_action2)
-        self.centre_widget.widg_lst[0].my_widget.rb_03.clicked.connect(self.tmp_action3)
-
-        '''
-        self.centre_widget.rb_01.clicked.connect(self.tmp_action1)
-        self.centre_widget.rb_02.clicked.connect(self.tmp_action2)
-        self.centre_widget.rb_03.clicked.connect(self.tmp_action3)
-        '''
+        self.centre_widget.widg_lst[0].my_widget.rb_full_auto.clicked.connect(self.set_full_auto)
+        self.centre_widget.widg_lst[0].my_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
+        self.centre_widget.widg_lst[0].my_widget.rb_expert.clicked.connect(self.set_expert)
 
         self.run_all = False
-
 
         h_left_splitter.addWidget(self.centre_widget)
 
@@ -400,17 +393,17 @@ class MainWidget(QMainWindow):
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
 
-    def tmp_action1(self):
+    def set_full_auto(self):
         print "Switching to fully automatic mode"
         self.idials_runner.make_next = True
         self.run_all = True
 
-    def tmp_action2(self):
+    def set_semi_auto(self):
         print "Switching to semi automatic mode"
         self.idials_runner.make_next = True
         self.run_all = False
 
-    def tmp_action3(self):
+    def set_expert(self):
         print "Switching to expert mode"
         self.idials_runner.make_next = False
         self.run_all = False
