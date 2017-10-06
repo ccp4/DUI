@@ -40,7 +40,6 @@ def get_next_step(node_obj):
 
 def build_command_lst(node_obj, cmd_lst):
 
-
     #TODO make sure new step is compatible with previous
     cmd_lst_to_run = []
     cmd_lst_to_run.append("dials." + cmd_lst[0])

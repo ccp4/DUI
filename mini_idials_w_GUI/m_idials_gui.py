@@ -275,6 +275,36 @@ class CentreWidget(QWidget):
                     btn.setEnabled(True)
 
 
+
+class ModeWidget(QWidget):
+
+    def __init__(self, parent = None):
+        super(ModeWidget, self).__init__()
+
+        big_layout = QVBoxLayout()
+
+        self.rb_group = QButtonGroup()
+        self.rb_group_box = QGroupBox()
+        self.rb_group_box_layout = QVBoxLayout()
+        self.rb_group_box.setLayout(self.rb_group_box_layout)
+
+        self.rb_full_auto = QRadioButton("Fully Automatic")
+        self.rb_group.addButton(self.rb_full_auto)
+        self.rb_group_box_layout.addWidget(self.rb_full_auto)
+
+        self.rb_semi_auto = QRadioButton("Semi Automatic")
+        self.rb_group.addButton(self.rb_semi_auto)
+        self.rb_group_box_layout.addWidget(self.rb_semi_auto)
+
+        self.rb_expert = QRadioButton("Expert")
+        self.rb_group.addButton(self.rb_expert)
+        self.rb_group_box_layout.addWidget(self.rb_expert)
+
+        big_layout.addWidget(self.rb_group_box)
+
+        self.setLayout(big_layout)
+        self.show()
+
 class SysArgvData(object):
     make_next = True
     template = None
@@ -342,9 +372,6 @@ class MainWidget(QMainWindow):
 
         self.centre_widget.get_arg_obj(sys_arg_in)
 
-        self.centre_widget.widg_lst[0].my_widget.rb_full_auto.clicked.connect(self.set_full_auto)
-        self.centre_widget.widg_lst[0].my_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
-        self.centre_widget.widg_lst[0].my_widget.rb_expert.clicked.connect(self.set_expert)
 
         self.run_all = False
 
@@ -381,6 +408,14 @@ class MainWidget(QMainWindow):
 
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
+
+        self.mode_widget = ModeWidget()
+
+        self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
+        self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
+        self.mode_widget.rb_expert.clicked.connect(self.set_expert)
+
+        main_box.addWidget(self.mode_widget)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)

@@ -104,6 +104,8 @@ class Runner(object):
 
     def run(self, command, ref_to_class):
 
+        #TODO verify the step actually runs and give the proper output files
+
         if(type(command) is str):
             cmd_lst = command.split()
         else:
