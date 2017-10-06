@@ -96,13 +96,13 @@ class Runner(object):
         self.step_list = [root_node]
         self.bigger_lin = 0
         self.current_line = self.bigger_lin
-
+        self.make_next = True
         self.create_step(root_node)
 
         print "root_node.lin_num =", root_node.lin_num
         #self.current_node = root_node
 
-    def run(self, command, ref_to_class, mk_nxt = True):
+    def run(self, command, ref_to_class):
 
         if(type(command) is str):
             cmd_lst = command.split()
@@ -135,7 +135,7 @@ class Runner(object):
                 self.create_step(self.current_node)
 
             self.current_node(cmd_lst, ref_to_class)
-            if(self.current_node.success == True and mk_nxt == True):
+            if(self.current_node.success == True and self.make_next == True):
                 self.create_step(self.current_node)
 
             else:
@@ -269,15 +269,15 @@ if(__name__ == "__main__"):
     tree_output = TreeShow()
 
     if(len(sys.argv) <= 1):
-        mk_nxt_in = True
+        make_next_in = True
         print "Defaulting to << automatic >> mode"
 
-    elif(str(sys.argv[1]) == "e"):
-        mk_nxt_in = False
+    elif(str(sys.argv[1]) == "-e"):
+        make_next_in = False
         print "Running in << explicit >> mode"
 
     else:
-        mk_nxt_in = True
+        make_next_in = True
         print "Running in << automatic >> mode"
 
     #tmp_off = '''
@@ -289,6 +289,8 @@ if(__name__ == "__main__"):
         print "unable to recover previous run"
         idials_runner = Runner()
         #'''
+
+    idials_runner.make_next = make_next_in
     tree_output(idials_runner)
 
 
@@ -306,7 +308,7 @@ if(__name__ == "__main__"):
             print " ... interrupting"
             sys.exit(0)
 
-        idials_runner.run(command, None, mk_nxt = mk_nxt_in)
+        idials_runner.run(command, None)
         tree_output(idials_runner)
         nxt_str = idials_runner.get_next_from_here()
         print "\n next to run:\n ", nxt_str

@@ -99,16 +99,13 @@ class MyThread(QThread):
     def __init__(self, parent = None):
         super(MyThread, self).__init__()
 
-    def __call__(self, cmd_to_run, ref_to_controler, mk_nxt = True):
+    def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
         self.ref_to_controler = ref_to_controler
-        self.make_next = mk_nxt
         self.start()
 
     def run(self):
-        # {mk_nxt = False} changes the GUI to "explicit" mode
-        self.ref_to_controler.run(command = self.cmd_to_run,
-                                  ref_to_class = self, mk_nxt = self.make_next)
+        self.ref_to_controler.run(command = self.cmd_to_run, ref_to_class = self)
 
     def emit_print_signal(self, str_lin):
         #print str_lin, "... Yes"
@@ -287,12 +284,6 @@ class MainWidget(QMainWindow):
     def __init__(self, sys_arg_in = None):
         super(MainWidget, self).__init__()
 
-        #This flag makes the behaviour switch (automatic / explicit)
-        if(sys_arg_in == None):
-            sys_arg_in = SysArgvData()
-
-        self.make_next = sys_arg_in.make_next
-
 
         #tmp_off = '''
         try:
@@ -310,6 +301,13 @@ class MainWidget(QMainWindow):
             #'''
             #if you reactivate the recovery thing, remeber to "tab" the next line
             self.idials_runner = Runner()
+
+        #This flag makes the behaviour switch (automatic / explicit)
+        if(sys_arg_in == None):
+            sys_arg_in = SysArgvData()
+
+        self.idials_runner.make_next = sys_arg_in.make_next
+
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
@@ -404,23 +402,23 @@ class MainWidget(QMainWindow):
 
     def tmp_action1(self):
         print "Switching to fully automatic mode"
-        self.make_next = True
+        self.idials_runner.make_next = True
         self.run_all = True
 
     def tmp_action2(self):
         print "Switching to semi automatic mode"
-        self.make_next = True
+        self.idials_runner.make_next = True
         self.run_all = False
 
     def tmp_action3(self):
         print "Switching to expert mode"
-        self.make_next = False
+        self.idials_runner.make_next = False
         self.run_all = False
 
     def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
         tmp_curr = self.idials_runner.current_node
-        if(self.make_next == False and
+        if(self.idials_runner.make_next == False and
                 len(tmp_curr.next_step_list) == 0 and
                 tmp_curr.success == True):
 
@@ -458,8 +456,7 @@ class MainWidget(QMainWindow):
 
     def cmd_exe(self, new_cmd):
         #Running NOT in parallel
-        self.idials_runner.run(command = new_cmd, ref_to_class = None,
-                               mk_nxt = self.make_next)
+        self.idials_runner.run(command = new_cmd, ref_to_class = None)
 
         self.update_nav_tree()
         self.check_reindex_pop()
@@ -470,7 +467,7 @@ class MainWidget(QMainWindow):
         self.txt_bar.start_motion()
         self.txt_bar.setText("Running")
 
-        self.custom_thread(new_cmd, self.idials_runner, mk_nxt = self.make_next)
+        self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
         update_info(self)
@@ -479,7 +476,7 @@ class MainWidget(QMainWindow):
         self.txt_bar.end_motion()
         self.just_reindexed = False
 
-        if(self.make_next == True):
+        if(self.idials_runner.make_next == True):
             tmp_curr = self.idials_runner.current_node.prev_step
             nxt_cmd = get_next_step(tmp_curr)
             print "get_next_step(tmp_curr) =", nxt_cmd
@@ -495,10 +492,9 @@ class MainWidget(QMainWindow):
         if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
                 tmp_curr.success == True):
 
-            if(self.make_next == False):
+            if(self.idials_runner.make_next == False):
                 self.idials_runner.run(command = ["mkchi"],
-                                        ref_to_class = None,
-                                        mk_nxt = self.make_next)
+                                        ref_to_class = None)
 
             self.idials_runner.current_node.command_lst[0] = "reindex"
 
@@ -567,7 +563,7 @@ class MainWidget(QMainWindow):
                                 self.idials_runner.current_line)
 
         tmp_cur_nod = self.idials_runner.current_node
-        if(self.make_next == False and
+        if(self.idials_runner.make_next == False and
                 len(tmp_cur_nod.next_step_list) == 0 and
                 tmp_cur_nod.success == True):
 
