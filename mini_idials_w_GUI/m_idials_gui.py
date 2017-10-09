@@ -282,7 +282,7 @@ class ModeWidget(QWidget):
         super(ModeWidget, self).__init__()
 
         big_layout = QVBoxLayout()
-
+        big_layout.addWidget(QLabel("Guide level"))
         self.rb_group = QButtonGroup()
         self.rb_group_box = QGroupBox()
         self.rb_group_box_layout = QVBoxLayout()
@@ -304,6 +304,22 @@ class ModeWidget(QWidget):
 
         self.setLayout(big_layout)
         self.show()
+
+class LeftWidget(QWidget):
+    def __init__(self, parent = None):
+        super(LeftWidget, self).__init__()
+
+        big_layout = QVBoxLayout()
+        self.tree_out = TreeNavWidget()
+        self.mode_widget = ModeWidget()
+
+        big_layout.addWidget(self.tree_out)
+        big_layout.addWidget(self.mode_widget)
+
+        self.setLayout(big_layout)
+        self.show()
+
+
 
 class SysArgvData(object):
     make_next = True
@@ -352,10 +368,21 @@ class MainWidget(QMainWindow):
         h_left_splitter = QSplitter()
         h_left_splitter.setOrientation(Qt.Horizontal)
 
+
+        left_widget = LeftWidget()
+        self.tree_out = left_widget.tree_out
+        self.mode_widget = left_widget.mode_widget
+        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
+        h_left_splitter.addWidget(left_widget)
+
+        to_be_replased_with_the_previous_four_lines = '''
         self.tree_out = TreeNavWidget()
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
-
         h_left_splitter.addWidget(self.tree_out)
+        self.mode_widget = ModeWidget()
+        h_left_splitter.addWidget(self.mode_widget)
+        '''
+
         self.update_nav_tree("import")
 
         self.centre_widget = CentreWidget()
@@ -409,13 +436,11 @@ class MainWidget(QMainWindow):
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
 
-        self.mode_widget = ModeWidget()
-
         self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
         self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
         self.mode_widget.rb_expert.clicked.connect(self.set_expert)
 
-        main_box.addWidget(self.mode_widget)
+        #main_box.addWidget(self.mode_widget)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
