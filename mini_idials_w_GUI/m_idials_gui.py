@@ -374,6 +374,10 @@ class MainWidget(QMainWindow):
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
         h_left_splitter.addWidget(left_widget)
 
+        self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
+        self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
+        self.mode_widget.rb_expert.clicked.connect(self.set_expert)
+
         self.update_nav_tree("import")
 
         self.centre_widget = CentreWidget()
@@ -406,7 +410,6 @@ class MainWidget(QMainWindow):
         h_main_splitter.setOrientation(Qt.Horizontal)
         h_main_splitter.addWidget(v_left_splitter)
 
-
         self.cli_out = CliOutView()
         self.web_view = WebTab()
         self.img_view = MyImgWin()
@@ -422,12 +425,6 @@ class MainWidget(QMainWindow):
 
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
-
-        self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
-        self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
-        self.mode_widget.rb_expert.clicked.connect(self.set_expert)
-
-        #main_box.addWidget(self.mode_widget)
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
