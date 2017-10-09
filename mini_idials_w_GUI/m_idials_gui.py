@@ -368,37 +368,24 @@ class MainWidget(QMainWindow):
         h_left_splitter = QSplitter()
         h_left_splitter.setOrientation(Qt.Horizontal)
 
-
         left_widget = LeftWidget()
         self.tree_out = left_widget.tree_out
         self.mode_widget = left_widget.mode_widget
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
         h_left_splitter.addWidget(left_widget)
 
-        to_be_replased_with_the_previous_four_lines = '''
-        self.tree_out = TreeNavWidget()
-        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
-        h_left_splitter.addWidget(self.tree_out)
-        self.mode_widget = ModeWidget()
-        h_left_splitter.addWidget(self.mode_widget)
-        '''
-
         self.update_nav_tree("import")
 
         self.centre_widget = CentreWidget()
 
-
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
-
         self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
-
         self.centre_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
 
         self.centre_widget.get_arg_obj(sys_arg_in)
-
 
         self.run_all = False
 
