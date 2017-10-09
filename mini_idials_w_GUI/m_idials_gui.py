@@ -378,7 +378,7 @@ class MainWidget(QMainWindow):
         self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
         self.mode_widget.rb_expert.clicked.connect(self.set_expert)
 
-        self.update_nav_tree("import")
+        self.update_nav_tree()
 
         self.centre_widget = CentreWidget()
 
@@ -545,7 +545,7 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
-        self.update_nav_tree(self.cur_cmd_name)
+        self.update_nav_tree()
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
 
@@ -595,7 +595,7 @@ class MainWidget(QMainWindow):
 
         self.just_reindexed = False
 
-    def update_nav_tree(self, cmd_name = None):
+    def update_nav_tree(self):
         self.tree_out.update_me(self.idials_runner.step_list[0],
                                 self.idials_runner.current_line)
 
