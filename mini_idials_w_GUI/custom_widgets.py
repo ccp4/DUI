@@ -110,6 +110,9 @@ def template_from_lst_build(in_str_lst):
     return out_str
 
 class ImportPage(QWidget):
+
+    update_command_lst = pyqtSignal(list)
+
     '''
     This stacked widget basically helps the user to browse the input images
     path, there is no auto-generated GUI form Phil parameters in use withing
@@ -178,7 +181,9 @@ class ImportPage(QWidget):
 
         my_cmd = str_path + str_value
         self.command_lst = ["import", my_cmd]
+        self.update_command_lst.emit(self.command_lst)
 
+        to_maybe_remove = '''
     def intro_dir_changed(self, value):
         print "txt(value) =", value
         str_path = "directory="
@@ -187,7 +192,6 @@ class ImportPage(QWidget):
         my_cmd = str_path + str_value
         self.command_lst = ["import", my_cmd]
 
-        to_maybe_remove = '''
     def open_dir(self):
         print "open_dir"
         file_dialog = QFileDialog()
@@ -324,7 +328,9 @@ def buils_lst_pair(lst_in):
     return lst_pair
 
 class ParamMainWidget( QWidget):
-    #str_param_signal = pyqtSignal(str)
+
+    update_command_lst = pyqtSignal(list)
+
     def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
         super(ParamMainWidget, self).__init__()
 
@@ -439,6 +445,8 @@ class ParamMainWidget( QWidget):
         print "self.command_lst =", self.command_lst, "\n"
         print "running update_lin_txt from: custom_widgets.py"
 
+        self.update_command_lst.emit(self.command_lst)
+
 
     def update_param(self, lst_in):
         self.reset_par()
@@ -459,6 +467,9 @@ class ParamMainWidget( QWidget):
 
 
 class ParamWidget(QWidget):
+
+    update_command_lst = pyqtSignal(list)
+
     def __init__(self, label_str):
         super(ParamWidget, self).__init__()
         self.my_label = label_str
@@ -483,9 +494,10 @@ class ParamWidget(QWidget):
 
         self.my_widget.command_lst = [label_str]
 
+        self.my_widget.update_command_lst.connect(self.update_parent_lst)
+
         v_left_box =  QVBoxLayout()
         v_left_box.addWidget(self.my_widget)
-
         self.setLayout(v_left_box)
         self.show()
 
@@ -493,6 +505,8 @@ class ParamWidget(QWidget):
         print "curr_step.command_lst = ", curr_step.command_lst
         self.my_widget.update_param(curr_step.command_lst)
 
+    def update_parent_lst(self, command_lst):
+        self.update_command_lst.emit(command_lst)
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

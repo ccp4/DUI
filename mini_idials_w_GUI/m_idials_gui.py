@@ -174,7 +174,9 @@ class TreeNavWidget(QTreeView):
 
 
 class CentreWidget(QWidget):
+
     user_changed = pyqtSignal(str)
+    update_command_lst = pyqtSignal(list)
 
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
@@ -206,7 +208,7 @@ class CentreWidget(QWidget):
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
-
+            param_widg.update_command_lst.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
 
@@ -242,6 +244,9 @@ class CentreWidget(QWidget):
 
         self.setLayout(big_v_box)
         self.show()
+
+    def update_parent_lst(self, command_lst):
+        self.update_command_lst.emit(command_lst)
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
@@ -354,7 +359,6 @@ class MainWidget(QMainWindow):
 
         self.idials_runner.make_next = sys_arg_in.make_next
 
-
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
 
@@ -386,9 +390,10 @@ class MainWidget(QMainWindow):
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
         self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
+        self.centre_widget.update_command_lst.connect(
+                          self.update_low_level_command_lst)
         self.centre_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
-
         self.centre_widget.get_arg_obj(sys_arg_in)
 
         self.run_all = False
@@ -436,6 +441,9 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
+    def update_low_level_command_lst(self, command_lst):
+        print "\n\n updating: ", command_lst, "\n\n"
+        self.idials_runner.current_node.command_lst = command_lst
 
     def set_full_auto(self):
         print "Switching to fully automatic mode"
