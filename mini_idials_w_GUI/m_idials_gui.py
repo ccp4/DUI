@@ -439,9 +439,14 @@ class MainWidget(QMainWindow):
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
     def update_low_level_command_lst(self, command_lst):
+
+        print "\n\n"
+        print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
+        print "                                command_lst =", command_lst
+        print "\n\n"
+
         if(self.idials_runner.current_node.success == True and
                 self.idials_runner.make_next == True):
-
             self.rep_clicked()
 
         self.idials_runner.current_node.command_lst = command_lst
@@ -643,8 +648,6 @@ class MainWidget(QMainWindow):
 
         self.check_reindex_pop()
         update_info(self)
-
-
 
 #default_way = '''
 if __name__ == '__main__':

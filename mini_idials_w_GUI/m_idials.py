@@ -150,7 +150,10 @@ class Runner(object):
         lst_to_rm = []
 
         for node in self.step_list:
-            if(node != self.current_node and node.success == None):
+            if( node != self.current_node and
+                node.success == None and (
+                self.make_next == False or
+                len(node.prev_step.next_step_list) > 1 ) ):
                 lst_to_rm.append(node)
 
         for node in lst_to_rm:
