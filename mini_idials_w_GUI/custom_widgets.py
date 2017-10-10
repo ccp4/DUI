@@ -320,9 +320,9 @@ def string2pair(str_in):
 def buils_lst_pair(lst_in):
     lst_pair = []
     for par_str in lst_in[1:len(lst_in)]:
-        print "par_str =", par_str
+        #print "par_str =", par_str
         pair = string2pair(par_str)
-        print "pair =", pair
+        #print "pair =", pair
         lst_pair.append(pair)
 
     return lst_pair
@@ -431,32 +431,17 @@ class ParamMainWidget( QWidget):
                                 widg.setCurrentIndex(pos)
 
     def update_lin_txt(self, str_path, str_value):
-
-        print "self.command_lst =", self.command_lst
-
         cmd_to_run = str_path + "=" + str_value
-        print "adjusting parameter: {", cmd_to_run,"}"
         self.update_advanced_widget(str_path, str_value)
-
         self.lst_pair = update_lst_pair(self.lst_pair, str_path, str_value)
-        print "self.lst_pair =", self.lst_pair
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
-
-        print "self.command_lst =", self.command_lst, "\n"
-        print "running update_lin_txt from: custom_widgets.py"
-
         self.update_command_lst.emit(self.command_lst)
-
 
     def update_param(self, lst_in):
         self.reset_par()
-        print "self.command_lst =", self.command_lst
-        print "lst_in =", lst_in
         if(len(lst_in) > 1):
             new_lst_pair = buils_lst_pair(lst_in)
-            print "new_lst_pair =", new_lst_pair
             self.lst_pair = new_lst_pair
-            print "self.lst_pair =", self.lst_pair
             self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
 
             for pair in self.lst_pair:
@@ -502,7 +487,6 @@ class ParamWidget(QWidget):
         self.show()
 
     def update_param(self, curr_step):
-        print "curr_step.command_lst = ", curr_step.command_lst
         self.my_widget.update_param(curr_step.command_lst)
 
     def update_parent_lst(self, command_lst):

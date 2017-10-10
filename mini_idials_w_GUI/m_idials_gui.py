@@ -251,7 +251,7 @@ class CentreWidget(QWidget):
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
 
-    def set_widget(self, nxt_cmd, curr_step = None):
+    def set_widget(self, nxt_cmd = None, curr_step = None):
         for widget in self.widg_lst:
             if(widget.my_label == nxt_cmd):
                 self.step_param_widg.setCurrentWidget(widget)
@@ -268,9 +268,6 @@ class CentreWidget(QWidget):
         self.user_changed.emit(my_sender.pr_widg.my_label)
 
     def gray_outs_from_lst(self, lst_nxt):
-        print "lst_nxt =", lst_nxt
-        #widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
-
         for btn in self.btn_lst:
             btn.setEnabled(False)
 
@@ -442,7 +439,11 @@ class MainWidget(QMainWindow):
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
     def update_low_level_command_lst(self, command_lst):
-        print "\n\n updating: ", command_lst, "\n\n"
+        if(self.idials_runner.current_node.success == True and
+                self.idials_runner.make_next == True):
+
+            self.rep_clicked()
+
         self.idials_runner.current_node.command_lst = command_lst
 
     def set_full_auto(self):
