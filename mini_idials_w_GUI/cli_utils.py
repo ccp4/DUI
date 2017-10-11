@@ -217,6 +217,13 @@ class DialsCommand(object):
             else:
                 local_success = False
 
+                #TODO handle error outputs
+                try:
+                    ref_to_class.emit_fail_signal()
+
+                except:
+                    print Failed
+
         except:
             local_success = False
             print "\n FAIL call"

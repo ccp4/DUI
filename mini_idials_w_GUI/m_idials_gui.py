@@ -95,6 +95,7 @@ def update_info(main_obj):
 class MyThread(QThread):
 
     str_print_signal = pyqtSignal(str)
+    str_fail_signal = pyqtSignal()
 
     def __init__(self, parent = None):
         super(MyThread, self).__init__()
@@ -111,14 +112,15 @@ class MyThread(QThread):
         #print str_lin, "... Yes"
         self.str_print_signal.emit(str_lin)
 
+    def emit_fail_signal(self):
+        self.str_fail_signal.emit()
 
 def kill_w_child(pid_num):
     print "attempting to kill pid #:", pid_num
-    #print "dir(psutil) =", dir(psutil)
-
     parent_proc = psutil.Process(pid_num)
     for child in parent_proc.children(recursive=True):  # or parent_proc.children() for recursive=False
         child.kill()
+
     parent_proc.kill()
 
 
@@ -262,7 +264,9 @@ class CentreWidget(QWidget):
         self.show()
 
     def update_parent_lst(self, command_lst):
-        self.update_command_lst.emit(command_lst)
+        #Temporarily commented, until fixed the back/forward signaling issue
+        #self.update_command_lst.emit(command_lst)
+        print "<< fix the back/forward signaling issue >>"
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
@@ -446,6 +450,9 @@ class MainWidget(QMainWindow):
 
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
+
+        self.custom_thread.str_fail_signal.connect(self.after_failed)
+
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
         self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
 
@@ -649,6 +656,11 @@ class MainWidget(QMainWindow):
         except:
             print "failed to << check_gray_outs() >>"
 
+    def after_failed(self):
+        #TODO handle error outputs
+        self.update_nav_tree()
+        self.txt_bar.setText("Idle") #TODO put here some clever message to the user
+        self.txt_bar.end_motion()
 
     def opt_clicked(self, row, col):
         re_idx = row + 1
