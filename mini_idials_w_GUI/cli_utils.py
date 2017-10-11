@@ -199,6 +199,8 @@ class DialsCommand(object):
                                           stderr = subprocess.STDOUT,
                                           bufsize = 1)
 
+            self.my_pid = my_process.pid
+
             for line in iter(my_process.stdout.readline, b''):
                 single_line = line[0:len(line)-1]
                 try:

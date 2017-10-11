@@ -28,7 +28,7 @@ from PyQt4.QtWebKit import *
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
 
-import sys, os
+import sys, os, psutil
 import pickle
 from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
@@ -110,6 +110,16 @@ class MyThread(QThread):
     def emit_print_signal(self, str_lin):
         #print str_lin, "... Yes"
         self.str_print_signal.emit(str_lin)
+
+
+def kill_w_child(pid_num):
+    print "attempting to kill pid #:", pid_num
+    #print "dir(psutil) =", dir(psutil)
+
+    parent_proc = psutil.Process(pid_num)
+    for child in parent_proc.children(recursive=True):  # or parent_proc.children() for recursive=False
+        child.kill()
+    parent_proc.kill()
 
 
 class TreeNavWidget(QTreeView):
@@ -496,6 +506,10 @@ class MainWidget(QMainWindow):
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
+        #TODO fix spelling on << dials_comand >>
+        pr_to_kill = self.idials_runner.current_node.dials_comand.my_pid
+        print "self.idials_runner.current_node.dials_comand.my_pid =", pr_to_kill
+        kill_w_child(pr_to_kill)
 
     def run_clicked(self):
         print "run_clicked"
