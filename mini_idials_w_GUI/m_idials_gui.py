@@ -166,16 +166,22 @@ class TreeNavWidget(QTreeView):
                     if(child_node.success == None):
                         new_item.setForeground(Qt.green)
 
-                    else:
+                    elif(child_node.success == True):
                         new_item.setForeground(Qt.white)
+
+                    elif(child_node.success == False):
+                        new_item.setForeground(Qt.red)
 
                 else:
                     new_item.setBackground(Qt.white)
                     if(child_node.success == None):
                         new_item.setForeground(Qt.green)
 
-                    else:
+                    elif(child_node.success == True):
                         new_item.setForeground(Qt.blue)
+
+                    elif(child_node.success == False):
+                        new_item.setForeground(Qt.red)
 
                 new_item.setEditable(False)      # not letting the user edit it
 
