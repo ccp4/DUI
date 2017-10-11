@@ -586,6 +586,16 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
+        elif(tmp_curr.command_lst[0] == "integrate" and
+                tmp_curr.success == True):
+
+            if(self.idials_runner.make_next == False):
+                self.idials_runner.run(command = ["mkchi"],
+                                        ref_to_class = None)
+
+            #self.idials_runner.current_node.command_lst[0] = "export"
+            self.cmd_launch(["export"])
+
         self.update_nav_tree()
         self.check_reindex_pop()
         self.check_gray_outs(tmp_curr)
