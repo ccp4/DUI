@@ -392,25 +392,13 @@ class MainWidget(QMainWindow):
         left_widget = LeftWidget()
         self.tree_out = left_widget.tree_out
         self.mode_widget = left_widget.mode_widget
-        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
         h_left_splitter.addWidget(left_widget)
 
-        self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
-        self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
-        self.mode_widget.rb_expert.clicked.connect(self.set_expert)
 
         self.update_nav_tree()
 
         self.centre_widget = CentreWidget()
 
-        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
-        self.centre_widget.run_btn.clicked.connect(self.run_clicked)
-        self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
-        self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
-        self.centre_widget.update_command_lst.connect(
-                          self.update_low_level_command_lst)
-        self.centre_widget.step_param_widg.currentChanged.connect(
-                                          self.cmd_changed_by_any)
         self.centre_widget.get_arg_obj(sys_arg_in)
 
         self.run_all = False
@@ -448,18 +436,33 @@ class MainWidget(QMainWindow):
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
 
+        self.connect_all()
+
         self.custom_thread = MyThread()
         self.custom_thread.finished.connect(self.update_after_finished)
-
         self.custom_thread.str_fail_signal.connect(self.after_failed)
-
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
         self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+
+    def connect_all(self):
+        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
+        self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
+        self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
+        self.mode_widget.rb_expert.clicked.connect(self.set_expert)
+        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
+        self.centre_widget.run_btn.clicked.connect(self.run_clicked)
+        self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
+        self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
+        self.centre_widget.update_command_lst.connect(
+                          self.update_low_level_command_lst)
+        self.centre_widget.step_param_widg.currentChanged.connect(
+                                          self.cmd_changed_by_any)
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
+
 
     def update_low_level_command_lst(self, command_lst):
 
