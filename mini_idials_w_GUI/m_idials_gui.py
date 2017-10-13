@@ -463,6 +463,26 @@ class MainWidget(QMainWindow):
                                           self.cmd_changed_by_any)
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
+    def disconnect_when_running(self):
+        self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
+        self.centre_widget.repeat_btn.clicked.disconnect(self.rep_clicked)
+        self.centre_widget.run_btn.clicked.disconnect(self.run_clicked)
+        self.centre_widget.user_changed.disconnect(self.cmd_changed_by_user)
+        self.centre_widget.update_command_lst.disconnect(
+                          self.update_low_level_command_lst)
+        self.centre_widget.step_param_widg.currentChanged.disconnect(
+                                          self.cmd_changed_by_any)
+
+    def reconnect_after_running(self):
+        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
+        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
+        self.centre_widget.run_btn.clicked.connect(self.run_clicked)
+        self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
+        self.centre_widget.update_command_lst.connect(
+                          self.update_low_level_command_lst)
+        self.centre_widget.step_param_widg.currentChanged.connect(
+                                          self.cmd_changed_by_any)
+
 
     def update_low_level_command_lst(self, command_lst):
 
@@ -547,11 +567,14 @@ class MainWidget(QMainWindow):
 
         self.txt_bar.start_motion()
         self.txt_bar.setText("Running")
+        self.disconnect_when_running()
 
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
         update_info(self)
+
+        self.reconnect_after_running()
 
         self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
@@ -678,6 +701,7 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
         self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
+        self.reconnect_after_running()
 
     def opt_clicked(self, row, col):
         re_idx = row + 1
