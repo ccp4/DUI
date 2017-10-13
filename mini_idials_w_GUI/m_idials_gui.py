@@ -596,9 +596,9 @@ class MainWidget(QMainWindow):
             mtz_name = str(self.centre_widget.widg_lst[5].my_widget.
                            sipler_widget.mtz_name_lin.text())
 
-            print "\n MTZ name =", mtz_name
-
-            self.cmd_launch(["export", "mtz.hklout=aaaaaaa.mtz"])
+            print "MTZ name =", mtz_name
+            mtz_export_par = "mtz.hklout=" + mtz_name
+            self.cmd_launch(["export", mtz_export_par])
 
         self.update_nav_tree()
         self.check_reindex_pop()
