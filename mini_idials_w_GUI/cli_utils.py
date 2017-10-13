@@ -147,9 +147,11 @@ def build_command_lst(node_obj, cmd_lst):
         cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
         cmd_lst_to_run.append(node_obj.prev_step.pickle_file_out)
 
+        tmp_off = '''
         file_out = str(node_obj.lin_num) + "_integrated.mtz"
         output_str = "mtz.hklout=" + file_out
         cmd_lst_to_run.append(output_str)
+        '''
 
     return cmd_lst_to_run
 
