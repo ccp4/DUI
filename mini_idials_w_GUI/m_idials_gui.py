@@ -265,7 +265,7 @@ class CentreWidget(QWidget):
 
     def update_parent_lst(self, command_lst):
         #Temporarily commented, until fixed the back/forward signaling issue
-        #self.update_command_lst.emit(command_lst)
+        self.update_command_lst.emit(command_lst)
         print "<< fix the back/forward signaling issue >>"
 
     def get_arg_obj(self, sys_arg_in):
@@ -710,6 +710,10 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
 
     def node_clicked(self, it_index):
+
+        self.centre_widget.update_command_lst.disconnect(
+                          self.update_low_level_command_lst)
+
         print "TreeNavWidget(node_clicked)"
         item = self.tree_out.std_mod.itemFromIndex(it_index)
         lin_num = item.idials_node.lin_num
@@ -721,6 +725,11 @@ class MainWidget(QMainWindow):
 
         self.check_reindex_pop()
         update_info(self)
+
+        self.centre_widget.update_command_lst.connect(
+                          self.update_low_level_command_lst)
+
+
 
 #default_way = '''
 if __name__ == '__main__':
