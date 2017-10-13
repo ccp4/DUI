@@ -287,6 +287,10 @@ class CentreWidget(QWidget):
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
         self.user_changed.emit(my_sender.pr_widg.my_label)
 
+        print "\n\n my_sender.pr_widg.my_label =", my_sender.pr_widg.my_label, "\n\n"
+        command_lst = [str(my_sender.pr_widg.my_label)]
+        self.update_command_lst.emit(command_lst)
+
     def gray_outs_from_lst(self, lst_nxt):
         for btn in self.btn_lst:
             btn.setEnabled(False)
@@ -496,6 +500,7 @@ class MainWidget(QMainWindow):
             self.rep_clicked()
 
         self.idials_runner.current_node.command_lst = command_lst
+        self.update_nav_tree()
 
     def set_full_auto(self):
         print "Switching to fully automatic mode"
