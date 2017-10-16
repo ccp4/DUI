@@ -235,7 +235,7 @@ class CentreWidget(QWidget):
         ctrl_box = QHBoxLayout()
 
         self.repeat_btn = QPushButton("\n Re Try \n", self)
-        self.repeat_btn.setIcon(QIcon.fromTheme("edit-redo"))
+        self.repeat_btn.setIcon(QIcon(idials_gui_path + "/resources/re_try.png"))
         self.repeat_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.repeat_btn)
 
@@ -246,7 +246,7 @@ class CentreWidget(QWidget):
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
-        self.stop_btn.setIcon(QIcon.fromTheme("process-stop"))
+        self.stop_btn.setIcon(QIcon(idials_gui_path + "/resources/stop.png"))
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
 
