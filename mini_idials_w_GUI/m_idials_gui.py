@@ -210,6 +210,15 @@ class CentreWidget(QWidget):
         lst_icons_path.append(idials_gui_path + "/resources/refine.png")
         lst_icons_path.append(idials_gui_path + "/resources/integrate.png")
 
+        lst_grayed_icons_path = []
+        lst_grayed_icons_path.append(idials_gui_path + "/resources/import_grayed.png")
+        lst_grayed_icons_path.append(idials_gui_path + "/resources/find_spots_grayed.png")
+        lst_grayed_icons_path.append(idials_gui_path + "/resources/index_grayed.png")
+        lst_grayed_icons_path.append(idials_gui_path + "/resources/reindex_grayed.png")
+        lst_grayed_icons_path.append(idials_gui_path + "/resources/refine_grayed.png")
+        lst_grayed_icons_path.append(idials_gui_path + "/resources/integrate_grayed.png")
+
+
         top_box =  QHBoxLayout()
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []
@@ -220,8 +229,7 @@ class CentreWidget(QWidget):
 
             tmp_ico = QIcon()
             tmp_ico.addFile(lst_icons_path[num], mode = QIcon.Normal)
-            tmp_ico.addFile(idials_gui_path + "/resources/import_grayed.png", mode = QIcon.Disabled)
-
+            tmp_ico.addFile(lst_grayed_icons_path[num], mode = QIcon.Disabled)
 
             new_btn.setIcon(tmp_ico)
 
