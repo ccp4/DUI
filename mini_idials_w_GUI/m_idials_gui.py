@@ -232,8 +232,6 @@ class CentreWidget(QWidget):
             tmp_ico.addFile(lst_grayed_icons_path[num], mode = QIcon.Disabled)
 
             new_btn.setIcon(tmp_ico)
-
-
             new_btn.setIconSize(QSize(38, 38))
             new_btn.clicked.connect(self.btn_clicked)
             top_box.addWidget(new_btn)
@@ -245,18 +243,11 @@ class CentreWidget(QWidget):
             param_widg.update_command_lst.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
-
         dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
         ctrl_box = QHBoxLayout()
 
         self.repeat_btn = QPushButton("\n Re Try \n", self)
-
-        print "\n\n dir(QPushButton) =", dir(QPushButton), "\n\n"
-        print "\n\n dir(self.repeat_btn.icon) =", dir(self.repeat_btn.icon), "\n\n"
-
-
-
         self.repeat_btn.setIcon(QIcon(idials_gui_path + "/resources/re_try.png"))
         self.repeat_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.repeat_btn)
@@ -264,7 +255,6 @@ class CentreWidget(QWidget):
         self.run_btn = QPushButton("\n  Run  \n", self)
         self.run_btn.setIcon(QIcon(dials_logo_path))
         self.run_btn.setIconSize(QSize(80, 48))
-
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
