@@ -217,7 +217,15 @@ class CentreWidget(QWidget):
         for num, step_name in enumerate(widg_name_list):
             new_btn = QPushButton(self)
             new_btn.setToolTip(step_name)
-            new_btn.setIcon(QIcon(lst_icons_path[num]))
+
+            tmp_ico = QIcon()
+            tmp_ico.addFile(lst_icons_path[num], mode = QIcon.Normal)
+            tmp_ico.addFile(idials_gui_path + "/resources/import_grayed.png", mode = QIcon.Disabled)
+
+
+            new_btn.setIcon(tmp_ico)
+
+
             new_btn.setIconSize(QSize(38, 38))
             new_btn.clicked.connect(self.btn_clicked)
             top_box.addWidget(new_btn)
@@ -235,6 +243,12 @@ class CentreWidget(QWidget):
         ctrl_box = QHBoxLayout()
 
         self.repeat_btn = QPushButton("\n Re Try \n", self)
+
+        print "\n\n dir(QPushButton) =", dir(QPushButton), "\n\n"
+        print "\n\n dir(self.repeat_btn.icon) =", dir(self.repeat_btn.icon), "\n\n"
+
+
+
         self.repeat_btn.setIcon(QIcon(idials_gui_path + "/resources/re_try.png"))
         self.repeat_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.repeat_btn)
