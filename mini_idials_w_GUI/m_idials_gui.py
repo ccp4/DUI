@@ -247,12 +247,19 @@ class CentreWidget(QWidget):
         ctrl_box = QHBoxLayout()
 
         self.repeat_btn = QPushButton("\n Re Try \n", self)
-        self.repeat_btn.setIcon(QIcon(idials_gui_path + "/resources/re_try.png"))
+        re_try_icon_path = str(idials_gui_path +
+                              "/resources/re_try.png")
+        re_try_grayed_path = str(idials_gui_path +
+                              "/resources/re_try_grayed.png")
+        tmp_ico = QIcon()
+        tmp_ico.addFile(re_try_icon_path, mode = QIcon.Normal)
+        tmp_ico.addFile(re_try_grayed_path, mode = QIcon.Disabled)
+
+        self.repeat_btn.setIcon(tmp_ico)
         self.repeat_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.repeat_btn)
 
         self.run_btn = QPushButton("\n  Run  \n", self)
-
         dials_logo_path = str(idials_gui_path +
                               "/resources/DIALS_Logo_smaller_centred.png")
         dials_grayed_path = str(idials_gui_path +
@@ -262,18 +269,18 @@ class CentreWidget(QWidget):
         tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
 
         self.run_btn.setIcon(tmp_ico)
-
-        #self.run_btn.setIcon(QIcon(dials_logo_path))
         self.run_btn.setIconSize(QSize(80, 48))
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
-        self.stop_btn.setIcon(QIcon(idials_gui_path + "/resources/stop.png"))
+        stop_logo_path = str(idials_gui_path + "/resources/stop.png")
+        stop_grayed_path = str(idials_gui_path + "/resources/stop_grayed.png")
+        tmp_ico = QIcon()
+        tmp_ico.addFile(stop_logo_path, mode = QIcon.Normal)
+        tmp_ico.addFile(stop_grayed_path, mode = QIcon.Disabled)
+        self.stop_btn.setIcon(tmp_ico)
         self.stop_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.stop_btn)
-
-        #mode radio buttons (old)
-
 
         big_v_box = QVBoxLayout()
 
@@ -491,9 +498,10 @@ class MainWidget(QMainWindow):
 
     def disconnect_when_running(self):
         self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
-        self.centre_widget.repeat_btn.clicked.disconnect(self.rep_clicked)
 
+        self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
+        self.centre_widget.stop_btn.setEnabled(True)
 
         self.centre_widget.user_changed.disconnect(self.cmd_changed_by_user)
         self.centre_widget.update_command_lst.disconnect(
@@ -503,9 +511,10 @@ class MainWidget(QMainWindow):
 
     def reconnect_after_running(self):
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
-        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
 
+        self.centre_widget.repeat_btn.setEnabled(True)
         self.centre_widget.run_btn.setEnabled(True)
+        self.centre_widget.stop_btn.setEnabled(False)
 
         self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
         self.centre_widget.update_command_lst.connect(
