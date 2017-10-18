@@ -320,9 +320,12 @@ class CentreWidget(QWidget):
         command_lst = [str(my_sender.pr_widg.my_label)]
         self.update_command_lst.emit(command_lst)
 
-    def gray_outs_from_lst(self, lst_nxt):
+    def gray_outs_all(self):
         for btn in self.btn_lst:
             btn.setEnabled(False)
+
+    def gray_outs_from_lst(self, lst_nxt):
+        self.gray_outs_all()
 
         for btn in self.btn_lst:
             for cmd_str in lst_nxt:
@@ -496,6 +499,33 @@ class MainWidget(QMainWindow):
                                           self.cmd_changed_by_any)
         self.check_gray_outs(self.idials_runner.current_node.prev_step)
 
+
+    def disconnect_when_running(self):
+        self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
+
+        self.centre_widget.repeat_btn.setEnabled(False)
+        self.centre_widget.run_btn.setEnabled(False)
+        self.centre_widget.stop_btn.setEnabled(True)
+
+
+        self.centre_widget.gray_outs_all()
+
+        self.centre_widget.update_command_lst.disconnect(
+                          self.update_low_level_command_lst)
+
+    def reconnect_after_running(self):
+        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
+
+        self.centre_widget.repeat_btn.setEnabled(True)
+        self.centre_widget.run_btn.setEnabled(True)
+        self.centre_widget.stop_btn.setEnabled(False)
+
+        self.centre_widget.gray_outs_from_lst(self.idials_runner.current_node.command_lst)
+
+        self.centre_widget.update_command_lst.connect(
+                          self.update_low_level_command_lst)
+
+        tmp_off = '''
     def disconnect_when_running(self):
         self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
 
@@ -521,6 +551,8 @@ class MainWidget(QMainWindow):
                           self.update_low_level_command_lst)
         self.centre_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
+
+        '''
 
 
     def update_low_level_command_lst(self, command_lst):
