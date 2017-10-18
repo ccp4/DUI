@@ -243,7 +243,6 @@ class CentreWidget(QWidget):
             param_widg.update_command_lst.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
-        dials_logo_path = str(idials_gui_path + "/resources/DIALS_Logo_smaller_centred.png")
 
         ctrl_box = QHBoxLayout()
 
@@ -253,7 +252,18 @@ class CentreWidget(QWidget):
         ctrl_box.addWidget(self.repeat_btn)
 
         self.run_btn = QPushButton("\n  Run  \n", self)
-        self.run_btn.setIcon(QIcon(dials_logo_path))
+
+        dials_logo_path = str(idials_gui_path +
+                              "/resources/DIALS_Logo_smaller_centred.png")
+        dials_grayed_path = str(idials_gui_path +
+                                "/resources/DIALS_Logo_smaller_centred_grayed.png")
+        tmp_ico = QIcon()
+        tmp_ico.addFile(dials_logo_path, mode = QIcon.Normal)
+        tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
+
+        self.run_btn.setIcon(tmp_ico)
+
+        #self.run_btn.setIcon(QIcon(dials_logo_path))
         self.run_btn.setIconSize(QSize(80, 48))
         ctrl_box.addWidget(self.run_btn)
 
@@ -482,7 +492,9 @@ class MainWidget(QMainWindow):
     def disconnect_when_running(self):
         self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
         self.centre_widget.repeat_btn.clicked.disconnect(self.rep_clicked)
-        self.centre_widget.run_btn.clicked.disconnect(self.run_clicked)
+
+        self.centre_widget.run_btn.setEnabled(False)
+
         self.centre_widget.user_changed.disconnect(self.cmd_changed_by_user)
         self.centre_widget.update_command_lst.disconnect(
                           self.update_low_level_command_lst)
@@ -492,7 +504,9 @@ class MainWidget(QMainWindow):
     def reconnect_after_running(self):
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
-        self.centre_widget.run_btn.clicked.connect(self.run_clicked)
+
+        self.centre_widget.run_btn.setEnabled(True)
+
         self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
         self.centre_widget.update_command_lst.connect(
                           self.update_low_level_command_lst)
