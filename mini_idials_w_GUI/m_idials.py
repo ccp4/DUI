@@ -246,22 +246,20 @@ class Runner(object):
     def get_reflections_path(self):
         tmp_cur = self.current_node
         if(tmp_cur.command_lst == [None]):
-           tmp_cur = tmp_cur.prev_step
+            tmp_cur = tmp_cur.prev_step
 
         if(tmp_cur.command_lst[0] == "Root" or
-             tmp_cur.command_lst[0] == "import" or
-             tmp_cur.success == False):
+                tmp_cur.command_lst[0] == "import" or
+                tmp_cur.success != True):
 
-            path_to_pickle = None
+            return None
 
         try:
-            path_to_pickle = tmp_cur.pickle_file_out
+            return tmp_cur.pickle_file_out
 
         except:
-            path_to_pickle = None
             print "no pickle file available"
-
-        return path_to_pickle
+            return None
 
     def get_next_from_here(self):
         return self.current_node.get_next_step()

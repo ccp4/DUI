@@ -485,6 +485,7 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
     def connect_all(self):
+        self.tree_clickable = True
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
         self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
         self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
@@ -501,58 +502,23 @@ class MainWidget(QMainWindow):
 
 
     def disconnect_when_running(self):
-        self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
+        self.tree_clickable = False
+        #self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
 
         self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(True)
-
-
         self.centre_widget.gray_outs_all()
 
-        self.centre_widget.update_command_lst.disconnect(
-                          self.update_low_level_command_lst)
-
     def reconnect_after_running(self):
-        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
+        self.tree_clickable = True
+        #self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
 
         self.centre_widget.repeat_btn.setEnabled(True)
         self.centre_widget.run_btn.setEnabled(True)
         self.centre_widget.stop_btn.setEnabled(False)
 
         self.centre_widget.gray_outs_from_lst(self.idials_runner.current_node.command_lst)
-
-        self.centre_widget.update_command_lst.connect(
-                          self.update_low_level_command_lst)
-
-        tmp_off = '''
-    def disconnect_when_running(self):
-        self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
-
-        self.centre_widget.repeat_btn.setEnabled(False)
-        self.centre_widget.run_btn.setEnabled(False)
-        self.centre_widget.stop_btn.setEnabled(True)
-
-        self.centre_widget.user_changed.disconnect(self.cmd_changed_by_user)
-        self.centre_widget.update_command_lst.disconnect(
-                          self.update_low_level_command_lst)
-        self.centre_widget.step_param_widg.currentChanged.disconnect(
-                                          self.cmd_changed_by_any)
-
-    def reconnect_after_running(self):
-        self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
-
-        self.centre_widget.repeat_btn.setEnabled(True)
-        self.centre_widget.run_btn.setEnabled(True)
-        self.centre_widget.stop_btn.setEnabled(False)
-
-        self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
-        self.centre_widget.update_command_lst.connect(
-                          self.update_low_level_command_lst)
-        self.centre_widget.step_param_widg.currentChanged.connect(
-                                          self.cmd_changed_by_any)
-
-        '''
 
 
     def update_low_level_command_lst(self, command_lst):
@@ -782,24 +748,27 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
 
     def node_clicked(self, it_index):
+        if(self.tree_clickable == True):
+            try:
+                self.centre_widget.update_command_lst.disconnect(
+                                self.update_low_level_command_lst)
+            except:
+                print "<< update_low_level_command_lst >> already disconnected"
 
-        self.centre_widget.update_command_lst.disconnect(
-                          self.update_low_level_command_lst)
+            print "TreeNavWidget(node_clicked)"
+            item = self.tree_out.std_mod.itemFromIndex(it_index)
+            lin_num = item.idials_node.lin_num
+            print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
+            cmd_ovr = "goto " + str(lin_num)
+            self.cmd_exe(cmd_ovr)
+            self.centre_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
+                                        curr_step = self.idials_runner.current_node)
 
-        print "TreeNavWidget(node_clicked)"
-        item = self.tree_out.std_mod.itemFromIndex(it_index)
-        lin_num = item.idials_node.lin_num
-        print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
-        cmd_ovr = "goto " + str(lin_num)
-        self.cmd_exe(cmd_ovr)
-        self.centre_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
-                                      curr_step = self.idials_runner.current_node)
+            self.check_reindex_pop()
+            update_info(self)
 
-        self.check_reindex_pop()
-        update_info(self)
-
-        self.centre_widget.update_command_lst.connect(
-                          self.update_low_level_command_lst)
+            self.centre_widget.update_command_lst.connect(
+                            self.update_low_level_command_lst)
 
 
 

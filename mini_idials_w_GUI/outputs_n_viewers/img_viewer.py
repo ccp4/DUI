@@ -551,23 +551,27 @@ class MyImgWin(QWidget):
             firts_time = time_now()
 
             print "[pickle file] =", pckl_file_path
-            table = flex.reflection_table.from_pickle(pckl_file_path)
-            print "table =", table
-            print "len(table) = ", len(table)
-            n_refs = len(table)
-            bbox_col = map(list, table["bbox"])
             try:
-                hkl_col = map(str, table["miller_index"])
+                table = flex.reflection_table.from_pickle(pckl_file_path)
+                print "table =", table
+                print "len(table) = ", len(table)
+                n_refs = len(table)
+                bbox_col = map(list, table["bbox"])
+                try:
+                    hkl_col = map(str, table["miller_index"])
+
+                except:
+                    hkl_col = []
+
+                n_imgs = self.img_select.maximum()
+                self.flat_data_lst = []
+                if(n_imgs > 0):
+                    self.flat_data_lst = lst_arange(bbox_col, hkl_col, n_imgs)
+
+                print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
 
             except:
-                hkl_col = []
-
-            n_imgs = self.img_select.maximum()
-            self.flat_data_lst = []
-            if(n_imgs > 0):
-                self.flat_data_lst = lst_arange(bbox_col, hkl_col, n_imgs)
-
-            print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
+                self.flat_data_lst = [None]
 
         else:
             self.flat_data_lst = [None]
