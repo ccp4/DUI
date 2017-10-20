@@ -363,22 +363,6 @@ class ModeWidget(QWidget):
         self.setLayout(big_layout)
         self.show()
 
-        to_remove = '''
-class LeftWidget(QWidget):
-    def __init__(self, parent = None):
-        super(LeftWidget, self).__init__()
-
-        big_layout = QVBoxLayout()
-        self.tree_out = TreeNavWidget()
-        self.mode_widget = ModeWidget()
-
-        big_layout.addWidget(self.tree_out)
-        big_layout.addWidget(self.mode_widget)
-
-        self.setLayout(big_layout)
-        self.show()
-        '''
-
 class SysArgvData(object):
     make_next = False
     run_all = False
@@ -426,13 +410,6 @@ class MainWidget(QMainWindow):
         h_left_splitter = QSplitter()
         h_left_splitter.setOrientation(Qt.Horizontal)
 
-
-        to_remove = '''
-        left_widget = LeftWidget()
-        self.tree_out = left_widget.tree_out
-        self.mode_widget = left_widget.mode_widget
-        h_left_splitter.addWidget(left_widget)
-        '''
 
         self.tree_out = TreeNavWidget()
         h_left_splitter.addWidget(self.tree_out)
@@ -493,11 +470,7 @@ class MainWidget(QMainWindow):
     def connect_all(self):
         self.tree_clickable = True
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
-        to_remove = '''
-        self.mode_widget.rb_full_auto.clicked.connect(self.set_full_auto)
-        self.mode_widget.rb_semi_auto.clicked.connect(self.set_semi_auto)
-        self.mode_widget.rb_expert.clicked.connect(self.set_expert)
-        '''
+
         self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
@@ -542,23 +515,6 @@ class MainWidget(QMainWindow):
 
         self.idials_runner.current_node.command_lst = command_lst
         self.update_nav_tree()
-
-        to_remove = '''
-    def set_full_auto(self):
-        print "Switching to fully automatic mode"
-        self.idials_runner.make_next = True
-        self.run_all = True
-
-    def set_semi_auto(self):
-        print "Switching to semi automatic mode"
-        self.idials_runner.make_next = True
-        self.run_all = False
-
-    def set_expert(self):
-        print "Switching to expert mode"
-        self.idials_runner.make_next = False
-        self.run_all = False
-        '''
 
     def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
