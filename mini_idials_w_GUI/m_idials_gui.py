@@ -380,7 +380,8 @@ class LeftWidget(QWidget):
 
 
 class SysArgvData(object):
-    make_next = True
+    make_next = False
+    run_all = False
     template = None
     directory = None
 
@@ -437,7 +438,7 @@ class MainWidget(QMainWindow):
 
         self.centre_widget.get_arg_obj(sys_arg_in)
 
-        self.run_all = False
+        self.run_all = sys_arg_in.run_all
 
         h_left_splitter.addWidget(self.centre_widget)
 
@@ -784,13 +785,22 @@ if __name__ == '__main__':
                     par_str == "explicit" or par_str == "--explicit"):
 
                 sys_arg.make_next = False
+                sys_arg.run_all = False
                 print "Running in << explicit >> mode"
 
             elif(par_str == "a" or par_str == "-a" or
                  par_str == "automatic" or par_str == "--automatic"):
 
                 sys_arg.make_next = True
+                sys_arg.run_all = False
                 print "Running in << automatic >> mode"
+
+            elif(par_str == "sa" or par_str == "-sa" or
+                 par_str == "superautomatic" or par_str == "--superautomatic"):
+
+                sys_arg.make_next = True
+                sys_arg.run_all = True
+                print "Running in << SUPER automatic >> mode"
 
             elif(par_str[0:9] == "template="):
                 sys_arg.template = par_str[9:]
