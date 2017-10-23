@@ -126,7 +126,7 @@ class ImportPage(QWidget):
         template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
         self.templ_lin.setText(" ? ")
-        opn_fil_btn = QPushButton("\n open File(s)\n")
+        opn_fil_btn = QPushButton("\n Select File(s)\n")
 
         template_vbox.addWidget(self.templ_lin)
         template_vbox.addWidget(opn_fil_btn)
