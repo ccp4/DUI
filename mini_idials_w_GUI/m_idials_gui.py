@@ -510,6 +510,7 @@ class MainWidget(QMainWindow):
 
         if(self.idials_runner.current_node.success == True and
                 self.idials_runner.make_next == True):
+
             self.rep_clicked()
 
         self.idials_runner.current_node.command_lst = command_lst
@@ -541,6 +542,7 @@ class MainWidget(QMainWindow):
         print "rep_clicked"
         self.cmd_exe(["mksib"])
         self.cmd_exe(["clean"])
+        self.check_gray_outs()
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
