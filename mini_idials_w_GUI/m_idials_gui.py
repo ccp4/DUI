@@ -479,7 +479,7 @@ class MainWidget(QMainWindow):
                           self.update_low_level_command_lst)
         self.centre_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
-        self.check_gray_outs(self.idials_runner.current_node.prev_step)
+        self.check_gray_outs()
 
 
     def disconnect_when_running(self):
@@ -498,9 +498,8 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.setEnabled(True)
         self.centre_widget.run_btn.setEnabled(True)
         self.centre_widget.stop_btn.setEnabled(False)
-
-        self.centre_widget.gray_outs_from_lst(self.idials_runner.current_node.command_lst)
-
+        self.check_gray_outs()
+        #self.centre_widget.gray_outs_from_lst(self.idials_runner.current_node.command_lst)
 
     def update_low_level_command_lst(self, command_lst):
 
@@ -520,7 +519,6 @@ class MainWidget(QMainWindow):
         print "cmd_changed_by_user()"
         tmp_curr = self.idials_runner.current_node
         if(self.idials_runner.make_next == False and
-                len(tmp_curr.next_step_list) == 0 and
                 tmp_curr.success == True):
 
             self.cmd_exe(["mkchi"])
@@ -632,7 +630,7 @@ class MainWidget(QMainWindow):
 
         self.update_nav_tree()
         self.check_reindex_pop()
-        self.check_gray_outs(tmp_curr)
+        self.check_gray_outs()
 
         if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
                 tmp_curr.command_lst[0] != "integrate" and
@@ -646,7 +644,11 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
         #'''
 
-    def check_gray_outs(self, tmp_curr):
+    def check_gray_outs(self):
+        tmp_curr = self.idials_runner.current_node
+        if(tmp_curr.success != True):
+            tmp_curr = tmp_curr.prev_step
+
         cmd_connects = {"Root"                    : ["import"] ,
                         "import"                  : ["find_spots"] ,
                         "find_spots"              : ["index"] ,
@@ -715,6 +717,7 @@ class MainWidget(QMainWindow):
 
     def node_clicked(self, it_index):
         if(self.tree_clickable == True):
+            #TODO Think of a more robust way to "disconnect" ... next line
             try:
                 self.centre_widget.update_command_lst.disconnect(
                                 self.update_low_level_command_lst)
@@ -732,6 +735,7 @@ class MainWidget(QMainWindow):
 
             self.check_reindex_pop()
             update_info(self)
+            self.check_gray_outs()
 
             self.centre_widget.update_command_lst.connect(
                             self.update_low_level_command_lst)
