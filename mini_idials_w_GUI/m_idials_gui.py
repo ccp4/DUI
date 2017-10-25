@@ -503,6 +503,11 @@ class MainWidget(QMainWindow):
         else:
             self.centre_widget.repeat_btn.setEnabled(True)
 
+        if(self.idials_runner.current_node.command_lst[0] == "reindex"):
+            self.centre_widget.run_btn.setEnabled(False)
+            self.centre_widget.repeat_btn.setEnabled(False)
+
+
         self.check_gray_outs()
 
     def update_low_level_command_lst(self, command_lst):
@@ -583,7 +588,6 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
         update_info(self)
 
-        self.reconnect_when_ready()
 
         self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
@@ -644,6 +648,8 @@ class MainWidget(QMainWindow):
                 self.run_all == True):
 
             self.run_clicked()
+
+        self.reconnect_when_ready()
 
 
         #tmp_off = '''
