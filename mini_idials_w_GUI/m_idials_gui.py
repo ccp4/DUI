@@ -482,24 +482,28 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
 
 
-    def disconnect_when_running(self):
+    def disconnect_while_running(self):
         self.tree_clickable = False
-        #self.tree_out.clicked[QModelIndex].disconnect(self.node_clicked)
 
         self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(True)
         self.centre_widget.gray_outs_all()
 
-    def reconnect_after_running(self):
+    def reconnect_when_ready(self):
         self.tree_clickable = True
-        #self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
 
-        self.centre_widget.repeat_btn.setEnabled(True)
-        self.centre_widget.run_btn.setEnabled(True)
+        self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(False)
+        self.centre_widget.run_btn.setEnabled(False)
+
+        if(self.idials_runner.current_node.success == None):
+            self.centre_widget.run_btn.setEnabled(True)
+
+        else:
+            self.centre_widget.repeat_btn.setEnabled(True)
+
         self.check_gray_outs()
-        #self.centre_widget.gray_outs_from_lst(self.idials_runner.current_node.command_lst)
 
     def update_low_level_command_lst(self, command_lst):
 
@@ -565,20 +569,21 @@ class MainWidget(QMainWindow):
 
         self.update_nav_tree()
         self.check_reindex_pop()
+        self.reconnect_when_ready()
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
 
         self.txt_bar.start_motion()
         self.txt_bar.setText("Running")
-        self.disconnect_when_running()
+        self.disconnect_while_running()
 
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
         update_info(self)
 
-        self.reconnect_after_running()
+        self.reconnect_when_ready()
 
         self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
@@ -709,7 +714,6 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
         self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
-        self.reconnect_after_running()
 
     def opt_clicked(self, row, col):
         re_idx = row + 1
