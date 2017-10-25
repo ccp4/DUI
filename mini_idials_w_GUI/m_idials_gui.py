@@ -467,6 +467,8 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
+        self.user_stoped = False
+
     def connect_all(self):
         self.tree_clickable = True
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
@@ -489,6 +491,8 @@ class MainWidget(QMainWindow):
         self.centre_widget.run_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(True)
         self.centre_widget.gray_outs_all()
+        self.user_stoped = False
+
 
     def reconnect_when_ready(self):
         self.tree_clickable = True
@@ -496,6 +500,9 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
+
+        if(self.user_stoped == True):
+            self.idials_runner.current_node.success = None
 
         if(self.idials_runner.current_node.success == None):
             self.centre_widget.run_btn.setEnabled(True)
@@ -507,8 +514,8 @@ class MainWidget(QMainWindow):
             self.centre_widget.run_btn.setEnabled(False)
             self.centre_widget.repeat_btn.setEnabled(False)
 
-
         self.check_gray_outs()
+        self.user_stoped = False
 
     def update_low_level_command_lst(self, command_lst):
 
@@ -558,6 +565,7 @@ class MainWidget(QMainWindow):
         #TODO fix spelling on << dials_comand >>
         pr_to_kill = self.idials_runner.current_node.dials_comand.my_pid
         print "self.idials_runner.current_node.dials_comand.my_pid =", pr_to_kill
+        self.user_stoped = True
         kill_w_child(pr_to_kill)
 
     def run_clicked(self):
@@ -639,18 +647,17 @@ class MainWidget(QMainWindow):
             mtz_export_par = "mtz.hklout=" + mtz_name
             self.cmd_launch(["export", mtz_export_par])
 
-        self.update_nav_tree()
-        self.check_reindex_pop()
-        self.check_gray_outs()
-
         if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
                 tmp_curr.command_lst[0] != "integrate" and
                 self.run_all == True):
 
             self.run_clicked()
 
-        self.reconnect_when_ready()
+        self.check_reindex_pop()
+        self.check_gray_outs()
 
+        self.reconnect_when_ready()
+        self.update_nav_tree()
 
         #tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
