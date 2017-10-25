@@ -47,7 +47,8 @@ def update_data_label(data_label, data_info, n_dec = 2):
 
     else:
         data_label.setText("   -      ")
-        data_label.setStyleSheet("background-color:white")
+        #data_label.setStyleSheet("background-color: gray")
+        data_label.setStyleSheet("background-color: lightGray")
 
 
 class InfoWidget( QWidget):

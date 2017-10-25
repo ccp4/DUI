@@ -659,10 +659,8 @@ class MainWidget(QMainWindow):
         self.reconnect_when_ready()
         self.update_nav_tree()
 
-        #tmp_off = '''
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
-        #'''
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
