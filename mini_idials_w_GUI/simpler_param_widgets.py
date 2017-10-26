@@ -47,8 +47,6 @@ class FindspotsSimplerParameterTab( QWidget):
         xds_gain_spn_bx.local_path = "spotfinder.threshold.xds.gain"
         xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
 
-        xds_gain_label.setStyleSheet("color: rgba(88, 88, 88, 88)")
-        xds_gain_spn_bx.setReadOnly(True)
 
         xds_sigma_background_label = QLabel("spotfinder.threshold.xds.sigma_background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
@@ -100,6 +98,21 @@ class FindspotsSimplerParameterTab( QWidget):
         self.box_nproc = QSpinBox()
         self.box_nproc.local_path = "spotfinder.mp.nproc"
 
+        example = '''
+        for i in xrange(localLayout.count()):
+            upper_box = localLayout.itemAt(i)
+            for j in xrange(upper_box.count()):
+                local_widget = upper_box.itemAt(j).widget()
+                local_widget.setStyleSheet("color: rgba(88, 88, 88, 88)")
+                try:
+                    local_widget.setReadOnly(True)
+
+                except:
+                    pass
+        '''
+
+
+
 
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
@@ -110,14 +123,26 @@ class FindspotsSimplerParameterTab( QWidget):
         self.setLayout(localLayout)
 
         self.lst_wgs = []
-        self.lst_wgs.append(xds_gain_spn_bx)
-        self.lst_wgs.append(xds_sigma_background_spn_bx)
-        self.lst_wgs.append(xds_sigma_strong_spn_bx)
-        self.lst_wgs.append(xds_global_threshold_spn_bx)
-        self.lst_wgs.append(self.box_nproc)
+        for i in xrange(localLayout.count()):
+            upper_box = localLayout.itemAt(i)
+            try:
+                for j in xrange(upper_box.count()):
+                    local_widget = upper_box.itemAt(j).widget()
+                    self.lst_wgs.append(local_widget)
+            except:
+                pass
+
+
 
         for wgdt in self.lst_wgs:
             wgdt.tmp_lst = None
+
+            wgdt.setStyleSheet("color: rgba(88, 88, 88, 88)")
+            try:
+                wgdt.setReadOnly(True)
+
+            except:
+                pass
 
 
     def spnbox_changed(self, value):
