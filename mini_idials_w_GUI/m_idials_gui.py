@@ -332,12 +332,6 @@ class CentreWidget(QWidget):
                 if(str(btn.toolTip()) == cmd_str):
                     btn.setEnabled(True)
 
-        '''
-        for widg in self.widg_lst:
-            widg.my_widget.gray_me_out()
-        '''
-
-
 
 class ModeWidget(QWidget):
 
@@ -496,8 +490,10 @@ class MainWidget(QMainWindow):
         self.centre_widget.run_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(True)
         self.centre_widget.gray_outs_all()
-        self.user_stoped = False
 
+        self.centre_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
+
+        self.user_stoped = False
 
     def reconnect_when_ready(self):
         self.tree_clickable = True
@@ -514,6 +510,7 @@ class MainWidget(QMainWindow):
 
         else:
             self.centre_widget.repeat_btn.setEnabled(True)
+            self.centre_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
 
         if(self.idials_runner.current_node.command_lst[0] == "reindex"):
             self.centre_widget.run_btn.setEnabled(False)
@@ -558,6 +555,7 @@ class MainWidget(QMainWindow):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
         self.update_nav_tree()
+        #self.reconnect_when_ready()
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -758,6 +756,7 @@ class MainWidget(QMainWindow):
             self.check_reindex_pop()
             update_info(self)
             self.check_gray_outs()
+            self.reconnect_when_ready()
 
             self.centre_widget.update_command_lst.connect(
                             self.update_low_level_command_lst)
