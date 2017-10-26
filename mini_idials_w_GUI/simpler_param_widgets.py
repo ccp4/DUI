@@ -47,6 +47,9 @@ class FindspotsSimplerParameterTab( QWidget):
         xds_gain_spn_bx.local_path = "spotfinder.threshold.xds.gain"
         xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
 
+        xds_gain_label.setStyleSheet("color: rgba(88, 88, 88, 88)")
+        xds_gain_spn_bx.setReadOnly(True)
+
         xds_sigma_background_label = QLabel("spotfinder.threshold.xds.sigma_background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
         xds_sigma_background_spn_bx.setValue(6.0)
