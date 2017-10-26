@@ -507,6 +507,7 @@ class MainWidget(QMainWindow):
 
         if(self.idials_runner.current_node.success == None):
             self.centre_widget.run_btn.setEnabled(True)
+            self.centre_widget.step_param_widg.currentWidget().my_widget.activate_me()
 
         else:
             self.centre_widget.repeat_btn.setEnabled(True)

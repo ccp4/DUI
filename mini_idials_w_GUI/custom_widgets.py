@@ -459,7 +459,6 @@ class ParamMainWidget( QWidget):
             self.command_lst = [self.command_lst[0]]
 
     def gray_me_out(self):
-
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
                        self.sipler_widget.lst_wgs):
             for widg in bg_widg:
@@ -467,6 +466,19 @@ class ParamMainWidget( QWidget):
                 widg.setStyleSheet("color: rgba(88, 88, 88, 88)")
                 try:
                     widg.setReadOnly(True)
+
+                except:
+                    pass
+
+
+    def activate_me(self):
+        for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
+                       self.sipler_widget.lst_wgs):
+            for widg in bg_widg:
+
+                widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
+                try:
+                    widg.setReadOnly(False)
 
                 except:
                     pass
