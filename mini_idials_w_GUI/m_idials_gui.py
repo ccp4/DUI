@@ -332,6 +332,11 @@ class CentreWidget(QWidget):
                 if(str(btn.toolTip()) == cmd_str):
                     btn.setEnabled(True)
 
+        '''
+        for widg in self.widg_lst:
+            widg.my_widget.gray_me_out()
+        '''
+
 
 
 class ModeWidget(QWidget):

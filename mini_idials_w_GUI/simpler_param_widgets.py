@@ -133,18 +133,6 @@ class FindspotsSimplerParameterTab( QWidget):
                 pass
 
 
-
-        for wgdt in self.lst_wgs:
-            wgdt.tmp_lst = None
-
-            wgdt.setStyleSheet("color: rgba(88, 88, 88, 88)")
-            try:
-                wgdt.setReadOnly(True)
-
-            except:
-                pass
-
-
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
@@ -210,8 +198,15 @@ class IndexSimplerParamTab( QWidget):
         self.setLayout(localLayout)
 
         self.lst_wgs = []
-        self.lst_wgs.append(box_scan_varying)
-        self.lst_wgs.append(box_method_62)
+        for i in xrange(localLayout.count()):
+            upper_box = localLayout.itemAt(i)
+            try:
+                for j in xrange(upper_box.count()):
+                    local_widget = upper_box.itemAt(j).widget()
+                    self.lst_wgs.append(local_widget)
+            except:
+                pass
+
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -251,6 +246,7 @@ class RefineBravaiSimplerParamTab(QWidget):
 
         self.lst_wgs = []
         self.lst_wgs.append(box_scan_varying)
+        self.lst_wgs.append(label_scan_varying)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -295,6 +291,7 @@ class RefineSimplerParamTab( QWidget):
 
         self.lst_wgs = []
         self.lst_wgs.append(box_scan_varying)
+        self.lst_wgs.append(label_scan_varying)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -374,12 +371,19 @@ class IntegrateSimplerParamTab( QWidget):
         self.mtz_name_lin.textChanged.connect(self.mtz_name_changed)
 
         self.setLayout(localLayout)
+        self.box_nproc.tmp_lst = None
 
         self.lst_wgs = []
-        self.lst_wgs.append(PrFit_comb_bx)
-        self.lst_wgs.append(box_algorithm_53)
-        self.box_nproc.tmp_lst = None
-        self.lst_wgs.append(self.box_nproc)
+        for i in xrange(localLayout.count()):
+            upper_box = localLayout.itemAt(i)
+            try:
+                for j in xrange(upper_box.count()):
+                    local_widget = upper_box.itemAt(j).widget()
+                    self.lst_wgs.append(local_widget)
+
+            except:
+                pass
+
 
     def combobox_changed(self, value):
         sender = self.sender()

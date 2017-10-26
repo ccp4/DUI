@@ -252,6 +252,9 @@ class ImportPage(QWidget):
         else:
             print "Failed to pick dir"
 
+    def gray_me_out(self):
+        pass
+
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
@@ -367,6 +370,7 @@ class ParamMainWidget( QWidget):
         self.setLayout(self._vbox)
         self.show()
 
+
     def build_param_widget(self):
         self.dual_level_tab = QTabWidget()
 
@@ -415,20 +419,24 @@ class ParamMainWidget( QWidget):
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
                        self.sipler_widget.lst_wgs):
             for widg in bg_widg:
-                if(widg.local_path == str_path):
-                    if(widg.tmp_lst == None):
-                        try:
-                            num_val = float(str_value)
-                            widg.setValue(num_val)
+                try:
+                    if(widg.local_path == str_path):
+                        if(widg.tmp_lst == None):
+                            try:
+                                num_val = float(str_value)
+                                widg.setValue(num_val)
 
-                        except:
-                            print "\n\n Type Mismatch while searching for twin parameter \n\n"
+                            except:
+                                print "\n\n Type Mismatch while searching for twin parameter \n\n"
 
-                    else:
-                        for pos, val in enumerate(widg.tmp_lst):
-                            if(val == str_value):
-                                print "found val, v=", val
-                                widg.setCurrentIndex(pos)
+                        else:
+                            for pos, val in enumerate(widg.tmp_lst):
+                                if(val == str_value):
+                                    print "found val, v=", val
+                                    widg.setCurrentIndex(pos)
+
+                except:
+                    pass
 
     def update_lin_txt(self, str_path, str_value):
         cmd_to_run = str_path + "=" + str_value
@@ -449,6 +457,19 @@ class ParamMainWidget( QWidget):
         else:
             self.lst_pair = []
             self.command_lst = [self.command_lst[0]]
+
+    def gray_me_out(self):
+
+        for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
+                       self.sipler_widget.lst_wgs):
+            for widg in bg_widg:
+
+                widg.setStyleSheet("color: rgba(88, 88, 88, 88)")
+                try:
+                    widg.setReadOnly(True)
+
+                except:
+                    pass
 
 
 class ParamWidget(QWidget):
