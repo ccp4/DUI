@@ -98,28 +98,28 @@ class PhilWidget( QWidget):
         super(PhilWidget, self).__init__(parent)
         #self.param_widget_parent = parent.param_widget_parent
 
-        self.win_pal = QPalette()
-        self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
-        #self.win_pal.setColor(QPalette.Background, Qt.white)
-        self.setAutoFillBackground(True)
-        self.setPalette(self.win_pal)
-
-        #std_bkgr = self.palette().color(self.backgroundRole())
-
-        self.plt_scp = QPalette()
-        self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
-        #self.plt_scp.setColor(QPalette.Background, std_bkgr)
-
-        self.plt_obj = QPalette()
-        self.plt_obj.setColor(QPalette.WindowText, Qt.black)
-        #self.plt_obj.setColor(QPalette.Background, std_bkgr)
+        #self.win_pal = QPalette()
+        #self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
+        ##self.win_pal.setColor(QPalette.Background, Qt.white)
+        #self.setAutoFillBackground(True)
+        #self.setPalette(self.win_pal)
+        #
+        ##std_bkgr = self.palette().color(self.backgroundRole())
+        #
+        #self.plt_scp = QPalette()
+        #self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
+        ##self.plt_scp.setColor(QPalette.Background, std_bkgr)
+        #
+        #self.plt_obj = QPalette()
+        #self.plt_obj.setColor(QPalette.WindowText, Qt.black)
+        ##self.plt_obj.setColor(QPalette.Background, std_bkgr)
+        #
+        #
+        #self.plt_fnd = QPalette()
+        #self.plt_fnd.setColor(QPalette.WindowText, QColor(0, 0, 255, 255))
+        #self.plt_fnd.setColor(QPalette.Background, QColor(255, 255, 0, 255))
 
         self.bg_box = QVBoxLayout(self)
-
-        self.plt_fnd = QPalette()
-        self.plt_fnd.setColor(QPalette.WindowText, QColor(0, 0, 255, 255))
-        self.plt_fnd.setColor(QPalette.Background, QColor(255, 255, 0, 255))
-
 
 
         lst_obj = tree_2_lineal(phl_obj.objects)
@@ -132,18 +132,22 @@ class PhilWidget( QWidget):
 
     def user_searching(self, value):
 
-        for nm, labl_obj in enumerate(self.lst_widg):
-            labl_obj.setPalette(labl_obj.palette_orig)
+        for nm, labl_obj in enumerate(self.lst_label_widg):
+            #labl_obj.setPalette(labl_obj.palette_orig)
+            labl_obj.setStyleSheet("color: rgba(0, 0, 0, 255)")
 
         if(len(value) > 1):
             print "user searching for:", value
             pos_str = None
             print "len =", len(value)
 
-            for nm, labl_obj in enumerate(self.lst_widg):
+            for nm, labl_obj in enumerate(self.lst_label_widg):
                 labl_text = labl_obj.text()
                 if(value in labl_text):
-                    labl_obj.setPalette(self.plt_fnd)
+                    #labl_obj.setPalette(self.plt_fnd)
+                    labl_obj.setStyleSheet("color: rgba(255, 255, 0, 255)")
+
+
                     print "pos_str =", nm
 
 
@@ -156,9 +160,9 @@ class PhilWidget( QWidget):
         inde_step = 4
 
         #lst_widg = self.lst_phil_obj
-        self.lst_widg = []
+        self.lst_label_widg = []
         something_else = False
-        self.lst_wgs = []
+        self.lst_var_widg = []
 
         #print "\n advanced parameters GUI:\n"
 
@@ -171,12 +175,15 @@ class PhilWidget( QWidget):
                 #print tmp_str
                 tmp_widg = QLabel(tmp_str)
                 tmp_widg.setAutoFillBackground(True)
-                tmp_widg.setPalette(self.plt_scp)
+                #tmp_widg.setPalette(self.plt_scp)
                 tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
-                self.bg_box.addWidget(tmp_widg)
-                tmp_widg.palette_orig = self.plt_scp
+                tmp_widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
 
-                self.lst_widg.append(tmp_widg)
+                self.bg_box.addWidget(tmp_widg)
+                #tmp_widg.palette_orig = self.plt_scp
+                tmp_widg.test_flag = "Yes"
+
+                self.lst_label_widg.append(tmp_widg)
 
             else:
                 multiple_index = False
@@ -193,12 +200,13 @@ class PhilWidget( QWidget):
                     tmp_str = " " * indent * inde_step + str(obj.name)
                     tmp_label  = QLabel(tmp_str)
                     tmp_label.setAutoFillBackground(True)
-                    tmp_label.setPalette(self.plt_obj)
+                    #tmp_label.setPalette(self.plt_obj)
+                    tmp_label.setStyleSheet("color: rgba(0, 0, 0, 255)")
                     tmp_label.setFont(QFont("Monospace", sys_font_point_size))
 
                     tmp_h_box.addWidget(tmp_label)
-                    tmp_label.palette_orig = self.plt_obj
-                    self.lst_widg.append(tmp_label)
+                    #tmp_label.palette_orig = self.plt_obj
+                    self.lst_label_widg.append(tmp_label)
 
                     something_else = False
                     if(obj.type.phil_type == 'float' or
@@ -360,7 +368,7 @@ class PhilWidget( QWidget):
                         if(tmp_str != None):
                             tmp_h_box.addWidget(tmp_widg)
                             self.bg_box.addLayout(tmp_h_box)
-                            self.lst_wgs.append(tmp_widg)
+                            self.lst_var_widg.append(tmp_widg)
                             #print tmp_str
 
                     else:

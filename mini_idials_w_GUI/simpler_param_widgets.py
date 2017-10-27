@@ -98,21 +98,6 @@ class FindspotsSimplerParameterTab( QWidget):
         self.box_nproc = QSpinBox()
         self.box_nproc.local_path = "spotfinder.mp.nproc"
 
-        example = '''
-        for i in xrange(localLayout.count()):
-            upper_box = localLayout.itemAt(i)
-            for j in xrange(upper_box.count()):
-                local_widget = upper_box.itemAt(j).widget()
-                local_widget.setStyleSheet("color: rgba(88, 88, 88, 88)")
-                try:
-                    local_widget.setReadOnly(True)
-
-                except:
-                    pass
-        '''
-
-
-
 
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
@@ -122,13 +107,13 @@ class FindspotsSimplerParameterTab( QWidget):
 
         self.setLayout(localLayout)
 
-        self.lst_wgs = []
+        self.lst_var_widg = []
         for i in xrange(localLayout.count()):
             upper_box = localLayout.itemAt(i)
             try:
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
-                    self.lst_wgs.append(local_widget)
+                    self.lst_var_widg.append(local_widget)
             except:
                 pass
 
@@ -197,13 +182,13 @@ class IndexSimplerParamTab( QWidget):
 
         self.setLayout(localLayout)
 
-        self.lst_wgs = []
+        self.lst_var_widg = []
         for i in xrange(localLayout.count()):
             upper_box = localLayout.itemAt(i)
             try:
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
-                    self.lst_wgs.append(local_widget)
+                    self.lst_var_widg.append(local_widget)
             except:
                 pass
 
@@ -244,9 +229,9 @@ class RefineBravaiSimplerParamTab(QWidget):
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
-        self.lst_wgs = []
-        self.lst_wgs.append(box_scan_varying)
-        self.lst_wgs.append(label_scan_varying)
+        self.lst_var_widg = []
+        self.lst_var_widg.append(box_scan_varying)
+        self.lst_var_widg.append(label_scan_varying)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -289,9 +274,9 @@ class RefineSimplerParamTab( QWidget):
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
-        self.lst_wgs = []
-        self.lst_wgs.append(box_scan_varying)
-        self.lst_wgs.append(label_scan_varying)
+        self.lst_var_widg = []
+        self.lst_var_widg.append(box_scan_varying)
+        self.lst_var_widg.append(label_scan_varying)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -373,13 +358,13 @@ class IntegrateSimplerParamTab( QWidget):
         self.setLayout(localLayout)
         self.box_nproc.tmp_lst = None
 
-        self.lst_wgs = []
+        self.lst_var_widg = []
         for i in xrange(localLayout.count()):
             upper_box = localLayout.itemAt(i)
             try:
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
-                    self.lst_wgs.append(local_widget)
+                    self.lst_var_widg.append(local_widget)
 
             except:
                 pass

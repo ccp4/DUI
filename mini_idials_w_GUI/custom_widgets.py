@@ -416,8 +416,8 @@ class ParamMainWidget( QWidget):
 
     def update_advanced_widget(self, str_path, str_value):
 
-        for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
-                       self.sipler_widget.lst_wgs):
+        for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
+                       self.sipler_widget.lst_var_widg):
             for widg in bg_widg:
                 try:
                     if(widg.local_path == str_path):
@@ -459,11 +459,20 @@ class ParamMainWidget( QWidget):
             self.command_lst = [self.command_lst[0]]
 
     def gray_me_out(self):
-        for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
-                       self.sipler_widget.lst_wgs):
+        palt_gray = QPalette()
+        palt_gray.setColor(QPalette.WindowText, QColor(88, 88, 88, 88))
+
+        for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
+                       self.advanced_widget.scrollable_widget.lst_label_widg,
+                       self.sipler_widget.lst_var_widg):
+
             for widg in bg_widg:
 
+                print "type(widg) =", type(widg)
+
                 widg.setStyleSheet("color: rgba(88, 88, 88, 88)")
+                #widg.setPalette(palt_gray)
+
                 try:
                     widg.setReadOnly(True)
 
@@ -472,11 +481,20 @@ class ParamMainWidget( QWidget):
 
 
     def activate_me(self):
-        for bg_widg in(self.advanced_widget.scrollable_widget.lst_wgs ,
-                       self.sipler_widget.lst_wgs):
+        for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
+                       self.advanced_widget.scrollable_widget.lst_label_widg,
+                       self.sipler_widget.lst_var_widg):
+
             for widg in bg_widg:
 
                 widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
+                '''
+                try:
+                    widg.setPalette(widg.palette_orig)
+                except:
+                    pass
+                '''
+
                 try:
                     widg.setReadOnly(False)
 
