@@ -488,12 +488,10 @@ class ParamMainWidget( QWidget):
             for widg in bg_widg:
 
                 widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
-                '''
                 try:
-                    widg.setPalette(widg.palette_orig)
+                    widg.setStyleSheet(widg.style_orign)
                 except:
                     pass
-                '''
 
                 try:
                     widg.setReadOnly(False)

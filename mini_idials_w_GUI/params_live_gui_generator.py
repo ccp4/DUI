@@ -133,8 +133,8 @@ class PhilWidget( QWidget):
     def user_searching(self, value):
 
         for nm, labl_obj in enumerate(self.lst_label_widg):
-            #labl_obj.setPalette(labl_obj.palette_orig)
-            labl_obj.setStyleSheet("color: rgba(0, 0, 0, 255)")
+            #labl_obj.setPalette(labl_obj.style_orign)
+            labl_obj.setStyleSheet(labl_obj.style_orign)
 
         if(len(value) > 1):
             print "user searching for:", value
@@ -145,10 +145,12 @@ class PhilWidget( QWidget):
                 labl_text = labl_obj.text()
                 if(value in labl_text):
                     #labl_obj.setPalette(self.plt_fnd)
-                    labl_obj.setStyleSheet("color: rgba(255, 255, 0, 255)")
-
+                    labl_obj.setStyleSheet("color: rgba(0, 155, 255, 255);"
+                                           "background-color: yellow;")
 
                     print "pos_str =", nm
+
+            #TODO make sure this keeps colours of grayed state
 
 
     def phil_list2gui(self, lst_phil_obj):
@@ -177,10 +179,11 @@ class PhilWidget( QWidget):
                 tmp_widg.setAutoFillBackground(True)
                 #tmp_widg.setPalette(self.plt_scp)
                 tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
-                tmp_widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
+                tmp_widg.style_orign = "color: rgba(85, 85, 85, 255)"
+                tmp_widg.setStyleSheet(tmp_widg.style_orign)
 
                 self.bg_box.addWidget(tmp_widg)
-                #tmp_widg.palette_orig = self.plt_scp
+
                 tmp_widg.test_flag = "Yes"
 
                 self.lst_label_widg.append(tmp_widg)
@@ -201,11 +204,12 @@ class PhilWidget( QWidget):
                     tmp_label  = QLabel(tmp_str)
                     tmp_label.setAutoFillBackground(True)
                     #tmp_label.setPalette(self.plt_obj)
-                    tmp_label.setStyleSheet("color: rgba(0, 0, 0, 255)")
+                    tmp_label.style_orign = "color: rgba(0, 0, 0, 255)"
+                    tmp_label.setStyleSheet(tmp_label.style_orign)
                     tmp_label.setFont(QFont("Monospace", sys_font_point_size))
 
                     tmp_h_box.addWidget(tmp_label)
-                    #tmp_label.palette_orig = self.plt_obj
+
                     self.lst_label_widg.append(tmp_label)
 
                     something_else = False
