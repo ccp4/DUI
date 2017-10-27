@@ -370,16 +370,12 @@ class ParamMainWidget( QWidget):
         self.setLayout(self._vbox)
         self.show()
 
-
     def build_param_widget(self):
         self.dual_level_tab = QTabWidget()
-
-        #self.sipler_widget = self.simp_widg_in(parent = self) #TODO make sure you need to do: parent = self
         self.sipler_widget = self.simp_widg_in()
-
         self.advanced_widget = ParamAdvancedWidget(phl_obj = self.my_phl_obj, parent = self)
-
         self.advanced_widget.scrollable_widget.item_changed.connect(self.update_lin_txt)
+
         try:
             self.sipler_widget.item_changed.connect(self.update_advanced_widget)
 
@@ -389,11 +385,10 @@ class ParamMainWidget( QWidget):
         self.dual_level_tab.addTab(self.sipler_widget, "Simple")
         self.dual_level_tab.addTab(self.advanced_widget, "Advanced")
 
-
     def reset_par(self):
         print "Reseting"
 
-
+        #TODO her is suposed to reset idials low level parameters to TODO
         for i in reversed(range(self._vbox.count())):
             widgetToRemove = self._vbox.itemAt( i ).widget()
             self._vbox.removeWidget( widgetToRemove )
@@ -413,6 +408,7 @@ class ParamMainWidget( QWidget):
         except:
             print "\n This step runs as fas as it can with nproc = 1 \n"
 
+        #TODO her is suposed to reset idials low level parameters to TODO
 
     def update_advanced_widget(self, str_path, str_value):
 
@@ -467,18 +463,13 @@ class ParamMainWidget( QWidget):
                        self.sipler_widget.lst_var_widg):
 
             for widg in bg_widg:
-
-                print "type(widg) =", type(widg)
-
                 widg.setStyleSheet("color: rgba(88, 88, 88, 88)")
-                #widg.setPalette(palt_gray)
 
                 try:
-                    widg.setReadOnly(True)
+                    widg.setEnabled(False)
 
                 except:
                     pass
-
 
     def activate_me(self):
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
@@ -494,11 +485,10 @@ class ParamMainWidget( QWidget):
                     pass
 
                 try:
-                    widg.setReadOnly(False)
+                    widg.setEnabled(True)
 
                 except:
                     pass
-
 
 class ParamWidget(QWidget):
 
