@@ -252,8 +252,11 @@ class ImportPage(QWidget):
         else:
             print "Failed to pick dir"
 
+    def activate_me(self):
+        self.templ_lin.setEnabled(True)
+
     def gray_me_out(self):
-        pass
+        self.templ_lin.setEnabled(False)
 
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):

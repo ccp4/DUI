@@ -552,7 +552,7 @@ class MainWidget(QMainWindow):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
         self.update_nav_tree()
-        #self.reconnect_when_ready()
+        self.reconnect_when_ready()
 
     def rep_clicked(self):
         print "rep_clicked"
