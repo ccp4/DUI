@@ -482,7 +482,6 @@ class MainWidget(QMainWindow):
                                           self.cmd_changed_by_any)
         self.check_gray_outs()
 
-
     def disconnect_while_running(self):
         self.tree_clickable = False
 
@@ -490,7 +489,6 @@ class MainWidget(QMainWindow):
         self.centre_widget.run_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(True)
         self.centre_widget.gray_outs_all()
-
         self.centre_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
 
         self.user_stoped = False
@@ -521,11 +519,9 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
 
     def update_low_level_command_lst(self, command_lst):
-
-        print "\n\n"
         print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
         print "                                command_lst =", command_lst
-        print "\n\n"
+        print "\n"
 
         if(self.idials_runner.current_node.success == True and
                 self.idials_runner.make_next == True):
@@ -600,7 +596,6 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
         update_info(self)
 
-
         self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
         self.just_reindexed = False
@@ -616,7 +611,6 @@ class MainWidget(QMainWindow):
 
         else:
             tmp_curr = self.idials_runner.current_node
-
 
         if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
                 tmp_curr.success == True):
