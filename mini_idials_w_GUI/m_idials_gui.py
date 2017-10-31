@@ -466,10 +466,7 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.user_stoped = False
-
         self.reconnect_when_ready()
-        #self.update_nav_tree()
-
 
     def connect_all(self):
         self.tree_clickable = True
@@ -534,7 +531,6 @@ class MainWidget(QMainWindow):
 
         self.idials_runner.current_node.command_lst = command_lst
         self.reconnect_when_ready()
-        #self.update_nav_tree()
 
     def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
@@ -552,13 +548,11 @@ class MainWidget(QMainWindow):
         elif(tmp_curr.success == None):
             self.idials_runner.current_node.command_lst = [str(my_label)]
             self.reconnect_when_ready()
-            #self.update_nav_tree()
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
         self.reconnect_when_ready()
-        self.update_nav_tree()
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -584,10 +578,8 @@ class MainWidget(QMainWindow):
     def cmd_exe(self, new_cmd):
         #Running NOT in parallel
         self.idials_runner.run(command = new_cmd, ref_to_class = None)
-
         self.check_reindex_pop()
         self.reconnect_when_ready()
-        #self.update_nav_tree()
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
@@ -658,9 +650,7 @@ class MainWidget(QMainWindow):
 
         self.check_reindex_pop()
         self.check_gray_outs()
-
         self.reconnect_when_ready()
-        #self.update_nav_tree()
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
