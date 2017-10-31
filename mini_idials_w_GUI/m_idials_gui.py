@@ -577,7 +577,6 @@ class MainWidget(QMainWindow):
         cmd_tmp = self.centre_widget.step_param_widg.currentWidget().my_widget.command_lst
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
-        #TODO think about how to prevent launches from happening when is busy
 
     def cmd_exe(self, new_cmd):
         #Running NOT in parallel
@@ -676,6 +675,7 @@ class MainWidget(QMainWindow):
                         "reindex"                 : ["refine", "integrate"] ,
                         "refine"                  : ["refine", "integrate"] ,
                         "integrate"               : [None] ,
+                        "export"                  : [None] ,
                         "None"                    : [None] }
 
         #TODO Consider if it worth using this dictionary instead of the function get_next_item()
