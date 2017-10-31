@@ -468,6 +468,9 @@ class MainWidget(QMainWindow):
 
         self.user_stoped = False
 
+        self.reconnect_when_ready()
+
+
     def connect_all(self):
         self.tree_clickable = True
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
