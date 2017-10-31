@@ -23,7 +23,7 @@ def write_script(self_path):
     lst_lin.append( "export PATH=$PATH:$DUI_PATH\n")
     lst_lin.append( "cd $DUI_PATH\n")
     lst_lin.append( "echo \"DUI_PATH =$DUI_PATH\"\n")
-    lst_lin.append( "cd ../idials_GUI/\n")
+    lst_lin.append( "cd ../mini_idials_w_GUI/\n")
     lst_lin.append( "export IDIALS_GUI_PATH=$(pwd)\n")
     lst_lin.append( "echo \"IDIALS_GUI_PATH=$IDIALS_GUI_PATH\"\n")
     lst_lin.append( "echo \"done\"\n")
