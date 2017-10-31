@@ -293,9 +293,7 @@ class CentreWidget(QWidget):
         self.show()
 
     def update_parent_lst(self, command_lst):
-        #Temporarily commented, until fixed the back/forward signaling issue
         self.update_command_lst.emit(command_lst)
-        print "<< fix the back/forward signaling issue >>"
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
