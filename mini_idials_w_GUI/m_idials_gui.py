@@ -522,7 +522,6 @@ class MainWidget(QMainWindow):
     def update_low_level_command_lst(self, command_lst):
         print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
         print "                                command_lst =", command_lst
-        print "\n"
 
         if(self.idials_runner.current_node.success == True and
                 self.idials_runner.make_next == True):

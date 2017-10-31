@@ -391,18 +391,27 @@ class ParamMainWidget( QWidget):
     def reset_par(self):
         print "Reseting"
 
-        #TODO her is suposed to reset idials low level parameters to TODO
+        #TODO here is suposed to reset idials low level parameters to TODO
         for i in reversed(range(self._vbox.count())):
             widgetToRemove = self._vbox.itemAt( i ).widget()
             self._vbox.removeWidget( widgetToRemove )
             widgetToRemove.setParent( None )
-
 
         self.build_param_widget()
 
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
         self._vbox.addWidget(self.reset_btn)
+
+
+        print "<< inner >>self.command_lst =", self.command_lst
+        self.command_lst = [self.command_lst[0]]
+        self.lst_pair = []
+        print "<< inner >>self.command_lst =", self.command_lst
+
+
+
+        self.update_command_lst.emit(self.command_lst)
 
         try:
             self.sipler_widget.set_max_nproc()
@@ -411,7 +420,7 @@ class ParamMainWidget( QWidget):
         except:
             print "\n This step runs as fas as it can with nproc = 1 \n"
 
-        #TODO her is suposed to reset idials low level parameters to TODO
+        #TODO here is suposed to reset idials low level parameters to TODO
 
     def update_advanced_widget(self, str_path, str_value):
 
