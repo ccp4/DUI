@@ -413,7 +413,6 @@ class MainWidget(QMainWindow):
         self.tree_out = TreeNavWidget()
         h_left_splitter.addWidget(self.tree_out)
 
-        self.update_nav_tree()
 
         self.centre_widget = CentreWidget()
 
@@ -469,6 +468,7 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
 
         self.reconnect_when_ready()
+        #self.update_nav_tree()
 
 
     def connect_all(self):
@@ -520,6 +520,7 @@ class MainWidget(QMainWindow):
 
         self.check_gray_outs()
         self.user_stoped = False
+        self.update_nav_tree()
 
     def update_low_level_command_lst(self, command_lst):
         print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
@@ -532,7 +533,8 @@ class MainWidget(QMainWindow):
             self.rep_clicked()
 
         self.idials_runner.current_node.command_lst = command_lst
-        self.update_nav_tree()
+        self.reconnect_when_ready()
+        #self.update_nav_tree()
 
     def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
@@ -549,13 +551,14 @@ class MainWidget(QMainWindow):
 
         elif(tmp_curr.success == None):
             self.idials_runner.current_node.command_lst = [str(my_label)]
-            self.update_nav_tree()
+            self.reconnect_when_ready()
+            #self.update_nav_tree()
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
-        self.update_nav_tree()
         self.reconnect_when_ready()
+        self.update_nav_tree()
 
     def rep_clicked(self):
         print "rep_clicked"
@@ -582,9 +585,9 @@ class MainWidget(QMainWindow):
         #Running NOT in parallel
         self.idials_runner.run(command = new_cmd, ref_to_class = None)
 
-        self.update_nav_tree()
         self.check_reindex_pop()
         self.reconnect_when_ready()
+        #self.update_nav_tree()
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
@@ -657,7 +660,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
 
         self.reconnect_when_ready()
-        self.update_nav_tree()
+        #self.update_nav_tree()
 
         with open('bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
