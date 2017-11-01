@@ -538,7 +538,7 @@ class MainWidget(QMainWindow):
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
 
-            #self.centre_widget.step_param_widg.currentWidget.reset_par()
+            self.centre_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             self.cmd_exe(["clean"])
 
