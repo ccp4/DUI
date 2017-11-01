@@ -28,8 +28,6 @@ setup(name='dui_test',
                    'resources/reindex.png'])],
      )
 
-'''
-
   #mini_idials_gui.sh
   #mini_idials.sh
 
@@ -70,6 +68,4 @@ a= ['cli_utils',
   'resources/re_try.png',
   'resources/stop_grayed.png',
   'resources/stop.png',
-
-'''
 
