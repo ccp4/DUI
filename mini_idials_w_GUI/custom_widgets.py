@@ -446,9 +446,36 @@ class ParamMainWidget( QWidget):
                 except:
                     pass
 
+    def update_simpler_widget(self, str_path, str_value):
+
+        for widg in self.sipler_widget.lst_var_widg:
+            try:
+                if(widg.local_path == str_path):
+                    print "found << widg.local_path == str_path >> "
+
+                    try:
+                        num_val = float(str_value)
+                        widg.setValue(num_val)
+
+                    except:
+                        try:
+                            for pos, val in enumerate(widg.tmp_lst):
+                                if(val == str_value):
+                                    print "found val, v=", val
+                                    widg.setCurrentIndex(pos)
+
+                        except:
+                            print "\n\n Type Mismatch in simpler_param_widgets \n\n"
+
+            except:
+                print "skip label_str"
+
+
     def update_lin_txt(self, str_path, str_value):
         cmd_to_run = str_path + "=" + str_value
         self.update_advanced_widget(str_path, str_value)
+        self.update_simpler_widget(str_path, str_value)
+
         self.lst_pair = update_lst_pair(self.lst_pair, str_path, str_value)
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
         self.update_command_lst.emit(self.command_lst)
@@ -545,8 +572,8 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    #ex = ParamWidget("find_spots")
-    ex = ParamWidget("import")
+    ex = ParamWidget("find_spots")
+    #ex = ParamWidget("import")
     sys.exit(app.exec_())
 
 
