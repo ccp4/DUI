@@ -523,8 +523,12 @@ class MyImgWin(QWidget):
                 datablock = datablocks[0]
                 self.my_sweep = datablock.extract_sweeps()[0]
                 self.img_select.clear()
+
+            except:
+                print "Failed to load images from  datablock.json"
+
+            try:
                 print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
-                print "self.my_sweep.get_image_size() =", self.my_sweep.get_image_size()
                 n_of_imgs = len(self.my_sweep.indices())
                 print "n_of_imgs =", n_of_imgs
 
@@ -537,9 +541,8 @@ class MyImgWin(QWidget):
                 self.num_of_imgs_to_add.setMaximum(n_of_imgs)
                 self.num_of_imgs_to_add.setMinimum(1)
 
-
             except:
-                print "Failed to load images from  datablock.json"
+                print "Failed to set up IMG control dialog"
 
         self.btn_first_clicked()
         #TODO Find a better way to call this function only onse
@@ -589,10 +592,10 @@ class MyImgWin(QWidget):
 
             loc_stk_siz = self.stack_size
 
-            if(self.stack_size == 1):
+            if(loc_stk_siz == 1):
                 self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
 
-            elif(self.stack_size > 1):
+            elif(loc_stk_siz > 1):
 
                 if(img_pos + loc_stk_siz > len(self.my_sweep.indices()) - 1):
                     loc_stk_siz = len(self.my_sweep.indices()) - img_pos

@@ -86,6 +86,7 @@ def update_info(main_obj):
     if(main_obj.cur_json != new_img_json):
         main_obj.cur_json = new_img_json
         main_obj.img_view.ini_datablock(main_obj.cur_json)
+        print "\n\n called .ini_datablock() \n\n"
 
 
     main_obj.info_widget.update_data(exp_json_path = uni_json,
