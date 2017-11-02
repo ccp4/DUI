@@ -22,7 +22,7 @@ setup(name='dui_test',
                    'outputs_n_viewers.img_view_tools',
                    'outputs_n_viewers.info_handler',
                    'outputs_n_viewers.__init__',
-                   'outputs_n_viewers.web_page_view',]
+                   'outputs_n_viewers.web_page_view',],
       data_files=[('logos', ['resources/DIALS_Logo_smaller_centred_grayed.png',
                              'resources/DIALS_Logo_smaller_centred.png',
                              'resources/export.png',
