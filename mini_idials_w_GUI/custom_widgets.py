@@ -42,14 +42,14 @@ from dials.command_line.export import phil_scope as phil_scope_export
 
 def template_right_side_build(in_str_tmp, dir_path):
 
-    #print "in_str_tmp =", in_str_tmp
-    #print "dir_path =", dir_path
+    expli_templ = True
 
-    out_str = in_str_tmp + dir_path
-    lst_files = os.listdir(str(dir_path))
+    print "in_str_tmp =", in_str_tmp
+    print "dir_path =", dir_path
 
-    #for i, e in reversed(list(enumerate(a))):
-    #for pos, single_char in enumerate(in_str_tmp):
+    out_str = dir_path + in_str_tmp
+    #lst_files = os.listdir(str(dir_path))     #<<< test comment
+
     for pos, single_char in reversed(list(enumerate(in_str_tmp))):
         if(single_char == "."):
             pos_sep = pos
@@ -60,28 +60,31 @@ def template_right_side_build(in_str_tmp, dir_path):
     ext_name = in_str_tmp[pos_sep:]
     print "\n ext_name =", ext_name, "\n"
 
+    if(ext_name == ".h5"):
+        print "found h5 file"
+        expli_templ = False
+        out_str = left_sd_name
+        out_str = out_str + ext_name
 
-    out_str = left_sd_name
+    else:
+        out_str = left_sd_name
 
-    max_tail_size = int(len(in_str_tmp) / 3)
-    print "\n max_tail_size =", max_tail_size, "\n"
-    for tail_size in xrange(max_tail_size):
-        #print "tail_size =", tail_size
-        prev_str = out_str
-        pos_to_replase = len(out_str) - tail_size - 1
-        #print "pos_to_replase =", pos_to_replase
-        for num_char in '0123456789':
-            if out_str[pos_to_replase] == num_char:
-                out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
+        max_tail_size = int(len(in_str_tmp) / 3)
+        print "\n max_tail_size =", max_tail_size, "\n"
+        for tail_size in xrange(max_tail_size):
+            prev_str = out_str
+            pos_to_replase = len(out_str) - tail_size - 1
+            for num_char in '0123456789':
+                if out_str[pos_to_replase] == num_char:
+                    out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
 
-        #print "new out_str =", out_str
-        if(prev_str == out_str):
-            #print "found non num char"
-            break
+            if(prev_str == out_str):
+                #print "found non num char"
+                break
 
-    out_str = out_str + ext_name
-    return out_str
+        out_str = out_str + ext_name
 
+    return out_str, expli_templ
 
 def template_from_lst_build(in_str_lst):
     print "in_str_lst =", in_str_lst
@@ -133,32 +136,11 @@ class ImportPage(QWidget):
 
         template_grp.setLayout(template_vbox)
 
-        to_maybe_remove = '''
-        dir_grp =  QGroupBox(" Import from Dir ")
-        dir_vbox =  QVBoxLayout()
-        self.dir_lin =   QLineEdit(self)
-        self.dir_lin.setText(" ? ")
-        opn_dir_btn = QPushButton("\n open Dir\n")
-        dir_vbox.addWidget(self.dir_lin)
-        dir_vbox.addWidget(opn_dir_btn)
-        dir_grp.setLayout(dir_vbox)
-        '''
-
         big_layout =  QVBoxLayout()
         big_layout.addWidget(template_grp)
 
-        to_maybe_remove = '''
-        big_layout.addWidget(QLabel("\n\n                                 Or \n\n"))
-        big_layout.addWidget(dir_grp)
-        '''
-
         opn_fil_btn.clicked.connect(self.open_files)
         self.templ_lin.textChanged.connect(self.intro_file_changed)
-
-        to_maybe_remove = '''
-        opn_dir_btn.clicked.connect(self.open_dir)
-        self.dir_lin.textChanged.connect(self.intro_dir_changed)
-        '''
 
         self.setLayout(big_layout)
         self.show()
@@ -168,43 +150,24 @@ class ImportPage(QWidget):
         if(sys_arg_in.template != None):
             self.templ_lin.setText(str(sys_arg_in.template))
 
-        to_maybe_remove = '''
-        elif(sys_arg_in.directory != None):
-            self.dir_lin.setText(str(sys_arg_in.directory))
-        '''
-
-
     def intro_file_changed(self, value):
         print "txt(value) =", value
         str_path = "template="
+
         str_value = str(value)
 
-        my_cmd = str_path + str_value
+        if(self.expli_templ == True):
+            my_cmd = str_path + str_value
+
+        else:
+            my_cmd = str_value
+
         self.command_lst = ["import", my_cmd]
         self.update_command_lst.emit(self.command_lst)
 
-        to_maybe_remove = '''
-    def intro_dir_changed(self, value):
-        print "txt(value) =", value
-        str_path = "directory="
-        str_value = str(value)
-
-        my_cmd = str_path + str_value
-        self.command_lst = ["import", my_cmd]
-
-    def open_dir(self):
-        print "open_dir"
-        file_dialog = QFileDialog()
-        get_wor_dir = str(os.getcwd())
-
-        end_dir =  QFileDialog.getExistingDirectory(self, "Open Dir",
-                                                      get_wor_dir)
-
-        print "end_dir =", end_dir
-        self.dir_lin.setText(end_dir)
-        '''
-
     def open_files(self):
+        self.expli_templ = True
+
         print "from open_files  << import page >>"
         get_wor_dir = str(os.getcwd())
 
@@ -238,7 +201,8 @@ class ImportPage(QWidget):
             templ_str_tmp = selected_file_path[pos_sep:]
             #print "templ_str_tmp =", templ_str_tmp
 
-            templ_r_side = template_right_side_build(templ_str_tmp, dir_name)
+            templ_r_side, self.expli_templ = template_right_side_build(templ_str_tmp, dir_name)
+
 
             templ_str_final = dir_name + templ_r_side
             self.templ_lin.setText(templ_str_final)
