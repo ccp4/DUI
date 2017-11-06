@@ -458,9 +458,9 @@ class ParamMainWidget( QWidget):
             self.command_lst = [self.command_lst[0]]
 
     def gray_me_out(self):
+        self.reset_btn.setEnabled(False)
         palt_gray = QPalette()
         palt_gray.setColor(QPalette.WindowText, QColor(88, 88, 88, 88))
-
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
                        self.advanced_widget.scrollable_widget.lst_label_widg,
                        self.sipler_widget.lst_var_widg):
@@ -475,6 +475,7 @@ class ParamMainWidget( QWidget):
                     pass
 
     def activate_me(self):
+        self.reset_btn.setEnabled(True)
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
                        self.advanced_widget.scrollable_widget.lst_label_widg,
                        self.sipler_widget.lst_var_widg):
