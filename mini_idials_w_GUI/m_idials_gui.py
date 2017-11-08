@@ -464,6 +464,11 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
+        self.just_reindexed = False
+
+        print "\n\n\n ________________________ here _____________________________ \n\n\n"
+
+
         self.user_stoped = False
         self.reconnect_when_ready()
 
