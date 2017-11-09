@@ -130,10 +130,8 @@ class ImportPage(QWidget):
         self.templ_lin =   QLineEdit(self)
         self.templ_lin.setText(" ? ")
         opn_fil_btn = QPushButton("\n Select File(s)\n")
-
-        template_vbox.addWidget(self.templ_lin)
         template_vbox.addWidget(opn_fil_btn)
-
+        template_vbox.addWidget(self.templ_lin)
         template_grp.setLayout(template_vbox)
 
         big_layout =  QVBoxLayout()
@@ -141,7 +139,7 @@ class ImportPage(QWidget):
 
         opn_fil_btn.clicked.connect(self.open_files)
         self.templ_lin.textChanged.connect(self.intro_file_changed)
-
+        self.expli_templ = True
         self.setLayout(big_layout)
         self.show()
 
