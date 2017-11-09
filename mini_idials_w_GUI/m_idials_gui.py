@@ -194,7 +194,7 @@ class CentreWidget(QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
 
-        idials_gui_path = str(os.environ["IDIALS_GUI_PATH"])
+        idials_gui_path = str(os.path.dirname(os.path.abspath(__file__)))
         print "idials_gui_path =", idials_gui_path
 
         lst_icons_path = []
