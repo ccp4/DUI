@@ -25,20 +25,16 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
+import sys, os, psutil, pickle
+
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
-
-import sys, os, psutil
-import pickle
 from cli_utils import TreeShow, get_next_step
 from m_idials import Runner
 from gui_utils import CliOutView, Text_w_Bar
 from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
-import subprocess
-
 from custom_widgets import  ParamWidget
-
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
@@ -64,8 +60,6 @@ def update_info(main_obj):
         tmp_curr = tmp_curr.prev_step
 
     uni_json = tmp_curr.json_file_out
-
-
 
     print "\n new_html =", new_html , "\n"
     print " new_img_json =", new_img_json , "\n"
@@ -465,10 +459,6 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.just_reindexed = False
-
-        print "\n\n\n ________________________ here _____________________________ \n\n\n"
-
-
         self.user_stoped = False
         self.reconnect_when_ready()
 
@@ -728,6 +718,7 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
 
     def node_clicked(self, it_index):
+        print "it_index =", it_index
         if(self.tree_clickable == True):
             #TODO Think of a more robust way to "disconnect" ... next line
             try:
