@@ -583,9 +583,11 @@ class MainWidget(QMainWindow):
             if(os.path.isfile(mtz_name)):
                 print "\n\n the file IS about to be there \n\n"
 
-                new_text, ok = QInputDialog.getText(self, "Replace Name of MTZ final OutPut file",
-                    "If you wish to create new MTZ file you must change the file name bellow and clic Ok \n \
-                     If you don't mind replacing old MTZ file just clic Ok", text=str(mtz_name))
+                mesg_text = "\n Overwrite existing file, or change file name below"
+
+                new_text, ok = QInputDialog.getText(self,
+                                                    "Confirm Name of Output MTZ file",
+                                                    mesg_text , text=str(mtz_name))
 
                 if ok:
                     run_me = True
