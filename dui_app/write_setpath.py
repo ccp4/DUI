@@ -7,7 +7,7 @@ def write_script(self_path):
 
     print "self_path =", self_path
 
-    py_gui_path = self_path[0:-15] + "/mini_idials_w_GUI"
+    py_gui_path = self_path[0:-8]
     print "py_gui_path =", py_gui_path
 
     lst_lin = []
@@ -20,7 +20,7 @@ def write_script(self_path):
     line_w_path += "\"\n"
     lst_lin.append( line_w_path)
 
-    lst_lin.append( "export PATH=$PATH:" + self_path + "\n")
+    lst_lin.append( "export PATH=$PATH:" + py_gui_path + "\n")
     lst_lin.append( "echo \" \"\n")
 
     line_x_tut = "echo \"type "
