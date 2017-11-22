@@ -574,12 +574,35 @@ class MainWidget(QMainWindow):
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
+        run_me = True
+        if(new_cmd[0] == "integrate"):
+            print "\n  Time to check if an old \".mtz\" file will be replaced \n"
+            mtz_name = str(self.centre_widget.widg_lst[5].my_widget.
+                           sipler_widget.mtz_name_lin.text())
+            print "mtz_name =", mtz_name
+            if(os.path.isfile(mtz_name)):
+                print "\n\n the file IS about to be there \n\n"
 
-        self.txt_bar.start_motion()
-        self.txt_bar.setText("Running")
-        self.disconnect_while_running()
+                new_text, ok = QInputDialog.getText(self, "Replace Name of MTZ final OutPut file",
+                    "If you wish to create new MTZ file you must change the file name bellow and clic Ok \n \
+                     If you don't mind replacing old MTZ file just clic Ok", text=str(mtz_name))
 
-        self.custom_thread(new_cmd, self.idials_runner)
+                if ok:
+                    run_me = True
+                    self.centre_widget.widg_lst[5].my_widget.sipler_widget.mtz_name_lin.setText(new_text)
+
+                else:
+                    run_me = False
+
+            else:
+                print "the \".mtz\" file is NOT going to be replaced "
+
+        if(run_me == True):
+            self.txt_bar.start_motion()
+            self.txt_bar.setText("Running")
+            self.disconnect_while_running()
+
+            self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
         update_info(self)
