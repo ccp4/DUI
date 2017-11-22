@@ -355,11 +355,6 @@ class ModeWidget(QWidget):
         self.setLayout(big_layout)
         self.show()
 
-class SysArgvData(object):
-    make_next = False
-    run_all = False
-    template = None
-    directory = None
 
 class MainWidget(QMainWindow):
     def __init__(self, sys_arg_in = None):
