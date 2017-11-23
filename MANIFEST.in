@@ -1,0 +1,2 @@
+include README.txt dui.py
+recursive-include mini_idials_w_GUI/ *
