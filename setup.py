@@ -8,8 +8,8 @@ setup(name='dui_test',
       url='none yet',
       platforms='GNU/Linux & Mac OS',
 
-      packages = ['mini_idials_w_GUI', 'mini_idials_w_GUI.outputs_n_viewers'],
-      data_files=[('logos', ['mini_idials_w_GUI/DIALS_Logo_smaller_centred_grayed.png',
+      packages=['mini_idials_w_GUI', 'mini_idials_w_GUI.outputs_n_viewers'],
+      data_files=[('logos_01', ['mini_idials_w_GUI/DIALS_Logo_smaller_centred_grayed.png',
                              'mini_idials_w_GUI/DIALS_Logo_smaller_centred.png',
                              'mini_idials_w_GUI/find_spots_grayed.png',
                              'mini_idials_w_GUI/find_spots.png',
@@ -27,7 +27,6 @@ setup(name='dui_test',
                              'mini_idials_w_GUI/re_try.png',
                              'mini_idials_w_GUI/stop_grayed.png',
                              'mini_idials_w_GUI/stop.png'])],
-      entry_points = {
-          'console_scripts':['dui=mini_idials_w_GUI.main_dui:main']},
+      entry_points={'console_scripts':['dui=mini_idials_w_GUI.main_dui:main']},
      )
 
