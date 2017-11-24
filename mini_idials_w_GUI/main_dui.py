@@ -36,7 +36,6 @@ class SysArgvData(object):
     directory = None
 
 def main():
-    print "\n\n Running from new \"main\" \n\n"
     sys_arg = SysArgvData()
     call_arg = sys.argv
     if(len(call_arg) > 1):
