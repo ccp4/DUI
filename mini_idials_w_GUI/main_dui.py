@@ -30,6 +30,9 @@ from PyQt4.QtWebKit import *
 from m_idials_gui import MainWidget
 
 class SysArgvData(object):
+    '''
+    Some data related to how the GUI gets launched from CLI
+    '''
     make_next = False
     run_all = False
     template = None
@@ -66,7 +69,6 @@ def main():
 
             elif(par_str[0:10] == "directory="):
                 sys_arg.directory = par_str[10:]
-
 
     print "sys_arg.template=", sys_arg.template
     print "sys_arg.directory=", sys_arg.directory
