@@ -38,7 +38,6 @@ class SysArgvData(object):
     template = None
     directory = None
 
-
 def main():
     sys_arg = SysArgvData()
     call_arg = sys.argv
