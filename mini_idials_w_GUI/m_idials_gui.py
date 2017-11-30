@@ -29,12 +29,13 @@ import sys, os, psutil, pickle
 
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
-from cli_utils import TreeShow, get_next_step
+from cli_utils import TreeShow, get_next_step, prn_lst_lst_cmd
 from m_idials import Runner
 from gui_utils import CliOutView, Text_w_Bar
 from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
 from custom_widgets import  ParamWidget
+
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
@@ -751,6 +752,7 @@ class MainWidget(QMainWindow):
 
             print "TreeNavWidget(node_clicked)"
             item = self.tree_out.std_mod.itemFromIndex(it_index)
+            prn_lst_lst_cmd(item.idials_node)
             lin_num = item.idials_node.lin_num
             print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
             cmd_ovr = "goto " + str(lin_num)

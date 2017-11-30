@@ -25,6 +25,33 @@ copyright (c) CCP4 - DLS
 import subprocess
 import json
 
+
+def prn_lst_lst_cmd(last_idials_node):
+    cur_nod = last_idials_node
+    lst_simpl_cmd = []
+    lst_full_cmd = []
+
+    while True:
+        if(cur_nod.command_lst == ["Root"] or cur_nod.lin_num == 0):
+            break
+
+        l_n = str(cur_nod.lin_num)
+        lst_simpl_cmd.append("command_lst[" + l_n + "] = " + str(cur_nod.command_lst))
+        lst_full_cmd.append("full_cmd_lst[" + l_n + "] = " + str(cur_nod.dials_comand.full_cmd_lst))
+
+        cur_nod = cur_nod.prev_step
+
+    for prn_lin in reversed(lst_simpl_cmd):
+        print prn_lin
+
+    print "\n"
+
+    for prn_lin in reversed(lst_full_cmd):
+        print prn_lin
+
+    print "\n\n"
+
+
 def get_next_step(node_obj):
     if(node_obj.lin_num == 0):
         return "import"
@@ -192,10 +219,12 @@ def generate_report(node_obj):
 class DialsCommand(object):
     def __init__(self):
         print "creating new DialsCommand (obj)"
+        self.full_cmd_lst = None
 
     def __call__(self, lst_cmd_to_run = None, ref_to_class = None):
         try:
             print "\n << running >>", lst_cmd_to_run
+
             my_process = subprocess.Popen(lst_cmd_to_run,
                                           stdout = subprocess.PIPE,
                                           stderr = subprocess.STDOUT,
@@ -230,8 +259,8 @@ class DialsCommand(object):
             local_success = False
             print "\n FAIL call"
 
+        self.full_cmd_lst = lst_cmd_to_run
         return local_success
-
 
 def print_list(lst, curr):
     print "__________________________listing:"
