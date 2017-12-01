@@ -4,7 +4,8 @@
 # Python script the generates setpath.sh script
 # with hard-codded path to runnable tools
 MY_WD=$(cd $(dirname ${0}); pwd)
-dials.python ${MY_WD}/write_setpath.py ${MY_WD}
+#dials.python ${MY_WD}/write_setpath.py ${MY_WD}
+ccp4-python ${MY_WD}/write_setpath.py ${MY_WD}
 
 #temporary skipping
 
