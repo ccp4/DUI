@@ -361,8 +361,7 @@ class MainWidget(QMainWindow):
     def __init__(self, sys_arg_in = None):
         super(MainWidget, self).__init__()
 
-
-        #tmp_off = '''
+        tmp_off = '''
         try:
             with open ('bkp.pickle', 'rb') as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
@@ -376,8 +375,8 @@ class MainWidget(QMainWindow):
             print "e.__doc__ =", e.__doc__
             print "e.message =", e.message
             #'''
-            #if you reactivate the recovery thing, remeber to "tab" the next line
-            self.idials_runner = Runner()
+        #if you reactivate the recovery thing, remeber to "tab" the next line
+        self.idials_runner = Runner()
 
         #This flag makes the behaviour switch (automatic / explicit)
         if(sys_arg_in == None):
