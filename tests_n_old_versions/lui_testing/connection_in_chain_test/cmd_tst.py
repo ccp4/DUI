@@ -26,7 +26,9 @@ def build_cmd():
 
     full_cmd_lst = []
 
-    full_cmd_lst.append(['dials.import', 'template=/scratch/dui/dui_test/only_9_img/th_8_2_####.cbf',
+    #full_cmd_lst.append(['dials.import', 'template=/scratch/dui/dui_test/only_9_img/th_8_2_####.cbf',
+
+    full_cmd_lst.append(['dials.import', 'template=/home/lui/ccp4/dui_test/only_9_img/X4_wide_M1S4_2_####.cbf',
                          'output.datablock=dials_files/1_datablock.json',
                          'output.log=dials_files/1_import.log',
                          'output.debug_log=dials_files/1_import_debug.log'
