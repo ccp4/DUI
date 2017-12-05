@@ -361,9 +361,8 @@ class MainWidget(QMainWindow):
     def __init__(self, sys_arg_in = None):
         super(MainWidget, self).__init__()
 
-        tmp_off = '''
         try:
-            with open ('bkp.pickle', 'rb') as bkp_in:
+            with open ('dials_files/bkp.pickle', 'rb') as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
             #TODO sometimes the following error appears
@@ -374,9 +373,8 @@ class MainWidget(QMainWindow):
             print "str(e) =", str(e)
             print "e.__doc__ =", e.__doc__
             print "e.message =", e.message
-            #'''
-        #if you reactivate the recovery thing, remeber to "tab" the next line
-        self.idials_runner = Runner()
+            self.idials_runner = Runner()
+            os.mkdir("dials_files")
 
         #This flag makes the behaviour switch (automatic / explicit)
         if(sys_arg_in == None):
@@ -665,7 +663,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        with open('bkp.pickle', 'wb') as bkp_out:
+        with open('dials_files/bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
     def check_gray_outs(self):

@@ -49,11 +49,11 @@ class CommandNode(object):
         self.pickle_file_out = None
         self.json_file_out = None
         self.phil_file_out = None
+        self.log_file_out = None
+        self.debug_log_file_out = None
         self.report_out = None
         self.dials_comand = DialsCommand()
-
         self.work_dir = os.getcwd()
-
 
     def __call__(self, cmd_lst, ref_to_class):
         self.command_lst = cmd_lst
