@@ -374,6 +374,14 @@ class MainWidget(QMainWindow):
             print "e.__doc__ =", e.__doc__
             print "e.message =", e.message
             self.idials_runner = Runner()
+
+            try:
+                import shutil
+                shutil.rmtree("dials_files")
+
+            except:
+                print "failed to do \"shutil.rmtree(\"dials_files\")\""
+
             os.mkdir("dials_files")
 
         #This flag makes the behaviour switch (automatic / explicit)
