@@ -88,6 +88,51 @@ def update_info(main_obj):
                                      refl_pikl_path = new_ref_pikl)
 
 
+def update_pbar_msg(main_obj):
+    tmp_curr = main_obj.idials_runner.current_node
+    txt = str(tmp_curr.command_lst[0])
+
+    if(tmp_curr.success == False):
+        txt = "click << Re Try >> or navigate backwards in the tree"
+
+    elif(  (txt == "integrate"
+            or txt == "refine_bravais_settings")
+            and tmp_curr.success == True):
+
+        txt = "click << Re Try >> or navigate elsewhere in the tree"
+
+    elif(txt == "reindex" and tmp_curr.success == None):
+        txt = "click the blue row to run reindex"
+
+    elif(tmp_curr.success == None):
+        if(tmp_curr.lin_num == 1):
+            print "tmp_curr.lin_num == 1"
+            templ_text = main_obj.centre_widget.step_param_widg.currentWidget().my_widget.templ_lin.text()
+            print "templ_text =", templ_text
+            if(templ_text == " ? "):
+                txt = "click << Select File(s) >> or edit template line "
+
+            else:
+                txt = "click dials icon to run import"
+
+        else:
+            txt = "click dials icon to run " + txt
+
+    else:
+        nxt_cmd = get_next_step(tmp_curr)
+
+        if(nxt_cmd == None):
+            txt  ="Done"
+
+        else:
+            txt = "click <<" + nxt_cmd + ">> to go ahead, or click << Re Try >>"
+
+    main_obj.txt_bar.setText(txt)
+
+    print "\n\n update_pbar_msg =", txt
+    #print "get_next_step(tmp_curr) =", nxt_cmd, "\n\n"
+
+
 class MyThread(QThread):
 
     str_print_signal = pyqtSignal(str)
@@ -612,7 +657,6 @@ class MainWidget(QMainWindow):
     def update_after_finished(self):
         update_info(self)
 
-        self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
         self.just_reindexed = False
 
@@ -733,10 +777,11 @@ class MainWidget(QMainWindow):
         except:
             print "failed to << check_gray_outs() >>"
 
+        update_pbar_msg(self)
+
     def after_failed(self):
         #TODO handle error outputs
         self.update_nav_tree()
-        self.txt_bar.setText("Idle") #TODO put here some clever message to the user
         self.txt_bar.end_motion()
 
     def opt_clicked(self, row, col):

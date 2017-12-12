@@ -52,6 +52,7 @@ class Text_w_Bar(QProgressBar):
 
     def setText(self, text):
         self._text = text
+        self.repaint()
 
     def text(self):
         return self._text
