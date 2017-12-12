@@ -123,6 +123,76 @@ def update_pbar_msg(main_obj):
     print "\n\n update_pbar_msg =", txt
     #print "get_next_step(tmp_curr) =", nxt_cmd, "\n\n"
 
+
+class TreeNavWidget(QTreeView):
+    def __init__(self, parent = None):
+        super(TreeNavWidget, self).__init__()
+        print "TreeNavWidget(__init__)"
+
+    def update_me(self, root_node, lst_path_idx):
+        self.lst_idx = lst_path_idx
+
+        print self.lst_idx
+
+        self.std_mod = QStandardItemModel(self)
+        self.recursive_node(root_node, self.std_mod)
+
+        self.std_mod.setHorizontalHeaderLabels(["History Tree"])
+        self.setModel(self.std_mod)
+        self.expandAll()
+
+    def recursive_node(self, root_node, item_in):
+        if(len(root_node.next_step_list) > 0):
+            for child_node in root_node.next_step_list:
+                if(child_node.command_lst != [None]):
+                    child_node_name = str(child_node.command_lst[0])
+
+                elif(child_node.success == None):
+                    child_node_name = "* None *"
+
+                else:
+                    child_node_name = " ? None ? "
+
+                try:
+                    child_node_tip = build_command_tip(child_node.command_lst)
+
+                except:
+                    child_node_tip = "None"
+
+                new_item = QStandardItem(child_node_name)
+                new_item.setToolTip(child_node_tip)
+                new_item.idials_node = child_node
+
+                if(self.lst_idx == child_node.lin_num):
+                    new_item.setBackground(Qt.blue)
+                    if(child_node.success == None):
+                        new_item.setForeground(Qt.green)
+
+                    elif(child_node.success == True):
+                        new_item.setForeground(Qt.white)
+
+                    elif(child_node.success == False):
+                        new_item.setForeground(Qt.red)
+
+                else:
+                    new_item.setBackground(Qt.white)
+                    if(child_node.success == None):
+                        new_item.setForeground(Qt.green)
+
+                    elif(child_node.success == True):
+                        new_item.setForeground(Qt.blue)
+
+                    elif(child_node.success == False):
+                        new_item.setForeground(Qt.red)
+
+                new_item.setEditable(False)      # not letting the user edit it
+
+                self.recursive_node(child_node, new_item)
+                item_in.appendRow(new_item)
+
+
+
+
 class CliOutView(QTextEdit):
     def __init__(self, app = None):
         super(CliOutView, self).__init__()
