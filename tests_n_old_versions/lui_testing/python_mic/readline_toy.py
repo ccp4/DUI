@@ -22,10 +22,9 @@ def completer(text, state):
 readline.set_completer(completer)
 readline.parse_and_bind("tab: complete")
 
-
-#while 1:
-command = ""
-while( command.strip() != 'exit' and command.strip() != 'quit' ):
-    command = str(raw_input("[[dials.>> "))
-    print "You entered:", command
+if(__name__ == "__main__"):
+    command = ""
+    while( command.strip() != 'exit' and command.strip() != 'quit' ):
+        command = str(raw_input("[[dials.>> "))
+        print "You entered:", command
 
