@@ -1,9 +1,19 @@
 import readline
 
-addrs = ['angela@domain.com', 'michael@domain.com', 'david@test.com']
+cmd_lst = [
+          'import',
+          'find_spots',
+          'index',
+          'refine_bravais_settings',
+          'reindex',
+          'refine',
+          'integrate',
+          'export',
+          'exit',
+          ]
 
 def completer(text, state):
-    options = [x for x in addrs if x.startswith(text)]
+    options = [x for x in cmd_lst if x.startswith(text)]
     try:
         return options[state]
     except IndexError:
@@ -12,6 +22,10 @@ def completer(text, state):
 readline.set_completer(completer)
 readline.parse_and_bind("tab: complete")
 
-while 1:
-    a = raw_input("> ")
-    print "You entered", a
+
+#while 1:
+command = ""
+while( command.strip() != 'exit' and command.strip() != 'quit' ):
+    command = str(raw_input("[[dials.>> "))
+    print "You entered:", command
+
