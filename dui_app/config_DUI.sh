@@ -3,12 +3,17 @@
 
 # Python script the generates setpath.sh script
 # with hard-codded path to runnable tools
-MY_WD=$(cd $(dirname ${0}); pwd)
-#dials.python ${MY_WD}/write_setpath.py ${MY_WD}
+
+# The next line seem to be more POSIX / UNIX-like
+# but it brakes my automated << update all >> script
+#MY_WD=$(cd $(dirname ${0}); pwd)
+
+#The next line work better when this script is called from external script
+MY_WD=$(pwd)
+
 ccp4-python ${MY_WD}/write_setpath.py ${MY_WD}
 
 #temporary skipping
-
 
 #Attemplting to compile list C++ extension
 
