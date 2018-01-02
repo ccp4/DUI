@@ -382,7 +382,7 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
-        self.centre_widget.run_btn.setText(" ? ")
+        self.centre_widget.run_btn.setText(" . ")
 
         if(self.user_stoped == True):
             self.idials_runner.current_node.success = None

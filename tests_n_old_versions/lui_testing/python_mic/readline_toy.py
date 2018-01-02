@@ -1,3 +1,5 @@
+#This does NOT work with ccp4-python because there is not readline module in ccp4-python
+
 import readline
 
 cmd_lst = [

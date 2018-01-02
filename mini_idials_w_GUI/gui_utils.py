@@ -83,6 +83,8 @@ def update_pbar_msg(main_obj):
     tmp_curr = main_obj.idials_runner.current_node
     txt = str(tmp_curr.command_lst[0])
 
+    #TODO try to change the background when giving advice
+
     if(tmp_curr.success == False):
         txt = "click << Re Try >> or navigate backwards in the tree"
 
