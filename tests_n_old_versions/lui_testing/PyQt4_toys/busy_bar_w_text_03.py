@@ -25,24 +25,6 @@ class Text_w_Bar(QtGui.QProgressBar):
         print "ending motion"
 
 
-'''
-
-class MyProgressBar(QtGui.QProgressBar):
-
-    def __init__(self, parent):
-        super(MyProgressBar,self).__init__()
-        self.setRange(0, 0)
-        self.setAlignment(QtCore.Qt.AlignCenter)
-        self._text = None
-
-    def setText(self, text):
-        self._text = text
-
-    def text(self):
-        return self._text
-
-'''
-
 class Example(QtGui.QWidget):
 
     def __init__(self):
