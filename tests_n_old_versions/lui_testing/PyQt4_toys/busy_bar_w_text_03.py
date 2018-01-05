@@ -2,7 +2,6 @@ from PySide import QtGui, QtCore
 import sys
 
 
-
 class Text_w_Bar(QtGui.QProgressBar):
     def __init__(self, parent = None):
         super(Text_w_Bar,self).__init__()
@@ -48,6 +47,8 @@ class Example(QtGui.QWidget):
     def doAction(self):
         self.pbar.setText("working")
         self.pbar.start_motion()
+        self.setCursor(QtCore.Qt.BusyCursor)
+
 
 
 
