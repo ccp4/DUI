@@ -29,6 +29,8 @@ class Example(QtGui.QWidget):
     def __init__(self):
         super(Example, self).__init__()
 
+        self.busy_state = False
+
         self.pbar = Text_w_Bar(self)
         self.pbar.setText('finding resource...')
 
@@ -45,11 +47,19 @@ class Example(QtGui.QWidget):
 
 
     def doAction(self):
-        self.pbar.setText("working")
-        self.pbar.start_motion()
-        self.setCursor(QtCore.Qt.BusyCursor)
+        if(self.busy_state == False):
+            self.busy_state = True
 
+            self.pbar.setText("working")
+            self.pbar.start_motion()
+            self.setCursor(QtCore.Qt.BusyCursor)
 
+        else:
+            self.busy_state = False
+
+            self.pbar.setText("Stoped")
+            self.pbar.end_motion()
+            self.setCursor(QtCore.Qt.ArrowCursor)
 
 
 if __name__ == '__main__':
