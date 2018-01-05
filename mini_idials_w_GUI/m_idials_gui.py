@@ -352,6 +352,7 @@ class MainWidget(QMainWindow):
         self.reconnect_when_ready()
 
     def connect_all(self):
+        self.setCursor(Qt.ArrowCursor)
         self.tree_clickable = True
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
 
@@ -366,6 +367,8 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
 
     def disconnect_while_running(self):
+
+        self.setCursor(Qt.BusyCursor)
         self.tree_clickable = False
 
         self.centre_widget.repeat_btn.setEnabled(False)
@@ -377,6 +380,8 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
 
     def reconnect_when_ready(self):
+
+        self.setCursor(Qt.ArrowCursor)
         self.tree_clickable = True
 
         self.centre_widget.repeat_btn.setEnabled(False)
@@ -498,6 +503,7 @@ class MainWidget(QMainWindow):
                 print "the \".mtz\" file is NOT going to be replaced "
 
         if(run_me == True):
+
             self.txt_bar.start_motion()
             self.txt_bar.setText("Running")
             self.disconnect_while_running()
