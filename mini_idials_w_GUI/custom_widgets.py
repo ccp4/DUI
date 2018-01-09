@@ -112,6 +112,36 @@ def template_from_lst_build(in_str_lst):
 
     return out_str
 
+class LstFilesView(QTextEdit):
+
+    refreshed = pyqtSignal(str)
+
+    def __init__(self, parent = None):
+        super(LstFilesView, self).__init__()
+        print "\n\n __init__ from LstFilesView \n\n"
+        self.textChanged.connect(self.refresh_me)
+
+    def add_txt(self, str_to_print):
+
+        #TODO reconcider how elegant is this
+        try:
+            self.append(str_to_print)
+
+        except:
+            self.append(str_to_print[0])
+
+
+    def show_lst(self, lst):
+        self.clear()
+        for single_file in lst:
+            self.add_txt(single_file)
+
+        self.refresh_me()
+
+    def refresh_me(self):
+        all_text = self.toPlainText()
+        self.refreshed.emit(all_text)
+
 class ImportPage(QWidget):
 
     update_command_lst = pyqtSignal(list)
@@ -125,12 +155,35 @@ class ImportPage(QWidget):
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
 
+        self.rb_group = QButtonGroup()
+
         template_grp =  QGroupBox(" Import from File(s) ")
         template_vbox =  QVBoxLayout()
         self.templ_lin =   QLineEdit(self)
         self.templ_lin.setText(" ? ")
+
+        self.lst_view = LstFilesView()
+
+
+        self.rb_01 = QRadioButton("buttn 1")
+        self.rb_group.addButton(self.rb_01)
+        #self.rb_01.clicked.connect(self.Action1)
+
+        self.rb_02 = QRadioButton("buttn 2")
+        self.rb_group.addButton(self.rb_02)
+        #self.rb_02.clicked.connect(self.Action1)
+
         opn_fil_btn = QPushButton("\n Select File(s)\n")
-        template_vbox.addWidget(opn_fil_btn)
+        tmp_hbox = QHBoxLayout()
+        tmp_hbox.addStretch()
+        tmp_hbox.addWidget(opn_fil_btn)
+        template_vbox.addLayout(tmp_hbox)
+
+        template_vbox.addWidget(self.rb_01)
+        template_vbox.addWidget(self.lst_view)
+        template_vbox.addWidget(self.rb_02)
+
+
         template_vbox.addWidget(self.templ_lin)
         template_grp.setLayout(template_vbox)
 
@@ -139,6 +192,9 @@ class ImportPage(QWidget):
 
         opn_fil_btn.clicked.connect(self.open_files)
         self.templ_lin.textChanged.connect(self.intro_file_changed)
+
+        self.lst_view.refreshed.connect(self.list_changed)
+
         self.expli_templ = True
         self.setLayout(big_layout)
         self.show()
@@ -148,7 +204,8 @@ class ImportPage(QWidget):
         if(sys_arg_in.template != None):
             self.templ_lin.setText(str(sys_arg_in.template))
 
-    def intro_file_changed(self, value):
+    def intro_file_changed(self, value = None):
+
         print "txt(value) =", value
         str_path = "template="
 
@@ -162,6 +219,27 @@ class ImportPage(QWidget):
 
         self.command_lst = ["import", my_cmd]
         self.update_command_lst.emit(self.command_lst)
+        #print "\n\n self.command_lst =", self.command_lst, "\n\n"
+
+    def list_changed(self, list_obj = None):
+        print "handling << ? >>"
+        print "list_obj =", list_obj
+        print "type(list_obj) =", type(list_obj)
+
+        path_new_lst = str(list_obj).split("\n")
+
+        print "path_new_lst =", path_new_lst
+
+        #self.command_lst = ["import", my_cmd]
+        self.command_lst = ["import"]
+        for single_file_path in path_new_lst:
+            if(len(single_file_path) > 4):
+                self.command_lst.append(single_file_path)
+
+        print "\n\n self.command_lst =", self.command_lst, "\n\n"
+
+        self.update_command_lst.emit(self.command_lst)
+
 
     def open_files(self):
         self.expli_templ = True
@@ -213,6 +291,8 @@ class ImportPage(QWidget):
 
         else:
             print "Failed to pick dir"
+
+        self.lst_view.show_lst(lst_file_path)
 
     def activate_me(self):
         self.templ_lin.setEnabled(True)
@@ -535,8 +615,8 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ParamWidget("find_spots")
-    #ex = ParamWidget("import")
+    #ex = ParamWidget("find_spots")
+    ex = ParamWidget("import")
     sys.exit(app.exec_())
 
 
