@@ -217,8 +217,9 @@ class Text_w_Bar(QProgressBar):
         self._text = ""
 
     def setText(self, text):
-        self._text = text
-        self.repaint()
+        if(len(text) > 2):
+            self._text = text
+            self.repaint()
 
     def text(self):
         return self._text
