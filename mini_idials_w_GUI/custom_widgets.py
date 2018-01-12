@@ -55,10 +55,10 @@ def template_right_side_build(in_str_tmp, dir_path):
             pos_sep = pos
 
     left_sd_name = in_str_tmp[:pos_sep]
-    print "\n left_sd_name =", left_sd_name, "\n"
+    print "left_sd_name =", left_sd_name
 
     ext_name = in_str_tmp[pos_sep:]
-    print "\n ext_name =", ext_name, "\n"
+    print "ext_name =", ext_name
 
     if(ext_name == ".h5"):
         print "found h5 file"
@@ -70,7 +70,7 @@ def template_right_side_build(in_str_tmp, dir_path):
         out_str = left_sd_name
 
         max_tail_size = int(len(in_str_tmp) / 3)
-        print "\n max_tail_size =", max_tail_size, "\n"
+        print "max_tail_size =", max_tail_size
         for tail_size in xrange(max_tail_size):
             prev_str = out_str
             pos_to_replase = len(out_str) - tail_size - 1
@@ -86,6 +86,29 @@ def template_right_side_build(in_str_tmp, dir_path):
 
     return out_str, expli_templ
 
+def default_string(my_cmd):
+    print "\n\n default_string(", my_cmd,"):"
+
+    prev_char = None
+    new_cmd = ""
+
+    for single_char in my_cmd:
+
+        if(single_char != "#"):
+            new_cmd += single_char
+
+        elif(prev_char != "#"):
+            new_cmd += "*"
+
+        prev_char = single_char
+
+    print "new_cmd =", new_cmd
+
+    print "\n\n"
+
+    return new_cmd
+
+
 def template_from_lst_build(in_str_lst):
     print "in_str_lst =", in_str_lst
     str_lst = []
@@ -99,8 +122,11 @@ def template_from_lst_build(in_str_lst):
         all_equal = True
         single_char = str_lst[0][pos]
         for single_string in str_lst:
-            if(single_string[pos] != single_char):
-                all_equal = False
+            try:
+                if(single_string[pos] != single_char):
+                    all_equal = False
+            except:
+                all_equal =False
 
         if(all_equal == True):
             out_str = out_str + single_char
@@ -162,6 +188,10 @@ class ImportPage(QWidget):
         self.templ_lin =   QLineEdit(self)
         self.templ_lin.setText(" ? ")
 
+        self.simple_lin =   QLineEdit(self)
+        self.simple_lin.setText(" ? ")
+
+
         self.lst_view = LstFilesView()
 
 
@@ -173,6 +203,10 @@ class ImportPage(QWidget):
         self.rb_group.addButton(self.rb_02)
         #self.rb_02.clicked.connect(self.Action1)
 
+        self.rb_03 = QRadioButton("buttn 3")
+        self.rb_group.addButton(self.rb_03)
+        #self.rb_01.clicked.connect(self.Action1)
+
         opn_fil_btn = QPushButton("\n Select File(s)\n")
         tmp_hbox = QHBoxLayout()
         tmp_hbox.addStretch()
@@ -180,8 +214,10 @@ class ImportPage(QWidget):
         template_vbox.addLayout(tmp_hbox)
 
         template_vbox.addWidget(self.rb_01)
-        template_vbox.addWidget(self.lst_view)
+        template_vbox.addWidget(self.simple_lin)
         template_vbox.addWidget(self.rb_02)
+        template_vbox.addWidget(self.lst_view)
+        template_vbox.addWidget(self.rb_03)
 
 
         template_vbox.addWidget(self.templ_lin)
@@ -206,20 +242,24 @@ class ImportPage(QWidget):
 
     def intro_file_changed(self, value = None):
 
-        print "txt(value) =", value
-        str_path = "template="
+        #print "\n\n txt(value) =", value
+        tml_ini = "template="
 
         str_value = str(value)
 
         if(self.expli_templ == True):
-            my_cmd = str_path + str_value
+            my_cmd = tml_ini + str_value
 
         else:
             my_cmd = str_value
 
+        dfa_str = default_string(my_cmd[9:])
+
+        self.simple_lin.setText(dfa_str)
+
         self.command_lst = ["import", my_cmd]
         self.update_command_lst.emit(self.command_lst)
-        #print "\n\n self.command_lst =", self.command_lst, "\n\n"
+        print "self.command_lst =", self.command_lst, "\n"
 
     def list_changed(self, list_obj = None):
         print "handling << ? >>"
@@ -236,7 +276,7 @@ class ImportPage(QWidget):
             if(len(single_file_path) > 4):
                 self.command_lst.append(single_file_path)
 
-        print "\n\n self.command_lst =", self.command_lst, "\n\n"
+        print "self.command_lst =", self.command_lst
 
         self.update_command_lst.emit(self.command_lst)
 
