@@ -194,18 +194,17 @@ class ImportPage(QWidget):
 
         self.lst_view = LstFilesView()
 
+        self.radbutt_simple = QRadioButton("Simple use of \"*\" for completeness")
+        self.rb_group.addButton(self.radbutt_simple)
+        self.radbutt_simple.clicked.connect(self.action_simple)
 
-        self.rb_01 = QRadioButton("buttn 1")
-        self.rb_group.addButton(self.rb_01)
-        #self.rb_01.clicked.connect(self.Action1)
+        self.radbutt_list = QRadioButton("Enter the entire list of files")
+        self.rb_group.addButton(self.radbutt_list)
+        self.radbutt_list.clicked.connect(self.action_list)
 
-        self.rb_02 = QRadioButton("buttn 2")
-        self.rb_group.addButton(self.rb_02)
-        #self.rb_02.clicked.connect(self.Action1)
-
-        self.rb_03 = QRadioButton("buttn 3")
-        self.rb_group.addButton(self.rb_03)
-        #self.rb_01.clicked.connect(self.Action1)
+        self.radbutt_templ = QRadioButton("Use template syntax")
+        self.rb_group.addButton(self.radbutt_templ)
+        self.radbutt_templ.clicked.connect(self.action_template)
 
         opn_fil_btn = QPushButton("\n Select File(s)\n")
         tmp_hbox = QHBoxLayout()
@@ -213,11 +212,11 @@ class ImportPage(QWidget):
         tmp_hbox.addWidget(opn_fil_btn)
         template_vbox.addLayout(tmp_hbox)
 
-        template_vbox.addWidget(self.rb_01)
+        template_vbox.addWidget(self.radbutt_simple)
         template_vbox.addWidget(self.simple_lin)
-        template_vbox.addWidget(self.rb_02)
+        template_vbox.addWidget(self.radbutt_list)
         template_vbox.addWidget(self.lst_view)
-        template_vbox.addWidget(self.rb_03)
+        template_vbox.addWidget(self.radbutt_templ)
 
 
         template_vbox.addWidget(self.templ_lin)
@@ -227,7 +226,6 @@ class ImportPage(QWidget):
         big_layout.addWidget(template_grp)
 
         opn_fil_btn.clicked.connect(self.open_files)
-        self.templ_lin.textChanged.connect(self.intro_file_changed)
 
         self.lst_view.refreshed.connect(self.list_changed)
 
@@ -238,54 +236,80 @@ class ImportPage(QWidget):
     def get_arg_obj(self, sys_arg_in):
         print "\n sys_arg_in =", sys_arg_in, "\n"
         if(sys_arg_in.template != None):
-            self.templ_lin.setText(str(sys_arg_in.template))
+            str_arg = str(sys_arg_in.template)
+            self.templ_lin.setText(str_arg)
+            self.intro_file_changed(str_arg)
 
     def intro_file_changed(self, value = None):
 
-        #print "\n\n txt(value) =", value
         tml_ini = "template="
-
         str_value = str(value)
 
+        tmp_off = '''
         if(self.expli_templ == True):
             my_cmd = tml_ini + str_value
 
         else:
             my_cmd = str_value
+        self.command_lst = ["import", my_cmd]
+        '''
 
-        dfa_str = default_string(my_cmd[9:])
-
+        self.templ_cmd = str_value
+        dfa_str = default_string(str_value)
         self.simple_lin.setText(dfa_str)
 
-        self.command_lst = ["import", my_cmd]
+    def list_changed(self, list_obj = None):
+        print "list_changed"
+        self.path_new_lst = str(list_obj).split("\n")
+        self.handle_lst_path(self.path_new_lst)
+        self.check_radbut()
+
+    def check_radbut(self):
+        print "self.radbutt_simple.isChecked() =", self.radbutt_simple.isChecked()
+        print "self.radbutt_list.isChecked() =", self.radbutt_list.isChecked()
+        print "self.radbutt_templ.isChecked() =", self.radbutt_templ.isChecked()
+
+        some_radbutt_is_checked = False
+        if(self.radbutt_simple.isChecked()):
+            self.action_simple()
+
+        elif(self.radbutt_list.isChecked()):
+            self.action_list()
+
+        elif(self.radbutt_templ.isChecked()):
+            self.action_template()
+
+        else:
+            self.action_simple()
+
+    def action_simple(self):
+        print "action_simple"
+        self.command_lst = ["import", str(self.simple_lin.text())]
         self.update_command_lst.emit(self.command_lst)
         print "self.command_lst =", self.command_lst, "\n"
 
-    def list_changed(self, list_obj = None):
-        print "handling << ? >>"
-        print "list_obj =", list_obj
-        print "type(list_obj) =", type(list_obj)
-
-        path_new_lst = str(list_obj).split("\n")
-
-        print "path_new_lst =", path_new_lst
-
-        #self.command_lst = ["import", my_cmd]
+    def action_list(self):
+        print "action_list"
         self.command_lst = ["import"]
-        for single_file_path in path_new_lst:
+        for single_file_path in self.path_new_lst:
             if(len(single_file_path) > 4):
                 self.command_lst.append(single_file_path)
 
-        print "self.command_lst =", self.command_lst
-
         self.update_command_lst.emit(self.command_lst)
+        print "self.command_lst =", self.command_lst, "\n"
 
+    def action_template(self):
+        print "action_template"
+        self.command_lst = ["import", "template=" + self.templ_cmd]
+        self.update_command_lst.emit(self.command_lst)
+        print "self.command_lst =", self.command_lst, "\n"
 
     def open_files(self):
         self.expli_templ = True
 
         print "from open_files  << import page >>"
         get_wor_dir = str(os.getcwd())
+        print "\nget_wor_dir =", get_wor_dir, "\n"
 
         lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
                                                       get_wor_dir,
@@ -294,6 +318,9 @@ class ImportPage(QWidget):
         print "[ file path selected ] =", lst_file_path
         print "len(lst_file_path) =", len(lst_file_path)
 
+        self.lst_view.show_lst(lst_file_path)
+
+    def handle_lst_path(self, lst_file_path):
         for single_string in lst_file_path:
             print "single_string =", single_string
 
@@ -307,12 +334,19 @@ class ImportPage(QWidget):
                 if(single_char == "/" or single_char == "\\"):
                     pos_sep = pos
 
+            else:
+                print "Failed to find dir path"
+                return
+
+            print "pos_sep =", pos_sep
+
+            #TODO make this dir more persistent for the next time the user opens the dialog
             dir_name = selected_file_path[:pos_sep]
             if(dir_name[0:3] == "(u\'"):
                 print "dir_name[0:3] == \"(u\'\""
                 dir_name = dir_name[3:]
 
-            print "dir_name(final) =", dir_name
+            print "\ndir_name(final) =", dir_name, "\n"
 
             templ_str_tmp = selected_file_path[pos_sep:]
             #print "templ_str_tmp =", templ_str_tmp
@@ -322,17 +356,17 @@ class ImportPage(QWidget):
 
             templ_str_final = dir_name + templ_r_side
             self.templ_lin.setText(templ_str_final)
+            self.intro_file_changed(templ_str_final)
 
         elif(len(lst_file_path) > 1):
             print "time to handle multiple files selected"
             templ_str_final = template_from_lst_build(lst_file_path)
-            print "templ_str_final =", templ_str_final
             self.templ_lin.setText(templ_str_final)
+            self.intro_file_changed(templ_str_final)
 
         else:
-            print "Failed to pick dir"
+            print "Failed to change file"
 
-        self.lst_view.show_lst(lst_file_path)
 
     def activate_me(self):
         self.templ_lin.setEnabled(True)
