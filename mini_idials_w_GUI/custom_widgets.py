@@ -230,6 +230,7 @@ class ImportPage(QWidget):
         self.lst_view.refreshed.connect(self.list_changed)
 
         self.expli_templ = True
+        self.get_wor_dir = str(os.getcwd())
         self.setLayout(big_layout)
         self.show()
 
@@ -308,11 +309,10 @@ class ImportPage(QWidget):
         self.expli_templ = True
 
         print "from open_files  << import page >>"
-        get_wor_dir = str(os.getcwd())
-        print "\nget_wor_dir =", get_wor_dir, "\n"
+        print "\nget_wor_dir =", self.get_wor_dir, "\n"
 
         lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
-                                                      get_wor_dir,
+                                                      self.get_wor_dir,
                                                       "All Files (*.*)")
 
         print "[ file path selected ] =", lst_file_path
@@ -323,7 +323,7 @@ class ImportPage(QWidget):
     def handle_lst_path(self, lst_file_path):
         for single_string in lst_file_path:
             print "single_string =", single_string
-
+        templ_str_final = None
         if(lst_file_path and len(lst_file_path) == 1):
             selected_file_path = str(lst_file_path[0])
 
@@ -371,6 +371,8 @@ class ImportPage(QWidget):
         else:
             print "Failed to change file"
 
+        if(templ_str_final != None):
+            self.get_wor_dir = templ_str_final
 
     def activate_me(self):
         self.templ_lin.setEnabled(True)
