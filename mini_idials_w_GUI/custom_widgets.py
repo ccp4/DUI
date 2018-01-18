@@ -330,11 +330,15 @@ class ImportPage(QWidget):
             print "\n selected_file_path =", selected_file_path, "\n"
             print "type(selected_file_path) =", type(selected_file_path)
 
+            fnd_sep = False
+
             for pos, single_char in enumerate(selected_file_path):
                 if(single_char == "/" or single_char == "\\"):
                     pos_sep = pos
+                    print "found dir separator"
+                    fnd_sep = True
 
-            else:
+            if(fnd_sep == False):
                 print "Failed to find dir path"
                 return
 
