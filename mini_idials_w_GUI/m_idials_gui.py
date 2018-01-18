@@ -143,7 +143,7 @@ class CentreWidget(QWidget):
         self.repeat_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.repeat_btn)
 
-        self.run_btn = QPushButton("\n $  Run  \n", self)
+        self.run_btn = QPushButton("\n  Run  \n", self)
         dials_logo_path = str(idials_gui_path +
                               "/resources/DIALS_Logo_smaller_centred.png")
         dials_grayed_path = str(idials_gui_path +
@@ -387,7 +387,7 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
-        self.centre_widget.run_btn.setText(" . ")
+        #self.centre_widget.run_btn.setText(" . ")
 
         if(self.user_stoped == True):
             self.idials_runner.current_node.success = None
@@ -396,11 +396,13 @@ class MainWidget(QMainWindow):
             self.centre_widget.run_btn.setEnabled(True)
             self.centre_widget.step_param_widg.currentWidget().my_widget.activate_me()
 
+            tmp_off = '''
             txt_cap = self.idials_runner.current_node.command_lst[0]
             if(txt_cap == None):
                 txt_cap = " ? "
 
             self.centre_widget.run_btn.setText(txt_cap)
+            '''
 
         else:
             if(self.idials_runner.current_node.command_lst[0] != "export"):
