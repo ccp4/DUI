@@ -206,10 +206,10 @@ class ImportPage(QWidget):
         self.rb_group.addButton(self.radbutt_templ)
         self.radbutt_templ.clicked.connect(self.action_template)
 
-        opn_fil_btn = QPushButton("\n Select File(s)\n")
+        self.opn_fil_btn = QPushButton("\n Select File(s)\n")
         tmp_hbox = QHBoxLayout()
         tmp_hbox.addStretch()
-        tmp_hbox.addWidget(opn_fil_btn)
+        tmp_hbox.addWidget(self.opn_fil_btn)
         template_vbox.addLayout(tmp_hbox)
 
         template_vbox.addWidget(self.radbutt_simple)
@@ -225,10 +225,10 @@ class ImportPage(QWidget):
         big_layout =  QVBoxLayout()
         big_layout.addWidget(template_grp)
 
-        opn_fil_btn.clicked.connect(self.open_files)
-
+        self.opn_fil_btn.clicked.connect(self.open_files)
         self.lst_view.refreshed.connect(self.list_changed)
 
+        self.templ_cmd = ""
         self.expli_templ = True
         self.get_wor_dir = str(os.getcwd())
         self.setLayout(big_layout)
@@ -377,8 +377,25 @@ class ImportPage(QWidget):
     def activate_me(self):
         self.templ_lin.setEnabled(True)
 
+        self.simple_lin.setEnabled(True)
+        self.lst_view.setEnabled(True)
+        self.opn_fil_btn.setEnabled(True)
+
+        self.radbutt_simple.setEnabled(True)
+        self.radbutt_list.setEnabled(True)
+        self.radbutt_templ.setEnabled(True)
+
     def gray_me_out(self):
         self.templ_lin.setEnabled(False)
+
+        self.simple_lin.setEnabled(False)
+        self.lst_view.setEnabled(False)
+        self.opn_fil_btn.setEnabled(False)
+
+        self.radbutt_simple.setEnabled(False)
+        self.radbutt_list.setEnabled(False)
+        self.radbutt_templ.setEnabled(False)
+
 
 class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
