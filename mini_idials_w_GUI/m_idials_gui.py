@@ -130,7 +130,7 @@ class CentreWidget(QWidget):
 
         ctrl_box = QHBoxLayout()
 
-        self.repeat_btn = QPushButton("\n Re Try \n", self)
+        self.repeat_btn = QPushButton("\n Retry \n", self)
         re_try_icon_path = str(idials_gui_path +
                               "/resources/re_try.png")
         re_try_grayed_path = str(idials_gui_path +
@@ -325,7 +325,7 @@ class MainWidget(QMainWindow):
 
         self.output_info_tabs = QTabWidget()
         self.output_info_tabs.addTab(self.img_view, "Image View")
-        self.output_info_tabs.addTab(self.cli_out, "CLI OutPut")
+        self.output_info_tabs.addTab(self.cli_out, "CLI Output")
         self.output_info_tabs.addTab(self.web_view, "Report View")
 
         h_main_splitter.addWidget(self.output_info_tabs)

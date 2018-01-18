@@ -197,7 +197,7 @@ class MainWidget(QMainWindow):
 
         self.my_tabs = QTabWidget()
         self.my_tabs.addTab(self.img_view, "Image View")
-        self.my_tabs.addTab(self.cli_out, "CLI OutPut")
+        self.my_tabs.addTab(self.cli_out, "CLI Output")
         self.my_tabs.addTab(self.web_view, "Report View")
 
         h_main_splitter.addWidget(self.my_tabs)

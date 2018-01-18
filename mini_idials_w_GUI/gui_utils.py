@@ -86,13 +86,13 @@ def update_pbar_msg(main_obj):
     #TODO try to change the background when giving advice
 
     if(tmp_curr.success == False):
-        txt = "click << Re Try >> or navigate backwards in the tree"
+        txt = "click << Retry >> or navigate backwards in the tree"
 
     elif(  (txt == "integrate"
             or txt == "refine_bravais_settings")
             and tmp_curr.success == True):
 
-        txt = "click << Re Try >> or navigate elsewhere in the tree"
+        txt = "click << Retry >> or navigate elsewhere in the tree"
 
     elif(txt == "reindex" and tmp_curr.success == None):
         txt = "click the blue row to run reindex"
@@ -118,7 +118,7 @@ def update_pbar_msg(main_obj):
             txt  ="Done"
 
         else:
-            txt = "click <<" + nxt_cmd + ">> to go ahead, or click << Re Try >>"
+            txt = "click <<" + nxt_cmd + ">> to go ahead, or click << Retry >>"
 
     main_obj.txt_bar.setText(txt)
 
