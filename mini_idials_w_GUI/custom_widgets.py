@@ -74,14 +74,12 @@ def right_side_from_single(in_str_tmp, dir_path):
 
 def build_comm_from_lst(in_str_lst):
 
-    print "\n type(in_str_lst) =", type(in_str_lst), "\n"
-
     selected_file_path = str(in_str_lst[0])
     fnd_sep = False
     for pos, single_char in enumerate(selected_file_path):
         if(single_char == "/" or single_char == "\\"):
             pos_sep = pos
-            print "found dir separator"
+            print "Dir separator(", pos, " = ", single_char
             fnd_sep = True
 
     if(fnd_sep == False):
@@ -104,7 +102,6 @@ def build_comm_from_lst(in_str_lst):
         out_str = dir_name + templ_r_side
 
     else:
-        print "in_str_lst =", in_str_lst
         str_lst = []
         for single_qstring in in_str_lst:
             str_lst.append(str(single_qstring))
@@ -141,16 +138,8 @@ def build_comm_from_lst(in_str_lst):
 
         prev_char = single_char
 
-    print "new_cmd =", new_cmd
     out_str = new_cmd
     print "out_str( * mode ) =", out_str
-
-
-    print "\n"
-    print "dir_name =", dir_name
-    print "str(dir_name) =", str(dir_name)
-    print "\n"
-
 
     return dir_name, out_str
 
@@ -179,21 +168,21 @@ class ImportPage(QWidget):
         self.simple_lin.setText(" ? ")
         self.simple_lin.textChanged.connect(self.update_command)
 
-        self.opn_fil_btn = QPushButton("\n Select File(s)\n")
+        self.opn_fil_btn = QPushButton("Select File(s)")
         tmp_hbox = QHBoxLayout()
         tmp_hbox.addStretch()
         tmp_hbox.addWidget(self.opn_fil_btn)
 
         template_vbox.addWidget(step_label)
-        template_vbox.addStretch()
         template_vbox.addLayout(tmp_hbox)
+        template_vbox.addStretch()
         template_vbox.addWidget(self.simple_lin)
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
         #self.templ_cmd = ""
         #self.expli_templ = True
-        self.get_wor_dir = str(os.getcwd())
+        self.defa_dir = str(os.getcwd())
         self.setLayout(template_vbox)
         self.show()
 
@@ -206,22 +195,18 @@ class ImportPage(QWidget):
         self.opn_fil_btn.setEnabled(True)
 
     def open_files(self):
-        print "\nget_wor_dir =", self.get_wor_dir, "\n"
-
         lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
-                                                      self.get_wor_dir,
+                                                      self.defa_dir,
                                                       "All Files (*.*)")
 
-        print "[ file path selected ] =", lst_file_path
-        print "len(lst_file_path) =", len(lst_file_path)
 
         if(len(lst_file_path) > 0):
             new_dir, new_command = build_comm_from_lst(lst_file_path)
             self.simple_lin.setText(new_command)
-            self.get_wor_dir = new_dir
+            self.defa_dir = new_dir
 
     def get_arg_obj(self, sys_arg_in):
-        print "\n sys_arg_in =", sys_arg_in, "\n"
+        print "sys_arg_in =", sys_arg_in
         if(sys_arg_in.template != None):
             str_arg = str(sys_arg_in.template)
             self.simple_lin.setText(str_arg)
