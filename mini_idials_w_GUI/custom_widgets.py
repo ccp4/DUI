@@ -52,6 +52,7 @@ def right_side_from_single(in_str_tmp, dir_path):
         print "found h5 file"
         out_str = left_sd_name
         out_str = out_str + ext_name
+        tail_size = 0
 
     else:
         out_str = left_sd_name
@@ -69,10 +70,12 @@ def right_side_from_single(in_str_tmp, dir_path):
 
         out_str = out_str + ext_name
 
-    return out_str
+    return out_str, tail_size
 
 
 def build_comm_from_lst(in_str_lst):
+
+    img_range = None
 
     selected_file_path = str(in_str_lst[0])
     fnd_sep = False
@@ -90,15 +93,15 @@ def build_comm_from_lst(in_str_lst):
     dir_name = selected_file_path[:pos_sep]
 
     #TODO test if the next << if >> is actually needed
-    '''
     if(dir_name[0:3] == "(u\'"):
         print "dir_name[0:3] == \"(u\'\""
         dir_name = dir_name[3:]
-    '''
+
+    templ_str_tmp = selected_file_path[pos_sep:]
+    templ_r_side, bak_pos = right_side_from_single(templ_str_tmp, dir_name)
+    print "templ_r_side, bak_pos =", templ_r_side, bak_pos
 
     if(in_str_lst and len(in_str_lst) == 1):
-        templ_str_tmp = selected_file_path[pos_sep:]
-        templ_r_side = right_side_from_single(templ_str_tmp, dir_name)
         out_str = dir_name + templ_r_side
 
     else:
@@ -106,9 +109,12 @@ def build_comm_from_lst(in_str_lst):
         for single_qstring in in_str_lst:
             str_lst.append(str(single_qstring))
 
-        print "str_lst =", str_lst
+        print "\n str_lst =", str_lst, "\n"
 
         out_str = ""
+        pos_last_num = 0
+        num_of_num = 0
+
         for pos in xrange(len(str_lst[0])):
             all_equal = True
             single_char = str_lst[0][pos]
@@ -124,6 +130,31 @@ def build_comm_from_lst(in_str_lst):
 
             else:
                 out_str = out_str + "#"
+                pos_last_num = pos
+
+        pos_last_num +=1
+
+        print "pos_last_num =", pos_last_num
+
+        if(pos_last_num > 1):
+            lst_num_str = []
+            try:
+
+                for single_string in str_lst:
+                        lst_num_str.append(int(single_string[pos_last_num-bak_pos:pos_last_num]))
+
+                print "lst_num_str =", lst_num_str, "\n"
+                print "min(lst_num_str) = ", min(lst_num_str)
+                print "max(lst_num_str) = ", max(lst_num_str)
+
+            except:
+                print "something went wrong with the range thing 01"
+                img_range = None
+
+        else:
+            print "something went wrong with the range thing 02"
+            img_range = None
+
 
     print "out_str( template mode ) =", out_str
 
@@ -141,7 +172,8 @@ def build_comm_from_lst(in_str_lst):
     out_str = new_cmd
     print "out_str( * mode ) =", out_str
 
-    return dir_name, out_str
+
+    return dir_name, out_str, img_range
 
 
 class ImportPage(QWidget):
@@ -201,7 +233,7 @@ class ImportPage(QWidget):
 
 
         if(len(lst_file_path) > 0):
-            new_dir, new_command = build_comm_from_lst(lst_file_path)
+            new_dir, new_command, new_range = build_comm_from_lst(lst_file_path)
             self.simple_lin.setText(new_command)
             self.defa_dir = new_dir
 
