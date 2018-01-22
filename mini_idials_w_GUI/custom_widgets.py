@@ -168,7 +168,7 @@ class ImportPage(QWidget):
         self.simple_lin.setText(" ? ")
         self.simple_lin.textChanged.connect(self.update_command)
 
-        self.opn_fil_btn = QPushButton("Select File(s)")
+        self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
         tmp_hbox = QHBoxLayout()
         tmp_hbox.addStretch()
         tmp_hbox.addWidget(self.opn_fil_btn)
