@@ -40,24 +40,14 @@ from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 from dials.command_line.export import phil_scope as phil_scope_export
 
-def template_right_side_build(in_str_tmp, dir_path):
-
-    print "in_str_tmp =", in_str_tmp
-    print "dir_path =", dir_path
-
+def right_side_from_single(in_str_tmp, dir_path):
     out_str = dir_path + in_str_tmp
-    #lst_files = os.listdir(str(dir_path))     #<<< test comment
-
     for pos, single_char in reversed(list(enumerate(in_str_tmp))):
         if(single_char == "."):
             pos_sep = pos
 
     left_sd_name = in_str_tmp[:pos_sep]
-    print "left_sd_name =", left_sd_name
-
     ext_name = in_str_tmp[pos_sep:]
-    print "ext_name =", ext_name
-
     if(ext_name == ".h5"):
         print "found h5 file"
         out_str = left_sd_name
@@ -67,7 +57,6 @@ def template_right_side_build(in_str_tmp, dir_path):
         out_str = left_sd_name
 
         max_tail_size = int(len(in_str_tmp) / 3)
-        print "max_tail_size =", max_tail_size
         for tail_size in xrange(max_tail_size):
             prev_str = out_str
             pos_to_replase = len(out_str) - tail_size - 1
@@ -76,7 +65,6 @@ def template_right_side_build(in_str_tmp, dir_path):
                     out_str = out_str[:pos_to_replase] + '#' + out_str[pos_to_replase + 1:]
 
             if(prev_str == out_str):
-                #print "found non num char"
                 break
 
         out_str = out_str + ext_name
@@ -86,45 +74,35 @@ def template_right_side_build(in_str_tmp, dir_path):
 
 def build_comm_from_lst(in_str_lst):
 
-    dir_name = None
+    print "\n type(in_str_lst) =", type(in_str_lst), "\n"
+
+    selected_file_path = str(in_str_lst[0])
+    fnd_sep = False
+    for pos, single_char in enumerate(selected_file_path):
+        if(single_char == "/" or single_char == "\\"):
+            pos_sep = pos
+            print "found dir separator"
+            fnd_sep = True
+
+    if(fnd_sep == False):
+        print "Failed to find dir path"
+        return None
+
+    print "pos_sep =", pos_sep
+    dir_name = selected_file_path[:pos_sep]
+
+    #TODO test if the next << if >> is actually needed
+    '''
+    if(dir_name[0:3] == "(u\'"):
+        print "dir_name[0:3] == \"(u\'\""
+        dir_name = dir_name[3:]
+    '''
 
     if(in_str_lst and len(in_str_lst) == 1):
-        selected_file_path = str(in_str_lst[0])
-        fnd_sep = False
-        for pos, single_char in enumerate(selected_file_path):
-            if(single_char == "/" or single_char == "\\"):
-                pos_sep = pos
-                print "found dir separator"
-                fnd_sep = True
-
-        if(fnd_sep == False):
-            print "Failed to find dir path"
-            return None
-
-        print "pos_sep =", pos_sep
-
-        #TODO make this dir more persistent for the next time the user opens the dialog
-        dir_name = selected_file_path[:pos_sep]
-        if(dir_name[0:3] == "(u\'"):
-            print "dir_name[0:3] == \"(u\'\""
-            dir_name = dir_name[3:]
-
-        print "\ndir_name(final) =", dir_name, "\n"
-
         templ_str_tmp = selected_file_path[pos_sep:]
-        #print "templ_str_tmp =", templ_str_tmp
-
-        templ_r_side = template_right_side_build(templ_str_tmp, dir_name)
-
-
+        templ_r_side = right_side_from_single(templ_str_tmp, dir_name)
         out_str = dir_name + templ_r_side
 
-        tmp_off = '''
-        self.templ_lin.setText(templ_str_final)
-        self.intro_file_changed(templ_str_final)
-        '''
-
-    #################################################################
     else:
         print "in_str_lst =", in_str_lst
         str_lst = []
@@ -150,9 +128,8 @@ def build_comm_from_lst(in_str_lst):
             else:
                 out_str = out_str + "#"
 
-    print "out_str( 01 ) =", out_str
+    print "out_str( template mode ) =", out_str
 
-    #prev_char = None
     new_cmd = ""
     for single_char in out_str:
 
@@ -166,7 +143,14 @@ def build_comm_from_lst(in_str_lst):
 
     print "new_cmd =", new_cmd
     out_str = new_cmd
-    print "out_str( 02 ) =", out_str
+    print "out_str( * mode ) =", out_str
+
+
+    print "\n"
+    print "dir_name =", dir_name
+    print "str(dir_name) =", str(dir_name)
+    print "\n"
+
 
     return dir_name, out_str
 
@@ -222,9 +206,6 @@ class ImportPage(QWidget):
         self.opn_fil_btn.setEnabled(True)
 
     def open_files(self):
-        #self.expli_templ = True
-
-        print "from open_files  << import page >>"
         print "\nget_wor_dir =", self.get_wor_dir, "\n"
 
         lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
@@ -234,10 +215,10 @@ class ImportPage(QWidget):
         print "[ file path selected ] =", lst_file_path
         print "len(lst_file_path) =", len(lst_file_path)
 
-        new_dir, new_command = build_comm_from_lst(lst_file_path)
-        #new_command = build_comm_from_lst(lst_file_path)
-        self.simple_lin.setText(new_command)
-
+        if(len(lst_file_path) > 0):
+            new_dir, new_command = build_comm_from_lst(lst_file_path)
+            self.simple_lin.setText(new_command)
+            self.get_wor_dir = new_dir
 
     def get_arg_obj(self, sys_arg_in):
         print "\n sys_arg_in =", sys_arg_in, "\n"
