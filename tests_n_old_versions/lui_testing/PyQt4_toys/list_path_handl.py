@@ -128,7 +128,7 @@ def get_run_str(in_str_lst):
     print "img_range =", img_range
 
     if(img_range != None):
-        out_str += " range=" + str(img_range[0]) + "," + str(img_range[1])
+        out_str += " image_range=" + str(img_range[0]) + "," + str(img_range[1])
 
     print "out_str( * mode ) =", out_str, "\n"
 
