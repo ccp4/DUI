@@ -18,26 +18,23 @@ def get_run_str(in_str_lst):
         print "Failed to find dir path"
         return None
 
-    dir_name = selected_file_path[:dir_pos_sep]
-    print "dir_name =", dir_name
+    dir_path = selected_file_path[:dir_pos_sep]
+    print "dir_path =", dir_path
 
     #TODO test if the next << if >> is actually needed
-    if(dir_name[0:3] == "(u\'"):
-        print "dir_name[0:3] == \"(u\'\""
-        dir_name = dir_name[3:]
+    if(dir_path[0:3] == "(u\'"):
+        print "dir_path[0:3] == \"(u\'\""
+        dir_path = dir_path[3:]
 
     templ_str_tmp = selected_file_path[dir_pos_sep:]
 
-    in_str_tmp = templ_str_tmp
-    dir_path = dir_name
-
-    out_str = dir_path + in_str_tmp
-    for pos, single_char in reversed(list(enumerate(in_str_tmp))):
+    out_str = dir_path + templ_str_tmp
+    for pos, single_char in reversed(list(enumerate(templ_str_tmp))):
         if(single_char == "."):
             ext_pos_sep = pos
 
-    left_sd_name = in_str_tmp[:ext_pos_sep]
-    ext_name = in_str_tmp[ext_pos_sep:]
+    left_sd_name = templ_str_tmp[:ext_pos_sep]
+    ext_name = templ_str_tmp[ext_pos_sep:]
     if(ext_name == ".h5"):
         print "found h5 file"
         out_str = left_sd_name
@@ -47,7 +44,7 @@ def get_run_str(in_str_lst):
     else:
         out_str = left_sd_name
 
-        max_tail_size = int(len(in_str_tmp) / 3)
+        max_tail_size = int(len(templ_str_tmp) / 3)
         for tail_size in xrange(max_tail_size):
             prev_str = out_str
             pos_to_replase = len(out_str) - tail_size - 1
@@ -66,7 +63,7 @@ def get_run_str(in_str_lst):
     print "templ_r_side, bak_pos =", templ_r_side, bak_pos
 
     if(in_str_lst and len(in_str_lst) == 1):
-        out_str = dir_name + templ_r_side
+        out_str = dir_path + templ_r_side
 
     else:
         str_lst = []
@@ -137,7 +134,7 @@ def get_run_str(in_str_lst):
     print "out_str( * mode ) =", out_str
 
 
-    return dir_name, out_str
+    return dir_path, out_str
 
 if(__name__ == "__main__"):
 
@@ -148,6 +145,9 @@ if(__name__ == "__main__"):
                   'c:\scratch\dui\dui_code\mini_idials_w_GUI\params_live_gui_generator.pyc']
 
     str_lst_single = ['/scratch/dui/dui_code/mini_idials_w_GUI/dynamic_reindex_gui.pyc']
+
+    str_lst_single_real = ['/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0004.cbf']
+
     str_lst_real = ['/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0004.cbf',
                     '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0005.cbf',
                     '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0006.cbf',
@@ -161,9 +161,34 @@ if(__name__ == "__main__"):
                     '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0014.cbf',
                     '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0015.cbf']
 
-    dir_name, out_str = get_run_str(str_lst_real)
+    str_lst_trick = ['/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0004.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0005.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0006.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0007.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0012.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0013.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0014.cbf',
+                    '/scratch/dui/dui_test/only_20_img_X4_wide/X4_wide_M1S4_2_0015.cbf']
 
-    print "dir_name, out_str", dir_name, out_str
+
+    dir_path, out_str = get_run_str(str_lst_ux)
+    print "dir_path", dir_path
+    print "out_str",  out_str, "\n\n\n"
+    dir_path, out_str = get_run_str(str_lst_wd)
+    print "dir_path", dir_path
+    print "out_str",  out_str, "\n\n\n"
+    dir_path, out_str = get_run_str(str_lst_single)
+    print "dir_path", dir_path
+    print "out_str",  out_str, "\n\n\n"
+    dir_path, out_str = get_run_str(str_lst_single_real)
+    print "dir_path", dir_path
+    print "out_str",  out_str, "\n\n\n"
+    dir_path, out_str = get_run_str(str_lst_real)
+    print "dir_path", dir_path
+    print "out_str",  out_str, "\n\n\n"
+    dir_path, out_str = get_run_str(str_lst_trick)
+    print "dir_path", dir_path
+    print "out_str",  out_str, "\n\n\n"
 
 
 
