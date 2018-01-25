@@ -153,6 +153,10 @@ class CentreWidget(QWidget):
         ctrl_box = QHBoxLayout()
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
+
+        #next line is a test
+        #self.repeat_btn.setStyleSheet("border:50px solid;")
+
         re_try_icon_path = str(idials_gui_path +
                               "/resources/re_try.png")
         re_try_grayed_path = str(idials_gui_path +
