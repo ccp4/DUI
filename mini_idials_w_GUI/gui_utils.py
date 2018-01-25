@@ -103,7 +103,7 @@ def update_pbar_msg(main_obj):
             templ_text = main_obj.centre_widget.step_param_widg.currentWidget().my_widget.simple_lin.text()
             print "templ_text =", templ_text
             if(templ_text == " ? "):
-                txt = "click << Select File(s) >> or edit template line "
+                txt = "click << Select File(s) >> or edit input line "
 
             else:
                 txt = "click dials icon to run import"

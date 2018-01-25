@@ -75,6 +75,18 @@ def kill_w_child(pid_num):
     parent_proc.kill()
 
 
+def replae_dash(com_nam):
+    new_com_nam = ""
+    for singe_char in com_nam:
+        if(singe_char == "_"):
+            new_com_nam += "\n"
+
+        else:
+            new_com_nam += singe_char
+
+    return new_com_nam
+
+
 class CentreWidget(QWidget):
 
     user_changed = pyqtSignal(str)
@@ -108,7 +120,15 @@ class CentreWidget(QWidget):
         self.widg_lst = []
         self.btn_lst = []
         for num, step_name in enumerate(widg_name_list):
+            '''
             new_btn = QPushButton(self)
+            '''
+            new_btn = QToolButton()
+            new_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+
+            btn_txt = replae_dash(step_name)
+            new_btn.setText(btn_txt)
+
             new_btn.setToolTip(step_name)
 
             tmp_ico = QIcon()
