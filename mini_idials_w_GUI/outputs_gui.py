@@ -57,7 +57,7 @@ class InfoWidget( QWidget):
 
         empty_str = "__________"
 
-        beam_group =  QGroupBox(" Beam ")
+        beam_group =  QGroupBox("                Beam                ")
         bm_v_layout = QVBoxLayout()
 
         xb_label = QLabel("  X (mm) ")
@@ -91,7 +91,7 @@ class InfoWidget( QWidget):
 
 
 
-        cell_group =  QGroupBox(" Crystal ")
+        cell_group =  QGroupBox("               Crystal                 ")
         cell_v_layout = QVBoxLayout()
 
         a_label = QLabel("    a ")
@@ -177,8 +177,7 @@ class InfoWidget( QWidget):
         crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
-
-        scan_group =  QGroupBox(" Scan ")
+        scan_group =  QGroupBox("                   Scan                    ")
 
         scan_v_layout = QVBoxLayout()
         scan_v_layout.addWidget(QLabel(" Image Range "))
@@ -203,10 +202,9 @@ class InfoWidget( QWidget):
 
         scan_v_layout.addWidget(QLabel("  "))
 
-        #scan_v_layout.addWidget(QLabel("  oscillation  "))
         oscil_h_layout = QHBoxLayout()
         oscil1_v_layout = QVBoxLayout()
-        oscil_h_layout.addWidget(QLabel(" Oscillation "))
+        oscil_h_layout.addWidget(QLabel("Oscillation "))
 
         #oscil1_label = QLabel(" from ")
         tmp_off = '''
@@ -276,7 +274,7 @@ class InfoWidget( QWidget):
         scan_v_layout.addStretch()
         scan_group.setLayout(scan_v_layout)
 
-        detec_group =  QGroupBox(" Detector ")
+        detec_group =  QGroupBox("            Detector                ")
         detec_v_layout = QVBoxLayout()
 
         #detec_v_layout.addWidget(QLabel("  "))
