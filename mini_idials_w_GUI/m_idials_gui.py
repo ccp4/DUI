@@ -76,13 +76,15 @@ def kill_w_child(pid_num):
 
 
 def replae_dash(com_nam):
-    new_com_nam = ""
-    for singe_char in com_nam:
-        if(singe_char == "_"):
-            new_com_nam += "\n"
 
-        else:
-            new_com_nam += singe_char
+    label_connects = {"import"                  : " \n import \n "                      ,
+                      "find_spots"              : " \n find \n spots"                   ,
+                      "index"                   : " \n index \n "                       ,
+                      "refine_bravais_settings" : "refine \n bravais \n settings"       ,
+                      "refine"                  : " \n refine \n "                      ,
+                      "integrate"               : " \n integrate \n "                     }
+
+    new_com_nam = label_connects[com_nam]
 
     return new_com_nam
 
@@ -188,8 +190,8 @@ class CentreWidget(QWidget):
 
         big_v_box = QVBoxLayout()
 
-        big_v_box.addLayout(ctrl_box)
         big_v_box.addLayout(top_box)
+        big_v_box.addLayout(ctrl_box)
 
         big_v_box.addWidget(self.step_param_widg)
 
