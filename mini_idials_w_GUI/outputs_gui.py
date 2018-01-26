@@ -50,15 +50,24 @@ def update_data_label(data_label, data_info, n_dec = 2):
         #data_label.setStyleSheet("background-color: gray")
         data_label.setStyleSheet("background-color: lightGray")
 
+def get_spacebox(size):
+    space_box = QHBoxLayout()
+    space_box.insertSpacing(1, size)
+    return space_box
+
 
 class InfoWidget( QWidget):
     def __init__(self, parent = None):
         super(InfoWidget, self).__init__()
 
+
+
         empty_str = "__________"
 
-        beam_group =  QGroupBox("                Beam                ")
+        beam_group =  QGroupBox(" Beam ")
         bm_v_layout = QVBoxLayout()
+
+        bm_v_layout.addLayout(get_spacebox(130))
 
         xb_label = QLabel("  X (mm) ")
         yb_label = QLabel("  Y (mm) ")
@@ -91,7 +100,7 @@ class InfoWidget( QWidget):
 
 
 
-        cell_group =  QGroupBox("               Crystal                 ")
+        cell_group =  QGroupBox(" Crystal ")
         cell_v_layout = QVBoxLayout()
 
         a_label = QLabel("    a ")
@@ -138,6 +147,8 @@ class InfoWidget( QWidget):
         cell_v_layout.addLayout(cell_data_layout)
 
         cell_v_layout.addWidget(QLabel("  "))
+
+
         spgrp_label = QLabel(" Space Group")
         self.spgrp_data = QLabel(empty_str)
         spgrp_hbox = QHBoxLayout()
@@ -177,7 +188,7 @@ class InfoWidget( QWidget):
         crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
-        scan_group =  QGroupBox("                   Scan                    ")
+        scan_group =  QGroupBox(" Scan ")
 
         scan_v_layout = QVBoxLayout()
         scan_v_layout.addWidget(QLabel(" Image Range "))
@@ -274,7 +285,7 @@ class InfoWidget( QWidget):
         scan_v_layout.addStretch()
         scan_group.setLayout(scan_v_layout)
 
-        detec_group =  QGroupBox("            Detector                ")
+        detec_group =  QGroupBox(" Detector ")
         detec_v_layout = QVBoxLayout()
 
         #detec_v_layout.addWidget(QLabel("  "))
@@ -339,10 +350,10 @@ class InfoWidget( QWidget):
         inner_main_box.addWidget(cell_group)
         inner_main_box.addWidget(scan_group)
         inner_main_box.addWidget(detec_group)
-
+        inner_main_box.addStretch()
         my_main_box = QVBoxLayout()
         my_main_box.addLayout(inner_main_box)
-        my_main_box.addStretch()
+        #my_main_box.addStretch()
 
         self.my_json_path = None
         self.my_pikl_path = None
