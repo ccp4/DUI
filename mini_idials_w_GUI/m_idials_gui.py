@@ -77,16 +77,35 @@ def kill_w_child(pid_num):
 
 def replae_dash(com_nam):
 
-    label_connects = {"import"                  :"         \n import  \n        ",
-                      "find_spots"              :"         \nfind     \n  spots ",
-                      "index"                   :"         \nindex    \n        ",
-                      "refine_bravais_settings" :" refine  \nbravais  \nsettings",
-                      "refine"                  :"         \nrefine   \n        ",
-                      "integrate"               :"         \nintegrate\n        "}
+    label_connects = {"import"                  :"\n  import  ",
+                      "find_spots"              :"\n   find   ",
+                      "index"                   :"\n   index  ",
+                      "refine_bravais_settings" :"\n  reindex ",
+                      "refine"                  :"\n   refine ",
+                      "integrate"               :"\n integrate"}
 
     new_com_nam = label_connects[com_nam]
 
     return new_com_nam
+
+class MyQButton(QPushButton):
+    def __init__(self, parent = None):
+        super(MyQButton, self).__init__()
+        #print "\n MyQButton \n"
+
+
+    def intro_text(self, my_text):
+        v_box = QVBoxLayout()
+        v_box.insertSpacing(1, 30)
+
+        h_box = QHBoxLayout()
+        h_box.insertSpacing(1, 55)
+        v_box.addLayout(h_box)
+
+        v_box.addWidget(QLabel(my_text))
+        self.setLayout(v_box)
+        self.show()
+
 
 
 class CentreWidget(QWidget):
@@ -122,16 +141,20 @@ class CentreWidget(QWidget):
         self.widg_lst = []
         self.btn_lst = []
         for num, step_name in enumerate(widg_name_list):
-            '''
-            new_btn = QPushButton(self)
+            #new_btn = QPushButton(self)
+
+            new_btn = MyQButton(self)
+
             '''
             new_btn = QToolButton()
-            #new_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
             new_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
             new_btn.setFont(QFont("Monospace"))
+            '''
 
             btn_txt = replae_dash(step_name)
-            new_btn.setText(btn_txt)
+            #new_btn.setText(btn_txt)
+            new_btn.intro_text(btn_txt)
+
 
             new_btn.setToolTip(step_name)
 
