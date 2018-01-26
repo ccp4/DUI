@@ -75,7 +75,7 @@ def kill_w_child(pid_num):
     parent_proc.kill()
 
 
-def replae_dash(com_nam):
+def build_label(com_nam):
 
     label_connects = {"import"                  :"\n   import ",
                       "find_spots"              :"\n    find  ",
@@ -88,6 +88,19 @@ def replae_dash(com_nam):
 
     return new_com_nam
 
+def build_ttip(com_nam):
+    #TODO find out why the when we edit the tooltip with this it grays out the button
+    tip_connects = {"import"                  :" dials.import ...",
+                    "find_spots"              :" dials.find_spots ...",
+                    "index"                   :" dials.index ...",
+                    "refine_bravais_settings" :" dials.refine_bravais_settings\n    +   \n            dials.reindex ...",
+                    "refine"                  :" dials.refine ...",
+                    "integrate"               :" dials.integrate ..."}
+
+    new_ttip = tip_connects[com_nam]
+
+    return new_ttip
+
 class MyQButton(QPushButton):
     def __init__(self, parent = None):
         super(MyQButton, self).__init__()
@@ -95,6 +108,8 @@ class MyQButton(QPushButton):
 
 
     def intro_text(self, my_text):
+        btn_txt = build_label(my_text)
+
         v_box = QVBoxLayout()
         v_box.insertSpacing(1, 25)
 
@@ -102,7 +117,8 @@ class MyQButton(QPushButton):
         h_box.insertSpacing(1, 65)
         v_box.addLayout(h_box)
 
-        v_box.addWidget(QLabel(my_text))
+        v_box.addWidget(QLabel(btn_txt))
+
         self.setLayout(v_box)
         self.show()
 
@@ -145,9 +161,8 @@ class CentreWidget(QWidget):
 
             new_btn = MyQButton(self)
 
-            btn_txt = replae_dash(step_name)
-            #new_btn.setText(btn_txt)
-            new_btn.intro_text(btn_txt)
+            new_btn.intro_text(step_name)
+
 
             new_btn.setToolTip(step_name)
 
