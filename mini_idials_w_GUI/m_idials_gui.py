@@ -77,8 +77,8 @@ def kill_w_child(pid_num):
 
 def replae_dash(com_nam):
 
-    label_connects = {"import"                  :"\n  import  ",
-                      "find_spots"              :"\n   find   ",
+    label_connects = {"import"                  :"\n   import ",
+                      "find_spots"              :"\n    find  ",
                       "index"                   :"\n   index  ",
                       "refine_bravais_settings" :"\n  reindex ",
                       "refine"                  :"\n   refine ",
@@ -96,10 +96,10 @@ class MyQButton(QPushButton):
 
     def intro_text(self, my_text):
         v_box = QVBoxLayout()
-        v_box.insertSpacing(1, 30)
+        v_box.insertSpacing(1, 25)
 
         h_box = QHBoxLayout()
-        h_box.insertSpacing(1, 55)
+        h_box.insertSpacing(1, 65)
         v_box.addLayout(h_box)
 
         v_box.addWidget(QLabel(my_text))
@@ -145,16 +145,9 @@ class CentreWidget(QWidget):
 
             new_btn = MyQButton(self)
 
-            '''
-            new_btn = QToolButton()
-            new_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-            new_btn.setFont(QFont("Monospace"))
-            '''
-
             btn_txt = replae_dash(step_name)
             #new_btn.setText(btn_txt)
             new_btn.intro_text(btn_txt)
-
 
             new_btn.setToolTip(step_name)
 

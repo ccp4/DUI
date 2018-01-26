@@ -118,12 +118,33 @@ def update_pbar_msg(main_obj):
             txt  ="Done"
 
         else:
-            txt = "click <<" + nxt_cmd + ">> to go ahead, or click << Retry >>"
+
+            lab_nxt_cmd = get_lab_txt(nxt_cmd)
+
+
+
+            txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
 
     main_obj.txt_bar.setText(txt)
 
     print "\n\n update_pbar_msg =", txt
     #print "get_next_step(tmp_curr) =", nxt_cmd, "\n\n"
+
+
+
+def get_lab_txt(com_nam):
+
+    cmd_to_labl = {"import"                  :" import ",
+                   "find_spots"              :" find ",
+                   "index"                   :" index ",
+                   "refine_bravais_settings" :" reindex ",
+                   "refine"                  :" refine ",
+                   "integrate"               :" integrate"}
+
+    new_com_nam = cmd_to_labl[com_nam]
+
+    return new_com_nam
+
 
 
 class TreeNavWidget(QTreeView):
