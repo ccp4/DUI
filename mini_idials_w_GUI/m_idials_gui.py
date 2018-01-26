@@ -40,7 +40,6 @@ from gui_utils import CliOutView, Text_w_Bar, \
      TreeNavWidget
 
 
-
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
 class MyThread(QThread):
@@ -84,9 +83,7 @@ def build_label(com_nam):
                       "refine"                  :"\n   refine ",
                       "integrate"               :"\n integrate"}
 
-    new_com_nam = label_connects[com_nam]
-
-    return new_com_nam
+    return label_connects[com_nam]
 
 def build_ttip(com_nam):
 

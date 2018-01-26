@@ -102,6 +102,7 @@ class InfoWidget( QWidget):
 
         cell_group =  QGroupBox(" Crystal ")
         cell_v_layout = QVBoxLayout()
+        cell_v_layout.addLayout(get_spacebox(160))
 
         a_label = QLabel("    a ")
         b_label = QLabel("    b ")
@@ -191,6 +192,7 @@ class InfoWidget( QWidget):
         scan_group =  QGroupBox(" Scan ")
 
         scan_v_layout = QVBoxLayout()
+        scan_v_layout.addLayout(get_spacebox(180))
         scan_v_layout.addWidget(QLabel(" Image Range "))
 
         img_ran_h_layout = QHBoxLayout()
@@ -287,6 +289,7 @@ class InfoWidget( QWidget):
 
         detec_group =  QGroupBox(" Detector ")
         detec_v_layout = QVBoxLayout()
+        detec_v_layout.addLayout(get_spacebox(160))
 
         #detec_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel(" Distance (mm)")
