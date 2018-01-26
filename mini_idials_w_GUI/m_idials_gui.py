@@ -126,6 +126,7 @@ class CentreWidget(QWidget):
             new_btn = QPushButton(self)
             '''
             new_btn = QToolButton()
+            #new_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
             new_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
             new_btn.setFont(QFont("Monospace"))
 
