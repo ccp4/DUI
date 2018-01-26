@@ -89,23 +89,25 @@ def build_label(com_nam):
     return new_com_nam
 
 def build_ttip(com_nam):
-    #TODO find out why the when we edit the tooltip with this it grays out the button
+
     tip_connects = {"import"                  :" dials.import ...",
                     "find_spots"              :" dials.find_spots ...",
                     "index"                   :" dials.index ...",
-                    "refine_bravais_settings" :" dials.refine_bravais_settings\n    +   \n            dials.reindex ...",
+                    "refine_bravais_settings" :" dials.refine_bravais_settings\n" + \
+                                               "         + \n" + \
+                                               " dials.reindex ...",
                     "refine"                  :" dials.refine ...",
-                    "integrate"               :" dials.integrate ..."}
+                    "integrate"               :" dials.integrate\n" + \
+                                               "         + \n" + \
+                                               " dials.export ..."}
 
-    new_ttip = tip_connects[com_nam]
+    return tip_connects[com_nam]
 
-    return new_ttip
 
 class MyQButton(QPushButton):
-    def __init__(self, parent = None):
+    def __init__(self, text = "", parent = None):
         super(MyQButton, self).__init__()
         #print "\n MyQButton \n"
-
 
     def intro_text(self, my_text):
         btn_txt = build_label(my_text)
@@ -118,10 +120,9 @@ class MyQButton(QPushButton):
         v_box.addLayout(h_box)
 
         v_box.addWidget(QLabel(btn_txt))
-
+        self.cmd_n1 = my_text
         self.setLayout(v_box)
         self.show()
-
 
 
 class CentreWidget(QWidget):
@@ -163,8 +164,8 @@ class CentreWidget(QWidget):
 
             new_btn.intro_text(step_name)
 
-
-            new_btn.setToolTip(step_name)
+            ttip = build_ttip(step_name)
+            new_btn.setToolTip(ttip)
 
             tmp_ico = QIcon()
             tmp_ico.addFile(lst_icons_path[num], mode = QIcon.Normal)
@@ -186,9 +187,6 @@ class CentreWidget(QWidget):
         ctrl_box = QHBoxLayout()
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
-
-        #next line is a test
-        #self.repeat_btn.setStyleSheet("border:50px solid;")
 
         re_try_icon_path = str(idials_gui_path +
                               "/resources/re_try.png")
@@ -270,7 +268,7 @@ class CentreWidget(QWidget):
 
         for btn in self.btn_lst:
             for cmd_str in lst_nxt:
-                if(str(btn.toolTip()) == cmd_str):
+                if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
 
