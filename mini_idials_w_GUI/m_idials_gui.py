@@ -37,7 +37,7 @@ from custom_widgets import  ParamWidget
 
 from gui_utils import CliOutView, Text_w_Bar, \
      build_command_tip, update_info, update_pbar_msg, \
-     TreeNavWidget
+     TreeNavWidget, build_ttip, build_label
 
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
@@ -72,33 +72,6 @@ def kill_w_child(pid_num):
         child.kill()
 
     parent_proc.kill()
-
-
-def build_label(com_nam):
-
-    label_connects = {"import"                  :"\n   import ",
-                      "find_spots"              :"\n    find  ",
-                      "index"                   :"\n   index  ",
-                      "refine_bravais_settings" :"\n  reindex ",
-                      "refine"                  :"\n   refine ",
-                      "integrate"               :"\n integrate"}
-
-    return label_connects[com_nam]
-
-def build_ttip(com_nam):
-
-    tip_connects = {"import"                  :" dials.import ...",
-                    "find_spots"              :" dials.find_spots ...",
-                    "index"                   :" dials.index ...",
-                    "refine_bravais_settings" :" dials.refine_bravais_settings\n" + \
-                                               "         + \n" + \
-                                               " dials.reindex ...",
-                    "refine"                  :" dials.refine ...",
-                    "integrate"               :" dials.integrate\n" + \
-                                               "         + \n" + \
-                                               " dials.export ..."}
-
-    return tip_connects[com_nam]
 
 
 class MyQButton(QPushButton):

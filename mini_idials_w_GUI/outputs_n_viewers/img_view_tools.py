@@ -98,6 +98,8 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 
     my_bar = ProgBarInShell(min_val = 0, max_val = len(bbox_lst), text = "updating Image/Reflections Data:")
 
+    print "\n\n len(bbox_lst) =", len(bbox_lst), "\n"
+
     for i, ref_box in enumerate(bbox_lst):
         my_bar(i)
         x_ini = ref_box[0]
@@ -132,13 +134,13 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 try:
     import lst_ext
     find_closer_hkl = lst_ext.find_closer_hkl_func
-    lst_arrange = lst_ext.arrange_list
+    list_arr = lst_ext.arrange_list
     print "running C++ lst_ext"
 
 except:
     find_closer_hkl = py_find_closer_hkl_func
-    lst_arrange = py_list_arange_func
-    print "running Python replacements of lst_ext C++ Module"
+    list_arr = py_list_arange_func
+    print "running Python version of lst_ext C++ Module"
 
 def find_hkl_near(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
@@ -149,8 +151,8 @@ def find_hkl_near(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
     return hkl_result, slice_result
 
 
-def lst_arange(bbox_lst, hkl_lst, n_imgs):
-    return lst_arrange(bbox_lst, hkl_lst, n_imgs)
+def list_arrange(bbox_lst, hkl_lst, n_imgs):
+    return list_arr(bbox_lst, hkl_lst, n_imgs)
 
 
 class img_w_cpp(object):

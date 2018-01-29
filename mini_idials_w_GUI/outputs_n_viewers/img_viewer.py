@@ -30,7 +30,7 @@ import numpy as np
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
-from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, lst_arange
+from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, list_arrange
 from time import time as time_now
 
 QGLWidget_test = '''
@@ -513,7 +513,7 @@ class MyImgWin(QWidget):
                 self.contrast_initiated = True
 
             except:
-                print "\n unable to calculate mean and adjust contrast \n"
+                print "Unable to calculate mean and adjust contrast"
 
     def ini_datablock(self, json_file_path):
         if(json_file_path != None):
@@ -569,12 +569,13 @@ class MyImgWin(QWidget):
                 n_imgs = self.img_select.maximum()
                 self.flat_data_lst = []
                 if(n_imgs > 0):
-                    self.flat_data_lst = lst_arange(bbox_col, hkl_col, n_imgs)
+                    self.flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
 
                 print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
 
             except:
                 self.flat_data_lst = [None]
+                print "\n\n\ something failed with the reflection pickle \n\n"
 
         else:
             self.flat_data_lst = [None]
@@ -589,6 +590,8 @@ class MyImgWin(QWidget):
     def set_img(self):
         if(self.my_sweep != None):
             img_pos = self.img_num - 1
+
+            print "\n img_pos =", img_pos, "\n"
 
             loc_stk_siz = self.stack_size
 
