@@ -592,6 +592,7 @@ class MyImgWin(QWidget):
             img_pos = self.img_num - 1
 
             print "\n img_pos =", img_pos, "\n"
+            print "len(self.flat_data_lst) =", len(self.flat_data_lst), "\n"
 
             loc_stk_siz = self.stack_size
 
