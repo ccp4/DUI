@@ -296,6 +296,9 @@ class ImgPainter(MyQWidgetWithQPainter):
             #painter.setFont(QFont("FreeMono", 22))
 
             if(self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
+
+                print "len(self.flat_data_lst) =", len(self.flat_data_lst)
+
                 tmp_font = QFont()
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
@@ -592,9 +595,10 @@ class MyImgWin(QWidget):
             img_pos = self.img_num - 1
 
             print "\n img_pos =", img_pos, "\n"
-            print "len(self.flat_data_lst) =", len(self.flat_data_lst), "\n"
+            print "len(self.flat_data_lst) =", len(self.flat_data_lst)
 
             loc_stk_siz = self.stack_size
+            print "loc_stk_siz =", loc_stk_siz
 
             if(loc_stk_siz == 1):
                 self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
@@ -620,6 +624,9 @@ class MyImgWin(QWidget):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                             self.i_min, self.i_max),
                                             self.flat_data_lst[img_pos:img_pos + loc_stk_siz])
+
+                print "len(self.flat_data_lst[img_pos:img_pos + loc_stk_siz]) =", len(self.flat_data_lst[img_pos:img_pos + loc_stk_siz]), "\n"
+
 
 
     def Action1(self):

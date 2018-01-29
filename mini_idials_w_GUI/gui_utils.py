@@ -229,15 +229,14 @@ def update_info(main_obj):
         except:
             print "No HTML here"
 
-    if(main_obj.cur_pick != new_ref_pikl):
-        main_obj.cur_pick = new_ref_pikl
-        main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
-
     if(main_obj.cur_json != new_img_json):
         main_obj.cur_json = new_img_json
         main_obj.img_view.ini_datablock(main_obj.cur_json)
         print "\n\n called .ini_datablock() \n\n"
 
+    if(main_obj.cur_pick != new_ref_pikl):
+        main_obj.cur_pick = new_ref_pikl
+        main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
     main_obj.info_widget.update_data(exp_json_path = uni_json,
                                      refl_pikl_path = new_ref_pikl)
