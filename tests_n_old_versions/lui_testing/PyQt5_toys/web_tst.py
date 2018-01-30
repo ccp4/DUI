@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWebKitWidgets import QWebView , QWebPage
 from PyQt5.QtWebKit import QWebSettings
 from PyQt5.QtNetwork import *
+
+
 import sys
 from optparse import OptionParser
 
@@ -28,7 +30,7 @@ class Browser(QWebView):
 app = QApplication(sys.argv)
 view = Browser()
 view.showMaximized()
-view.load("https://uglymol.github.io/reciprocal.html?rlp=data/rlp.csv")
-#view.load("https://google.com")
+#view.load("https://uglymol.github.io/reciprocal.html?rlp=data/rlp.csv")
+view.load("https://google.com")
 
 app.exec_()
