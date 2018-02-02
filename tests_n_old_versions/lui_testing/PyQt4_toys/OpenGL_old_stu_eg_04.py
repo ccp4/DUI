@@ -45,8 +45,10 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
     def resizeGL(self,w,h):
         if h == 0:
             h = 1
+
         if w == 0:
             w = 1
+
         ratio = 1.0*w / h
 
         opengl.glMatrixMode(opengl.GL_PROJECTION);
@@ -59,8 +61,10 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Up:
             self.scale *= 1.1
+
         elif event.key() == QtCore.Qt.Key_Down:
             self.scale /= 1.1
+
         self.updateGL()
 
     def mousePressEvent(self, event):
@@ -74,17 +78,21 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
     def mouseMoveEvent(self, event):
         dx = event.x() - self.lastPos.x()
         dy = event.y() - self.lastPos.y()
-        if (dx==0 and abs(dy)<2) or (abs(dy)<2 and dx==0): return
+        if (dx==0 and abs(dy)<2) or (abs(dy)<2 and dx==0):
+            return
+
         if event.modifiers()&QtCore.Qt.ControlModifier==QtCore.Qt.ControlModifier:
             self.setRotation(dx,dy,0)
+
         else:
             self.origin[0] += dx/10.
             self.origin[1] -= dy/10.
+
         self.lastPos = event.pos()
         self.updateGL()
 
     def wheelEvent(self, event):
-        print dir(event), "\n\n"
+        #print dir(event), "\n\n"
         print "event.delta() = ", event.delta(), "\n\n"
 
         #print "event.pos() = ", event.pos(), "\n\n"
