@@ -59,6 +59,7 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
         opengl.glMatrixMode(opengl.GL_MODELVIEW)
 
     def keyPressEvent(self, event):
+        old_way = '''
         if event.key() == QtCore.Qt.Key_Up:
             self.scale *= 1.1
 
@@ -66,6 +67,8 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
             self.scale /= 1.1
 
         self.updateGL()
+        '''
+        print "event.key() =", event.key()
 
     def mousePressEvent(self, event):
         self.lastPos = QtCore.QPoint(event.pos())
@@ -93,10 +96,13 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
 
     def wheelEvent(self, event):
         #print dir(event), "\n\n"
-        print "event.delta() = ", event.delta(), "\n\n"
+        print "event.delta() = ", event.delta()
+        flo_del = float(event.delta())
+        fact = (800.0 + flo_del) / 800.0
+        print "fact =", fact, "\n\n"
 
-        #print "event.pos() = ", event.pos(), "\n\n"
-
+        self.scale *= fact
+        self.updateGL()
 
 
 if __name__ == "__main__":

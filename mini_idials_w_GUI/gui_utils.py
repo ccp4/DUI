@@ -394,6 +394,12 @@ class Text_w_Bar(QProgressBar):
         super(Text_w_Bar,self).__init__()
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
+        print "test setStyle(QStyleFactory.create())"
+        self.setStyle(QStyleFactory.create("cleanlooks"))
+        #self.setStyle(QStyleFactory.create("Plastique"))
+        #self.setStyle(QStyleFactory.create("cde"))
+        #self.setStyle(QStyleFactory.create("motif"))
+
 
     def setText(self, text):
         if(len(text) > 2):

@@ -297,7 +297,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             if(self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
 
-                print "len(self.flat_data_lst) =", len(self.flat_data_lst)
+                #print "len(self.flat_data_lst) =", len(self.flat_data_lst)
 
                 tmp_font = QFont()
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
@@ -594,8 +594,8 @@ class MyImgWin(QWidget):
         if(self.my_sweep != None):
             img_pos = self.img_num - 1
 
-            print "\n img_pos =", img_pos, "\n"
-            print "len(self.flat_data_lst) =", len(self.flat_data_lst)
+            #print "\n img_pos =", img_pos, "\n"
+            #print "len(self.flat_data_lst) =", len(self.flat_data_lst)
 
             loc_stk_siz = self.stack_size
             print "loc_stk_siz =", loc_stk_siz
