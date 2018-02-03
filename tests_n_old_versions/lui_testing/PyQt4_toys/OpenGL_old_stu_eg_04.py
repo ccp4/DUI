@@ -37,9 +37,17 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
         opengl.glColor3f(0.0,0.0,0.0)
 
         opengl.glBegin(opengl.GL_TRIANGLES)
+        old_way = '''
         opengl.glVertex3f(-10,-10,-20)
         opengl.glVertex3f(10,-10,-20)
         opengl.glVertex3f(0,10,-20)
+        '''
+
+        opengl.glVertex3f(-10, -10, -2)
+        opengl.glVertex3f( 10, -10, -2)
+        opengl.glVertex3f(  0,  10, -2)
+
+
         opengl.glEnd()
 
     def resizeGL(self,w,h):
@@ -81,6 +89,7 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
     def mouseMoveEvent(self, event):
         dx = event.x() - self.lastPos.x()
         dy = event.y() - self.lastPos.y()
+        old_way = '''
         if (dx==0 and abs(dy)<2) or (abs(dy)<2 and dx==0):
             return
 
@@ -90,6 +99,8 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
         else:
             self.origin[0] += dx/10.
             self.origin[1] -= dy/10.
+        '''
+        self.setRotation(dx,dy,0)
 
         self.lastPos = event.pos()
         self.updateGL()
