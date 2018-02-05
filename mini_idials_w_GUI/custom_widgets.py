@@ -174,7 +174,8 @@ def build_lst_str(cmd_0, lst_pair):
     lst_str = [cmd_0]
     for pair in lst_pair:
         str_cmd = pair2string(pair[0], pair[1])
-        lst_str.append(str_cmd)
+        if(pair[1] != ""):
+            lst_str.append(str_cmd)
 
     return lst_str
 

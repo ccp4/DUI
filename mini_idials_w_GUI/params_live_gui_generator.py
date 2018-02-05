@@ -157,7 +157,7 @@ class PhilWidget( QWidget):
 
         sys_font = QFont()
         sys_font_point_size =  sys_font.pointSize()
-        print "sys_font_point_size =", sys_font_point_size
+        #print "sys_font_point_size =", sys_font_point_size
 
         inde_step = 4
 
@@ -174,7 +174,7 @@ class PhilWidget( QWidget):
 
             if(str(type(obj))[-11:-2] == "ScopeData"):
                 tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
-                print tmp_str
+                #print tmp_str
                 tmp_widg = QLabel(tmp_str)
                 tmp_widg.setAutoFillBackground(True)
                 #tmp_widg.setPalette(self.plt_scp)
@@ -321,7 +321,7 @@ class PhilWidget( QWidget):
 
 
                 else:
-                    #debugging = '''
+                    debugging = '''
                     print
                     print "_____________________ << WARNING find something ELSE"
                     print "_____________________ << full_path =", obj.full_path()
@@ -334,7 +334,7 @@ class PhilWidget( QWidget):
                 if(something_else == False):
                     if(multiple_index == False):
                         if(tmp_str != None):
-                            print tmp_str
+                            #print tmp_str
                             tmp_h_box.addWidget(tmp_widg)
                             self.bg_box.addLayout(tmp_h_box)
                             self.lst_var_widg.append(tmp_widg)
@@ -343,7 +343,7 @@ class PhilWidget( QWidget):
                         for indx in range(obj.type.size_max):
                             tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
                             self.bg_box.addLayout(tmp_h_box_lst[indx])
-        #debugging = '''
+        debugging = '''
         print "\n\n Non added parameters:"
         for lin_to_print in non_added_lst:
             print lin_to_print
