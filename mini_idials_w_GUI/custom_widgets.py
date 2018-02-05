@@ -299,7 +299,12 @@ class ParamMainWidget( QWidget):
                                 widg.setValue(num_val)
 
                             except:
-                                print "\n\n Type Mismatch while searching for twin parameter \n\n"
+                                try:
+                                    str_val = str(str_value)
+                                    widg.setText(str_val)
+
+                                except:
+                                    print "\n\n Type Mismatch while searching for twin parameter \n\n"
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
@@ -435,7 +440,8 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ParamWidget("find_spots")
+    #ex = ParamWidget("find_spots")
+    ex = ParamWidget("integrate")
     #ex = ParamWidget("import")
     sys.exit(app.exec_())
 

@@ -191,11 +191,13 @@ class PhilWidget( QWidget):
             else:
                 multiple_index = False
 
-                if(obj.type.phil_type == 'float' or
-                   obj.type.phil_type == 'int'   or
-                   obj.type.phil_type == 'str'   or
-                   obj.type.phil_type == 'bool'  or
-                   obj.type.phil_type == 'choice'):
+                if(obj.type.phil_type == 'float'  or
+                   obj.type.phil_type == 'int'    or
+                   obj.type.phil_type == 'bool'   or
+                   obj.type.phil_type == 'choice' or
+                   obj.type.phil_type == 'str'    or
+                   obj.type.phil_type == 'ints'   or
+                   obj.type.phil_type == 'floats'):
 
                     tmp_h_box = QHBoxLayout()
 
@@ -215,7 +217,9 @@ class PhilWidget( QWidget):
                     something_else = False
                     if(obj.type.phil_type == 'float' or
                        obj.type.phil_type == 'int'   or
-                       obj.type.phil_type == 'str'   ):
+                       obj.type.phil_type == 'str'   or
+                       obj.type.phil_type == 'ints'   or
+                       obj.type.phil_type == 'floats'):
 
                         if(obj.type.phil_type == 'float'):
                             par_min = 0.0
@@ -228,8 +232,11 @@ class PhilWidget( QWidget):
                             par_max = 5000
                             tmp_widg = QSpinBox()
 
-                        elif(obj.type.phil_type == 'str'):
+                        elif(obj.type.phil_type == 'str'  or
+                             obj.type.phil_type == 'ints' or
+                             obj.type.phil_type == 'floats'):
                             tmp_widg = QLineEdit()
+                            tmp_widg.setText("")
                             #TODO iclude the asignation of this one too
 
                         tmp_widg.str_defl = None
@@ -312,52 +319,9 @@ class PhilWidget( QWidget):
                             tmp_str = None
                             non_added_lst.append(str(obj.full_path()))
 
-                elif(obj.type.phil_type == 'ints' or obj.type.phil_type == 'floats'):
-                    tmp_str = None
-                    non_added_lst.append(str(obj.full_path()))
-                    something_else = True
-
-                    to_rebiew_later = '''
-                    if(obj.type.size_min >= 2 and obj.type.size_max <= 6 and
-                        obj.type.size_max == obj.type.size_min and obj.type.size_max != None):
-                        tmp_h_box_lst = []
-                        tmp_label_lst = []
-                        multi_widg_lst = []
-                        indent = str(obj.full_path()).count('.')
-
-                        for indx in range(obj.type.size_max):
-
-                            new_labl = QLabel(" " * indent * inde_step + str(obj.name)
-                                              + "[" + str(indx + 1) + "]")
-
-                            new_labl.setPalette(self.plt_obj)
-                            new_labl.setFont(QFont("Monospace", sys_font_point_size))
-                            tmp_label_lst.append(new_labl)
-
-
-                            new_hbox = QHBoxLayout()
-                            new_hbox.addWidget(tmp_label_lst[indx])
-                            tmp_h_box_lst.append(new_hbox)
-
-                            if(obj.type.phil_type == 'ints'):
-                                new_widg = QSpinBox()
-
-                            elif(obj.type.phil_type == 'floats'):
-                                new_widg = QDoubleSpinBox()
-
-                            new_widg.local_path = str(obj.full_path())
-                            new_widg.valueChanged.connect(self.spnbox_changed)
-                            multi_widg_lst.append(new_widg)
-
-                        multiple_index = True
-
-                    else:
-                        something_else = True
-                    '''
-
 
                 else:
-                    debugging = '''
+                    #debugging = '''
                     print
                     print "_____________________ << WARNING find something ELSE"
                     print "_____________________ << full_path =", obj.full_path()
@@ -370,10 +334,10 @@ class PhilWidget( QWidget):
                 if(something_else == False):
                     if(multiple_index == False):
                         if(tmp_str != None):
+                            print tmp_str
                             tmp_h_box.addWidget(tmp_widg)
                             self.bg_box.addLayout(tmp_h_box)
                             self.lst_var_widg.append(tmp_widg)
-                            print tmp_str
 
                     else:
                         for indx in range(obj.type.size_max):
