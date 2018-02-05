@@ -395,10 +395,14 @@ class Text_w_Bar(QProgressBar):
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
         print "test setStyle(QStyleFactory.create())"
-        self.setStyle(QStyleFactory.create("cleanlooks"))
-        #self.setStyle(QStyleFactory.create("Plastique"))
-        #self.setStyle(QStyleFactory.create("cde"))
-        #self.setStyle(QStyleFactory.create("motif"))
+        try:
+
+            self.setStyle(QStyleFactory.create("cleanlooks"))
+            #self.setStyle(QStyleFactory.create("Plastique"))
+            #self.setStyle(QStyleFactory.create("cde"))
+            #self.setStyle(QStyleFactory.create("motif"))
+        except:
+            print "\n Failed to setStyle() \n"
 
 
     def setText(self, text):

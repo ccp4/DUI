@@ -174,7 +174,7 @@ class PhilWidget( QWidget):
 
             if(str(type(obj))[-11:-2] == "ScopeData"):
                 tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
-                #print tmp_str
+                print tmp_str
                 tmp_widg = QLabel(tmp_str)
                 tmp_widg.setAutoFillBackground(True)
                 #tmp_widg.setPalette(self.plt_scp)
@@ -364,7 +364,7 @@ class PhilWidget( QWidget):
                     print "_____________________ << obj.type.phil_type =", obj.type.phil_type
                     print "_____________________ << obj.type =", obj.type
                     print
-                    '''
+                    #'''
                     something_else = True
 
                 if(something_else == False):
@@ -373,19 +373,19 @@ class PhilWidget( QWidget):
                             tmp_h_box.addWidget(tmp_widg)
                             self.bg_box.addLayout(tmp_h_box)
                             self.lst_var_widg.append(tmp_widg)
-                            #print tmp_str
+                            print tmp_str
 
                     else:
                         for indx in range(obj.type.size_max):
                             tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
                             self.bg_box.addLayout(tmp_h_box_lst[indx])
-        debugging = '''
+        #debugging = '''
         print "\n\n Non added parameters:"
         for lin_to_print in non_added_lst:
             print lin_to_print
 
         print "\n\n"
-        '''
+        #'''
 
 
     def spnbox_changed(self, value):
