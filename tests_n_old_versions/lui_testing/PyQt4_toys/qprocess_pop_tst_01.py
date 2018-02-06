@@ -11,6 +11,16 @@ print "works with PySide"
 
 import sys
 
+class OuterCaller(QWidget):
+    def __init__(self):
+        super(OuterCaller, self).__init__()
+
+        v_box = QHBoxLayout()
+        v_box.addWidget(QLabel("\n Aaaaaa \n"))
+
+        self.setLayout(v_box)
+        self.show()
+
 class MyQProcess(QProcess):
     def __init__(self):
         super(MyQProcess, self).__init__()
@@ -34,7 +44,7 @@ if __name__ == '__main__':
 
     app   = QApplication(sys.argv)
 
-    my_widg = QWidget()
+    my_widg = OuterCaller()
     my_widg.setWindowTitle("QTextEdit Standard Output Redirection")
     my_widg.show()
 
