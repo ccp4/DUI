@@ -168,12 +168,12 @@ def get_import_run_string(in_str_lst):
 
 def build_label(com_nam):
 
-    label_connects = {"import"                  :"\n   import ",
-                      "find_spots"              :"\n    find  ",
-                      "index"                   :"\n   index  ",
-                      "refine_bravais_settings" :"\n  reindex ",
-                      "refine"                  :"\n   refine ",
-                      "integrate"               :"\n integrate"}
+    label_connects = {"import"                  :"\n  import ",
+                      "find_spots"              :"\n   find  ",
+                      "index"                   :"\n  index  ",
+                      "refine_bravais_settings" :"\n reindex ",
+                      "refine"                  :"\n  refine ",
+                      "integrate"               :"\nintegrate"}
 
     return label_connects[com_nam]
 
@@ -309,6 +309,7 @@ class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
         super(TreeNavWidget, self).__init__()
         print "TreeNavWidget(__init__)"
+        self.setMinimumWidth(165)
 
     def update_me(self, root_node, lst_path_idx):
         self.lst_idx = lst_path_idx

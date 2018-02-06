@@ -77,13 +77,13 @@ def kill_w_child(pid_num):
 class MyQButton(QPushButton):
     def __init__(self, text = "", parent = None):
         super(MyQButton, self).__init__()
-        #print "\n MyQButton \n"
+        self.setContentsMargins(-1,-1,-1,-1)
 
     def intro_text(self, my_text):
         btn_txt = build_label(my_text)
 
         v_box = QVBoxLayout()
-        v_box.insertSpacing(1, 25)
+        v_box.insertSpacing(1, 24)
 
         h_box = QHBoxLayout()
         h_box.insertSpacing(1, 65)
@@ -140,9 +140,9 @@ class CentreWidget(QWidget):
             tmp_ico = QIcon()
             tmp_ico.addFile(lst_icons_path[num], mode = QIcon.Normal)
             tmp_ico.addFile(lst_grayed_icons_path[num], mode = QIcon.Disabled)
-
             new_btn.setIcon(tmp_ico)
             new_btn.setIconSize(QSize(38, 38))
+
             new_btn.clicked.connect(self.btn_clicked)
             top_box.addWidget(new_btn)
 
