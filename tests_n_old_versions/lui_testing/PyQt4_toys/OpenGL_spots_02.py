@@ -38,10 +38,12 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
         #print "self.origin =", self.origin
         self.quat.Print(); print
 
+        quaternion_mode = '''
         glrotmat = self.quat.getMatrix().to_dp()
         opengl.glMultMatrixd(glrotmat)
-
         opengl.delcdp(glrotmat)
+        '''
+
         opengl.glClear(opengl.GL_COLOR_BUFFER_BIT | opengl.GL_DEPTH_BUFFER_BIT)
         opengl.glColor3f(0.0,0.0,1.0)
 
