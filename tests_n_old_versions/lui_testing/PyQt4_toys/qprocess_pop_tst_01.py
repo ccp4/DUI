@@ -11,16 +11,6 @@ print "works with PySide"
 
 import sys
 
-class OuterCaller(QWidget):
-    def __init__(self):
-        super(OuterCaller, self).__init__()
-
-        v_box = QHBoxLayout()
-        v_box.addWidget(QLabel("\n Aaaaaa \n"))
-
-        self.setLayout(v_box)
-        self.show()
-
 class MyQProcess(QProcess):
     def __init__(self):
         super(MyQProcess, self).__init__()
@@ -40,17 +30,34 @@ class MyQProcess(QProcess):
         single_line = line_string[0:len(line_string) - 1]
         print ">>", single_line
 
+class OuterCaller(QWidget):
+    def __init__(self):
+        super(OuterCaller, self).__init__()
+
+        v_box = QHBoxLayout()
+        v_box.addWidget(QLabel("\n Click >> \n"))
+
+        my_but = QPushButton("Start QProcess")
+        my_but.clicked.connect(self.run_my_proc)
+        v_box.addWidget(my_but)
+
+        self.qProcess = MyQProcess()
+        self.qProcess.setProcessChannelMode(QProcess.MergedChannels);
+
+        self.setLayout(v_box)
+        self.show()
+
+    def run_my_proc(self):
+        self.qProcess.start("./sec_interval.sh")
+
+
 if __name__ == '__main__':
 
     app   = QApplication(sys.argv)
 
     my_widg = OuterCaller()
-    my_widg.setWindowTitle("QTextEdit Standard Output Redirection")
     my_widg.show()
 
-    qProcess  = MyQProcess()
-    qProcess.setProcessChannelMode(QProcess.MergedChannels);
-    qProcess.start("./sec_interval.sh")
 
     sys.exit(app.exec_())
 
