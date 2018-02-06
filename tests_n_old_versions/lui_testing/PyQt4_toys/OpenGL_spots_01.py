@@ -18,7 +18,7 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
 
 
     def initializeGL(self):
-        opengl.glClearColor(1.0,1.0,0.0,1.0)
+        opengl.glClearColor(0.0,0.0,0.0,1.0)
         #self.origin = [0,0,0]
         self.origin = [0, 0, -15]
         self.scale = 1.0
@@ -42,11 +42,15 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
         opengl.glMultMatrixd(glrotmat)
         opengl.delcdp(glrotmat)
         opengl.glClear(opengl.GL_COLOR_BUFFER_BIT | opengl.GL_DEPTH_BUFFER_BIT)
-        opengl.glColor3f(0.0,0.0,0.0)
+        opengl.glColor3f(0.0,0.0,1.0)
 
         opengl.glBegin(opengl.GL_POINTS)
 
-        for coords in self.coord_list:
+        for coords in self.coord_list[:5000]:
+            opengl.glVertex3f( coords[0], coords[1], coords[2] )
+
+        opengl.glColor3f(0.0,1.0,0.0)
+        for coords in self.coord_list[5000:]:
             opengl.glVertex3f( coords[0], coords[1], coords[2] )
 
         opengl.glEnd()
@@ -76,6 +80,7 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
     def setRotation(self,dx,dy,dz):
         #print "Now I want to construct a rotation....", dx,dy,dz
         rotQ = pygl_coord.Quat(dx,dy,dz,0)
+        #rotQ = pygl_coord.Quat(dz,dx,dy,0)
         self.quat.postMult(rotQ)
 
     def mouseMoveEvent(self, event):
