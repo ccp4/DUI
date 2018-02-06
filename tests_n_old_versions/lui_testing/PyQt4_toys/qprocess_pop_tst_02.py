@@ -51,8 +51,8 @@ class OuterCaller(QWidget):
     def run_my_proc(self):
         #self.qProcess.start("./sec_interval.sh")
         #self.qProcess.start("dials.reciprocal_lattice_viewer /scratch/dui/dui_test/only_20_img_X4_wide/aaaa/dials_files/6_reflections.pickle /scratch/dui/dui_test/only_20_img_X4_wide/aaaa/dials_files/6_experiments.json")
-
-        p = subprocess.Popen(["dials.reciprocal_lattice_viewer /scratch/dui/dui_test/only_20_img_X4_wide/aaaa/dials_files/6_reflections.pickle /scratch/dui/dui_test/only_20_img_X4_wide/aaaa/dials_files/6_experiments.json"],
+        #p = subprocess.Popen(["dials.reciprocal_lattice_viewer /scratch/dui/dui_test/only_20_img_X4_wide/aaaa/dials_files/6_reflections.pickle /scratch/dui/dui_test/only_20_img_X4_wide/aaaa/dials_files/6_experiments.json"],
+        p = subprocess.Popen(["dials.reciprocal_lattice_viewer ../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle ../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"],
                             shell = True,
                             stdout = subprocess.PIPE,
                             stderr = subprocess.STDOUT,
