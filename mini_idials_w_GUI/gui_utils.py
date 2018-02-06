@@ -304,6 +304,27 @@ def get_lab_txt(com_nam):
     return new_com_nam
 
 
+class MyQButton(QPushButton):
+    def __init__(self, text = "", parent = None):
+        super(MyQButton, self).__init__()
+        self.setContentsMargins(-1,-1,-1,-1)
+
+    def intro_text(self, my_text):
+        btn_txt = build_label(my_text)
+
+        v_box = QVBoxLayout()
+        v_box.insertSpacing(1, 24)
+
+        h_box = QHBoxLayout()
+        h_box.insertSpacing(1, 65)
+        v_box.addLayout(h_box)
+
+        v_box.addWidget(QLabel(btn_txt))
+        self.cmd_n1 = my_text
+        self.setLayout(v_box)
+        self.show()
+
+
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):

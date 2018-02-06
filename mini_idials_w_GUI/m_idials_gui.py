@@ -37,7 +37,7 @@ from custom_widgets import  ParamWidget
 
 from gui_utils import CliOutView, Text_w_Bar, \
      build_command_tip, update_info, update_pbar_msg, \
-     TreeNavWidget, build_ttip, build_label
+     TreeNavWidget, build_ttip, build_label, MyQButton
 
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
@@ -72,27 +72,6 @@ def kill_w_child(pid_num):
         child.kill()
 
     parent_proc.kill()
-
-
-class MyQButton(QPushButton):
-    def __init__(self, text = "", parent = None):
-        super(MyQButton, self).__init__()
-        self.setContentsMargins(-1,-1,-1,-1)
-
-    def intro_text(self, my_text):
-        btn_txt = build_label(my_text)
-
-        v_box = QVBoxLayout()
-        v_box.insertSpacing(1, 24)
-
-        h_box = QHBoxLayout()
-        h_box.insertSpacing(1, 65)
-        v_box.addLayout(h_box)
-
-        v_box.addWidget(QLabel(btn_txt))
-        self.cmd_n1 = my_text
-        self.setLayout(v_box)
-        self.show()
 
 
 class CentreWidget(QWidget):
