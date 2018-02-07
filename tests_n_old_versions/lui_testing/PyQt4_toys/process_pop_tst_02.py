@@ -12,14 +12,44 @@ import subprocess
 import sys
 class MyDialog(QDialog):
     def __init__(self, parent = None):
+
         super(MyDialog, self).__init__(parent)
-        labl1 = QLabel("\n Hi QDialog \n")
 
         vbox = QVBoxLayout()
-        vbox.addWidget(labl1)
+        vbox.addWidget(QLabel("\n Hi QDialog \n"))
+
+        kl_but = QPushButton("Kill QProcess")
+        kl_but.clicked.connect(self.kill_my_proc)
+        vbox.addWidget(kl_but)
+
         self.setLayout(vbox)
         self.setModal(True)
         self.show()
+
+
+    def kill_my_proc(self):
+        print "self.kill_my_proc"
+
+        lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", \
+                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle", \
+                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"]
+        my_process = subprocess.Popen(lst_cmd_to_run,
+                                      stdout = subprocess.PIPE,
+                                      stderr = subprocess.STDOUT,
+                                      bufsize = 1)
+
+        self.my_pid = my_process.pid
+        print "self.my_pid =", self.my_pid
+
+
+        print "Just Launched >>> \n"
+
+        for line in iter(my_process.stdout.readline, b''):
+            single_line = line[0:len(line)-1]
+            print single_line
+
+        print "\n<<< After Ended"
+
 
     def closeEvent(self, event):
         print "from << closeEvent  (QDialog) >>"
@@ -36,42 +66,13 @@ class OuterCaller(QWidget):
         my_but.clicked.connect(self.run_my_proc)
         v_box.addWidget(my_but)
 
-        kl_but = QPushButton("Kill QProcess")
-        kl_but.clicked.connect(self.kill_my_proc)
-        v_box.addWidget(kl_but)
-
         self.setLayout(v_box)
         self.show()
 
-    def kill_my_proc(self):
-        print "self.kill_my_proc"
 
     def run_my_proc(self):
-        self.setWindowModality(Qt.WindowModal)
-
-
-
-        lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", \
-                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle", \
-                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"]
-        my_process = subprocess.Popen(lst_cmd_to_run,
-                                      stdout = subprocess.PIPE,
-                                      stderr = subprocess.STDOUT,
-                                      bufsize = 1)
-
-        self.my_pid = my_process.pid
-        print "self.my_pid =", self.my_pid
-
         diag = MyDialog()
         diag.exec_()
-
-        print "Just Launched >>> \n"
-
-        for line in iter(my_process.stdout.readline, b''):
-            single_line = line[0:len(line)-1]
-            print single_line
-
-        print "\n<<< After Ended"
 
 
 if __name__ == '__main__':
