@@ -10,9 +10,36 @@ print "works with PySide"
 #'''
 import subprocess
 import sys
+
+
+class MyQProcess(QProcess):
+    def __init__(self):
+        super(MyQProcess, self).__init__()
+
+        self.started.connect(self.on_start)
+        self.readyReadStandardOutput.connect(self.readStdOutput)
+        self.finished.connect(self.on_finish)
+
+    def on_start(self):
+        print "on_start"
+
+    def on_finish(self):
+        print "on_finish"
+
+    def readStdOutput(self):
+        line_string = str(self.readAllStandardOutput())
+        single_line = line_string[0:len(line_string) - 1]
+        print ">>", single_line
+
+
 class MyDialog(QDialog):
     def __init__(self, parent = None):
         super(MyDialog, self).__init__()
+
+
+        self.qProcess = MyQProcess()
+        self.qProcess.setProcessChannelMode(QProcess.MergedChannels);
+
 
         vbox = QVBoxLayout()
         vbox.addWidget(QLabel("\n Hi QDialog \n"))
@@ -20,45 +47,24 @@ class MyDialog(QDialog):
         kl_but = QPushButton("Kill QProcess")
         kl_but.clicked.connect(self.kill_my_proc)
         vbox.addWidget(kl_but)
-
-
+        '''
         run_but = QPushButton("run QProcess")
         run_but.clicked.connect(self.run_my_proc)
         vbox.addWidget(run_but)
-
-
+        '''
         self.setLayout(vbox)
         self.setModal(True)
         self.show()
 
+        lst_cmd_to_run = "dials.reciprocal_lattice_viewer"
+        lst_cmd_to_run += " ../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle"
+        lst_cmd_to_run += " ../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"
 
-    def run_my_proc(self):
-
-        lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", \
-                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle", \
-                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"]
-        my_process = subprocess.Popen(lst_cmd_to_run,
-                                      stdout = subprocess.PIPE,
-                                      stderr = subprocess.STDOUT,
-                                      bufsize = 1)
-
-        self.my_pid = my_process.pid
-        print "self.my_pid =", self.my_pid
-
-
-        print "Just Launched >>> \n"
-
-        for line in iter(my_process.stdout.readline, b''):
-            single_line = line[0:len(line)-1]
-            print single_line
-
-        print "\n<<< After Ended"
-
+        self.qProcess.start(lst_cmd_to_run)
+        #self.qProcess.start("./sec_interval.sh")
 
     def kill_my_proc(self):
         print "self.kill_my_proc"
-
-
 
     def closeEvent(self, event):
         print "from << closeEvent  (QDialog) >>"
