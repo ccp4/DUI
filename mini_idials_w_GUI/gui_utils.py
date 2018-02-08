@@ -25,7 +25,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
-from time import sleep
 from cli_utils import get_next_step
 
 import sys
