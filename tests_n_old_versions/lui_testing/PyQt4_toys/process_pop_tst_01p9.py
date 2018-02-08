@@ -42,8 +42,10 @@ class OuterCaller(QWidget):
                           "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"
                          ]
 
-        self.my_app.processEvents()
+        for num_of_tim in xrange(10):
+            self.my_app.processEvents()
 
+        #old_way = '''
         my_process = subprocess.Popen(lst_cmd_to_run,
                                       stdout = subprocess.PIPE,
                                       stderr = subprocess.STDOUT,
@@ -51,13 +53,17 @@ class OuterCaller(QWidget):
 
         self.my_pid = my_process.pid
         print "self.my_pid =", self.my_pid
-
         print "Just Launched --> \n"
         for line in iter(my_process.stdout.readline, b''):
             single_line = line[0:len(line)-1]
             print single_line
 
         print "\n<-- After Ended"
+
+        '''
+
+        subprocess.call(lst_cmd_to_run)
+        '''
 
         self.setEnabled(True)
 
