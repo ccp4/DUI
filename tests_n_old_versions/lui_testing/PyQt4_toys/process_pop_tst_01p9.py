@@ -28,6 +28,9 @@ class OuterCaller(QWidget):
         self.setLayout(v_box)
         self.show()
 
+    def set_app_root(self, root_ref):
+        self.my_app = root_ref
+
     def run_dum_prn(self):
         print "[self.run_dum_prn] =", self.run_dum_prn
 
@@ -39,6 +42,8 @@ class OuterCaller(QWidget):
                           "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"
                          ]
 
+        self.my_app.processEvents()
+
         my_process = subprocess.Popen(lst_cmd_to_run,
                                       stdout = subprocess.PIPE,
                                       stderr = subprocess.STDOUT,
@@ -46,14 +51,6 @@ class OuterCaller(QWidget):
 
         self.my_pid = my_process.pid
         print "self.my_pid =", self.my_pid
-
-        '''
-Constant    Description
-Qt.NonModal The window is not modal and does not block input to other windows.
-Qt.WindowModal  The window is modal to a single window hierarchy and blocks input to its parent window, all grandparent windows, and all siblings of its parent and grandparent windows.
-Qt.ApplicationModal The window is modal to the application and blocks input to all windows.
-        '''
-
 
         print "Just Launched --> \n"
         for line in iter(my_process.stdout.readline, b''):
@@ -69,7 +66,7 @@ if __name__ == '__main__':
     app   = QApplication(sys.argv)
 
     my_widg = OuterCaller()
-    my_widg.show()
+    my_widg.set_app_root(app)
 
 
     sys.exit(app.exec_())
