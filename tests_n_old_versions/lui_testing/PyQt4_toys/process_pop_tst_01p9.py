@@ -45,7 +45,6 @@ class OuterCaller(QWidget):
         for num_of_tim in xrange(10):
             self.my_app.processEvents()
 
-        #old_way = '''
         my_process = subprocess.Popen(lst_cmd_to_run,
                                       stdout = subprocess.PIPE,
                                       stderr = subprocess.STDOUT,
@@ -60,10 +59,6 @@ class OuterCaller(QWidget):
 
         print "\n<-- After Ended"
 
-        '''
-
-        subprocess.call(lst_cmd_to_run)
-        '''
 
         self.setEnabled(True)
 

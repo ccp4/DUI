@@ -37,7 +37,8 @@ class MyDialog(QDialog):
                      "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle",
                      "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"
                      ]
-
+        my_process = subprocess.Popen(lst_cmd_to_run)
+        '''
         my_process = subprocess.Popen(lst_cmd_to_run,
                                       stdout = subprocess.PIPE,
                                       stderr = subprocess.STDOUT,
@@ -54,6 +55,7 @@ class MyDialog(QDialog):
             print single_line
 
         print "\n<<< After Ended"
+        '''
 
 
     def kill_my_proc(self):
@@ -82,6 +84,7 @@ class OuterCaller(QWidget):
         self.show()
 
     def run_my_dialg(self):
+        self.diag.run_my_proc()
         self.diag.exec_()
 
 
