@@ -17,10 +17,6 @@ class MyDialog(QDialog):
         vbox = QVBoxLayout()
         vbox.addWidget(QLabel("\n Hi QDialog \n"))
 
-        run_but = QPushButton("run QProcess")
-        run_but.clicked.connect(self.run_my_proc)
-        vbox.addWidget(run_but)
-
         kl_but = QPushButton("Kill QProcess")
         kl_but.clicked.connect(self.kill_my_proc)
         vbox.addWidget(kl_but)
@@ -35,28 +31,37 @@ class MyDialog(QDialog):
                      "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle",
                      "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"
                      ]
-        #my_process = subprocess.Popen(lst_cmd_to_run)
+        my_process = subprocess.Popen(lst_cmd_to_run)
+        self.my_pid = my_process.pid
+        self.exec_()
+        while my_process.poll() is None:
+            print "proc.poll() is None"
+
+        '''
+
         my_process = subprocess.Popen(lst_cmd_to_run,
                                       stdout = subprocess.PIPE,
                                       stderr = subprocess.STDOUT,
                                       bufsize = 1)
-
         self.my_pid = my_process.pid
         print "self.my_pid =", self.my_pid
 
-
-        print "Just Launched >>> \n"
         self.exec_()
 
+        print "Just Launched >>> \n"
         for line in iter(my_process.stdout.readline, b''):
             single_line = line[0:len(line)-1]
             print single_line
 
         print "\n<<< After Ended"
+        '''
+
+        self.done(0)
 
 
     def kill_my_proc(self):
         print "self.kill_my_proc"
+        print "time to kill", self.my_pid
 
 
 
