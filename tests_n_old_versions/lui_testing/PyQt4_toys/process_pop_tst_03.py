@@ -25,15 +25,19 @@ class MyDialog(QDialog):
         kl_but.clicked.connect(self.kill_my_proc)
         vbox.addWidget(kl_but)
 
+#        self.setFocus.connect(self.run_my_proc)
 
         self.setLayout(vbox)
         self.setModal(True)
 
     def run_my_proc(self):
 
-        lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", \
-                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle", \
-                          "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"]
+        lst_cmd_to_run = [
+                     "dials.reciprocal_lattice_viewer",
+                     "../../../../dui_test/X4_wide/reuse_area/dials_files/3_reflections.pickle",
+                     "../../../../dui_test/X4_wide/reuse_area/dials_files/3_experiments.json"
+                     ]
+
         my_process = subprocess.Popen(lst_cmd_to_run,
                                       stdout = subprocess.PIPE,
                                       stderr = subprocess.STDOUT,
@@ -79,6 +83,7 @@ class OuterCaller(QWidget):
 
     def run_my_dialg(self):
         self.diag.exec_()
+        print dir(self.diag)
 
 
 if __name__ == '__main__':
