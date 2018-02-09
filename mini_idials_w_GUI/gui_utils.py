@@ -27,7 +27,17 @@ from PyQt4.QtWebKit import *
 
 from cli_utils import get_next_step
 
-import sys
+import sys, subprocess, psutil
+
+
+def kill_w_child(pid_num):
+    print "attempting to kill pid #:", pid_num
+    parent_proc = psutil.Process(pid_num)
+    for child in parent_proc.children(recursive=True):  # or parent_proc.children() for recursive=False
+        child.kill()
+
+    parent_proc.kill()
+
 
 def get_import_run_string(in_str_lst):
 
@@ -395,6 +405,62 @@ class TreeNavWidget(QTreeView):
                 item_in.appendRow(new_item)
 
 
+class MyDialog(QDialog):
+    def __init__(self, parent = None):
+        super(MyDialog, self).__init__()
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("\n Running dials.reciprocal_lattice_viewer ...\
+                               \n   remember to close the viewer before \
+                               \n         performing any other task"))
+
+        kl_but = QPushButton("Close reciprocal lattice viewer")
+        kl_but.clicked.connect(self.kill_my_proc)
+        vbox.addWidget(kl_but)
+
+        self.setLayout(vbox)
+        self.setModal(True)
+
+    def run_my_proc(self, pickle_path, json_path):
+
+        lst_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+
+        self.my_process = subprocess.Popen(lst_to_run)
+        self.proc_pid = self.my_process.pid
+        self.exec_()
+
+    def kill_my_proc(self):
+        print "self.kill_my_proc"
+        print "time to kill", self.proc_pid
+        kill_w_child(self.proc_pid)
+        self.done(0)
+
+    def closeEvent(self, event):
+        print "from << closeEvent  (QDialog) >>"
+
+
+class OuterCaller(QWidget):
+    def __init__(self):
+        super(OuterCaller, self).__init__()
+
+        v_box = QHBoxLayout()
+        #v_box.addWidget(QLabel("\n Click >> \n"))
+
+        my_but = QPushButton("\n Open Reciprocal Lattice Viewer \n")
+        my_but.clicked.connect(self.run_my_dialg)
+        v_box.addWidget(my_but)
+
+        self.diag = MyDialog()
+
+        self.setLayout(v_box)
+        self.show()
+
+    def update_data(self, new_pick = None, new_json = None):
+        self.my_pick = new_pick
+        self.my_json = new_json
+
+    def run_my_dialg(self):
+        self.diag.run_my_proc(self.my_pick, self.my_json)
 
 
 class CliOutView(QTextEdit):
