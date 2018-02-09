@@ -74,7 +74,6 @@ class OuterCaller(QWidget):
 
     def run_my_dialg(self):
         self.diag.run_my_proc()
-        #self.diag.exec_()
 
 
 if __name__ == '__main__':

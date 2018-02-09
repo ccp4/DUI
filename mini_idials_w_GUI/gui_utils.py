@@ -240,6 +240,8 @@ def update_info(main_obj):
     main_obj.info_widget.update_data(exp_json_path = uni_json,
                                      refl_pikl_path = new_ref_pikl)
 
+    main_obj.ext_view.update_data(new_pick = new_ref_pikl,
+                                  new_json = uni_json)
 
 def update_pbar_msg(main_obj):
     tmp_curr = main_obj.idials_runner.current_node

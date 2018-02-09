@@ -35,10 +35,79 @@ from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
 from custom_widgets import  ParamWidget
 
+import subprocess
+
 from gui_utils import CliOutView, Text_w_Bar, \
      build_command_tip, update_info, update_pbar_msg, \
      TreeNavWidget, build_ttip, build_label, MyQButton
 
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
+
+class MyDialog(QDialog):
+    def __init__(self, parent = None):
+        super(MyDialog, self).__init__()
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel("\n Running dials.reciprocal_lattice_viewer ...\
+                               \n   remember to close the viewer before \
+                               \n         performing any other task"))
+
+        kl_but = QPushButton("Close reciprocal lattice viewer")
+        kl_but.clicked.connect(self.kill_my_proc)
+        vbox.addWidget(kl_but)
+
+        self.setLayout(vbox)
+        self.setModal(True)
+
+    def run_my_proc(self, pickle_path, json_path):
+
+        lst_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+
+        self.my_process = subprocess.Popen(lst_to_run)
+        self.proc_pid = self.my_process.pid
+        self.exec_()
+
+    def kill_my_proc(self):
+        print "self.kill_my_proc"
+        print "time to kill", self.proc_pid
+        kill_w_child(self.proc_pid)
+        self.done(0)
+
+    def closeEvent(self, event):
+        print "from << closeEvent  (QDialog) >>"
+
+
+class OuterCaller(QWidget):
+    def __init__(self):
+        super(OuterCaller, self).__init__()
+
+        v_box = QHBoxLayout()
+        #v_box.addWidget(QLabel("\n Click >> \n"))
+
+        my_but = QPushButton("\n Open Reciprocal Lattice Viewer \n")
+        my_but.clicked.connect(self.run_my_dialg)
+        v_box.addWidget(my_but)
+
+        self.diag = MyDialog()
+
+        self.setLayout(v_box)
+        self.show()
+
+    def update_data(self, new_pick = None, new_json = None):
+        self.my_pick = new_pick
+        self.my_json = new_json
+
+    def run_my_dialg(self):
+        self.diag.run_my_proc(self.my_pick, self.my_json)
+
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
@@ -328,11 +397,16 @@ class MainWidget(QMainWindow):
         self.cli_out = CliOutView()
         self.web_view = WebTab()
         self.img_view = MyImgWin()
+        self.ext_view = OuterCaller()
+
+
 
         self.output_info_tabs = QTabWidget()
         self.output_info_tabs.addTab(self.img_view, "Image View")
         self.output_info_tabs.addTab(self.cli_out, "CLI Output")
         self.output_info_tabs.addTab(self.web_view, "Report View")
+
+        self.output_info_tabs.addTab(self.ext_view, "CLI Viewing Tools")
 
         h_main_splitter.addWidget(self.output_info_tabs)
 
