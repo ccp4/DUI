@@ -31,9 +31,9 @@ class MyThread (QThread):
     def run(self):
         print "Hi from QThread(run)  ___________________ Before Loop"
         my_proc = psutil.Process(self.pid_to_see)
-        while(my_proc.status() == 'running' or my_proc.status() == 'sleeping'):
-            print "my_proc.status() =", my_proc.status()
-
+        my_proc_stat = my_proc.status()
+        while(my_proc_stat == 'running' or my_proc_stat == 'sleeping'):
+            my_proc_stat = my_proc.status()
 
         print "my_proc.status() =", my_proc.status()
 
