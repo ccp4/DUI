@@ -341,7 +341,19 @@ class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
         super(TreeNavWidget, self).__init__()
         print "TreeNavWidget(__init__)"
-        self.setMinimumWidth(165)
+        self.setSortingEnabled(False)
+        self.setAnimated(True)
+
+        #self.setMinimumWidth(1125)
+        #self.setMaximumWidth(1565)
+        #self.setMinimumHeight(1425)
+        #self.setMaximumHeight(1565)
+
+        #self.setIndentation(12)
+
+        header_view = self.header()
+        header_view.setResizeMode(QHeaderView.ResizeToContents)
+        header_view.setStretchLastSection(False)
 
     def update_me(self, root_node, lst_path_idx):
         self.lst_idx = lst_path_idx
@@ -351,8 +363,10 @@ class TreeNavWidget(QTreeView):
         self.std_mod = QStandardItemModel(self)
         self.recursive_node(root_node, self.std_mod)
 
-        self.std_mod.setHorizontalHeaderLabels(["History Tree"])
+        self.std_mod.setHorizontalHeaderLabels([" History Tree "])
         self.setModel(self.std_mod)
+
+        #self.update()
         self.expandAll()
 
     def recursive_node(self, root_node, item_in):

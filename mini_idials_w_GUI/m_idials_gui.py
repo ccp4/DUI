@@ -288,15 +288,17 @@ class MainWidget(QMainWindow):
         h_left_splitter = QSplitter()
         h_left_splitter.setOrientation(Qt.Horizontal)
 
-
         self.tree_out = TreeNavWidget()
+        '''
+        scroll_area_left = QScrollArea()
+        scroll_area_left.setWidget(self.tree_out)
+        h_left_splitter.addWidget(scroll_area_left)
+        '''
         h_left_splitter.addWidget(self.tree_out)
 
 
         self.centre_widget = CentreWidget()
-
         self.centre_widget.get_arg_obj(sys_arg_in)
-
         self.run_all = sys_arg_in.run_all
 
         h_left_splitter.addWidget(self.centre_widget)
