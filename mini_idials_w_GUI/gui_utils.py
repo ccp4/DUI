@@ -27,7 +27,7 @@ from PyQt4.QtWebKit import *
 
 from cli_utils import get_next_step
 
-import sys, subprocess, psutil
+import sys, subprocess, psutil, time
 
 
 def kill_w_child(pid_num):
@@ -419,6 +419,30 @@ class TreeNavWidget(QTreeView):
                 item_in.appendRow(new_item)
 
 
+
+class MyThread (QThread):
+
+    def __init__(self, parent = None):
+        super(MyThread, self).__init__()
+
+    def run(self):
+        print "Hi from QThread(run)  ___________________ Before Loop"
+        my_proc = psutil.Process(self.pid_to_see)
+
+        time.sleep(0.333)
+        my_proc_stat = my_proc.status()
+
+        while(my_proc_stat == 'running' or my_proc_stat == 'sleeping'):
+            my_proc_stat = my_proc.status()
+
+        print "my_proc.status() =", my_proc.status()
+
+        print "_________________________________________ Loop ended"
+
+    def get_pid(self, pid_in):
+        self.pid_to_see = pid_in
+
+
 class MyDialog(QDialog):
     def __init__(self, parent = None):
         super(MyDialog, self).__init__()
@@ -437,10 +461,17 @@ class MyDialog(QDialog):
 
     def run_my_proc(self, pickle_path, json_path):
 
-        lst_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+        lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+        self.thrd = MyThread()
 
-        self.my_process = subprocess.Popen(lst_to_run)
+        self.my_process = subprocess.Popen(lst_cmd_to_run)
+
         self.proc_pid = self.my_process.pid
+        self.thrd.get_pid(self.proc_pid)
+
+        self.thrd.finished.connect(self.child_closed)
+        self.thrd.start()
+
         self.exec_()
 
     def kill_my_proc(self):
@@ -449,8 +480,13 @@ class MyDialog(QDialog):
         kill_w_child(self.proc_pid)
         self.done(0)
 
+    def child_closed(self):
+        print "after ...close()"
+        self.kill_my_proc()
+
     def closeEvent(self, event):
         print "from << closeEvent  (QDialog) >>"
+        self.kill_my_proc()
 
 
 class OuterCaller(QWidget):
