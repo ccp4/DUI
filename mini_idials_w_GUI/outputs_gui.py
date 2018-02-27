@@ -487,4 +487,5 @@ if( __name__ == "__main__" ):
 
     app =  QApplication(sys.argv)
     ex = InfoWidget()
+    ex.update_data(sys.argv[1])
     sys.exit(app.exec_())
