@@ -23,7 +23,7 @@ class WebTab(QWidget):
     def update_page(self, new_path):
         print " >> update_page(", new_path, ")"
         #new_path = "file://" + new_path # unix way
-        new_path = "file:///" + new_path # windows way
+        new_path = "file:///" + new_path # Windows way(seems to work on Unix too)
 
         print " >> new_path:", new_path
         self.web.load(QUrl(new_path))

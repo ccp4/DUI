@@ -604,9 +604,20 @@ class MainWidget(QMainWindow):
         if(tmp_curr.command_lst[0] == "reindex" and
                 self.just_reindexed == False):
 
-            self.my_pop = MyReindexOpts()
-            self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
-            self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+            try:
+                self.my_pop = MyReindexOpts()
+                self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
+                self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+
+            except Exception as my_err:
+                print "str(my_err) =", str(my_err)
+                print "my_err.__doc__ =", my_err.__doc__
+                print "my_err.message =", my_err.message
+                if(str(my_err)[0:36] == '[Errno 2] No such file or directory:'):
+                    print "\n interrupted refine_bravais_settings \n"
+
+
+            #TODO find an elegant way to interrupt and remove nodes
 
         else:
             try:

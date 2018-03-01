@@ -24,6 +24,7 @@ copyright (c) CCP4 - DLS
 
 import subprocess
 import json
+import os
 
 
 def prn_lst_lst_cmd(last_idials_node):
@@ -75,15 +76,15 @@ def build_command_lst(node_obj, cmd_lst):
             cmd_lst_to_run.append(tmp_par)
 
     if(cmd_lst[0] == "import"):
-        node_obj.json_file_out = "dials_files/" +  str(node_obj.lin_num) + "_datablock.json"
+        node_obj.json_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -101,19 +102,19 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = "dials_files/" +  str(node_obj.lin_num) + "_datablock.json"
+        node_obj.json_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.pickle_file_out = "dials_files/" + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.pickle_file_out = "dials_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -136,19 +137,19 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = "dials_files/" +  str(node_obj.lin_num) + "_experiments.json"
+        node_obj.json_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.pickle_file_out = "dials_files/" + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.pickle_file_out = "dials_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -177,13 +178,13 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.prefix=" + node_obj.prefix_out
         cmd_lst_to_run.append(output_str)
         cmd_lst_to_run.append("output.directory=dials_files")
-        node_obj.json_file_out = "dials_files/" +  prefix_str + "bravais_summary.json"
+        node_obj.json_file_out = "dials_files" + os.sep +  prefix_str + "bravais_summary.json"
 
-        node_obj.log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -218,9 +219,9 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = "dials_files/" +  node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
+        node_obj.json_file_out = "dials_files" + os.sep +  node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
 
-        node_obj.pickle_file_out = "dials_files/" + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.pickle_file_out = "dials_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -241,22 +242,22 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = "dials_files/" +  str(node_obj.lin_num) + "_experiments.json"
+        node_obj.json_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.pickle_file_out = "dials_files/" + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.pickle_file_out = "dials_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
 
         if(cmd_lst[0] == "integrate"):
             cmd_lst_to_run.append("output.phil=dials_files/" + str(node_obj.lin_num) + "_integrate.phil")
 
-        node_obj.log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -283,11 +284,11 @@ def build_command_lst(node_obj, cmd_lst):
         cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
         cmd_lst_to_run.append(node_obj.prev_step.pickle_file_out)
 
-        node_obj.log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = "dials_files/" +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -309,7 +310,7 @@ def generate_report(node_obj):
         current_lin = node_obj.lin_num
         refl_inp = node_obj.pickle_file_out
         deps_outp = "output.external_dependencies=local"
-        htm_fil = "dials_files/" + str(current_lin) + "_report.html"
+        htm_fil = "dials_files" + os.sep + str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
         if(node_obj.command_lst[0] == "find_spots"):
             rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
@@ -343,14 +344,40 @@ class DialsCommand(object):
 
     def __call__(self, lst_cmd_to_run = None, ref_to_class = None):
         try:
-            print "\n << running >>", lst_cmd_to_run
+            print "\n [[ running >> \n"
+            single_string = ""
+
+            for lin_to_prn in lst_cmd_to_run:
+                print lin_to_prn
+
+                single_string += lin_to_prn
+                single_string += " "
+
+            print "\n<<<"
+
+            my_process = subprocess.Popen(single_string,
+                                        shell = True,
+                                        stdout = subprocess.PIPE,
+                                        stderr = subprocess.STDOUT,
+                                        bufsize = 1)
+
+
+
+            '''
+            for lin_to_prn in lst_cmd_to_run:
+                print lin_to_prn
+
+            print "\n<<<"
 
             my_process = subprocess.Popen(lst_cmd_to_run,
-                                          stdout = subprocess.PIPE,
-                                          stderr = subprocess.STDOUT,
-                                          bufsize = 1)
+                                            stdout = subprocess.PIPE,
+                                            stderr = subprocess.STDOUT,
+                                            bufsize = 1)
+            '''
 
             self.my_pid = my_process.pid
+
+            print "process PID =", self.my_pid
 
             for line in iter(my_process.stdout.readline, b''):
                 single_line = line[0:len(line)-1]
@@ -359,6 +386,8 @@ class DialsCommand(object):
 
                 except:
                     print single_line
+
+            print "Done print loop"
 
             my_process.wait()
             my_process.stdout.close()
@@ -375,7 +404,10 @@ class DialsCommand(object):
                 except:
                     print Failed
 
-        except:
+            print "Done all step"
+
+        except Exception as my_err:
+            print "error =", my_err, "\n"
             local_success = False
             print "\n FAIL call"
 

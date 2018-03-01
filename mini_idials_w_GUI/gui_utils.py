@@ -31,12 +31,17 @@ import sys, subprocess, psutil, time
 
 
 def kill_w_child(pid_num):
-    print "attempting to kill pid #:", pid_num
-    parent_proc = psutil.Process(pid_num)
-    for child in parent_proc.children(recursive=True):  # or parent_proc.children() for recursive=False
-        child.kill()
 
-    parent_proc.kill()
+    print "attempting to kill pid #:", pid_num
+    try:
+        parent_proc = psutil.Process(pid_num)
+        for child in parent_proc.children(recursive=True):  # or parent_proc.children() for recursive=False
+            child.kill()
+
+        parent_proc.kill()
+
+    except:
+        print "\n\n failed to kill process(es)"
 
 
 def get_import_run_string(in_str_lst):
@@ -44,6 +49,8 @@ def get_import_run_string(in_str_lst):
     print "in_str_lst =", in_str_lst
 
     selected_file_path = str(in_str_lst[0])
+    print "selected_file_path =", selected_file_path
+
     fnd_sep = False
     sep_chr = None
     for pos, single_char in enumerate(selected_file_path):
@@ -171,6 +178,7 @@ def get_import_run_string(in_str_lst):
         out_str += " image_range=" + str(img_range[0]) + "," + str(img_range[1])
 
     print "out_str( * mode ) =", out_str, "\n"
+    print "dir_path =", dir_path
 
     return dir_path, out_str
 
@@ -425,22 +433,28 @@ class MyThread (QThread):
     def __init__(self, parent = None):
         super(MyThread, self).__init__()
 
+
+    def get_pid(self, pid_in):
+        self.pid_to_see = pid_in
+
+
     def run(self):
         print "Hi from QThread(run)  ___________________ Before Loop"
         my_proc = psutil.Process(self.pid_to_see)
 
-        time.sleep(0.333)
         my_proc_stat = my_proc.status()
 
         while(my_proc_stat == 'running' or my_proc_stat == 'sleeping'):
-            my_proc_stat = my_proc.status()
+            try:
+                my_proc_stat = my_proc.status()
 
-        print "my_proc.status() =", my_proc.status()
+            except:
+                print "proc disappeared"
+                my_proc_stat = 'None'
+
 
         print "_________________________________________ Loop ended"
 
-    def get_pid(self, pid_in):
-        self.pid_to_see = pid_in
 
 
 class MyDialog(QDialog):
@@ -461,12 +475,17 @@ class MyDialog(QDialog):
 
     def run_my_proc(self, pickle_path, json_path):
 
-        lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+        str_cmd_to_run = "dials.reciprocal_lattice_viewer " + str(pickle_path) + " " + str(json_path)
+        print "str_cmd_to_run =", str_cmd_to_run
+
+        #lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+
         self.thrd = MyThread()
 
-        self.my_process = subprocess.Popen(lst_cmd_to_run)
-
+        #self.my_process = subprocess.Popen(lst_cmd_to_run)
+        self.my_process = subprocess.Popen(str_cmd_to_run, shell = True)
         self.proc_pid = self.my_process.pid
+        time.sleep(0.333)
         self.thrd.get_pid(self.proc_pid)
 
         self.thrd.finished.connect(self.child_closed)

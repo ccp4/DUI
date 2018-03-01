@@ -114,12 +114,27 @@ class ImportPage(QWidget):
         print "action_simple"
         self.command_lst = ["import"]
         param_com = str(self.simple_lin.text())
+        print "param_com =", param_com
+
         cmd_lst = param_com.split(" ")
+        print "cmd_lst =", cmd_lst
+
         for single_com in cmd_lst:
+            '''
+            new_single_com = single_com.encode('utf_8')
+            print "new_single_com =", new_single_com
+            print "single_com =", single_com
+            self.command_lst.append(new_single_com.decode('unicode_escape'))
+            '''
             self.command_lst.append(single_com)
 
         self.update_command_lst.emit(self.command_lst)
-        print "self.command_lst =", self.command_lst, "\n"
+        print "self.command_lst =", self.command_lst
+
+        print "\n loop print \n"
+
+        for lin_prn in self.command_lst:
+            print "lin_prn =", lin_prn
 
 
 class ParamAdvancedWidget( QWidget):
