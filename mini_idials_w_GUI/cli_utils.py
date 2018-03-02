@@ -271,7 +271,12 @@ class DialsCommand(object):
         print "creating new DialsCommand (obj)"
         self.full_cmd_lst = None
 
-        self.use_shell = True
+        os_name = os.name
+        print "\n Running process on ", os_name, "\n\n"
+        if(os_name == "nt"):
+            self.use_shell = True
+        else:
+            self.use_shell = False
 
     def __call__(self, lst_cmd_to_run = None, ref_to_class = None):
         try:
