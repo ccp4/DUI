@@ -88,13 +88,6 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
-        '''
-    full_cmd_lst.append(['dials.import', 'template=/home/lui/ccp4/dui_test/only_9_img/X4_wide_M1S4_2_####.cbf',
-                         'output.datablock=dials_files/1_datablock.json',
-                         'output.log=dials_files/1_import.log',
-                         'output.debug_log=dials_files/1_import_debug.log'
-                         ] )
-        '''
         #TODO make sure import without arguments does NOT run
 
     elif(cmd_lst[0] == "find_spots"):
@@ -117,16 +110,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
-
-        '''
-    full_cmd_lst.append(['dials.find_spots', 'spotfinder.mp.nproc=4',
-                         'input.datablock=dials_files/1_datablock.json',
-                         'output.datablock=dials_files/2_datablock.json',
-                         'output.reflections=dials_files/2_reflections.pickle',
-                         'output.log=dials_files/2_find_spots.log',
-                         'output.debug_log=dials_files/2_find_spots_debug.log'
-                         ] )
-        '''
 
     elif(cmd_lst[0] == "index"):
         json_file_in = node_obj.prev_step.json_file_out
@@ -153,16 +136,6 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
-        '''
-    full_cmd_lst.append(['dials.index',
-                         'input.datablock=dials_files/2_datablock.json',
-                         'input.reflections=dials_files/2_reflections.pickle',
-                         'output.experiments=dials_files/3_experiments.json',
-                         'output.reflections=dials_files/3_reflections.pickle',
-                         'output.log=dials_files/3_index.log',
-                         'output.debug_log=dials_files/3_index_debug.log'
-                         ] )
-        '''
 
     elif(cmd_lst[0] == "refine_bravais_settings"):
         json_file_in = node_obj.prev_step.json_file_out
@@ -188,16 +161,6 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
-        '''
-    full_cmd_lst.append(['dials.refine_bravais_settings',
-                         'input.experiments=dials_files/3_experiments.json',
-                         'input.reflections=dials_files/3_reflections.pickle',
-                         'output.prefix=lin_4_',
-                         'output.directory=dials_files',
-                         'output.log=dials_files/4_refine_bravais_settings.log',
-                         'output.debug_log=dials_files/4_refine_bravais_settings_debug.log'
-                         ] )
-        '''
     elif(cmd_lst[0] == "reindex"):
         try:
             if(cmd_lst[1][0:9] == "solution="):
@@ -224,14 +187,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.pickle_file_out = "dials_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.pickle_file_out
         cmd_lst_to_run.append(output_str)
-
-        '''
-    full_cmd_lst.append(['dials.reindex',
-                         'input.reflections=dials_files/3_reflections.pickle',
-                         'change_of_basis_op=a,b,c',
-                         'output.reflections=dials_files/5_reflections.pickle'
-                         ] )
-        '''
 
     elif(cmd_lst[0] == "refine" or cmd_lst[0] == "integrate"):
         json_file_in = node_obj.prev_step.json_file_out
@@ -261,25 +216,6 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
-        '''
-    full_cmd_lst.append(['dials.refine',
-                         'input.experiments=dials_files/lin_4_bravais_setting_9.json',
-                         'input.reflections=dials_files/5_reflections.pickle',
-                         'output.experiments=dials_files/6_experiments.json',
-                         'output.reflections=dials_files/6_reflections.pickle',
-                         'output.log=dials_files/6_refine.log',
-                         'output.debug_log=dials_files/6_refine_debug.log'
-                         ] )
-        '''
-        now = '''
-                        ['dials.refine',
-                         'input.experiments=dials_files/lin_4_dials_files/bravais_setting_9.json',
-                         'input.reflections=dials_files/5_reflections.pickle',
-                         'output.experiments=dials_files/6_experiments.json',
-                         'output.reflections=dials_files/6_reflections.pickle']
-
-        '''
-
     elif(cmd_lst[0] == "export"):
         cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
         cmd_lst_to_run.append(node_obj.prev_step.pickle_file_out)
@@ -291,15 +227,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.debug_log_file_out = "dials_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
-
-        '''
-    full_cmd_lst.append(['dials.export', 'mtz.hklout=hkl_out.mtz',
-                         'dials_files/7_experiments.json',
-                         'dials_files/7_reflections.pickle',
-                         'output.log=dials_files/8_export.log',
-                         'output.debug_log=dials_files/8_export_debug.log'
-                         ] )
-        '''
 
     return cmd_lst_to_run
 
@@ -313,16 +240,18 @@ def generate_report(node_obj):
         htm_fil = "dials_files" + os.sep + str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
         if(node_obj.command_lst[0] == "find_spots"):
-            rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
+            #rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
+            rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
 
         else:
             exp_inp = node_obj.json_file_out
-            rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
+            #rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
+            rep_cmd = "dials.report " + exp_inp + " " + refl_inp + " " + deps_outp + " " + html_outp
 
         print "rep_cmd =", rep_cmd
 
         try:
-            gen_rep_proc = subprocess.Popen(rep_cmd)
+            gen_rep_proc = subprocess.Popen(rep_cmd, shell = True)
             gen_rep_proc.wait()
             rep_out = node_obj.work_dir + "/" + htm_fil
             print "generated report at: ", rep_out
