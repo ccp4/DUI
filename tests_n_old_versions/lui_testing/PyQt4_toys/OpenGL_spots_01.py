@@ -78,12 +78,15 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
     def mousePressEvent(self, event):
         self.lastPos = QtCore.QPoint(event.pos())
 
+<<<<<<< TREE
+=======
     def setRotation(self,dx,dy,dz):
         #print "Now I want to construct a rotation....", dx,dy,dz
         rotQ = pygl_coord.Quat(dx,dy,dz,0)
         #rotQ = pygl_coord.Quat(dz,dx,dy,0)
         self.quat.postMult(rotQ)
 
+>>>>>>> MERGE-SOURCE
     def mouseMoveEvent(self, event):
         dx = event.x() - self.lastPos.x()
         dy = event.y() - self.lastPos.y()
@@ -92,6 +95,12 @@ class ReciprocalLatticeViewer(QtOpenGL.QGLWidget):
 
         self.lastPos = event.pos()
         self.updateGL()
+
+    def setRotation(self, dx, dy, dz):
+        print "dx, dy, dz =", dx, dy, dz
+        #print "Now I want to construct a rotation....", dx,dy,dz
+        rotQ = pygl_coord.Quat(dx,dy,dz,0)
+        self.quat.postMult(rotQ)
 
     def wheelEvent(self, event):
         #print dir(event), "\n\n"

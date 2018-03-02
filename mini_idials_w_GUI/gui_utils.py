@@ -466,6 +466,12 @@ class MyDialog(QDialog):
                                \n   remember to close the viewer before \
                                \n         performing any other task"))
 
+        to_consider = '''
+        my_bar = Text_w_Bar()
+        vbox.addWidget(my_bar)
+        my_bar.start_motion()
+        '''
+
         kl_but = QPushButton("Close reciprocal lattice viewer")
         kl_but.clicked.connect(self.kill_my_proc)
         vbox.addWidget(kl_but)
@@ -475,7 +481,10 @@ class MyDialog(QDialog):
 
     def run_my_proc(self, pickle_path, json_path):
 
-        str_cmd_to_run = "dials.reciprocal_lattice_viewer " + str(pickle_path) + " " + str(json_path)
+        str_cmd_to_run = "dials.reciprocal_lattice_viewer " \
+                         + str(pickle_path) + " " \
+                         + str(json_path)
+
         print "str_cmd_to_run =", str_cmd_to_run
 
         #lst_cmd_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]

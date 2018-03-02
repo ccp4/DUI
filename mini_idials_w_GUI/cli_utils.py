@@ -342,6 +342,8 @@ class DialsCommand(object):
         print "creating new DialsCommand (obj)"
         self.full_cmd_lst = None
 
+        self.use_shell = True
+
     def __call__(self, lst_cmd_to_run = None, ref_to_class = None):
         try:
             print "\n [[ running >> \n"
@@ -353,10 +355,16 @@ class DialsCommand(object):
                 single_string += lin_to_prn
                 single_string += " "
 
+            if(self.use_shell == True):
+                run_cmd = single_string
+
+            else:
+                run_cmd = lst_cmd_to_run
+
             print "\n<<<"
 
-            my_process = subprocess.Popen(single_string,
-                                        shell = True,
+            my_process = subprocess.Popen(run_cmd,
+                                        shell = self.use_shell,
                                         stdout = subprocess.PIPE,
                                         stderr = subprocess.STDOUT,
                                         bufsize = 1)
