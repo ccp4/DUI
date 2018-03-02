@@ -42,13 +42,13 @@ from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
-class MyThread(QThread):
+class CommandThread(QThread):
 
     str_print_signal = pyqtSignal(str)
     str_fail_signal = pyqtSignal()
 
     def __init__(self, parent = None):
-        super(MyThread, self).__init__()
+        super(CommandThread, self).__init__()
 
     def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
@@ -339,7 +339,7 @@ class MainWidget(QMainWindow):
 
         self.connect_all()
 
-        self.custom_thread = MyThread()
+        self.custom_thread = CommandThread()
         self.custom_thread.finished.connect(self.update_after_finished)
         self.custom_thread.str_fail_signal.connect(self.after_failed)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)

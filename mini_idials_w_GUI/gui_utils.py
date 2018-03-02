@@ -428,10 +428,10 @@ class TreeNavWidget(QTreeView):
 
 
 
-class MyThread (QThread):
+class ViewerThread (QThread):
 
     def __init__(self, parent = None):
-        super(MyThread, self).__init__()
+        super(ViewerThread, self).__init__()
 
 
     def get_pid(self, pid_in):
@@ -491,7 +491,7 @@ class MyDialog(QDialog):
         else:
             cmd_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
 
-        self.thrd = MyThread()
+        self.thrd = ViewerThread()
 
         self.my_process = subprocess.Popen(cmd_to_run, shell = self.use_shell)
         self.proc_pid = self.my_process.pid
