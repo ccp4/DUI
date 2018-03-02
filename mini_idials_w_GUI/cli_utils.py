@@ -369,20 +369,6 @@ class DialsCommand(object):
                                         stderr = subprocess.STDOUT,
                                         bufsize = 1)
 
-
-
-            '''
-            for lin_to_prn in lst_cmd_to_run:
-                print lin_to_prn
-
-            print "\n<<<"
-
-            my_process = subprocess.Popen(lst_cmd_to_run,
-                                            stdout = subprocess.PIPE,
-                                            stderr = subprocess.STDOUT,
-                                            bufsize = 1)
-            '''
-
             self.my_pid = my_process.pid
 
             print "process PID =", self.my_pid
