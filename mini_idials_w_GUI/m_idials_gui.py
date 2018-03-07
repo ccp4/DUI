@@ -33,7 +33,7 @@ from cli_utils import TreeShow, prn_lst_lst_cmd
 from m_idials import Runner
 from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
-from custom_widgets import  ParamWidget
+from custom_widgets import ParamWidget
 
 from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
      build_command_tip, update_info, update_pbar_msg, kill_w_child, \
@@ -59,7 +59,6 @@ class CommandThread(QThread):
         self.ref_to_controler.run(command = self.cmd_to_run, ref_to_class = self)
 
     def emit_print_signal(self, str_lin):
-        #print str_lin, "... Yes"
         self.str_print_signal.emit(str_lin)
 
     def emit_fail_signal(self):
@@ -281,6 +280,7 @@ class MainWidget(QMainWindow):
         self.cur_html = None
         self.cur_pick = None
         self.cur_json = None
+        self.cur_log = None
         self.cur_cmd_name = "None"
 
         main_box = QVBoxLayout()

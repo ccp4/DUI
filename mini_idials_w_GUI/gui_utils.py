@@ -83,8 +83,8 @@ def get_import_run_string(in_str_lst):
 
     left_sd_name = templ_r_side[:ext_pos_sep]
     ext_name = templ_r_side[ext_pos_sep:]
-    if(ext_name == ".h5"):
-        print "found h5 file"
+    if(ext_name == ".h5" or ext_name == ".nxs"):
+        print "found h5 or nxs file"
         file_name = left_sd_name
         file_name = file_name + ext_name
         tail_size = 0
@@ -228,6 +228,8 @@ def update_info(main_obj):
     new_img_json = main_obj.idials_runner.get_datablock_path()
     new_ref_pikl = main_obj.idials_runner.get_reflections_path()
 
+    new_log = main_obj.idials_runner.get_log_path()
+
     tmp_curr = main_obj.idials_runner.current_node
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
@@ -255,11 +257,16 @@ def update_info(main_obj):
         main_obj.cur_pick = new_ref_pikl
         main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
+    if(main_obj.cur_log != new_log):
+        main_obj.cur_log = new_log
+        main_obj.cli_out.refresh_txt(main_obj.cur_log)
+
     main_obj.info_widget.update_data(exp_json_path = uni_json,
                                      refl_pikl_path = new_ref_pikl)
 
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
                                   new_json = uni_json)
+
 
 def update_pbar_msg(main_obj):
     tmp_curr = main_obj.idials_runner.current_node
@@ -548,13 +555,36 @@ class CliOutView(QTextEdit):
         self.setCurrentFont(QFont("Monospace"))
 
     def add_txt(self, str_to_print):
+        try:
+            ed_str = str(str_to_print)
+            if(ed_str[-1]) == "\n":
+                ed_str = ed_str[0:-1]
 
+            self.append(ed_str)
+
+        except:
+            print "Failed to print:", str_to_print
+
+        old_way = '''
         #TODO reconcider how elegant is this
         try:
             self.append(str_to_print)
 
         except:
             self.append(str_to_print[0])
+        '''
+
+    def refresh_txt(self, path_to_log):
+        print "refresh_txt"
+        print "path_to_log =", path_to_log
+        if(type(path_to_log) == str):
+            fil_obj = open(path_to_log, 'r')
+            lst_lin = fil_obj.readlines()
+
+            self.clear()
+
+            for lin in lst_lin:
+                self.add_txt(lin)
 
 
 class Text_w_Bar(QProgressBar):
@@ -601,13 +631,17 @@ class MainWidget(QMainWindow):
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
 
-        btn1 = QPushButton(self)
+        btn1 = QPushButton("\n Do \n", self)
         btn1.clicked.connect(self.btn_1_clicked)
         main_box.addWidget(btn1)
 
-        btn2 = QPushButton(self)
+        btn2 = QPushButton("\n Stop \n", self)
         btn2.clicked.connect(self.btn_2_clicked)
         main_box.addWidget(btn2)
+
+        btn3 = QPushButton("\n refresh text \n", self)
+        btn3.clicked.connect(self.btn_3_clicked)
+        main_box.addWidget(btn3)
 
         self.n = 1
 
@@ -628,6 +662,10 @@ class MainWidget(QMainWindow):
         self.tst_view.add_txt(my_text)
         self.txt_bar.setText(my_text)
         self.txt_bar.end_motion()
+
+    def btn_3_clicked(self):
+        self.tst_view.refresh_txt("../../dui_test/X4_wide/reuse_area/dials_files/2_find_spots.log")
+
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

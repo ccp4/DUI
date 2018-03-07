@@ -222,6 +222,23 @@ class Runner(object):
 
         return path_to_json
 
+    def get_log_path(self):
+
+        path_to_log = None
+
+        try:
+            path_to_log = self.current_node.log_file_out
+
+        except:
+            print "failed to retrieve log path"
+
+
+        return path_to_log
+
+
+
+
+
     def get_experiment_path(self):
         path_to_json = None
         tmp_cur = self.current_node

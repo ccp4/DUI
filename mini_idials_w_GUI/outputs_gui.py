@@ -442,46 +442,6 @@ class InfoWidget( QWidget):
         update_data_label(self.spgrp_data   , self.all_data.spg_group)
 
 
-
-class TextOut( QTextBrowser):
-    def __init__(self, parent = None):
-        super(TextOut, self).__init__(parent)
-        self.set_black_font()
-        self.content_lst = []
-
-    def set_black_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("black"))
-
-    def set_green_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("green"))
-
-    def set_red_font(self):
-        self.setCurrentFont( QFont("Monospace"))
-        self.setTextColor( QColor("red"))
-
-    def append_black(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_black_font()
-        self.append(to_print)
-        self.content_lst.append(to_print)
-
-    def append_green(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_green_font()
-        self.append(to_print)
-        self.content_lst = []
-
-    def append_red(self, to_print):
-        self.moveCursor(QTextCursor.End)
-        self.set_red_font()
-        self.append(to_print)
-
-    def get_full_output_lst(self):
-        return self.content_lst
-
-
 if( __name__ == "__main__" ):
 
     app =  QApplication(sys.argv)
