@@ -475,6 +475,7 @@ class MainWidget(QMainWindow):
 
     def cmd_exe(self, new_cmd):
         #Running NOT in parallel
+        update_info(self)
         self.idials_runner.run(command = new_cmd, ref_to_class = None)
         self.check_reindex_pop()
         self.reconnect_when_ready()

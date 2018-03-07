@@ -257,15 +257,18 @@ def update_info(main_obj):
         main_obj.cur_pick = new_ref_pikl
         main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
-    if(main_obj.cur_log != new_log):
-        main_obj.cur_log = new_log
-        main_obj.cli_out.refresh_txt(main_obj.cur_log)
-
     main_obj.info_widget.update_data(exp_json_path = uni_json,
                                      refl_pikl_path = new_ref_pikl)
 
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
                                   new_json = uni_json)
+
+    main_obj.cli_out.clear()
+    #TODO use next line properly
+    main_obj.cli_out.make_green()
+    if(main_obj.cur_log != new_log):
+        main_obj.cur_log = new_log
+        main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr.success)
 
 
 def update_pbar_msg(main_obj):
@@ -552,7 +555,9 @@ class OuterCaller(QWidget):
 class CliOutView(QTextEdit):
     def __init__(self, app = None):
         super(CliOutView, self).__init__()
-        self.setCurrentFont(QFont("Monospace"))
+        #self.setCurrentFont(QFont("Monospace"))
+        self.setFont(QFont("Monospace", 10, QFont.Bold))
+        self.make_green()
 
     def add_txt(self, str_to_print):
         try:
@@ -565,26 +570,42 @@ class CliOutView(QTextEdit):
         except:
             print "Failed to print:", str_to_print
 
-        old_way = '''
-        #TODO reconcider how elegant is this
+    def make_red(self):
+        style_orign = "color: rgba(220, 0, 0, 255)"
+        self.setStyleSheet(style_orign)
+
+    def make_green(self):
+        style_orign = "color: rgba(0, 125, 0, 255)"
+        self.setStyleSheet(style_orign)
+
+    def make_blue(self):
+        style_orign = "color: rgba(0, 0, 125, 255)"
+        self.setStyleSheet(style_orign)
+
+
+    def refresh_txt(self, path_to_log, success = None):
+        print "\n path_to_log =", path_to_log, "\n"
         try:
-            self.append(str_to_print)
-
-        except:
-            self.append(str_to_print[0])
-        '''
-
-    def refresh_txt(self, path_to_log):
-        print "refresh_txt"
-        print "path_to_log =", path_to_log
-        if(type(path_to_log) == str):
             fil_obj = open(path_to_log, 'r')
             lst_lin = fil_obj.readlines()
 
-            self.clear()
+        except:
+            print "Failed to read log file"
+            lst_lin = ["No log file to show yet"]
+            self.make_green()
 
-            for lin in lst_lin:
-                self.add_txt(lin)
+        self.clear()
+        if(success == True):
+            self.make_blue()
+
+        elif(success == False):
+            self.make_red()
+
+        else:
+            self.make_green()
+
+        for lin in lst_lin:
+            self.add_txt(lin)
 
 
 class Text_w_Bar(QProgressBar):
