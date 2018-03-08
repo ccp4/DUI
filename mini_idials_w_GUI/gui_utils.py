@@ -231,6 +231,12 @@ def update_info(main_obj):
     new_log = main_obj.idials_runner.get_log_path()
 
     tmp_curr = main_obj.idials_runner.current_node
+
+    main_obj.cli_out.clear()
+    main_obj.cli_out.make_green()
+    main_obj.cur_log = new_log
+    main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr.success)
+
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
 
@@ -263,12 +269,6 @@ def update_info(main_obj):
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
                                   new_json = uni_json)
 
-    main_obj.cli_out.clear()
-    #TODO use next line properly
-    main_obj.cli_out.make_green()
-    if(main_obj.cur_log != new_log):
-        main_obj.cur_log = new_log
-        main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr.success)
 
 
 def update_pbar_msg(main_obj):
@@ -568,17 +568,20 @@ class CliOutView(QTextEdit):
             self.append(ed_str)
 
         except:
-            print "Failed to print:", str_to_print
+            print "unwritable char <<", str_to_print, ">>",
 
     def make_red(self):
+        print "\n turning log fonts to RED \n"
         style_orign = "color: rgba(220, 0, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_green(self):
+        print "\n turning log fonts to GREEN \n"
         style_orign = "color: rgba(0, 125, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_blue(self):
+        print "\n turning log fonts to BLUE \n"
         style_orign = "color: rgba(0, 0, 125, 255)"
         self.setStyleSheet(style_orign)
 
@@ -591,7 +594,7 @@ class CliOutView(QTextEdit):
 
         except:
             print "Failed to read log file"
-            lst_lin = ["No log file to show yet"]
+            lst_lin = ["Ready to Run:"]
             self.make_green()
 
         self.clear()
@@ -603,6 +606,8 @@ class CliOutView(QTextEdit):
 
         else:
             self.make_green()
+
+        print "success =", success, "refresh_txt"
 
         for lin in lst_lin:
             self.add_txt(lin)
