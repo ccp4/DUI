@@ -329,6 +329,7 @@ class MainWidget(QMainWindow):
         self.output_info_tabs.addTab(self.cli_out, "CLI Output")
         self.output_info_tabs.addTab(self.web_view, "Report View")
         self.output_info_tabs.addTab(self.ext_view, "External Viewing Tools")
+        self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
         h_main_splitter.addWidget(self.output_info_tabs)
 
@@ -419,6 +420,9 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.user_stoped = False
         self.update_nav_tree()
+
+    def tab_changed(self, num):
+        update_info(self)
 
     def update_low_level_command_lst(self, command_lst):
         print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst

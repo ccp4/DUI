@@ -562,10 +562,13 @@ class CliOutView(QTextEdit):
     def add_txt(self, str_to_print):
         try:
             ed_str = str(str_to_print)
+            ed_str_fin = ed_str.rstrip()
+            obsolette = '''
             if(ed_str[-1]) == "\n":
                 ed_str = ed_str[0:-1]
+            '''
 
-            self.append(ed_str)
+            self.append(ed_str_fin)
 
         except:
             print "unwritable char <<", str_to_print, ">>",
