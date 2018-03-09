@@ -223,10 +223,25 @@ def build_command_tip(command_lst):
     return str_tip
 
 def update_info(main_obj):
+
+
     main_obj.cli_tree_output(main_obj.idials_runner)
     new_html = main_obj.idials_runner.get_html_report()
     new_img_json = main_obj.idials_runner.get_datablock_path()
     new_ref_pikl = main_obj.idials_runner.get_reflections_path()
+
+    if(main_obj.cur_html != new_html):
+        main_obj.cur_html = new_html
+
+    if(main_obj.view_tab_num == 2):
+        main_obj.web_view.update_page(main_obj.cur_html)
+
+        test_remove = '''
+        try:
+            main_obj.web_view.update_page(main_obj.cur_html)
+        except:
+            print "No HTML here"
+        '''
 
     new_log = main_obj.idials_runner.get_log_path()
 
@@ -242,26 +257,16 @@ def update_info(main_obj):
 
     uni_json = tmp_curr.json_file_out
 
-    print "\n new_html =", new_html , "\n"
-    print " new_img_json =", new_img_json , "\n"
-    print " new_ref_pikl =", new_ref_pikl , "\n"
+    print "self.view_tab_num =", main_obj.view_tab_num
 
-    if(main_obj.cur_html != new_html):
-        main_obj.cur_html = new_html
-        try:
-            main_obj.web_view.update_page(new_html)
+    if(main_obj.view_tab_num == 0):
+        if(main_obj.cur_json != new_img_json):
+            main_obj.cur_json = new_img_json
+            main_obj.img_view.ini_datablock(main_obj.cur_json)
 
-        except:
-            print "No HTML here"
-
-    if(main_obj.cur_json != new_img_json):
-        main_obj.cur_json = new_img_json
-        main_obj.img_view.ini_datablock(main_obj.cur_json)
-        print "\n\n called .ini_datablock() \n\n"
-
-    if(main_obj.cur_pick != new_ref_pikl):
-        main_obj.cur_pick = new_ref_pikl
-        main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
+        if(main_obj.cur_pick != new_ref_pikl):
+            main_obj.cur_pick = new_ref_pikl
+            main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
     main_obj.info_widget.update_data(exp_json_path = uni_json,
                                      refl_pikl_path = new_ref_pikl)

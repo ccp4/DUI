@@ -15,18 +15,31 @@ class WebTab(QWidget):
 
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
-
-        #self.setGeometry(1100, 200, 550, 250)
         self.setLayout(hbox)
         self.show()
 
-    def update_page(self, new_path):
-        print " >> update_page(", new_path, ")"
-        #new_path = "file://" + new_path # unix way
-        new_path = "file:///" + new_path # Windows way(seems to work on Unix too)
+    def update_page(self, new_path = None):
+        try:
+            print "\n >> update_page(", new_path, ")"
+            #new_path = "file://" + new_path # unix way
+            new_path = "file:///" + new_path # Windows way(seems to work on Unix too)
+            print " >> new_path:", new_path, "\n"
+            self.web.load(QUrl(new_path))
 
-        print " >> new_path:", new_path
-        self.web.load(QUrl(new_path))
+        except:
+            print "\n failed to show <<", new_path, ">>  on web view "
+            dummy_html = '''<html>
+            <head>
+            <title>A Sample Page</title>
+            </head>
+            <body>
+            <h1>No page to show here</h1>
+            <hr />
+            The step where you are on the tree does not generates HTML report
+            </body>
+            </html>'''
+            self.web.setHtml(dummy_html)
+
 
 
 class TmpTstWidget( QWidget):
