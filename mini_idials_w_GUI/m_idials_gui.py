@@ -663,11 +663,24 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
         self.txt_bar.end_motion()
 
+        curr_step = self.idials_runner.current_node
 
-        for err_lin in self.idials_runner.current_node.dials_command.tmp_std_all:
+        for err_lin in curr_step.dials_command.tmp_std_all:
             print err_lin
 
-        print "\n"
+
+        print "curr_step.lin_num =", curr_step.lin_num
+        err_log_file_out = "dials_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
+        print "err_log_file_out =", err_log_file_out, "\n"
+
+        fil_obj = open(err_log_file_out, 'w')
+        for err_lin in curr_step.dials_command.tmp_std_all:
+            fil_obj.write(err_lin)
+            fil_obj.write("\n")
+
+        fil_obj.close()
+        self.idials_runner.current_node.err_file_out = err_log_file_out
+
 
     def opt_clicked(self, row, col):
         re_idx = row + 1

@@ -52,6 +52,8 @@ class CommandNode(object):
         self.log_file_out = None
         self.debug_log_file_out = None
         self.report_out = None
+        self.err_file_out = None
+
         self.dials_command = DialsCommand()
         self.work_dir = os.getcwd()
 

@@ -242,7 +242,7 @@ def update_info(main_obj):
     main_obj.cli_out.clear()
     main_obj.cli_out.make_green()
     main_obj.cur_log = new_log
-    main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr.success)
+    main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr)
 
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
@@ -580,8 +580,10 @@ class CliOutView(QTextEdit):
         self.setStyleSheet(style_orign)
 
 
-    def refresh_txt(self, path_to_log, success = None):
+    def refresh_txt(self, path_to_log, curr_step = None):
+        success = curr_step.success
         print "\n path_to_log =", path_to_log, "\n"
+
         try:
             fil_obj = open(path_to_log, 'r')
             lst_lin = fil_obj.readlines()
@@ -597,6 +599,9 @@ class CliOutView(QTextEdit):
 
         elif(success == False):
             self.make_red()
+
+            fil_obj = open(curr_step.err_file_out, 'r')
+            lst_lin = fil_obj.readlines()
 
         else:
             self.make_green()
