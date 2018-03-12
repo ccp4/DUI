@@ -696,4 +696,10 @@ class MainWidget(QMainWindow):
             self.centre_widget.update_command_lst.connect(
                             self.update_low_level_command_lst)
 
+    def closeEvent(self, event):
+            try:
+                self.my_pop.close()
+
+            except:
+                print "no need to close reindex table"
 

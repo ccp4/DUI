@@ -224,7 +224,6 @@ def build_command_tip(command_lst):
 
 def update_info(main_obj):
 
-
     main_obj.cli_tree_output(main_obj.idials_runner)
     new_html = main_obj.idials_runner.get_html_report()
     new_img_json = main_obj.idials_runner.get_datablock_path()
@@ -235,13 +234,6 @@ def update_info(main_obj):
 
     if(main_obj.view_tab_num == 2):
         main_obj.web_view.update_page(main_obj.cur_html)
-
-        test_remove = '''
-        try:
-            main_obj.web_view.update_page(main_obj.cur_html)
-        except:
-            print "No HTML here"
-        '''
 
     new_log = main_obj.idials_runner.get_log_path()
 

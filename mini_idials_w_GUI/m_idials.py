@@ -188,6 +188,15 @@ class Runner(object):
         return self.current_node
 
     def get_html_report(self):
+
+        try:
+            html_rep = self.current_node.report_out
+
+        except:
+            html_rep = None
+
+
+        old_style = '''
         if(self.current_node.success == True):
             html_rep = self.current_node.report_out
 
@@ -197,6 +206,7 @@ class Runner(object):
 
             except:
                 html_rep = None
+        '''
 
         return html_rep
 
@@ -288,6 +298,7 @@ class Runner(object):
 if(__name__ == "__main__"):
     tree_output = TreeShow()
 
+    '''
     if(len(sys.argv) <= 1):
         make_next_in = True
         print "Defaulting to << automatic >> mode"
@@ -299,8 +310,8 @@ if(__name__ == "__main__"):
     else:
         make_next_in = True
         print "Running in << automatic >> mode"
+    '''
 
-    #tmp_off = '''
     try:
         with open ('bkp.pickle', 'rb') as bkp_in:
             idials_runner = pickle.load(bkp_in)
@@ -308,9 +319,9 @@ if(__name__ == "__main__"):
     except:
         print "unable to recover previous run"
         idials_runner = Runner()
-        #'''
 
-    idials_runner.make_next = make_next_in
+    #idials_runner.make_next = make_next_in
+    idials_runner.make_next = False
     tree_output(idials_runner)
 
 

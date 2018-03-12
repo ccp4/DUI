@@ -10,8 +10,18 @@ class WebTab(QWidget):
         print " QWebSettings.JavascriptEnabled =",  QWebSettings.JavascriptEnabled
         QWebSettings.JavascriptEnabled = True
 
+        self.dummy_html = '''<html>
+            <head>
+            <title>A Sample Page</title>
+            </head>
+            <body>
+            <h3>There is no report available for this step.</h3>
+            </body>
+            </html>'''
+
         self.web =  QWebView()
         print "No need to load HTML file yet\n"
+        self.web.loadFinished.connect(self.load_finished)
 
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
@@ -28,18 +38,12 @@ class WebTab(QWidget):
 
         except:
             print "\n failed to show <<", new_path, ">>  on web view "
-            dummy_html = '''<html>
-            <head>
-            <title>A Sample Page</title>
-            </head>
-            <body>
-            <h1>No page to show here</h1>
-            <hr />
-            The step where you are on the tree does not generates HTML report
-            </body>
-            </html>'''
-            self.web.setHtml(dummy_html)
+            self.web.setHtml(self.dummy_html)
 
+    def load_finished(self, ok_bool):
+        print "self.load_finished(ok) =", ok_bool
+        if(ok_bool == False):
+            self.web.setHtml(self.dummy_html)
 
 
 class TmpTstWidget( QWidget):

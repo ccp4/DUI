@@ -246,7 +246,7 @@ def generate_report(node_obj):
         else:
             exp_inp = node_obj.json_file_out
             #rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
-            rep_cmd = "dials.report " + exp_inp + " " + refl_inp + " " + deps_outp + " " + html_outp
+            rep_cmd = "dials.report " + str(exp_inp) + " " + str(refl_inp) + " " + deps_outp + " " + html_outp
 
         print "rep_cmd =", rep_cmd
 
