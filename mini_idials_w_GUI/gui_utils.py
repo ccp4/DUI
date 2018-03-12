@@ -582,6 +582,17 @@ class CliOutView(QTextEdit):
 
     def refresh_txt(self, path_to_log, curr_step = None):
         success = curr_step.success
+
+        if(success == True):
+            self.make_blue()
+
+        elif(success == False):
+            self.make_red()
+            path_to_log = curr_step.err_file_out
+
+        else:
+            self.make_green()
+
         print "\n path_to_log =", path_to_log, "\n"
 
         try:
@@ -594,18 +605,6 @@ class CliOutView(QTextEdit):
             self.make_green()
 
         self.clear()
-        if(success == True):
-            self.make_blue()
-
-        elif(success == False):
-            self.make_red()
-
-            fil_obj = open(curr_step.err_file_out, 'r')
-            lst_lin = fil_obj.readlines()
-
-        else:
-            self.make_green()
-
         print "success =", success, "refresh_txt"
 
         for lin in lst_lin:
