@@ -3,7 +3,7 @@ import os
 
 tmp_off = '''
 self.prev_step = prev_step
-self.dials_comand = DialsCommand()
+self.dials_command = DialsCommand()
 self.work_dir = os.getcwd()
 '''
 def get_new_elem(num = -1):

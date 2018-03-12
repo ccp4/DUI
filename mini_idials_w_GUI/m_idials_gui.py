@@ -466,9 +466,9 @@ class MainWidget(QMainWindow):
 
     def stop_clicked(self):
         print "\n\n <<< Stop clicked >>> \n\n"
-        #TODO fix spelling on << dials_comand >>
-        pr_to_kill = self.idials_runner.current_node.dials_comand.my_pid
-        print "self.idials_runner.current_node.dials_comand.my_pid =", pr_to_kill
+        #TODO fix spelling on << dials_command >>
+        pr_to_kill = self.idials_runner.current_node.dials_command.my_pid
+        print "self.idials_runner.current_node.dials_command.my_pid =", pr_to_kill
         self.user_stoped = True
         kill_w_child(pr_to_kill)
 
@@ -585,6 +585,7 @@ class MainWidget(QMainWindow):
         with open('dials_files/bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
+
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
         if(tmp_curr.success != True):
@@ -658,9 +659,15 @@ class MainWidget(QMainWindow):
         update_pbar_msg(self)
 
     def after_failed(self):
-        #TODO handle error outputs
+        print "\n FAILED STEP:"
         self.update_nav_tree()
         self.txt_bar.end_motion()
+
+
+        for err_lin in self.idials_runner.current_node.dials_command.tmp_std_all:
+            print err_lin
+
+        print "\n"
 
     def opt_clicked(self, row, col):
         re_idx = row + 1

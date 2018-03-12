@@ -27,7 +27,7 @@ class UniStep(object):
         self.json_file_out = None
         self.phil_file_out = None
         self.report_out = None
-        self.dials_comand = DialsCommand()
+        self.dials_command = DialsCommand()
 
         self.work_dir = os.getcwd()
 
@@ -42,7 +42,7 @@ class UniStep(object):
         else:
             if( cmd_lst[0] in self.dials_com_lst ):
                 self.build_command(cmd_lst)
-                self.success = self.dials_comand( lst_cmd_to_run = self.cmd_lst_to_run,
+                self.success = self.dials_command( lst_cmd_to_run = self.cmd_lst_to_run,
                                                  ref_to_class = ref_to_class)
 
                 if( self.success == True ):

@@ -38,7 +38,7 @@ def prn_lst_lst_cmd(last_idials_node):
 
         l_n = str(cur_nod.lin_num)
         lst_simpl_cmd.append("command_lst[" + l_n + "] = " + str(cur_nod.command_lst))
-        lst_full_cmd.append("full_cmd_lst[" + l_n + "] = " + str(cur_nod.dials_comand.full_cmd_lst))
+        lst_full_cmd.append("full_cmd_lst[" + l_n + "] = " + str(cur_nod.dials_command.full_cmd_lst))
 
         cur_nod = cur_nod.prev_step
 
@@ -297,6 +297,8 @@ class DialsCommand(object):
 
             print "\n<<<"
 
+            self.tmp_std_all = []
+
             my_process = subprocess.Popen(run_cmd,
                                         shell = self.use_shell,
                                         stdout = subprocess.PIPE,
@@ -311,6 +313,7 @@ class DialsCommand(object):
                 single_line = line[0:len(line)-1]
                 try:
                     ref_to_class.emit_print_signal(single_line)
+                    self.tmp_std_all.append(single_line)
 
                 except:
                     print single_line
