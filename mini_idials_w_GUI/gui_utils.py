@@ -225,12 +225,7 @@ def build_command_tip(command_lst):
 def update_info(main_obj):
 
     main_obj.cli_tree_output(main_obj.idials_runner)
-    new_html = main_obj.idials_runner.get_html_report()
-    new_img_json = main_obj.idials_runner.get_datablock_path()
-    new_ref_pikl = main_obj.idials_runner.get_reflections_path()
-
-    if(main_obj.cur_html != new_html):
-        main_obj.cur_html = new_html
+    main_obj.cur_html = main_obj.idials_runner.get_html_report()
 
     if(main_obj.view_tab_num == 2):
         main_obj.web_view.update_page(main_obj.cur_html)
@@ -244,12 +239,8 @@ def update_info(main_obj):
     main_obj.cur_log = new_log
     main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr)
 
-    if(tmp_curr.success == None):
-        tmp_curr = tmp_curr.prev_step
-
-    uni_json = tmp_curr.json_file_out
-
-    print "self.view_tab_num =", main_obj.view_tab_num
+    new_img_json = main_obj.idials_runner.get_datablock_path()
+    new_ref_pikl = main_obj.idials_runner.get_reflections_path()
 
     if(main_obj.view_tab_num == 0):
         if(main_obj.cur_json != new_img_json):
@@ -259,6 +250,11 @@ def update_info(main_obj):
         if(main_obj.cur_pick != new_ref_pikl):
             main_obj.cur_pick = new_ref_pikl
             main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
+
+    if(tmp_curr.success == None):
+        tmp_curr = tmp_curr.prev_step
+
+    uni_json = tmp_curr.json_file_out
 
     main_obj.info_widget.update_data(exp_json_path = uni_json,
                                      refl_pikl_path = new_ref_pikl)
