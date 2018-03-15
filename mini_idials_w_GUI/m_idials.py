@@ -297,10 +297,10 @@ class Runner(object):
         print "printing in steps list mode: \n"
         print_list(self.step_list, self.current_line)
 
+
 if(__name__ == "__main__"):
     tree_output = TreeShow()
 
-    '''
     if(len(sys.argv) <= 1):
         make_next_in = True
         print "Defaulting to << automatic >> mode"
@@ -312,21 +312,33 @@ if(__name__ == "__main__"):
     else:
         make_next_in = True
         print "Running in << automatic >> mode"
-    '''
 
     try:
-        with open ('bkp.pickle', 'rb') as bkp_in:
+        with open ('dials_files/bkp.pickle', 'rb') as bkp_in:
             idials_runner = pickle.load(bkp_in)
 
-    except:
-        print "unable to recover previous run"
+        #TODO sometimes the following error appears
+        #Attribute not found
+        #'module' object has no attribute 'CommandNode'
+
+    except Exception as e:
+        print "str(e) =", str(e)
+        print "e.__doc__ =", e.__doc__
+        print "e.message =", e.message
         idials_runner = Runner()
 
-    #idials_runner.make_next = make_next_in
-    idials_runner.make_next = False
+        try:
+            import shutil
+            shutil.rmtree("dials_files")
+
+        except:
+            print "failed to do \"shutil.rmtree(\"dials_files\")\""
+
+        os.mkdir("dials_files")
+
+
+    idials_runner.make_next = make_next_in
     tree_output(idials_runner)
-
-
 
     command = ""
     while(command.strip() != 'exit' and command.strip() != 'quit'):
@@ -344,9 +356,10 @@ if(__name__ == "__main__"):
         idials_runner.run(command, None)
         tree_output(idials_runner)
         nxt_str = idials_runner.get_next_from_here()
-        print "\n next to run:\n ", nxt_str
-        #tmp_off = '''
-        with open('bkp.pickle', 'wb') as bkp_out:
+
+
+        with open('dials_files/bkp.pickle', 'wb') as bkp_out:
             pickle.dump(idials_runner, bkp_out)
-            #'''
+
+
 
