@@ -773,7 +773,7 @@ if(__name__ == "__main__"):
     print "pckl_file_path =", pckl_file_path
 
 
-    diag = MyImgWin(img_path, pckl_file_path)
+    diag = MyImgWin(img_path, [pckl_file_path, None])
     sys.exit(app.exec_())
     app.exec_()
 
