@@ -382,7 +382,7 @@ class InfoWidget( QWidget):
         try:
 
             self.all_data = update_all_data(experiments_path = exp_json_path,
-                                            reflections_path = refl_pikl_path)
+                                            reflections_path = refl_pikl_path[0])
 
         except:
             print "unable to update data panel"

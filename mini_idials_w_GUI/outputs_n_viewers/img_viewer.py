@@ -443,7 +443,7 @@ class MyImgWin(QWidget):
         self.stack_size = 1
 
         self.my_sweep = None
-        self.flat_data_lst = [None]
+        self.find_spt_flat_data_lst = [None]
         self.current_qimg = build_qimg()
 
         self.contrast_initiated = False
@@ -455,11 +455,11 @@ class MyImgWin(QWidget):
         else:
             self.ini_datablock(json_file_path)
 
-        if(pckl_file_path == None):
-            print "\n no pickle file given \n"
-
-        else:
+        try:
             self.ini_reflection_table(pckl_file_path)
+
+        except:
+            print "No pickle file given"
 
         self.set_img()
 
@@ -553,12 +553,12 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def ini_reflection_table(self, pckl_file_path):
-        if(pckl_file_path != None):
+        if(pckl_file_path[0] != None):
             firts_time = time_now()
 
-            print "[pickle file] =", pckl_file_path
+            print "{pickle file} =", pckl_file_path[0]
             try:
-                table = flex.reflection_table.from_pickle(pckl_file_path)
+                table = flex.reflection_table.from_pickle(pckl_file_path[0])
                 print "table =", table
                 print "len(table) = ", len(table)
                 n_refs = len(table)
@@ -570,18 +570,18 @@ class MyImgWin(QWidget):
                     hkl_col = []
 
                 n_imgs = self.img_select.maximum()
-                self.flat_data_lst = []
+                self.find_spt_flat_data_lst = []
                 if(n_imgs > 0):
-                    self.flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
+                    self.find_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
 
-                print "\n building flat_data_lst (diff time) =", time_now() - firts_time, "\n"
+                print "\n building find_spt_flat_data_lst (diff time) =", time_now() - firts_time, "\n"
 
             except:
-                self.flat_data_lst = [None]
+                self.find_spt_flat_data_lst = [None]
                 print "\n\n\ something failed with the reflection pickle \n\n"
 
         else:
-            self.flat_data_lst = [None]
+            self.find_spt_flat_data_lst = [None]
 
         self.set_img()
 
@@ -595,7 +595,7 @@ class MyImgWin(QWidget):
             img_pos = self.img_num - 1
 
             #print "\n img_pos =", img_pos, "\n"
-            #print "len(self.flat_data_lst) =", len(self.flat_data_lst)
+            #print "len(self.find_spt_flat_data_lst) =", len(self.find_spt_flat_data_lst)
 
             loc_stk_siz = self.stack_size
             print "loc_stk_siz =", loc_stk_siz
@@ -616,16 +616,16 @@ class MyImgWin(QWidget):
                     self.img_arr = self.img_arr \
                     + self.my_sweep.get_raw_data(pos_to_add)[0].as_double() * loc_scale
 
-            if(self.flat_data_lst == [None]):
+            if(self.find_spt_flat_data_lst == [None]):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                                               self.i_min, self.i_max))
 
             else:
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                             self.i_min, self.i_max),
-                                            self.flat_data_lst[img_pos:img_pos + loc_stk_siz])
+                                            self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
 
-                print "len(self.flat_data_lst[img_pos:img_pos + loc_stk_siz]) =", len(self.flat_data_lst[img_pos:img_pos + loc_stk_siz]), "\n"
+                print "len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]) =", len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]), "\n"
 
 
 

@@ -26,7 +26,7 @@ import os
 import sys
 import pickle
 from cli_utils import print_list, TreeShow, DialsCommand, \
-     generate_report, build_command_lst, get_next_step
+     generate_report, build_command_lst, get_next_step, generate_predict
 
 class CommandNode(object):
     dials_com_lst = [
@@ -46,12 +46,13 @@ class CommandNode(object):
         self.prev_step = prev_step
         self.command_lst = [None]
         self.success = None
-        self.pickle_file_out = None
+        self.refl_pickle_file_out = None
         self.json_file_out = None
         self.phil_file_out = None
         self.log_file_out = None
         self.debug_log_file_out = None
         self.report_out = None
+        self.predict_pickle_out = None
         self.err_file_out = None
 
         self.dials_command = DialsCommand()
@@ -71,8 +72,8 @@ class CommandNode(object):
                                                  ref_to_class = ref_to_class)
 
                 if(self.success == True):
-                    #print "#generate_report(self)"
                     self.report_out = generate_report(self)
+                    self.predict_pickle_out = generate_predict(self)
 
             else:
                 print "NOT dials command"
@@ -281,14 +282,19 @@ class Runner(object):
                 tmp_cur.command_lst[0] == "import" or
                 tmp_cur.success != True):
 
-            return None
+            return None, None
+
+        ref_pkl = None
+        pre_pkl = None
 
         try:
-            return tmp_cur.pickle_file_out
+            ref_pkl = tmp_cur.refl_pickle_file_out
+            pre_pkl = tmp_cur.predict_pickle_out
 
         except:
             print "no pickle file available"
-            return None
+
+        return ref_pkl, pre_pkl
 
     def get_next_from_here(self):
         return self.current_node.get_next_step()
