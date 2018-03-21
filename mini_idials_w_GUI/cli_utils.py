@@ -243,10 +243,15 @@ def generate_predict(node_obj):
 
             gen_pred_proc = subprocess.Popen(pred_cmd, shell = True)
             gen_pred_proc.wait()
-            pre_out = node_obj.work_dir + "/" + htm_fil
-            print "\ngenerated predictions at: ", pre_out, "\n"
+            pre_out = node_obj.work_dir + "/" + pre_fil
+            if(os.path.exists(pre_out)):
+                print "\ngenerated predictions at: ", pre_out, "\n"
+
+            else:
+                pre_out = None
 
         except:
+            print "Failed adding path to predictions"
             pre_out = None
 
     return pre_out

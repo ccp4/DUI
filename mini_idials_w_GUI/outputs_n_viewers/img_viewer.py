@@ -554,9 +554,7 @@ class MyImgWin(QWidget):
 
     def ini_reflection_table(self, pckl_file_path):
         if(pckl_file_path[0] != None):
-            firts_time = time_now()
-
-            print "{pickle file} =", pckl_file_path[0]
+            print "\npickle file (found) =", pckl_file_path[0]
             try:
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
                 print "table =", table
@@ -574,14 +572,35 @@ class MyImgWin(QWidget):
                 if(n_imgs > 0):
                     self.find_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
 
-                print "\n building find_spt_flat_data_lst (diff time) =", time_now() - firts_time, "\n"
-
             except:
                 self.find_spt_flat_data_lst = [None]
-                print "\n\n\ something failed with the reflection pickle \n\n"
+                print "\n something failed with the reflection pickle \n\n"
+
+            print "\npickle file (predictions) =", pckl_file_path[1]
+
+            try:
+                table = flex.reflection_table.from_pickle(pckl_file_path[1])
+                print "table =", table
+                print "len(table) = ", len(table)
+                n_refs = len(table)
+                bbox_col = map(list, table["bbox"])
+                try:
+                    hkl_col = map(str, table["miller_index"])
+
+                except:
+                    hkl_col = []
+
+                n_imgs = self.img_select.maximum()
+                self.pred_spt_flat_data_lst = []
+                if(n_imgs > 0):
+                    self.pred_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
+
+            except:
+                self.pred_spt_flat_data_lst = [None]
+                print "\n something failed with the reflection pickle \n\n"
 
         else:
-            self.find_spt_flat_data_lst = [None]
+            self.pred_spt_flat_data_lst = [None]
 
         self.set_img()
 
@@ -593,9 +612,6 @@ class MyImgWin(QWidget):
     def set_img(self):
         if(self.my_sweep != None):
             img_pos = self.img_num - 1
-
-            #print "\n img_pos =", img_pos, "\n"
-            #print "len(self.find_spt_flat_data_lst) =", len(self.find_spt_flat_data_lst)
 
             loc_stk_siz = self.stack_size
             print "loc_stk_siz =", loc_stk_siz
