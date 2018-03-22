@@ -79,8 +79,6 @@ class PopBigMenu(QMenu):
         info_grp =  QGroupBox("Reflection Info ")
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        ##################################################################################################
-
         ref_type_group = QButtonGroup()
         ref_type_group.addButton(self.my_parent.rad_but_fnd_hkl)
         ref_type_group.addButton(self.my_parent.rad_but_pre_hkl)
@@ -90,18 +88,6 @@ class PopBigMenu(QMenu):
 
         type_grp =  QGroupBox("Reflection Type ")
         type_grp.setLayout(ref_type_group_box_layout)
-
-        ##################################################################################################
-
-
-        top_box = QHBoxLayout()
-        top_box.addWidget(self.my_parent.btn_first)
-        top_box.addWidget(self.my_parent.btn_rev)
-        top_box.addWidget(self.my_parent.btn_prev)
-        top_box.addWidget(self.my_parent.img_select)
-        top_box.addWidget(self.my_parent.btn_next)
-        top_box.addWidget(self.my_parent.btn_ffw)
-        top_box.addWidget(self.my_parent.btn_last)
 
         mid_box = QHBoxLayout()
         mid_box.addWidget(QLabel("Image Jump Step"))
@@ -114,11 +100,10 @@ class PopBigMenu(QMenu):
         bot_box.addWidget(self.my_parent.btn_stop)
 
         img_select_box = QVBoxLayout()
-        img_select_box.addLayout(top_box)
         img_select_box.addLayout(mid_box)
         img_select_box.addLayout(bot_box)
 
-        img_select_group_box = QGroupBox("IMG Select")
+        img_select_group_box = QGroupBox("IMG Navigation")
         img_select_group_box.setLayout(img_select_box)
 
         my_box = QVBoxLayout()
@@ -459,6 +444,22 @@ class MyImgWin(QWidget):
         self.btn_stop = QPushButton("Stop IMGs Video")
         self.btn_stop.clicked.connect(self.btn_stop_clicked)
 
+        ##################################################################################
+
+        nav_box = QHBoxLayout()
+        nav_box.addWidget(self.btn_first)
+        nav_box.addWidget(self.btn_rev)
+        nav_box.addWidget(self.btn_prev)
+        nav_box.addWidget(self.img_select)
+        nav_box.addWidget(self.btn_next)
+        nav_box.addWidget(self.btn_ffw)
+        nav_box.addWidget(self.btn_last)
+        nav_box.addStretch()
+
+        ##################################################################################
+
+
+
         big_menu_but = QPushButton('Viewing Tools  ...  ')
         big_menu_but.setMenu(PopBigMenu(self))
 
@@ -501,7 +502,10 @@ class MyImgWin(QWidget):
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
         my_box = QVBoxLayout()
+        my_box.addLayout(nav_box)
         my_box.addLayout(top_box)
+
+
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
 
