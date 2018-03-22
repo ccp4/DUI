@@ -70,24 +70,14 @@ class PopBigMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
+        info_grp =  QGroupBox("Reflection Info ")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
 
-        info_grp =  QGroupBox("Reflection Info ")
         info_grp.setLayout(ref_bond_group_box_layout)
-
-        ref_type_group = QButtonGroup()
-        ref_type_group.addButton(self.my_parent.rad_but_fnd_hkl)
-        ref_type_group.addButton(self.my_parent.rad_but_pre_hkl)
-        ref_type_group_box_layout = QVBoxLayout()
-        ref_type_group_box_layout.addWidget(self.my_parent.rad_but_fnd_hkl)
-        ref_type_group_box_layout.addWidget(self.my_parent.rad_but_pre_hkl)
-
-        type_grp =  QGroupBox("Reflection Type ")
-        type_grp.setLayout(ref_type_group_box_layout)
 
         mid_box = QHBoxLayout()
         mid_box.addWidget(QLabel("Image Jump Step"))
@@ -110,7 +100,7 @@ class PopBigMenu(QMenu):
         my_box.addWidget(colour_grp)
         my_box.addWidget(info_grp)
         my_box.addWidget(img_select_group_box)
-        my_box.addWidget(type_grp)
+
 
         self.setLayout(my_box)
         self.show()
@@ -413,6 +403,16 @@ class MyImgWin(QWidget):
         self.rad_but_pre_hkl = QRadioButton("Predic Pos")
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
+        ref_type_group = QButtonGroup()
+        ref_type_group.addButton(self.rad_but_fnd_hkl)
+        ref_type_group.addButton(self.rad_but_pre_hkl)
+        ref_type_group_box_layout = QHBoxLayout()
+        ref_type_group_box_layout.addWidget(self.rad_but_fnd_hkl)
+        ref_type_group_box_layout.addWidget(self.rad_but_pre_hkl)
+
+        type_grp =  QGroupBox("Reflection Type ")
+        type_grp.setLayout(ref_type_group_box_layout)
+
         self.palette_select = QComboBox()
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
         self.palette = self.palette_lst[0]
@@ -444,7 +444,6 @@ class MyImgWin(QWidget):
         self.btn_stop = QPushButton("Stop IMGs Video")
         self.btn_stop.clicked.connect(self.btn_stop_clicked)
 
-        ##################################################################################
 
         nav_box = QHBoxLayout()
         nav_box.addWidget(self.btn_first)
@@ -455,10 +454,6 @@ class MyImgWin(QWidget):
         nav_box.addWidget(self.btn_ffw)
         nav_box.addWidget(self.btn_last)
         nav_box.addStretch()
-
-        ##################################################################################
-
-
 
         big_menu_but = QPushButton('Viewing Tools  ...  ')
         big_menu_but.setMenu(PopBigMenu(self))
@@ -495,16 +490,23 @@ class MyImgWin(QWidget):
         self.img_step.valueChanged.connect(self.step_changed_by_user)
         self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
 
+        my_box = QVBoxLayout()
+
         top_box = QHBoxLayout()
         top_box.addWidget(big_menu_but)
-        top_box.addStretch()
+        #top_box.addStretch()
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
-        my_box = QVBoxLayout()
-        my_box.addLayout(nav_box)
-        my_box.addLayout(top_box)
+        top_lest_v_box = QVBoxLayout()
+        top_lest_v_box.addLayout(nav_box)
+        top_lest_v_box.addLayout(top_box)
 
+        top_hbox = QHBoxLayout()
+        top_hbox.addLayout(top_lest_v_box)
+        top_hbox.addWidget(type_grp)
+
+        my_box.addLayout(top_hbox)
 
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
