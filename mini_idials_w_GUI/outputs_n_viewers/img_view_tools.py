@@ -128,7 +128,7 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
 
         #print "local_hkl =", local_hkl
 
-        for idx in xrange(int(pos_tri[2]) - 3, int(pos_tri[2]) + 3):
+        for idx in xrange(int(pos_tri[2]) - 1, int(pos_tri[2]) + 1):
             if(idx >= 0 and idx < n_imgs):
                 img_lst[idx].append(box_dat);
 

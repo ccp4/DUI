@@ -79,6 +79,21 @@ class PopBigMenu(QMenu):
         info_grp =  QGroupBox("Reflection Info ")
         info_grp.setLayout(ref_bond_group_box_layout)
 
+        ##################################################################################################
+
+        ref_type_group = QButtonGroup()
+        ref_type_group.addButton(self.my_parent.rad_but_fnd_hkl)
+        ref_type_group.addButton(self.my_parent.rad_but_pre_hkl)
+        ref_type_group_box_layout = QVBoxLayout()
+        ref_type_group_box_layout.addWidget(self.my_parent.rad_but_fnd_hkl)
+        ref_type_group_box_layout.addWidget(self.my_parent.rad_but_pre_hkl)
+
+        type_grp =  QGroupBox("Reflection Type ")
+        type_grp.setLayout(ref_type_group_box_layout)
+
+        ##################################################################################################
+
+
         top_box = QHBoxLayout()
         top_box.addWidget(self.my_parent.btn_first)
         top_box.addWidget(self.my_parent.btn_rev)
@@ -110,6 +125,7 @@ class PopBigMenu(QMenu):
         my_box.addWidget(colour_grp)
         my_box.addWidget(info_grp)
         my_box.addWidget(img_select_group_box)
+        my_box.addWidget(type_grp)
 
         self.setLayout(my_box)
         self.show()
@@ -305,37 +321,39 @@ class ImgPainter(MyQWidgetWithQPainter):
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
                 painter.setFont(tmp_font)
+                try:
+                    for j, img_flat_data in enumerate(self.flat_data_lst):
+                        for i, reflection in enumerate(img_flat_data):
+                            x = float(reflection[0])
+                            y = float(reflection[1])
+                            width = float(reflection[2])
+                            height = float(reflection[3])
+                            rectangle = QRectF(x * self.my_scale, y * self.my_scale,
+                                            width * self.my_scale, height * self.my_scale)
 
-                for j, img_flat_data in enumerate(self.flat_data_lst):
-                    for i, reflection in enumerate(img_flat_data):
-                        x = float(reflection[0])
-                        y = float(reflection[1])
-                        width = float(reflection[2])
-                        height = float(reflection[3])
-                        rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                           width * self.my_scale, height * self.my_scale)
+                            if(reflection[4] == "NOT indexed"):
+                                painter.setPen(non_indexed_pen)
 
-                        if(reflection[4] == "NOT indexed"):
-                            painter.setPen(non_indexed_pen)
+                            else:
+                                painter.setPen(indexed_pen)
 
-                        else:
-                            painter.setPen(indexed_pen)
-
-                        painter.drawRect(rectangle)
+                            painter.drawRect(rectangle)
 
 
-                        if(self.my_parent.rad_but_all_hkl.isChecked() == True and
-                           reflection[4] != "" and reflection[4] != "NOT indexed"):
+                            if(self.my_parent.rad_but_all_hkl.isChecked() == True and
+                            reflection[4] != "" and reflection[4] != "NOT indexed"):
 
-                            painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                                  int(y * self.my_scale)),  reflection[4])
+                                painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                                    int(y * self.my_scale)),  reflection[4])
 
-                        elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
-                             self.closer_ref == [i, j]):
+                            elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
+                                self.closer_ref == [i, j]):
 
-                            painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                              int(y * self.my_scale)),  reflection[4])
+                                painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                                int(y * self.my_scale)),  reflection[4])
 
+                except:
+                    print "No reflection info to show (None type)"
 
 
                 if(self.xb != None and self.yb != None):
@@ -396,15 +414,19 @@ class MyImgWin(QWidget):
         self.chk_box_show.stateChanged.connect(self.set_img)
 
         self.rad_but_all_hkl = QRadioButton("All HKLs")
-        self.rad_but_all_hkl.clicked.connect(self.Action1)
+        self.rad_but_all_hkl.clicked.connect(self.set_img)
 
         self.rad_but_all_hkl.setChecked(True)
-
         self.rad_but_near_hkl = QRadioButton("Nearest HKL")
-        self.rad_but_near_hkl.clicked.connect(self.Action2)
+        self.rad_but_near_hkl.clicked.connect(self.set_img)
         self.rad_but_none_hkl = QRadioButton("No HKL")
-        self.rad_but_none_hkl.clicked.connect(self.Action3)
+        self.rad_but_none_hkl.clicked.connect(self.set_img)
 
+        self.rad_but_fnd_hkl = QRadioButton("Found Refs")
+        self.rad_but_fnd_hkl.setChecked(True)
+        self.rad_but_fnd_hkl.clicked.connect(self.set_img)
+        self.rad_but_pre_hkl = QRadioButton("Predic Pos")
+        self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
         self.palette_select = QComboBox()
         self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
@@ -642,20 +664,21 @@ class MyImgWin(QWidget):
                                                               self.i_min, self.i_max))
 
             else:
-                self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                            self.i_min, self.i_max),
-                                            self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
-                '''
-                self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                            self.i_min, self.i_max),
-                                            self.pred_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
-                '''
+                if( self.rad_but_fnd_hkl.isChecked() == True):
+                    self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                self.i_min, self.i_max),
+                                                self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
+
+                else:
+                    self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                                self.i_min, self.i_max),
+                                                self.pred_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
 
 
                 print "len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]) =", len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]), "\n"
 
 
-
+        to_remove = '''
     def Action1(self):
         #TODO fix the name of this function
         print "rad_but_all_hkl clicked"
@@ -670,6 +693,7 @@ class MyImgWin(QWidget):
         #TODO fix the name of this function
         print "rad_but_none_hkl clicked"
         self.set_img()
+        '''
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
