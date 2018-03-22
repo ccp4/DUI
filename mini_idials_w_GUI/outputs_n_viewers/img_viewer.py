@@ -30,7 +30,9 @@ import numpy as np
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
-from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, list_arrange
+from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, \
+                           list_arrange, list_p_arrange
+
 from time import time as time_now
 
 QGLWidget_test = '''
@@ -572,6 +574,9 @@ class MyImgWin(QWidget):
                 if(n_imgs > 0):
                     self.find_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
 
+                else:
+                    print "empty IMG lst"
+
             except:
                 self.find_spt_flat_data_lst = [None]
                 print "\n something failed with the reflection pickle \n\n"
@@ -583,7 +588,7 @@ class MyImgWin(QWidget):
                 print "table =", table
                 print "len(table) = ", len(table)
                 n_refs = len(table)
-                bbox_col = map(list, table["bbox"])
+                pos_col = map(list, table["xyzcal.px"])
                 try:
                     hkl_col = map(str, table["miller_index"])
 
@@ -593,7 +598,7 @@ class MyImgWin(QWidget):
                 n_imgs = self.img_select.maximum()
                 self.pred_spt_flat_data_lst = []
                 if(n_imgs > 0):
-                    self.pred_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
+                    self.pred_spt_flat_data_lst = list_p_arrange(pos_col, hkl_col, n_imgs)
 
             except:
                 self.pred_spt_flat_data_lst = [None]
@@ -640,6 +645,12 @@ class MyImgWin(QWidget):
                 self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
                                             self.i_min, self.i_max),
                                             self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
+                '''
+                self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
+                                            self.i_min, self.i_max),
+                                            self.pred_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
+                '''
+
 
                 print "len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]) =", len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]), "\n"
 

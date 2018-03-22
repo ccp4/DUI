@@ -90,6 +90,53 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
     return hkl_result, slice_result
 
+
+def list_p_arrange(pos_col, hkl_lst, n_imgs):
+    img_lst = []
+    for time in xrange(n_imgs):
+        img_lst.append([])
+
+    my_bar = ProgBarInShell(min_val = 0, max_val = len(pos_col), text = "updating Image/Reflections Data:")
+    print " len(pos_col) =", len(pos_col)
+
+    for i, pos_tri in enumerate(pos_col):
+        #print "pos_tri =", pos_tri
+        my_bar(i)
+        x_ini = pos_tri[0] - 1
+        y_ini = pos_tri[1] - 1
+        width = 2
+        height = 2
+
+        box_dat = []
+        box_dat.append(x_ini)
+        box_dat.append(y_ini)
+        box_dat.append(width)
+        box_dat.append(height)
+
+        #print "box_dat =", box_dat
+
+        if(len(hkl_lst) <= 1):
+            local_hkl = ""
+            box_dat.append(local_hkl)
+
+        else:
+            local_hkl = hkl_lst[i]
+            if(local_hkl == "(0, 0, 0)"):
+                local_hkl = "NOT indexed"
+
+            box_dat.append(local_hkl)
+
+        #print "local_hkl =", local_hkl
+
+        for idx in xrange(int(pos_tri[2]) - 3, int(pos_tri[2]) + 3):
+            if(idx >= 0 and idx < n_imgs):
+                img_lst[idx].append(box_dat);
+
+    my_bar.ended()
+
+    return img_lst
+
+
 def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 
     img_lst = []
