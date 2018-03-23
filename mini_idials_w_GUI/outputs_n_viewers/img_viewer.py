@@ -194,13 +194,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             v_new_pbar_pos = int(scale_factor * v_scr_bar +  (scale_factor - 1.0) * border_dy )
 
-            old_way = '''
-            h_new_pbar_pos = int(scale_factor * h_scr_bar
-                             + ((scale_factor - 1) * self.p_h_svar().pageStep()/2))
-
-            v_new_pbar_pos = int(scale_factor * v_scr_bar
-                             + ((scale_factor - 1) * self.p_v_svar().pageStep()/2))
-            '''
             self.update()
 
             self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
@@ -397,10 +390,10 @@ class MyImgWin(QWidget):
         self.rad_but_none_hkl = QRadioButton("No HKL")
         self.rad_but_none_hkl.clicked.connect(self.set_img)
 
-        self.rad_but_fnd_hkl = QRadioButton("Found Refs")
+        self.rad_but_fnd_hkl = QRadioButton("Obsevations")
         self.rad_but_fnd_hkl.setChecked(True)
         self.rad_but_fnd_hkl.clicked.connect(self.set_img)
-        self.rad_but_pre_hkl = QRadioButton("Predic Pos")
+        self.rad_but_pre_hkl = QRadioButton("Predictions")
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
         ref_type_group = QButtonGroup()
