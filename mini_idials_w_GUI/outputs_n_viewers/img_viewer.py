@@ -209,20 +209,26 @@ class ImgPainter(MyQWidgetWithQPainter):
 
 
     def find_closer_hkl(self, x_mouse, y_mouse):
-        if(self.flat_data_lst != None):
+        if(self.obs_flat_data != None):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
                                                      y_mouse_scaled,
-                                                     self.flat_data_lst)
+                                                     self.obs_flat_data)
+
 
             self.closer_ref = [closer_hkl, closer_slice]
             self.update()
 
-    def set_img_pix(self, q_img = None, flat_data_lst_in = None):
+    def set_img_pix(self, q_img = None,
+                    obs_flat_data_in = None,
+                    pre_flat_data_in = None,
+                    user_choice_in = (None, None)):
 
         self.img = q_img
-        self.flat_data_lst = flat_data_lst_in
+        self.obs_flat_data = obs_flat_data_in
+        self.pre_flat_data = pre_flat_data_in
+        self.user_choice = user_choice_in
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
@@ -281,47 +287,92 @@ class ImgPainter(MyQWidgetWithQPainter):
             #painter.setFont(QFont("Monospace", 22))
             #painter.setFont(QFont("FreeMono", 22))
 
-            if(self.flat_data_lst != None and self.my_parent.chk_box_show.checkState()):
+            if(self.obs_flat_data != None and
+                    self.my_parent.chk_box_show.checkState() and
+                    self.pre_flat_data !=None):
 
-                #print "len(self.flat_data_lst) =", len(self.flat_data_lst)
+                #print "len(self.obs_flat_data) =", len(self.obs_flat_data)
 
                 tmp_font = QFont()
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
                 painter.setFont(tmp_font)
-                try:
-                    for j, img_flat_data in enumerate(self.flat_data_lst):
-                        for i, reflection in enumerate(img_flat_data):
-                            x = float(reflection[0])
-                            y = float(reflection[1])
-                            width = float(reflection[2])
-                            height = float(reflection[3])
-                            rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                            width * self.my_scale, height * self.my_scale)
+                if(self.user_choice[0]):
+                    try:
+                        for j, img_flat_data in enumerate(self.obs_flat_data):
+                            for i, reflection in enumerate(img_flat_data):
+                                x = float(reflection[0])
+                                y = float(reflection[1])
+                                width = float(reflection[2])
+                                height = float(reflection[3])
+                                rectangle = QRectF(x * self.my_scale, y * self.my_scale,
+                                                width * self.my_scale, height * self.my_scale)
 
-                            if(reflection[4] == "NOT indexed"):
-                                painter.setPen(non_indexed_pen)
+                                if(reflection[4] == "NOT indexed"):
+                                    painter.setPen(non_indexed_pen)
 
-                            else:
-                                painter.setPen(indexed_pen)
+                                else:
+                                    painter.setPen(indexed_pen)
 
-                            painter.drawRect(rectangle)
+                                painter.drawRect(rectangle)
 
 
-                            if(self.my_parent.rad_but_all_hkl.isChecked() == True and
-                            reflection[4] != "" and reflection[4] != "NOT indexed"):
+                                if(self.my_parent.rad_but_all_hkl.isChecked() == True and
+                                        reflection[4] != "" and reflection[4] != "NOT indexed"):
 
-                                painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                    painter.drawText( QPoint(int((x + width) * self.my_scale),
+                                                        int(y * self.my_scale)),  reflection[4])
+
+                                elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
+                                        self.closer_ref == [i, j]):
+
+                                    painter.drawText( QPoint(int((x + width) * self.my_scale),
                                                     int(y * self.my_scale)),  reflection[4])
 
-                            elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
-                                self.closer_ref == [i, j]):
+                    except:
+                        print "No reflection (Obsevations) to show ... None type"
 
-                                painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                                int(y * self.my_scale)),  reflection[4])
+                if(self.user_choice[1]):
+                    try:
+                        for j, img_flat_data in enumerate(self.pre_flat_data):
+                            for i, reflection in enumerate(img_flat_data):
 
-                except:
-                    print "No reflection info to show (None type)"
+                                x = float(reflection[0]) + 1.0
+                                y = float(reflection[1]) + 1.0
+
+                                if(reflection[4] == "NOT indexed"):
+                                    painter.setPen(non_indexed_pen)
+
+                                else:
+                                    painter.setPen(indexed_pen)
+
+                                cen_siz = 5.0
+                                painter.drawLine(x * self.my_scale,
+                                                (y - cen_siz) * self.my_scale,
+                                                x * self.my_scale,
+                                                (y + cen_siz) * self.my_scale)
+
+                                painter.drawLine((x + cen_siz) * self.my_scale,
+                                                y * self.my_scale,
+                                                (x - cen_siz) * self.my_scale,
+                                                y * self.my_scale)
+
+                                replace = '''
+                                if(self.my_parent.rad_but_all_hkl.isChecked() == True and
+                                        reflection[4] != "" and reflection[4] != "NOT indexed"):
+
+                                    painter.drawText( QPoint(int(x * self.my_scale),
+                                                        int(y * self.my_scale)),  reflection[4])
+
+                                elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
+                                        self.closer_ref == [i, j]):
+
+                                    painter.drawText( QPoint(int(x * self.my_scale),
+                                                    int(y * self.my_scale)),  reflection[4])
+                                '''
+
+                    except:
+                        print "No reflection (Predictions) to show ... None type"
 
 
                 if(self.xb != None and self.yb != None):
@@ -390,10 +441,10 @@ class MyImgWin(QWidget):
         self.rad_but_none_hkl = QRadioButton("No HKL")
         self.rad_but_none_hkl.clicked.connect(self.set_img)
 
-        self.rad_but_fnd_hkl = QRadioButton("Obsevations")
+        self.rad_but_fnd_hkl = QCheckBox("Obsevations")
         self.rad_but_fnd_hkl.setChecked(True)
         self.rad_but_fnd_hkl.clicked.connect(self.set_img)
-        self.rad_but_pre_hkl = QRadioButton("Predictions")
+        self.rad_but_pre_hkl = QCheckBox("Predictions")
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
         ref_type_group = QButtonGroup()
@@ -457,6 +508,8 @@ class MyImgWin(QWidget):
 
         self.my_sweep = None
         self.find_spt_flat_data_lst = [None]
+        self.pred_spt_flat_data_lst = [None]
+
         self.current_qimg = build_qimg()
 
         self.contrast_initiated = False
@@ -640,7 +693,6 @@ class MyImgWin(QWidget):
             img_pos = self.img_num - 1
 
             loc_stk_siz = self.stack_size
-            print "loc_stk_siz =", loc_stk_siz
 
             if(loc_stk_siz == 1):
                 self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
@@ -658,41 +710,27 @@ class MyImgWin(QWidget):
                     self.img_arr = self.img_arr \
                     + self.my_sweep.get_raw_data(pos_to_add)[0].as_double() * loc_scale
 
-            if(self.find_spt_flat_data_lst == [None]):
-                self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                              self.i_min, self.i_max))
+            if(self.find_spt_flat_data_lst == [None] and
+                    self.pred_spt_flat_data_lst == [None]):
+
+                self.my_painter.set_img_pix(self.current_qimg(self.img_arr,
+                                                              self.palette,
+                                                              self.i_min,
+                                                              self.i_max))
 
             else:
-                if( self.rad_but_fnd_hkl.isChecked() == True):
-                    self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                self.i_min, self.i_max),
-                                                self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
-
-                else:
-                    self.my_painter.set_img_pix(self.current_qimg(self.img_arr, self.palette,
-                                                self.i_min, self.i_max),
-                                                self.pred_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz])
-
-
-                print "len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]) =", len(self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz]), "\n"
-
-
-        to_remove = '''
-    def Action1(self):
-        #TODO fix the name of this function
-        print "rad_but_all_hkl clicked"
-        self.set_img()
-
-    def Action2(self):
-        #TODO fix the name of this function
-        print "rad_but_near_hkl clicked"
-        self.set_img()
-
-    def Action3(self):
-        #TODO fix the name of this function
-        print "rad_but_none_hkl clicked"
-        self.set_img()
-        '''
+                self.my_painter.set_img_pix(q_img =
+                                            self.current_qimg(self.img_arr,
+                                            self.palette,
+                                            self.i_min,
+                                            self.i_max),
+                                            obs_flat_data_in =
+                                            self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz],
+                                            pre_flat_data_in =
+                                            self.pred_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz],
+                                            user_choice_in =
+                                            (self.rad_but_fnd_hkl.checkState(),
+                                            self.rad_but_pre_hkl.checkState()))
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
