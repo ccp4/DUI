@@ -209,13 +209,21 @@ class ImgPainter(MyQWidgetWithQPainter):
 
 
     def find_closer_hkl(self, x_mouse, y_mouse):
-        if(self.obs_flat_data != None):
+        if(self.pre_flat_data != None and self.user_choice[1]):
+            tmp_flat_data = self.pre_flat_data
+
+        elif(self.obs_flat_data != None and self.user_choice[0]):
+            tmp_flat_data = self.obs_flat_data
+
+        else:
+            tmp_flat_data = None
+
+        if(tmp_flat_data != None):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
                                                      y_mouse_scaled,
-                                                     self.obs_flat_data)
-
+                                                     tmp_flat_data)
 
             self.closer_ref = [closer_hkl, closer_slice]
             self.update()
@@ -297,6 +305,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
                 #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
                 painter.setFont(tmp_font)
+                lst_tmp_hkl = None
                 if(self.user_choice[0]):
                     try:
                         for j, img_flat_data in enumerate(self.obs_flat_data):
@@ -315,19 +324,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                                     painter.setPen(indexed_pen)
 
                                 painter.drawRect(rectangle)
-
-
-                                if(self.my_parent.rad_but_all_hkl.isChecked() == True and
-                                        reflection[4] != "" and reflection[4] != "NOT indexed"):
-
-                                    painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                                        int(y * self.my_scale)),  reflection[4])
-
-                                elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
-                                        self.closer_ref == [i, j]):
-
-                                    painter.drawText( QPoint(int((x + width) * self.my_scale),
-                                                    int(y * self.my_scale)),  reflection[4])
+                                lst_tmp_hkl = self.obs_flat_data
 
                     except:
                         print "No reflection (Obsevations) to show ... None type"
@@ -339,7 +336,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
                                 x = float(reflection[0]) + 1.0
                                 y = float(reflection[1]) + 1.0
-
                                 if(reflection[4] == "NOT indexed"):
                                     painter.setPen(non_indexed_pen)
 
@@ -357,23 +353,36 @@ class ImgPainter(MyQWidgetWithQPainter):
                                                 (x - cen_siz) * self.my_scale,
                                                 y * self.my_scale)
 
-                                replace = '''
-                                if(self.my_parent.rad_but_all_hkl.isChecked() == True and
-                                        reflection[4] != "" and reflection[4] != "NOT indexed"):
-
-                                    painter.drawText( QPoint(int(x * self.my_scale),
-                                                        int(y * self.my_scale)),  reflection[4])
-
-                                elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
-                                        self.closer_ref == [i, j]):
-
-                                    painter.drawText( QPoint(int(x * self.my_scale),
-                                                    int(y * self.my_scale)),  reflection[4])
-                                '''
+                                lst_tmp_hkl = self.pre_flat_data
 
                     except:
                         print "No reflection (Predictions) to show ... None type"
 
+                try:
+                    for j, img_flat_data in enumerate(lst_tmp_hkl):
+                        for i, reflection in enumerate(img_flat_data):
+                            x = float(reflection[0]) + 1.0
+                            y = float(reflection[1]) + 1.0
+                            if(reflection[4] == "NOT indexed"):
+                                painter.setPen(non_indexed_pen)
+
+                            else:
+                                painter.setPen(indexed_pen)
+
+                            if(self.my_parent.rad_but_all_hkl.isChecked() == True and
+                                    reflection[4] != "" and reflection[4] != "NOT indexed"):
+
+                                painter.drawText(QPoint(int(x * self.my_scale),
+                                                    int(y * self.my_scale)),  reflection[4])
+
+                            elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
+                                    self.closer_ref == [i, j]):
+
+                                painter.drawText( QPoint(int(x * self.my_scale),
+                                                int(y * self.my_scale)),  reflection[4])
+
+                except:
+                    print "Failed to show HKLs"
 
                 if(self.xb != None and self.yb != None):
 
