@@ -30,23 +30,10 @@ from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 import sys
 
-class ProgBarInShell(QProgressDialog):
+class ProgBarBox(QProgressDialog):
     def __init__(self, max_val = 100, min_val = 0, text = "Working"):
-        super(ProgBarInShell, self).__init__(parent = None)
-
-        TODO = '''
-        #Think about the idea of ussing the following "__init__(...)" way
-        class PySide.QtGui.QProgressDialog(labelText, cancelButtonText, minimum, maximum[, parent=None[, flags=0]])
-            Parameters:
-
-                cancelButtonText - unicode
-                flags - PySide.QtCore.Qt.WindowFlags
-                labelText - unicode
-                minimum - PySide.QtCore.int
-                maximum - PySide.QtCore.int
-                parent - PySide.QtGui.QWidget
-
-        '''
+        super(ProgBarBox, self).__init__(parent = None)
+        self.setMinimumDuration(500)
 
         if(max_val > min_val):
             self.my_max = max_val
@@ -63,7 +50,7 @@ class ProgBarInShell(QProgressDialog):
 
     def __call__(self, updated_val):
         prog_psent = float(updated_val - self.my_min) / self.my_delta
-        sys.stdout.write('\r' + self.my_txt + " " + str(prog_psent))
+        #sys.stdout.write('\r' + self.my_txt + " " + str(prog_psent))
         self.setValue(prog_psent * 100)
 
     def ended(self):
@@ -96,7 +83,8 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
     for time in xrange(n_imgs):
         img_lst.append([])
 
-    my_bar = ProgBarInShell(min_val = 0, max_val = len(pos_col), text = "updating Image/Reflections Data:")
+    txt_lab = "updating Observed Reflections Data:"
+    my_bar = ProgBarBox(min_val = 0, max_val = len(pos_col), text = txt_lab)
     print " len(pos_col) =", len(pos_col)
 
     for i, pos_tri in enumerate(pos_col):
@@ -104,8 +92,8 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
         my_bar(i)
         x_ini = pos_tri[0] - 1
         y_ini = pos_tri[1] - 1
-        width = 2
-        height = 2
+        width = 0
+        height = 0
 
         box_dat = []
         box_dat.append(x_ini)
@@ -143,7 +131,8 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
     for time in xrange(n_imgs):
         img_lst.append([])
 
-    my_bar = ProgBarInShell(min_val = 0, max_val = len(bbox_lst), text = "updating Image/Reflections Data:")
+    txt_lab = "updating Predicted Reflections Data:"
+    my_bar = ProgBarBox(min_val = 0, max_val = len(bbox_lst), text = txt_lab)
 
     print "\n\n len(bbox_lst) =", len(bbox_lst), "\n"
 
