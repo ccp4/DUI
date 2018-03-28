@@ -476,6 +476,7 @@ class MyDialog(QDialog):
         '''
 
         self.use_shell = True
+        #self.use_shell = False
 
         kl_but = QPushButton("Close reciprocal lattice viewer")
         kl_but.clicked.connect(self.kill_my_proc)
@@ -486,15 +487,19 @@ class MyDialog(QDialog):
 
     def run_my_proc(self, pickle_path, json_path):
 
+        first_pikl_path = pickle_path[0]
+
         if(self.use_shell == True):
             cmd_to_run = "dials.reciprocal_lattice_viewer " \
-                             + str(pickle_path) + " " \
+                             + str(first_pikl_path) + " " \
                              + str(json_path)
 
         else:
-            cmd_to_run = ["dials.reciprocal_lattice_viewer", pickle_path, json_path]
+            cmd_to_run = ["dials.reciprocal_lattice_viewer", first_pikl_path, json_path]
 
         self.thrd = ViewerThread()
+
+        print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
 
         self.my_process = subprocess.Popen(cmd_to_run, shell = self.use_shell)
         self.proc_pid = self.my_process.pid
