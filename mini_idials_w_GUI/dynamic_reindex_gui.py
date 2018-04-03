@@ -153,6 +153,7 @@ class MyReindexOpts(QWidget):
 
 
 class ReindexTable(QTableWidget):
+    opt_signal = pyqtSignal(int)
     def __init__(self, parent=None):
         super(ReindexTable, self).__init__(parent)
 
@@ -161,6 +162,7 @@ class ReindexTable(QTableWidget):
         self.v_sliderBar = self.verticalScrollBar()
         self.h_sliderBar = self.horizontalScrollBar()
 
+        self.tmp_sel = None
 
         sys_font = QFont()
         self.sys_font_point_size =  sys_font.pointSize()
@@ -172,9 +174,6 @@ class ReindexTable(QTableWidget):
         p_h_svar = self.horizontalScrollBar().value()
         p_v_svar = self.verticalScrollBar().value()
 
-        print "p_h_svar =", p_h_svar
-        print "p_v_svar =", p_v_svar
-
         v_sliderValue = self.v_sliderBar.value()
         h_sliderValue = self.h_sliderBar.value()
 
@@ -184,21 +183,24 @@ class ReindexTable(QTableWidget):
         self.v_sliderBar.setValue(v_sliderValue)
         self.h_sliderBar.setValue(h_sliderValue)
 
+        self.opt_pick(row)
+
+    def opt_pick(self, row):
+
+        if(self.tmp_sel == row):
+            print "\n selecting opt:", row + 1, "\n"
+            self.opt_signal.emit(row)
+
+        self.tmp_sel = row
+
     def find_best_solu(self):
         bst_sol = -1
         for row, row_cont in enumerate(self.list_labl):
-            to_debug = '''
-            print "\nrow =", row
-            print "row_cont[4] =", row_cont[5]
-            print "row_cont[", self.rec_col, "] =", row_cont[self.rec_col]
-            '''
             if(row_cont[self.rec_col] == " Y"):
                 if(row > bst_sol):
                     bst_sol = row
 
         print "bst_sol = ", bst_sol
-
-
 
         return bst_sol
 

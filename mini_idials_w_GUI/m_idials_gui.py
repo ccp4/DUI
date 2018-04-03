@@ -615,7 +615,7 @@ class MainWidget(QMainWindow):
             try:
                 self.my_pop = MyReindexOpts()
                 self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
-                self.my_pop.my_inner_table.cellClicked.connect(self.opt_clicked)
+                self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
                 print "str(my_err) =", str(my_err)
@@ -682,7 +682,7 @@ class MainWidget(QMainWindow):
         self.idials_runner.current_node.err_file_out = err_log_file_out
 
 
-    def opt_clicked(self, row, col):
+    def opt_dobl_clicked(self, row):
         re_idx = row + 1
         print "Solution clicked =", re_idx
         cmd_tmp = "reindex solution=" + str(re_idx)
