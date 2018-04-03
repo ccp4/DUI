@@ -117,6 +117,9 @@ def ops_list_from_json(json_path = None):
     return sorted_lst_ops
 
 
+
+
+
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
@@ -126,7 +129,28 @@ class MyReindexOpts(QWidget):
         my_box = QVBoxLayout()
         self.my_inner_table = ReindexTable(self)
         self.my_inner_table.add_opts_lst(json_path = in_json_path)
+
+        top_box = QHBoxLayout()
+        top_box.addWidget(QLabel("select row ... then click OK >>>"))
+        top_box.addStretch()
+        ok_but = QPushButton("    OK      ")
+        ok_but.clicked.connect(self.my_inner_table.ok_clicked)
+        top_box.addWidget(ok_but)
+
+        my_box.addLayout(top_box)
         my_box.addWidget(self.my_inner_table)
+
+        if(self.my_inner_table.rec_col != None):
+            my_solu = self.my_inner_table.find_best_solu()
+            self.my_inner_table.opt_clicked(my_solu, 0)
+
+        try:
+            recomd_str = "most likely row = " + str(self.my_inner_table.tmp_sel + 1) + " <<<"
+
+        except:
+            recomd_str = "Looks like there are no good bravais setings here"
+
+        my_box.addWidget(QLabel(recomd_str))
         self.setLayout(my_box)
 
         #print dir(self.my_inner_table)
@@ -139,17 +163,13 @@ class MyReindexOpts(QWidget):
 
         n_row = self.my_inner_table.rowCount()
         row_height = self.my_inner_table.rowHeight(1)
-        tot_heght = (n_row + 2) * row_height
+        tot_heght = (n_row + 4) * row_height
 
         self.resize(tot_width, tot_heght)
         #print "self.my_inner_table.PdmWidth =", self.my_inner_table.PdmWidth
 
         #self.adjustSize()
         self.show()
-
-        if(self.my_inner_table.rec_col != None):
-            my_solu = self.my_inner_table.find_best_solu()
-            self.my_inner_table.opt_clicked(my_solu, 0)
 
 
 class ReindexTable(QTableWidget):
@@ -184,6 +204,9 @@ class ReindexTable(QTableWidget):
         self.h_sliderBar.setValue(h_sliderValue)
 
         self.opt_pick(row)
+
+    def ok_clicked(self):
+        self.opt_pick(self.tmp_sel)
 
     def opt_pick(self, row):
 
