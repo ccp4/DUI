@@ -221,12 +221,16 @@ class ImgPainter(MyQWidgetWithQPainter):
         if(tmp_flat_data != None):
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
-            closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
-                                                     y_mouse_scaled,
-                                                     tmp_flat_data)
+            try:
+                closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
+                                                        y_mouse_scaled,
+                                                        tmp_flat_data)
 
-            self.closer_ref = [closer_hkl, closer_slice]
-            self.update()
+                self.closer_ref = [closer_hkl, closer_slice]
+                self.update()
+
+            except:
+                print "Failed to find closer HKL",
 
     def set_img_pix(self, q_img = None,
                     obs_flat_data_in = None,
