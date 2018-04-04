@@ -326,9 +326,9 @@ class MainWidget(QMainWindow):
 
         self.output_info_tabs = QTabWidget()
         self.output_info_tabs.addTab(self.img_view, "Image View")
-        self.output_info_tabs.addTab(self.cli_out, "CLI Output")
+        self.output_info_tabs.addTab(self.cli_out, "Log Text")
         self.output_info_tabs.addTab(self.web_view, "Report View")
-        self.output_info_tabs.addTab(self.ext_view, "External Viewing Tools")
+        self.output_info_tabs.addTab(self.ext_view, "Reciprocal Lattice Viewer")
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
