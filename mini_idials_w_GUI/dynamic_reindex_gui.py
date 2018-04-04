@@ -90,13 +90,13 @@ def ops_list_from_json(json_path = None):
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
                 uc_a = unit_cell_val[3:6]
-                unit_cell_str_a = "{:6.3}".format(uc_d[0])
-                unit_cell_str_b = "{:6.3}".format(uc_d[1])
-                unit_cell_str_c = "{:6.3}".format(uc_d[2])
+                unit_cell_str_a = "{:6.2f}".format(uc_d[0])
+                unit_cell_str_b = "{:6.2f}".format(uc_d[1])
+                unit_cell_str_c = "{:6.2f}".format(uc_d[2])
 
-                unit_cell_str_apl = "{:7.4}".format(uc_a[0])
-                unit_cell_str_bet = "{:7.4}".format(uc_a[1])
-                unit_cell_str_gam = "{:7.4}".format(uc_a[2])
+                unit_cell_str_apl = "{:7.2f}".format(uc_a[0])
+                unit_cell_str_bet = "{:7.2f}".format(uc_a[1])
+                unit_cell_str_gam = "{:7.2f}".format(uc_a[2])
 
 
             elif(inner_key ==  "recommended"):
@@ -130,27 +130,27 @@ class MyReindexOpts(QWidget):
         self.my_inner_table = ReindexTable(self)
         self.my_inner_table.add_opts_lst(json_path = in_json_path)
 
-        top_box = QHBoxLayout()
-        top_box.addWidget(QLabel("select row ... then click OK >>>"))
-        top_box.addStretch()
-        ok_but = QPushButton("    OK      ")
-        ok_but.clicked.connect(self.my_inner_table.ok_clicked)
-        top_box.addWidget(ok_but)
-
-        my_box.addLayout(top_box)
-        my_box.addWidget(self.my_inner_table)
-
         if(self.my_inner_table.rec_col != None):
             my_solu = self.my_inner_table.find_best_solu()
             self.my_inner_table.opt_clicked(my_solu, 0)
 
         try:
-            recomd_str = "most likely row = " + str(self.my_inner_table.tmp_sel + 1) + " <<<"
+            recomd_str = "(best guess solution = row {})".format(self.my_inner_table.tmp_sel + 1)
 
         except:
-            recomd_str = "Looks like there are no good bravais setings here"
+            recomd_str = "(no best solution could be automatically determined)"
 
-        my_box.addWidget(QLabel(recomd_str))
+        bot_box = QHBoxLayout()
+        bot_box.addWidget(QLabel(recomd_str))
+        bot_box.addStretch()
+        ok_but = QPushButton("     OK      ")
+        ok_but.clicked.connect(self.my_inner_table.ok_clicked)
+        bot_box.addWidget(ok_but)
+
+        my_box.addWidget(QLabel("Select a bravais lattice to enforce:"))
+        my_box.addWidget(self.my_inner_table)
+        my_box.addLayout(bot_box)
+
         self.setLayout(my_box)
 
         #print dir(self.my_inner_table)

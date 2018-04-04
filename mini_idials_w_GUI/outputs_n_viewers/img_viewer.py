@@ -454,7 +454,7 @@ class MyImgWin(QWidget):
         self.rad_but_none_hkl = QRadioButton("No HKL")
         self.rad_but_none_hkl.clicked.connect(self.set_img)
 
-        self.rad_but_fnd_hkl = QCheckBox("Obsevations")
+        self.rad_but_fnd_hkl = QCheckBox("Observations")
         self.rad_but_fnd_hkl.setChecked(True)
         self.rad_but_fnd_hkl.clicked.connect(self.set_img)
         self.rad_but_pre_hkl = QCheckBox("Predictions")
