@@ -22,7 +22,7 @@ copyright (c) CCP4 - DLS
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-#from python_qt_bind import *
+
 import sys
 import json
 
@@ -153,21 +153,17 @@ class MyReindexOpts(QWidget):
 
         self.setLayout(my_box)
 
-        #print dir(self.my_inner_table)
         n_col = self.my_inner_table.columnCount()
         tot_width = 80
         for col in xrange(n_col):
             loc_width = self.my_inner_table.columnWidth(col)
-            #print "self.my_inner_table.columnWidth(col)", loc_width
             tot_width += loc_width
 
         n_row = self.my_inner_table.rowCount()
         row_height = self.my_inner_table.rowHeight(1)
-        tot_heght = (n_row + 4) * row_height
+        tot_heght = int((float(n_row) + 3.5) * float(row_height))
 
         self.resize(tot_width, tot_heght)
-        #print "self.my_inner_table.PdmWidth =", self.my_inner_table.PdmWidth
-
         #self.adjustSize()
         self.show()
 
@@ -327,7 +323,10 @@ class MainWindow(QMainWindow):
     def doit(self):
         print "Opening a new popup window"
         self.my_pop = MyReindexOpts()
-        self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
+        #self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary_tweak_01.json")
+        #self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/th8_2_data_bravais_summary.json")
+        self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary.json")
+        #self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
 
     def opt_picked(self, opt_num):
         print "\n from dynamic_reindex_gui.py MainWindow"
@@ -345,4 +344,3 @@ if __name__ == "__main__":
     myWidget = MainWindow()
     myWidget.show()
     app.exec_()
-
