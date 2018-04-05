@@ -161,7 +161,7 @@ class MyReindexOpts(QWidget):
 
         n_row = self.my_inner_table.rowCount()
         row_height = self.my_inner_table.rowHeight(1)
-        tot_heght = int((float(n_row) + 3.5) * float(row_height))
+        tot_heght = int((float(n_row) + 3.8) * float(row_height))
 
         self.resize(tot_width, tot_heght)
         #self.adjustSize()
