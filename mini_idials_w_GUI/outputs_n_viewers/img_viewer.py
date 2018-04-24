@@ -754,6 +754,12 @@ class MyImgWin(QWidget):
         print "B_stop_clicked(self)"
         self.video_timer.stop()
 
+        try:
+            self.video_timer.timeout.disconnect()
+
+        except:
+            print "unable to disconnect timer again"
+
     def min_changed_by_user(self):
         new_value = self.min_edit.text()
         try:

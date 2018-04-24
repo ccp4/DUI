@@ -140,12 +140,12 @@ class CentreWidget(QWidget):
         ctrl_box.addWidget(self.repeat_btn)
 
         self.run_btn = QPushButton("\n  Run  \n", self)
-        dials_logo_path = str(idials_gui_path +
+        self.dials_logo_path = str(idials_gui_path +
                               "/resources/DIALS_Logo_smaller_centred.png")
         dials_grayed_path = str(idials_gui_path +
                                 "/resources/DIALS_Logo_smaller_centred_grayed.png")
         tmp_ico = QIcon()
-        tmp_ico.addFile(dials_logo_path, mode = QIcon.Normal)
+        tmp_ico.addFile(self.dials_logo_path, mode = QIcon.Normal)
         tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
 
         self.run_btn.setIcon(tmp_ico)
@@ -350,6 +350,10 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
+
+        self.setWindowTitle('CCP4 DUI')
+        self.setWindowIcon(QIcon(self.centre_widget.dials_logo_path))
+
 
         self.just_reindexed = False
         self.user_stoped = False
