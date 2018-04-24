@@ -20,7 +20,7 @@ def write_script(self_path):
     line_w_path += "\"\n"
     lst_lin.append( line_w_path)
 
-    lst_lin.append( "export PATH=$PATH:" + py_gui_path + "\n")
+    lst_lin.append( "export PATH=" + py_gui_path + ":$PATH\n")
     lst_lin.append( "echo \" \"\n")
 
     line_x_tut = "echo \"type "
