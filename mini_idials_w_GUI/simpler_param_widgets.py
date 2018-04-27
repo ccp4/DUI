@@ -143,6 +143,7 @@ class IndexSimplerParamTab( QWidget):
         super(IndexSimplerParamTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
 
+        '''
         hbox_lay_scan_varying =  QHBoxLayout()
         label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
 
@@ -158,6 +159,7 @@ class IndexSimplerParamTab( QWidget):
         box_scan_varying.setCurrentIndex(1)
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
+        '''
 
         #indexing_method_check = QCheckBox("indexing.method")
         hbox_method =  QHBoxLayout()
@@ -176,7 +178,7 @@ class IndexSimplerParamTab( QWidget):
         hbox_method.addWidget(box_method_62)
 
         localLayout = QVBoxLayout()
-        localLayout.addLayout(hbox_lay_scan_varying)
+        #localLayout.addLayout(hbox_lay_scan_varying)
         localLayout.addLayout(hbox_method)
         localLayout.addStretch(1)
 
