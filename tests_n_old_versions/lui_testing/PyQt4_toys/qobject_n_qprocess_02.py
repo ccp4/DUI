@@ -22,7 +22,9 @@ class MyQProcess(QProcess):
         self.str_print_signal.emit(single_line)
 
     def readErrOutput(self):
-        print "some ERROR"
+        err_string = str(self.readAllStandardError())
+        print "some ERROR\n"
+        print err_string
 
 
 class MyObject(QObject):
