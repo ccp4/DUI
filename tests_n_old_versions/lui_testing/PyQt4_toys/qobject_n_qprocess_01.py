@@ -14,14 +14,6 @@ class MyQProcess(QProcess):
         super(MyQProcess, self).__init__()
         self.readyReadStandardOutput.connect(self.readStdOutput)
         self.setProcessChannelMode(QProcess.MergedChannels)
-        self.started.connect(self.on_start)
-        self.finished.connect(self.on_finish)
-
-    def on_start(self):
-        print "\n on_start \n"
-
-    def on_finish(self):
-        print "\n on_finish \n"
 
     def readStdOutput(self):
         line_string = str(self.readAllStandardOutput())
@@ -32,11 +24,14 @@ class MyQProcess(QProcess):
 class MyObject(QObject):
 
     str_print_signal = pyqtSignal(str)
+    finished = pyqtSignal()
 
     def __init__(self, parent = None):
         super(MyObject, self).__init__()
         self.qProcess = MyQProcess()
         self.qProcess.str_print_signal.connect(self.prn_lin)
+        self.qProcess.started.connect(self.on_start)
+        self.qProcess.finished.connect(self.on_finish)
 
     def launch(self):
         print "Hi from QThread(run)"
@@ -44,6 +39,13 @@ class MyObject(QObject):
 
     def prn_lin(self, single_line):
         self.str_print_signal.emit(single_line)
+
+    def on_start(self):
+        print "\n on_start \n"
+
+    def on_finish(self):
+        print "\n on_finish \n"
+        self.finished.emit()
 
 
 class Example(QWidget):
@@ -54,7 +56,7 @@ class Example(QWidget):
         self.setWindowTitle('Qthread Toy')
 
         self.my_obj = MyObject()
-        #self.my_obj.finished.connect(self.tell_finished)
+        self.my_obj.finished.connect(self.tell_finished)
         main_box = QHBoxLayout()
 
 
@@ -71,14 +73,13 @@ class Example(QWidget):
         self.show()
 
     def start_thread(self):
-        print "Staring thread"
+        print "Staring QObject & QProcess"
         self.my_obj.launch()
 
     def tell_finished(self):
-        print "finished thread"
+        print "Finished QObject & QProcess"
 
     def cli_out(self, lin_to_prn):
-        #print lin_to_prn, " <<"
         self.textedit.append(lin_to_prn)
 
 if __name__ == '__main__':
