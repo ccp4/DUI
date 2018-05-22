@@ -360,7 +360,7 @@ class DialsCommand(object):
                     ref_to_class.emit_fail_signal()
 
                 except:
-                    print Failed
+                    print "Failed"
 
             print "Done all step"
 
