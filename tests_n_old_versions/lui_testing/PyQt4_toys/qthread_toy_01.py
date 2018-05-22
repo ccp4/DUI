@@ -1,6 +1,11 @@
 import sys
+PySide_ver = '''
 from PySide.QtGui import *
 from PySide.QtCore import *
+'''
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+
 import time
 import subprocess
 
