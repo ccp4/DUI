@@ -57,10 +57,9 @@ class Example(QWidget):
 
         self.my_obj = MyObject()
         self.my_obj.finished.connect(self.tell_finished)
-        main_box = QHBoxLayout()
-
-
         self.my_obj.str_print_signal.connect(self.cli_out)
+
+        main_box = QHBoxLayout()
 
         self.textedit = QTextEdit()
         main_box.addWidget(self.textedit)
