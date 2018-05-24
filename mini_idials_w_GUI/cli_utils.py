@@ -26,7 +26,6 @@ import subprocess
 import json
 import os
 
-
 def prn_lst_lst_cmd(last_idials_node):
     cur_nod = last_idials_node
     lst_simpl_cmd = []

@@ -36,6 +36,7 @@ class MyObject(QObject):
     def launch(self):
         print "Hi from QThread(run)"
         self.qProcess.start("./sec_interval.sh")
+        self.qProcess.start("dui")
 
     def prn_lin(self, single_line):
         self.str_print_signal.emit(single_line)

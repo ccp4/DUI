@@ -16,7 +16,8 @@ class MyThread (QThread):
         super(MyThread, self).__init__()
 
     def run(self):
-        self.cmd_to_run = "./sec_interval.sh"
+        #self.cmd_to_run = "./sec_interval.sh"
+        self.cmd_to_run = "dui"
         print "Hi from QThread(run)"
 
         print "before subprocess"
