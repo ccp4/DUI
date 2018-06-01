@@ -1,10 +1,13 @@
 #from subprocess import call as shell_func
 import subprocess
 import sys
-
+#'''
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+'''
 from PySide.QtGui import *
 from PySide.QtCore import *
-
+'''
 class Example(QWidget):
 
     def __init__(self):

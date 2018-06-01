@@ -41,8 +41,9 @@ class MyObject(QObject):
 
     def launch(self):
         print "Hi from QObject(run)"
-        self.qProcess.start("./sec_interval.sh")
-        #self.qProcess.start("dials.index")
+        #self.qProcess.start("./sec_interval.sh")
+        self.qProcess.start("dials.index")
+        self.qProcess.closeWriteChannel()           #remember to show this line to Kyle
 
     def prn_lin(self, single_line):
         self.str_print_signal.emit(single_line)
