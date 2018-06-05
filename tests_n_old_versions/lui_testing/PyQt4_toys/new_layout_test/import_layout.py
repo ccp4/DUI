@@ -9,6 +9,9 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 '''
 
+from params_live_gui_generator import PhilWidget
+from dials.command_line.find_spots import phil_scope
+
 class OverideButtonWidget(QWidget):
     def __init__(self):
         super(OverideButtonWidget, self).__init__()
@@ -27,8 +30,18 @@ class OverideButtonWidget(QWidget):
 class ChangeParameter(QWidget):
     def __init__(self):
         super(ChangeParameter, self).__init__()
+
         m_vbox = QVBoxLayout()
-        m_vbox.addStretch()
+        #m_vbox.addStretch()
+
+        phil_widget = PhilWidget(phil_scope)
+
+        scroll_area = QScrollArea()
+        scroll_area.setWidget(phil_widget)
+
+        m_vbox.addWidget(scroll_area)
+
+        old_to_remove = '''
         x_widg = QDoubleSpinBox()
         x_widg.setDecimals(3)
         y_widg = QDoubleSpinBox()
@@ -43,6 +56,7 @@ class ChangeParameter(QWidget):
         v_hbox2.addWidget(QLabel("Y beam Centre"))
         v_hbox2.addWidget(y_widg)
         m_vbox.addLayout(v_hbox2)
+        '''
 
         self.ChangeWidgetButton = QPushButton(" \n back to simple \n ")
 
