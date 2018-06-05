@@ -32,7 +32,6 @@ class ChangeParameter(QWidget):
         super(ChangeParameter, self).__init__()
 
         m_vbox = QVBoxLayout()
-        #m_vbox.addStretch()
 
         phil_widget = PhilWidget(phil_scope)
 
@@ -41,22 +40,6 @@ class ChangeParameter(QWidget):
 
         m_vbox.addWidget(scroll_area)
 
-        old_to_remove = '''
-        x_widg = QDoubleSpinBox()
-        x_widg.setDecimals(3)
-        y_widg = QDoubleSpinBox()
-        y_widg.setDecimals(3)
-
-        v_hbox1 = QHBoxLayout()
-        v_hbox1.addWidget(QLabel("X beam Centre"))
-        v_hbox1.addWidget(x_widg)
-        m_vbox.addLayout(v_hbox1)
-
-        v_hbox2 = QHBoxLayout()
-        v_hbox2.addWidget(QLabel("Y beam Centre"))
-        v_hbox2.addWidget(y_widg)
-        m_vbox.addLayout(v_hbox2)
-        '''
 
         self.ChangeWidgetButton = QPushButton(" \n back to simple \n ")
 
@@ -90,12 +73,10 @@ class ImportPage(QWidget):
         tmp_hbox.addStretch()
         tmp_hbox.addWidget(self.opn_fil_btn)
 
-
         self.par_widg = ChangeParameter()
 
         template_vbox.addWidget(step_label)
         template_vbox.addLayout(tmp_hbox)
-        template_vbox.addStretch()
 
         self.my_stackedWidget =  QStackedWidget()
         self.overide_button_widget = OverideButtonWidget()
