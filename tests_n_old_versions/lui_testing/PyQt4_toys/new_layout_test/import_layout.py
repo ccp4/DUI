@@ -10,20 +10,21 @@ from PySide.QtCore import *
 '''
 
 from params_live_gui_generator import PhilWidget
-from dials.command_line.find_spots import phil_scope
+#from dials.command_line.find_spots import phil_scope
+from dials.command_line.dials_import import phil_scope
 
 class OverideButtonWidget(QWidget):
     def __init__(self):
         super(OverideButtonWidget, self).__init__()
-        self.overide_button = QPushButton(" \n Overide Parameter \n ")
-        m_vbox = QVBoxLayout()
-        m_vbox.addStretch()
+        self.overide_button = QPushButton(" \n advanced parameters \n ")
 
         l_hbox = QHBoxLayout()
         l_hbox.addWidget(self.overide_button)
         l_hbox.addStretch()
 
-        m_vbox.addLayout(l_hbox)
+        m_vbox = QVBoxLayout()
+        m_vbox.addLayout(l_hbox)               # swap this two
+        m_vbox.addStretch()                    # to shange test layout
 
         self.setLayout(m_vbox)
 
@@ -38,16 +39,16 @@ class ChangeParameter(QWidget):
         scroll_area = QScrollArea()
         scroll_area.setWidget(phil_widget)
 
-        m_vbox.addWidget(scroll_area)
 
-
-        self.ChangeWidgetButton = QPushButton(" \n back to simple \n ")
+        butt_label = " \n    simple parameters  \n                                     "
+        self.ChangeWidgetButton = QPushButton(butt_label)
 
         l_hbox = QHBoxLayout()
         l_hbox.addWidget(self.ChangeWidgetButton)
         l_hbox.addStretch()
 
-        m_vbox.addLayout(l_hbox)
+        m_vbox.addLayout(l_hbox)             # swap this two
+        m_vbox.addWidget(scroll_area)        # to shange test layout
 
         self.setLayout(m_vbox)
 
