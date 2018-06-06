@@ -26,11 +26,14 @@ class Window(QWidget):
 
     def print_value1(self, value):
         print "value1 =", value
-        self.slider2.setValue(value)
+
+        if(self.slider2.sliderPosition() > value):
+            self.slider2.setValue(value)
 
     def print_value2(self, value):
         print "value2 =", value
-        self.slider1.setValue(value)
+        if(self.slider1.sliderPosition() < value):
+            self.slider1.setValue(value)
 
 
 if __name__ == '__main__':
