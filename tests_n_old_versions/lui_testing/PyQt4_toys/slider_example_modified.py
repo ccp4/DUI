@@ -15,6 +15,9 @@ class SlidersGroup(QtGui.QGroupBox):
         self.slider.setTickInterval(10)
         self.slider.setSingleStep(1)
 
+        self.slider.setMinimum(20)
+        self.slider.setMaximum(60)
+
         self.slider.valueChanged[int].connect(self.print_value)
 
         direction = QtGui.QBoxLayout.TopToBottom
@@ -26,17 +29,6 @@ class SlidersGroup(QtGui.QGroupBox):
     def print_value(self, value):
         print "value =", value
 
-    def setMinimum(self, value):
-        self.slider.setMinimum(value)
-
-    def setMaximum(self, value):
-        self.slider.setMaximum(value)
-
-    def invertAppearance(self, invert):
-        self.slider.setInvertedAppearance(invert)
-
-    def invertKeyBindings(self, invert):
-        self.slider.setInvertedControls(invert)
 
 class Window(QtGui.QWidget):
     def __init__(self):
