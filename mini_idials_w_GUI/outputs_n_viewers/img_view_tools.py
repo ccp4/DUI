@@ -102,8 +102,10 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
                 local_hkl = "NOT indexed"
 
         xrs_size = 1
-        for idx in xrange(int(pos_tri[2]) - 3, int(pos_tri[2]) + 3):
-            xrs_size += 2
+        int_z_centr = int(pos_tri[2])
+        max_xrs_siz = 3
+        for idx in xrange(int_z_centr - max_xrs_siz, int_z_centr + max_xrs_siz):
+            xrs_size = max_xrs_siz - abs(int_z_centr - idx)
             dat_to_append = [x_ini,
                              y_ini,
                              xrs_size,
