@@ -83,7 +83,7 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
     for time in xrange(n_imgs):
         img_lst.append([])
 
-    txt_lab = "updating Observed Reflections Data:"
+    txt_lab = "updating Predicted Reflections Data:"
     my_bar = ProgBarBox(min_val = 0, max_val = len(pos_col), text = txt_lab)
     print " len(pos_col) =", len(pos_col)
 
@@ -92,33 +92,26 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
         my_bar(i)
         x_ini = pos_tri[0] - 1
         y_ini = pos_tri[1] - 1
-        width = 0
-        height = 0
-
-        box_dat = []
-        box_dat.append(x_ini)
-        box_dat.append(y_ini)
-        box_dat.append(width)
-        box_dat.append(height)
-
-        #print "box_dat =", box_dat
 
         if(len(hkl_lst) <= 1):
             local_hkl = ""
-            box_dat.append(local_hkl)
 
         else:
             local_hkl = hkl_lst[i]
             if(local_hkl == "(0, 0, 0)"):
                 local_hkl = "NOT indexed"
 
-            box_dat.append(local_hkl)
+        xrs_size = 1
+        for idx in xrange(int(pos_tri[2]) - 3, int(pos_tri[2]) + 3):
+            xrs_size += 2
+            dat_to_append = [x_ini,
+                             y_ini,
+                             xrs_size,
+                             0,
+                             local_hkl]
 
-        #print "local_hkl =", local_hkl
-
-        for idx in xrange(int(pos_tri[2]) - 1, int(pos_tri[2]) + 1):
             if(idx >= 0 and idx < n_imgs):
-                img_lst[idx].append(box_dat);
+                img_lst[idx].append(dat_to_append);
 
     my_bar.ended()
 
@@ -131,7 +124,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
     for time in xrange(n_imgs):
         img_lst.append([])
 
-    txt_lab = "updating Predicted Reflections Data:"
+    txt_lab = "updating Observed Reflections Data:"
     my_bar = ProgBarBox(min_val = 0, max_val = len(bbox_lst), text = txt_lab)
 
     print "\n\n len(bbox_lst) =", len(bbox_lst), "\n"

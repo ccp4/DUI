@@ -346,15 +346,16 @@ class ImgPainter(MyQWidgetWithQPainter):
                                 else:
                                     painter.setPen(indexed_pen)
 
-                                cen_siz = 5.0
-                                painter.drawLine(x * self.my_scale,
-                                                (y - cen_siz) * self.my_scale,
-                                                x * self.my_scale,
-                                                (y + cen_siz) * self.my_scale)
+                                cross_size = float(reflection[2]) + 1.0
 
-                                painter.drawLine((x + cen_siz) * self.my_scale,
+                                painter.drawLine(x * self.my_scale,
+                                                (y - cross_size) * self.my_scale,
+                                                x * self.my_scale,
+                                                (y + cross_size) * self.my_scale)
+
+                                painter.drawLine((x + cross_size) * self.my_scale,
                                                 y * self.my_scale,
-                                                (x - cen_siz) * self.my_scale,
+                                                (x - cross_size) * self.my_scale,
                                                 y * self.my_scale)
 
                                 lst_tmp_hkl = self.pre_flat_data
