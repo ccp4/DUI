@@ -2,12 +2,12 @@
 
 from PyQt4 import QtCore, QtGui
 
-class SlidersGroup(QtGui.QGroupBox):
+class Window(QtGui.QWidget):
 
     valueChanged = QtCore.pyqtSignal(int)
 
-    def __init__(self, title, parent=None):
-        super(SlidersGroup, self).__init__(title, parent)
+    def __init__(self):
+        super(Window, self).__init__()
 
         self.slider = QtGui.QSlider(QtCore.Qt.Horizontal)
         self.slider.setFocusPolicy(QtCore.Qt.StrongFocus)
@@ -28,18 +28,6 @@ class SlidersGroup(QtGui.QGroupBox):
 
     def print_value(self, value):
         print "value =", value
-
-
-class Window(QtGui.QWidget):
-    def __init__(self):
-        super(Window, self).__init__()
-
-        self.horizontalSliders = SlidersGroup("Horizontal")
-
-        layout = QtGui.QHBoxLayout()
-        layout.addWidget(self.horizontalSliders)
-        self.setLayout(layout)
-        self.setWindowTitle("Sliders")
 
 
 if __name__ == '__main__':
