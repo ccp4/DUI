@@ -20,9 +20,7 @@ class Window(QtGui.QWidget):
 
         self.slider.valueChanged[int].connect(self.print_value)
 
-        direction = QtGui.QBoxLayout.TopToBottom
-
-        slidersLayout = QtGui.QBoxLayout(direction)
+        slidersLayout = QtGui.QHBoxLayout()
         slidersLayout.addWidget(self.slider)
         self.setLayout(slidersLayout)
 
@@ -33,7 +31,6 @@ class Window(QtGui.QWidget):
 if __name__ == '__main__':
 
     import sys
-
     app = QtGui.QApplication(sys.argv)
     window = Window()
     window.show()
