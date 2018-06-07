@@ -50,6 +50,9 @@ MyQWidgetWithQPainter = QWidget
 
 
 class PopBigMenu(QMenu):
+
+    sliders_changed = pyqtSignal(int, int)
+
     def __init__(self, parent=None):
         super(PopBigMenu, self).__init__(parent)
         self.my_parent = parent
@@ -62,8 +65,23 @@ class PopBigMenu(QMenu):
         colour_box.addWidget(self.my_parent.palette_select)
         colour_box.addStretch()
 
+        self.slider1 = QSlider(Qt.Horizontal)
+        self.slider1.setMinimum(-3)
+        self.slider1.setMaximum(777)
+        self.slider1.valueChanged[int].connect(self.print_value1)
+
+        self.slider2 = QSlider(Qt.Horizontal)
+        self.slider2.setMinimum(-3)
+        self.slider2.setMaximum(777)
+        self.slider2.valueChanged[int].connect(self.print_value2)
+
+        slidersLayout = QVBoxLayout()
+        slidersLayout.addWidget(self.slider1)
+        slidersLayout.addWidget(self.slider2)
+        slidersLayout.addLayout(colour_box)
+
         colour_grp =  QGroupBox("Colour Palette Tuning ")
-        colour_grp.setLayout(colour_box)
+        colour_grp.setLayout(slidersLayout)
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
@@ -101,9 +119,20 @@ class PopBigMenu(QMenu):
         my_box.addWidget(info_grp)
         my_box.addWidget(img_select_group_box)
 
-
         self.setLayout(my_box)
         self.show()
+
+    def print_value1(self, value):
+        if(self.slider2.sliderPosition() > value):
+            self.slider2.setValue(value)
+
+        self.sliders_changed.emit(int(value), int(self.slider2.sliderPosition()))
+
+    def print_value2(self, value):
+        if(self.slider1.sliderPosition() < value):
+            self.slider1.setValue(value)
+
+        self.sliders_changed.emit(int(self.slider1.sliderPosition()), int(value))
 
 class ImgPainter(MyQWidgetWithQPainter):
 
@@ -514,7 +543,9 @@ class MyImgWin(QWidget):
         nav_box.addStretch()
 
         big_menu_but = QPushButton('Viewing Tools  ...  ')
-        big_menu_but.setMenu(PopBigMenu(self))
+        pop_big_menu = PopBigMenu(self)
+        big_menu_but.setMenu(pop_big_menu)
+        pop_big_menu.sliders_changed.connect(self.new_sliders_pos)
 
         self.img_num = 1
         self.img_step_val = 1
@@ -573,7 +604,6 @@ class MyImgWin(QWidget):
 
         self.setLayout(my_box)
         self.show()
-
 
     def ini_contrast(self):
         if(self.contrast_initiated == False):
@@ -760,6 +790,12 @@ class MyImgWin(QWidget):
 
         except:
             print "unable to disconnect timer again"
+
+    def new_sliders_pos(self, pos1, pos2):
+        self.max_edit.setText(str(int(pos1)))
+        self.min_edit.setText(str(int(pos2)))
+        self.min_changed_by_user()
+        self.max_changed_by_user()
 
     def min_changed_by_user(self):
         new_value = self.min_edit.text()

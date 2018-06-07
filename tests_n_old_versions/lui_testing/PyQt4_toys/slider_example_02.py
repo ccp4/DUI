@@ -4,8 +4,6 @@ from PyQt4.QtGui import *
 
 class Window(QWidget):
 
-    valueChanged = pyqtSignal(int)
-
     def __init__(self):
         super(Window, self).__init__()
 
@@ -26,7 +24,6 @@ class Window(QWidget):
 
     def print_value1(self, value):
         print "value1 =", value
-
         if(self.slider2.sliderPosition() > value):
             self.slider2.setValue(value)
 
