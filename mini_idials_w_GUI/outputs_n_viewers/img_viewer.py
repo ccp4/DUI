@@ -65,19 +65,17 @@ class PopBigMenu(QMenu):
         colour_box.addWidget(self.my_parent.palette_select)
         colour_box.addStretch()
 
-        self.slider1 = QSlider(Qt.Horizontal)
-        self.slider1.setMinimum(-3)
-        self.slider1.setMaximum(777)
-        self.slider1.valueChanged[int].connect(self.print_value1)
+        self.my_parent.slider1.setMinimum(-3)
+        self.my_parent.slider1.setMaximum(777)
+        self.my_parent.slider1.valueChanged[int].connect(self.print_value1)
 
-        self.slider2 = QSlider(Qt.Horizontal)
-        self.slider2.setMinimum(-3)
-        self.slider2.setMaximum(777)
-        self.slider2.valueChanged[int].connect(self.print_value2)
+        self.my_parent.slider2.setMinimum(-3)
+        self.my_parent.slider2.setMaximum(777)
+        self.my_parent.slider2.valueChanged[int].connect(self.print_value2)
 
         slidersLayout = QVBoxLayout()
-        slidersLayout.addWidget(self.slider1)
-        slidersLayout.addWidget(self.slider2)
+        slidersLayout.addWidget(self.my_parent.slider1)
+        slidersLayout.addWidget(self.my_parent.slider2)
         slidersLayout.addLayout(colour_box)
 
         colour_grp =  QGroupBox("Colour Palette Tuning ")
@@ -123,16 +121,16 @@ class PopBigMenu(QMenu):
         self.show()
 
     def print_value1(self, value):
-        if(self.slider2.sliderPosition() > value):
-            self.slider2.setValue(value)
+        if(self.my_parent.slider2.sliderPosition() > value):
+            self.my_parent.slider2.setValue(value)
 
-        self.sliders_changed.emit(int(value), int(self.slider2.sliderPosition()))
+        self.sliders_changed.emit(int(value), int(self.my_parent.slider2.sliderPosition()))
 
     def print_value2(self, value):
-        if(self.slider1.sliderPosition() < value):
-            self.slider1.setValue(value)
+        if(self.my_parent.slider1.sliderPosition() < value):
+            self.my_parent.slider1.setValue(value)
 
-        self.sliders_changed.emit(int(self.slider1.sliderPosition()), int(value))
+        self.sliders_changed.emit(int(self.my_parent.slider1.sliderPosition()), int(value))
 
 class ImgPainter(MyQWidgetWithQPainter):
 
@@ -471,6 +469,9 @@ class MyImgWin(QWidget):
         self.max_edit.setText(str(self.i_max))
         self.max_edit.editingFinished.connect(self.max_changed_by_user)
 
+        self.slider1 = QSlider(Qt.Horizontal)
+        self.slider2 = QSlider(Qt.Horizontal)
+
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
@@ -801,8 +802,11 @@ class MyImgWin(QWidget):
         new_value = self.min_edit.text()
         try:
             self.i_min = int(new_value)
+
         except:
             self.i_min = 0
+
+        self.slider2.setValue(self.i_min)
         self.set_img()
 
     def max_changed_by_user(self):
@@ -815,6 +819,7 @@ class MyImgWin(QWidget):
         except:
             self.i_max = 0
 
+        self.slider1.setValue(self.i_max)
         self.set_img()
 
     def palette_changed_by_user(self, new_palette_num):
