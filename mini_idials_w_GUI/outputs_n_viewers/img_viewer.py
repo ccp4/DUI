@@ -25,7 +25,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 import sys, os
-import numpy as np
+#import numpy as np
 
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
@@ -56,27 +56,29 @@ class PopBigMenu(QMenu):
     def __init__(self, parent=None):
         super(PopBigMenu, self).__init__(parent)
         self.my_parent = parent
-
+        #self.isTearOffEnabled()
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
-        colour_box.addWidget(self.my_parent.min_edit)
+        colour_box.addWidget(self.my_parent.min_i_edit)
         colour_box.addWidget(QLabel("I max"))
-        colour_box.addWidget(self.my_parent.max_edit)
+        colour_box.addWidget(self.my_parent.max_i_edit)
         colour_box.addWidget(self.my_parent.palette_select)
         colour_box.addStretch()
 
-        self.my_parent.slider1.setMinimum(-3)
-        self.my_parent.slider1.setMaximum(777)
-        self.my_parent.slider1.valueChanged[int].connect(self.print_value1)
+        self.my_parent.slider_min.setMinimum(-3)
+        self.my_parent.slider_min.setMaximum(777)
+        self.my_parent.slider_min.valueChanged[int].connect(self.print_value2)
 
-        self.my_parent.slider2.setMinimum(-3)
-        self.my_parent.slider2.setMaximum(777)
-        self.my_parent.slider2.valueChanged[int].connect(self.print_value2)
+        self.my_parent.slider_max.setMinimum(-3)
+        self.my_parent.slider_max.setMaximum(777)
+        self.my_parent.slider_max.valueChanged[int].connect(self.print_value1)
 
         slidersLayout = QVBoxLayout()
-        slidersLayout.addWidget(self.my_parent.slider1)
-        slidersLayout.addWidget(self.my_parent.slider2)
+        slidersLayout.addWidget(self.my_parent.slider_max)
+        slidersLayout.addWidget(self.my_parent.slider_min)
         slidersLayout.addLayout(colour_box)
+
+        print "...geometry().width() =", self.my_parent.slider_min.geometry().width()
 
         colour_grp =  QGroupBox("Colour Palette Tuning ")
         colour_grp.setLayout(slidersLayout)
@@ -121,16 +123,17 @@ class PopBigMenu(QMenu):
         self.show()
 
     def print_value1(self, value):
-        if(self.my_parent.slider2.sliderPosition() > value):
-            self.my_parent.slider2.setValue(value)
+        if(self.my_parent.slider_min.sliderPosition() > value):
+            self.my_parent.slider_min.setValue(value)
 
-        self.sliders_changed.emit(int(value), int(self.my_parent.slider2.sliderPosition()))
+        self.sliders_changed.emit(int(value), int(self.my_parent.slider_min.sliderPosition()))
 
     def print_value2(self, value):
-        if(self.my_parent.slider1.sliderPosition() < value):
-            self.my_parent.slider1.setValue(value)
+        if(self.my_parent.slider_max.sliderPosition() < value):
+            self.my_parent.slider_max.setValue(value)
 
-        self.sliders_changed.emit(int(self.my_parent.slider1.sliderPosition()), int(value))
+        self.sliders_changed.emit(int(self.my_parent.slider_max.sliderPosition()),
+                                  int(value))
 
 class ImgPainter(MyQWidgetWithQPainter):
 
@@ -456,21 +459,19 @@ class MyImgWin(QWidget):
         self.video_timer = QTimer(self)
 
         self.i_min = -3
-        self.min_edit = QLineEdit()
-        self.min_edit.setFixedWidth(6 * sys_font_point_size)
-        self.min_edit.setValidator(max_min_validator)
-        self.min_edit.setText(str(self.i_min))
-        self.min_edit.editingFinished.connect(self.min_changed_by_user)
+        self.min_i_edit = QLineEdit()
+        self.min_i_edit.setFixedWidth(6 * sys_font_point_size)
+        self.min_i_edit.setValidator(max_min_validator)
+        self.min_i_edit.editingFinished.connect(self.min_changed_by_user)
 
         self.i_max = 100
-        self.max_edit = QLineEdit()
-        self.max_edit.setFixedWidth(6 * sys_font_point_size)
-        self.max_edit.setValidator(max_min_validator)
-        self.max_edit.setText(str(self.i_max))
-        self.max_edit.editingFinished.connect(self.max_changed_by_user)
+        self.max_i_edit = QLineEdit()
+        self.max_i_edit.setFixedWidth(6 * sys_font_point_size)
+        self.max_i_edit.setValidator(max_min_validator)
+        self.max_i_edit.editingFinished.connect(self.max_changed_by_user)
 
-        self.slider1 = QSlider(Qt.Horizontal)
-        self.slider2 = QSlider(Qt.Horizontal)
+        self.slider_min = QSlider(Qt.Horizontal)
+        self.slider_max = QSlider(Qt.Horizontal)
 
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
@@ -575,8 +576,8 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
-        #TODO Find a better way to call this function only onse
-        self.ini_contrast()
+        self.max_i_edit.setText(str(self.i_max))
+        self.min_i_edit.setText(str(self.i_min))
 
         self.img_select.valueChanged.connect(self.img_changed_by_user)
         self.img_step.valueChanged.connect(self.step_changed_by_user)
@@ -609,12 +610,8 @@ class MyImgWin(QWidget):
     def ini_contrast(self):
         if(self.contrast_initiated == False):
             try:
-
                 n_of_imgs = len(self.my_sweep.indices())
                 print "n_of_imgs(ini_contrast) =", n_of_imgs
-
-                x_size, y_size = self.my_sweep.get_image_size()
-                print "x_size, y_size =", x_size, y_size
 
                 img_arr_n0 = self.my_sweep.get_raw_data(0)[0]
                 img_arr_n1 = self.my_sweep.get_raw_data(1)[0]
@@ -632,7 +629,6 @@ class MyImgWin(QWidget):
 
                 print "flex.mean(tst_sample) =", i_mean
                 print "tst_new_max =", tst_new_max
-                self.max_edit.setText(str(int(tst_new_max)))
                 self.try_change_max(tst_new_max)
                 self.contrast_initiated = True
 
@@ -669,7 +665,6 @@ class MyImgWin(QWidget):
                 print "Failed to set up IMG control dialog"
 
         self.btn_first_clicked()
-        #TODO Find a better way to call this function only onse
         self.ini_contrast()
         self.set_img()
 
@@ -793,24 +788,24 @@ class MyImgWin(QWidget):
             print "unable to disconnect timer again"
 
     def new_sliders_pos(self, pos1, pos2):
-        self.max_edit.setText(str(int(pos1)))
-        self.min_edit.setText(str(int(pos2)))
+        self.max_i_edit.setText(str(int(pos1)))
+        self.min_i_edit.setText(str(int(pos2)))
         self.min_changed_by_user()
         self.max_changed_by_user()
 
     def min_changed_by_user(self):
-        new_value = self.min_edit.text()
+        new_value = self.min_i_edit.text()
         try:
             self.i_min = int(new_value)
 
         except:
             self.i_min = 0
 
-        self.slider2.setValue(self.i_min)
+        self.slider_min.setValue(self.i_min)
         self.set_img()
 
     def max_changed_by_user(self):
-        self.try_change_max(self.max_edit.text())
+        self.try_change_max(self.max_i_edit.text())
 
     def try_change_max(self, new_value):
         try:
@@ -819,7 +814,7 @@ class MyImgWin(QWidget):
         except:
             self.i_max = 0
 
-        self.slider1.setValue(self.i_max)
+        self.slider_max.setValue(self.i_max)
         self.set_img()
 
     def palette_changed_by_user(self, new_palette_num):
