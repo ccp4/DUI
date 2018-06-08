@@ -106,10 +106,16 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
         max_xrs_siz = 3
         for idx in xrange(int_z_centr - max_xrs_siz, int_z_centr + max_xrs_siz):
             xrs_size = max_xrs_siz - abs(int_z_centr - idx)
+            if(idx == int_z_centr):
+                size2 = 2
+
+            else:
+                size2 = 0
+
             dat_to_append = [x_ini,
                              y_ini,
                              xrs_size,
-                             0,
+                             size2,
                              local_hkl]
 
             if(idx >= 0 and idx < n_imgs):

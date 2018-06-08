@@ -30,7 +30,7 @@ import sys, os
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
-from img_view_tools import img_w_cpp, build_qimg, find_hkl_near, \
+from img_view_tools import build_qimg, find_hkl_near, \
                            list_arrange, list_p_arrange
 
 from time import time as time_now
@@ -377,6 +377,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                                     painter.setPen(indexed_pen)
 
                                 cross_size = float(reflection[2]) + 1.0
+                                cross_2_size = float(reflection[3])
 
                                 painter.drawLine(x * self.my_scale,
                                                 (y - cross_size) * self.my_scale,
@@ -387,6 +388,18 @@ class ImgPainter(MyQWidgetWithQPainter):
                                                 y * self.my_scale,
                                                 (x - cross_size) * self.my_scale,
                                                 y * self.my_scale)
+
+                                painter.drawLine((x - cross_2_size) * self.my_scale,
+                                                (y - cross_2_size) * self.my_scale,
+                                                (x + cross_2_size) * self.my_scale,
+                                                (y + cross_2_size) * self.my_scale)
+
+                                painter.drawLine((x + cross_2_size) * self.my_scale,
+                                                (y - cross_2_size) * self.my_scale,
+                                                (x - cross_2_size) * self.my_scale,
+                                                (y + cross_2_size) * self.my_scale)
+
+
 
                                 lst_tmp_hkl = self.pre_flat_data
 
