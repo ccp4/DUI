@@ -57,6 +57,26 @@ class ProgBarBox(QProgressDialog):
         self.setValue(100)
         self.close()
 
+def draw_palette_label(i_min, i_max):
+    scale_size = int(i_max - i_min)
+
+    np_img_arr = np.zeros((50, 503), dtype=np.double)
+    m_point = int((i_max + i_min) / 2) + 3
+    np_img_arr[0:50,:m_point] = i_min
+    np_img_arr[0:50,m_point:] = i_max
+    if(scale_size > 10):
+        ascending_img_arr = np.arange(i_min,
+                                      i_max,
+                                      1.0 / 50.0).reshape(scale_size, 50).T
+
+        lbound = int(i_min) + 3
+        ubound = int(i_max) + 3
+        np_img_arr[0:50,lbound:ubound] = ascending_img_arr[0:50, 0:scale_size]
+
+    tmp_flex_arr = flex.double(np_img_arr)
+    return tmp_flex_arr
+
+
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
     #print"\n Using Python search for closer reflection \n"

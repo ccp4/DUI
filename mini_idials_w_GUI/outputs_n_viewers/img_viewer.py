@@ -25,12 +25,11 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 import sys, os
-#import numpy as np
 
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
-from img_view_tools import build_qimg, find_hkl_near, \
+from img_view_tools import build_qimg, draw_palette_label, find_hkl_near, \
                            list_arrange, list_p_arrange
 
 from time import time as time_now
@@ -47,93 +46,6 @@ except:
 #'''
 
 MyQWidgetWithQPainter = QWidget
-
-
-class PopBigMenu(QMenu):
-
-    sliders_changed = pyqtSignal(int, int)
-
-    def __init__(self, parent=None):
-        super(PopBigMenu, self).__init__(parent)
-        self.my_parent = parent
-        #self.isTearOffEnabled()
-        colour_box = QHBoxLayout()
-        colour_box.addWidget(QLabel("I min"))
-        colour_box.addWidget(self.my_parent.min_i_edit)
-        colour_box.addWidget(QLabel("I max"))
-        colour_box.addWidget(self.my_parent.max_i_edit)
-        colour_box.addWidget(self.my_parent.palette_select)
-        colour_box.addStretch()
-
-        self.my_parent.slider_min.setMinimum(-3)
-        self.my_parent.slider_min.setMaximum(777)
-        self.my_parent.slider_min.valueChanged[int].connect(self.print_value2)
-
-        self.my_parent.slider_max.setMinimum(-3)
-        self.my_parent.slider_max.setMaximum(777)
-        self.my_parent.slider_max.valueChanged[int].connect(self.print_value1)
-
-        slidersLayout = QVBoxLayout()
-        slidersLayout.addWidget(self.my_parent.slider_max)
-        slidersLayout.addWidget(self.my_parent.slider_min)
-        slidersLayout.addLayout(colour_box)
-
-        print "...geometry().width() =", self.my_parent.slider_min.geometry().width()
-
-        colour_grp =  QGroupBox("Colour Palette Tuning ")
-        colour_grp.setLayout(slidersLayout)
-
-        ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
-        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
-        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
-
-        info_grp =  QGroupBox("Reflection Info ")
-        ref_bond_group_box_layout = QVBoxLayout()
-        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
-
-        info_grp.setLayout(ref_bond_group_box_layout)
-
-        mid_box = QHBoxLayout()
-        mid_box.addWidget(QLabel("Image Jump Step"))
-        mid_box.addWidget(self.my_parent.img_step)
-        mid_box.addWidget(QLabel("Number of Images to Add"))
-        mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
-
-        bot_box = QHBoxLayout()
-        bot_box.addWidget(self.my_parent.btn_play)
-        bot_box.addWidget(self.my_parent.btn_stop)
-
-        img_select_box = QVBoxLayout()
-        img_select_box.addLayout(mid_box)
-        img_select_box.addLayout(bot_box)
-
-        img_select_group_box = QGroupBox("IMG Navigation")
-        img_select_group_box.setLayout(img_select_box)
-
-        my_box = QVBoxLayout()
-        my_box.addWidget(colour_grp)
-        my_box.addWidget(info_grp)
-        my_box.addWidget(img_select_group_box)
-
-        self.setLayout(my_box)
-        self.show()
-
-    def print_value1(self, value):
-        if(self.my_parent.slider_min.sliderPosition() > value):
-            self.my_parent.slider_min.setValue(value)
-
-        self.sliders_changed.emit(int(value), int(self.my_parent.slider_min.sliderPosition()))
-
-    def print_value2(self, value):
-        if(self.my_parent.slider_max.sliderPosition() < value):
-            self.my_parent.slider_max.setValue(value)
-
-        self.sliders_changed.emit(int(self.my_parent.slider_max.sliderPosition()),
-                                  int(value))
 
 class ImgPainter(MyQWidgetWithQPainter):
 
@@ -430,7 +342,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                                                 int(y * self.my_scale)),  reflection[4])
 
                 except:
-                    print "Failed to show HKLs"
+                    print "Failed to show HKLs",
 
                 if(self.xb != None and self.yb != None):
 
@@ -453,6 +365,100 @@ class ImgPainter(MyQWidgetWithQPainter):
             painter.end()
 
 
+class PopBigMenu(QMenu):
+
+    sliders_changed = pyqtSignal(int, int)
+
+    def __init__(self, parent=None):
+        super(PopBigMenu, self).__init__(parent)
+        self.my_parent = parent
+        #self.isTearOffEnabled()
+        colour_box = QHBoxLayout()
+        colour_box.addWidget(QLabel("I min"))
+        colour_box.addWidget(self.my_parent.min_i_edit)
+        colour_box.addWidget(QLabel("I max"))
+        colour_box.addWidget(self.my_parent.max_i_edit)
+        colour_box.addWidget(self.my_parent.palette_select)
+        colour_box.addStretch()
+
+        self.my_parent.slider_min.setMinimum(-3)
+        self.my_parent.slider_min.setMaximum(499)
+        self.my_parent.slider_min.valueChanged[int].connect(self.slider_min_changed)
+
+        self.my_parent.slider_max.setMinimum(-3)
+        self.my_parent.slider_max.setMaximum(499)
+        self.my_parent.slider_max.valueChanged[int].connect(self.slider_max_changed)
+
+        slidersLayout = QVBoxLayout()
+        slidersLayout.addWidget(self.my_parent.slider_max)
+
+        palette_Hlayout = QHBoxLayout()
+        palette_Hlayout.addWidget(QLabel("")) # Left side margin
+        palette_Hlayout.addWidget(self.my_parent.palette_label)
+        palette_Hlayout.addWidget(QLabel("")) # Right side margin
+
+        slidersLayout.addLayout(palette_Hlayout)
+        slidersLayout.addWidget(self.my_parent.slider_min)
+        slidersLayout.addLayout(colour_box)
+
+        print "...geometry().width() =", self.my_parent.slider_min.geometry().width()
+
+        colour_grp =  QGroupBox("Colour Palette Tuning ")
+        colour_grp.setLayout(slidersLayout)
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
+
+        info_grp =  QGroupBox("Reflection Info ")
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
+
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        mid_box = QHBoxLayout()
+        mid_box.addWidget(QLabel("Image Jump Step"))
+        mid_box.addWidget(self.my_parent.img_step)
+        mid_box.addWidget(QLabel("Number of Images to Add"))
+        mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
+
+        bot_box = QHBoxLayout()
+        bot_box.addWidget(self.my_parent.btn_play)
+        bot_box.addWidget(self.my_parent.btn_stop)
+
+        img_select_box = QVBoxLayout()
+        img_select_box.addLayout(mid_box)
+        img_select_box.addLayout(bot_box)
+
+        img_select_group_box = QGroupBox("IMG Navigation")
+        img_select_group_box.setLayout(img_select_box)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(colour_grp)
+        my_box.addWidget(info_grp)
+        my_box.addWidget(img_select_group_box)
+
+        self.setLayout(my_box)
+        self.show()
+
+    def slider_max_changed(self, value):
+        if(self.my_parent.slider_min.sliderPosition() > value - 15):
+            self.my_parent.slider_min.setValue(value - 15)
+
+        self.sliders_changed.emit(int(value),
+                                  int(self.my_parent.slider_min.sliderPosition()))
+
+    def slider_min_changed(self, value):
+        if(self.my_parent.slider_max.sliderPosition() < value + 15):
+            self.my_parent.slider_max.setValue(value + 15)
+
+        self.sliders_changed.emit(int(self.my_parent.slider_max.sliderPosition()),
+                                  int(value))
+
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
         super(MyImgWin, self).__init__()
@@ -472,6 +478,7 @@ class MyImgWin(QWidget):
         self.video_timer = QTimer(self)
 
         self.i_min = -3
+
         self.min_i_edit = QLineEdit()
         self.min_i_edit.setFixedWidth(6 * sys_font_point_size)
         self.min_i_edit.setValidator(max_min_validator)
@@ -557,6 +564,9 @@ class MyImgWin(QWidget):
         nav_box.addWidget(self.btn_last)
         nav_box.addStretch()
 
+        self.palette_label = QLabel()
+        self.palette_qimg = build_qimg()
+
         big_menu_but = QPushButton('Viewing Tools  ...  ')
         pop_big_menu = PopBigMenu(self)
         big_menu_but.setMenu(pop_big_menu)
@@ -571,7 +581,6 @@ class MyImgWin(QWidget):
         self.pred_spt_flat_data_lst = [None]
 
         self.current_qimg = build_qimg()
-
         self.contrast_initiated = False
 
         if(json_file_path == None):
@@ -643,6 +652,7 @@ class MyImgWin(QWidget):
                 print "flex.mean(tst_sample) =", i_mean
                 print "tst_new_max =", tst_new_max
                 self.try_change_max(tst_new_max)
+                self.try_change_min(-3)
                 self.contrast_initiated = True
 
             except:
@@ -763,6 +773,7 @@ class MyImgWin(QWidget):
                     self.img_arr = self.img_arr \
                     + self.my_sweep.get_raw_data(pos_to_add)[0].as_double() * loc_scale
 
+
             if(self.find_spt_flat_data_lst == [None] and
                     self.pred_spt_flat_data_lst == [None]):
 
@@ -784,6 +795,13 @@ class MyImgWin(QWidget):
                                             user_choice_in =
                                             (self.rad_but_fnd_hkl.checkState(),
                                             self.rad_but_pre_hkl.checkState()))
+
+        pal_flex_arr = draw_palette_label(self.i_min, self.i_max)
+        self.palette_label.setPixmap(QPixmap(self.palette_qimg(pal_flex_arr,
+                                                               self.palette,
+                                                               self.i_min,
+                                                               self.i_max)))
+
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
@@ -807,7 +825,9 @@ class MyImgWin(QWidget):
         self.max_changed_by_user()
 
     def min_changed_by_user(self):
-        new_value = self.min_i_edit.text()
+        self.try_change_min(self.min_i_edit.text())
+
+    def try_change_min(self, new_value):
         try:
             self.i_min = int(new_value)
 
