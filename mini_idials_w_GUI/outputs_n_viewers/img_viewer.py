@@ -580,7 +580,7 @@ class MyImgWin(QWidget):
         pop_big_menu = PopBigMenu(self)
         big_menu_but.setMenu(pop_big_menu)
 
-        palette_menu_but = QPushButton('Palette tuning')
+        palette_menu_but = QPushButton('Palette Tuning')
         pop_palette_menu = PopPaletteMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
