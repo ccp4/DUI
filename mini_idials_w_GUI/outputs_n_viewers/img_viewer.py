@@ -364,15 +364,14 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             painter.end()
 
-
-class PopBigMenu(QMenu):
+class PopPaletteMenu(QMenu):
 
     sliders_changed = pyqtSignal(int, int)
 
     def __init__(self, parent=None):
-        super(PopBigMenu, self).__init__(parent)
+        super(PopPaletteMenu, self).__init__(parent)
         self.my_parent = parent
-        #self.isTearOffEnabled()
+
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
         colour_box.addWidget(self.my_parent.min_i_edit)
@@ -389,22 +388,46 @@ class PopBigMenu(QMenu):
         self.my_parent.slider_max.setMaximum(499)
         self.my_parent.slider_max.valueChanged[int].connect(self.slider_max_changed)
 
-        slidersLayout = QVBoxLayout()
-        slidersLayout.addWidget(self.my_parent.slider_max)
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(self.my_parent.slider_max)
 
         palette_Hlayout = QHBoxLayout()
         palette_Hlayout.addWidget(QLabel("")) # Left side margin
         palette_Hlayout.addWidget(self.my_parent.palette_label)
         palette_Hlayout.addWidget(QLabel("")) # Right side margin
 
-        slidersLayout.addLayout(palette_Hlayout)
-        slidersLayout.addWidget(self.my_parent.slider_min)
-        slidersLayout.addLayout(colour_box)
+        main_layout.addLayout(palette_Hlayout)
+        main_layout.addWidget(self.my_parent.slider_min)
+        main_layout.addLayout(colour_box)
 
         print "...geometry().width() =", self.my_parent.slider_min.geometry().width()
 
-        colour_grp =  QGroupBox("Colour Palette Tuning ")
-        colour_grp.setLayout(slidersLayout)
+        self.setLayout(main_layout)
+        self.show()
+
+    def slider_max_changed(self, value):
+        if(self.my_parent.slider_min.sliderPosition() > value - 15):
+            self.my_parent.slider_min.setValue(value - 15)
+
+        self.sliders_changed.emit(int(value),
+                                  int(self.my_parent.slider_min.sliderPosition()))
+
+    def slider_min_changed(self, value):
+        if(self.my_parent.slider_max.sliderPosition() < value + 15):
+            self.my_parent.slider_max.setValue(value + 15)
+
+        self.sliders_changed.emit(int(self.my_parent.slider_max.sliderPosition()),
+                                  int(value))
+
+
+class PopBigMenu(QMenu):
+
+    sliders_changed = pyqtSignal(int, int)
+
+    def __init__(self, parent=None):
+        super(PopBigMenu, self).__init__(parent)
+        self.my_parent = parent
+        #self.isTearOffEnabled()
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
@@ -438,26 +461,12 @@ class PopBigMenu(QMenu):
         img_select_group_box.setLayout(img_select_box)
 
         my_box = QVBoxLayout()
-        my_box.addWidget(colour_grp)
         my_box.addWidget(info_grp)
         my_box.addWidget(img_select_group_box)
 
         self.setLayout(my_box)
         self.show()
 
-    def slider_max_changed(self, value):
-        if(self.my_parent.slider_min.sliderPosition() > value - 15):
-            self.my_parent.slider_min.setValue(value - 15)
-
-        self.sliders_changed.emit(int(value),
-                                  int(self.my_parent.slider_min.sliderPosition()))
-
-    def slider_min_changed(self, value):
-        if(self.my_parent.slider_max.sliderPosition() < value + 15):
-            self.my_parent.slider_max.setValue(value + 15)
-
-        self.sliders_changed.emit(int(self.my_parent.slider_max.sliderPosition()),
-                                  int(value))
 
 class MyImgWin(QWidget):
     def __init__(self, json_file_path = None, pckl_file_path = None):
@@ -570,7 +579,11 @@ class MyImgWin(QWidget):
         big_menu_but = QPushButton('Viewing Tools  ...  ')
         pop_big_menu = PopBigMenu(self)
         big_menu_but.setMenu(pop_big_menu)
-        pop_big_menu.sliders_changed.connect(self.new_sliders_pos)
+
+        palette_menu_but = QPushButton('Palette tuning')
+        pop_palette_menu = PopPaletteMenu(self)
+        palette_menu_but.setMenu(pop_palette_menu)
+        pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
         self.img_num = 1
         self.img_step_val = 1
@@ -608,8 +621,8 @@ class MyImgWin(QWidget):
         my_box = QVBoxLayout()
 
         top_box = QHBoxLayout()
+        top_box.addWidget(palette_menu_but)
         top_box.addWidget(big_menu_but)
-        #top_box.addStretch()
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
@@ -801,7 +814,6 @@ class MyImgWin(QWidget):
                                                                self.palette,
                                                                self.i_min,
                                                                self.i_max)))
-
 
     def btn_play_clicked(self):
         print "btn_play_clicked(self)"
