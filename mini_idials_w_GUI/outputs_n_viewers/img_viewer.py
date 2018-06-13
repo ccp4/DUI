@@ -129,17 +129,22 @@ class ImgPainter(MyQWidgetWithQPainter):
             border_dx = float(event.x() - h_scr_bar)
             border_dy = float(event.y() - v_scr_bar)
 
-            # If you want to debug zoom scrolling behaviour uncomment next line
-            #print "border_dx, border_dy =", border_dx, border_dy
-
             h_new_pbar_pos = int(scale_factor * h_scr_bar +  (scale_factor - 1.0) * border_dx )
-
             v_new_pbar_pos = int(scale_factor * v_scr_bar +  (scale_factor - 1.0) * border_dy )
 
             self.update()
 
             self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
             self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
+
+    def scale2fact(self, new_scale = None):
+        if(new_scale == None):
+            self.my_scale = 1.0
+
+        else:
+            self.my_scale *= new_scale
+
+        self.update()
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
         if(dst != None):
@@ -454,19 +459,17 @@ class PopBigMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        mid_box = QHBoxLayout()
-        mid_box.addWidget(QLabel("Image Jump Step"))
-        mid_box.addWidget(self.my_parent.img_step)
-        mid_box.addWidget(QLabel("Number of Images to Add"))
-        mid_box.addWidget(self.my_parent.num_of_imgs_to_add)
+        mid_top_box = QHBoxLayout()
+        mid_top_box.addWidget(QLabel("Image Jump Step"))
+        mid_top_box.addWidget(self.my_parent.img_step)
 
-        bot_box = QHBoxLayout()
-        bot_box.addWidget(self.my_parent.btn_play)
-        bot_box.addWidget(self.my_parent.btn_stop)
+        mid_bot_box = QHBoxLayout()
+        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
+        mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
 
         img_select_box = QVBoxLayout()
-        img_select_box.addLayout(mid_box)
-        img_select_box.addLayout(bot_box)
+        img_select_box.addLayout(mid_top_box)
+        img_select_box.addLayout(mid_bot_box)
 
         img_select_group_box = QGroupBox("IMG Navigation")
         img_select_group_box.setLayout(img_select_box)
@@ -568,11 +571,9 @@ class MyImgWin(QWidget):
         self.btn_last =  QPushButton(' >I ')
         self.btn_last.setMinimumWidth(1)
         self.btn_last.clicked.connect(self.btn_last_clicked)
-        self.btn_play = QPushButton("Play IMGs Video")
-        self.btn_play.clicked.connect(self.btn_play_clicked)
-        self.btn_stop = QPushButton("Stop IMGs Video")
-        self.btn_stop.clicked.connect(self.btn_stop_clicked)
 
+        self.btn_play = QPushButton("Play/Stop Video")
+        self.btn_play.clicked.connect(self.btn_play_clicked)
 
         nav_box = QHBoxLayout()
         nav_box.addWidget(self.btn_first)
@@ -583,6 +584,7 @@ class MyImgWin(QWidget):
         nav_box.addWidget(self.btn_ffw)
         nav_box.addWidget(self.btn_last)
         nav_box.addStretch()
+        nav_box.addWidget(self.btn_play)
 
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
@@ -595,6 +597,13 @@ class MyImgWin(QWidget):
         pop_palette_menu = PopPaletteMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
+
+        zoom_in_but = QPushButton("Zoom In")
+        zoom_in_but.clicked.connect(self.zoom_in)
+        zoom2one_but = QPushButton("Zoom 1/1")
+        zoom2one_but.clicked.connect(self.zoom2one)
+        zoom_out_but = QPushButton("Zoom Out")
+        zoom_out_but.clicked.connect(self.zoom_out)
 
         self.img_num = 1
         self.img_step_val = 1
@@ -634,15 +643,19 @@ class MyImgWin(QWidget):
         top_box = QHBoxLayout()
         top_box.addWidget(palette_menu_but)
         top_box.addWidget(big_menu_but)
+        top_box.addStretch()
+        top_box.addWidget(zoom_in_but)
+        top_box.addWidget(zoom2one_but)
+        top_box.addWidget(zoom_out_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
-        top_lest_v_box = QVBoxLayout()
-        top_lest_v_box.addLayout(nav_box)
-        top_lest_v_box.addLayout(top_box)
+        top_left_v_box = QVBoxLayout()
+        top_left_v_box.addLayout(nav_box)
+        top_left_v_box.addLayout(top_box)
 
         top_hbox = QHBoxLayout()
-        top_hbox.addLayout(top_lest_v_box)
+        top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
         my_box.addLayout(top_hbox)
@@ -770,6 +783,16 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
+    def zoom2one(self):
+        self.my_painter.scale2fact()
+
+    def zoom_in(self):
+        self.my_painter.scale2fact(1.2)
+
+    def zoom_out(self):
+        self.my_painter.scale2fact(0.8)
+
+
     def update_beam_centre(self, xb, yb):
         print " update_beam_centre"
         print "new x,y =", xb, yb
@@ -827,19 +850,19 @@ class MyImgWin(QWidget):
                                                                self.i_max)))
 
     def btn_play_clicked(self):
-        print "btn_play_clicked(self)"
-        self.video_timer.timeout.connect(self.btn_next_clicked)
-        self.video_timer.start(1)
+        if(self.video_timer.isActive()):
+            print "Stoping video"
+            self.video_timer.stop()
+            try:
+                self.video_timer.timeout.disconnect()
 
-    def btn_stop_clicked(self):
-        print "B_stop_clicked(self)"
-        self.video_timer.stop()
+            except:
+                print "unable to disconnect timer again"
 
-        try:
-            self.video_timer.timeout.disconnect()
-
-        except:
-            print "unable to disconnect timer again"
+        else:
+            print "Playing Video"
+            self.video_timer.timeout.connect(self.btn_next_clicked)
+            self.video_timer.start(1)
 
     def new_sliders_pos(self, pos1, pos2):
         self.max_i_edit.setText(str(int(pos1)))
