@@ -389,14 +389,25 @@ class PopPaletteMenu(QMenu):
         self.my_parent.slider_max.valueChanged[int].connect(self.slider_max_changed)
 
         main_layout = QVBoxLayout()
-        main_layout.addWidget(self.my_parent.slider_max)
+
+        slider_max_Hlayout = QHBoxLayout()
+        slider_max_Hlayout.addWidget(QLabel(" ")) # Left side margin
+        slider_max_Hlayout.addWidget(self.my_parent.slider_max)
+        slider_max_Hlayout.addWidget(QLabel(" ")) # Right side margin
+        main_layout.addLayout(slider_max_Hlayout)
 
         palette_Hlayout = QHBoxLayout()
-        palette_Hlayout.addWidget(QLabel("")) # Left side margin
+        palette_Hlayout.addWidget(QLabel("   ")) # Left side margin
         palette_Hlayout.addWidget(self.my_parent.palette_label)
-        palette_Hlayout.addWidget(QLabel("")) # Right side margin
-
+        palette_Hlayout.addWidget(QLabel("   ")) # Right side margin
         main_layout.addLayout(palette_Hlayout)
+
+        slider_min_Hlayout = QHBoxLayout()
+        slider_min_Hlayout.addWidget(QLabel(" ")) # Left side margin
+        slider_min_Hlayout.addWidget(self.my_parent.slider_min)
+        slider_min_Hlayout.addWidget(QLabel(" ")) # Right side margin
+        main_layout.addLayout(slider_min_Hlayout)
+
         main_layout.addWidget(self.my_parent.slider_min)
         main_layout.addLayout(colour_box)
 
