@@ -138,10 +138,6 @@ class ImgPainter(MyQWidgetWithQPainter):
             self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
 
     def scale2fact(self, new_scale = None):
-        h_scr_bar = float(self.p_h_svar().value())
-        v_scr_bar = float(self.p_v_svar().value())
-        print "\n h_scr_bar, v_scr_bar =", h_scr_bar, v_scr_bar
-
         old_scale = float(self.my_scale)
 
         if(new_scale == None):
@@ -151,16 +147,13 @@ class ImgPainter(MyQWidgetWithQPainter):
             self.my_scale *= new_scale
 
         scale_factor = self.my_scale / old_scale
-
         self.update()
 
         h_scr_bar = float(self.p_h_svar().value())
         v_scr_bar = float(self.p_v_svar().value())
-        print "h_scr_bar, v_scr_bar =", h_scr_bar, v_scr_bar, "\n"
-
         self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_scr_bar * scale_factor)
         self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_scr_bar * scale_factor)
-
+        print "rescaling to:", self.my_scale
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
         if(dst != None):
