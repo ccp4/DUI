@@ -607,11 +607,11 @@ class MyImgWin(QWidget):
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
-        zoom_in_but = QPushButton("Zoom In")
+        zoom_in_but = QPushButton("Zoom In")        #TODO put an image here
         zoom_in_but.clicked.connect(self.zoom_in)
-        zoom2one_but = QPushButton("Zoom 1/1")
+        zoom2one_but = QPushButton("Zoom 1/1")      #TODO put an image here
         zoom2one_but.clicked.connect(self.zoom2one)
-        zoom_out_but = QPushButton("Zoom Out")
+        zoom_out_but = QPushButton("Zoom Out")      #TODO put an image here
         zoom_out_but.clicked.connect(self.zoom_out)
 
         self.img_num = 1
@@ -735,6 +735,20 @@ class MyImgWin(QWidget):
 
         self.btn_first_clicked()
         self.ini_contrast()
+
+        pt_width = float(self.my_painter.size().width())
+        pt_height = float(self.my_painter.size().height())
+        sc_width = float(self.my_scrollable.size().width())
+        sc_height = float(self.my_scrollable.size().height())
+
+        a_ratio_pt = pt_width / pt_height
+        a_ratio_sc = sc_width / sc_height
+
+        if(a_ratio_pt > a_ratio_sc):
+            self.my_painter.scale2fact( sc_width / pt_width )
+        else:
+            self.my_painter.scale2fact( sc_height / pt_height )
+
         self.set_img()
 
     def ini_reflection_table(self, pckl_file_path):
