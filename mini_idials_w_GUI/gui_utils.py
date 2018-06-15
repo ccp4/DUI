@@ -264,6 +264,8 @@ def update_info(main_obj):
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
                                   new_json = uni_json)
 
+    print "\n from update_info\n"
+
 
 
 def update_pbar_msg(main_obj):
@@ -568,17 +570,17 @@ class CliOutView(QTextEdit):
             print "unwritable char <<", str_to_print, ">>",
 
     def make_red(self):
-        print "\n turning log fonts to RED \n"
+        print "turning log fonts to RED"
         style_orign = "color: rgba(220, 0, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_green(self):
-        print "\n turning log fonts to GREEN \n"
+        print "turning log fonts to GREEN"
         style_orign = "color: rgba(0, 125, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_blue(self):
-        print "\n turning log fonts to BLUE \n"
+        print "turning log fonts to BLUE"
         style_orign = "color: rgba(0, 0, 125, 255)"
         self.setStyleSheet(style_orign)
 

@@ -155,7 +155,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
     txt_lab = "updating Observed Reflections Data:"
     my_bar = ProgBarBox(min_val = 0, max_val = len(bbox_lst), text = txt_lab)
 
-    print "\n\n len(bbox_lst) =", len(bbox_lst), "\n"
+    print "len(bbox_lst) =", len(bbox_lst)
 
     for i, ref_box in enumerate(bbox_lst):
         my_bar(i)

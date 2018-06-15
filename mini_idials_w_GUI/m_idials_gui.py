@@ -186,7 +186,7 @@ class CentreWidget(QWidget):
                     widget.update_param(curr_step)
 
                 except:
-                    print "\n\n Unable to update params\n\n"
+                    print "\n Unable to update params\n"
 
     def btn_clicked(self):
         print "btn_clicked"

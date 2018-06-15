@@ -32,8 +32,6 @@ from dials.array_family import flex
 from img_view_tools import build_qimg, draw_palette_label, find_hkl_near, \
                            list_arrange, list_p_arrange
 
-from time import time as time_now
-
 QGLWidget_test = '''
 try:
     from PyQt4.QtOpenGL import QGLWidget
@@ -735,11 +733,18 @@ class MyImgWin(QWidget):
 
         self.btn_first_clicked()
         self.ini_contrast()
+        self.set_img()
 
         pt_width = float(self.my_painter.size().width())
         pt_height = float(self.my_painter.size().height())
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
+
+        print "pt_width =", pt_width
+        print "pt_height =", pt_height
+        print "sc_width =", sc_width
+        print "sc_height =", sc_height
+
 
         a_ratio_pt = pt_width / pt_height
         a_ratio_sc = sc_width / sc_height
@@ -749,7 +754,6 @@ class MyImgWin(QWidget):
         else:
             self.my_painter.scale2fact( sc_height / pt_height )
 
-        self.set_img()
 
     def ini_reflection_table(self, pckl_file_path):
         if(pckl_file_path[0] != None):
