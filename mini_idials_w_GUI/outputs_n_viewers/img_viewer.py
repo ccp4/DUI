@@ -738,13 +738,9 @@ class MyImgWin(QWidget):
         self.btn_first_clicked()
         self.ini_contrast()
         self.set_img()
-
-        self.zooming_timer = QTimer(self)
-        self.zooming_timer.start(2000)
-        self.zooming_timer.timeout.connect(self.scale2border)
+        QTimer.singleShot(1000, self.scale2border)
 
     def scale2border(self):
-        self.zooming_timer.timeout.disconnect()
 
         pt_width = float(self.my_painter.size().width())
         pt_height = float(self.my_painter.size().height())
