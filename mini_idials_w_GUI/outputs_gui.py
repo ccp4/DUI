@@ -26,7 +26,6 @@ import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from outputs_n_viewers.img_viewer import MyImgWin
 from outputs_n_viewers.info_handler import InfoData, update_all_data
 from outputs_n_viewers.web_page_view import WebTab
 

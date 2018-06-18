@@ -374,6 +374,9 @@ class ImgPainter(MyQWidgetWithQPainter):
                     print "No xb,yb provided"
                     '''
 
+            else:
+                print "No need to draw reflections",
+
             painter.end()
 
 class PopPaletteMenu(QMenu):
@@ -756,6 +759,8 @@ class MyImgWin(QWidget):
 
 
     def ini_reflection_table(self, pckl_file_path):
+        print "\npickle file(s) =", pckl_file_path
+
         if(pckl_file_path[0] != None):
             print "\npickle file (found) =", pckl_file_path[0]
             try:
@@ -782,8 +787,6 @@ class MyImgWin(QWidget):
                 self.find_spt_flat_data_lst = [None]
                 print "\n something failed with the reflection pickle \n\n"
 
-            print "\npickle file (predictions) =", pckl_file_path[1]
-
             try:
                 table = flex.reflection_table.from_pickle(pckl_file_path[1])
                 print "table =", table
@@ -806,6 +809,7 @@ class MyImgWin(QWidget):
                 print "\n something failed with the reflection pickle \n\n"
 
         else:
+            self.find_spt_flat_data_lst = [None]
             self.pred_spt_flat_data_lst = [None]
 
         self.set_img()
