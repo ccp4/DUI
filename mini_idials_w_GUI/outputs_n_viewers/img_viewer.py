@@ -24,7 +24,7 @@ copyright (c) CCP4 - DLS
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import sys, os
+import sys, os, time
 
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
@@ -378,6 +378,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                 print "No need to draw reflections",
 
             painter.end()
+
 
 class PopPaletteMenu(QMenu):
 
@@ -738,16 +739,17 @@ class MyImgWin(QWidget):
         self.ini_contrast()
         self.set_img()
 
+        self.zooming_timer = QTimer(self)
+        self.zooming_timer.start(2000)
+        self.zooming_timer.timeout.connect(self.scale2border)
+
+    def scale2border(self):
+        self.zooming_timer.timeout.disconnect()
+
         pt_width = float(self.my_painter.size().width())
         pt_height = float(self.my_painter.size().height())
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
-
-        print "pt_width =", pt_width
-        print "pt_height =", pt_height
-        print "sc_width =", sc_width
-        print "sc_height =", sc_height
-
 
         a_ratio_pt = pt_width / pt_height
         a_ratio_sc = sc_width / sc_height
@@ -756,7 +758,6 @@ class MyImgWin(QWidget):
             self.my_painter.scale2fact( sc_width / pt_width )
         else:
             self.my_painter.scale2fact( sc_height / pt_height )
-
 
     def ini_reflection_table(self, pckl_file_path):
         print "\npickle file(s) =", pckl_file_path
