@@ -428,9 +428,19 @@ class PopPaletteMenu(QMenu):
         main_layout.addLayout(colour_box)
 
         print "...geometry().width() =", self.my_parent.slider_min.geometry().width()
-
         self.setLayout(main_layout)
         self.show()
+
+
+
+    def showEvent(self, event):
+        print "repainting"
+        try:
+            self.my_parent.set_img()
+
+        except:
+            print "no (...my_sweep) yet, skipping palette label paint"
+
 
     def slider_max_changed(self, value):
         if(self.my_parent.slider_min.sliderPosition() > value - 15):
