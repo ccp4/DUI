@@ -436,7 +436,13 @@ class PopPaletteMenu(QMenu):
     def showEvent(self, event):
         print "repainting"
         try:
-            self.my_parent.set_img()
+
+            self.my_parent.palette_label.setPixmap(QPixmap(self.my_parent.palette_qimg(
+                                                   draw_palette_label(self.my_parent.i_min,
+                                                                      self.my_parent.i_max),
+                                                                      self.my_parent.palette,
+                                                                      self.my_parent.i_min,
+                                                                      self.my_parent.i_max)))
 
         except:
             print "no (...my_sweep) yet, skipping palette label paint"
@@ -881,11 +887,12 @@ class MyImgWin(QWidget):
                                             (self.rad_but_fnd_hkl.checkState(),
                                             self.rad_but_pre_hkl.checkState()))
 
-        pal_flex_arr = draw_palette_label(self.i_min, self.i_max)
-        self.palette_label.setPixmap(QPixmap(self.palette_qimg(pal_flex_arr,
-                                                               self.palette,
-                                                               self.i_min,
-                                                               self.i_max)))
+        self.palette_label.setPixmap(QPixmap(self.palette_qimg(
+                                             draw_palette_label(self.i_min, self.i_max),
+                                                                self.palette,
+                                                                self.i_min,
+                                                                self.i_max)))
+
 
     def btn_play_clicked(self):
         if(self.video_timer.isActive()):
