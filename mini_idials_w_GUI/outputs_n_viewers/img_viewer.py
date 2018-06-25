@@ -625,11 +625,18 @@ class MyImgWin(QWidget):
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
-        zoom_in_but = QPushButton("Zoom In")        #TODO put an image here
+        my_code_path = str(os.path.dirname(os.path.abspath(__file__)))
+
+        icon_path = my_code_path + "/img_viewer_icons/"
+
+        zoom_in_but = QPushButton()
+        zoom_in_but.setIcon(QIcon(icon_path + "zoom_plus_ico.png"))
         zoom_in_but.clicked.connect(self.zoom_in)
-        zoom2one_but = QPushButton("Zoom 1/1")      #TODO put an image here
+        zoom2one_but = QPushButton()
+        zoom2one_but.setIcon(QIcon(icon_path + "zoom_ono_one_ico.png"))
         zoom2one_but.clicked.connect(self.zoom2one)
-        zoom_out_but = QPushButton("Zoom Out")      #TODO put an image here
+        zoom_out_but = QPushButton()
+        zoom_out_but.setIcon(QIcon(icon_path + "zoom_minus_ico.png"))
         zoom_out_but.clicked.connect(self.zoom_out)
 
         self.img_num = 1
