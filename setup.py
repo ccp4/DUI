@@ -26,7 +26,10 @@ setup(name='dui_test',
                                                    'mini_idials_w_GUI/resources/re_try_grayed.png',
                                                    'mini_idials_w_GUI/resources/re_try.png',
                                                    'mini_idials_w_GUI/resources/stop_grayed.png',
-                                                   'mini_idials_w_GUI/resources/stop.png'])],
+                                                   'mini_idials_w_GUI/resources/stop.png',
+                    'mini_idials_w_GUI/outputs_n_viewers/img_viewer_icons/zoom_plus_ico.png',
+                    'mini_idials_w_GUI/outputs_n_viewers/img_viewer_icons/zoom_ono_one_ico.png',
+                    'mini_idials_w_GUI/outputs_n_viewers/img_viewer_icons/zoom_minus_ico.png'])],
       entry_points={'console_scripts':['dui=mini_idials_w_GUI.main_dui:main']},
      )
 
