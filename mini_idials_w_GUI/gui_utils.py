@@ -663,6 +663,10 @@ class Text_w_Bar(QProgressBar):
 
 
 class MainWidget(QMainWindow):
+    '''
+    This is a test GUI only used by the developer
+    the user should NEVER see this code running
+    '''
     def __init__(self):
         super(MainWidget, self).__init__()
         main_box = QVBoxLayout()

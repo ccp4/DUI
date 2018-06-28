@@ -42,6 +42,8 @@ from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
 
+storage_path = "/tmp/"
+
 class CommandThread(QThread):
 
     str_print_signal = pyqtSignal(str)
@@ -246,7 +248,7 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
 
         try:
-            with open ('dials_files/bkp.pickle', 'rb') as bkp_in:
+            with open (storage_path + 'dials_files/bkp.pickle', 'rb') as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
             #TODO sometimes the following error appears
@@ -261,12 +263,12 @@ class MainWidget(QMainWindow):
 
             try:
                 import shutil
-                shutil.rmtree("dials_files")
+                shutil.rmtree(storage_path + "dials_files")
 
             except:
                 print "failed to do \"shutil.rmtree(\"dials_files\")\""
 
-            os.mkdir("dials_files")
+            os.mkdir(storage_path + "dials_files")
 
         #This flag makes the behaviour switch (automatic / explicit)
         if(sys_arg_in == None):
@@ -586,7 +588,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        with open('dials_files/bkp.pickle', 'wb') as bkp_out:
+        with open(storage_path + 'dials_files/bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
 
@@ -674,7 +676,7 @@ class MainWidget(QMainWindow):
 
 
         print "curr_step.lin_num =", curr_step.lin_num
-        err_log_file_out = "dials_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
+        err_log_file_out = storage_path + "dials_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
         print "err_log_file_out =", err_log_file_out, "\n"
 
         fil_obj = open(err_log_file_out, 'w')
