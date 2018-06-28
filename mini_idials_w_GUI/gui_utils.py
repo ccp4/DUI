@@ -184,12 +184,20 @@ def get_import_run_string(in_str_lst):
 
 
 def build_label(com_nam):
+    '''
+    label_connects = {"import"                  :"\n import  ",
+                      "find_spots"              :"\n  find   ",
+                      "index"                   :"\n index   ",
+                      "refine_bravais_settings" :"\n lattice ",
+                      "refine"                  :"\n refine  ",
+                      "integrate"               :"\nintegrate"}
+    '''
 
-    label_connects = {"import"                  :"\n  import ",
-                      "find_spots"              :"\n   find  ",
-                      "index"                   :"\n  index  ",
-                      "refine_bravais_settings" :"\n reindex ",
-                      "refine"                  :"\n  refine ",
+    label_connects = {"import"                  :"\nimport",
+                      "find_spots"              :"\nfind",
+                      "index"                   :"\nindex",
+                      "refine_bravais_settings" :"\nlattice",
+                      "refine"                  :"\nrefine",
                       "integrate"               :"\nintegrate"}
 
     return label_connects[com_nam]
@@ -341,11 +349,16 @@ class MyQButton(QPushButton):
         v_box = QVBoxLayout()
         v_box.insertSpacing(1, 24)
 
-        h_box = QHBoxLayout()
-        h_box.insertSpacing(1, 65)
-        v_box.addLayout(h_box)
+        h_box_space = QHBoxLayout()
+        h_box_space.insertSpacing(1, 65)
+        v_box.addLayout(h_box_space)
 
-        v_box.addWidget(QLabel(btn_txt))
+        h_box_label = QHBoxLayout()
+        h_box_label.addStretch()
+        h_box_label.addWidget(QLabel(btn_txt))
+        h_box_label.addStretch()
+
+        v_box.addLayout(h_box_label)
         self.cmd_n1 = my_text
         self.setLayout(v_box)
         self.show()
