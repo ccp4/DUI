@@ -247,11 +247,15 @@ def generate_predict(node_obj):
 
             gen_pred_proc = subprocess.Popen(pred_cmd, shell = True)
             gen_pred_proc.wait()
-            pre_out = node_obj.work_dir + "/" + pre_fil
+
+            #pre_out = node_obj.work_dir + "/" + pre_fil
+            pre_out = pre_fil
+
             if(os.path.exists(pre_out)):
                 print "\ngenerated predictions at: ", pre_out, "\n"
 
             else:
+                print "\n path to predictions NOT generated"
                 pre_out = None
 
         except:
@@ -284,7 +288,8 @@ def generate_report(node_obj):
         try:
             gen_rep_proc = subprocess.Popen(rep_cmd, shell = True)
             gen_rep_proc.wait()
-            rep_out = node_obj.work_dir + "/" + htm_fil
+            #rep_out = node_obj.work_dir + "/" + htm_fil
+            rep_out = htm_fil
             print "generated report at: ", rep_out
 
         except:

@@ -56,7 +56,7 @@ class CommandNode(object):
         self.err_file_out = None
 
         self.dials_command = DialsCommand()
-        self.work_dir = os.getcwd()
+        #self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
         self.command_lst = cmd_lst

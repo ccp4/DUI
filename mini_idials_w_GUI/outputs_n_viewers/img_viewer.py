@@ -368,14 +368,13 @@ class ImgPainter(MyQWidgetWithQPainter):
                                      int(self.yb * self.my_scale),
                                      int((self.xb - cen_siz) * self.my_scale),
                                      int(self.yb * self.my_scale))
-
+                    to_remove = '''
                 else:
-                    no_longer_needed = '''
                     print "No xb,yb provided"
-                    '''
 
             else:
                 print "No need to draw reflections",
+                                '''
 
             painter.end()
 

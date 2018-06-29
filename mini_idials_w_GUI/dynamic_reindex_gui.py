@@ -47,11 +47,11 @@ def ops_list_from_json(json_path = None):
         for inner_key in value:
             if(inner_key == "rmsd"):
                 rmsd_val = value["rmsd"]
-                rmsd_str = " {:7.4}".format(rmsd_val)
+                rmsd_str = " {:7.2}".format(rmsd_val)
 
             elif(inner_key ==  "min_cc"):
                 min_cc_val = value["min_cc"]
-                min_cc_str = " {:7.3}".format(min_cc_val)
+                min_cc_str = " {:7.2}".format(min_cc_val)
 
                 if("Non" in min_cc_str):
                     min_cc_str = "    - "
@@ -63,7 +63,7 @@ def ops_list_from_json(json_path = None):
 
             elif(inner_key ==  "max_cc"):
                 max_cc_val = value["max_cc"]
-                max_cc_str = " {:7.3}".format(max_cc_val)
+                max_cc_str = " {:7.2}".format(max_cc_val)
 
                 if("Non" in max_cc_str):
                     max_cc_str = "    - "
@@ -80,7 +80,7 @@ def ops_list_from_json(json_path = None):
 
             elif(inner_key ==  "max_angular_difference"):
                 angular_diff_val = value["max_angular_difference"]
-                angular_diff_str = " {:7.4} ".format(angular_diff_val)
+                angular_diff_str = " {:7.2} ".format(angular_diff_val)
 
             elif(inner_key ==  "correlation_coefficients"):
                 corr_coeff_val = value["correlation_coefficients"]
@@ -90,13 +90,13 @@ def ops_list_from_json(json_path = None):
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
                 uc_a = unit_cell_val[3:6]
-                unit_cell_str_a = "{:6.2f}".format(uc_d[0])
-                unit_cell_str_b = "{:6.2f}".format(uc_d[1])
-                unit_cell_str_c = "{:6.2f}".format(uc_d[2])
+                unit_cell_str_a = "{:6.1f}".format(uc_d[0])
+                unit_cell_str_b = "{:6.1f}".format(uc_d[1])
+                unit_cell_str_c = "{:6.1f}".format(uc_d[2])
 
-                unit_cell_str_apl = "{:7.2f}".format(uc_a[0])
-                unit_cell_str_bet = "{:7.2f}".format(uc_a[1])
-                unit_cell_str_gam = "{:7.2f}".format(uc_a[2])
+                unit_cell_str_apl = "{:7.1f}".format(uc_a[0])    #TODO if they are integers
+                unit_cell_str_bet = "{:7.1f}".format(uc_a[1])    #TODO remove the ".00" bit
+                unit_cell_str_gam = "{:7.1f}".format(uc_a[2])    #TODO
 
 
             elif(inner_key ==  "recommended"):
