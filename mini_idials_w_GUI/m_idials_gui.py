@@ -29,7 +29,7 @@ import sys, os, pickle
 
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
-from cli_utils import TreeShow, prn_lst_lst_cmd
+from cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
 from m_idials import Runner
 from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
@@ -39,10 +39,7 @@ from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
      build_command_tip, update_info, update_pbar_msg, kill_w_child, \
      TreeNavWidget, build_ttip, build_label, MyQButton
 
-
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
-
-storage_path = "/tmp/"
 
 class CommandThread(QThread):
 
@@ -244,11 +241,11 @@ class ModeWidget(QWidget):
 
 
 class MainWidget(QMainWindow):
-    def __init__(self, sys_arg_in = None):
+    def __init__(self):
         super(MainWidget, self).__init__()
-
+        self.storage_path = sys_arg.directory
         try:
-            with open (storage_path + 'dials_files/bkp.pickle', 'rb') as bkp_in:
+            with open (self.storage_path + 'dials_files/bkp.pickle', 'rb') as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
             #TODO sometimes the following error appears
@@ -263,18 +260,15 @@ class MainWidget(QMainWindow):
 
             try:
                 import shutil
-                shutil.rmtree(storage_path + "dials_files")
+                shutil.rmtree(self.storage_path + "dials_files")
 
             except:
                 print "failed to do \"shutil.rmtree(\"dials_files\")\""
 
-            os.mkdir(storage_path + "dials_files")
+            os.mkdir(self.storage_path + "dials_files")
 
         #This flag makes the behaviour switch (automatic / explicit)
-        if(sys_arg_in == None):
-            sys_arg_in = SysArgvData()
-
-        self.idials_runner.make_next = sys_arg_in.make_next
+        self.idials_runner.make_next = sys_arg.make_next
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
@@ -300,8 +294,8 @@ class MainWidget(QMainWindow):
 
 
         self.centre_widget = CentreWidget()
-        self.centre_widget.get_arg_obj(sys_arg_in)
-        self.run_all = sys_arg_in.run_all
+        self.centre_widget.get_arg_obj(sys_arg)
+        self.run_all = sys_arg.run_all
 
         h_left_splitter.addWidget(self.centre_widget)
 
@@ -588,7 +582,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        with open(storage_path + 'dials_files/bkp.pickle', 'wb') as bkp_out:
+        with open(self.storage_path + 'dials_files/bkp.pickle', 'wb') as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
 
@@ -676,7 +670,7 @@ class MainWidget(QMainWindow):
 
 
         print "curr_step.lin_num =", curr_step.lin_num
-        err_log_file_out = storage_path + "dials_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
+        err_log_file_out = self.storage_path + "dials_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
         print "err_log_file_out =", err_log_file_out, "\n"
 
         fil_obj = open(err_log_file_out, 'w')

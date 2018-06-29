@@ -25,7 +25,7 @@ copyright (c) CCP4 - DLS
 import os
 import sys
 import pickle
-from cli_utils import print_list, TreeShow, DialsCommand, \
+from cli_utils import print_list, TreeShow, DialsCommand, sys_arg, \
      generate_report, build_command_lst, get_next_step, generate_predict
 
 class CommandNode(object):
@@ -318,6 +318,8 @@ if(__name__ == "__main__"):
     else:
         make_next_in = True
         print "Running in << automatic >> mode"
+
+    storage_path = sys_arg.directory
 
     try:
         with open (storage_path + 'dials_files/bkp.pickle', 'rb') as bkp_in:

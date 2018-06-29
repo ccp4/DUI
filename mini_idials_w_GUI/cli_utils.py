@@ -26,7 +26,16 @@ import subprocess
 import json
 import os
 
-storage_path = "/tmp/"
+class SysArgvData(object):
+    '''
+    Some data related to how the GUI gets launched from CLI
+    '''
+    make_next = False
+    run_all = False
+    template = None
+    directory = str(os.getcwd())
+
+sys_arg = SysArgvData()
 
 
 def prn_lst_lst_cmd(last_idials_node):
@@ -70,9 +79,10 @@ def get_next_step(node_obj):
 
 def build_command_lst(node_obj, cmd_lst):
 
-
-
     #TODO make sure new step is compatible with previous
+
+    storage_path = sys_arg.directory
+
     cmd_lst_to_run = []
     cmd_lst_to_run.append("dials." + cmd_lst[0])
     if(cmd_lst[0] != "reindex"):
@@ -236,6 +246,8 @@ def build_command_lst(node_obj, cmd_lst):
 
 def generate_predict(node_obj):
     pre_out = None
+    storage_path = sys_arg.directory
+
     if(node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]):
         try:
             current_lin = node_obj.lin_num
@@ -266,7 +278,9 @@ def generate_predict(node_obj):
 
 
 def generate_report(node_obj):
+
     rep_out = None
+    storage_path = sys_arg.directory
 
     if(node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]):
         current_lin = node_obj.lin_num
