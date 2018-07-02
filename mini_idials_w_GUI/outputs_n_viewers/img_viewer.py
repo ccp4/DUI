@@ -357,7 +357,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                     print "Failed to show HKLs",
 
                 if(self.xb != None and self.yb != None):
-
+                    painter.setPen(indexed_pen)
                     cen_siz = 40.0
                     painter.drawLine(int(self.xb * self.my_scale),
                                      int((self.yb - cen_siz) * self.my_scale),
@@ -368,13 +368,8 @@ class ImgPainter(MyQWidgetWithQPainter):
                                      int(self.yb * self.my_scale),
                                      int((self.xb - cen_siz) * self.my_scale),
                                      int(self.yb * self.my_scale))
-                    to_remove = '''
                 else:
                     print "No xb,yb provided"
-
-            else:
-                print "No need to draw reflections",
-                                '''
 
             painter.end()
 
@@ -841,7 +836,6 @@ class MyImgWin(QWidget):
 
     def zoom_out(self):
         self.my_painter.scale2fact(0.8)
-
 
     def update_beam_centre(self, xb, yb):
         print " update_beam_centre"

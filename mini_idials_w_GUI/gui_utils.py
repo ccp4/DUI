@@ -251,6 +251,7 @@ def update_info(main_obj):
     new_ref_pikl = main_obj.idials_runner.get_reflections_path()
 
     if(main_obj.view_tab_num == 0):
+
         if(main_obj.cur_json != new_img_json):
             main_obj.cur_json = new_img_json
             #TODO check if next line should run ALLWAYS
@@ -260,6 +261,8 @@ def update_info(main_obj):
         if(main_obj.cur_pick != new_ref_pikl):
             main_obj.cur_pick = new_ref_pikl
             main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
+
+
 
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
@@ -271,6 +274,15 @@ def update_info(main_obj):
 
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
                                   new_json = uni_json)
+
+    try:
+        xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
+        yb = main_obj.info_widget.all_data.yb / main_obj.info_widget.all_data.y_px_size
+
+    except:
+        xb, yb = None, None
+
+    main_obj.img_view.update_beam_centre(xb, yb)
 
     print "\n from update_info\n"
 
