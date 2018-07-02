@@ -81,24 +81,25 @@ def build_command_lst(node_obj, cmd_lst):
 
     #TODO make sure new step is compatible with previous
 
-    storage_path = sys_arg.directory
-
     cmd_lst_to_run = []
     cmd_lst_to_run.append("dials." + cmd_lst[0])
     if(cmd_lst[0] != "reindex"):
         for tmp_par in cmd_lst[1:]:
             cmd_lst_to_run.append(tmp_par)
 
+    run_path = sys_arg.directory + os.sep + "dui_files"
+
+
     if(cmd_lst[0] == "import"):
-        node_obj.json_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_datablock.json"
+        node_obj.json_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -109,19 +110,19 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_datablock.json"
+        node_obj.json_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.refl_pickle_file_out = storage_path + "/dui_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -134,19 +135,19 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_experiments.json"
+        node_obj.json_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.refl_pickle_file_out = storage_path + "/dui_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -164,14 +165,14 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.prefix_out = prefix_str
         output_str = "output.prefix=" + node_obj.prefix_out
         cmd_lst_to_run.append(output_str)
-        cmd_lst_to_run.append("output.directory=" + storage_path + "/dui_files")
-        node_obj.json_file_out = storage_path + "/dui_files" + os.sep +  prefix_str + "bravais_summary.json"
+        cmd_lst_to_run.append("output.directory=" + run_path)
+        node_obj.json_file_out = run_path + os.sep +  prefix_str + "bravais_summary.json"
 
-        node_obj.log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -196,9 +197,9 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = storage_path + "/dui_files" + os.sep +  node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
+        node_obj.json_file_out = run_path + os.sep +  node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
 
-        node_obj.refl_pickle_file_out = storage_path + "/dui_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -211,22 +212,22 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
 
-        node_obj.json_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_experiments.json"
+        node_obj.json_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.refl_pickle_file_out = storage_path + "/dui_files" + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
 
         if(cmd_lst[0] == "integrate"):
-            cmd_lst_to_run.append("output.phil=" + storage_path + "/dui_files/" + str(node_obj.lin_num) + "_integrate.phil")
+            cmd_lst_to_run.append("output.phil=" + run_path + os.sep + str(node_obj.lin_num) + "_integrate.phil")
 
-        node_obj.log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -234,11 +235,11 @@ def build_command_lst(node_obj, cmd_lst):
         cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
         cmd_lst_to_run.append(node_obj.prev_step.refl_pickle_file_out)
 
-        node_obj.log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
+        node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
-        node_obj.debug_log_file_out = storage_path + "/dui_files" + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
 
@@ -246,13 +247,13 @@ def build_command_lst(node_obj, cmd_lst):
 
 def generate_predict(node_obj):
     pre_out = None
-    storage_path = sys_arg.directory
+    run_path = sys_arg.directory + os.sep +  "dui_files"
 
     if(node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]):
         try:
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
-            pre_fil = storage_path + "/dui_files" + os.sep + str(current_lin) + "_predict.pickle"
+            pre_fil = run_path + os.sep + str(current_lin) + "_predict.pickle"
             pred_outp = " output=" + pre_fil
             pred_cmd = "dials.predict " + str(exp_inp) + pred_outp
             print "predict command: ", pred_cmd, "\n\n"
@@ -260,7 +261,6 @@ def generate_predict(node_obj):
             gen_pred_proc = subprocess.Popen(pred_cmd, shell = True)
             gen_pred_proc.wait()
 
-            #pre_out = node_obj.work_dir + "/" + pre_fil
             pre_out = pre_fil
 
             if(os.path.exists(pre_out)):
@@ -280,13 +280,13 @@ def generate_predict(node_obj):
 def generate_report(node_obj):
 
     rep_out = None
-    storage_path = sys_arg.directory
+    run_path = sys_arg.directory + os.sep +  "dui_files"
 
     if(node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]):
         current_lin = node_obj.lin_num
         refl_inp = node_obj.refl_pickle_file_out
         deps_outp = "output.external_dependencies=local"
-        htm_fil = storage_path + "/dui_files" + os.sep + str(current_lin) + "_report.html"
+        htm_fil = run_path + os.sep + str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
         if(node_obj.command_lst[0] == "find_spots"):
             #rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
@@ -302,7 +302,7 @@ def generate_report(node_obj):
         try:
             gen_rep_proc = subprocess.Popen(rep_cmd, shell = True)
             gen_rep_proc.wait()
-            #rep_out = node_obj.work_dir + "/" + htm_fil
+
             rep_out = htm_fil
             print "generated report at: ", rep_out
 
