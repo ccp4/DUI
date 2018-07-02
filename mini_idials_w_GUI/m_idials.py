@@ -322,7 +322,7 @@ if(__name__ == "__main__"):
     storage_path = sys_arg.directory
 
     try:
-        with open (storage_path + 'dials_files/bkp.pickle', 'rb') as bkp_in:
+        with open (storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
             idials_runner = pickle.load(bkp_in)
 
         #TODO sometimes the following error appears
@@ -337,12 +337,12 @@ if(__name__ == "__main__"):
 
         try:
             import shutil
-            shutil.rmtree(storage_path + "dials_files")
+            shutil.rmtree(storage_path + "/dui_files")
 
         except:
-            print "failed to do \"shutil.rmtree(\"dials_files\")\""
+            print "failed to do \"shutil.rmtree(\"/dui_files\")\""
 
-        os.mkdir(storage_path + "dials_files")
+        os.mkdir(storage_path + "/dui_files")
 
 
     idials_runner.make_next = make_next_in
@@ -366,7 +366,7 @@ if(__name__ == "__main__"):
         nxt_str = idials_runner.get_next_from_here()
 
 
-        with open(storage_path + 'dials_files/bkp.pickle', 'wb') as bkp_out:
+        with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(idials_runner, bkp_out)
 
 

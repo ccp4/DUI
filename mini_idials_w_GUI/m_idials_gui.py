@@ -245,7 +245,7 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
         self.storage_path = sys_arg.directory
         try:
-            with open (self.storage_path + 'dials_files/bkp.pickle', 'rb') as bkp_in:
+            with open (self.storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
             #TODO sometimes the following error appears
@@ -260,12 +260,12 @@ class MainWidget(QMainWindow):
 
             try:
                 import shutil
-                shutil.rmtree(self.storage_path + "dials_files")
+                shutil.rmtree(self.storage_path + "/dui_files")
 
             except:
-                print "failed to do \"shutil.rmtree(\"dials_files\")\""
+                print "failed to do \"shutil.rmtree(\"/dui_files\")\""
 
-            os.mkdir(self.storage_path + "dials_files")
+            os.mkdir(self.storage_path + "/dui_files")
 
         #This flag makes the behaviour switch (automatic / explicit)
         self.idials_runner.make_next = sys_arg.make_next
@@ -582,7 +582,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        with open(self.storage_path + 'dials_files/bkp.pickle', 'wb') as bkp_out:
+        with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
 
@@ -670,7 +670,7 @@ class MainWidget(QMainWindow):
 
 
         print "curr_step.lin_num =", curr_step.lin_num
-        err_log_file_out = self.storage_path + "dials_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
+        err_log_file_out = self.storage_path + "/dui_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
         print "err_log_file_out =", err_log_file_out, "\n"
 
         fil_obj = open(err_log_file_out, 'w')

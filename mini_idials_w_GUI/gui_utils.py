@@ -710,6 +710,7 @@ class MainWidget(QMainWindow):
         self.txt_bar.end_motion()
 
     def btn_3_clicked(self):
+        #TODO update this path
         self.tst_view.refresh_txt("../../dui_test/X4_wide/reuse_area/dials_files/2_find_spots.log")
 
 
