@@ -34,37 +34,12 @@ lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
 
 def choice_if_decimal(num_in):
 
-    old_wway = '''
-    print "num_in =", num_in
-
-    str_d = " {:d}".format(int(round(num_in)))
     str_f = "{:6.2f}".format(num_in)
-
-    print "str_d =", str_d
-    print "str_f =", str_f
-    print
-
-    if( str_f == str_d + ".00" ):
-        str_out = str_d
-
-    else:
-        str_out = str_f
-    '''
-
-    print "num_in =", num_in
-
-    str_f = "{:6.2f}".format(num_in)
-
-    print "str_f =", str_f
-    print
-
     if( str_f[-3:] == ".00" ):
         str_out = str_f[0:-3]
 
     else:
         str_out = str_f
-
-
 
     return str_out
 
