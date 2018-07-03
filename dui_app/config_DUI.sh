@@ -11,7 +11,8 @@
 #The next line work better when this script is called from external script
 MY_WD=$(pwd)
 
-ccp4-python ${MY_WD}/write_setpath.py ${MY_WD}
+#ccp4-python ${MY_WD}/write_setpath.py ${MY_WD}
+dials.python ${MY_WD}/write_setpath.py ${MY_WD}
 
 #temporary skipping
 
