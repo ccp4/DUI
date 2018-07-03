@@ -32,6 +32,41 @@ lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
                                 'hR':146, 'cP':195, 'cF':196, 'cI':197}
 '''
 
+def choice_if_decimal(num_in):
+
+    old_wway = '''
+    print "num_in =", num_in
+
+    str_d = " {:d}".format(int(round(num_in)))
+    str_f = "{:6.2f}".format(num_in)
+
+    print "str_d =", str_d
+    print "str_f =", str_f
+    print
+
+    if( str_f == str_d + ".00" ):
+        str_out = str_d
+
+    else:
+        str_out = str_f
+    '''
+
+    print "num_in =", num_in
+
+    str_f = "{:6.2f}".format(num_in)
+
+    print "str_f =", str_f
+    print
+
+    if( str_f[-3:] == ".00" ):
+        str_out = str_f[0:-3]
+
+    else:
+        str_out = str_f
+
+
+
+    return str_out
 
 def ops_list_from_json(json_path = None):
     if(json_path == None):
@@ -94,9 +129,14 @@ def ops_list_from_json(json_path = None):
                 unit_cell_str_b = "{:6.1f}".format(uc_d[1])
                 unit_cell_str_c = "{:6.1f}".format(uc_d[2])
 
-                unit_cell_str_apl = "{:7.1f}".format(uc_a[0])    #TODO if they are integers
-                unit_cell_str_bet = "{:7.1f}".format(uc_a[1])    #TODO remove the ".00" bit
-                unit_cell_str_gam = "{:7.1f}".format(uc_a[2])    #TODO
+                #unit_cell_str_apl = "{:7.1f}".format(uc_a[0])    #TODO if they are integers
+                #unit_cell_str_bet = "{:7.1f}".format(uc_a[1])    #TODO remove the ".0" bit
+                #unit_cell_str_gam = "{:7.1f}".format(uc_a[2])    #TODO
+
+                unit_cell_str_apl = choice_if_decimal(uc_a[0])
+                unit_cell_str_bet = choice_if_decimal(uc_a[1])
+                unit_cell_str_gam = choice_if_decimal(uc_a[2])
+
 
 
             elif(inner_key ==  "recommended"):
