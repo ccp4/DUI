@@ -74,16 +74,8 @@ class ImgPainter(MyQWidgetWithQPainter):
             pix_col = int(self.x_pos / self.my_scale)
             pix_row = int(self.y_pos / self.my_scale)
 
-            try:
-                new_label_txt = " X : " + str(pix_col) + ", Y : " + str(pix_row) \
-                                + ", I : " + str(self.my_parent.img_arr[pix_row, pix_col])
+            self.my_parent.update_info_label(pix_col, pix_row)
 
-                self.my_parent.info_label.setText(new_label_txt)
-
-            except:
-                no_longer_needed = '''
-                print "failed to update i(x,y) label"
-                '''
 
             if(self.my_parent.rad_but_near_hkl.isChecked() == True):
                 self.find_closer_hkl(self.x_pos, self.y_pos)
@@ -636,7 +628,7 @@ class MyImgWin(QWidget):
         self.img_num = 1
         self.img_step_val = 1
         self.stack_size = 1
-
+        self.ref2exp = None
         self.my_sweep = None
         self.find_spt_flat_data_lst = [None]
         self.pred_spt_flat_data_lst = [None]
@@ -841,6 +833,34 @@ class MyImgWin(QWidget):
         print " update_beam_centre"
         print "new x,y =", xb, yb
         self.my_painter.update_my_beam_centre(xb, yb)
+
+    def update_exp(self, reference):
+        self.ref2exp = reference
+        print "\n update_exp(self, reference) \n"
+
+    def update_info_label(self, x_pos, y_pos):
+        new_label_txt = ""
+
+        try:
+            new_label_txt += " X = " + str(x_pos) + ", Y = " + str(y_pos) \
+                            + ", I = " + str(self.img_arr[y_pos, x_pos])
+
+
+        except:
+            new_label_txt += "X, Y, I = ?,?,?"
+
+        try:
+            mydetector = self.ref2exp.detector
+            mybeam = self.ref2exp.beam
+            p = self.ref2exp.detector[0]
+            res_str = str(p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos)))
+            new_label_txt += ", resolution = " + res_str
+
+        except:
+            new_label_txt += ", resolution = ?"
+
+        self.info_label.setText(new_label_txt)
+
 
     def set_img(self):
         if(self.my_sweep != None):

@@ -25,8 +25,7 @@ from dxtbx.model.experiment_list import ExperimentListFactory
 from dxtbx.model import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
-import json
-
+import json, sys
 class InfoData(object):
     def __init__(self):
 
@@ -67,6 +66,7 @@ class InfoData(object):
         self.n_integ_prf = None
 
         self.tmpl_str = None
+        self.ref2exp = None
 
 def update_all_data(reflections_path = None, experiments_path = None):
     dat = InfoData()
@@ -88,6 +88,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
         except:
             print "failed to find reflections"
+            print "reflections_path =", reflections_path
 
     if(experiments_path != None):
 
@@ -112,6 +113,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
             except ValueError:
                 print "failed to read json file"
+                print "experiments_path =", experiments_path
                 return dat
 
         print "len(experiments)", len(experiments)
@@ -216,6 +218,19 @@ def update_all_data(reflections_path = None, experiments_path = None):
             print "failed to find template in JSON file"
 
 
+    try:
+        dat.ref2exp = exp
+
+    except:
+        print "unable to get experiment from path"
+        dat.ref2exp = None
+
 
     return dat
+
+if(__name__ == "__main__"):
+    # This should be called with two paths adden in console
+    update_all_data(reflections_path = sys.argv[1], experiments_path = sys.argv[2])
+
+
 

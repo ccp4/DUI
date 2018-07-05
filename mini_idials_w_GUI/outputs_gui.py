@@ -378,6 +378,10 @@ class InfoWidget( QWidget):
             '''
 
     def update_data(self, exp_json_path = None, refl_pikl_path = None):
+
+        print "\n\nrefl_pikl_path =", refl_pikl_path,"\n"
+        print "\nexp_json_path =", exp_json_path,"\n"
+
         try:
 
             self.all_data = update_all_data(experiments_path = exp_json_path,
@@ -443,7 +447,9 @@ class InfoWidget( QWidget):
 
 if( __name__ == "__main__" ):
 
+    print "\n sys.argv(s) =", sys.argv[1], sys.argv[2], "\n"
     app =  QApplication(sys.argv)
     ex = InfoWidget()
-    ex.update_data(sys.argv[1])
+
+    ex.update_data(sys.argv[1], sys.argv[2])
     sys.exit(app.exec_())
