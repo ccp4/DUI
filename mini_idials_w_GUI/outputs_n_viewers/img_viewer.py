@@ -76,7 +76,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
             self.my_parent.update_info_label(pix_col, pix_row)
 
-
             if(self.my_parent.rad_but_near_hkl.isChecked() == True):
                 self.find_closer_hkl(self.x_pos, self.y_pos)
 
@@ -839,28 +838,25 @@ class MyImgWin(QWidget):
         print "\n update_exp(self, reference) \n"
 
     def update_info_label(self, x_pos, y_pos):
-        new_label_txt = ""
-
         try:
-            new_label_txt += " X = " + str(x_pos) + ", Y = " + str(y_pos) \
-                            + ", I = " + str(self.img_arr[y_pos, x_pos])
-
+            new_label_txt = "  X = " + str(x_pos) + " ,  Y = " + str(y_pos) \
+                            + " ,  I = " + str(self.img_arr[y_pos, x_pos])
 
         except:
-            new_label_txt += "X, Y, I = ?,?,?"
+            new_label_txt = "X, Y, I = ?,?,?"
 
         try:
             mydetector = self.ref2exp.detector
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
-            res_str = str(p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos)))
-            new_label_txt += ", resolution = " + res_str
+            res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
+            res_str = str("{:6.1f}".format(res_float))
+            new_label_txt += " ,  resolution = " + res_str + " " + u"\u00C5"
 
         except:
-            new_label_txt += ", resolution = ?"
+            new_label_txt += " ,  resolution = ?"
 
         self.info_label.setText(new_label_txt)
-
 
     def set_img(self):
         if(self.my_sweep != None):
