@@ -163,7 +163,7 @@ class PhilWidget( QWidget):
 
         #lst_widg = self.lst_phil_obj
         self.lst_label_widg = []
-        something_else = False
+
         self.lst_var_widg = []
 
         #print "\n advanced parameters GUI:\n"
@@ -189,37 +189,30 @@ class PhilWidget( QWidget):
                 self.lst_label_widg.append(tmp_widg)
 
             else:
-                multiple_index = False
+
+                tmp_h_box = QHBoxLayout()
+
+                indent = str(obj.full_path()).count('.')
+                tmp_str = " " * indent * inde_step + str(obj.name)
+                tmp_label  = QLabel(tmp_str)
+                tmp_label.setAutoFillBackground(True)
+                #tmp_label.setPalette(self.plt_obj)
+                tmp_label.style_orign = "color: rgba(0, 0, 0, 255)"
+                tmp_label.setStyleSheet(tmp_label.style_orign)
+                tmp_label.setFont(QFont("Monospace", sys_font_point_size))
+
+                tmp_h_box.addWidget(tmp_label)
+
+                self.lst_label_widg.append(tmp_label)
 
                 if(obj.type.phil_type == 'float'  or
                    obj.type.phil_type == 'int'    or
                    obj.type.phil_type == 'bool'   or
-                   obj.type.phil_type == 'choice' or
-                   obj.type.phil_type == 'str'    or
-                   obj.type.phil_type == 'ints'   or
-                   obj.type.phil_type == 'floats'):
+                   obj.type.phil_type == 'choice'):
 
-                    tmp_h_box = QHBoxLayout()
 
-                    indent = str(obj.full_path()).count('.')
-                    tmp_str = " " * indent * inde_step + str(obj.name)
-                    tmp_label  = QLabel(tmp_str)
-                    tmp_label.setAutoFillBackground(True)
-                    #tmp_label.setPalette(self.plt_obj)
-                    tmp_label.style_orign = "color: rgba(0, 0, 0, 255)"
-                    tmp_label.setStyleSheet(tmp_label.style_orign)
-                    tmp_label.setFont(QFont("Monospace", sys_font_point_size))
-
-                    tmp_h_box.addWidget(tmp_label)
-
-                    self.lst_label_widg.append(tmp_label)
-
-                    something_else = False
                     if(obj.type.phil_type == 'float' or
-                       obj.type.phil_type == 'int'   or
-                       obj.type.phil_type == 'str'   or
-                       obj.type.phil_type == 'ints'   or
-                       obj.type.phil_type == 'floats'):
+                       obj.type.phil_type == 'int' ):
 
                         if(obj.type.phil_type == 'float'):
                             par_min = 0.0
@@ -232,19 +225,9 @@ class PhilWidget( QWidget):
                             par_max = 5000
                             tmp_widg = QSpinBox()
 
-                        elif(obj.type.phil_type == 'str'  or
-                             obj.type.phil_type == 'ints' or
-                             obj.type.phil_type == 'floats'):
-                            tmp_widg = QLineEdit()
-                            tmp_widg.setText("")
-                            #TODO iclude the asignation of this one too
-
-                        tmp_widg.str_defl = None
-
                         if(obj.type.phil_type == 'int' or obj.type.phil_type == 'float'):
-
+                            tmp_widg.str_defl = None
                             tmp_widg.setRange(par_min, par_max)
-                            #if(type(obj.extract()) is str): TODO test why this line does NOT works
                             if(str(obj.extract()) == 'Auto' or str(obj.extract()) == 'None'):
                                 par_def = str(obj.extract())
                                 tmp_widg.setSpecialValueText(par_def)
@@ -260,11 +243,11 @@ class PhilWidget( QWidget):
 
                             tmp_str += "                          " + str(obj.extract())
 
-                        tmp_widg.local_path = str(obj.full_path())
                         tmp_widg.tmp_lst = None
 
                         if(obj.type.phil_type == 'int' or obj.type.phil_type == 'float'):
                             tmp_widg.valueChanged.connect(self.spnbox_changed)
+
                         else:
                             tmp_widg.textChanged.connect(self.spnbox_changed)
 
@@ -272,7 +255,6 @@ class PhilWidget( QWidget):
 
                         tmp_widg = QComboBox()
 
-                        tmp_widg.local_path = str(obj.full_path())
                         tmp_widg.tmp_lst=[]
                         tmp_widg.tmp_lst.append("True")
                         tmp_widg.tmp_lst.append("False")
@@ -295,7 +277,7 @@ class PhilWidget( QWidget):
                     elif(obj.type.phil_type == 'choice'):
 
                         tmp_widg = QComboBox()
-                        tmp_widg.local_path = str(obj.full_path())
+
                         tmp_widg.tmp_lst=[]
                         pos = 0
                         found_choise = False
@@ -319,31 +301,22 @@ class PhilWidget( QWidget):
                             tmp_str = None
                             non_added_lst.append(str(obj.full_path()))
 
-
                 else:
-                    debugging = '''
-                    print
-                    print "_____________________ << WARNING find something ELSE"
-                    print "_____________________ << full_path =", obj.full_path()
-                    print "_____________________ << obj.type.phil_type =", obj.type.phil_type
-                    print "_____________________ << obj.type =", obj.type
-                    print
-                    #'''
-                    something_else = True
+                    tmp_widg = QLineEdit()
+                    tmp_widg.setText("")
+                    tmp_widg.str_defl = None
+                    tmp_widg.textChanged.connect(self.spnbox_changed)
+                    #tmp_widg.tmp_lst = None
+                    tmp_str += "                          " + str(obj.extract())
 
-                if(something_else == False):
-                    if(multiple_index == False):
-                        if(tmp_str != None):
-                            #print tmp_str
-                            tmp_h_box.addWidget(tmp_widg)
-                            self.bg_box.addLayout(tmp_h_box)
-                            self.lst_var_widg.append(tmp_widg)
+                if(tmp_str != None):
+                    tmp_widg.local_path = str(obj.full_path())
+                    tmp_h_box.addWidget(tmp_widg)
+                    self.lst_var_widg.append(tmp_widg)
+                    self.bg_box.addLayout(tmp_h_box)
 
-                    else:
-                        for indx in range(obj.type.size_max):
-                            tmp_h_box_lst[indx].addWidget(multi_widg_lst[indx])
-                            self.bg_box.addLayout(tmp_h_box_lst[indx])
-        debugging = '''
+
+        #debugging = '''
         print "\n\n Non added parameters:"
         for lin_to_print in non_added_lst:
             print lin_to_print

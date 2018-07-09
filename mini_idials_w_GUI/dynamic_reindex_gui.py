@@ -104,10 +104,6 @@ def ops_list_from_json(json_path = None):
                 unit_cell_str_b = "{:6.1f}".format(uc_d[1])
                 unit_cell_str_c = "{:6.1f}".format(uc_d[2])
 
-                #unit_cell_str_apl = "{:7.1f}".format(uc_a[0])    #TODO if they are integers
-                #unit_cell_str_bet = "{:7.1f}".format(uc_a[1])    #TODO remove the ".0" bit
-                #unit_cell_str_gam = "{:7.1f}".format(uc_a[2])    #TODO
-
                 unit_cell_str_apl = choice_if_decimal(uc_a[0])
                 unit_cell_str_bet = choice_if_decimal(uc_a[1])
                 unit_cell_str_gam = choice_if_decimal(uc_a[2])
@@ -130,9 +126,6 @@ def ops_list_from_json(json_path = None):
     sorted_lst_ops = sorted(lst_ops)
 
     return sorted_lst_ops
-
-
-
 
 
 class MyReindexOpts(QWidget):
