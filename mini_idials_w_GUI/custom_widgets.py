@@ -456,10 +456,10 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    #ex = ParamWidget("find_spots")
+    ex = ParamWidget("find_spots")
     #ex = ParamWidget("integrate")
     #ex = ParamWidget("import")
-    ex = ParamWidget("index")
+    #ex = ParamWidget("index")
     sys.exit(app.exec_())
 
 

@@ -66,7 +66,7 @@ class CommandThread(QThread):
 class CentreWidget(QWidget):
 
     user_changed = pyqtSignal(str)
-    update_command_lst = pyqtSignal(list)
+    update_command_lst_hl = pyqtSignal(list)
 
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
@@ -172,7 +172,7 @@ class CentreWidget(QWidget):
         self.show()
 
     def update_parent_lst(self, command_lst):
-        self.update_command_lst.emit(command_lst)
+        self.update_command_lst_hl.emit(command_lst)
 
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
@@ -195,7 +195,7 @@ class CentreWidget(QWidget):
 
         print "\n\n my_sender.pr_widg.my_label =", my_sender.pr_widg.my_label, "\n\n"
         command_lst = [str(my_sender.pr_widg.my_label)]
-        self.update_command_lst.emit(command_lst)
+        self.update_command_lst_hl.emit(command_lst)
 
     def gray_outs_all(self):
         for btn in self.btn_lst:
@@ -364,7 +364,7 @@ class MainWidget(QMainWindow):
         self.centre_widget.run_btn.clicked.connect(self.run_clicked)
         self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
         self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
-        self.centre_widget.update_command_lst.connect(
+        self.centre_widget.update_command_lst_hl.connect(
                           self.update_low_level_command_lst)
         self.centre_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
@@ -693,7 +693,7 @@ class MainWidget(QMainWindow):
         if(self.tree_clickable == True):
             #TODO Think of a more robust way to "disconnect" ... next line
             try:
-                self.centre_widget.update_command_lst.disconnect(
+                self.centre_widget.update_command_lst_hl.disconnect(
                                 self.update_low_level_command_lst)
             except:
                 print "<< update_low_level_command_lst >> already disconnected"
@@ -713,7 +713,7 @@ class MainWidget(QMainWindow):
             self.check_gray_outs()
             self.reconnect_when_ready()
 
-            self.centre_widget.update_command_lst.connect(
+            self.centre_widget.update_command_lst_hl.connect(
                             self.update_low_level_command_lst)
 
     def closeEvent(self, event):

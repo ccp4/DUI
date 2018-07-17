@@ -42,27 +42,27 @@ class FindspotsSimplerParameterTab( QWidget):
         super(FindspotsSimplerParameterTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
 
-        xds_gain_label = QLabel("spotfinder.threshold.xds.gain")
+        xds_gain_label = QLabel("spotfinder.threshold.dispersion.gain")
         xds_gain_spn_bx = QDoubleSpinBox()
-        xds_gain_spn_bx.local_path = "spotfinder.threshold.xds.gain"
+        xds_gain_spn_bx.local_path = "spotfinder.threshold.dispersion.gain"
         xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
 
 
-        xds_sigma_background_label = QLabel("spotfinder.threshold.xds.sigma_background")
+        xds_sigma_background_label = QLabel("spotfinder.threshold.dispersion.sigma_background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
         xds_sigma_background_spn_bx.setValue(6.0)
-        xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.xds.sigma_background"
+        xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.dispersion.sigma_background"
         xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
 
-        xds_sigma_strong_label = QLabel("spotfinder.threshold.xds.sigma_strong")
+        xds_sigma_strong_label = QLabel("spotfinder.threshold.dispersion.sigma_strong")
         xds_sigma_strong_spn_bx = QDoubleSpinBox()
         xds_sigma_strong_spn_bx.setValue(3.0)
-        xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.xds.sigma_strong"
+        xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.dispersion.sigma_strong"
         xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
 
-        xds_global_threshold_label = QLabel("spotfinder.threshold.xds.global_threshold")
+        xds_global_threshold_label = QLabel("spotfinder.threshold.dispersion.global_threshold")
         xds_global_threshold_spn_bx = QDoubleSpinBox()
-        xds_global_threshold_spn_bx.local_path = "spotfinder.threshold.xds.global_threshold"
+        xds_global_threshold_spn_bx.local_path = "spotfinder.threshold.dispersion.global_threshold"
         xds_global_threshold_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         localLayout = QVBoxLayout()
