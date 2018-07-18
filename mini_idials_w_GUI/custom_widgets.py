@@ -43,7 +43,7 @@ from dials.command_line.export import phil_scope as phil_scope_export
 from gui_utils import get_import_run_string
 
 class ImportPage(QWidget):
-    update_command_lst = pyqtSignal(list)
+    update_command_lst_ll = pyqtSignal(list)
 
     '''
     This stacked widget basically helps the user to browse the input images
@@ -128,7 +128,7 @@ class ImportPage(QWidget):
             '''
             self.command_lst.append(single_com)
 
-        self.update_command_lst.emit(self.command_lst)
+        self.update_command_lst_ll.emit(self.command_lst)
         print "self.command_lst =", self.command_lst
 
         print "\n loop print \n"
@@ -215,7 +215,7 @@ def buils_lst_pair(lst_in):
 
 class ParamMainWidget( QWidget):
 
-    update_command_lst = pyqtSignal(list)
+    update_command_lst_ll = pyqtSignal(list)
 
     def __init__(self, phl_obj = None, simp_widg = None, parent = None, upper_label = None):
         super(ParamMainWidget, self).__init__()
@@ -291,7 +291,7 @@ class ParamMainWidget( QWidget):
 
 
 
-        self.update_command_lst.emit(self.command_lst)
+        self.update_command_lst_ll.emit(self.command_lst)
 
         try:
             self.sipler_widget.set_max_nproc()
@@ -363,7 +363,7 @@ class ParamMainWidget( QWidget):
 
         self.lst_pair = update_lst_pair(self.lst_pair, str_path, str_value)
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
-        self.update_command_lst.emit(self.command_lst)
+        self.update_command_lst_ll.emit(self.command_lst)
 
     def update_param(self, lst_in):
         self.reset_par()
@@ -441,7 +441,7 @@ class ParamWidget(QWidget):
 
         self.my_widget.command_lst = [label_str]
 
-        self.my_widget.update_command_lst.connect(self.update_parent_lst)
+        self.my_widget.update_command_lst_ll.connect(self.update_parent_lst)
 
         v_left_box =  QVBoxLayout()
         v_left_box.addWidget(self.my_widget)
