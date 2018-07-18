@@ -31,7 +31,6 @@ from m_idials_gui import MainWidget
 from cli_utils import sys_arg
 
 def main():
-    #sys_arg = SysArgvData()
     call_arg = sys.argv
     if(len(call_arg) > 1):
         for par_str in call_arg[1:]:
@@ -65,7 +64,6 @@ def main():
     print "sys_arg.template=", sys_arg.template
     print "sys_arg.directory=", sys_arg.directory
     app =  QApplication(call_arg)
-    #ex = MainWidget(sys_arg_in = sys_arg)
     ex = MainWidget()
     ex.show()
     sys.exit(app.exec_())
