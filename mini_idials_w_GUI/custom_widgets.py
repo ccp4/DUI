@@ -417,7 +417,7 @@ class ParamMainWidget( QWidget):
 
 class ParamWidget(QWidget):
 
-    update_command_lst = pyqtSignal(list)
+    update_command_lst_ml = pyqtSignal(list)
 
     def __init__(self, label_str):
         super(ParamWidget, self).__init__()
@@ -452,7 +452,7 @@ class ParamWidget(QWidget):
         self.my_widget.update_param(curr_step.command_lst)
 
     def update_parent_lst(self, command_lst):
-        self.update_command_lst.emit(command_lst)
+        self.update_command_lst_ml.emit(command_lst)
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)

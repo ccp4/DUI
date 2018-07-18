@@ -118,7 +118,7 @@ class CentreWidget(QWidget):
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
-            param_widg.update_command_lst.connect(self.update_parent_lst)
+            param_widg.update_command_lst_ml.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
 
