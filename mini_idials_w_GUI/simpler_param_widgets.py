@@ -128,8 +128,9 @@ class FindspotsSimplerParameterTab( QWidget):
         self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
-        cpu_max_proc = libtbx.introspection.number_of_processors()
-        self.box_nproc.setValue(int(cpu_max_proc))
+        cpu_max_proc = int(libtbx.introspection.number_of_processors())
+        self.box_nproc.setValue(cpu_max_proc)
+        return cpu_max_proc
 
 
 class IndexSimplerParamTab( QWidget):
@@ -386,12 +387,12 @@ class IntegrateSimplerParamTab( QWidget):
         print value
         str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
-        cpu_max_proc = libtbx.introspection.number_of_processors()
-        self.box_nproc.setValue(int(cpu_max_proc))
+        cpu_max_proc = int(libtbx.introspection.number_of_processors())
+        self.box_nproc.setValue(cpu_max_proc)
+        return cpu_max_proc
 
     def mtz_name_changed(self, value):
         print "used to run"

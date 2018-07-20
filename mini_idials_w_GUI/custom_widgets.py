@@ -271,7 +271,6 @@ class ParamMainWidget( QWidget):
     def reset_par(self):
         print "Reseting"
 
-        #TODO here is suposed to reset idials low level parameters to TODO
         for i in reversed(range(self._vbox.count())):
             widgetToRemove = self._vbox.itemAt( i ).widget()
             self._vbox.removeWidget( widgetToRemove )
@@ -289,18 +288,28 @@ class ParamMainWidget( QWidget):
         self.lst_pair = []
         print "<< inner >>self.command_lst =", self.command_lst
 
-
-
         self.update_command_lst_low_level.emit(self.command_lst)
 
         try:
-            self.sipler_widget.set_max_nproc()
-            print "\n Tunning nproc to maximum \n"
+            max_nproc = self.sipler_widget.set_max_nproc()
+            if(max_nproc > 1):
+                print "\n time to raise nproc to:", max_nproc, " \n"
+                self.raise_nproc_str = str(self.sipler_widget.box_nproc.local_path) + "=" + str(max_nproc)
+                QTimer.singleShot(1000, self.raise_nproc_to_max)
+                print "tst 03"
 
         except:
-            print "\n This step runs as fas as it can with nproc = 1 \n"
+            print "\n This step runs as fast as it can with nproc = 1 \n"
 
-        #TODO here is suposed to reset idials low level parameters to TODO
+    def raise_nproc_to_max(self):
+        found_nproc = False
+        for single_par in self.command_lst:
+            if("mp.nproc" in single_par):
+                found_nproc = True
+
+        if(found_nproc == False):
+            self.command_lst.append(self.raise_nproc_str)
+            self.update_command_lst_low_level.emit(self.command_lst)
 
     def update_advanced_widget(self, str_path, str_value):
 
@@ -365,7 +374,7 @@ class ParamMainWidget( QWidget):
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
         self.update_command_lst_low_level.emit(self.command_lst)
 
-    def update_param(self, lst_in):
+    def update_param_w_lst(self, lst_in):
         self.reset_par()
         if(len(lst_in) > 1):
             new_lst_pair = buils_lst_pair(lst_in)
@@ -449,7 +458,7 @@ class ParamWidget(QWidget):
         self.show()
 
     def update_param(self, curr_step):
-        self.my_widget.update_param(curr_step.command_lst)
+        self.my_widget.update_param_w_lst(curr_step.command_lst)
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_medium_level.emit(command_lst)
