@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
@@ -31,6 +31,10 @@ class WebTab(QWidget):
     def update_page(self, new_path = None):
         try:
             print "\n >> update_page(", new_path, ")"
+
+            #TODO test this and re use it with the pickle files
+            new_path = os.path.abspath(new_path)
+
             #new_path = "file://" + new_path # unix way
             new_path = "file:///" + new_path # Windows way(seems to work on Unix too)
             print " >> new_path:", new_path, "\n"

@@ -184,14 +184,6 @@ def get_import_run_string(in_str_lst):
 
 
 def build_label(com_nam):
-    '''
-    label_connects = {"import"                  :"\n import  ",
-                      "find_spots"              :"\n  find   ",
-                      "index"                   :"\n index   ",
-                      "refine_bravais_settings" :"\n lattice ",
-                      "refine"                  :"\n refine  ",
-                      "integrate"               :"\nintegrate"}
-    '''
 
     label_connects = {"import"                  :"\nimport",
                       "find_spots"              :"\nfind",
@@ -382,13 +374,6 @@ class TreeNavWidget(QTreeView):
         print "TreeNavWidget(__init__)"
         self.setSortingEnabled(False)
         self.setAnimated(True)
-
-        #self.setMinimumWidth(1125)
-        #self.setMaximumWidth(1565)
-        #self.setMinimumHeight(1425)
-        #self.setMaximumHeight(1565)
-
-        #self.setIndentation(12)
 
         header_view = self.header()
         header_view.setResizeMode(QHeaderView.ResizeToContents)
