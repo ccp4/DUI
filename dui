@@ -1,3 +1,5 @@
+# This is a developer only tool for testing DUI with cudtom build of Dials
+
 echo "Running DUI/iDIALS from local copy of git repo"
 export BOOST_ADAPTBX_SIGNALS_DEFAULT=1
 export BOOST_ADAPTBX_FPE_DEFAULT=1
