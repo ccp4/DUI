@@ -57,6 +57,7 @@ class ProgBarBox(QProgressDialog):
         self.setValue(100)
         self.close()
 
+
 def draw_palette_label(i_min, i_max):
     scale_size = int(i_max - i_min)
 
@@ -75,7 +76,6 @@ def draw_palette_label(i_min, i_max):
 
     tmp_flex_arr = flex.double(np_img_arr)
     return tmp_flex_arr
-
 
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
@@ -188,6 +188,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 
     return img_lst
 
+
 try:
     import lst_ext
     find_closer_hkl = lst_ext.find_closer_hkl_func
@@ -260,5 +261,4 @@ class build_qimg(object):
                        np.size(arr_i[:, 0:1, 0:1]), QImage.Format_RGB32)
 
         return q_img
-
 

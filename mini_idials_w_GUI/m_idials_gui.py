@@ -90,7 +90,6 @@ class CentreWidget(QWidget):
         lst_grayed_icons_path.append(idials_gui_path + "/resources/refine_grayed.png")
         lst_grayed_icons_path.append(idials_gui_path + "/resources/integrate_grayed.png")
 
-
         top_box =  QHBoxLayout()
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []
@@ -120,7 +119,6 @@ class CentreWidget(QWidget):
             self.widg_lst.append(param_widg)
             param_widg.update_command_lst_medium_level.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
-
 
         ctrl_box = QHBoxLayout()
 
@@ -292,7 +290,6 @@ class MainWidget(QMainWindow):
         '''
         h_left_splitter.addWidget(self.tree_out)
 
-
         self.centre_widget = CentreWidget()
         self.centre_widget.get_arg_obj(sys_arg)
         self.run_all = sys_arg.run_all
@@ -318,7 +315,6 @@ class MainWidget(QMainWindow):
         self.web_view = WebTab()
         self.img_view = MyImgWin()
         self.ext_view = OuterCaller()
-
 
         self.output_info_tabs = QTabWidget()
         self.output_info_tabs.addTab(self.img_view, "Image View")
@@ -585,7 +581,6 @@ class MainWidget(QMainWindow):
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
-
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
         if(tmp_curr.success != True):
@@ -623,7 +618,6 @@ class MainWidget(QMainWindow):
                 print "my_err.message =", my_err.message
                 if(str(my_err)[0:36] == '[Errno 2] No such file or directory:'):
                     print "\n interrupted refine_bravais_settings \n"
-
 
             #TODO find an elegant way to interrupt and remove nodes
 
@@ -680,7 +674,6 @@ class MainWidget(QMainWindow):
 
         fil_obj.close()
         self.idials_runner.current_node.err_file_out = err_log_file_out
-
 
     def opt_dobl_clicked(self, row):
         re_idx = row + 1

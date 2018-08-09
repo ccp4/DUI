@@ -25,11 +25,13 @@ copyright (c) CCP4 - DLS
 # FIXME Copied from dials.index.py. This is needed here because scipy needs to
 # be imported before cctbx otherwise there will be a segmentation fault. This
 # should be fixed in dials.index so that we don't need to import here.
+
 try:
   # try importing scipy.linalg before any cctbx modules, otherwise we
   # sometimes get a segmentation fault/core dump if it is imported after
   # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
   import scipy.linalg # import dependency
+
 except ImportError, e:
   pass
 
@@ -47,6 +49,7 @@ class ScopeData(object):
     class conceived to store only data related to the scope Phil object
     '''
     pass
+
 
 class tree_2_lineal(object):
 
@@ -157,16 +160,11 @@ class PhilWidget( QWidget):
 
         sys_font = QFont()
         sys_font_point_size =  sys_font.pointSize()
-        #print "sys_font_point_size =", sys_font_point_size
 
         inde_step = 4
 
-        #lst_widg = self.lst_phil_obj
         self.lst_label_widg = []
-
         self.lst_var_widg = []
-
-        #print "\n advanced parameters GUI:\n"
 
         non_added_lst = []
 
@@ -324,7 +322,6 @@ class PhilWidget( QWidget):
         print "\n\n"
         #'''
 
-
     def spnbox_changed(self, value):
         sender = self.sender()
         if(sender.str_defl != None and float(value) == 0.0):
@@ -355,6 +352,7 @@ class PhilWidget( QWidget):
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
+
 class TstTmpWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(TstTmpWidget, self).__init__(parent)
@@ -366,7 +364,6 @@ class TstTmpWidget( QWidget):
         my_box.addWidget(inner_widget)
         self.setLayout(my_box)
         self.show()
-
 
     def update_lin_txt(self, new_path, new_value):
         print "new_path =", new_path

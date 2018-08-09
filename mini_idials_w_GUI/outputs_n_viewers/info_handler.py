@@ -194,7 +194,6 @@ def update_all_data(reflections_path = None, experiments_path = None):
         dat.gain = pnl.get_gain()
         dat.max_res = exp.detector.get_max_resolution(exp.beam.get_s0())
 
-
         # manually finding template from experiments_path
 
         try:
@@ -217,7 +216,6 @@ def update_all_data(reflections_path = None, experiments_path = None):
         except:
             print "failed to find template in JSON file"
 
-
     try:
         dat.ref2exp = exp
 
@@ -225,12 +223,9 @@ def update_all_data(reflections_path = None, experiments_path = None):
         print "unable to get experiment from path"
         dat.ref2exp = None
 
-
     return dat
 
 if(__name__ == "__main__"):
     # This should be called with two paths adden in console
     update_all_data(reflections_path = sys.argv[1], experiments_path = sys.argv[2])
-
-
 

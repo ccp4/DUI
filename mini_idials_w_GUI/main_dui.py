@@ -31,7 +31,9 @@ from m_idials_gui import MainWidget
 from cli_utils import sys_arg
 
 def main():
+
     call_arg = sys.argv
+
     if(len(call_arg) > 1):
         for par_str in call_arg[1:]:
             if(par_str == "e" or par_str == "-e" or
@@ -70,5 +72,7 @@ def main():
     ex.show()
     sys.exit(app.exec_())
 
+
 if(__name__ == "__main__"):
     main()
+

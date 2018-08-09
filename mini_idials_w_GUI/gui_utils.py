@@ -29,7 +29,6 @@ from cli_utils import get_next_step
 
 import sys, subprocess, psutil, time
 
-
 def kill_w_child(pid_num):
 
     print "attempting to kill pid #:", pid_num
@@ -194,6 +193,7 @@ def build_label(com_nam):
 
     return label_connects[com_nam]
 
+
 def build_ttip(com_nam):
 
     tip_connects = {"import"                  :" dials.import ...",
@@ -210,7 +210,6 @@ def build_ttip(com_nam):
     return tip_connects[com_nam]
 
 
-
 def build_command_tip(command_lst):
     if(command_lst == [None]):
         str_tip = "?"
@@ -221,6 +220,7 @@ def build_command_tip(command_lst):
             str_tip += "\n  " + str(new_cmd)
 
     return str_tip
+
 
 def update_info(main_obj):
 
@@ -254,8 +254,6 @@ def update_info(main_obj):
             main_obj.cur_pick = new_ref_pikl
             main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
-
-
     if(tmp_curr.success == None):
         tmp_curr = tmp_curr.prev_step
 
@@ -265,7 +263,6 @@ def update_info(main_obj):
                                      refl_pikl_path = new_ref_pikl)
 
     main_obj.img_view.update_exp(main_obj.info_widget.all_data.ref2exp)
-
 
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
                                   new_json = uni_json)
@@ -318,9 +315,7 @@ def update_pbar_msg(main_obj):
             txt  ="Done"
 
         else:
-
             lab_nxt_cmd = get_lab_txt(nxt_cmd)
-
             txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
 
     main_obj.txt_bar.setText(txt)
@@ -365,7 +360,6 @@ class MyQButton(QPushButton):
         self.cmd_n1 = my_text
         self.setLayout(v_box)
         self.show()
-
 
 
 class TreeNavWidget(QTreeView):
@@ -443,16 +437,13 @@ class TreeNavWidget(QTreeView):
                 item_in.appendRow(new_item)
 
 
-
 class ViewerThread (QThread):
 
     def __init__(self, parent = None):
         super(ViewerThread, self).__init__()
 
-
     def get_pid(self, pid_in):
         self.pid_to_see = pid_in
-
 
     def run(self):
         print "Hi from QThread(run)  ___________________ Before Loop"
@@ -468,9 +459,7 @@ class ViewerThread (QThread):
                 print "proc disappeared"
                 my_proc_stat = 'None'
 
-
         print "_________________________________________ Loop ended"
-
 
 
 class MyDialog(QDialog):
@@ -489,7 +478,6 @@ class MyDialog(QDialog):
         '''
 
         self.use_shell = True
-        #self.use_shell = False
 
         kl_but = QPushButton("Close reciprocal lattice viewer")
         kl_but.clicked.connect(self.kill_my_proc)
@@ -593,7 +581,6 @@ class CliOutView(QTextEdit):
         style_orign = "color: rgba(0, 0, 125, 255)"
         self.setStyleSheet(style_orign)
 
-
     def refresh_txt(self, path_to_log, curr_step = None):
         success = curr_step.success
 
@@ -632,14 +619,13 @@ class Text_w_Bar(QProgressBar):
         self._text = ""
         print "test setStyle(QStyleFactory.create())"
         try:
-
             self.setStyle(QStyleFactory.create("cleanlooks"))
             #self.setStyle(QStyleFactory.create("Plastique"))
             #self.setStyle(QStyleFactory.create("cde"))
             #self.setStyle(QStyleFactory.create("motif"))
+
         except:
             print "\n Failed to setStyle() \n"
-
 
     def setText(self, text):
         if(len(text) > 2):
@@ -715,5 +701,4 @@ if __name__ == '__main__':
     ex = MainWidget()
     ex.show()
     sys.exit(app.exec_())
-
 

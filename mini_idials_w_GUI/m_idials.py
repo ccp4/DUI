@@ -83,12 +83,12 @@ class CommandNode(object):
         self.command_lst = cmd_lst
 
     def build_command(self, cmd_lst):
-
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
         print "\n cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
 
     def get_next_step(self):
         return get_next_step(self)
+
 
 class Runner(object):
 
@@ -232,7 +232,6 @@ class Runner(object):
             else:
                 tmp_cur = tmp_cur.prev_step
 
-
         return path_to_json
 
     def get_log_path(self):
@@ -245,12 +244,7 @@ class Runner(object):
         except:
             print "failed to retrieve log path"
 
-
         return path_to_log
-
-
-
-
 
     def get_experiment_path(self):
         path_to_json = None
@@ -270,8 +264,6 @@ class Runner(object):
                 print "no experimet json file available"
 
         return path_to_json
-
-
 
     def get_reflections_path(self):
         tmp_cur = self.current_node
@@ -344,7 +336,6 @@ if(__name__ == "__main__"):
 
         os.mkdir(storage_path + "/dui_files")
 
-
     idials_runner.make_next = make_next_in
     tree_output(idials_runner)
 
@@ -368,6 +359,4 @@ if(__name__ == "__main__"):
 
         with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(idials_runner, bkp_out)
-
-
 

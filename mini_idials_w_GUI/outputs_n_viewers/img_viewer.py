@@ -67,7 +67,6 @@ class ImgPainter(MyQWidgetWithQPainter):
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
         self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
 
-
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             self.x_pos, self.y_pos = event.x(), event.y()
@@ -94,7 +93,6 @@ class ImgPainter(MyQWidgetWithQPainter):
         #TODO find out how does this works despite
         #               NOT updating
         #      self.x_pos and self.y_pos always
-
 
     def wheelEvent(self, event):
 
@@ -151,7 +149,6 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         if(new_pos != None):
             scrollBar.setValue(new_pos)
-
 
     def find_closer_hkl(self, x_mouse, y_mouse):
         if(self.pre_flat_data != None and self.user_choice[1]):
@@ -314,8 +311,6 @@ class ImgPainter(MyQWidgetWithQPainter):
                                                 (x - cross_2_size) * self.my_scale,
                                                 (y + cross_2_size) * self.my_scale)
 
-
-
                                 lst_tmp_hkl = self.pre_flat_data
 
                     except:
@@ -359,6 +354,7 @@ class ImgPainter(MyQWidgetWithQPainter):
                                      int(self.yb * self.my_scale),
                                      int((self.xb - cen_siz) * self.my_scale),
                                      int(self.yb * self.my_scale))
+
                 else:
                     print "No xb,yb provided"
 
@@ -416,8 +412,6 @@ class PopPaletteMenu(QMenu):
         self.setLayout(main_layout)
         self.show()
 
-
-
     def showEvent(self, event):
         print "repainting"
         try:
@@ -431,7 +425,6 @@ class PopPaletteMenu(QMenu):
 
         except:
             print "no (...my_sweep) yet, skipping palette label paint"
-
 
     def slider_max_changed(self, value):
         if(self.my_parent.slider_min.sliderPosition() > value - 15):
@@ -880,7 +873,6 @@ class MyImgWin(QWidget):
                     self.img_arr = self.img_arr \
                     + self.my_sweep.get_raw_data(pos_to_add)[0].as_double() * loc_scale
 
-
             if(self.find_spt_flat_data_lst == [None] and
                     self.pred_spt_flat_data_lst == [None]):
 
@@ -908,7 +900,6 @@ class MyImgWin(QWidget):
                                                                 self.palette,
                                                                 self.i_min,
                                                                 self.i_max)))
-
 
     def btn_play_clicked(self):
         if(self.video_timer.isActive()):
@@ -1044,6 +1035,4 @@ if(__name__ == "__main__"):
     diag = MyImgWin(img_path, [pckl_file_path, None])
     sys.exit(app.exec_())
     app.exec_()
-
-
 

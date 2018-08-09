@@ -43,6 +43,7 @@ def choice_if_decimal(num_in):
 
     return str_out
 
+
 def ops_list_from_json(json_path = None):
     if(json_path == None):
         #json_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
@@ -192,7 +193,6 @@ class ReindexTable(QTableWidget):
         self.sys_font_point_size =  sys_font.pointSize()
         self.show()
 
-
     def opt_clicked(self, row, col):
         print "Solution clicked =", row + 1
         p_h_svar = self.horizontalScrollBar().value()
@@ -287,19 +287,8 @@ class ReindexTable(QTableWidget):
 
                 item.setFont(QFont("Monospace", self.sys_font_point_size))#, QFont.Bold))
                 self.setItem(row, col, item)
-                '''
-                if(width_lst[col] < len(col_cont)):
-                    width_lst[col] = len(col_cont)
-                '''
 
         self.resizeColumnsToContents()
-        '''
-        print "width_lst =", width_lst
-        for col_n, col_len in enumerate(width_lst):
-            #remember that with is given in pixels
-            self.setColumnWidth(col_n, (col_len+1) * 10)
-        '''
-
 
     def del_opts_lst(self):
 
@@ -307,7 +296,6 @@ class ReindexTable(QTableWidget):
         self.clear()
         self.setRowCount(1)
         self.setColumnCount(1)
-
 
 
 class MainWindow(QMainWindow):
@@ -340,7 +328,6 @@ class MainWindow(QMainWindow):
         print "\n from dynamic_reindex_gui.py MainWindow"
         print "opt_num =", opt_num, "\n"
 
-
     def closeEvent(self, event):
         print "<< closeEvent ( from QMainWindow) >>"
         if(self.my_pop != None):
@@ -352,3 +339,4 @@ if __name__ == "__main__":
     myWidget = MainWindow()
     myWidget.show()
     app.exec_()
+

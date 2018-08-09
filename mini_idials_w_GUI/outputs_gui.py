@@ -48,6 +48,7 @@ def update_data_label(data_label, data_info, n_dec = 2):
         #data_label.setStyleSheet("background-color: gray")
         data_label.setStyleSheet("background-color: lightGray")
 
+
 def get_spacebox(size):
     space_box = QHBoxLayout()
     space_box.insertSpacing(1, size)
@@ -57,8 +58,6 @@ def get_spacebox(size):
 class InfoWidget( QWidget):
     def __init__(self, parent = None):
         super(InfoWidget, self).__init__()
-
-
 
         empty_str = "__________"
 
@@ -95,7 +94,6 @@ class InfoWidget( QWidget):
 
         bm_v_layout.addStretch()
         beam_group.setLayout(bm_v_layout)
-
 
 
         cell_group =  QGroupBox(" Crystal ")
@@ -241,7 +239,6 @@ class InfoWidget( QWidget):
         e_time_hbox.addWidget(self.e_time_data)
         scan_v_layout.addLayout(e_time_hbox)
 
-
         scan_v_layout.addWidget(QLabel("  "))
         strn_sp_label = QLabel("Strong Spots")
         self.strn_sp_data = QLabel(empty_str)
@@ -364,19 +361,6 @@ class InfoWidget( QWidget):
         self.setLayout(my_main_box)
         self.show()
 
-        bkp_old = '''
-
-    def update_data(self, dblock_json_path = None, exp_json_path = None, refl_pikl_path = None):
-
-        print "\n\nrefl_pikl_path =", refl_pikl_path,"\n"
-        print "\nexp_json_path =", exp_json_path,"\n"
-        print "\ndblock_json_path =", dblock_json_path,"\n\n"
-
-        if( dblock_json_path != None ):
-            exp_json_path = dblock_json_path
-
-            '''
-
     def update_data(self, exp_json_path = None, refl_pikl_path = None):
 
         print "\n\nrefl_pikl_path =", refl_pikl_path,"\n"
@@ -403,7 +387,6 @@ class InfoWidget( QWidget):
         update_data_label(self.r1_data, self.all_data.r1)
         update_data_label(self.r2_data, self.all_data.r2)
         update_data_label(self.r3_data, self.all_data.r3)
-
 
         update_data_label(self.img_ran1_data, self.all_data.img_ran1)
         update_data_label(self.img_ran2_data, self.all_data.img_ran2)
@@ -435,7 +418,6 @@ class InfoWidget( QWidget):
 
         update_data_label(self.d_dist_data, self.all_data.dd)
 
-
         update_data_label(self.strn_sp_data    , self.all_data.n_strng)
         update_data_label(self.indx_sp_data    , self.all_data.n_index)
         update_data_label(self.refn_sp_data    , self.all_data.n_refnd)
@@ -453,3 +435,4 @@ if( __name__ == "__main__" ):
 
     ex.update_data(sys.argv[1], sys.argv[2])
     sys.exit(app.exec_())
+

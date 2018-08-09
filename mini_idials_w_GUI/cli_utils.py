@@ -35,8 +35,8 @@ class SysArgvData(object):
     template = None
     directory = str(os.getcwd())
 
-sys_arg = SysArgvData()
 
+sys_arg = SysArgvData()
 
 def prn_lst_lst_cmd(last_idials_node):
     cur_nod = last_idials_node
@@ -77,6 +77,7 @@ def get_next_step(node_obj):
     print "\n\n Defaulting to << None >> in automatic << get_next_step >> \n\n"
     return None
 
+
 def build_command_lst(node_obj, cmd_lst):
 
     #TODO make sure new step is compatible with previous
@@ -88,7 +89,6 @@ def build_command_lst(node_obj, cmd_lst):
             cmd_lst_to_run.append(tmp_par)
 
     run_path = sys_arg.directory + os.sep + "dui_files"
-
 
     if(cmd_lst[0] == "import"):
         node_obj.json_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_datablock.json"
@@ -150,7 +150,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
-
 
     elif(cmd_lst[0] == "refine_bravais_settings"):
         json_file_in = node_obj.prev_step.json_file_out
@@ -245,6 +244,7 @@ def build_command_lst(node_obj, cmd_lst):
 
     return cmd_lst_to_run
 
+
 def generate_predict(node_obj):
     pre_out = None
     run_path = sys_arg.directory + os.sep +  "dui_files"
@@ -315,6 +315,7 @@ def generate_report(node_obj):
         rep_out = None
 
     return rep_out
+
 
 class DialsCommand(object):
     def __init__(self):
@@ -395,6 +396,7 @@ class DialsCommand(object):
         self.full_cmd_lst = lst_cmd_to_run
         return local_success
 
+
 def print_list(lst, curr):
     print "__________________________listing:"
     for uni in lst:
@@ -419,6 +421,7 @@ def print_list(lst, curr):
 
         print stp_str
 
+
 class TreeShow(object):
     def __init__(self):
         self.ind_spc = "      "
@@ -436,7 +439,6 @@ class TreeShow(object):
         self.add_tree(step = my_runner.step_list[0], indent = 0)
         self.tree_print(my_runner.current_line)
         print "---------------------" + self.max_indent * self.ind_lin
-
 
     def add_tree(self, step = None, indent = None):
         if(step.success == True):

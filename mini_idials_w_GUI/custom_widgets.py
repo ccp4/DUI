@@ -43,6 +43,7 @@ from dials.command_line.export import phil_scope as phil_scope_export
 from gui_utils import get_import_run_string
 
 class ImportPage(QWidget):
+
     update_command_lst_low_level = pyqtSignal(list)
 
     '''
@@ -97,7 +98,6 @@ class ImportPage(QWidget):
                                                       self.defa_dir,
                                                       "All Files (*.*)")
 
-
         if(len(lst_file_path) > 0):
             new_dir, new_command = get_import_run_string(lst_file_path)
 
@@ -141,9 +141,6 @@ class ParamAdvancedWidget( QWidget):
     def __init__(self, phl_obj = None, parent = None):
         super(ParamAdvancedWidget, self).__init__()
 
-        #self.super_parent = parent.super_parent
-        #self.param_widget_parent = parent.param_widget_parent
-
         self.scrollable_widget = PhilWidget(phl_obj, parent = self)
         scrollArea = QScrollArea()
         scrollArea.setWidget(self.scrollable_widget)
@@ -163,6 +160,7 @@ class ParamAdvancedWidget( QWidget):
         self.setLayout(vbox)
         self.show()
 
+
 def update_lst_pair(lst_ini, str_path, str_value):
     new_lst = []
     found = False
@@ -181,9 +179,11 @@ def update_lst_pair(lst_ini, str_path, str_value):
 
     return new_lst
 
+
 def pair2string(str_path, str_value):
     str_out = str(str_path) + "=" + str(str_value)
     return str_out
+
 
 def build_lst_str(cmd_0, lst_pair):
     lst_str = [cmd_0]
@@ -193,6 +193,7 @@ def build_lst_str(cmd_0, lst_pair):
             lst_str.append(str_cmd)
 
     return lst_str
+
 
 def string2pair(str_in):
     pair = None
@@ -213,6 +214,7 @@ def buils_lst_pair(lst_in):
 
     return lst_pair
 
+
 class ParamMainWidget( QWidget):
 
     update_command_lst_low_level = pyqtSignal(list)
@@ -228,10 +230,6 @@ class ParamMainWidget( QWidget):
             self.simp_widg_in = simp_widg
         except:
             print "\n\n\n something went wrong here wiht the phil object \n\n\n"
-
-
-
-        #self.param_widget_parent = self
 
         self._vbox = QVBoxLayout()
 
@@ -364,7 +362,6 @@ class ParamMainWidget( QWidget):
             except:
                 print "skip label_str"
 
-
     def update_lin_txt(self, str_path, str_value):
         cmd_to_run = str_path + "=" + str_value
         self.update_advanced_widget(str_path, str_value)
@@ -424,6 +421,7 @@ class ParamMainWidget( QWidget):
                 except:
                     pass
 
+
 class ParamWidget(QWidget):
 
     update_command_lst_medium_level = pyqtSignal(list)
@@ -463,6 +461,7 @@ class ParamWidget(QWidget):
     def update_parent_lst(self, command_lst):
         self.update_command_lst_medium_level.emit(command_lst)
 
+
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
     ex = ParamWidget("find_spots")
@@ -470,5 +469,4 @@ if __name__ == '__main__':
     #ex = ParamWidget("import")
     #ex = ParamWidget("index")
     sys.exit(app.exec_())
-
 

@@ -67,7 +67,9 @@ class TmpTstWidget( QWidget):
     def load_page(self):
         self.my_widget.update_page(sys.argv[1])
 
+
 if(__name__ == "__main__"):
     app =  QApplication(sys.argv)
     ex = TmpTstWidget()
     sys.exit(app.exec_())
+

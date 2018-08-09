@@ -21,15 +21,12 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-
 
 import os, sys
 
 import libtbx.introspection
-
 
 class FindspotsSimplerParameterTab( QWidget):
     '''
@@ -37,7 +34,9 @@ class FindspotsSimplerParameterTab( QWidget):
     in the spot-finder, this widget is the first to appear once the button
     "Find Sots" at the left side of the GUI is clicked
     '''
+
     item_changed = pyqtSignal(str, str)
+
     def __init__(self, parent = None):
         super(FindspotsSimplerParameterTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
@@ -117,7 +116,6 @@ class FindspotsSimplerParameterTab( QWidget):
             except:
                 pass
 
-
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
@@ -139,30 +137,15 @@ class IndexSimplerParamTab( QWidget):
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
     '''
+
     item_changed = pyqtSignal(str, str)
+
     def __init__(self, phl_obj = None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
+
         #self.param_widget_parent = parent.param_widget_parent
-
-        '''
-        hbox_lay_scan_varying =  QHBoxLayout()
-        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
-
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
-
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        '''
-
         #indexing_method_check = QCheckBox("indexing.method")
+
         hbox_method =  QHBoxLayout()
         label_method_62 = QLabel("indexing.method")
         hbox_method.addWidget(label_method_62)
@@ -195,7 +178,6 @@ class IndexSimplerParamTab( QWidget):
             except:
                 pass
 
-
     def combobox_changed(self, value):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
@@ -207,7 +189,9 @@ class IndexSimplerParamTab( QWidget):
 
 class RefineBravaiSimplerParamTab(QWidget):
     #TODO some doc string here
+
     item_changed = pyqtSignal(str, str)
+
     def __init__(self, parent = None):
         super(RefineBravaiSimplerParamTab, self).__init__()
 
@@ -251,7 +235,9 @@ class RefineSimplerParamTab( QWidget):
     in the refiner, this widget is the first to appear once the button
     "Refine" at the left side of the GUI is clicked
     '''
+
     item_changed = pyqtSignal(str, str)
+
     def __init__(self, parent = None):
         super(RefineSimplerParamTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
@@ -296,7 +282,9 @@ class IntegrateSimplerParamTab( QWidget):
     in the integrate algorithm, this widget is the first to appear once the button
     "Integrate" at the left side of the GUI is clicked
     '''
+
     item_changed = pyqtSignal(str, str)
+
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
@@ -372,7 +360,6 @@ class IntegrateSimplerParamTab( QWidget):
             except:
                 pass
 
-
     def combobox_changed(self, value):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
@@ -398,6 +385,7 @@ class IntegrateSimplerParamTab( QWidget):
         print "used to run"
         #print "self.param_widget_parent.super_parent.mtz_name_changed(value)"
 
+
 class TmpTstWidget( QWidget):
 
     def __init__(self, parent = None):
@@ -410,7 +398,9 @@ class TmpTstWidget( QWidget):
         self.setLayout(my_box)
         self.show()
 
+
 if(__name__ == "__main__"):
     app =  QApplication(sys.argv)
     ex = TmpTstWidget()
     sys.exit(app.exec_())
+
