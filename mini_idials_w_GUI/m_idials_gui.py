@@ -609,7 +609,7 @@ class MainWidget(QMainWindow):
 
             try:
                 self.my_pop = MyReindexOpts()
-                self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out)
+                self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out, lin_num = tmp_curr.prev_step.lin_num)
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:

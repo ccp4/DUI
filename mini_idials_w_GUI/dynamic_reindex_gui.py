@@ -109,8 +109,6 @@ def ops_list_from_json(json_path = None):
                 unit_cell_str_bet = choice_if_decimal(uc_a[1])
                 unit_cell_str_gam = choice_if_decimal(uc_a[2])
 
-
-
             elif(inner_key ==  "recommended"):
                 recommended_val = value["recommended"]
                 if(recommended_val == True):
@@ -128,13 +126,48 @@ def ops_list_from_json(json_path = None):
 
     return sorted_lst_ops
 
+def heather_text_from_lin(lin_num, j_path):
+
+    dir_path_end = j_path.find("lin_")
+    dir_path = j_path[0:dir_path_end]
+    lin_num_str = str(lin_num)
+    my_file_path = dir_path + lin_num_str + "_refine_bravais_settings.log"
+
+    myfile = open(my_file_path, "r")
+    all_lines = myfile.readlines()
+    myfile.close()
+
+    multi_lin_txt = ""
+    n_of_lines = 0
+    for pos1, single_lin1 in enumerate(all_lines):
+        if(str(single_lin1[0:19]) == "Chiral space groups"):
+            start_block = pos1
+            print "start_block =", start_block
+
+            for pos2, single_lin2 in enumerate(all_lines[start_block:]):
+                n_of_lines += 1
+                if(str(single_lin2[0:19]) == "-------------------"):
+                    end_block = pos2 + start_block
+                    print "end_block =", end_block
+                    break
+
+            break
+
+    print "start_block, end_block =", start_block, end_block
+
+    for single_lin in all_lines[start_block:end_block]:
+        multi_lin_txt += single_lin
+
+    print "\n\n\n here 2 \n"
+
+    return multi_lin_txt, n_of_lines
 
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
         super(MyReindexOpts, self).__init__(parent)
         self.setWindowTitle("Reindex")
 
-    def set_ref(self, in_json_path):
+    def set_ref(self, in_json_path, lin_num):
         my_box = QVBoxLayout()
         self.my_inner_table = ReindexTable(self)
         self.my_inner_table.add_opts_lst(json_path = in_json_path)
@@ -143,11 +176,12 @@ class MyReindexOpts(QWidget):
             my_solu = self.my_inner_table.find_best_solu()
             self.my_inner_table.opt_clicked(my_solu, 0)
 
+        recomd_str ="Select a bravais lattice to enforce: \n"
         try:
-            recomd_str = "(best guess solution = row {})".format(self.my_inner_table.tmp_sel + 1)
+            recomd_str += "(best guess solution = row {})".format(self.my_inner_table.tmp_sel + 1)
 
         except:
-            recomd_str = "(no best solution could be automatically determined)"
+            recomd_str += "(no best solution could be automatically determined)"
 
         bot_box = QHBoxLayout()
         bot_box.addWidget(QLabel(recomd_str))
@@ -155,8 +189,8 @@ class MyReindexOpts(QWidget):
         ok_but = QPushButton("     OK      ")
         ok_but.clicked.connect(self.my_inner_table.ok_clicked)
         bot_box.addWidget(ok_but)
-
-        my_box.addWidget(QLabel("Select a bravais lattice to enforce:"))
+        heather_text, v_heather_size = heather_text_from_lin(lin_num, in_json_path)
+        my_box.addWidget(QLabel(heather_text))
         my_box.addWidget(self.my_inner_table)
         my_box.addLayout(bot_box)
 
@@ -170,7 +204,12 @@ class MyReindexOpts(QWidget):
 
         n_row = self.my_inner_table.rowCount()
         row_height = self.my_inner_table.rowHeight(1)
+        tmp_off = '''
         tot_heght = int((float(n_row) + 3.8) * float(row_height))
+        tot_heght += int((float(v_heather_size)) * float(row_height * .4))
+        '''
+        tot_heght = int((float(n_row)) * float(row_height))
+        tot_heght += int((float(v_heather_size + 2)) * float(row_height * .62))
 
         self.resize(tot_width, tot_heght)
         #self.adjustSize()
