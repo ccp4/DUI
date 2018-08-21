@@ -10,10 +10,8 @@ def hello_world():
         print request.form
 
         sleep(1)
-
         str_entered = request.form['command']
-
-        str_out = (str_entered + "\n\n") * 15
+        str_out = (str_entered + "\n\n") * 5
 
         print "\n", str_entered, "\n"
 
