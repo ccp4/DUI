@@ -439,6 +439,7 @@ class TreeShow(object):
         self.add_tree(step = my_runner.step_list[0], indent = 0)
         self.tree_print(my_runner.current_line)
         print "---------------------" + self.max_indent * self.ind_lin
+        return self.tree_dat
 
     def add_tree(self, step = None, indent = None):
         if(step.success == True):

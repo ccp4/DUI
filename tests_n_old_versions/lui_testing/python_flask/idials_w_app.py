@@ -328,8 +328,6 @@ def web_loop():
     if request.method == 'POST':
         print request.form
         str_entered = request.form['command']
-        str_out = " ok \n" + str_entered + "\n OK"
-        print "\n", str_entered, "\n"
 
         #############################################################
         try:
@@ -343,10 +341,16 @@ def web_loop():
             sys.exit(0)
 
         idials_runner.run(command, None)
-        tree_output(idials_runner)
+        tree_out_lst = tree_output(idials_runner)
 
         with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(idials_runner, bkp_out)
+
+        str_out = ""
+        for prn_str in tree_out_lst:
+            str_out += "\n" + prn_str[0]
+
+        #str_out = " ok \n" + str_entered + "\n OK"
 
     return render_template("index.html", out_put = str_out)
 
