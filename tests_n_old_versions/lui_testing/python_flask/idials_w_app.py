@@ -297,6 +297,9 @@ class Runner(object):
         print "printing in steps list mode: \n"
         print_list(self.step_list, self.current_line)
 
+app = Flask(__name__)
+
+
 def main_loop(i_runner, o_tree):
     command = ""
     while(command.strip() != 'exit' and command.strip() != 'quit'):
@@ -317,25 +320,35 @@ def main_loop(i_runner, o_tree):
         with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(i_runner, bkp_out)
 
-'''
 
-app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
-def hello_world():
+def web_loop():
     str_out = ""
     if request.method == 'POST':
         print request.form
         str_entered = request.form['command']
-        str_out = (str_entered + "\n\n") * 15
+        str_out = " ok \n" + str_entered + "\n OK"
         print "\n", str_entered, "\n"
 
+        #############################################################
+        try:
+            command = str(str_entered)
+            if(command == ""):
+                print "converting empty line in self.slist()"
+                command = "slist"
+
+        except:
+            print " ... interrupting"
+            sys.exit(0)
+
+        idials_runner.run(command, None)
+        tree_output(idials_runner)
+
+        with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
+            pickle.dump(idials_runner, bkp_out)
+
     return render_template("index.html", out_put = str_out)
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-
-'''
 
 
 if(__name__ == "__main__"):
@@ -364,6 +377,7 @@ if(__name__ == "__main__"):
 
     idials_runner.make_next = make_next_in
     tree_output(idials_runner)
-    main_loop(i_runner = idials_runner, o_tree = tree_output)
+    #main_loop(i_runner = idials_runner, o_tree = tree_output)
 
+    app.run(host='0.0.0.0', port=5000)
 
