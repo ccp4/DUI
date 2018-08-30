@@ -901,6 +901,9 @@ class MyImgWin(QWidget):
                                                                 self.i_min,
                                                                 self.i_max)))
 
+
+        print "\n self.i_min =", self.i_min
+        print " self.i_max =", self.i_max, "\n"
     def btn_play_clicked(self):
         if(self.video_timer.isActive()):
             print "Stoping video"

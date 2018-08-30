@@ -59,20 +59,32 @@ class ProgBarBox(QProgressDialog):
 
 
 def draw_palette_label(i_min, i_max):
-    scale_size = int(i_max - i_min)
 
+    if(i_max > 500):
+        i_max = 500
+        print "reshaping i_max in shown palette bitmap"
+
+    if(i_min < -3):
+        i_min = -3
+        print "reshaping i_min in shown palette bitmap"
+
+    scale_size = int(i_max - i_min)
     np_img_arr = np.zeros((50, 503), dtype=np.double)
     m_point = int((i_max + i_min) / 2) + 3
     np_img_arr[0:50,:m_point] = i_min
     np_img_arr[0:50,m_point:] = i_max
     if(scale_size > 10):
-        ascending_img_arr = np.arange(i_min,
-                                      i_max,
-                                      1.0 / 50.0).reshape(scale_size, 50).T
+        try:
+            ascending_img_arr = np.arange(i_min,
+                                          i_max,
+                                          1.0 / 50.0).reshape(scale_size, 50).T
 
-        lbound = int(i_min) + 3
-        ubound = int(i_max) + 3
-        np_img_arr[0:50,lbound:ubound] = ascending_img_arr[0:50, 0:scale_size]
+            lbound = int(i_min) + 3
+            ubound = int(i_max) + 3
+            np_img_arr[0:50,lbound:ubound] = ascending_img_arr[0:50, 0:scale_size]
+
+        except:
+            print "something went wrong with the creation of palette bitmap"
 
     tmp_flex_arr = flex.double(np_img_arr)
     return tmp_flex_arr
