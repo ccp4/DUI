@@ -488,7 +488,7 @@ class PopBigMenu(QMenu):
 
 
 class MyImgWin(QWidget):
-    def __init__(self, json_file_path = None, pckl_file_path = None):
+    def __init__(self, json_file_path = None, pckl_file_path = None, my_code_path = ""):
         super(MyImgWin, self).__init__()
 
         self.my_scrollable = QScrollArea()
@@ -603,10 +603,7 @@ class MyImgWin(QWidget):
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
-        my_code_path = str(os.path.dirname(os.path.abspath(__file__)))
-
-        icon_path = my_code_path + "/img_viewer_icons/"
-
+        icon_path = my_code_path + "/resources/"
         zoom_in_but = QPushButton()
         zoom_in_but.setIcon(QIcon(icon_path + "zoom_plus_ico.png"))
         zoom_in_but.clicked.connect(self.zoom_in)
