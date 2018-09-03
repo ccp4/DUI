@@ -315,7 +315,6 @@ class MainWidget(QMainWindow):
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
-        #self.img_view = MyImgWin(my_code_path = self.centre_widget.main_path)                             #fix this
         self.img_view = MyImgWin()
         self.ext_view = OuterCaller()
 
