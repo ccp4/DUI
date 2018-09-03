@@ -27,7 +27,7 @@ from PyQt4.QtWebKit import *
 
 from cli_utils import get_next_step
 
-import sys, subprocess, psutil, time
+import sys, os, subprocess, psutil, time
 
 def kill_w_child(pid_num):
 
@@ -41,6 +41,10 @@ def kill_w_child(pid_num):
 
     except:
         print "\n\n failed to kill process(es)"
+
+
+def get_main_path():
+    return str(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_import_run_string(in_str_lst):

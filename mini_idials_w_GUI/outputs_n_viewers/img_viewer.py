@@ -29,6 +29,8 @@ import sys, os, time
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
+from gui_utils import get_main_path
+
 from img_view_tools import build_qimg, draw_palette_label, find_hkl_near, \
                            list_arrange, list_p_arrange
 
@@ -488,7 +490,7 @@ class PopBigMenu(QMenu):
 
 
 class MyImgWin(QWidget):
-    def __init__(self, json_file_path = None, pckl_file_path = None, my_code_path = ""):
+    def __init__(self, json_file_path = None, pckl_file_path = None):
         super(MyImgWin, self).__init__()
 
         self.my_scrollable = QScrollArea()
@@ -602,6 +604,8 @@ class MyImgWin(QWidget):
         pop_palette_menu = PopPaletteMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
+
+        my_code_path = get_main_path()
 
         icon_path = my_code_path + "/resources/"
         zoom_in_but = QPushButton()

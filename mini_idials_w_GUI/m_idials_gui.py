@@ -37,9 +37,11 @@ from custom_widgets import ParamWidget
 
 from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
      build_command_tip, update_info, update_pbar_msg, kill_w_child, \
-     TreeNavWidget, build_ttip, build_label, MyQButton
+     TreeNavWidget, build_ttip, build_label, MyQButton, get_main_path
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
+
+
 
 class CommandThread(QThread):
 
@@ -71,24 +73,24 @@ class CentreWidget(QWidget):
     def __init__(self, parent = None):
         super(CentreWidget, self).__init__()
 
-        self.main_path = str(os.path.dirname(os.path.abspath(__file__)))
-        print "self.main_path =", self.main_path
+        main_path = get_main_path()
+        print "main_path =", main_path
 
         lst_icons_path = []
-        lst_icons_path.append(self.main_path + "/resources/import.png")
-        lst_icons_path.append(self.main_path + "/resources/find_spots.png")
-        lst_icons_path.append(self.main_path + "/resources/index.png")
-        lst_icons_path.append(self.main_path + "/resources/reindex.png")
-        lst_icons_path.append(self.main_path + "/resources/refine.png")
-        lst_icons_path.append(self.main_path + "/resources/integrate.png")
+        lst_icons_path.append(main_path + "/resources/import.png")
+        lst_icons_path.append(main_path + "/resources/find_spots.png")
+        lst_icons_path.append(main_path + "/resources/index.png")
+        lst_icons_path.append(main_path + "/resources/reindex.png")
+        lst_icons_path.append(main_path + "/resources/refine.png")
+        lst_icons_path.append(main_path + "/resources/integrate.png")
 
         lst_grayed_icons_path = []
-        lst_grayed_icons_path.append(self.main_path + "/resources/import_grayed.png")
-        lst_grayed_icons_path.append(self.main_path + "/resources/find_spots_grayed.png")
-        lst_grayed_icons_path.append(self.main_path + "/resources/index_grayed.png")
-        lst_grayed_icons_path.append(self.main_path + "/resources/reindex_grayed.png")
-        lst_grayed_icons_path.append(self.main_path + "/resources/refine_grayed.png")
-        lst_grayed_icons_path.append(self.main_path + "/resources/integrate_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/import_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/find_spots_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/index_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/reindex_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/refine_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/integrate_grayed.png")
 
         top_box =  QHBoxLayout()
         self.step_param_widg = QStackedWidget()
@@ -124,9 +126,9 @@ class CentreWidget(QWidget):
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
 
-        re_try_icon_path = str(self.main_path +
+        re_try_icon_path = str(main_path +
                               "/resources/re_try.png")
-        re_try_grayed_path = str(self.main_path +
+        re_try_grayed_path = str(main_path +
                               "/resources/re_try_grayed.png")
         tmp_ico = QIcon()
         tmp_ico.addFile(re_try_icon_path, mode = QIcon.Normal)
@@ -137,9 +139,9 @@ class CentreWidget(QWidget):
         ctrl_box.addWidget(self.repeat_btn)
 
         self.run_btn = QPushButton("\n  Run  \n", self)
-        self.dials_logo_path = str(self.main_path +
+        self.dials_logo_path = str(main_path +
                               "/resources/DIALS_Logo_smaller_centred.png")
-        dials_grayed_path = str(self.main_path +
+        dials_grayed_path = str(main_path +
                                 "/resources/DIALS_Logo_smaller_centred_grayed.png")
         tmp_ico = QIcon()
         tmp_ico.addFile(self.dials_logo_path, mode = QIcon.Normal)
@@ -150,8 +152,8 @@ class CentreWidget(QWidget):
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
-        stop_logo_path = str(self.main_path + "/resources/stop.png")
-        stop_grayed_path = str(self.main_path + "/resources/stop_grayed.png")
+        stop_logo_path = str(main_path + "/resources/stop.png")
+        stop_grayed_path = str(main_path + "/resources/stop_grayed.png")
         tmp_ico = QIcon()
         tmp_ico.addFile(stop_logo_path, mode = QIcon.Normal)
         tmp_ico.addFile(stop_grayed_path, mode = QIcon.Disabled)
@@ -313,7 +315,8 @@ class MainWidget(QMainWindow):
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
-        self.img_view = MyImgWin(my_code_path = self.centre_widget.main_path)
+        #self.img_view = MyImgWin(my_code_path = self.centre_widget.main_path)                             #fix this
+        self.img_view = MyImgWin()
         self.ext_view = OuterCaller()
 
         self.output_info_tabs = QTabWidget()
