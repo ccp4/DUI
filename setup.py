@@ -33,9 +33,3 @@ setup(name='dui_test',
       entry_points={'console_scripts':['dui=mini_idials_w_GUI.main_dui:main']},
      )
 
-
-to_remove = '''
-                    'mini_idials_w_GUI/outputs_n_viewers/img_viewer_icons/zoom_plus_ico.png',
-                    'mini_idials_w_GUI/outputs_n_viewers/img_viewer_icons/zoom_ono_one_ico.png',
-                    'mini_idials_w_GUI/outputs_n_viewers/img_viewer_icons/zoom_minus_ico.png'])],
-'''
