@@ -29,7 +29,7 @@ import sys, os, time
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 
-from gui_utils import get_main_path
+from mini_idials_w_GUI.gui_utils import get_main_path
 
 from img_view_tools import build_qimg, draw_palette_label, find_hkl_near, \
                            list_arrange, list_p_arrange
