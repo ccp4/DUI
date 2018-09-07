@@ -27,7 +27,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from outputs_n_viewers.info_handler import InfoData, update_all_data
-from outputs_n_viewers.web_page_view import WebTab
 
 def update_data_label(data_label, data_info, n_dec = 2):
     #data_label.setStyleSheet("background-color: silver")

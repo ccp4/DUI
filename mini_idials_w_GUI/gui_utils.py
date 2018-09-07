@@ -490,14 +490,22 @@ class MyDialog(QDialog):
         self.setLayout(vbox)
         self.setModal(True)
 
-    def run_my_proc(self, pickle_path, json_path):
+    def run_my_proc(self, pickle_path = "", json_path = ""):
 
         first_pikl_path = pickle_path[0]
 
         if(self.use_shell == True):
+            original_call = '''
             cmd_to_run = "dials.reciprocal_lattice_viewer " \
                              + str(first_pikl_path) + " " \
                              + str(json_path)
+                             '''
+
+            cmd_to_run = "dials.image_viewer " + str(json_path) + " "
+            if(first_pikl_path != None):
+                cmd_to_run += str(first_pikl_path)
+
+
 
         else:
             cmd_to_run = ["dials.reciprocal_lattice_viewer", first_pikl_path, json_path]
