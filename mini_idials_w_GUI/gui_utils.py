@@ -471,7 +471,8 @@ class MyDialog(QDialog):
         super(MyDialog, self).__init__()
 
         vbox = QVBoxLayout()
-        vbox.addWidget(QLabel("\n Running dials.reciprocal_lattice_viewer ...\
+        vbox.addWidget(QLabel("\n          Running a pop-up viewer ...\
+                               \n \
                                \n   remember to close the viewer before \
                                \n         performing any other task"))
 
@@ -483,7 +484,7 @@ class MyDialog(QDialog):
 
         self.use_shell = True
 
-        kl_but = QPushButton("Close reciprocal lattice viewer")
+        kl_but = QPushButton("Close pop-up viewer")
         kl_but.clicked.connect(self.kill_my_proc)
         vbox.addWidget(kl_but)
 
@@ -496,25 +497,21 @@ class MyDialog(QDialog):
         first_pikl_path = pickle_path[0]
 
         if(self.use_shell == True):
-            original_call = '''
-            cmd_to_run = "dials.reciprocal_lattice_viewer " \
-                             + str(first_pikl_path) + " " \
-                             + str(json_path)
-                             '''
-
             cmd_to_run = command_in + " " + str(json_path)
             if(first_pikl_path != None):
                 cmd_to_run += " " + str(first_pikl_path)
 
 
         else:
-            cmd_to_run = ["dials.reciprocal_lattice_viewer", first_pikl_path, json_path]
+            cmd_to_run = [command_in, first_pikl_path, json_path]
 
         self.thrd = ViewerThread()
 
         print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
 
-        self.my_process = subprocess.Popen(cmd_to_run, shell = self.use_shell)
+        self.my_process = subprocess.Popen(args = cmd_to_run, shell = self.use_shell,
+                                           cwd="/tmp/dir_w_t")
+        #self.my_process = subprocess.Popen(cmd_to_run, shell = self.use_shell, cwd=/tmp/dir_w_t)
         self.proc_pid = self.my_process.pid
         time.sleep(0.333)
         self.thrd.get_pid(self.proc_pid)
@@ -544,7 +541,6 @@ class OuterCaller(QWidget):
         super(OuterCaller, self).__init__()
 
         v_box = QVBoxLayout()
-        #v_box.addWidget(QLabel("\n Click >> \n"))
 
         recip_lat_but = QPushButton("\n Open Reciprocal Lattice Viewer \n")
         recip_lat_but.clicked.connect(self.run_recip_dialg)
