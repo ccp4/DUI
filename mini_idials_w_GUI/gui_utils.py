@@ -510,7 +510,7 @@ class MyDialog(QDialog):
         print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
 
         self.my_process = subprocess.Popen(args = cmd_to_run, shell = self.use_shell,
-                                           cwd="/tmp/dir_w_t")
+                                           cwd="/tmp")
         #self.my_process = subprocess.Popen(cmd_to_run, shell = self.use_shell, cwd=/tmp/dir_w_t)
         self.proc_pid = self.my_process.pid
         time.sleep(0.333)
