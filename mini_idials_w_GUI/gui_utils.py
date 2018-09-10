@@ -490,7 +490,8 @@ class MyDialog(QDialog):
         self.setLayout(vbox)
         self.setModal(True)
 
-    def run_my_proc(self, pickle_path = "", json_path = ""):
+    def run_my_proc(self, pickle_path = "", json_path = "",
+                    command_in = "dials.image_viewer"):
 
         first_pikl_path = pickle_path[0]
 
@@ -501,10 +502,9 @@ class MyDialog(QDialog):
                              + str(json_path)
                              '''
 
-            cmd_to_run = "dials.image_viewer " + str(json_path) + " "
+            cmd_to_run = command_in + " " + str(json_path)
             if(first_pikl_path != None):
-                cmd_to_run += str(first_pikl_path)
-
+                cmd_to_run += " " + str(first_pikl_path)
 
 
         else:
@@ -543,12 +543,16 @@ class OuterCaller(QWidget):
     def __init__(self):
         super(OuterCaller, self).__init__()
 
-        v_box = QHBoxLayout()
+        v_box = QVBoxLayout()
         #v_box.addWidget(QLabel("\n Click >> \n"))
 
-        my_but = QPushButton("\n Open Reciprocal Lattice Viewer \n")
-        my_but.clicked.connect(self.run_my_dialg)
-        v_box.addWidget(my_but)
+        recip_lat_but = QPushButton("\n Open Reciprocal Lattice Viewer \n")
+        recip_lat_but.clicked.connect(self.run_recip_dialg)
+        v_box.addWidget(recip_lat_but)
+
+        img_but = QPushButton("\n Open Image Viewer \n")
+        img_but.clicked.connect(self.run_img_dialg)
+        v_box.addWidget(img_but)
 
         self.diag = MyDialog()
 
@@ -559,9 +563,13 @@ class OuterCaller(QWidget):
         self.my_pick = new_pick
         self.my_json = new_json
 
-    def run_my_dialg(self):
-        self.diag.run_my_proc(self.my_pick, self.my_json)
+    def run_recip_dialg(self):
+        self.diag.run_my_proc(pickle_path = self.my_pick, json_path = self.my_json,
+                              command_in = "dials.reciprocal_lattice_viewer")
 
+    def run_img_dialg(self):
+        self.diag.run_my_proc(pickle_path = self.my_pick, json_path = self.my_json,
+                              command_in = "dials.image_viewer")
 
 class CliOutView(QTextEdit):
     def __init__(self, app = None):
