@@ -25,7 +25,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
-from cli_utils import get_next_step
+from cli_utils import get_next_step, sys_arg
 
 import sys, os, subprocess, psutil, time
 
@@ -466,9 +466,9 @@ class ViewerThread (QThread):
         print "_________________________________________ Loop ended"
 
 
-class MyDialog(QDialog):
+class ExternalProcDialog(QDialog):
     def __init__(self, parent = None):
-        super(MyDialog, self).__init__()
+        super(ExternalProcDialog, self).__init__()
 
         vbox = QVBoxLayout()
         vbox.addWidget(QLabel("\n          Running a pop-up viewer ...\
@@ -501,7 +501,6 @@ class MyDialog(QDialog):
             if(first_pikl_path != None):
                 cmd_to_run += " " + str(first_pikl_path)
 
-
         else:
             cmd_to_run = [command_in, first_pikl_path, json_path]
 
@@ -509,9 +508,17 @@ class MyDialog(QDialog):
 
         print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
 
+        cwd_path = sys_arg.directory + os.sep + "dui_files"
+        self.phil_path = cwd_path + os.sep + "find_spots.phil"
+        try:
+            os.remove(self.phil_path)
+
+        except:
+            print "no ", self.phil_path, " found"
+
         self.my_process = subprocess.Popen(args = cmd_to_run, shell = self.use_shell,
-                                           cwd="/tmp")
-        #self.my_process = subprocess.Popen(cmd_to_run, shell = self.use_shell, cwd=/tmp/dir_w_t)
+                                           cwd = cwd_path)
+
         self.proc_pid = self.my_process.pid
         time.sleep(0.333)
         self.thrd.get_pid(self.proc_pid)
@@ -550,7 +557,7 @@ class OuterCaller(QWidget):
         img_but.clicked.connect(self.run_img_dialg)
         v_box.addWidget(img_but)
 
-        self.diag = MyDialog()
+        self.diag = ExternalProcDialog()
 
         self.setLayout(v_box)
         self.show()
