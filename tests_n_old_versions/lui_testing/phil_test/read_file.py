@@ -42,24 +42,30 @@ class tree_2_lineal(object):
 
 
 def get_phil_par(path_to_file):
+    from dials.command_line.find_spots import phil_scope
+    #from dials.command_line.refine_bravais_settings import phil_scope
 
     print "path_to_file =", path_to_file
-    obj = libtbx.phil.parse(file_name=path_to_file)
-    print "type(obj) =", type(obj)
-    print "obj =", obj
-    lst_obj = tree_2_lineal(obj.objects)
+    #p_obj = libtbx.phil.parse(file_name=path_to_file)
+    p_obj = phil_scope
+    print "type(p_obj) =", type(p_obj)
+    print "p_obj =", p_obj
+    lst_obj = tree_2_lineal(p_obj.objects)
     multipl_phil_lst = lst_obj()
 
     for obj in multipl_phil_lst:
         if(obj.is_definition):
-            str_par = str(obj.full_path()) + "="
-            str_val = ''
-            for nm, single_val in enumerate(obj.extract()):
-                if(nm > 0):
-                    str_val += ","
-                str_val += str(single_val)
+            try:
+                str_par = str(obj.full_path()) + "="
+                str_val = ''
+                for nm, single_val in enumerate(obj.extract()):
+                    if(nm > 0):
+                        str_val += ","
+                    str_val += str(single_val)
 
-            str_par += str_val
+                str_par += str_val
+            except:
+                print "failed to get obj & par"
 
             print str_par
 
