@@ -210,9 +210,13 @@ class CentreWidget(QWidget):
                     btn.setEnabled(True)
 
     def pass_parmams(self, cmd_lst):
-        self.widg_lst[1].my_widget.update_param_w_lst(cmd_lst)
+        my_widget_now = self.step_param_widg.currentWidget()
+        if(my_widget_now.my_widget.command_lst[0] == 'find_spots'):
+            self.widg_lst[1].my_widget.update_param_w_lst(cmd_lst)
 
-
+        else:
+            print "No need to feed back params"
+            print "my_widget_now.my_widget.command_lst =", my_widget_now.my_widget.command_lst
 
 class ModeWidget(QWidget):
 
