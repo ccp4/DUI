@@ -57,7 +57,7 @@ def get_phil_par(path_to_file):
     '''
 
     print "path_to_file =", path_to_file
-    '''
+    #'''
     p_obj = libtbx.phil.parse(
             input_string=None,
             source_info=None,
@@ -67,7 +67,7 @@ def get_phil_par(path_to_file):
             )
     #'''
 
-    p_obj = phil_scope
+    #p_obj = phil_scope
     print "type(p_obj) =", type(p_obj)
     print "p_obj =", p_obj
     lst_obj = tree_2_lineal(p_obj.objects)
@@ -102,6 +102,9 @@ def get_phil_par(path_to_file):
     return lst_str_commands
 
 if(__name__ == "__main__"):
-    lst_par = get_phil_par("/scratch/dui/dui_test/only_20_img_X4_wide/dui_files/find_spots.phil")
+    #lst_par = get_phil_par("/scratch/dui/dui_test/only_20_img_X4_wide/dui_files/find_spots.phil")
+    #lst_par = get_phil_par("/home/lui/ccp4/dui_test/only_20_imgs_X4_wide/dui_files/find_spots.phil")
+
+    lst_par = get_phil_par("find_spots.phil")
     print "all commands =", lst_par
 
