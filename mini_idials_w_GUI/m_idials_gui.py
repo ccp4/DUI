@@ -209,6 +209,10 @@ class CentreWidget(QWidget):
                 if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
+    def pass_parmams(self, cmd_lst):
+        self.widg_lst[1].my_widget.update_param_w_lst(cmd_lst)
+
+
 
 class ModeWidget(QWidget):
 
@@ -340,6 +344,10 @@ class MainWidget(QMainWindow):
         self.custom_thread.str_fail_signal.connect(self.after_failed)
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
         self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
+
+
+        self.ext_view.pass_parmam_lst.connect(self.centre_widget.pass_parmams)
+
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)

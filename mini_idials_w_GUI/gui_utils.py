@@ -25,8 +25,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
-from cli_utils import get_next_step, sys_arg
-
+from cli_utils import get_next_step, sys_arg, get_phil_par
 import sys, os, subprocess, psutil, time
 
 def kill_w_child(pid_num):
@@ -467,6 +466,9 @@ class ViewerThread (QThread):
 
 
 class ExternalProcDialog(QDialog):
+
+    read_phil_file = pyqtSignal(str)
+
     def __init__(self, parent = None):
         super(ExternalProcDialog, self).__init__()
 
@@ -530,9 +532,11 @@ class ExternalProcDialog(QDialog):
 
     def kill_my_proc(self):
         print "self.kill_my_proc"
+        self.read_phil_file.emit(self.phil_path)
         print "time to kill", self.proc_pid
         kill_w_child(self.proc_pid)
         self.done(0)
+
 
     def child_closed(self):
         print "after ...close()"
@@ -544,6 +548,9 @@ class ExternalProcDialog(QDialog):
 
 
 class OuterCaller(QWidget):
+
+    pass_parmam_lst = pyqtSignal(list)
+
     def __init__(self):
         super(OuterCaller, self).__init__()
 
@@ -558,7 +565,7 @@ class OuterCaller(QWidget):
         v_box.addWidget(img_but)
 
         self.diag = ExternalProcDialog()
-
+        self.diag.read_phil_file.connect(self.check_phil_is)
         self.setLayout(v_box)
         self.show()
 
@@ -573,6 +580,13 @@ class OuterCaller(QWidget):
     def run_img_dialg(self):
         self.diag.run_my_proc(pickle_path = self.my_pick, json_path = self.my_json,
                               command_in = "dials.image_viewer")
+
+    def check_phil_is(self, path_to_pass):
+        if(os.path.isfile(path_to_pass)):
+            print "\n\n time to read:", path_to_pass, "\n\n"
+            lst_params = get_phil_par(path_to_pass)
+            self.pass_parmam_lst.emit(lst_params)
+
 
 class CliOutView(QTextEdit):
     def __init__(self, app = None):
