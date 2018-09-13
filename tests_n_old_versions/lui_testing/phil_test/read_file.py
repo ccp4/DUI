@@ -1,7 +1,3 @@
-'''
-from dials.util.options import OptionParser
-import libtbx.load_env
-'''
 
 import libtbx.phil
 
@@ -43,11 +39,35 @@ class tree_2_lineal(object):
 
 def get_phil_par(path_to_file):
     from dials.command_line.find_spots import phil_scope
-    #from dials.command_line.refine_bravais_settings import phil_scope
+    from dials.command_line.refine_bravais_settings import phil_scope
+
+    example = '''
+    libtbx.phil.parse(
+    input_string=input_string,
+    source_info=source_info,
+    file_name=file_name,
+    converter_registry=converter_registry,
+    process_includes=process_includes)
+
+    input_string=None,
+    source_info=None,
+    file_name=None,
+    converter_registry=None,
+    process_includes=False
+    '''
 
     print "path_to_file =", path_to_file
-    #p_obj = libtbx.phil.parse(file_name=path_to_file)
-    p_obj = phil_scope
+    #'''
+    p_obj = libtbx.phil.parse(
+            input_string=None,
+            source_info=None,
+            file_name=path_to_file,
+            converter_registry=None,
+            process_includes=False
+            )
+    #'''
+
+    #p_obj = phil_scope
     print "type(p_obj) =", type(p_obj)
     print "p_obj =", p_obj
     lst_obj = tree_2_lineal(p_obj.objects)
@@ -58,14 +78,21 @@ def get_phil_par(path_to_file):
             try:
                 str_par = str(obj.full_path()) + "="
                 str_val = ''
-                for nm, single_val in enumerate(obj.extract()):
-                    if(nm > 0):
-                        str_val += ","
-                    str_val += str(single_val)
+                obj_ext = obj.extract()
+                print "obj_ext =", obj_ext
+                if(type(obj_ext) is list):
+                    for nm, single_val in enumerate(obj_ext):
+                        if(nm > 0):
+                            str_val += ","
+
+                        str_val += str(single_val)
+                else:
+                    str_val = str(obj_ext)
 
                 str_par += str_val
+
             except:
-                print "failed to get obj & par"
+                print "\n\n failed to get obj & par \n\n"
 
             print str_par
 
