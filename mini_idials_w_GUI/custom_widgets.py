@@ -340,6 +340,8 @@ class ParamMainWidget( QWidget):
 
     def update_simpler_widget(self, str_path, str_value):
 
+        print "update_simpler_widget(", str_path, ", ", str_value, ")"
+
         for widg in self.sipler_widget.lst_var_widg:
             try:
                 if(widg.local_path == str_path):
@@ -372,6 +374,9 @@ class ParamMainWidget( QWidget):
         self.update_command_lst_low_level.emit(self.command_lst)
 
     def update_param_w_lst(self, lst_in):
+
+        print "update_param_w_lst(self, ", lst_in, ")"
+
         self.reset_par()
         if(len(lst_in) > 1):
             new_lst_pair = buils_lst_pair(lst_in)
@@ -456,6 +461,8 @@ class ParamWidget(QWidget):
         self.show()
 
     def update_param(self, curr_step):
+
+        print "update_param(", curr_step.command_lst, ")"
         self.my_widget.update_param_w_lst(curr_step.command_lst)
 
     def update_parent_lst(self, command_lst):

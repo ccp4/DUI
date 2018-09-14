@@ -362,8 +362,8 @@ class InfoWidget( QWidget):
 
     def update_data(self, exp_json_path = None, refl_pikl_path = None):
 
-        print "\n\nrefl_pikl_path =", refl_pikl_path,"\n"
-        print "\nexp_json_path =", exp_json_path,"\n"
+        print "\n\nrefl_pikl_path =", refl_pikl_path
+        print "exp_json_path =", exp_json_path,"\n"
 
         try:
 

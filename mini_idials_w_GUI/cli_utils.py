@@ -154,6 +154,7 @@ def get_phil_par(path_to_file):
 
             lst_str_commands.append(str_par)
 
+    print "\n lst_str_commands =", lst_str_commands
     return lst_str_commands
 
 

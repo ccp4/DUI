@@ -84,7 +84,7 @@ class CommandNode(object):
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
-        print "\n cmd_lst_to_run =", self.cmd_lst_to_run, "\n"
+        print "cmd_lst_to_run =", self.cmd_lst_to_run
 
     def get_next_step(self):
         return get_next_step(self)

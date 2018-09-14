@@ -583,7 +583,7 @@ class OuterCaller(QWidget):
 
     def check_phil_is(self, path_to_pass):
         if(os.path.isfile(path_to_pass)):
-            print "\n\n time to read:", path_to_pass, "\n\n"
+            print "\n time to read:", path_to_pass, "\n"
             lst_params = get_phil_par(path_to_pass)
             self.pass_parmam_lst.emit(lst_params)
 
@@ -631,7 +631,7 @@ class CliOutView(QTextEdit):
         else:
             self.make_green()
 
-        print "\n path_to_log =", path_to_log, "\n"
+        print " path_to_log =", path_to_log
 
         try:
             fil_obj = open(path_to_log, 'r')
@@ -662,7 +662,7 @@ class Text_w_Bar(QProgressBar):
             #self.setStyle(QStyleFactory.create("motif"))
 
         except:
-            print "\n Failed to setStyle() \n"
+            print "Failed to setStyle()"
 
     def setText(self, text):
         if(len(text) > 2):

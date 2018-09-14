@@ -193,7 +193,7 @@ class CentreWidget(QWidget):
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
         self.user_changed.emit(my_sender.pr_widg.my_label)
 
-        print "\n\n my_sender.pr_widg.my_label =", my_sender.pr_widg.my_label, "\n\n"
+        print "my_sender.pr_widg.my_label =", my_sender.pr_widg.my_label
         command_lst = [str(my_sender.pr_widg.my_label)]
         self.update_command_lst_high_level.emit(command_lst)
 
@@ -210,9 +210,16 @@ class CentreWidget(QWidget):
                     btn.setEnabled(True)
 
     def pass_parmams(self, cmd_lst):
+
+        full_cmd_lst = ["find_spots"]
+        for to_add in cmd_lst:
+            full_cmd_lst.append(to_add)
+
+        print "\n full_cmd_lst =", full_cmd_lst
+
         my_widget_now = self.step_param_widg.currentWidget()
         if(my_widget_now.my_widget.command_lst[0] == 'find_spots'):
-            self.widg_lst[1].my_widget.update_param_w_lst(cmd_lst)
+            self.widg_lst[1].my_widget.update_param_w_lst(full_cmd_lst)
 
         else:
             print "No need to feed back params"
@@ -500,12 +507,12 @@ class MainWidget(QMainWindow):
         #Running WITH theading
         run_me = True
         if(new_cmd[0] == "integrate"):
-            print "\n  Time to check if an old \".mtz\" file will be replaced \n"
+            print "Time to check if an old \".mtz\" file will be replaced \n"
             mtz_name = str(self.centre_widget.widg_lst[5].my_widget.
                            sipler_widget.mtz_name_lin.text())
             print "mtz_name =", mtz_name
             if(os.path.isfile(mtz_name)):
-                print "\n\n the file IS about to be there \n\n"
+                print "\nthe file IS about to be there \n"
 
                 mesg_text = "\n Overwrite existing file, or change file name below"
 
