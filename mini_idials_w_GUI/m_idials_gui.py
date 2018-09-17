@@ -209,21 +209,6 @@ class CentreWidget(QWidget):
                 if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
-    def pass_parmams(self, cmd_lst):
-
-        full_cmd_lst = ["find_spots"]
-        for to_add in cmd_lst:
-            full_cmd_lst.append(to_add)
-
-        print "\n full_cmd_lst =", full_cmd_lst
-
-        my_widget_now = self.step_param_widg.currentWidget()
-        if(my_widget_now.my_widget.command_lst[0] == 'find_spots'):
-            self.widg_lst[1].my_widget.update_param_w_lst(full_cmd_lst)
-
-        else:
-            print "No need to feed back params"
-            print "my_widget_now.my_widget.command_lst =", my_widget_now.my_widget.command_lst
 
 class ModeWidget(QWidget):
 
@@ -357,8 +342,7 @@ class MainWidget(QMainWindow):
         self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
 
 
-        self.ext_view.pass_parmam_lst.connect(self.centre_widget.pass_parmams)
-
+        self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -442,6 +426,27 @@ class MainWidget(QMainWindow):
     def tab_changed(self, num):
         self.view_tab_num = num
         update_info(self)
+
+
+    def pass_parmams(self, cmd_lst):
+
+        full_cmd_lst = ["find_spots"]
+        for to_add in cmd_lst:
+            full_cmd_lst.append(to_add)
+
+        print "\n full_cmd_lst =", full_cmd_lst
+
+        my_widget_now = self.centre_widget.step_param_widg.currentWidget()
+        if(my_widget_now.my_widget.command_lst[0] == 'find_spots' and
+                self.idials_runner.current_node.success == None):
+
+            self.centre_widget.widg_lst[1].my_widget.update_param_w_lst(full_cmd_lst)
+
+        else:
+            print "No need to feed back params"
+            print "my_widget_now.my_widget.command_lst =", my_widget_now.my_widget.command_lst
+
+
 
     def update_low_level_command_lst(self, command_lst):
         print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
