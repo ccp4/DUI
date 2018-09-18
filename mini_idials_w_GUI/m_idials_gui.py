@@ -25,7 +25,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
-import sys, os, pickle
+import sys, os, pickle, time
 
 from outputs_n_viewers.web_page_view import WebTab
 from outputs_n_viewers.img_viewer import MyImgWin
@@ -248,9 +248,12 @@ class MainWidget(QMainWindow):
             with open (self.storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
+
             #TODO sometimes the following error appears
             #Attribute not found
             #'module' object has no attribute 'CommandNode'
+
+            refresh_gui = True
 
         except Exception as e:
             print "str(e) =", str(e)
@@ -266,6 +269,8 @@ class MainWidget(QMainWindow):
                 print "failed to do \"shutil.rmtree(\"/dui_files\")\""
 
             os.mkdir(self.storage_path + "/dui_files")
+            refresh_gui = False
+
 
         #This flag makes the behaviour switch (automatic / explicit)
         self.idials_runner.make_next = sys_arg.make_next
@@ -355,6 +360,10 @@ class MainWidget(QMainWindow):
         self.just_reindexed = False
         self.user_stoped = False
         self.reconnect_when_ready()
+
+        if(refresh_gui == True):
+            self.refresh_my_gui()
+
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)
@@ -708,7 +717,10 @@ class MainWidget(QMainWindow):
         self.cmd_launch(cmd_tmp)
 
     def node_clicked(self, it_index):
-        print "it_index =", it_index
+
+        print "\n it_index =", it_index
+        print " type(it_index) =", type(it_index)
+
         if(self.tree_clickable == True):
             #TODO Think of a more robust way to "disconnect" ... next line
             try:
@@ -734,6 +746,23 @@ class MainWidget(QMainWindow):
 
             self.centre_widget.update_command_lst_high_level.connect(
                             self.update_low_level_command_lst)
+
+    def refresh_my_gui(self):
+
+        prn_lst_lst_cmd(self.idials_runner.current_node)
+        lin_num = self.idials_runner.current_node.lin_num
+        print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
+        cmd_ovr = "goto " + str(lin_num)
+        self.cmd_exe(cmd_ovr)
+        self.centre_widget.set_widget(nxt_cmd = self.idials_runner.current_node.command_lst[0],
+                                    curr_step = self.idials_runner.current_node)
+
+        self.check_reindex_pop()
+        update_info(self)
+        self.check_gray_outs()
+        self.reconnect_when_ready()
+
+        print "\n\n_________________________________________ ... refreshing GUI \n\n"
 
     def closeEvent(self, event):
             try:
