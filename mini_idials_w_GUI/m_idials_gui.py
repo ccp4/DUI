@@ -116,7 +116,7 @@ class CentreWidget(QWidget):
                 new_btn.clicked.connect(self.btn_clicked)
                 top_box.addWidget(new_btn)
 
-            else:
+            elif(num == 0):
                 new_btn.hide()
 
             param_widg = ParamWidget(step_name)

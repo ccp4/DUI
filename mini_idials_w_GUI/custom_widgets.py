@@ -40,7 +40,7 @@ from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 from dials.command_line.export import phil_scope as phil_scope_export
 
-from gui_utils import get_import_run_string
+from gui_utils import get_import_run_string, get_main_path
 
 class ImportPage(QWidget):
 
@@ -68,6 +68,15 @@ class ImportPage(QWidget):
         self.simple_lin.textChanged.connect(self.update_command)
 
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
+
+        #######################################################################
+        main_path = get_main_path()
+        print "main_path =", main_path
+        self.opn_fil_btn.setIcon(QIcon(main_path + "/resources/import.png"))
+        self.opn_fil_btn.setIconSize(QSize(80, 48))
+
+        #######################################################################
+
         tmp_hbox = QHBoxLayout()
         tmp_hbox.addStretch()
         tmp_hbox.addWidget(self.opn_fil_btn)
