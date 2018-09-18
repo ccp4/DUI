@@ -178,14 +178,25 @@ class CentreWidget(QWidget):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
 
     def set_widget(self, nxt_cmd = None, curr_step = None):
+
+        found_label = False
+
         for widget in self.widg_lst:
             if(widget.my_label == nxt_cmd):
                 self.step_param_widg.setCurrentWidget(widget)
+                found_label = True
                 try:
                     widget.update_param(curr_step)
 
                 except:
                     print "\n Unable to update params\n"
+
+        if(found_label == False and nxt_cmd == "reindex"):
+            print "assuming reindex mode"
+            widget_now = self.widg_lst[3]
+            self.step_param_widg.setCurrentWidget(widget_now)
+            #widget_now.update_param(curr_step.prev_step)
+            #widget_now.my_widget.gray_me_out()
 
     def btn_clicked(self):
         print "btn_clicked"
@@ -751,7 +762,7 @@ class MainWidget(QMainWindow):
 
         prn_lst_lst_cmd(self.idials_runner.current_node)
         lin_num = self.idials_runner.current_node.lin_num
-        print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
+        print "doing goto: ", lin_num
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
         self.centre_widget.set_widget(nxt_cmd = self.idials_runner.current_node.command_lst[0],
