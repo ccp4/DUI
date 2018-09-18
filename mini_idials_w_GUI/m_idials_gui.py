@@ -112,8 +112,12 @@ class CentreWidget(QWidget):
             new_btn.setIcon(tmp_ico)
             new_btn.setIconSize(QSize(38, 38))
 
-            new_btn.clicked.connect(self.btn_clicked)
-            top_box.addWidget(new_btn)
+            if(num > 0):
+                new_btn.clicked.connect(self.btn_clicked)
+                top_box.addWidget(new_btn)
+
+            else:
+                new_btn.hide()
 
             param_widg = ParamWidget(step_name)
             new_btn.pr_widg = param_widg
