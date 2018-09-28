@@ -31,5 +31,6 @@ setup(name='dui_test',
                                                    'mini_idials_w_GUI/resources/zoom_ono_one_ico.png',
                                                    'mini_idials_w_GUI/resources/zoom_minus_ico.png'])],
       entry_points={'console_scripts':['dui=mini_idials_w_GUI.main_dui:main']},
+      install_requires=['PyQt4','psutil'],
      )
 
