@@ -47,7 +47,7 @@ except:
 
 MyQWidgetWithQPainter = QWidget
 
-class ImgPainter(MyQWidgetWithQPainter):
+class ImgPainter(QWidget):
 
     def __init__(self, parent = None):
         super(ImgPainter, self).__init__()
@@ -188,17 +188,7 @@ class ImgPainter(MyQWidgetWithQPainter):
 
         self.img_width = q_img.width()
         self.img_height = q_img.height()
-
-        #replace <<update>> with <<paintEvent>> when [self] inherits from QGLWidget
-        #print "self.__class__.__bases__[0].__name__ =", self.__class__.__bases__[0].__name__
-        if(self.__class__.__bases__[0].__name__ == "QWidget"):
-            #print "inherits from QWidget"
-            self.update()
-        else:
-            #print "inherits from QGLWidget"
-            self.paintEvent(None)
-
-        #in future consider *self.repaint()* for the video thing instead of *self.update()*
+        self.update()
 
     def update_my_beam_centre(self, xb, yb):
         self.xb = xb
