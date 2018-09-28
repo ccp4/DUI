@@ -457,6 +457,7 @@ class ViewerThread (QThread):
         while(my_proc_stat == 'running' or my_proc_stat == 'sleeping'):
             try:
                 my_proc_stat = my_proc.status()
+                time.sleep(0.1)
 
             except:
                 print "proc disappeared"
