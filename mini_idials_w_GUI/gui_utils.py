@@ -449,10 +449,11 @@ class ViewerThread (QThread):
         self.pid_to_see = pid_in
 
     def run(self):
-        print "Hi from QThread(run)  ___________________ Before Loop"
+        print "Hi from QThread(run)  ___________________<<< Before Loop"
         my_proc = psutil.Process(self.pid_to_see)
 
         my_proc_stat = my_proc.status()
+        print "my_proc_stat =", my_proc_stat
 
         while(my_proc_stat == 'running' or my_proc_stat == 'sleeping'):
             try:
@@ -463,7 +464,9 @@ class ViewerThread (QThread):
                 print "proc disappeared"
                 my_proc_stat = 'None'
 
-        print "_________________________________________ Loop ended"
+
+        print "_________________________________________>>> Loop ended"
+
 
 
 class ExternalProcDialog(QDialog):
@@ -509,7 +512,6 @@ class ExternalProcDialog(QDialog):
 
         self.thrd = ViewerThread()
 
-        print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
 
         cwd_path = sys_arg.directory + os.sep + "dui_files"
         self.phil_path = cwd_path + os.sep + "find_spots.phil"
@@ -519,11 +521,14 @@ class ExternalProcDialog(QDialog):
         except:
             print "no ", self.phil_path, " found"
 
+        print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
         self.my_process = subprocess.Popen(args = cmd_to_run, shell = self.use_shell,
                                            cwd = cwd_path)
 
+        time.sleep(0.2)
         self.proc_pid = self.my_process.pid
-        time.sleep(0.333)
+        print "self.proc_pid =", self.proc_pid
+        time.sleep(0.2)
         self.thrd.get_pid(self.proc_pid)
 
         self.thrd.finished.connect(self.child_closed)
