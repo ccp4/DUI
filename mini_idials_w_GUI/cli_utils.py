@@ -75,7 +75,7 @@ def get_next_step(node_obj):
                 nxt_str = node_obj.dials_com_lst[pos + 1]
                 return nxt_str
 
-    print "\n\n Defaulting to << None >> in automatic << get_next_step >> \n\n"
+    #print "\n\n Defaulting to << None >> in automatic << get_next_step >> \n\n"
     return None
 
 class ScopeData(object):
