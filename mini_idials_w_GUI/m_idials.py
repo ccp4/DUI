@@ -37,6 +37,7 @@ class CommandNode(object):
     'reindex',
     'refine',
     'integrate',
+    'scale',
     'export',
     ]
 
