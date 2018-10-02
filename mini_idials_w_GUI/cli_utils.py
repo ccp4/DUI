@@ -282,7 +282,9 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
 
-    elif(cmd_lst[0] == "refine" or cmd_lst[0] == "integrate" or cmd_lst[0] == "scale"):
+    elif(cmd_lst[0] == "refine" or cmd_lst[0] == "integrate"
+            or cmd_lst[0] == "scale" or cmd_lst[0] == "symmetry"):
+
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
@@ -304,7 +306,6 @@ def build_command_lst(node_obj, cmd_lst):
 
         node_obj.log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-
         cmd_lst_to_run.append(output_str)
 
         node_obj.debug_log_file_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
@@ -316,6 +317,13 @@ def build_command_lst(node_obj, cmd_lst):
             output_str = "output.debug_log=" + node_obj.debug_log_file_out
 
         cmd_lst_to_run.append(output_str)
+
+        if(cmd_lst[0] == "symmetry"):
+            node_obj.json_sym_out = run_path + os.sep +  str(node_obj.lin_num) + "_" + cmd_lst[0] + ".symmetry.json"
+            output_str = "output.json=" + node_obj.json_sym_out
+            cmd_lst_to_run.append(output_str)
+
+            #.json_sym_out
 
     elif(cmd_lst[0] == "export"):
         cmd_lst_to_run.append(node_obj.prev_step.json_file_out)

@@ -37,6 +37,7 @@ class CommandNode(object):
     'reindex',
     'refine',
     'integrate',
+    'symmetry',
     'scale',
     'export',
     ]
@@ -55,6 +56,7 @@ class CommandNode(object):
         self.report_out = None
         self.predict_pickle_out = None
         self.err_file_out = None
+        self.json_sym_out = None
 
         self.dials_command = DialsCommand()
         #self.work_dir = os.getcwd()
