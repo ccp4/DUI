@@ -449,7 +449,7 @@ class ViewerThread (QThread):
         self.pid_to_see = pid_in
 
     def run(self):
-        print "Hi from QThread(run)  ___________________<<< Before Loop"
+        print "Hi from QThread(run)  ___________________<<< Before Loop >>>"
         my_proc = psutil.Process(self.pid_to_see)
 
         my_proc_stat = my_proc.status()
@@ -464,9 +464,7 @@ class ViewerThread (QThread):
                 print "proc disappeared"
                 my_proc_stat = 'None'
 
-
-        print "_________________________________________>>> Loop ended"
-
+        print "_________________________________________>>> Loop ended <<<"
 
 
 class ExternalProcDialog(QDialog):
@@ -488,7 +486,7 @@ class ExternalProcDialog(QDialog):
         my_bar.start_motion()
         '''
 
-        self.use_shell = True
+        self.use_shell = False
 
         kl_but = QPushButton("Close pop-up viewer")
         kl_but.clicked.connect(self.kill_my_proc)
@@ -508,7 +506,9 @@ class ExternalProcDialog(QDialog):
                 cmd_to_run += " " + str(first_pikl_path)
 
         else:
-            cmd_to_run = [command_in, first_pikl_path, json_path]
+            cmd_to_run = [command_in, str(json_path)]
+            if(first_pikl_path != None):
+                cmd_to_run.append(str(first_pikl_path))
 
         self.thrd = ViewerThread()
 

@@ -29,7 +29,7 @@ import os, sys
 from params_live_gui_generator import PhilWidget
 from simpler_param_widgets import FindspotsSimplerParameterTab, IndexSimplerParamTab, \
                                   RefineBravaiSimplerParamTab, RefineSimplerParamTab, \
-                                  IntegrateSimplerParamTab
+                                  IntegrateSimplerParamTab, SymmetrySimplerParamTab
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
@@ -39,6 +39,7 @@ from dials.command_line.refine_bravais_settings import phil_scope as phil_scope_
 from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 from dials.command_line.export import phil_scope as phil_scope_export
+from dials.command_line.symmetry import phil_scope as phil_scope_symetry
 
 from gui_utils import get_import_run_string, get_main_path
 
@@ -450,6 +451,7 @@ class ParamWidget(QWidget):
                        "refine_bravais_settings": [phil_scope_r_b_settings , RefineBravaiSimplerParamTab  ],
                        "refine"    :              [phil_scope_refine       , RefineSimplerParamTab        ],
                        "integrate" :              [phil_scope_integrate    , IntegrateSimplerParamTab     ],
+                       "symmetry"  :              [phil_scope_symetry      , SymmetrySimplerParamTab      ]
                         }
 
         if(label_str == "import"):
@@ -480,9 +482,12 @@ class ParamWidget(QWidget):
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
-    ex = ParamWidget("find_spots")
+    #ex = ParamWidget("find_spots")
     #ex = ParamWidget("integrate")
     #ex = ParamWidget("import")
     #ex = ParamWidget("index")
+    #ex = ParamWidget("refine")
+    #ex = ParamWidget("integrate")
+    ex = ParamWidget("symmetry")
     sys.exit(app.exec_())
 
