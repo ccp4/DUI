@@ -39,7 +39,8 @@ from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
      build_command_tip, update_info, update_pbar_msg, kill_w_child, \
      TreeNavWidget, build_ttip, build_label, MyQButton, get_main_path
 
-widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings", "refine", "integrate"]
+widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings",
+                  "refine", "integrate", "symmetry", "scale"]
 
 
 
@@ -83,6 +84,8 @@ class CentreWidget(QWidget):
         lst_icons_path.append(main_path + "/resources/reindex.png")
         lst_icons_path.append(main_path + "/resources/refine.png")
         lst_icons_path.append(main_path + "/resources/integrate.png")
+        lst_icons_path.append(main_path + "/resources/symmetry.png")
+        lst_icons_path.append(main_path + "/resources/scale.png")
 
         lst_grayed_icons_path = []
         lst_grayed_icons_path.append(main_path + "/resources/import_grayed.png")
@@ -91,6 +94,8 @@ class CentreWidget(QWidget):
         lst_grayed_icons_path.append(main_path + "/resources/reindex_grayed.png")
         lst_grayed_icons_path.append(main_path + "/resources/refine_grayed.png")
         lst_grayed_icons_path.append(main_path + "/resources/integrate_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/symmetry_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/scale_grayed.png")
 
         top_box =  QHBoxLayout()
         self.step_param_widg = QStackedWidget()
@@ -535,6 +540,7 @@ class MainWidget(QMainWindow):
     def cmd_launch(self, new_cmd):
         #Running WITH theading
         run_me = True
+        to_replase = '''
         if(new_cmd[0] == "integrate"):
             print "Time to check if an old \".mtz\" file will be replaced \n"
             mtz_name = str(self.centre_widget.widg_lst[5].my_widget.
@@ -558,6 +564,7 @@ class MainWidget(QMainWindow):
 
             else:
                 print "the \".mtz\" file is NOT going to be replaced "
+        '''
 
         if(run_me == True):
 
@@ -604,6 +611,8 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
+            to_replase = '''
+
         elif(tmp_curr.command_lst[0] == "integrate" and
                 tmp_curr.success == True):
 
@@ -617,6 +626,7 @@ class MainWidget(QMainWindow):
             print "MTZ name =", mtz_name
             mtz_export_par = "mtz.hklout=" + mtz_name
             self.cmd_launch(["export", mtz_export_par])
+            '''
 
         if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
                 tmp_curr.command_lst[0] != "integrate" and
@@ -643,7 +653,9 @@ class MainWidget(QMainWindow):
                         "refine_bravais_settings" : [None] ,
                         "reindex"                 : ["refine", "integrate"] ,
                         "refine"                  : ["refine", "integrate"] ,
-                        "integrate"               : [None] ,
+                        "integrate"               : ["symmetry", "scale"] ,
+                        "symmetry"                : ["scale"] ,
+                        "scale"                   : ["integrate"] ,
                         "export"                  : [None] ,
                         "None"                    : [None] }
 

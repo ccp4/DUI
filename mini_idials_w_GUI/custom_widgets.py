@@ -29,7 +29,8 @@ import os, sys
 from params_live_gui_generator import PhilWidget
 from simpler_param_widgets import FindspotsSimplerParameterTab, IndexSimplerParamTab, \
                                   RefineBravaiSimplerParamTab, RefineSimplerParamTab, \
-                                  IntegrateSimplerParamTab, SymmetrySimplerParamTab
+                                  IntegrateSimplerParamTab, SymmetrySimplerParamTab, \
+                                  ScaleSimplerParamTab
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
@@ -40,6 +41,7 @@ from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 from dials.command_line.export import phil_scope as phil_scope_export
 from dials.command_line.symmetry import phil_scope as phil_scope_symetry
+from dials.command_line.scale import phil_scope as phil_scope_scale
 
 from gui_utils import get_import_run_string, get_main_path
 
@@ -451,7 +453,8 @@ class ParamWidget(QWidget):
                        "refine_bravais_settings": [phil_scope_r_b_settings , RefineBravaiSimplerParamTab  ],
                        "refine"    :              [phil_scope_refine       , RefineSimplerParamTab        ],
                        "integrate" :              [phil_scope_integrate    , IntegrateSimplerParamTab     ],
-                       "symmetry"  :              [phil_scope_symetry      , SymmetrySimplerParamTab      ]
+                       "symmetry"  :              [phil_scope_symetry      , SymmetrySimplerParamTab      ],
+                       "scale"     :              [phil_scope_scale        , ScaleSimplerParamTab      ]
                         }
 
         if(label_str == "import"):
@@ -488,6 +491,7 @@ if __name__ == '__main__':
     #ex = ParamWidget("index")
     #ex = ParamWidget("refine")
     #ex = ParamWidget("integrate")
-    ex = ParamWidget("symmetry")
+    #ex = ParamWidget("symmetry")
+    ex = ParamWidget("scale")
     sys.exit(app.exec_())
 

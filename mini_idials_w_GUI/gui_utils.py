@@ -192,7 +192,10 @@ def build_label(com_nam):
                       "index"                   :"\nindex",
                       "refine_bravais_settings" :"\nlattice",
                       "refine"                  :"\nrefine",
-                      "integrate"               :"\nintegrate"}
+                      "integrate"               :"\nintegrate",
+                      "symmetry"                :"\nsymmetry",
+                      "scale"                   :"\nscale",
+                      }
 
     return label_connects[com_nam]
 
@@ -208,7 +211,10 @@ def build_ttip(com_nam):
                     "refine"                  :" dials.refine ...",
                     "integrate"               :" dials.integrate\n" + \
                                                "         + \n" + \
-                                               " dials.export ..."}
+                                               " dials.export ...",
+                    "symmetry"                :" dials.symmetry ...",
+                    "scale"                   :" dials.scale ...",
+                    }
 
     return tip_connects[com_nam]
 
@@ -332,7 +338,11 @@ def get_lab_txt(com_nam):
                    "index"                   :" index ",
                    "refine_bravais_settings" :" reindex ",
                    "refine"                  :" refine ",
-                   "integrate"               :" integrate"}
+                   "integrate"               :" integrate",
+                   "symmetry"                :" symmetry",
+                   "scale"                   :" scale",
+                   "export"                  :" export"
+                   }
 
     new_com_nam = cmd_to_labl[com_nam]
 
