@@ -195,6 +195,7 @@ def build_label(com_nam):
                       "integrate"               :"\nintegrate",
                       "symmetry"                :"\nsymmetry",
                       "scale"                   :"\nscale",
+                      "export"                  :"\nexport"
                       }
 
     return label_connects[com_nam]
@@ -202,18 +203,19 @@ def build_label(com_nam):
 
 def build_ttip(com_nam):
 
-    tip_connects = {"import"                  :" dials.import ...",
-                    "find_spots"              :" dials.find_spots ...",
-                    "index"                   :" dials.index ...",
-                    "refine_bravais_settings" :" dials.refine_bravais_settings\n" + \
-                                               "         + \n" + \
-                                               " dials.reindex ...",
-                    "refine"                  :" dials.refine ...",
-                    "integrate"               :" dials.integrate\n" + \
-                                               "         + \n" + \
-                                               " dials.export ...",
-                    "symmetry"                :" dials.symmetry ...",
-                    "scale"                   :" dials.scale ...",
+    tip_connects = {"import"                    :" dials.import ...",
+                    "find_spots"                :" dials.find_spots ...",
+                    "index"                     :" dials.index ...",
+                    "refine_bravais_settings"   :" dials.refine_bravais_settings\n" + \
+                                                 "         + \n" + \
+                                                 " dials.reindex ...",
+                    "refine"                    :" dials.refine ...",
+                    "integrate"                 :" dials.integrate\n" + \
+                                                 "         + \n" + \
+                                                 " dials.export ...",
+                    "symmetry"                  :" dials.symmetry ...",
+                    "scale"                     :" dials.scale ...",
+                    "export"                    :" dials.export ..."
                     }
 
     return tip_connects[com_nam]

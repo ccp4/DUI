@@ -40,7 +40,7 @@ from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
      TreeNavWidget, build_ttip, build_label, MyQButton, get_main_path
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings",
-                  "refine", "integrate", "symmetry", "scale"]
+                  "refine", "integrate", "symmetry", "scale", "export"]
 
 
 
@@ -86,6 +86,7 @@ class CentreWidget(QWidget):
         lst_icons_path.append(main_path + "/resources/integrate.png")
         lst_icons_path.append(main_path + "/resources/symmetry.png")
         lst_icons_path.append(main_path + "/resources/scale.png")
+        lst_icons_path.append(main_path + "/resources/export.png")
 
         lst_grayed_icons_path = []
         lst_grayed_icons_path.append(main_path + "/resources/import_grayed.png")
@@ -96,6 +97,8 @@ class CentreWidget(QWidget):
         lst_grayed_icons_path.append(main_path + "/resources/integrate_grayed.png")
         lst_grayed_icons_path.append(main_path + "/resources/symmetry_grayed.png")
         lst_grayed_icons_path.append(main_path + "/resources/scale_grayed.png")
+        lst_grayed_icons_path.append(main_path + "/resources/export_grayed.png")
+
 
         top_box =  QHBoxLayout()
         self.step_param_widg = QStackedWidget()
@@ -653,9 +656,9 @@ class MainWidget(QMainWindow):
                         "refine_bravais_settings" : [None] ,
                         "reindex"                 : ["refine", "integrate"] ,
                         "refine"                  : ["refine", "integrate"] ,
-                        "integrate"               : ["symmetry", "scale"] ,
-                        "symmetry"                : ["scale"] ,
-                        "scale"                   : ["integrate"] ,
+                        "integrate"               : ["symmetry", "scale", "export"] ,
+                        "symmetry"                : ["scale", "export"] ,
+                        "scale"                   : ["export"] ,
                         "export"                  : [None] ,
                         "None"                    : [None] }
 

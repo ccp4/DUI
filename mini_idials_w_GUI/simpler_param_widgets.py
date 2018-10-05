@@ -387,62 +387,6 @@ class IntegrateSimplerParamTab( QWidget):
         #print "self.param_widget_parent.super_parent.mtz_name_changed(value)"
 
 
-class ScaleSimplerParamTab(QWidget):
-
-    '''
-    This widget is the tool for tunning the simpler and most common parameters
-    in the scale command, this widget is the first to appear once the button
-    "Scale" at the left side of the GUI is clicked
-    '''
-
-    item_changed = pyqtSignal(str, str)
-
-    def __init__(self, parent = None):
-        super(ScaleSimplerParamTab, self).__init__()
-
-        hbox_lay_scan_varying =  QHBoxLayout()
-        localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
-
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
-
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
-
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        localLayout.addLayout(hbox_lay_scan_varying)
-        localLayout.addStretch(1)
-        self.setLayout(localLayout)
-
-        self.lst_var_widg = []
-        self.lst_var_widg.append(box_scan_varying)
-        self.lst_var_widg.append(label_scan_varying)
-
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
-
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-        '''
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        print value
-        str_path = str(sender.local_path)
-
-        self.item_changed.emit(str_path, str_value)
-        '''
-
 
 class SymmetrySimplerParamTab(QWidget):
     '''
@@ -458,7 +402,7 @@ class SymmetrySimplerParamTab(QWidget):
 
         hbox_lay_scan_varying =  QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
+        label_scan_varying = QLabel("...symmetry ...scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
@@ -500,6 +444,117 @@ class SymmetrySimplerParamTab(QWidget):
         '''
 
 
+class ScaleSimplerParamTab(QWidget):
+
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the scale command, this widget is the first to appear once the button
+    "Scale" at the left side of the GUI is clicked
+    '''
+
+    item_changed = pyqtSignal(str, str)
+
+    def __init__(self, parent = None):
+        super(ScaleSimplerParamTab, self).__init__()
+
+        hbox_lay_scan_varying =  QHBoxLayout()
+        localLayout = QVBoxLayout()
+        label_scan_varying = QLabel("... scale ...scan_varying")
+
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
+
+        box_scan_varying = QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.setCurrentIndex(1)
+
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
+        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
+
+        self.lst_var_widg = []
+        self.lst_var_widg.append(box_scan_varying)
+        self.lst_var_widg.append(label_scan_varying)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        str_value = str(sender.tmp_lst[value])
+        str_path = str(sender.local_path)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
+
+        '''
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
+
+        self.item_changed.emit(str_path, str_value)
+        '''
+
+class ExportSimplerParamTab(QWidget):
+
+    '''
+    This widget is the tool for tunning the simpler and most common parameters
+    in the scale command, this widget is the first to appear once the button
+    "Scale" at the left side of the GUI is clicked
+    '''
+
+    item_changed = pyqtSignal(str, str)
+
+    def __init__(self, parent = None):
+        super(ExportSimplerParamTab, self).__init__()
+
+        hbox_lay_scan_varying =  QHBoxLayout()
+        localLayout = QVBoxLayout()
+        label_scan_varying = QLabel("... export ...scan_varying")
+
+        hbox_lay_scan_varying.addWidget(label_scan_varying)
+
+        box_scan_varying = QComboBox()
+        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
+        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst.append("True")
+        box_scan_varying.tmp_lst.append("False")
+        for lst_itm in box_scan_varying.tmp_lst:
+            box_scan_varying.addItem(lst_itm)
+        box_scan_varying.setCurrentIndex(1)
+
+        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_scan_varying.addWidget(box_scan_varying)
+        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addStretch(1)
+        self.setLayout(localLayout)
+
+        self.lst_var_widg = []
+        self.lst_var_widg.append(box_scan_varying)
+        self.lst_var_widg.append(label_scan_varying)
+
+    def combobox_changed(self, value):
+        sender = self.sender()
+        str_value = str(sender.tmp_lst[value])
+        str_path = str(sender.local_path)
+
+        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
+
+        '''
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
+
+        self.item_changed.emit(str_path, str_value)
+        '''
 
 
 class TmpTstWidget( QWidget):
@@ -508,7 +563,9 @@ class TmpTstWidget( QWidget):
         super(TmpTstWidget, self).__init__()
         #self.param_widget_parent = self
         #my_widget = FindspotsSimplerParameterTab(self)
-        my_widget = SymmetrySimplerParamTab(self)
+        #my_widget = SymmetrySimplerParamTab(self)
+        #my_widget = ScaleSimplerParamTab(self)
+        my_widget = ExportSimplerParamTab(self)
 
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)
