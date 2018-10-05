@@ -188,7 +188,7 @@ def get_import_run_string(in_str_lst):
 def build_label(com_nam):
 
     label_connects = {"import"                  :"\nimport",
-                      "find_spots"              :"\nfind",
+                      "find_spots"              :"\nfind  ",
                       "index"                   :"\nindex",
                       "refine_bravais_settings" :"\nlattice",
                       "refine"                  :"\nrefine",
@@ -355,9 +355,9 @@ class MyQButton(QPushButton):
         v_box.addLayout(h_box_space)
 
         h_box_label = QHBoxLayout()
-        h_box_label.addStretch()
+        #h_box_label.addStretch()
         h_box_label.addWidget(QLabel(btn_txt))
-        h_box_label.addStretch()
+        #h_box_label.addStretch()
 
         v_box.addLayout(h_box_label)
         self.cmd_n1 = my_text
