@@ -142,7 +142,7 @@ class CentreWidget(QWidget):
         tmp_ico.addFile(re_try_grayed_path, mode = QIcon.Disabled)
 
         self.repeat_btn.setIcon(tmp_ico)
-        self.repeat_btn.setIconSize(QSize(28, 28))
+        self.repeat_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.repeat_btn)
 
         self.run_btn = QPushButton("\n  Run  \n", self)
@@ -155,8 +155,8 @@ class CentreWidget(QWidget):
         tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
 
         self.run_btn.setIcon(tmp_ico)
-        #self.run_btn.setIconSize(QSize(80, 48))
-        self.run_btn.setIconSize(QSize(28, 28))
+        self.run_btn.setIconSize(QSize(50, 38))
+        #self.run_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
@@ -166,7 +166,7 @@ class CentreWidget(QWidget):
         tmp_ico.addFile(stop_logo_path, mode = QIcon.Normal)
         tmp_ico.addFile(stop_grayed_path, mode = QIcon.Disabled)
         self.stop_btn.setIcon(tmp_ico)
-        self.stop_btn.setIconSize(QSize(28, 28))
+        self.stop_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.stop_btn)
 
         big_v_box = QVBoxLayout()
