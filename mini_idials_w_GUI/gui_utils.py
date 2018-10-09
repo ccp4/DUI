@@ -210,9 +210,7 @@ def build_ttip(com_nam):
                                                  "         + \n" + \
                                                  " dials.reindex ...",
                     "refine"                    :" dials.refine ...",
-                    "integrate"                 :" dials.integrate\n" + \
-                                                 "         + \n" + \
-                                                 " dials.export ...",
+                    "integrate"                 :" dials.integrate ...",
                     "symmetry"                  :" dials.symmetry ...",
                     "scale"                     :" dials.scale ...",
                     "export"                    :" dials.export ..."

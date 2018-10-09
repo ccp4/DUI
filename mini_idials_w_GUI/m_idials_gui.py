@@ -227,37 +227,6 @@ class CentreWidget(QWidget):
                 if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
-
-class ModeWidget(QWidget):
-
-    def __init__(self, parent = None):
-        super(ModeWidget, self).__init__()
-
-        big_layout = QVBoxLayout()
-        big_layout.addWidget(QLabel("Guide level"))
-        self.rb_group = QButtonGroup()
-        self.rb_group_box = QGroupBox()
-        self.rb_group_box_layout = QVBoxLayout()
-        self.rb_group_box.setLayout(self.rb_group_box_layout)
-
-        self.rb_full_auto = QRadioButton("Fully Automatic")
-        self.rb_group.addButton(self.rb_full_auto)
-        self.rb_group_box_layout.addWidget(self.rb_full_auto)
-
-        self.rb_semi_auto = QRadioButton("Semi Automatic")
-        self.rb_group.addButton(self.rb_semi_auto)
-        self.rb_group_box_layout.addWidget(self.rb_semi_auto)
-
-        self.rb_expert = QRadioButton("Expert")
-        self.rb_group.addButton(self.rb_expert)
-        self.rb_group_box_layout.addWidget(self.rb_expert)
-
-        big_layout.addWidget(self.rb_group_box)
-
-        self.setLayout(big_layout)
-        self.show()
-
-
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
