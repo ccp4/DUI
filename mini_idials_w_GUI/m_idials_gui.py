@@ -105,20 +105,15 @@ class CentreWidget(QWidget):
         self.widg_lst = []
         self.btn_lst = []
         for num, step_name in enumerate(widg_name_list):
-            #new_btn = QPushButton(self)
-
-            new_btn = MyQButton(self)
-
-            new_btn.intro_text(step_name)
-
-            ttip = build_ttip(step_name)
-            new_btn.setToolTip(ttip)
 
             tmp_ico = QIcon()
             tmp_ico.addFile(lst_icons_path[num], mode = QIcon.Normal)
             tmp_ico.addFile(lst_grayed_icons_path[num], mode = QIcon.Disabled)
-            new_btn.setIcon(tmp_ico)
-            new_btn.setIconSize(QSize(38, 38))
+
+            ttip = build_ttip(step_name)
+
+            new_btn = MyQButton(self)
+            new_btn.intro_content(step_name, tmp_ico, ttip)
 
             if(num > 0):
                 new_btn.clicked.connect(self.btn_clicked)

@@ -354,22 +354,38 @@ def get_lab_txt(com_nam):
 class MyQButton(QPushButton):
     def __init__(self, text = "", parent = None):
         super(MyQButton, self).__init__()
-        self.setContentsMargins(-1,-1,-1,-1)
+        self.setContentsMargins(-5,-1,-5,-1)
 
-    def intro_text(self, my_text):
+
+    def intro_content(self, my_text, my_icon, my_tool_tip):
+
+        self.setIcon(my_icon)
+        self.setIconSize(QSize(32, 32))
+
+        self.setToolTip(my_tool_tip)
+
         btn_txt = build_label(my_text)
 
         v_box = QVBoxLayout()
         v_box.insertSpacing(1, 24)
 
         h_box_space = QHBoxLayout()
-        h_box_space.insertSpacing(1, 65)
+        h_box_space.insertSpacing(1, 45)
         v_box.addLayout(h_box_space)
 
         h_box_label = QHBoxLayout()
-        #h_box_label.addStretch()
-        h_box_label.addWidget(QLabel(btn_txt))
-        #h_box_label.addStretch()
+        h_box_label.addStretch()
+
+        my_font = QFont()
+        sys_font_point_size =  my_font.pointSize()
+        my_font.setPointSize(sys_font_point_size - 2)
+
+        my_label = QLabel(btn_txt)
+        my_label.setMargin(1)
+        my_label.setFont(my_font)
+
+        h_box_label.addWidget(my_label)
+        h_box_label.addStretch()
 
         v_box.addLayout(h_box_label)
         self.cmd_n1 = my_text
