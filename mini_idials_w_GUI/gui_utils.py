@@ -360,7 +360,7 @@ class MyQButton(QPushButton):
     def intro_content(self, my_text, my_icon, my_tool_tip):
 
         self.setIcon(my_icon)
-        self.setIconSize(QSize(32, 32))
+        self.setIconSize(QSize(31, 30))
 
         self.setToolTip(my_tool_tip)
 
