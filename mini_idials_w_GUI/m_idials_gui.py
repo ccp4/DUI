@@ -172,9 +172,8 @@ class CentreWidget(QWidget):
         big_v_box = QVBoxLayout()
 
         big_v_box.addLayout(top_box)
-        big_v_box.addLayout(ctrl_box)
-
         big_v_box.addWidget(self.step_param_widg)
+        big_v_box.addLayout(ctrl_box)
 
         self.setLayout(big_v_box)
         self.show()
