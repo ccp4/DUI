@@ -130,6 +130,7 @@ class CentreWidget(QWidget):
             self.btn_lst.append(new_btn)
 
         ctrl_box = QHBoxLayout()
+        ctrl_box.addStretch()
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
 
@@ -156,7 +157,6 @@ class CentreWidget(QWidget):
 
         self.run_btn.setIcon(tmp_ico)
         self.run_btn.setIconSize(QSize(50, 38))
-        #self.run_btn.setIconSize(QSize(28, 28))
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
@@ -168,7 +168,7 @@ class CentreWidget(QWidget):
         self.stop_btn.setIcon(tmp_ico)
         self.stop_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.stop_btn)
-
+        #ctrl_box.addStretch()
         big_v_box = QVBoxLayout()
 
         big_v_box.addLayout(top_box)
@@ -623,7 +623,7 @@ class MainWidget(QMainWindow):
                         "refine"                  : ["refine", "integrate"] ,
                         "integrate"               : ["symmetry", "scale", "export"] ,
                         "symmetry"                : ["scale", "export"] ,
-                        "scale"                   : ["export"] ,
+                        "scale"                   : ["symmetry", "export"] ,
                         "export"                  : [None] ,
                         "None"                    : [None] }
 
