@@ -415,9 +415,7 @@ class SymmetrySimplerParamTab(QWidget):
         d_min_spn_bx.setValue(0.0)
         hbox_d_min.addWidget(d_min_spn_bx)
 
-
         d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
-
 
         localLayout.addLayout(hbox_d_min)
         localLayout.addStretch(1)
