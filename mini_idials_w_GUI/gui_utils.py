@@ -294,9 +294,7 @@ def update_pbar_msg(main_obj):
     if(tmp_curr.success == False):
         txt = "click << Retry >> or navigate backwards in the tree"
 
-    elif(  (txt == "integrate"
-            or txt == "refine_bravais_settings")
-            and tmp_curr.success == True):
+    elif( txt == "refine_bravais_settings" and tmp_curr.success == True):
 
         txt = "click << Retry >> or navigate elsewhere in the tree"
 
@@ -336,7 +334,7 @@ def get_lab_txt(com_nam):
     cmd_to_labl = {"import"                  :" import ",
                    "find_spots"              :" find ",
                    "index"                   :" index ",
-                   "refine_bravais_settings" :" reindex ",
+                   "refine_bravais_settings" :" lattice ",
                    "refine"                  :" refine ",
                    "integrate"               :" integrate",
                    "symmetry"                :" symmetry",
