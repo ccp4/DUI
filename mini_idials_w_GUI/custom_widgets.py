@@ -247,7 +247,7 @@ class ParamMainWidget( QWidget):
 
         self.build_param_widget()
 
-        self.reset_btn = QPushButton("Reset to Default", self)
+        self.reset_btn = QPushButton("\n Reset to Default \n", self)
         self.reset_btn.clicked.connect(self.reset_par)
 
         label_font = QFont()

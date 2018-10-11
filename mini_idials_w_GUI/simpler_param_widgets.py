@@ -402,40 +402,31 @@ class SymmetrySimplerParamTab(QWidget):
     def __init__(self, parent = None):
         super(SymmetrySimplerParamTab, self).__init__()
 
-        hbox_lay_scan_varying =  QHBoxLayout()
+        hbox_d_min =  QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("...symmetry ...scan_varying")
+        label_d_min = QLabel("d_min")
 
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
+        hbox_d_min.addWidget(label_d_min)
 
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
+        xds_sigma_strong_label = QLabel("d_min")
+        d_min_spn_bx = QDoubleSpinBox()
+        d_min_spn_bx.local_path = "d_min"
+        d_min_spn_bx.setSpecialValueText("Auto")
+        d_min_spn_bx.setValue(0.0)
+        hbox_d_min.addWidget(d_min_spn_bx)
 
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        localLayout.addLayout(hbox_lay_scan_varying)
+
+        d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
+
+
+        localLayout.addLayout(hbox_d_min)
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
-        self.lst_var_widg.append(box_scan_varying)
-        self.lst_var_widg.append(label_scan_varying)
+        self.lst_var_widg.append(d_min_spn_bx)
+        self.lst_var_widg.append(label_d_min)
 
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
-
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-        '''
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
@@ -443,7 +434,6 @@ class SymmetrySimplerParamTab(QWidget):
         str_path = str(sender.local_path)
 
         self.item_changed.emit(str_path, str_value)
-        '''
 
 
 class ScaleSimplerParamTab(QWidget):
