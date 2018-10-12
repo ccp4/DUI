@@ -447,30 +447,52 @@ class ScaleSimplerParamTab(QWidget):
     def __init__(self, parent = None):
         super(ScaleSimplerParamTab, self).__init__()
 
-        hbox_lay_scan_varying =  QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("... scale ...scan_varying")
 
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
+        hbox_lay_mod =  QHBoxLayout()
+        label_mod = QLabel("model")
 
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
+        hbox_lay_mod.addWidget(label_mod)
 
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        localLayout.addLayout(hbox_lay_scan_varying)
+        box_mod = QComboBox()
+        box_mod.local_path = "model"
+        box_mod.tmp_lst=[]
+        box_mod.tmp_lst.append("physical")
+        box_mod.tmp_lst.append("array")
+        box_mod.tmp_lst.append("KB")
+        for lst_itm in box_mod.tmp_lst:
+            box_mod.addItem(lst_itm)
+
+        box_mod.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_mod.addWidget(box_mod)
+
+        hbox_lay_wgh_opt_err =  QHBoxLayout()
+        label_wgh_opt_err = QLabel("weighting.optimise_errors")
+
+        hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
+
+        box_wgh_opt_err = QComboBox()
+        box_wgh_opt_err.local_path = "weighting.optimise_errors"
+        box_wgh_opt_err.tmp_lst=[]
+        box_wgh_opt_err.tmp_lst.append("True")
+        box_wgh_opt_err.tmp_lst.append("False")
+        for lst_itm in box_wgh_opt_err.tmp_lst:
+            box_wgh_opt_err.addItem(lst_itm)
+
+        box_wgh_opt_err.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
+
+        localLayout.addLayout(hbox_lay_mod)
+        localLayout.addLayout(hbox_lay_wgh_opt_err)
         localLayout.addStretch(1)
+
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
-        self.lst_var_widg.append(box_scan_varying)
-        self.lst_var_widg.append(label_scan_varying)
+        self.lst_var_widg.append(box_mod)
+        self.lst_var_widg.append(label_mod)
+        self.lst_var_widg.append(box_wgh_opt_err)
+        self.lst_var_widg.append(label_wgh_opt_err)
 
     def combobox_changed(self, value):
         sender = self.sender()

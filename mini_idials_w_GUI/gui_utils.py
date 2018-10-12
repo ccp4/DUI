@@ -289,8 +289,6 @@ def update_pbar_msg(main_obj):
     tmp_curr = main_obj.idials_runner.current_node
     txt = str(tmp_curr.command_lst[0])
 
-    #TODO try to change the background when giving advice
-
     if(tmp_curr.success == False):
         txt = "click << Retry >> or navigate backwards in the tree"
 
@@ -621,7 +619,6 @@ class OuterCaller(QWidget):
 class CliOutView(QTextEdit):
     def __init__(self, app = None):
         super(CliOutView, self).__init__()
-        #self.setCurrentFont(QFont("Monospace"))
         self.setFont(QFont("Monospace", 10, QFont.Bold))
         self.make_green()
 
