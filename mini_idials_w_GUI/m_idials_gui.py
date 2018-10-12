@@ -510,7 +510,8 @@ class MainWidget(QMainWindow):
 
 
         if(run_me == True):
-
+            self.cli_out.clear()
+            self.cli_out.make_green()
             self.txt_bar.start_motion()
             self.txt_bar.setText("Running")
             self.disconnect_while_running()
