@@ -507,31 +507,7 @@ class MainWidget(QMainWindow):
     def cmd_launch(self, new_cmd):
         #Running WITH theading
         run_me = True
-        to_replase = '''
-        if(new_cmd[0] == "integrate"):
-            print "Time to check if an old \".mtz\" file will be replaced \n"
-            mtz_name = str(self.centre_widget.widg_lst[5].my_widget.
-                           sipler_widget.mtz_name_lin.text())
-            print "mtz_name =", mtz_name
-            if(os.path.isfile(mtz_name)):
-                print "\nthe file IS about to be there \n"
 
-                mesg_text = "\n Overwrite existing file, or change file name below"
-
-                new_text, ok = QInputDialog.getText(self,
-                                                    "Confirm Name of Output MTZ file",
-                                                    mesg_text , text=str(mtz_name))
-
-                if ok:
-                    run_me = True
-                    self.centre_widget.widg_lst[5].my_widget.sipler_widget.mtz_name_lin.setText(new_text)
-
-                else:
-                    run_me = False
-
-            else:
-                print "the \".mtz\" file is NOT going to be replaced "
-        '''
 
         if(run_me == True):
 
@@ -578,25 +554,7 @@ class MainWidget(QMainWindow):
             except:
                 print "no need to close reindex table"
 
-            to_replase = '''
-
-        elif(tmp_curr.command_lst[0] == "integrate" and
-                tmp_curr.success == True):
-
-            if(self.idials_runner.make_next == False):
-                self.idials_runner.run(command = ["mkchi"],
-                                        ref_to_class = None)
-
-            mtz_name = str(self.centre_widget.widg_lst[5].my_widget.
-                           sipler_widget.mtz_name_lin.text())
-
-            print "MTZ name =", mtz_name
-            mtz_export_par = "mtz.hklout=" + mtz_name
-            self.cmd_launch(["export", mtz_export_par])
-            '''
-
         if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
-                tmp_curr.command_lst[0] != "integrate" and
                 self.run_all == True):
 
             self.run_clicked()

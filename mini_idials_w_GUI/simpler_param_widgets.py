@@ -342,12 +342,13 @@ class IntegrateSimplerParamTab( QWidget):
         localLayout.addLayout(hbox_lay_nproc)
 
         localLayout.addStretch(1)
-
+        '''
         self.mtz_name_lin =   QLineEdit(self)
         self.mtz_name_lin.setText("hkl_out.mtz")
         localLayout.addWidget(QLabel("mtz output name:"))
         localLayout.addWidget(self.mtz_name_lin)
         self.mtz_name_lin.textChanged.connect(self.mtz_name_changed)
+        '''
 
         self.setLayout(localLayout)
         self.box_nproc.tmp_lst = None
