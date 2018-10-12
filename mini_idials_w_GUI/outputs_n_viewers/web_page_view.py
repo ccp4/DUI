@@ -40,14 +40,18 @@ class WebTab(QWidget):
             print " >> new_path:", new_path, "\n"
             self.web.load(QUrl(new_path))
 
+            print "\n\n ___________________________________________________________________<<< Loading ", new_path, "\n\n\n"
+
         except:
             print "\n failed to show <<", new_path, ">>  on web view "
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
-        print "self.load_finished(ok) =", ok_bool
+        print "HTML Load(ok) =", ok_bool
         if(ok_bool == False):
             self.web.setHtml(self.dummy_html)
+
+        print "\n\n ___________________________________________________________________<<< finished Loading HTML \n\n\n"
 
 
 class TmpTstWidget( QWidget):
