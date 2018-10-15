@@ -34,8 +34,6 @@ class WebTab(QWidget):
     def update_page(self, new_path = None):
         try:
             print "\n >> update_page(", new_path, ")"
-
-            #TODO test this and re use it with the pickle files
             new_path = os.path.abspath(new_path)
 
             #new_path = "file://" + new_path # unix way
@@ -43,13 +41,11 @@ class WebTab(QWidget):
             print " >> new_path:", new_path, "\n"
             self.web.load(QUrl(new_path))
 
-            print "\n\n ___________________________________________________________________<<< Loading ", new_path, "\n\n\n"
-
+            print " Loading ", new_path
 
             txt_lab = "updating Report view:"
             self.my_bar = ProgBarBox(min_val = 0, max_val = 10, text = txt_lab)
             self.my_bar(5)
-
 
         except:
             print "\n failed to show <<", new_path, ">>  on web view "
@@ -60,7 +56,7 @@ class WebTab(QWidget):
         if(ok_bool == False):
             self.web.setHtml(self.dummy_html)
 
-        print "\n\n ___________________________________________________________________<<< finished Loading HTML \n\n\n"
+        print " finished Loading HTML "
         self.my_bar.ended()
 
 class TmpTstWidget( QWidget):
