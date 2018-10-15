@@ -1,11 +1,11 @@
 from setuptools import setup
-setup(name='dui_test',
+setup(name='DUI',
       version='1.0',
       license="GPL 2.0",
-      description="Dials User Interface, pre - release Test",
+      description="Dials User Interface",
       author='Luis Fuentes-Montero (Luiso)',
       author_email='luis.fuentes-montero@diamond.ac.uk',
-      url='none yet',
+      url='https://github.com/ccp4/DUI',
       platforms='GNU/Linux & Mac OS',
 
       packages=['mini_idials_w_GUI', 'mini_idials_w_GUI.outputs_n_viewers'],
@@ -31,6 +31,9 @@ setup(name='dui_test',
                                                    'mini_idials_w_GUI/resources/zoom_ono_one_ico.png',
                                                    'mini_idials_w_GUI/resources/zoom_minus_ico.png'])],
       entry_points={'console_scripts':['dui=mini_idials_w_GUI.main_dui:main']},
-      install_requires=['PyQt4','psutil'],
      )
+
+tmp_out = '''
+     install_requires=['PyQt4','psutil'],
+'''
 
