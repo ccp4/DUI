@@ -2,6 +2,9 @@ import sys, os
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
+
+from img_view_tools import ProgBarBox
+
 class WebTab(QWidget):
 
     def __init__(self):
@@ -42,6 +45,12 @@ class WebTab(QWidget):
 
             print "\n\n ___________________________________________________________________<<< Loading ", new_path, "\n\n\n"
 
+
+            txt_lab = "updating Report view:"
+            self.my_bar = ProgBarBox(min_val = 0, max_val = 10, text = txt_lab)
+            self.my_bar(5)
+
+
         except:
             print "\n failed to show <<", new_path, ">>  on web view "
             self.web.setHtml(self.dummy_html)
@@ -52,7 +61,7 @@ class WebTab(QWidget):
             self.web.setHtml(self.dummy_html)
 
         print "\n\n ___________________________________________________________________<<< finished Loading HTML \n\n\n"
-
+        self.my_bar.ended()
 
 class TmpTstWidget( QWidget):
 
