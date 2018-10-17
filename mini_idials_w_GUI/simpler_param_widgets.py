@@ -241,9 +241,10 @@ class RefineSimplerParamTab( QWidget):
     def __init__(self, parent = None):
         super(RefineSimplerParamTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
+        localLayout = QVBoxLayout()
 
         hbox_lay_scan_varying =  QHBoxLayout()
-        localLayout = QVBoxLayout()
+
         label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
@@ -256,11 +257,63 @@ class RefineSimplerParamTab( QWidget):
 
         for lst_itm in box_scan_varying.tmp_lst:
             box_scan_varying.addItem(lst_itm)
+
         box_scan_varying.setCurrentIndex(1)
 
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
+
+
+
+        hbox_lay_beam_fix =  QHBoxLayout()
+        label_beam_fix = QLabel("refinement.parameterisation.beam_fix")
+
+        hbox_lay_beam_fix.addWidget(label_beam_fix)
+        box_beam_fix = QComboBox()
+        box_beam_fix.local_path = "refinement.parameterisation.beam.fix"
+        box_beam_fix.tmp_lst=[]
+        box_beam_fix.tmp_lst.append("all")
+        box_beam_fix.tmp_lst.append("in_spindle_plane")
+        box_beam_fix.tmp_lst.append("out_spindle_plane")
+        box_beam_fix.tmp_lst.append("wavelength")
+
+        for lst_itm in box_beam_fix.tmp_lst:
+            box_beam_fix.addItem(lst_itm)
+
+        box_beam_fix.setCurrentIndex(1)
+
+        box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_beam_fix.addWidget(box_beam_fix)
+        localLayout.addLayout(hbox_lay_beam_fix)
+
+        the_path_here_is_broken = '''
+
+        #####################################################################################
+
+        hbox_lay_crystal_fix =  QHBoxLayout()
+        label_crystal_fix = QLabel("refinement.parameterisation.crystal_fix")
+
+        hbox_lay_crystal_fix.addWidget(label_crystal_fix)
+        box_crystal_fix = QComboBox()
+        box_crystal_fix.local_path = "refinement.parameterisation.crystal.fix"
+        box_crystal_fix.tmp_lst=[]
+        box_crystal_fix.tmp_lst.append("all")
+        box_crystal_fix.tmp_lst.append("cell")
+        box_crystal_fix.tmp_lst.append("orientation")
+
+        for lst_itm in box_crystal_fix.tmp_lst:
+            box_crystal_fix.addItem(lst_itm)
+
+        box_crystal_fix.setCurrentIndex(1)
+
+        box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_crystal_fix.addWidget(box_crystal_fix)
+        localLayout.addLayout(hbox_lay_crystal_fix)
+
+        ###############################################################################
+        '''
+
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
@@ -272,6 +325,8 @@ class RefineSimplerParamTab( QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
+
+        print "str(sender.local_path) =", str(sender.local_path)
 
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
