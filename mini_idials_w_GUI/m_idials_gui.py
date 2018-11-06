@@ -170,7 +170,6 @@ class CentreWidget(QWidget):
         self.stop_btn.setIcon(tmp_ico)
         self.stop_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.stop_btn)
-        #ctrl_box.addStretch()
 
 
         big_h_box = QHBoxLayout()
