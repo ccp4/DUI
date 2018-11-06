@@ -27,6 +27,7 @@ from PyQt4.QtCore import *
 import numpy as np
 
 from dials_viewer_ext import rgb_img
+
 from dials.array_family import flex
 import sys
 

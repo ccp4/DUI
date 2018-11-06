@@ -100,7 +100,9 @@ class CentreWidget(QWidget):
         lst_grayed_icons_path.append(main_path + "/resources/export_grayed.png")
 
 
-        top_box =  QHBoxLayout()
+        #top_box =  QHBoxLayout()
+        top_box =  QVBoxLayout()
+
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []
         self.btn_lst = []
@@ -169,13 +171,20 @@ class CentreWidget(QWidget):
         self.stop_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.stop_btn)
         #ctrl_box.addStretch()
+
+
+        big_h_box = QHBoxLayout()
+        big_h_box.addLayout(top_box)
+
         big_v_box = QVBoxLayout()
 
-        big_v_box.addLayout(top_box)
+
         big_v_box.addWidget(self.step_param_widg)
         big_v_box.addLayout(ctrl_box)
 
-        self.setLayout(big_v_box)
+        big_h_box.addLayout(big_v_box)
+
+        self.setLayout(big_h_box)
         self.show()
 
     def update_parent_lst(self, command_lst):
