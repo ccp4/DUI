@@ -41,25 +41,25 @@ class FindspotsSimplerParameterTab( QWidget):
         super(FindspotsSimplerParameterTab, self).__init__()
         #self.param_widget_parent = parent.param_widget_parent
 
-        xds_gain_label = QLabel("spotfinder.threshold.dispersion.gain")
+        xds_gain_label = QLabel("   gain")
         xds_gain_spn_bx = QDoubleSpinBox()
         xds_gain_spn_bx.local_path = "spotfinder.threshold.dispersion.gain"
         xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
 
 
-        xds_sigma_background_label = QLabel("spotfinder.threshold.dispersion.sigma_background")
+        xds_sigma_background_label = QLabel(" sigma_background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
         xds_sigma_background_spn_bx.setValue(6.0)
         xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.dispersion.sigma_background"
         xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
 
-        xds_sigma_strong_label = QLabel("spotfinder.threshold.dispersion.sigma_strong")
+        xds_sigma_strong_label = QLabel(" sigma_strong")
         xds_sigma_strong_spn_bx = QDoubleSpinBox()
         xds_sigma_strong_spn_bx.setValue(3.0)
         xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.dispersion.sigma_strong"
         xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
 
-        xds_global_threshold_label = QLabel("spotfinder.threshold.dispersion.global_threshold")
+        xds_global_threshold_label = QLabel(" global_threshold")
         xds_global_threshold_spn_bx = QDoubleSpinBox()
         xds_global_threshold_spn_bx.local_path = "spotfinder.threshold.dispersion.global_threshold"
         xds_global_threshold_spn_bx.valueChanged.connect(self.spnbox_changed)
@@ -88,7 +88,7 @@ class FindspotsSimplerParameterTab( QWidget):
 
 
         hbox_lay_nproc =  QHBoxLayout()
-        label_nproc = QLabel("spotfinder.mp.nproc")
+        label_nproc = QLabel(" nproc")
         #label_nproc.setPalette(palette_object)
         #label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
@@ -147,7 +147,7 @@ class IndexSimplerParamTab( QWidget):
         #indexing_method_check = QCheckBox("indexing.method")
 
         hbox_method =  QHBoxLayout()
-        label_method_62 = QLabel("indexing.method")
+        label_method_62 = QLabel("indexing \n method")
         hbox_method.addWidget(label_method_62)
         box_method_62 = QComboBox()
         box_method_62.tmp_lst=[]
@@ -197,7 +197,7 @@ class RefineBravaiSimplerParamTab(QWidget):
 
         hbox_lay_scan_varying =  QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
+        label_scan_varying = QLabel("refinement \n parameterisation \n scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
@@ -245,7 +245,7 @@ class RefineSimplerParamTab( QWidget):
 
         hbox_lay_scan_varying =  QHBoxLayout()
 
-        label_scan_varying = QLabel("refinement.parameterisation.scan_varying")
+        label_scan_varying = QLabel("refinement \n parameterisation \n scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
@@ -267,7 +267,7 @@ class RefineSimplerParamTab( QWidget):
 
 
         hbox_lay_beam_fix =  QHBoxLayout()
-        label_beam_fix = QLabel("refinement.parameterisation.beam_fix")
+        label_beam_fix = QLabel("refinement \n parameterisation \n beam_fix")
 
         hbox_lay_beam_fix.addWidget(label_beam_fix)
         box_beam_fix = QComboBox()
@@ -348,7 +348,7 @@ class IntegrateSimplerParamTab( QWidget):
 
         localLayout = QVBoxLayout()
         PrFit_lay_out =  QHBoxLayout()
-        label_PrFit = QLabel("integration.profile.fitting")
+        label_PrFit = QLabel("integration \n profile \n fitting")
         PrFit_lay_out.addWidget(label_PrFit)
 
         PrFit_comb_bx = QComboBox()
@@ -364,7 +364,7 @@ class IntegrateSimplerParamTab( QWidget):
         localLayout.addLayout(PrFit_lay_out)
 
         hbox_lay_algorithm_53 =  QHBoxLayout()
-        label_algorithm_53 = QLabel("integration.background.algorithm")
+        label_algorithm_53 = QLabel("integration \n background \n algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
         box_algorithm_53 = QComboBox()
@@ -384,7 +384,7 @@ class IntegrateSimplerParamTab( QWidget):
         localLayout.addLayout(hbox_lay_algorithm_53)
 
         hbox_lay_nproc =  QHBoxLayout()
-        label_nproc = QLabel("integration.mp.nproc")
+        label_nproc = QLabel("integration \n mp \n nproc")
         #label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
 
@@ -522,7 +522,7 @@ class ScaleSimplerParamTab(QWidget):
         hbox_lay_mod.addWidget(box_mod)
 
         hbox_lay_wgh_opt_err =  QHBoxLayout()
-        label_wgh_opt_err = QLabel("weighting.optimise_errors")
+        label_wgh_opt_err = QLabel("weighting \n optimise_errors")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
 
@@ -582,7 +582,7 @@ class ExportSimplerParamTab(QWidget):
 
         hbox_lay_scan_varying =  QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("... export ...scan_varying")
+        label_scan_varying = QLabel("... export \n ...scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
