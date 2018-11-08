@@ -266,8 +266,6 @@ class MainWidget(QMainWindow):
             os.mkdir(self.storage_path + "/dui_files")
             refresh_gui = False
 
-
-        #This flag makes the behaviour switch (automatic / explicit)
         self.idials_runner.make_next = sys_arg.make_next
 
         self.cli_tree_output = TreeShow()
@@ -285,11 +283,7 @@ class MainWidget(QMainWindow):
         h_left_splitter.setOrientation(Qt.Horizontal)
 
         self.tree_out = TreeNavWidget()
-        '''
-        scroll_area_left = QScrollArea()
-        scroll_area_left.setWidget(self.tree_out)
-        h_left_splitter.addWidget(scroll_area_left)
-        '''
+
         h_left_splitter.addWidget(self.tree_out)
 
         self.centre_widget = CentreWidget()
@@ -396,7 +390,6 @@ class MainWidget(QMainWindow):
         self.centre_widget.repeat_btn.setEnabled(False)
         self.centre_widget.stop_btn.setEnabled(False)
         self.centre_widget.run_btn.setEnabled(False)
-        #self.centre_widget.run_btn.setText(" . ")
 
         if(self.user_stoped == True):
             self.idials_runner.current_node.success = None
@@ -404,14 +397,6 @@ class MainWidget(QMainWindow):
         if(self.idials_runner.current_node.success == None):
             self.centre_widget.run_btn.setEnabled(True)
             self.centre_widget.step_param_widg.currentWidget().my_widget.activate_me()
-
-            tmp_off = '''
-            txt_cap = self.idials_runner.current_node.command_lst[0]
-            if(txt_cap == None):
-                txt_cap = " ? "
-
-            self.centre_widget.run_btn.setText(txt_cap)
-            '''
 
         else:
             if(self.idials_runner.current_node.command_lst[0] != "export"):
