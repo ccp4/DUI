@@ -298,10 +298,10 @@ class MainWidget(QMainWindow):
 
         self.info_widget = InfoWidget()
 
-        scrollArea = QScrollArea()
-        scrollArea.setWidget(self.info_widget)
+        InfoScrollArea = QScrollArea()
+        InfoScrollArea.setWidget(self.info_widget)
 
-        v_left_splitter.addWidget(scrollArea)
+        v_left_splitter.addWidget(InfoScrollArea)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
@@ -577,8 +577,6 @@ class MainWidget(QMainWindow):
                         "scale"                   : ["symmetry", "export"] ,
                         "export"                  : [None] ,
                         "None"                    : [None] }
-
-        #TODO Consider if it worth using this dictionary instead of the function get_next_item()
 
         lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
         self.centre_widget.gray_outs_from_lst(lst_nxt)
