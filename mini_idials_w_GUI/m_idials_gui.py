@@ -296,12 +296,6 @@ class MainWidget(QMainWindow):
         v_left_splitter.setOrientation(Qt.Vertical)
         v_left_splitter.addWidget(h_left_splitter)
 
-        self.info_widget = InfoWidget()
-
-        InfoScrollArea = QScrollArea()
-        InfoScrollArea.setWidget(self.info_widget)
-
-        v_left_splitter.addWidget(InfoScrollArea)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
@@ -319,8 +313,20 @@ class MainWidget(QMainWindow):
         self.output_info_tabs.addTab(self.ext_view, "External Tools")
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
+        #############################
 
-        h_main_splitter.addWidget(self.output_info_tabs)
+        self.info_widget = InfoWidget()
+
+        InfoScrollArea = QScrollArea()
+        InfoScrollArea.setWidget(self.info_widget)
+
+        v_info_splitter = QSplitter()
+        v_info_splitter.setOrientation(Qt.Vertical)
+        v_info_splitter.addWidget(self.output_info_tabs)
+        v_info_splitter.addWidget(InfoScrollArea)
+
+        h_main_splitter.addWidget(v_info_splitter)
+        #############################
 
         main_box.addWidget(h_main_splitter)
 
