@@ -187,18 +187,18 @@ def get_import_run_string(in_str_lst):
 
 def build_label(com_nam):
 
-    label_connects = {"import"                  :"\nimport",
-                      "find_spots"              :"\nfind  ",
-                      "index"                   :"\nindex",
-                      "refine_bravais_settings" :"\nlattice",
-                      "refine"                  :"\nrefine",
-                      "integrate"               :"\nintegrate",
-                      "symmetry"                :"\nsymmetry",
-                      "scale"                   :"\nscale",
-                      "export"                  :"\nexport"
+    label_connects = {"import"                  :"import",
+                      "find_spots"              :"find  ",
+                      "index"                   :"index",
+                      "refine_bravais_settings" :"lattice",
+                      "refine"                  :"refine",
+                      "integrate"               :"integrate",
+                      "symmetry"                :"symmetry",
+                      "scale"                   :"scale",
+                      "export"                  :"export"
                       }
 
-    return label_connects[com_nam]
+    return "\n" * 2 + label_connects[com_nam]
 
 
 def build_ttip(com_nam):
