@@ -302,7 +302,7 @@ def update_pbar_msg(main_obj):
     elif(tmp_curr.success == None):
         if(tmp_curr.lin_num == 1):
             print "tmp_curr.lin_num == 1"
-            templ_text = main_obj.centre_widget.step_param_widg.currentWidget().my_widget.simple_lin.text()
+            templ_text = main_obj.centre_par_widget.step_param_widg.currentWidget().my_widget.simple_lin.text()
             print "templ_text =", templ_text
             if(templ_text == " ? "):
                 txt = "click << Select File(s) >> or edit input line "
