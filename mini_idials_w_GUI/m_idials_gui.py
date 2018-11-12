@@ -131,6 +131,9 @@ class CentreWidget(QWidget):
             param_widg.update_command_lst_medium_level.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
+
+        top_box.addStretch()
+
         ctrl_box = QHBoxLayout()
         ctrl_box.addStretch()
 
