@@ -66,13 +66,13 @@ class CommandThread(QThread):
     def emit_fail_signal(self):
         self.str_fail_signal.emit()
 
-class CentreWidget(QWidget):
+class ControlWidget(QWidget):
 
     user_changed = pyqtSignal(str)
     update_command_lst_high_level = pyqtSignal(list)
 
     def __init__(self, parent = None):
-        super(CentreWidget, self).__init__()
+        super(ControlWidget, self).__init__()
 
         main_path = get_main_path()
         print "main_path =", main_path
@@ -134,45 +134,6 @@ class CentreWidget(QWidget):
 
         top_box.addStretch()
 
-        ctrl_box = QHBoxLayout()
-        ctrl_box.addStretch()
-
-        self.repeat_btn = QPushButton("\n Retry \n", self)
-
-        re_try_icon_path = str(main_path +
-                              "/resources/re_try.png")
-        re_try_grayed_path = str(main_path +
-                              "/resources/re_try_grayed.png")
-        tmp_ico = QIcon()
-        tmp_ico.addFile(re_try_icon_path, mode = QIcon.Normal)
-        tmp_ico.addFile(re_try_grayed_path, mode = QIcon.Disabled)
-
-        self.repeat_btn.setIcon(tmp_ico)
-        self.repeat_btn.setIconSize(QSize(50, 38))
-        ctrl_box.addWidget(self.repeat_btn)
-
-        self.run_btn = QPushButton("\n  Run  \n", self)
-        self.dials_logo_path = str(main_path +
-                              "/resources/DIALS_Logo_smaller_centred.png")
-        dials_grayed_path = str(main_path +
-                                "/resources/DIALS_Logo_smaller_centred_grayed.png")
-        tmp_ico = QIcon()
-        tmp_ico.addFile(self.dials_logo_path, mode = QIcon.Normal)
-        tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
-
-        self.run_btn.setIcon(tmp_ico)
-        self.run_btn.setIconSize(QSize(50, 38))
-        ctrl_box.addWidget(self.run_btn)
-
-        self.stop_btn = QPushButton("\n  Stop  \n", self)
-        stop_logo_path = str(main_path + "/resources/stop.png")
-        stop_grayed_path = str(main_path + "/resources/stop_grayed.png")
-        tmp_ico = QIcon()
-        tmp_ico.addFile(stop_logo_path, mode = QIcon.Normal)
-        tmp_ico.addFile(stop_grayed_path, mode = QIcon.Disabled)
-        self.stop_btn.setIcon(tmp_ico)
-        self.stop_btn.setIconSize(QSize(50, 38))
-        ctrl_box.addWidget(self.stop_btn)
 
 
         big_h_box = QHBoxLayout()
@@ -182,7 +143,6 @@ class CentreWidget(QWidget):
 
 
         big_v_box.addWidget(self.step_param_widg)
-        big_v_box.addLayout(ctrl_box)
 
         big_h_box.addLayout(big_v_box)
 
@@ -238,6 +198,57 @@ class CentreWidget(QWidget):
                 if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
+class StopRunRety(QWidget):
+
+    def __init__(self, parent = None):
+        super(StopRunRety, self).__init__()
+
+        main_path = get_main_path()
+
+        ctrl_box = QHBoxLayout()
+        ctrl_box.addStretch()
+
+        self.repeat_btn = QPushButton("\n Retry \n", self)
+
+        re_try_icon_path = str(main_path +
+                              "/resources/re_try.png")
+        re_try_grayed_path = str(main_path +
+                              "/resources/re_try_grayed.png")
+        tmp_ico = QIcon()
+        tmp_ico.addFile(re_try_icon_path, mode = QIcon.Normal)
+        tmp_ico.addFile(re_try_grayed_path, mode = QIcon.Disabled)
+
+        self.repeat_btn.setIcon(tmp_ico)
+        self.repeat_btn.setIconSize(QSize(50, 38))
+        ctrl_box.addWidget(self.repeat_btn)
+
+        self.run_btn = QPushButton("\n  Run  \n", self)
+        self.dials_logo_path = str(main_path +
+                              "/resources/DIALS_Logo_smaller_centred.png")
+        dials_grayed_path = str(main_path +
+                                "/resources/DIALS_Logo_smaller_centred_grayed.png")
+        tmp_ico = QIcon()
+        tmp_ico.addFile(self.dials_logo_path, mode = QIcon.Normal)
+        tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
+
+        self.run_btn.setIcon(tmp_ico)
+        self.run_btn.setIconSize(QSize(50, 38))
+        ctrl_box.addWidget(self.run_btn)
+
+        self.stop_btn = QPushButton("\n  Stop  \n", self)
+        stop_logo_path = str(main_path + "/resources/stop.png")
+        stop_grayed_path = str(main_path + "/resources/stop_grayed.png")
+        tmp_ico = QIcon()
+        tmp_ico.addFile(stop_logo_path, mode = QIcon.Normal)
+        tmp_ico.addFile(stop_grayed_path, mode = QIcon.Disabled)
+        self.stop_btn.setIcon(tmp_ico)
+        self.stop_btn.setIconSize(QSize(50, 38))
+        ctrl_box.addWidget(self.stop_btn)
+
+        self.setLayout(ctrl_box)
+        self.show()
+
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
@@ -282,22 +293,25 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        h_left_splitter = QSplitter()
-        h_left_splitter.setOrientation(Qt.Horizontal)
+        h_left_tab = QTabWidget()
 
-        self.tree_out = TreeNavWidget()
-
-        h_left_splitter.addWidget(self.tree_out)
-
-        self.centre_widget = CentreWidget()
-        self.centre_widget.get_arg_obj(sys_arg)
+        self.centre_par_widget = ControlWidget()
+        self.centre_par_widget.get_arg_obj(sys_arg)
         self.run_all = sys_arg.run_all
 
-        h_left_splitter.addWidget(self.centre_widget)
+        h_left_tab.addTab(self.centre_par_widget, "Control")
+
+        self.stop_run_retry = StopRunRety()
+        #h_left_tab.addTab(self.stop_run_retry, "tmp")
+
+        self.tree_out = TreeNavWidget()
+        h_left_tab.addTab(self.tree_out, "Navigation")
+
 
         v_left_splitter = QSplitter()
         v_left_splitter.setOrientation(Qt.Vertical)
-        v_left_splitter.addWidget(h_left_splitter)
+        v_left_splitter.addWidget(h_left_tab)
+        v_left_splitter.addWidget(self.stop_run_retry)
 
 
         h_main_splitter = QSplitter()
@@ -352,7 +366,7 @@ class MainWidget(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.setWindowTitle('CCP4 DUI')
-        self.setWindowIcon(QIcon(self.centre_widget.dials_logo_path))
+        self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
 
         self.just_reindexed = False
@@ -368,13 +382,14 @@ class MainWidget(QMainWindow):
         self.tree_clickable = True
         self.tree_out.clicked[QModelIndex].connect(self.node_clicked)
 
-        self.centre_widget.repeat_btn.clicked.connect(self.rep_clicked)
-        self.centre_widget.run_btn.clicked.connect(self.run_clicked)
-        self.centre_widget.stop_btn.clicked.connect(self.stop_clicked)
-        self.centre_widget.user_changed.connect(self.cmd_changed_by_user)
-        self.centre_widget.update_command_lst_high_level.connect(
+        self.stop_run_retry.repeat_btn.clicked.connect(self.rep_clicked)
+        self.stop_run_retry.run_btn.clicked.connect(self.run_clicked)
+        self.stop_run_retry.stop_btn.clicked.connect(self.stop_clicked)
+
+        self.centre_par_widget.user_changed.connect(self.cmd_changed_by_user)
+        self.centre_par_widget.update_command_lst_high_level.connect(
                           self.update_low_level_command_lst)
-        self.centre_widget.step_param_widg.currentChanged.connect(
+        self.centre_par_widget.step_param_widg.currentChanged.connect(
                                           self.cmd_changed_by_any)
         self.check_gray_outs()
 
@@ -383,11 +398,11 @@ class MainWidget(QMainWindow):
         self.setCursor(Qt.BusyCursor)
         self.tree_clickable = False
 
-        self.centre_widget.repeat_btn.setEnabled(False)
-        self.centre_widget.run_btn.setEnabled(False)
-        self.centre_widget.stop_btn.setEnabled(True)
-        self.centre_widget.gray_outs_all()
-        self.centre_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
+        self.stop_run_retry.repeat_btn.setEnabled(False)
+        self.stop_run_retry.run_btn.setEnabled(False)
+        self.stop_run_retry.stop_btn.setEnabled(True)
+        self.centre_par_widget.gray_outs_all()
+        self.centre_par_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
 
         self.user_stoped = False
 
@@ -396,26 +411,26 @@ class MainWidget(QMainWindow):
         self.setCursor(Qt.ArrowCursor)
         self.tree_clickable = True
 
-        self.centre_widget.repeat_btn.setEnabled(False)
-        self.centre_widget.stop_btn.setEnabled(False)
-        self.centre_widget.run_btn.setEnabled(False)
+        self.stop_run_retry.repeat_btn.setEnabled(False)
+        self.stop_run_retry.stop_btn.setEnabled(False)
+        self.stop_run_retry.run_btn.setEnabled(False)
 
         if(self.user_stoped == True):
             self.idials_runner.current_node.success = None
 
         if(self.idials_runner.current_node.success == None):
-            self.centre_widget.run_btn.setEnabled(True)
-            self.centre_widget.step_param_widg.currentWidget().my_widget.activate_me()
+            self.stop_run_retry.run_btn.setEnabled(True)
+            self.centre_par_widget.step_param_widg.currentWidget().my_widget.activate_me()
 
         else:
             if(self.idials_runner.current_node.command_lst[0] != "export"):
-                self.centre_widget.repeat_btn.setEnabled(True)
+                self.stop_run_retry.repeat_btn.setEnabled(True)
 
-            self.centre_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
+            self.centre_par_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
 
         if(self.idials_runner.current_node.command_lst[0] == "reindex"):
-            self.centre_widget.run_btn.setEnabled(False)
-            self.centre_widget.repeat_btn.setEnabled(False)
+            self.stop_run_retry.run_btn.setEnabled(False)
+            self.stop_run_retry.repeat_btn.setEnabled(False)
 
         self.check_gray_outs()
         self.user_stoped = False
@@ -434,11 +449,11 @@ class MainWidget(QMainWindow):
 
         print "\n full_cmd_lst =", full_cmd_lst
 
-        my_widget_now = self.centre_widget.step_param_widg.currentWidget()
+        my_widget_now = self.centre_par_widget.step_param_widg.currentWidget()
         if(my_widget_now.my_widget.command_lst[0] == 'find_spots' and
                 self.idials_runner.current_node.success == None):
 
-            self.centre_widget.widg_lst[1].my_widget.update_param_w_lst(full_cmd_lst)
+            self.centre_par_widget.widg_lst[1].my_widget.update_param_w_lst(full_cmd_lst)
 
         else:
             print "No need to feed back params"
@@ -466,7 +481,7 @@ class MainWidget(QMainWindow):
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
-            self.centre_widget.step_param_widg.currentWidget().my_widget.reset_par()
+            self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
             self.cmd_exe(["clean"])
 
         elif(tmp_curr.success == None):
@@ -474,7 +489,7 @@ class MainWidget(QMainWindow):
             self.reconnect_when_ready()
 
     def cmd_changed_by_any(self):
-        tmp_curr_widg = self.centre_widget.step_param_widg.currentWidget()
+        tmp_curr_widg = self.centre_par_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
         self.reconnect_when_ready()
 
@@ -494,8 +509,8 @@ class MainWidget(QMainWindow):
 
     def run_clicked(self):
         print "run_clicked"
-        print "...currentWidget(ref) =", self.centre_widget.step_param_widg.currentWidget()
-        cmd_tmp = self.centre_widget.step_param_widg.currentWidget().my_widget.command_lst
+        print "...currentWidget(ref) =", self.centre_par_widget.step_param_widg.currentWidget()
+        cmd_tmp = self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
         print "cmd_tmp =", cmd_tmp
         self.cmd_launch(cmd_tmp)
 
@@ -531,7 +546,7 @@ class MainWidget(QMainWindow):
             nxt_cmd = get_next_step(tmp_curr)
             print "get_next_step(tmp_curr) =", nxt_cmd
             if(nxt_cmd != "reindex" and tmp_curr.success == True):
-                self.centre_widget.set_widget(nxt_cmd = nxt_cmd)
+                self.centre_par_widget.set_widget(nxt_cmd = nxt_cmd)
 
             self.idials_runner.current_node.command_lst[0] = nxt_cmd
 
@@ -588,7 +603,7 @@ class MainWidget(QMainWindow):
                         "None"                    : [None] }
 
         lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
-        self.centre_widget.gray_outs_from_lst(lst_nxt)
+        self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
@@ -677,7 +692,7 @@ class MainWidget(QMainWindow):
         if(self.tree_clickable == True):
             #TODO Think of a more robust way to "disconnect" ... next line
             try:
-                self.centre_widget.update_command_lst_high_level.disconnect(
+                self.centre_par_widget.update_command_lst_high_level.disconnect(
                                 self.update_low_level_command_lst)
             except:
                 print "<< update_low_level_command_lst >> already disconnected"
@@ -689,7 +704,7 @@ class MainWidget(QMainWindow):
             print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
             cmd_ovr = "goto " + str(lin_num)
             self.cmd_exe(cmd_ovr)
-            self.centre_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
+            self.centre_par_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
                                         curr_step = self.idials_runner.current_node)
 
             self.check_reindex_pop()
@@ -697,7 +712,7 @@ class MainWidget(QMainWindow):
             self.check_gray_outs()
             self.reconnect_when_ready()
 
-            self.centre_widget.update_command_lst_high_level.connect(
+            self.centre_par_widget.update_command_lst_high_level.connect(
                             self.update_low_level_command_lst)
 
     def refresh_my_gui(self):
@@ -707,7 +722,7 @@ class MainWidget(QMainWindow):
         print "doing goto: ", lin_num
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
-        self.centre_widget.set_widget(nxt_cmd = self.idials_runner.current_node.command_lst[0],
+        self.centre_par_widget.set_widget(nxt_cmd = self.idials_runner.current_node.command_lst[0],
                                     curr_step = self.idials_runner.current_node)
 
         self.check_reindex_pop()
