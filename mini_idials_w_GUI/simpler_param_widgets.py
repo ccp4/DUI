@@ -287,8 +287,7 @@ class RefineSimplerParamTab( QWidget):
         hbox_lay_beam_fix.addWidget(box_beam_fix)
         localLayout.addLayout(hbox_lay_beam_fix)
 
-        the_path_here_is_broken = '''
-
+        #the_path_here_is_broken = '''
         #####################################################################################
 
         hbox_lay_crystal_fix =  QHBoxLayout()
@@ -312,7 +311,7 @@ class RefineSimplerParamTab( QWidget):
         localLayout.addLayout(hbox_lay_crystal_fix)
 
         ###############################################################################
-        '''
+        #'''
 
         localLayout.addStretch(1)
         self.setLayout(localLayout)
@@ -321,6 +320,31 @@ class RefineSimplerParamTab( QWidget):
         self.lst_var_widg.append(box_scan_varying)
         self.lst_var_widg.append(label_scan_varying)
 
+        '''
+refinement {
+  parameterisation {
+    scan_varying = False
+    beam {
+      fix = all *in_spindle_plane out_spindle_plane *wavelength
+    }
+    crystal {
+      fix = all cell orientation
+    }
+    detector {
+      fix = all position orientation
+    }
+    goniometer {
+      fix = *all in_beam_plane out_beam_plane
+    }
+  }
+  reflections {
+    outlier {
+      algorithm = null *auto mcd tukey sauter_poon
+    }
+  }
+}
+
+        '''
     def combobox_changed(self, value):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
@@ -629,10 +653,13 @@ class TmpTstWidget( QWidget):
     def __init__(self, parent = None):
         super(TmpTstWidget, self).__init__()
         #self.param_widget_parent = self
+
+        my_widget = RefineSimplerParamTab(self)
+
         #my_widget = FindspotsSimplerParameterTab(self)
         #my_widget = SymmetrySimplerParamTab(self)
         #my_widget = ScaleSimplerParamTab(self)
-        my_widget = ExportSimplerParamTab(self)
+        #my_widget = ExportSimplerParamTab(self)
 
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)

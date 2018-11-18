@@ -273,7 +273,8 @@ class PhilWidget( QWidget):
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
                     elif(obj.type.phil_type == 'choice'):
-
+                        #remember to ask david about the issue here
+                        before_patch = '''
                         tmp_widg = QComboBox()
 
                         tmp_widg.tmp_lst=[]
@@ -298,6 +299,33 @@ class PhilWidget( QWidget):
                         if(found_choise == False):
                             tmp_str = None
                             non_added_lst.append(str(obj.full_path()))
+                        '''
+                        # begins pathed version
+                        tmp_widg = QComboBox()
+
+                        tmp_widg.tmp_lst=[]
+                        pos = 0
+                        found_choise = False
+                        for num, opt in enumerate(obj.words):
+                            opt = str(opt)
+                            if(opt[0] == "*"):
+                                found_choise = True
+                                opt = opt[1:]
+                                pos = num
+                                tmp_str += "                          " + opt
+
+                            tmp_widg.tmp_lst.append(opt)
+
+                        if(found_choise == False):
+                            tmp_str += "                          " + str(obj.extract())
+
+                        for lst_itm in tmp_widg.tmp_lst:
+                            tmp_widg.addItem(lst_itm)
+
+                        tmp_widg.setCurrentIndex(pos)
+                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+
+                        # ends pathed version
 
                 else:
                     tmp_widg = QLineEdit()

@@ -490,10 +490,10 @@ if __name__ == '__main__':
     #ex = ParamWidget("integrate")
     #ex = ParamWidget("import")
     #ex = ParamWidget("index")
-    #ex = ParamWidget("refine")
+    ex = ParamWidget("refine")
     #ex = ParamWidget("integrate")
     #ex = ParamWidget("symmetry")
     #ex = ParamWidget("scale")
-    ex = ParamWidget("export")
+    #ex = ParamWidget("export")
     sys.exit(app.exec_())
 
