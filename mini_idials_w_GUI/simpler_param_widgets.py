@@ -263,9 +263,9 @@ class RefineSimplerParamTab( QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-
-
-
+        '''beam {
+          fix = all *in_spindle_plane out_spindle_plane *wavelength
+        }'''
         hbox_lay_beam_fix =  QHBoxLayout()
         label_beam_fix = QLabel("refinement \n parameterisation \n beam_fix")
 
@@ -281,12 +281,14 @@ class RefineSimplerParamTab( QWidget):
         for lst_itm in box_beam_fix.tmp_lst:
             box_beam_fix.addItem(lst_itm)
 
-        box_beam_fix.setCurrentIndex(0)
+        box_beam_fix.setCurrentIndex(3)
 
         box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_beam_fix.addWidget(box_beam_fix)
         localLayout.addLayout(hbox_lay_beam_fix)
-
+        '''crystal {
+        fix = all cell orientation
+        }'''
         hbox_lay_crystal_fix =  QHBoxLayout()
         label_crystal_fix = QLabel("refinement \n parameterisation \n crystal_fix")
 
@@ -306,7 +308,9 @@ class RefineSimplerParamTab( QWidget):
         box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_crystal_fix.addWidget(box_crystal_fix)
         localLayout.addLayout(hbox_lay_crystal_fix)
-
+        '''detector {
+        fix = all position orientation
+        }'''
         hbox_lay_detector_fix =  QHBoxLayout()
         label_detector_fix = QLabel("refinement \n parameterisation \n detector_fix")
 
@@ -326,8 +330,9 @@ class RefineSimplerParamTab( QWidget):
         box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_detector_fix.addWidget(box_detector_fix)
         localLayout.addLayout(hbox_lay_detector_fix)
-
-        ##############################################################################
+        '''goniometer {
+        fix = *all in_beam_plane out_beam_plane
+        }'''
         hbox_lay_goniometer_fix =  QHBoxLayout()
         label_goniometer_fix = QLabel("refinement \n parameterisation \n goniometer_fix")
 
@@ -347,7 +352,33 @@ class RefineSimplerParamTab( QWidget):
         box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
         localLayout.addLayout(hbox_lay_goniometer_fix)
-        ##############################################################################
+        '''reflections {
+            outlier {
+              algorithm = null *auto mcd tukey sauter_poon
+            }
+          }'''
+        hbox_lay_outlier_algorithm =  QHBoxLayout()
+        label_outlier_algorithm = QLabel("refinement \n reflections \n outlier \n algorithm")
+
+        hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
+        box_outlier_algorithm = QComboBox()
+        box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
+        box_outlier_algorithm.tmp_lst=[]
+        box_outlier_algorithm.tmp_lst.append("null")
+        box_outlier_algorithm.tmp_lst.append("auto")
+        box_outlier_algorithm.tmp_lst.append("mcd")
+        box_outlier_algorithm.tmp_lst.append("tukey")
+        box_outlier_algorithm.tmp_lst.append("sauter_poon")
+
+        for lst_itm in box_outlier_algorithm.tmp_lst:
+            box_outlier_algorithm.addItem(lst_itm)
+
+        box_outlier_algorithm.setCurrentIndex(1)
+
+        box_outlier_algorithm.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
+        localLayout.addLayout(hbox_lay_outlier_algorithm)
+
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
