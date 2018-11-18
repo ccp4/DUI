@@ -401,31 +401,6 @@ class RefineSimplerParamTab( QWidget):
         self.lst_var_widg.append(box_outlier_algorithm)
         self.lst_var_widg.append(label_outlier_algorithm)
 
-        '''
-refinement {
-  parameterisation {
-    scan_varying = False
-    beam {
-      fix = all *in_spindle_plane out_spindle_plane *wavelength
-    }
-    crystal {
-      fix = all cell orientation
-    }
-    detector {
-      fix = all position orientation
-    }
-    goniometer {
-      fix = *all in_beam_plane out_beam_plane
-    }
-  }
-  reflections {
-    outlier {
-      algorithm = null *auto mcd tukey sauter_poon
-    }
-  }
-}
-
-        '''
     def combobox_changed(self, value):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
