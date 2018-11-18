@@ -281,17 +281,14 @@ class RefineSimplerParamTab( QWidget):
         for lst_itm in box_beam_fix.tmp_lst:
             box_beam_fix.addItem(lst_itm)
 
-        box_beam_fix.setCurrentIndex(1)
+        box_beam_fix.setCurrentIndex(0)
 
         box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_beam_fix.addWidget(box_beam_fix)
         localLayout.addLayout(hbox_lay_beam_fix)
 
-        #the_path_here_is_broken = '''
-        #####################################################################################
-
         hbox_lay_crystal_fix =  QHBoxLayout()
-        label_crystal_fix = QLabel("refinement.parameterisation.crystal_fix")
+        label_crystal_fix = QLabel("refinement \n parameterisation \n crystal_fix")
 
         hbox_lay_crystal_fix.addWidget(label_crystal_fix)
         box_crystal_fix = QComboBox()
@@ -304,15 +301,53 @@ class RefineSimplerParamTab( QWidget):
         for lst_itm in box_crystal_fix.tmp_lst:
             box_crystal_fix.addItem(lst_itm)
 
-        box_crystal_fix.setCurrentIndex(1)
+        box_crystal_fix.setCurrentIndex(0)
 
         box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_crystal_fix.addWidget(box_crystal_fix)
         localLayout.addLayout(hbox_lay_crystal_fix)
 
-        ###############################################################################
-        #'''
+        hbox_lay_detector_fix =  QHBoxLayout()
+        label_detector_fix = QLabel("refinement \n parameterisation \n detector_fix")
 
+        hbox_lay_detector_fix.addWidget(label_detector_fix)
+        box_detector_fix = QComboBox()
+        box_detector_fix.local_path = "refinement.parameterisation.detector.fix"
+        box_detector_fix.tmp_lst=[]
+        box_detector_fix.tmp_lst.append("all")
+        box_detector_fix.tmp_lst.append("position")
+        box_detector_fix.tmp_lst.append("orientation")
+
+        for lst_itm in box_detector_fix.tmp_lst:
+            box_detector_fix.addItem(lst_itm)
+
+        box_detector_fix.setCurrentIndex(0)
+
+        box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_detector_fix.addWidget(box_detector_fix)
+        localLayout.addLayout(hbox_lay_detector_fix)
+
+        ##############################################################################
+        hbox_lay_goniometer_fix =  QHBoxLayout()
+        label_goniometer_fix = QLabel("refinement \n parameterisation \n goniometer_fix")
+
+        hbox_lay_goniometer_fix.addWidget(label_goniometer_fix)
+        box_goniometer_fix = QComboBox()
+        box_goniometer_fix.local_path = "refinement.parameterisation.goniometer.fix"
+        box_goniometer_fix.tmp_lst=[]
+        box_goniometer_fix.tmp_lst.append("all")
+        box_goniometer_fix.tmp_lst.append("in_beam_plane")
+        box_goniometer_fix.tmp_lst.append("out_beam_plane")
+
+        for lst_itm in box_goniometer_fix.tmp_lst:
+            box_goniometer_fix.addItem(lst_itm)
+
+        box_goniometer_fix.setCurrentIndex(0)
+
+        box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
+        localLayout.addLayout(hbox_lay_goniometer_fix)
+        ##############################################################################
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
