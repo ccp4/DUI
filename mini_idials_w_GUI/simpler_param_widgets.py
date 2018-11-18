@@ -386,6 +386,21 @@ class RefineSimplerParamTab( QWidget):
         self.lst_var_widg.append(box_scan_varying)
         self.lst_var_widg.append(label_scan_varying)
 
+        self.lst_var_widg.append(box_beam_fix)
+        self.lst_var_widg.append(label_beam_fix)
+
+        self.lst_var_widg.append(box_crystal_fix)
+        self.lst_var_widg.append(label_crystal_fix)
+
+        self.lst_var_widg.append(box_detector_fix)
+        self.lst_var_widg.append(label_detector_fix)
+
+        self.lst_var_widg.append(box_goniometer_fix)
+        self.lst_var_widg.append(label_goniometer_fix)
+
+        self.lst_var_widg.append(box_outlier_algorithm)
+        self.lst_var_widg.append(label_outlier_algorithm)
+
         '''
 refinement {
   parameterisation {
