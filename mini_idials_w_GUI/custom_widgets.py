@@ -24,7 +24,7 @@ copyright (c) CCP4 - DLS
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import os, sys
+import os, sys, time
 
 from params_live_gui_generator import PhilWidget
 from simpler_param_widgets import FindspotsSimplerParameterTab, IndexSimplerParamTab, \
@@ -333,10 +333,17 @@ class ParamMainWidget( QWidget):
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
 
+                                print "<<< here 1"
+
                             except:
                                 try:
                                     str_val = str(str_value)
+                                    time.sleep(0.1)
                                     widg.setText(str_val)
+                                    print "<<< here 2"
+                                    print "widg.local_path =", widg.local_path
+
+                                    print "type(widg) =", type(widg)
 
                                 except:
                                     print "\n\n Type Mismatch while searching for twin parameter \n\n"
@@ -349,6 +356,9 @@ class ParamMainWidget( QWidget):
 
                 except:
                     pass
+
+
+
 
     def update_simpler_widget(self, str_path, str_value):
 
@@ -493,7 +503,7 @@ if __name__ == '__main__':
     #ex = ParamWidget("refine")
     #ex = ParamWidget("integrate")
     #ex = ParamWidget("symmetry")
-    ex = ParamWidget("scale")
-    #ex = ParamWidget("export")
+    #ex = ParamWidget("scale")
+    ex = ParamWidget("export")
     sys.exit(app.exec_())
 

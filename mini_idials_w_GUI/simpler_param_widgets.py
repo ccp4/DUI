@@ -519,9 +519,6 @@ class IntegrateSimplerParamTab( QWidget):
         self.box_nproc.setValue(cpu_max_proc)
         return cpu_max_proc
 
-    def mtz_name_changed(self, value):
-        print "used to run"
-        #print "self.param_widget_parent.super_parent.mtz_name_changed(value)"
 
 
 
@@ -637,15 +634,6 @@ class ScaleSimplerParamTab(QWidget):
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
-        '''
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        print value
-        str_path = str(sender.local_path)
-
-        self.item_changed.emit(str_path, str_value)
-        '''
 
 class ExportSimplerParamTab(QWidget):
 
@@ -660,48 +648,38 @@ class ExportSimplerParamTab(QWidget):
     def __init__(self, parent = None):
         super(ExportSimplerParamTab, self).__init__()
 
-        hbox_lay_scan_varying =  QHBoxLayout()
+        #mtz.hklout=integrated.mtz
+
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("... export \n ...scan_varying")
 
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
+        self.mtz_name_lin =   QLineEdit(self)
+        self.mtz_name_lin.setText("integrated.mtz")
 
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
+        self.mtz_name_lin.local_path = "mtz.hklout"
+        self.mtz_name_lin.tmp_lst = None
 
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        localLayout.addLayout(hbox_lay_scan_varying)
+        localLayout.addWidget(QLabel("mtz output name:"))
+        localLayout.addWidget(self.mtz_name_lin)
+        self.mtz_name_lin.textChanged.connect(self.spnbox_changed)
+
+
         localLayout.addStretch(1)
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
-        self.lst_var_widg.append(box_scan_varying)
-        self.lst_var_widg.append(label_scan_varying)
+        self.lst_var_widg.append(self.mtz_name_lin)
+        #self.lst_var_widg.append()
 
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-        '''
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
-        print value
+        print "str_value =", str_value
         str_path = str(sender.local_path)
+        print "str_path =", str_path
 
         self.item_changed.emit(str_path, str_value)
-        '''
+
 
 
 class TmpTstWidget( QWidget):
