@@ -11,6 +11,7 @@ from PyQt4.QtCore import *
 class inner_widg( QWidget):
 
     goClicked = pyqtSignal()
+    txt_changed = pyqtSignal(str)
 
     def __init__(self, parent):
         super(inner_widg, self).__init__()
@@ -20,14 +21,14 @@ class inner_widg( QWidget):
         self.btn_go.clicked.connect(self.goClicked)
 
 
-        tmp_widg = QLineEdit()
-        tmp_widg.setText("")
-        tmp_widg.textChanged.connect(self.line_txt_changed)
+        self.line_ed = QLineEdit()
+        self.line_ed.setText("")
+        self.line_ed.textChanged.connect(self.line_txt_changed)
 
 
         hbox =  QHBoxLayout()
         hbox.addWidget(self.btn_go)
-        hbox.addWidget(tmp_widg)
+        hbox.addWidget(self.line_ed)
 
         bg_box =  QVBoxLayout(self)
         bg_box.addLayout(hbox)
@@ -38,6 +39,8 @@ class inner_widg( QWidget):
 
     def line_txt_changed(self):
         print "ed"
+        new_str = str(self.line_ed.text())
+        self.txt_changed.emit(new_str)
 
 class MainWidget( QWidget):
 
@@ -45,7 +48,7 @@ class MainWidget( QWidget):
         super(MainWidget, self).__init__()
         self.btn_go = inner_widg(self)
         self.btn_go.goClicked.connect(self.onGoClicked)
-
+        self.btn_go.txt_changed.connect(self.on_txt_changed)
         hbox =  QHBoxLayout()
         hbox.addWidget(self.btn_go)
 
@@ -55,6 +58,9 @@ class MainWidget( QWidget):
 
     def onGoClicked(self):
         print"\n Ok    from parent_widg \n"
+
+    def on_txt_changed(self, txt):
+        print "new_str =", txt
 
 if __name__ == '__main__':
     app =  QApplication(sys.argv)
