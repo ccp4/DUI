@@ -634,14 +634,8 @@ class ScaleSimplerParamTab(QWidget):
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
-
+unstable_test = '''
 class ExportSimplerParamTab(QWidget):
-
-    '''
-    This widget is the tool for tunning the simpler and most common parameters
-    in the scale command, this widget is the first to appear once the button
-    "Scale" at the left side of the GUI is clicked
-    '''
 
     item_changed = pyqtSignal(str, str)
 
@@ -679,7 +673,7 @@ class ExportSimplerParamTab(QWidget):
         print "str_path =", str_path
 
         self.item_changed.emit(str_path, str_value)
-
+'''
 
 
 class TmpTstWidget( QWidget):

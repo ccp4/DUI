@@ -30,7 +30,7 @@ from params_live_gui_generator import PhilWidget
 from simpler_param_widgets import FindspotsSimplerParameterTab, IndexSimplerParamTab, \
                                   RefineBravaiSimplerParamTab, RefineSimplerParamTab, \
                                   IntegrateSimplerParamTab, SymmetrySimplerParamTab, \
-                                  ScaleSimplerParamTab, ExportSimplerParamTab
+                                  ScaleSimplerParamTab#, ExportSimplerParamTab
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
@@ -44,6 +44,47 @@ from dials.command_line.scale import phil_scope as phil_scope_scale
 from dials.command_line.export import phil_scope as phil_scope_export
 
 from gui_utils import get_import_run_string, get_main_path
+
+
+class ExportPage(QWidget):
+
+    update_command_lst_low_level = pyqtSignal(list)
+
+    '''
+    This stacked widget basically helps the user to browse the input images
+    path, there is no auto-generated GUI form Phil parameters in use withing
+    this widget.
+    '''
+
+    def __init__(self, parent = None):
+        super(ExportPage, self).__init__(parent = None)
+
+        template_vbox =  QVBoxLayout()
+
+        label_font = QFont()
+        sys_font_point_size =  label_font.pointSize()
+        label_font.setPointSize(sys_font_point_size + 2)
+        step_label = QLabel(str("Export"))
+        step_label.setFont(label_font)
+
+        out_file_label = QLabel(str("mtz output name:"))
+
+        self.simple_lin = QLineEdit(self)
+        self.simple_lin.setText("integrated.mtz")
+        self.simple_lin.textChanged.connect(self.update_command)
+
+        template_vbox.addWidget(step_label)
+        template_vbox.addStretch()
+        template_vbox.addWidget(out_file_label)
+        template_vbox.addWidget(self.simple_lin)
+
+        self.setLayout(template_vbox)
+        self.show()
+
+    def update_command(self):
+        print "[self.simple_lin] =", self.simple_lin.text()
+
+
 
 class ImportPage(QWidget):
 
@@ -464,12 +505,19 @@ class ParamWidget(QWidget):
                        "refine"    :              [phil_scope_refine       , RefineSimplerParamTab        ],
                        "integrate" :              [phil_scope_integrate    , IntegrateSimplerParamTab     ],
                        "symmetry"  :              [phil_scope_symetry      , SymmetrySimplerParamTab      ],
-                       "scale"     :              [phil_scope_scale        , ScaleSimplerParamTab         ],
+                       "scale"     :              [phil_scope_scale        , ScaleSimplerParamTab         ]
+                        }
+        to_remove = '''
+                       ,
                        "export"    :              [phil_scope_export       , ExportSimplerParamTab        ]
                         }
+                        '''
 
         if(label_str == "import"):
             self.my_widget = ImportPage()
+
+        elif(label_str == "export"):
+            self.my_widget = ExportPage()
 
         else:
             self.my_widget = ParamMainWidget(phl_obj = inner_widgs[label_str][0],
