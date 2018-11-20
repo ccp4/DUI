@@ -135,7 +135,6 @@ class ControlWidget(QWidget):
         top_box.addStretch()
 
 
-
         big_h_box = QHBoxLayout()
         big_h_box.addLayout(top_box)
 
@@ -198,10 +197,10 @@ class ControlWidget(QWidget):
                 if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
-class StopRunRety(QWidget):
+class StopRunRetry(QWidget):
 
     def __init__(self, parent = None):
-        super(StopRunRety, self).__init__()
+        super(StopRunRetry, self).__init__()
 
         main_path = get_main_path()
 
@@ -297,7 +296,7 @@ class MainWidget(QMainWindow):
         self.centre_par_widget = ControlWidget()
         self.centre_par_widget.get_arg_obj(sys_arg)
         self.run_all = sys_arg.run_all
-        self.stop_run_retry = StopRunRety()
+        self.stop_run_retry = StopRunRetry()
         self.tree_out = TreeNavWidget()
 
         left_control_box = QHBoxLayout()
@@ -310,8 +309,10 @@ class MainWidget(QMainWindow):
         v_control_splitter = QSplitter()
         v_control_splitter.setOrientation(Qt.Vertical)
 
+        ParamScrollArea = QScrollArea()
+        ParamScrollArea.setWidget(self.centre_par_widget.step_param_widg)
 
-        v_control_splitter.addWidget(self.centre_par_widget.step_param_widg) # stacked widget
+        v_control_splitter.addWidget(ParamScrollArea)
         v_control_splitter.addWidget(self.tree_out)
 
         centre_control_box.addWidget(v_control_splitter)

@@ -101,8 +101,8 @@ class FindspotsSimplerParameterTab( QWidget):
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
+        localLayout.addStretch()
 
-        #localLayout.addStretch(1)
 
         self.setLayout(localLayout)
 
@@ -163,7 +163,7 @@ class IndexSimplerParamTab( QWidget):
 
         localLayout = QVBoxLayout()
         localLayout.addLayout(hbox_method)
-        #localLayout.addStretch(1)
+        localLayout.addStretch()
 
         self.setLayout(localLayout)
 
@@ -212,7 +212,7 @@ class RefineBravaiSimplerParamTab(QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        #localLayout.addStretch(1)
+        localLayout.addStretch()
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -378,7 +378,7 @@ class RefineSimplerParamTab( QWidget):
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
         localLayout.addLayout(hbox_lay_outlier_algorithm)
 
-        #localLayout.addStretch(1)
+        localLayout.addStretch()
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -474,7 +474,7 @@ class IntegrateSimplerParamTab( QWidget):
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
-        #localLayout.addStretch(1)
+        localLayout.addStretch()
         '''
         self.mtz_name_lin =   QLineEdit(self)
         self.mtz_name_lin.setText("hkl_out.mtz")
@@ -549,7 +549,7 @@ class SymmetrySimplerParamTab(QWidget):
         d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         localLayout.addLayout(hbox_d_min)
-        #localLayout.addStretch(1)
+        localLayout.addStretch()
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -615,7 +615,7 @@ class ScaleSimplerParamTab(QWidget):
 
         localLayout.addLayout(hbox_lay_mod)
         localLayout.addLayout(hbox_lay_wgh_opt_err)
-        #localLayout.addStretch(1)
+        localLayout.addStretch()
 
         self.setLayout(localLayout)
 
