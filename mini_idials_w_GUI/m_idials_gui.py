@@ -142,7 +142,7 @@ class ControlWidget(QWidget):
         big_v_box = QVBoxLayout()
 
 
-        big_v_box.addWidget(self.step_param_widg)
+        #big_v_box.addWidget(self.step_param_widg)
 
         big_h_box.addLayout(big_v_box)
 
@@ -293,34 +293,31 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        #h_left_tab = QTabWidget()
-        h_left_vbox = QSplitter()
-        h_left_vbox.setOrientation(Qt.Vertical)
+        h_left_vbox = QHBoxLayout()
 
         self.centre_par_widget = ControlWidget()
         self.centre_par_widget.get_arg_obj(sys_arg)
         self.run_all = sys_arg.run_all
-
-        #h_left_tab.addTab(self.centre_par_widget, "Control")
-        h_left_vbox.addWidget(self.centre_par_widget)
-
         self.stop_run_retry = StopRunRety()
-
         self.tree_out = TreeNavWidget()
-        #h_left_tab.addTab(self.tree_out, "Navigation")
-        h_left_vbox.addWidget(self.tree_out)
+
+        left_control_box = QHBoxLayout()
 
 
-        v_left_splitter = QSplitter()
-        v_left_splitter.setOrientation(Qt.Vertical)
-        #v_left_splitter.addWidget(h_left_tab)
-        v_left_splitter.addWidget(h_left_vbox)
-        v_left_splitter.addWidget(self.stop_run_retry)
+        left_control_box.addWidget(self.centre_par_widget)
+
+        centre_control_box = QVBoxLayout()
+
+        centre_control_box.addWidget(self.centre_par_widget.step_param_widg) # stacked widget
+        centre_control_box.addWidget(self.tree_out)
+        centre_control_box.addWidget(self.stop_run_retry)
+        left_control_box.addLayout(centre_control_box)
 
 
-        h_main_splitter = QSplitter()
-        h_main_splitter.setOrientation(Qt.Horizontal)
-        h_main_splitter.addWidget(v_left_splitter)
+
+        h_main_splitter = QHBoxLayout()
+        h_main_splitter.addLayout(left_control_box)
+
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()
@@ -349,7 +346,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(v_info_splitter)
         #############################
 
-        main_box.addWidget(h_main_splitter)
+        main_box.addLayout(h_main_splitter)
 
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
