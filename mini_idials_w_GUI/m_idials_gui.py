@@ -302,7 +302,6 @@ class MainWidget(QMainWindow):
         h_left_tab.addTab(self.centre_par_widget, "Control")
 
         self.stop_run_retry = StopRunRety()
-        #h_left_tab.addTab(self.stop_run_retry, "tmp")
 
         self.tree_out = TreeNavWidget()
         h_left_tab.addTab(self.tree_out, "Navigation")
