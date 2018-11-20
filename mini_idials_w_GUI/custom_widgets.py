@@ -314,7 +314,7 @@ class ParamMainWidget( QWidget):
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
         self._vbox.addWidget(self.reset_btn)
-        self._vbox.addStretch()
+        #self._vbox.addStretch()
 
         self.setLayout(self._vbox)
         self.show()
