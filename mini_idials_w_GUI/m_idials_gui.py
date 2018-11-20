@@ -319,10 +319,18 @@ class MainWidget(QMainWindow):
         centre_control_box.addWidget(self.stop_run_retry)
         left_control_box.addLayout(centre_control_box)
 
+        dummy_left_widget = QWidget()
+        dummy_h_layout = QHBoxLayout()
+        dummy_h_layout.addLayout(left_control_box)
+        dummy_h_layout.addStretch()
+        dummy_left_widget.setLayout(dummy_h_layout)
+        dummy_left_widget.show()
 
 
-        h_main_splitter = QHBoxLayout()
-        h_main_splitter.addLayout(left_control_box)
+
+        h_main_splitter = QSplitter()
+        h_main_splitter.setOrientation(Qt.Horizontal)
+        h_main_splitter.addWidget(dummy_left_widget)
 
 
         self.cli_out = CliOutView()
@@ -352,7 +360,7 @@ class MainWidget(QMainWindow):
         h_main_splitter.addWidget(v_info_splitter)
         #############################
 
-        main_box.addLayout(h_main_splitter)
+        main_box.addWidget(h_main_splitter)
 
         self.txt_bar = Text_w_Bar()
         main_box.addWidget(self.txt_bar)
