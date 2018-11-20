@@ -80,9 +80,32 @@ class ExportPage(QWidget):
 
         self.setLayout(template_vbox)
         self.show()
-
+        '''
     def update_command(self):
         print "[self.simple_lin] =", self.simple_lin.text()
+        '''
+
+    def update_command(self):
+        self.command_lst = ["export"]
+        param_com = str(self.simple_lin.text())
+        print "param_com =", param_com
+
+        self.command_lst.append("mtz.hklout=" + param_com)
+
+        self.update_command_lst_low_level.emit(self.command_lst)
+        print "self.command_lst =", self.command_lst
+
+        for lin_prn in self.command_lst:
+            print "lin_prn =", lin_prn
+
+
+
+    def gray_me_out(self):
+        self.simple_lin.setEnabled(False)
+
+    def activate_me(self):
+        self.simple_lin.setEnabled(True)
+
 
 
 
