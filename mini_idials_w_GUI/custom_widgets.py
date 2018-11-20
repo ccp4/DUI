@@ -51,9 +51,9 @@ class ExportPage(QWidget):
     update_command_lst_low_level = pyqtSignal(list)
 
     '''
-    This stacked widget basically helps the user to browse the input images
-    path, there is no auto-generated GUI form Phil parameters in use withing
-    this widget.
+    This stacked widget basically helps the user to export by
+    generating an MTZ file, there is no auto-generated GUI
+    form Phil parameters in use withing this widget.
     '''
 
     def __init__(self, parent = None):
@@ -80,10 +80,6 @@ class ExportPage(QWidget):
 
         self.setLayout(template_vbox)
         self.show()
-        '''
-    def update_command(self):
-        print "[self.simple_lin] =", self.simple_lin.text()
-        '''
 
     def update_command(self):
         self.command_lst = ["export"]
@@ -98,15 +94,11 @@ class ExportPage(QWidget):
         for lin_prn in self.command_lst:
             print "lin_prn =", lin_prn
 
-
-
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
 
     def activate_me(self):
         self.simple_lin.setEnabled(True)
-
-
 
 
 class ImportPage(QWidget):
