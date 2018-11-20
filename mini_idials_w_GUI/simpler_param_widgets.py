@@ -102,7 +102,7 @@ class FindspotsSimplerParameterTab( QWidget):
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
 
         self.setLayout(localLayout)
 
@@ -162,9 +162,8 @@ class IndexSimplerParamTab( QWidget):
         hbox_method.addWidget(box_method_62)
 
         localLayout = QVBoxLayout()
-        #localLayout.addLayout(hbox_lay_scan_varying)
         localLayout.addLayout(hbox_method)
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
 
         self.setLayout(localLayout)
 
@@ -213,7 +212,7 @@ class RefineBravaiSimplerParamTab(QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -245,7 +244,7 @@ class RefineSimplerParamTab( QWidget):
 
         hbox_lay_scan_varying =  QHBoxLayout()
 
-        label_scan_varying = QLabel("refinement \n parameterisation \n scan_varying")
+        label_scan_varying = QLabel(" parameterisation \n scan_varying")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
@@ -267,7 +266,7 @@ class RefineSimplerParamTab( QWidget):
           fix = all *in_spindle_plane out_spindle_plane *wavelength
         }'''
         hbox_lay_beam_fix =  QHBoxLayout()
-        label_beam_fix = QLabel("refinement \n parameterisation \n beam_fix")
+        label_beam_fix = QLabel(" parameterisation \n beam_fix")
 
         hbox_lay_beam_fix.addWidget(label_beam_fix)
         box_beam_fix = QComboBox()
@@ -290,7 +289,7 @@ class RefineSimplerParamTab( QWidget):
         fix = all cell orientation
         }'''
         hbox_lay_crystal_fix =  QHBoxLayout()
-        label_crystal_fix = QLabel("refinement \n parameterisation \n crystal_fix")
+        label_crystal_fix = QLabel(" parameterisation \n crystal_fix")
 
         hbox_lay_crystal_fix.addWidget(label_crystal_fix)
         box_crystal_fix = QComboBox()
@@ -312,7 +311,7 @@ class RefineSimplerParamTab( QWidget):
         fix = all position orientation
         }'''
         hbox_lay_detector_fix =  QHBoxLayout()
-        label_detector_fix = QLabel("refinement \n parameterisation \n detector_fix")
+        label_detector_fix = QLabel(" parameterisation \n detector_fix")
 
         hbox_lay_detector_fix.addWidget(label_detector_fix)
         box_detector_fix = QComboBox()
@@ -334,7 +333,7 @@ class RefineSimplerParamTab( QWidget):
         fix = *all in_beam_plane out_beam_plane
         }'''
         hbox_lay_goniometer_fix =  QHBoxLayout()
-        label_goniometer_fix = QLabel("refinement \n parameterisation \n goniometer_fix")
+        label_goniometer_fix = QLabel(" parameterisation \n goniometer_fix")
 
         hbox_lay_goniometer_fix.addWidget(label_goniometer_fix)
         box_goniometer_fix = QComboBox()
@@ -358,7 +357,7 @@ class RefineSimplerParamTab( QWidget):
             }
           }'''
         hbox_lay_outlier_algorithm =  QHBoxLayout()
-        label_outlier_algorithm = QLabel("refinement \n reflections \n outlier \n algorithm")
+        label_outlier_algorithm = QLabel(" reflections \n outlier \n algorithm")
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
         box_outlier_algorithm = QComboBox()
@@ -379,7 +378,7 @@ class RefineSimplerParamTab( QWidget):
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
         localLayout.addLayout(hbox_lay_outlier_algorithm)
 
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -475,7 +474,7 @@ class IntegrateSimplerParamTab( QWidget):
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
         '''
         self.mtz_name_lin =   QLineEdit(self)
         self.mtz_name_lin.setText("hkl_out.mtz")
@@ -550,7 +549,7 @@ class SymmetrySimplerParamTab(QWidget):
         d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         localLayout.addLayout(hbox_d_min)
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -616,7 +615,7 @@ class ScaleSimplerParamTab(QWidget):
 
         localLayout.addLayout(hbox_lay_mod)
         localLayout.addLayout(hbox_lay_wgh_opt_err)
-        localLayout.addStretch(1)
+        #localLayout.addStretch(1)
 
         self.setLayout(localLayout)
 

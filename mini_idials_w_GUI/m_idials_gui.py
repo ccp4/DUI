@@ -293,7 +293,6 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        h_left_vbox = QHBoxLayout()
 
         self.centre_par_widget = ControlWidget()
         self.centre_par_widget.get_arg_obj(sys_arg)
@@ -308,8 +307,14 @@ class MainWidget(QMainWindow):
 
         centre_control_box = QVBoxLayout()
 
-        centre_control_box.addWidget(self.centre_par_widget.step_param_widg) # stacked widget
-        centre_control_box.addWidget(self.tree_out)
+        v_control_splitter = QSplitter()
+        v_control_splitter.setOrientation(Qt.Vertical)
+
+
+        v_control_splitter.addWidget(self.centre_par_widget.step_param_widg) # stacked widget
+        v_control_splitter.addWidget(self.tree_out)
+
+        centre_control_box.addWidget(v_control_splitter)
         centre_control_box.addWidget(self.stop_run_retry)
         left_control_box.addLayout(centre_control_box)
 

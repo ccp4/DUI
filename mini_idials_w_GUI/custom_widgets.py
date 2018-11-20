@@ -74,7 +74,7 @@ class ExportPage(QWidget):
         self.simple_lin.textChanged.connect(self.update_command)
 
         template_vbox.addWidget(step_label)
-        template_vbox.addStretch()
+        #template_vbox.addStretch()
         template_vbox.addWidget(out_file_label)
         template_vbox.addWidget(self.simple_lin)
 
@@ -137,12 +137,12 @@ class ImportPage(QWidget):
         #######################################################################
 
         tmp_hbox = QHBoxLayout()
-        tmp_hbox.addStretch()
+        #tmp_hbox.addStretch()
         tmp_hbox.addWidget(self.opn_fil_btn)
 
         template_vbox.addWidget(step_label)
         template_vbox.addLayout(tmp_hbox)
-        template_vbox.addStretch()
+        #template_vbox.addStretch()
         template_vbox.addWidget(self.simple_lin)
 
         self.opn_fil_btn.clicked.connect(self.open_files)
