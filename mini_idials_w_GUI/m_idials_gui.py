@@ -293,23 +293,28 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-        h_left_tab = QTabWidget()
+        #h_left_tab = QTabWidget()
+        h_left_vbox = QSplitter()
+        h_left_vbox.setOrientation(Qt.Vertical)
 
         self.centre_par_widget = ControlWidget()
         self.centre_par_widget.get_arg_obj(sys_arg)
         self.run_all = sys_arg.run_all
 
-        h_left_tab.addTab(self.centre_par_widget, "Control")
+        #h_left_tab.addTab(self.centre_par_widget, "Control")
+        h_left_vbox.addWidget(self.centre_par_widget)
 
         self.stop_run_retry = StopRunRety()
 
         self.tree_out = TreeNavWidget()
-        h_left_tab.addTab(self.tree_out, "Navigation")
+        #h_left_tab.addTab(self.tree_out, "Navigation")
+        h_left_vbox.addWidget(self.tree_out)
 
 
         v_left_splitter = QSplitter()
         v_left_splitter.setOrientation(Qt.Vertical)
-        v_left_splitter.addWidget(h_left_tab)
+        #v_left_splitter.addWidget(h_left_tab)
+        v_left_splitter.addWidget(h_left_vbox)
         v_left_splitter.addWidget(self.stop_run_retry)
 
 
