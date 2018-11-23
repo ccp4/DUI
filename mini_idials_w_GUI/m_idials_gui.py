@@ -312,8 +312,8 @@ class MainWidget(QMainWindow):
         ParamScrollArea = QScrollArea()
         ParamScrollArea.setWidget(self.centre_par_widget.step_param_widg)
 
-        v_control_splitter.addWidget(ParamScrollArea)
         v_control_splitter.addWidget(self.tree_out)
+        v_control_splitter.addWidget(ParamScrollArea)
 
         centre_control_box.addWidget(v_control_splitter)
         centre_control_box.addWidget(self.stop_run_retry)
