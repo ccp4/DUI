@@ -314,7 +314,6 @@ class ParamMainWidget( QWidget):
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
         self._vbox.addWidget(self.reset_btn)
-        #self._vbox.addStretch()
 
         self.setLayout(self._vbox)
         self.show()
@@ -538,6 +537,7 @@ class ParamWidget(QWidget):
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)
 
         v_left_box =  QVBoxLayout()
+        self.my_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
         self.show()

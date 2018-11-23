@@ -99,13 +99,18 @@ class ControlWidget(QWidget):
         lst_grayed_icons_path.append(main_path + "/resources/scale_grayed.png")
         lst_grayed_icons_path.append(main_path + "/resources/export_grayed.png")
 
-
-        #top_box =  QHBoxLayout()
         top_box =  QVBoxLayout()
 
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []
         self.btn_lst = []
+
+        print "\n\n\n\n"
+
+
+        lst_heights = []
+        lst_widths = []
+
         for num, step_name in enumerate(widg_name_list):
 
             tmp_ico = QIcon()
@@ -131,22 +136,32 @@ class ControlWidget(QWidget):
             param_widg.update_command_lst_medium_level.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
+            param_widg.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+
+            lst_heights.append(param_widg.height())
+            lst_widths.append(param_widg.width())
+
+        print "lst_heights =", lst_heights
+        print "max(lst_heights) =", max(lst_heights)
+
+        print "lst_widths =", lst_widths
+        print "max(lst_widths) =", max(lst_widths)
 
         top_box.addStretch()
-
 
         big_h_box = QHBoxLayout()
         big_h_box.addLayout(top_box)
 
         big_v_box = QVBoxLayout()
-
-
-        #big_v_box.addWidget(self.step_param_widg)
-
         big_h_box.addLayout(big_v_box)
 
         self.setLayout(big_h_box)
+        self.step_param_widg.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.show()
+
+        print "self.height =", self.height()
+        print "self.width =", self.width()
+        print "\n\n\n\n"
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit(command_lst)
@@ -172,8 +187,6 @@ class ControlWidget(QWidget):
             print "assuming reindex mode"
             widget_now = self.widg_lst[3]
             self.step_param_widg.setCurrentWidget(widget_now)
-            #widget_now.update_param(curr_step.prev_step)
-            #widget_now.my_widget.gray_me_out()
 
     def btn_clicked(self):
         print "btn_clicked"
@@ -205,7 +218,7 @@ class StopRunRetry(QWidget):
         main_path = get_main_path()
 
         ctrl_box = QHBoxLayout()
-        ctrl_box.addStretch()
+        #ctrl_box.addStretch()
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
 
@@ -322,7 +335,7 @@ class MainWidget(QMainWindow):
         dummy_left_widget = QWidget()
         dummy_h_layout = QHBoxLayout()
         dummy_h_layout.addLayout(left_control_box)
-        dummy_h_layout.addStretch()
+        #dummy_h_layout.addStretch()
         dummy_left_widget.setLayout(dummy_h_layout)
         dummy_left_widget.show()
 
