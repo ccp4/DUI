@@ -120,6 +120,7 @@ class ControlWidget(QWidget):
             ttip = build_ttip(step_name)
 
             new_btn = MyQButton(self)
+            new_btn.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
             new_btn.intro_content(step_name, tmp_ico, ttip)
 
             if(num > 0):
@@ -147,16 +148,9 @@ class ControlWidget(QWidget):
         print "lst_widths =", lst_widths
         print "max(lst_widths) =", max(lst_widths)
 
-        top_box.addStretch()
+        self.setLayout(top_box)
 
-        big_h_box = QHBoxLayout()
-        big_h_box.addLayout(top_box)
-
-        big_v_box = QVBoxLayout()
-        big_h_box.addLayout(big_v_box)
-
-        self.setLayout(big_h_box)
-        self.step_param_widg.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.show()
 
         print "self.height =", self.height()
@@ -210,6 +204,7 @@ class ControlWidget(QWidget):
                 if(btn.cmd_n1 == cmd_str):
                     btn.setEnabled(True)
 
+
 class StopRunRetry(QWidget):
 
     def __init__(self, parent = None):
@@ -218,7 +213,6 @@ class StopRunRetry(QWidget):
         main_path = get_main_path()
 
         ctrl_box = QHBoxLayout()
-        #ctrl_box.addStretch()
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
 
@@ -258,6 +252,19 @@ class StopRunRetry(QWidget):
         ctrl_box.addWidget(self.stop_btn)
 
         self.setLayout(ctrl_box)
+        self.show()
+
+
+class DummyLeftWidget(QWidget):
+
+    def __init__(self, parent = None):
+        super(DummyLeftWidget, self).__init__()
+
+    def set_content(self, layout_in):
+        dummy_h_layout = QHBoxLayout()
+        dummy_h_layout.addLayout(layout_in)
+        self.setLayout(dummy_h_layout)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.show()
 
 
@@ -324,6 +331,7 @@ class MainWidget(QMainWindow):
 
         ParamScrollArea = QScrollArea()
         ParamScrollArea.setWidget(self.centre_par_widget.step_param_widg)
+        ParamScrollArea.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         v_control_splitter.addWidget(self.tree_out)
         v_control_splitter.addWidget(ParamScrollArea)
@@ -332,19 +340,14 @@ class MainWidget(QMainWindow):
         centre_control_box.addWidget(self.stop_run_retry)
         left_control_box.addLayout(centre_control_box)
 
-        dummy_left_widget = QWidget()
-        dummy_h_layout = QHBoxLayout()
-        dummy_h_layout.addLayout(left_control_box)
-        #dummy_h_layout.addStretch()
-        dummy_left_widget.setLayout(dummy_h_layout)
-        dummy_left_widget.show()
-
-
+        ##########################################################
+        dummy_left_widget = DummyLeftWidget()
+        dummy_left_widget.set_content(left_control_box)
+        ##########################################################
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
         h_main_splitter.addWidget(dummy_left_widget)
-
 
         self.cli_out = CliOutView()
         self.web_view = WebTab()

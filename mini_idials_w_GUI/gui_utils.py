@@ -384,6 +384,10 @@ class MyQButton(QPushButton):
         v_box.addLayout(h_box_label)
         self.cmd_n1 = my_text
         self.setLayout(v_box)
+
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+
         self.show()
 
 
