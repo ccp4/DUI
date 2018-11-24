@@ -281,16 +281,6 @@ def buils_lst_pair(lst_in):
 
     return lst_pair
 
-class ResetButton(QPushButton):
-    def __init__(self, parent = None):
-        super(ResetButton, self).__init__()
-        self.setContentsMargins(-5,-1,-5,-1)
-
-        my_label = QLabel("Reset to Default")
-        v_box = QVBoxLayout()
-        v_box.addWidget(my_label)
-        self.setLayout(v_box)
-        self.show()
 
 
 class ParamMainWidget( QWidget):
@@ -309,14 +299,8 @@ class ParamMainWidget( QWidget):
         except:
             print "\n\n\n something went wrong here wiht the phil object \n\n\n"
 
-        self._vbox = QVBoxLayout()
 
         self.build_param_widget()
-
-        #self.reset_btn = QPushButton("\n Reset to Default \n", self)
-        self.reset_btn = ResetButton()
-
-        self.reset_btn.clicked.connect(self.reset_par)
 
         label_font = QFont()
         sys_font_point_size =  label_font.pointSize()
@@ -324,32 +308,34 @@ class ParamMainWidget( QWidget):
         self.step_label = QLabel(str(upper_label))
         self.step_label.setFont(label_font)
 
+        self._vbox = QVBoxLayout()
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
-        self._vbox.addWidget(self.reset_btn)
 
         self.setLayout(self._vbox)
         self.show()
 
     def build_param_widget(self):
         self.dual_level_tab = QTabWidget()
-        self.sipler_widget = self.simp_widg_in()
+        self.simpler_widget = self.simp_widg_in()
         self.advanced_widget = ParamAdvancedWidget(phl_obj = self.my_phl_obj, parent = self)
         self.advanced_widget.scrollable_widget.item_changed.connect(self.update_lin_txt)
 
         try:
-            self.sipler_widget.item_changed.connect(self.update_advanced_widget)
+            self.simpler_widget.item_changed.connect(self.update_advanced_widget)
 
         except:
-            print "found self.sipler_widget without << item_changed >> signal"
+            print "found self.simpler_widget without << item_changed >> signal"
 
-        self.dual_level_tab.addTab(self.sipler_widget, "Simple")
+        self.reset_btn = self.simpler_widget.inner_reset_btn
+        self.dual_level_tab.addTab(self.simpler_widget, "Simple")
         self.dual_level_tab.addTab(self.advanced_widget, "Advanced")
+        self.reset_btn.clicked.connect(self.reset_par)
 
     def reset_par(self):
         print "Reseting"
 
-        for i in reversed(range(self._vbox.count())):
+        for i in reversed(range(self._vbox.count() )):
             widgetToRemove = self._vbox.itemAt( i ).widget()
             self._vbox.removeWidget( widgetToRemove )
             widgetToRemove.setParent( None )
@@ -358,8 +344,6 @@ class ParamMainWidget( QWidget):
 
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
-        self._vbox.addWidget(self.reset_btn)
-
 
         print "<< inner >>self.command_lst =", self.command_lst
         self.command_lst = [self.command_lst[0]]
@@ -369,10 +353,10 @@ class ParamMainWidget( QWidget):
         self.update_command_lst_low_level.emit(self.command_lst)
 
         try:
-            max_nproc = self.sipler_widget.set_max_nproc()
+            max_nproc = self.simpler_widget.set_max_nproc()
             if(max_nproc > 1):
                 print "\n time to raise nproc to:", max_nproc, " \n"
-                self.raise_nproc_str = str(self.sipler_widget.box_nproc.local_path) + "=" + str(max_nproc)
+                self.raise_nproc_str = str(self.simpler_widget.box_nproc.local_path) + "=" + str(max_nproc)
                 QTimer.singleShot(1000, self.raise_nproc_to_max)
                 print "tst 03"
 
@@ -392,7 +376,7 @@ class ParamMainWidget( QWidget):
     def update_advanced_widget(self, str_path, str_value):
 
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
-                       self.sipler_widget.lst_var_widg):
+                       self.simpler_widget.lst_var_widg):
             for widg in bg_widg:
                 try:
                     if(widg.local_path == str_path):
@@ -426,7 +410,7 @@ class ParamMainWidget( QWidget):
 
         print "update_simpler_widget(", str_path, ", ", str_value, ")"
 
-        for widg in self.sipler_widget.lst_var_widg:
+        for widg in self.simpler_widget.lst_var_widg:
             try:
                 if(widg.local_path == str_path):
                     print "found << widg.local_path == str_path >> "
@@ -479,7 +463,7 @@ class ParamMainWidget( QWidget):
         palt_gray.setColor(QPalette.WindowText, QColor(88, 88, 88, 88))
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
                        self.advanced_widget.scrollable_widget.lst_label_widg,
-                       self.sipler_widget.lst_var_widg):
+                       self.simpler_widget.lst_var_widg):
 
             for widg in bg_widg:
                 widg.setStyleSheet("color: rgba(88, 88, 88, 88)")
@@ -494,7 +478,7 @@ class ParamMainWidget( QWidget):
         self.reset_btn.setEnabled(True)
         for bg_widg in(self.advanced_widget.scrollable_widget.lst_var_widg ,
                        self.advanced_widget.scrollable_widget.lst_label_widg,
-                       self.sipler_widget.lst_var_widg):
+                       self.simpler_widget.lst_var_widg):
 
             for widg in bg_widg:
 

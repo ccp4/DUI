@@ -28,6 +28,18 @@ import os, sys
 
 import libtbx.introspection
 
+class ResetButton(QPushButton):
+    def __init__(self, parent = None):
+        super(ResetButton, self).__init__()
+        self.setContentsMargins(-5,-1,-5,-1)
+
+        my_label = QLabel("Reset to Default")
+        v_box = QVBoxLayout()
+        v_box.addWidget(my_label)
+        self.setLayout(v_box)
+        self.show()
+
+
 class FindspotsSimplerParameterTab( QWidget):
     '''
     This widget is the tool for tunning the simpler and most common parameters
@@ -100,18 +112,21 @@ class FindspotsSimplerParameterTab( QWidget):
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
-        #localLayout.addStretch()
 
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
 
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
-        for i in xrange(localLayout.count()):
+        for i in xrange(localLayout.count() - 1):
             upper_box = localLayout.itemAt(i)
             try:
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
                     self.lst_var_widg.append(local_widget)
+
             except:
                 pass
 
@@ -162,17 +177,22 @@ class IndexSimplerParamTab( QWidget):
 
         localLayout = QVBoxLayout()
         localLayout.addLayout(hbox_method)
-        #localLayout.addStretch()
+
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
+
 
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
-        for i in xrange(localLayout.count()):
+        for i in xrange(localLayout.count() - 1):
             upper_box = localLayout.itemAt(i)
             try:
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
                     self.lst_var_widg.append(local_widget)
+
             except:
                 pass
 
@@ -211,7 +231,11 @@ class RefineBravaiSimplerParamTab(QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        #localLayout.addStretch()
+
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
+
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -377,7 +401,11 @@ class RefineSimplerParamTab( QWidget):
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
         localLayout.addLayout(hbox_lay_outlier_algorithm)
 
-        #localLayout.addStretch()
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
+
+
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -473,20 +501,15 @@ class IntegrateSimplerParamTab( QWidget):
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
-        #localLayout.addStretch()
-        '''
-        self.mtz_name_lin =   QLineEdit(self)
-        self.mtz_name_lin.setText("hkl_out.mtz")
-        localLayout.addWidget(QLabel("mtz output name:"))
-        localLayout.addWidget(self.mtz_name_lin)
-        self.mtz_name_lin.textChanged.connect(self.mtz_name_changed)
-        '''
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
 
         self.setLayout(localLayout)
         self.box_nproc.tmp_lst = None
 
         self.lst_var_widg = []
-        for i in xrange(localLayout.count()):
+        for i in xrange(localLayout.count() - 1):
             upper_box = localLayout.itemAt(i)
             try:
                 for j in xrange(upper_box.count()):
@@ -548,7 +571,11 @@ class SymmetrySimplerParamTab(QWidget):
         d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         localLayout.addLayout(hbox_d_min)
-        #localLayout.addStretch()
+
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
+
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
@@ -614,7 +641,10 @@ class ScaleSimplerParamTab(QWidget):
 
         localLayout.addLayout(hbox_lay_mod)
         localLayout.addLayout(hbox_lay_wgh_opt_err)
-        #localLayout.addStretch()
+
+        self.inner_reset_btn = ResetButton()
+        localLayout.addWidget(self.inner_reset_btn)
+        localLayout.addStretch()
 
         self.setLayout(localLayout)
 
