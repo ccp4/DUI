@@ -368,7 +368,7 @@ class MyQButton(QPushButton):
         v_box.addLayout(h_box_space)
 
         h_box_label = QHBoxLayout()
-        #h_box_label.addStretch()
+        h_box_label.addStretch()
 
         my_font = QFont()
         sys_font_point_size =  my_font.pointSize()
@@ -379,7 +379,7 @@ class MyQButton(QPushButton):
         my_label.setFont(my_font)
 
         h_box_label.addWidget(my_label)
-        #h_box_label.addStretch()
+        h_box_label.addStretch()
 
         v_box.addLayout(h_box_label)
         self.cmd_n1 = my_text

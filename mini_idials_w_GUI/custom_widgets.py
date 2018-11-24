@@ -515,11 +515,6 @@ class ParamWidget(QWidget):
                        "symmetry"  :              [phil_scope_symetry      , SymmetrySimplerParamTab      ],
                        "scale"     :              [phil_scope_scale        , ScaleSimplerParamTab         ]
                         }
-        to_remove = '''
-                       ,
-                       "export"    :              [phil_scope_export       , ExportSimplerParamTab        ]
-                        }
-                        '''
 
         if(label_str == "import"):
             self.my_widget = ImportPage()
@@ -537,7 +532,7 @@ class ParamWidget(QWidget):
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)
 
         v_left_box =  QVBoxLayout()
-        self.my_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.my_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
         self.show()
