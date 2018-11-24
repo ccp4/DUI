@@ -281,6 +281,17 @@ def buils_lst_pair(lst_in):
 
     return lst_pair
 
+class ResetButton(QPushButton):
+    def __init__(self, parent = None):
+        super(ResetButton, self).__init__()
+        self.setContentsMargins(-5,-1,-5,-1)
+
+        my_label = QLabel("Reset to Default")
+        v_box = QVBoxLayout()
+        v_box.addWidget(my_label)
+        self.setLayout(v_box)
+        self.show()
+
 
 class ParamMainWidget( QWidget):
 
@@ -302,7 +313,9 @@ class ParamMainWidget( QWidget):
 
         self.build_param_widget()
 
-        self.reset_btn = QPushButton("\n Reset to Default \n", self)
+        #self.reset_btn = QPushButton("\n Reset to Default \n", self)
+        self.reset_btn = ResetButton()
+
         self.reset_btn.clicked.connect(self.reset_par)
 
         label_font = QFont()
