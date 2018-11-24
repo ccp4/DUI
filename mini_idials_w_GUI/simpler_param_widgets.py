@@ -632,46 +632,6 @@ class ScaleSimplerParamTab(QWidget):
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
-unstable_test = '''
-class ExportSimplerParamTab(QWidget):
-
-    item_changed = pyqtSignal(str, str)
-
-    def __init__(self, parent = None):
-        super(ExportSimplerParamTab, self).__init__()
-
-        #mtz.hklout=integrated.mtz
-
-        localLayout = QVBoxLayout()
-
-        self.mtz_name_lin =   QLineEdit(self)
-        self.mtz_name_lin.setText("integrated.mtz")
-
-        self.mtz_name_lin.local_path = "mtz.hklout"
-        self.mtz_name_lin.tmp_lst = None
-
-        localLayout.addWidget(QLabel("mtz output name:"))
-        localLayout.addWidget(self.mtz_name_lin)
-        self.mtz_name_lin.textChanged.connect(self.spnbox_changed)
-
-
-        #localLayout.addStretch(1)
-        self.setLayout(localLayout)
-
-        self.lst_var_widg = []
-        self.lst_var_widg.append(self.mtz_name_lin)
-        #self.lst_var_widg.append()
-
-
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        print "str_value =", str_value
-        str_path = str(sender.local_path)
-        print "str_path =", str_path
-
-        self.item_changed.emit(str_path, str_value)
-'''
 
 
 class TmpTstWidget( QWidget):

@@ -76,7 +76,7 @@ class ExportPage(QWidget):
         template_vbox.addWidget(step_label)
         template_vbox.addWidget(out_file_label)
         template_vbox.addWidget(self.simple_lin)
-        template_vbox.addStretch()
+        #template_vbox.addStretch()
 
         self.setLayout(template_vbox)
         self.show()
@@ -142,7 +142,7 @@ class ImportPage(QWidget):
         template_vbox.addWidget(step_label)
         template_vbox.addLayout(tmp_hbox)
         template_vbox.addWidget(self.simple_lin)
-        template_vbox.addStretch()
+        #template_vbox.addStretch()
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
@@ -537,7 +537,7 @@ class ParamWidget(QWidget):
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)
 
         v_left_box =  QVBoxLayout()
-        self.my_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.my_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
         self.show()
