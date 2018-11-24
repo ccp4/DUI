@@ -254,7 +254,7 @@ class StopRunRetry(QWidget):
         self.setLayout(ctrl_box)
         self.show()
 
-
+'''
 class DummyLeftWidget(QWidget):
 
     def __init__(self, parent = None):
@@ -266,7 +266,7 @@ class DummyLeftWidget(QWidget):
         self.setLayout(dummy_h_layout)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.show()
-
+'''
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -321,8 +321,10 @@ class MainWidget(QMainWindow):
 
         left_control_box = QHBoxLayout()
 
-
-        left_control_box.addWidget(self.centre_par_widget)
+        left_top_control_box = QVBoxLayout()
+        left_top_control_box.addWidget(self.centre_par_widget)
+        left_top_control_box.addStretch()
+        left_control_box.addLayout(left_top_control_box)
 
         centre_control_box = QVBoxLayout()
 
@@ -341,9 +343,18 @@ class MainWidget(QMainWindow):
         left_control_box.addLayout(centre_control_box)
 
         ##########################################################
-        dummy_left_widget = DummyLeftWidget()
-        dummy_left_widget.set_content(left_control_box)
+        #dummy_left_widget = DummyLeftWidget()
+        #dummy_left_widget.set_content(left_control_box)
         ##########################################################
+        dummy_left_widget = QWidget()
+        dummy_h_layout = QHBoxLayout()
+        dummy_h_layout.addLayout(left_control_box)
+        dummy_left_widget.setLayout(dummy_h_layout)
+        dummy_left_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        ##########################################################
+
+
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
@@ -361,7 +372,6 @@ class MainWidget(QMainWindow):
         self.output_info_tabs.addTab(self.ext_view, "External Tools")
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
-        #############################
 
         self.info_widget = InfoWidget()
 
@@ -374,7 +384,6 @@ class MainWidget(QMainWindow):
         v_info_splitter.addWidget(InfoScrollArea)
 
         h_main_splitter.addWidget(v_info_splitter)
-        #############################
 
         main_box.addWidget(h_main_splitter)
 
