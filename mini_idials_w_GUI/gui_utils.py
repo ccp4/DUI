@@ -361,10 +361,10 @@ class MyQButton(QPushButton):
         btn_txt = build_label(my_text)
 
         v_box = QVBoxLayout()
-        #v_box.insertSpacing(1, 24)
+        v_box.insertSpacing(1, 10)
 
         h_box_space = QHBoxLayout()
-        h_box_space.insertSpacing(1, 45)
+        h_box_space.insertSpacing(1, 62)
         v_box.addLayout(h_box_space)
 
         h_box_label = QHBoxLayout()
