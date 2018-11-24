@@ -254,19 +254,6 @@ class StopRunRetry(QWidget):
         self.setLayout(ctrl_box)
         self.show()
 
-'''
-class DummyLeftWidget(QWidget):
-
-    def __init__(self, parent = None):
-        super(DummyLeftWidget, self).__init__()
-
-    def set_content(self, layout_in):
-        dummy_h_layout = QHBoxLayout()
-        dummy_h_layout.addLayout(layout_in)
-        self.setLayout(dummy_h_layout)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.show()
-'''
 
 class MainWidget(QMainWindow):
     def __init__(self):
@@ -312,7 +299,6 @@ class MainWidget(QMainWindow):
 
         main_box = QVBoxLayout()
 
-
         self.centre_par_widget = ControlWidget()
         self.centre_par_widget.get_arg_obj(sys_arg)
         self.run_all = sys_arg.run_all
@@ -342,19 +328,11 @@ class MainWidget(QMainWindow):
         centre_control_box.addWidget(self.stop_run_retry)
         left_control_box.addLayout(centre_control_box)
 
-        ##########################################################
-        #dummy_left_widget = DummyLeftWidget()
-        #dummy_left_widget.set_content(left_control_box)
-        ##########################################################
         dummy_left_widget = QWidget()
         dummy_h_layout = QHBoxLayout()
         dummy_h_layout.addLayout(left_control_box)
         dummy_left_widget.setLayout(dummy_h_layout)
         dummy_left_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-        ##########################################################
-
-
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
@@ -398,7 +376,6 @@ class MainWidget(QMainWindow):
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
         self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
 
-
         self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
 
         self.main_widget = QWidget()
@@ -407,7 +384,6 @@ class MainWidget(QMainWindow):
 
         self.setWindowTitle('CCP4 DUI')
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
-
 
         self.just_reindexed = False
         self.user_stoped = False
