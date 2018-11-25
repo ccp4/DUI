@@ -337,6 +337,7 @@ class PhilWidget( QWidget):
 
                 if(tmp_str != None):
                     tmp_widg.local_path = str(obj.full_path())
+                    #tmp_h_box.addStretch()
                     tmp_h_box.addWidget(tmp_widg)
                     self.lst_var_widg.append(tmp_widg)
                     self.bg_box.addLayout(tmp_h_box)

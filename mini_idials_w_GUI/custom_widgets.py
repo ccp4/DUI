@@ -76,7 +76,7 @@ class ExportPage(QWidget):
         template_vbox.addWidget(step_label)
         template_vbox.addWidget(out_file_label)
         template_vbox.addWidget(self.simple_lin)
-        #template_vbox.addStretch()
+        template_vbox.addStretch()
 
         self.setLayout(template_vbox)
         self.show()
@@ -128,26 +128,18 @@ class ImportPage(QWidget):
 
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
 
-        #######################################################################
         main_path = get_main_path()
         print "main_path =", main_path
         self.opn_fil_btn.setIcon(QIcon(main_path + "/resources/import.png"))
         self.opn_fil_btn.setIconSize(QSize(80, 48))
 
-        #######################################################################
-
-        tmp_hbox = QHBoxLayout()
-        tmp_hbox.addWidget(self.opn_fil_btn)
-
         template_vbox.addWidget(step_label)
-        template_vbox.addLayout(tmp_hbox)
+        template_vbox.addWidget(self.opn_fil_btn)
+        template_vbox.addStretch(5)
         template_vbox.addWidget(self.simple_lin)
-        #template_vbox.addStretch()
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
-        #self.templ_cmd = ""
-        #self.expli_templ = True
         self.defa_dir = str(os.getcwd())
         self.setLayout(template_vbox)
         self.show()
