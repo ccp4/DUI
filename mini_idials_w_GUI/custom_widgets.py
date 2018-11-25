@@ -274,9 +274,9 @@ def string2pair(str_in):
 def buils_lst_pair(lst_in):
     lst_pair = []
     for par_str in lst_in[1:len(lst_in)]:
-        #print "par_str =", par_str
+        print "par_str =", par_str
         pair = string2pair(par_str)
-        #print "pair =", pair
+        print "pair =", pair
         lst_pair.append(pair)
 
     return lst_pair
@@ -326,6 +326,14 @@ class ParamMainWidget( QWidget):
 
         except:
             print "found self.simpler_widget without << item_changed >> signal"
+
+        try:
+            self.simpler_widget.item_to_remove.connect(self.remove_one_par)
+
+        except:
+            print "found self.simpler_widget without << item_to_remove >> signal"
+
+
 
         self.reset_btn = self.simpler_widget.inner_reset_btn
         self.dual_level_tab.addTab(self.simpler_widget, "Simple")
@@ -397,14 +405,18 @@ class ParamMainWidget( QWidget):
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if(val == str_value):
-                                    print "found val, v=", val
-                                    widg.setCurrentIndex(pos)
+                                    try:
+                                        print "found val, v=", val
+                                        widg.setCurrentIndex(pos)
+
+                                    except:
+                                        print "failed to:"
+                                        print "widg.setCurrentIndex(pos)"
 
                 except:
                     pass
 
-
-
+        print "finished update_advanced_widget"
 
     def update_simpler_widget(self, str_path, str_value):
 
@@ -441,21 +453,41 @@ class ParamMainWidget( QWidget):
         self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
         self.update_command_lst_low_level.emit(self.command_lst)
 
-    def update_param_w_lst(self, lst_in):
+    def update_param_w_lst(self, lst_in, do_reset = True):
 
         print "update_param_w_lst(self, ", lst_in, ")"
+        if(do_reset == True):
+            self.reset_par()
 
-        self.reset_par()
+        print "_________________ after reset_par"
         if(len(lst_in) > 1):
-            new_lst_pair = buils_lst_pair(lst_in)
-            self.lst_pair = new_lst_pair
-            self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
-
+            print "restoring advanced widgets"
+            self.lst_pair = buils_lst_pair(lst_in)
+            print "lst_pair done"
+            self.command_lst = build_lst_str(lst_in[0], self.lst_pair)
+            print "looping thru params"
             for pair in self.lst_pair:
                 self.update_advanced_widget(pair[0], pair[1])
+
         else:
+            print "updating with no parameters"
             self.lst_pair = []
-            self.command_lst = [self.command_lst[0]]
+            self.command_lst = lst_in
+            print ""
+
+        print "after update widgets"
+
+    def remove_one_par(self, path_str):
+        print "\n removing:", path_str,"parameter \n"
+        nxt_lst = []
+        for single_param in self.command_lst:
+            if(str(path_str) in single_param):
+                print "found: ", single_param
+
+            else:
+                nxt_lst.append(str(single_param))
+
+        self.update_param_w_lst(nxt_lst, do_reset = False)
 
     def gray_me_out(self):
         self.reset_btn.setEnabled(False)

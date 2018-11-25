@@ -259,6 +259,7 @@ class RefineSimplerParamTab( QWidget):
     '''
 
     item_changed = pyqtSignal(str, str)
+    item_to_remove = pyqtSignal(str)
 
     def __init__(self, parent = None):
         super(RefineSimplerParamTab, self).__init__()
@@ -299,11 +300,13 @@ class RefineSimplerParamTab( QWidget):
         box_beam_fix.tmp_lst.append("in_spindle_plane")
         box_beam_fix.tmp_lst.append("out_spindle_plane")
         box_beam_fix.tmp_lst.append("wavelength")
+        box_beam_fix.tmp_lst.append("none")
 
         for lst_itm in box_beam_fix.tmp_lst:
             box_beam_fix.addItem(lst_itm)
 
-        box_beam_fix.setCurrentIndex(3)
+        #box_beam_fix.setCurrentIndex(3)
+        box_beam_fix.setCurrentIndex(4)
 
         box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_beam_fix.addWidget(box_beam_fix)
@@ -321,11 +324,13 @@ class RefineSimplerParamTab( QWidget):
         box_crystal_fix.tmp_lst.append("all")
         box_crystal_fix.tmp_lst.append("cell")
         box_crystal_fix.tmp_lst.append("orientation")
+        box_crystal_fix.tmp_lst.append("none")
 
         for lst_itm in box_crystal_fix.tmp_lst:
             box_crystal_fix.addItem(lst_itm)
 
-        box_crystal_fix.setCurrentIndex(0)
+        #box_crystal_fix.setCurrentIndex(0)
+        box_crystal_fix.setCurrentIndex(3)
 
         box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_crystal_fix.addWidget(box_crystal_fix)
@@ -343,11 +348,13 @@ class RefineSimplerParamTab( QWidget):
         box_detector_fix.tmp_lst.append("all")
         box_detector_fix.tmp_lst.append("position")
         box_detector_fix.tmp_lst.append("orientation")
+        box_detector_fix.tmp_lst.append("none")
 
         for lst_itm in box_detector_fix.tmp_lst:
             box_detector_fix.addItem(lst_itm)
 
-        box_detector_fix.setCurrentIndex(0)
+        #box_detector_fix.setCurrentIndex(0)
+        box_detector_fix.setCurrentIndex(3)
 
         box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_detector_fix.addWidget(box_detector_fix)
@@ -365,11 +372,13 @@ class RefineSimplerParamTab( QWidget):
         box_goniometer_fix.tmp_lst.append("all")
         box_goniometer_fix.tmp_lst.append("in_beam_plane")
         box_goniometer_fix.tmp_lst.append("out_beam_plane")
+        box_goniometer_fix.tmp_lst.append("none")
 
         for lst_itm in box_goniometer_fix.tmp_lst:
             box_goniometer_fix.addItem(lst_itm)
 
-        box_goniometer_fix.setCurrentIndex(0)
+        #box_goniometer_fix.setCurrentIndex(0)
+        box_goniometer_fix.setCurrentIndex(3)
 
         box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
@@ -428,14 +437,18 @@ class RefineSimplerParamTab( QWidget):
         self.lst_var_widg.append(label_outlier_algorithm)
 
     def combobox_changed(self, value):
+
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-
         print "str(sender.local_path) =", str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
+        if(str_value == "none"):
+            print "trying to emit [item_to_remove] =", str_path
+            self.item_to_remove.emit(str_path)
+
+        else:
+            self.item_changed.emit(str_path, str_value)
 
 
 

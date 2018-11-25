@@ -542,17 +542,13 @@ class MainWidget(QMainWindow):
 
     def cmd_launch(self, new_cmd):
         #Running WITH theading
-        run_me = True
+        self.cli_out.clear()
+        self.cli_out.make_green()
+        self.txt_bar.start_motion()
+        self.txt_bar.setText("Running")
+        self.disconnect_while_running()
 
-
-        if(run_me == True):
-            self.cli_out.clear()
-            self.cli_out.make_green()
-            self.txt_bar.start_motion()
-            self.txt_bar.setText("Running")
-            self.disconnect_while_running()
-
-            self.custom_thread(new_cmd, self.idials_runner)
+        self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
         update_info(self)
