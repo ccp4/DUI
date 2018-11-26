@@ -208,7 +208,10 @@ class ImgPainter(QWidget):
             painter = QPainter(self)
 
             indexed_pen = QPen()  # creates a default indexed_pen
-            indexed_pen.setBrush(Qt.green)
+            #indexed_pen.setBrush(Qt.green)
+            #indexed_pen.setBrush(QColor(80, 200, 0))
+            indexed_pen.setBrush(QColor(155, 255, 0))
+
             indexed_pen.setStyle(Qt.SolidLine)
 
             if(self.my_scale >= 5.0):
@@ -668,6 +671,11 @@ class MyImgWin(QWidget):
 
         self.setLayout(my_box)
         self.show()
+
+        #changing default palette:
+
+        self.palette_select.setCurrentIndex(3)
+
 
     def ini_contrast(self):
         if(self.contrast_initiated == False):
