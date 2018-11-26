@@ -70,23 +70,40 @@ class ExportPage(QWidget):
         out_file_label = QLabel(str("mtz output name:"))
 
         self.simple_lin = QLineEdit(self)
-        self.simple_lin.setText("integrated.mtz")
         self.simple_lin.textChanged.connect(self.update_command)
+
+
+        self.check_scale = QCheckBox("Scale HKL")
+        self.check_scale.setChecked(False)
+        self.check_scale.stateChanged.connect(self.update_command)
+
 
         template_vbox.addWidget(step_label)
         template_vbox.addWidget(out_file_label)
         template_vbox.addWidget(self.simple_lin)
-        template_vbox.addStretch()
+        template_vbox.addWidget(self.check_scale)
 
+
+        template_vbox.addStretch()
         self.setLayout(template_vbox)
         self.show()
 
+        self.simple_lin.setText("integrated_aa.mtz")
+
     def update_command(self):
         self.command_lst = ["export"]
-        param_com = str(self.simple_lin.text())
-        print "param_com =", param_com
 
-        self.command_lst.append("mtz.hklout=" + param_com)
+        param1_com = str(self.simple_lin.text())
+        print "param1_com =", param1_com
+
+        self.command_lst.append("mtz.hklout=" + param1_com)
+
+        if(self.check_scale.checkState()):
+            param2_com = "intensity=scale"
+            print "param2_com =", param2_com
+
+            self.command_lst.append(param2_com)
+
 
         self.update_command_lst_low_level.emit(self.command_lst)
         print "self.command_lst =", self.command_lst
