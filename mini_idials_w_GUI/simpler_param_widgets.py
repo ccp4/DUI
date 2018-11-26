@@ -286,9 +286,13 @@ class RefineSimplerParamTab( QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        '''beam {
+        '''
+        beam {
           fix = all *in_spindle_plane out_spindle_plane *wavelength
-        }'''
+        }
+        '''
+
+        this_will_change_drastically_after_git_push_part_1 = '''
         hbox_lay_beam_fix =  QHBoxLayout()
         label_beam_fix = QLabel("Beam Fix Parameters")
 
@@ -311,9 +315,11 @@ class RefineSimplerParamTab( QWidget):
         box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_beam_fix.addWidget(box_beam_fix)
         localLayout.addLayout(hbox_lay_beam_fix)
-        '''crystal {
-        fix = all cell orientation
-        }'''
+        '''
+        #crystal {
+        #fix = all cell orientation
+        #}
+        this_will_change_drastically_after_git_push_part_2 = '''
         hbox_lay_crystal_fix =  QHBoxLayout()
         label_crystal_fix = QLabel("Crystal Fix Parameters")
 
@@ -335,9 +341,11 @@ class RefineSimplerParamTab( QWidget):
         box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_crystal_fix.addWidget(box_crystal_fix)
         localLayout.addLayout(hbox_lay_crystal_fix)
-        '''detector {
-        fix = all position orientation
-        }'''
+        '''
+        #detector {
+        #fix = all position orientation
+        #}
+        this_will_change_drastically_after_git_push_part_3 = '''
         hbox_lay_detector_fix =  QHBoxLayout()
         label_detector_fix = QLabel("Detector Fix Parameters")
 
@@ -359,9 +367,12 @@ class RefineSimplerParamTab( QWidget):
         box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_detector_fix.addWidget(box_detector_fix)
         localLayout.addLayout(hbox_lay_detector_fix)
-        '''goniometer {
-        fix = *all in_beam_plane out_beam_plane
-        }'''
+        '''
+        #goniometer {
+        #fix = *all in_beam_plane out_beam_plane
+        #
+        #}
+        this_will_change_drastically_after_git_push_part_4 = '''
         hbox_lay_goniometer_fix =  QHBoxLayout()
         label_goniometer_fix = QLabel("Goniometer Fix Parameters")
 
@@ -383,11 +394,12 @@ class RefineSimplerParamTab( QWidget):
         box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
         localLayout.addLayout(hbox_lay_goniometer_fix)
-        '''reflections {
-            outlier {
-              algorithm = null *auto mcd tukey sauter_poon
-            }
-          }'''
+        '''
+        #reflections {
+        #    outlier {
+        #      algorithm = null *auto mcd tukey sauter_poon
+        #    }
+        #  }
         hbox_lay_outlier_algorithm =  QHBoxLayout()
         label_outlier_algorithm = QLabel("Outlier Rejection Algorithm")
 
@@ -414,13 +426,13 @@ class RefineSimplerParamTab( QWidget):
         localLayout.addWidget(self.inner_reset_btn)
         localLayout.addStretch()
 
-
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
         self.lst_var_widg.append(box_scan_varying)
         self.lst_var_widg.append(label_scan_varying)
 
+        '''
         self.lst_var_widg.append(box_beam_fix)
         self.lst_var_widg.append(label_beam_fix)
 
@@ -432,6 +444,7 @@ class RefineSimplerParamTab( QWidget):
 
         self.lst_var_widg.append(box_goniometer_fix)
         self.lst_var_widg.append(label_goniometer_fix)
+        '''
 
         self.lst_var_widg.append(box_outlier_algorithm)
         self.lst_var_widg.append(label_outlier_algorithm)
