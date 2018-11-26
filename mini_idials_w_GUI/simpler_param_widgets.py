@@ -587,7 +587,6 @@ class SymmetrySimplerParamTab(QWidget):
 
         hbox_d_min.addWidget(label_d_min)
 
-        xds_sigma_strong_label = QLabel("d_min")
         d_min_spn_bx = QDoubleSpinBox()
         d_min_spn_bx.local_path = "d_min"
         d_min_spn_bx.setSpecialValueText("Auto")
@@ -665,8 +664,20 @@ class ScaleSimplerParamTab(QWidget):
         box_wgh_opt_err.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
 
+        hbox_d_min = QHBoxLayout()
+        d_min_label = QLabel("d_min")
+        d_min_spn_bx = QDoubleSpinBox()
+        d_min_spn_bx.local_path = "cut_data.d_min"
+        d_min_spn_bx.setSpecialValueText("Auto")
+        d_min_spn_bx.setValue(0.0)
+        hbox_d_min.addWidget(d_min_label)
+        hbox_d_min.addWidget(d_min_spn_bx)
+
+        d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
+
         localLayout.addLayout(hbox_lay_mod)
         localLayout.addLayout(hbox_lay_wgh_opt_err)
+        localLayout.addLayout(hbox_d_min)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
@@ -679,6 +690,8 @@ class ScaleSimplerParamTab(QWidget):
         self.lst_var_widg.append(label_mod)
         self.lst_var_widg.append(box_wgh_opt_err)
         self.lst_var_widg.append(label_wgh_opt_err)
+        self.lst_var_widg.append(d_min_spn_bx)
+        self.lst_var_widg.append(d_min_label)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -688,7 +701,13 @@ class ScaleSimplerParamTab(QWidget):
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        print value
+        str_path = str(sender.local_path)
 
+        self.item_changed.emit(str_path, str_value)
 
 class TmpTstWidget( QWidget):
 
