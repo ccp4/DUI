@@ -73,7 +73,7 @@ class ExportPage(QWidget):
         self.simple_lin.textChanged.connect(self.update_command)
 
 
-        self.check_scale = QCheckBox("Scale HKL")
+        self.check_scale = QCheckBox("Output Scaled Intensities")
         self.check_scale.setChecked(False)
         self.check_scale.stateChanged.connect(self.update_command)
 
