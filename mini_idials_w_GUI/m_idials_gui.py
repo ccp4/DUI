@@ -439,6 +439,7 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.activate_me()
 
         else:
+
             if(self.idials_runner.current_node.command_lst[0] != "export"):
                 self.stop_run_retry.repeat_btn.setEnabled(True)
 
