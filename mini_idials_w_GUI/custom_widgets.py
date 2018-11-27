@@ -88,7 +88,7 @@ class ExportPage(QWidget):
         self.setLayout(template_vbox)
         self.show()
 
-        self.simple_lin.setText("hkl_out.mtz")
+        self.simple_lin.setText("integrated.mtz")
 
     def update_command(self):
         self.command_lst = ["export"]
