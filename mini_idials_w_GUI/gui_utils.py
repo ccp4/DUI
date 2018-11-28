@@ -481,7 +481,10 @@ class ViewerThread (QThread):
         my_proc_stat = my_proc.status()
         print "my_proc_stat =", my_proc_stat
 
-        while(my_proc_stat == 'running' or my_proc_stat == 'sleeping'):
+        while(my_proc_stat == 'running' or
+              my_proc_stat == 'sleeping' or
+              my_proc_stat == 'disk-sleep' ):
+
             try:
                 my_proc_stat = my_proc.status()
                 time.sleep(0.1)
