@@ -143,9 +143,9 @@ class ImportPage(QWidget):
         self.simple_lin.setText(" ? ")
         self.simple_lin.textChanged.connect(self.update_command)
 
-        x_spn_bx = QDoubleSpinBox()
+        x_spn_bx = QSpinBox()
         #x_spn_bx.setValue(6.0)
-        y_spn_bx = QDoubleSpinBox()
+        y_spn_bx = QSpinBox()
         #y_spn_bx.setValue(6.0)
         x_spn_bx.valueChanged.connect(self.x_beam_changed)
         y_spn_bx.valueChanged.connect(self.y_beam_changed)
