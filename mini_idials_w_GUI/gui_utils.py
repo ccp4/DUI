@@ -548,23 +548,28 @@ class ExternalProcDialog(QDialog):
     def kill_my_proc(self):
         """Kill the subprocess early"""
         print "self.kill_my_proc"
-        self.read_phil_file.emit(self.phil_path)
-
+        self._emit_phil_signals()
         kill_w_child(self.my_process.pid)
-
         self.done(0)
-
 
     def child_closed(self):
         """The child process has closed by itself"""
         print "after ...close()"
+        self._emit_phil_signals();
         # Just close ourself
         self.done(0)
 
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
         print "from << closeEvent  (QDialog) >>"
+        self._emit_phil_signals()
         self.kill_my_proc()
+
+    def _emit_phil_signals(self):
+        """Send out any messages about .phil files"""
+        # Do we have a spotfinding .phil file to read?
+        if os.path.isfile(self.phil_path):
+            self.read_phil_file.emit(self.phil_path)
 
 
 class OuterCaller(QWidget):
