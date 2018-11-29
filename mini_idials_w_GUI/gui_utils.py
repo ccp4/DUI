@@ -406,7 +406,7 @@ class TreeNavWidget(QTreeView):
 
         header_view = self.header()
         header_view.setResizeMode(QHeaderView.ResizeToContents)
-        header_view.setStretchLastSection(False)
+        header_view.setStretchLastSection(True)
 
     def update_me(self, root_node, lst_path_idx):
         self.lst_idx = lst_path_idx
