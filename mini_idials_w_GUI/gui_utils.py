@@ -538,20 +538,16 @@ class ExternalProcDialog(QDialog):
         first_pikl_path = pickle_path[0]
         if first_pikl_path is not None:
             cmd_to_run.append(str(first_pikl_path))
-        # If using shell, this needs to be a string
-        if self.use_shell == True:
-            cmd_to_run = " ".join(cmd_to_run)
 
         cwd_path = sys_arg.directory + os.sep + "dui_files"
         self.phil_path = cwd_path + os.sep + "find_spots.phil"
         try:
             os.remove(self.phil_path)
         except:
-            print "no ", self.phil_path, " found"
+            print("no ", self.phil_path, " found")
 
-        print "\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<"
-        self.my_process = subprocess.Popen(args = cmd_to_run, shell = self.use_shell,
-                                           cwd = cwd_path)
+        print("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
+        self.my_process = subprocess.Popen(args=cmd_to_run, cwd=cwd_path)
         print("Running PID {}".format(self.my_process.pid))
 
         # Track the process status in a separate thread
