@@ -59,7 +59,7 @@ class ExportPage(QWidget):
     def __init__(self, parent = None):
         super(ExportPage, self).__init__(parent = None)
 
-        template_vbox =  QVBoxLayout()
+        main_v_box =  QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size =  label_font.pointSize()
@@ -78,14 +78,14 @@ class ExportPage(QWidget):
         self.check_scale.stateChanged.connect(self.update_command)
 
 
-        template_vbox.addWidget(step_label)
-        template_vbox.addWidget(out_file_label)
-        template_vbox.addWidget(self.simple_lin)
-        template_vbox.addWidget(self.check_scale)
+        main_v_box.addWidget(step_label)
+        main_v_box.addWidget(out_file_label)
+        main_v_box.addWidget(self.simple_lin)
+        main_v_box.addWidget(self.check_scale)
 
 
-        template_vbox.addStretch()
-        self.setLayout(template_vbox)
+        main_v_box.addStretch()
+        self.setLayout(main_v_box)
         self.show()
 
         self.simple_lin.setText("integrated.mtz")
@@ -131,7 +131,7 @@ class ImportPage(QWidget):
     def __init__(self, parent = None):
         super(ImportPage, self).__init__(parent = None)
 
-        template_vbox =  QVBoxLayout()
+        main_v_box =  QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size =  label_font.pointSize()
@@ -144,8 +144,10 @@ class ImportPage(QWidget):
         self.simple_lin.textChanged.connect(self.update_command)
 
         x_spn_bx = QSpinBox()
+        x_spn_bx.setMaximum(99999)
         #x_spn_bx.setValue(6.0)
         y_spn_bx = QSpinBox()
+        y_spn_bx.setMaximum(99999)
         #y_spn_bx.setValue(6.0)
         x_spn_bx.valueChanged.connect(self.x_beam_changed)
         y_spn_bx.valueChanged.connect(self.y_beam_changed)
@@ -157,26 +159,27 @@ class ImportPage(QWidget):
         self.opn_fil_btn.setIcon(QIcon(main_path + "/resources/import.png"))
         self.opn_fil_btn.setIconSize(QSize(80, 48))
 
-        template_vbox.addWidget(step_label)
-        template_vbox.addWidget(self.opn_fil_btn)
-        template_vbox.addWidget(self.simple_lin)
-        template_vbox.addWidget(QLabel("\n\n Beam Centre"))
+        main_v_box.addWidget(step_label)
+        main_v_box.addWidget(self.opn_fil_btn)
+        main_v_box.addWidget(self.simple_lin)
+        main_v_box.addWidget(QLabel("\n\n Beam Centre"))
         cent_hbox = QHBoxLayout()
         cent_hbox.addWidget(QLabel("    X: "))
         cent_hbox.addWidget(x_spn_bx)
         cent_hbox.addWidget(QLabel("    Y: "))
         cent_hbox.addWidget(y_spn_bx)
         cent_hbox.addStretch()
-        template_vbox.addLayout(cent_hbox)
+        main_v_box.addLayout(cent_hbox)
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
         self.cmd_list = []
         self.x_beam, self.y_beam = None, None
+        self.path_file_str = ""
         self.second_half = ""
 
         self.defa_dir = str(os.getcwd())
-        self.setLayout(template_vbox)
+        self.setLayout(main_v_box)
         self.show()
 
     def x_beam_changed(self, value):
@@ -208,7 +211,10 @@ class ImportPage(QWidget):
 
     def put_str_lin(self):
         self.cmd_list = [self.path_file_str, self.second_half]
-        self.simple_lin.setText(" ".join(self.cmd_list))
+        txt_lin = " ".join(self.cmd_list).rstrip()
+        self.simple_lin.setText(txt_lin)
+
+        print "self.simple_lin.setText:<<" + txt_lin + ">>"
 
     def get_arg_obj(self, sys_arg_in):
         print "sys_arg_in =", sys_arg_in
