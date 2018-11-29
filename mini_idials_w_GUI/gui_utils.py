@@ -7,6 +7,8 @@ With strong help from DIALS and CCP4 teams
 copyright (c) CCP4 - DLS
 '''
 
+from __future__ import absolute_import, division, print_function
+
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
 #as published by the Free Software Foundation; either version 2
@@ -25,12 +27,12 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
-from cli_utils import get_next_step, sys_arg, get_phil_par
+from .cli_utils import get_next_step, sys_arg, get_phil_par
 import sys, os, subprocess, psutil, time
 
 def kill_w_child(pid_num):
 
-    print "attempting to kill pid #:", pid_num
+    print("attempting to kill pid #:", pid_num)
     try:
         parent_proc = psutil.Process(pid_num)
         for child in parent_proc.children(recursive=True):  # or parent_proc.children() for recursive=False
@@ -39,7 +41,7 @@ def kill_w_child(pid_num):
         parent_proc.kill()
 
     except:
-        print "\n\n failed to kill process(es)"
+        print("\n\n failed to kill process(es)")
 
 
 def get_main_path():
@@ -48,10 +50,10 @@ def get_main_path():
 
 def get_import_run_string(in_str_lst):
 
-    print "in_str_lst =", in_str_lst
+    print("in_str_lst =", in_str_lst)
 
     selected_file_path = str(in_str_lst[0])
-    print "selected_file_path =", selected_file_path
+    print("selected_file_path =", selected_file_path)
 
     fnd_sep = False
     sep_chr = None
@@ -60,21 +62,21 @@ def get_import_run_string(in_str_lst):
             dir_pos_sep = pos
 
             if(fnd_sep == True and sep_chr != single_char):
-                print "inconsistent dir separator"
+                print("inconsistent dir separator")
                 return None
 
             fnd_sep = True
             sep_chr = single_char
 
     if(fnd_sep == False):
-        print "Failed to find dir path"
+        print("Failed to find dir path")
         return None
 
     dir_path = selected_file_path[:dir_pos_sep]
 
     #TODO test if the next << if >> is actually needed
     if(dir_path[0:3] == "(u\'"):
-        print "dir_path[0:3] == \"(u\'\""
+        print("dir_path[0:3] == \"(u\'\"")
         dir_path = dir_path[3:]
 
     templ_r_side = selected_file_path[dir_pos_sep:]
@@ -86,7 +88,7 @@ def get_import_run_string(in_str_lst):
     left_sd_name = templ_r_side[:ext_pos_sep]
     ext_name = templ_r_side[ext_pos_sep:]
     if(ext_name == ".h5" or ext_name == ".nxs"):
-        print "found h5 or nxs file"
+        print("found h5 or nxs file")
         file_name = left_sd_name
         file_name = file_name + ext_name
         tail_size = 0
@@ -138,7 +140,7 @@ def get_import_run_string(in_str_lst):
 
         pos_last_num +=1
 
-        print "pos_last_num =", pos_last_num
+        print("pos_last_num =", pos_last_num)
 
         if(pos_last_num > 1):
             lst_num_str = []
@@ -148,19 +150,19 @@ def get_import_run_string(in_str_lst):
                     lst_num_str.append(int(single_string[pos_last_num-tail_size:
                                                          pos_last_num]))
 
-                print "lst_num_str =", lst_num_str
+                print("lst_num_str =", lst_num_str)
                 img_range = [min(lst_num_str), max(lst_num_str)]
 
             except:
-                print "something went wrong with the range thing 01"
+                print("something went wrong with the range thing 01")
                 img_range = None
 
         else:
-            print "something went wrong with the range thing 02"
+            print("something went wrong with the range thing 02")
             img_range = None
 
 
-    print "out_str( template mode ) =", out_str
+    print("out_str( template mode ) =", out_str)
 
     new_cmd = ""
     for single_char in out_str:
@@ -174,13 +176,13 @@ def get_import_run_string(in_str_lst):
         prev_char = single_char
 
     out_str = new_cmd
-    print "img_range =", img_range
+    print("img_range =", img_range)
 
     if(img_range != None):
         out_str += " image_range=" + str(img_range[0]) + "," + str(img_range[1])
 
-    print "out_str( * mode ) =", out_str, "\n"
-    print "dir_path =", dir_path
+    print("out_str( * mode ) =", out_str, "\n")
+    print("dir_path =", dir_path)
 
     return dir_path, out_str
 
@@ -301,9 +303,9 @@ def update_pbar_msg(main_obj):
 
     elif(tmp_curr.success == None):
         if(tmp_curr.lin_num == 1):
-            print "tmp_curr.lin_num == 1"
+            print("tmp_curr.lin_num == 1")
             templ_text = main_obj.centre_par_widget.step_param_widg.currentWidget().my_widget.simple_lin.text()
-            print "templ_text =", templ_text
+            print("templ_text =", templ_text)
             if(templ_text == " ? "):
                 txt = "click << Select File(s) >> or edit input line "
 
@@ -324,7 +326,7 @@ def update_pbar_msg(main_obj):
             txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
 
     main_obj.txt_bar.setText(txt)
-    print "update_pbar_msg =", txt
+    print("update_pbar_msg =", txt)
 
 
 def get_lab_txt(com_nam):
@@ -394,7 +396,7 @@ class MyQButton(QPushButton):
 class TreeNavWidget(QTreeView):
     def __init__(self, parent = None):
         super(TreeNavWidget, self).__init__()
-        print "TreeNavWidget(__init__)"
+        print("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
 
@@ -405,7 +407,7 @@ class TreeNavWidget(QTreeView):
     def update_me(self, root_node, lst_path_idx):
         self.lst_idx = lst_path_idx
 
-        print self.lst_idx
+        print(self.lst_idx)
 
         self.std_mod = QStandardItemModel(self)
         self.recursive_node(root_node, self.std_mod)
@@ -477,11 +479,11 @@ class ViewerThread (QThread):
         self.process = process
 
     def run(self):
-        print "Hi from QThread(run)  ___________________<<< Before Loop >>>"
+        print("Hi from QThread(run)  ___________________<<< Before Loop >>>")
 
         self.process.wait()
 
-        print "_________________________________________>>> Loop ended <<<"
+        print("_________________________________________>>> Loop ended <<<")
 
 
 class ExternalProcDialog(QDialog):
@@ -551,7 +553,7 @@ class ExternalProcDialog(QDialog):
         try:
             os.remove(self.phil_path)
         except:
-            print("no ", self.phil_path, " found")
+            print(("no ", self.phil_path, " found"))
 
         print("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=cwd_path)
@@ -567,21 +569,21 @@ class ExternalProcDialog(QDialog):
 
     def kill_my_proc(self):
         """Kill the subprocess early"""
-        print "self.kill_my_proc"
+        print("self.kill_my_proc")
         self._emit_phil_signals()
         kill_w_child(self.my_process.pid)
         self.done(0)
 
     def child_closed(self):
         """The child process has closed by itself"""
-        print "after ...close()"
+        print("after ...close()")
         self._emit_phil_signals()
         # Just close ourself
         self.done(0)
 
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
-        print "from << closeEvent  (QDialog) >>"
+        print("from << closeEvent  (QDialog) >>")
         self._emit_phil_signals()
         self.kill_my_proc()
 
@@ -630,7 +632,7 @@ class OuterCaller(QWidget):
 
     def check_phil_is(self, path_to_pass):
         if(os.path.isfile(path_to_pass)):
-            print "\n time to read:", path_to_pass, "\n"
+            print("\n time to read:", path_to_pass, "\n")
             lst_params = get_phil_par(path_to_pass)
             self.pass_parmam_lst.emit(lst_params)
 
@@ -647,20 +649,20 @@ class CliOutView(QTextEdit):
             self.append(ed_str)
 
         except:
-            print "unwritable char <<", str_to_print, ">>",
+            print("unwritable char <<", str_to_print, ">>", end=' ')
 
     def make_red(self):
-        print "turning log fonts to RED"
+        print("turning log fonts to RED")
         style_orign = "color: rgba(220, 0, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_green(self):
-        print "turning log fonts to GREEN"
+        print("turning log fonts to GREEN")
         style_orign = "color: rgba(0, 125, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_blue(self):
-        print "turning log fonts to BLUE"
+        print("turning log fonts to BLUE")
         style_orign = "color: rgba(0, 0, 125, 255)"
         self.setStyleSheet(style_orign)
 
@@ -677,19 +679,19 @@ class CliOutView(QTextEdit):
         else:
             self.make_green()
 
-        print " path_to_log =", path_to_log
+        print(" path_to_log =", path_to_log)
 
         try:
             fil_obj = open(path_to_log, 'r')
             lst_lin = fil_obj.readlines()
 
         except:
-            print "Failed to read log file"
+            print("Failed to read log file")
             lst_lin = ["Ready to Run:"]
             self.make_green()
 
         self.clear()
-        print "success =", success, "refresh_txt"
+        print("success =", success, "refresh_txt")
 
         for lin in lst_lin:
             self.add_txt(lin)
@@ -700,7 +702,7 @@ class Text_w_Bar(QProgressBar):
         super(Text_w_Bar,self).__init__()
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
-        print "test setStyle(QStyleFactory.create())"
+        print("test setStyle(QStyleFactory.create())")
         try:
             self.setStyle(QStyleFactory.create("cleanlooks"))
             #self.setStyle(QStyleFactory.create("Plastique"))
@@ -708,7 +710,7 @@ class Text_w_Bar(QProgressBar):
             #self.setStyle(QStyleFactory.create("motif"))
 
         except:
-            print "Failed to setStyle()"
+            print("Failed to setStyle()")
 
     def setText(self, text):
         if(len(text) > 2):
@@ -719,12 +721,12 @@ class Text_w_Bar(QProgressBar):
         return self._text
 
     def start_motion(self):
-        print "starting motion"
+        print("starting motion")
         self.setRange(0, 0)
 
     def end_motion(self):
         self.setRange(0, 1)
-        print "ending motion"
+        print("ending motion")
 
 
 class MainWidget(QMainWindow):
