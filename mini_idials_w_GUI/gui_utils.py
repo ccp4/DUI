@@ -500,10 +500,15 @@ class ExternalProcDialog(QDialog):
         super(ExternalProcDialog, self).__init__(parent)
 
         vbox = QVBoxLayout()
-        vbox.addWidget(QLabel("\n          Running a pop-up viewer ...\
-                               \n \
-                               \n   remember to close the viewer before \
-                               \n         performing any other task"))
+        label = QLabel(
+            (
+                "Running a pop-up viewer ...\n\n"
+                "remember to close the viewer before\n"
+                "performing any other task"
+            )
+        )
+        label.setAlignment(Qt.AlignCenter)
+        vbox.addWidget(label)
 
         kl_but = QPushButton("Close pop-up viewer")
         kl_but.clicked.connect(self.kill_my_proc)
@@ -512,6 +517,8 @@ class ExternalProcDialog(QDialog):
         self.setLayout(vbox)
         self.setFixedSize(self.sizeHint())
         self.setModal(True)
+        self.setWindowTitle("External Tool")
+
 
     def run_my_proc(self, command, json_path, pickle_path):
         """Run a process.
