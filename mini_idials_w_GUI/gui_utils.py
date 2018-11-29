@@ -31,7 +31,11 @@ from .cli_utils import get_next_step, sys_arg, get_phil_par
 import sys, os, subprocess, psutil, time
 
 def kill_w_child(pid_num):
+    """Kills a process and it's entire child process tree.
 
+    Args:
+        pid_num (int): The PID of the parent process to kill
+    """
     print("attempting to kill pid #:", pid_num)
     try:
         parent_proc = psutil.Process(pid_num)
@@ -40,8 +44,8 @@ def kill_w_child(pid_num):
 
         parent_proc.kill()
 
-    except:
-        print("\n\n failed to kill process(es)")
+    except Exception as e:
+        print("\n\n failed to kill process(es):", e)
 
 
 def get_main_path():
