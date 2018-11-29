@@ -595,8 +595,8 @@ class ExternalProcDialog(QDialog):
     def kill_my_proc(self):
         """Kill the subprocess early"""
         print("self.kill_my_proc")
-        self.my_process = None
         kill_w_child(self.my_process.pid)
+        self.my_process = None
         self._check_for_output_files()
         self.done(0)
 
@@ -611,7 +611,6 @@ class ExternalProcDialog(QDialog):
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
         print("from << closeEvent  (QDialog) >>")
-        self.my_process = None
         self._check_for_output_files()
         self.kill_my_proc()
 
@@ -670,9 +669,9 @@ class OuterCaller(QWidget):
         print(output_files)
 
         for filename in output_files:
-            if(filename.ends_with("find_spots.phil")):
-                print("\n time to read:", path_to_pass, "\n")
-                lst_params = get_phil_par(path_to_pass)
+            if(filename.endswith("find_spots.phil")):
+                print("\n time to read:", filename, "\n")
+                lst_params = get_phil_par(filename)
                 self.pass_parmam_lst.emit(lst_params)
             else:
                 print("Not sure how to handle", filename)
