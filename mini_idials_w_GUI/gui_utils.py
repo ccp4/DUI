@@ -485,6 +485,14 @@ class ViewerThread (QThread):
 
 
 class ExternalProcDialog(QDialog):
+    """Create a pop-up modal dialog to wait for an external process
+
+    Args:
+        parent (QWidget): The parent for the dialog. Passed to QDialog.
+
+    Attributes:
+        read_phil_file (pyqtSignal): A .phil file has been found after closing
+    """
 
     read_phil_file = pyqtSignal(str)
 
@@ -497,14 +505,6 @@ class ExternalProcDialog(QDialog):
                                \n   remember to close the viewer before \
                                \n         performing any other task"))
 
-        to_consider = '''
-        my_bar = Text_w_Bar()
-        vbox.addWidget(my_bar)
-        my_bar.start_motion()
-        '''
-
-        self.use_shell = False
-
         kl_but = QPushButton("Close pop-up viewer")
         kl_but.clicked.connect(self.kill_my_proc)
         vbox.addWidget(kl_but)
@@ -513,14 +513,30 @@ class ExternalProcDialog(QDialog):
         self.setFixedSize(self.sizeHint())
         self.setModal(True)
 
-    def run_my_proc(self, pickle_path = "", json_path = "",
-                    command_in = "dials.image_viewer"):
+    def run_my_proc(self, command, json_path, pickle_path):
+        """Run a process.
 
-        first_pikl_path = pickle_path[0]
+        Args:
+            command (str):      The command to run
+            json_path (str):
+                Path to the JSON file to pass in as first argument
+            pickle_path (Sequence[Optional[str]]):
+                An additional path to a pickle to pass in as an argument.
+                Currently, all except the first argument is ignored.
+        """
+        assert isinstance(json_path, basestring)
+        # This function previously had strings as default parameters
+        # but appears to only accept Indexable lists of strings. Make
+        # sure we never try to use strings
+        assert not isinstance(pickle_path, basestring)
+        # Since we ignore everything after [0] assert they are None
+        assert all(x is None for x in pickle_path[1:])
+
 
         # Build the command
-        cmd_to_run = [command_in, str(json_path)]
-        if(first_pikl_path != None):
+        cmd_to_run = [command, str(json_path)]
+        first_pikl_path = pickle_path[0]
+        if first_pikl_path is not None:
             cmd_to_run.append(str(first_pikl_path))
         # If using shell, this needs to be a string
         if self.use_shell == True:
@@ -556,7 +572,7 @@ class ExternalProcDialog(QDialog):
     def child_closed(self):
         """The child process has closed by itself"""
         print "after ...close()"
-        self._emit_phil_signals();
+        self._emit_phil_signals()
         # Just close ourself
         self.done(0)
 
@@ -600,12 +616,14 @@ class OuterCaller(QWidget):
         self.my_json = new_json
 
     def run_recip_dialg(self):
-        self.diag.run_my_proc(pickle_path = self.my_pick, json_path = self.my_json,
-                              command_in = "dials.reciprocal_lattice_viewer")
+        self.diag.run_my_proc("dials.reciprocal_lattice_viewer",
+            json_path=self.my_json,
+            pickle_path=self.my_pick)
 
     def run_img_dialg(self):
-        self.diag.run_my_proc(pickle_path = self.my_pick, json_path = self.my_json,
-                              command_in = "dials.image_viewer")
+        self.diag.run_my_proc("dials.image_viewer",
+            json_path=self.my_json,
+            pickle_path=self.my_pick)
 
     def check_phil_is(self, path_to_pass):
         if(os.path.isfile(path_to_pass)):
