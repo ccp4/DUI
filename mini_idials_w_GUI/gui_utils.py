@@ -510,6 +510,7 @@ class ExternalProcDialog(QDialog):
         vbox.addWidget(kl_but)
 
         self.setLayout(vbox)
+        self.setFixedSize(self.sizeHint())
         self.setModal(True)
 
     def run_my_proc(self, pickle_path = "", json_path = "",
