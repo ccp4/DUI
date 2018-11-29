@@ -488,8 +488,8 @@ class ExternalProcDialog(QDialog):
 
     read_phil_file = pyqtSignal(str)
 
-    def __init__(self, parent = None):
-        super(ExternalProcDialog, self).__init__()
+    def __init__(self, parent=None):
+        super(ExternalProcDialog, self).__init__(parent)
 
         vbox = QVBoxLayout()
         vbox.addWidget(QLabel("\n          Running a pop-up viewer ...\
@@ -589,7 +589,7 @@ class OuterCaller(QWidget):
         img_but.clicked.connect(self.run_img_dialg)
         v_box.addWidget(img_but)
 
-        self.diag = ExternalProcDialog()
+        self.diag = ExternalProcDialog(parent=self.window())
         self.diag.read_phil_file.connect(self.check_phil_is)
         self.setLayout(v_box)
         self.show()
