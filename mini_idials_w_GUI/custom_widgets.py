@@ -143,6 +143,13 @@ class ImportPage(QWidget):
         self.simple_lin.setText(" ? ")
         self.simple_lin.textChanged.connect(self.update_command)
 
+        x_spn_bx = QDoubleSpinBox()
+        #x_spn_bx.setValue(6.0)
+        y_spn_bx = QDoubleSpinBox()
+        #y_spn_bx.setValue(6.0)
+        x_spn_bx.valueChanged.connect(self.x_beam_changed)
+        y_spn_bx.valueChanged.connect(self.y_beam_changed)
+
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
 
         main_path = get_main_path()
@@ -152,22 +159,41 @@ class ImportPage(QWidget):
 
         template_vbox.addWidget(step_label)
         template_vbox.addWidget(self.opn_fil_btn)
-        template_vbox.addStretch(5)
         template_vbox.addWidget(self.simple_lin)
+        template_vbox.addWidget(QLabel("\n\n Beam Centre"))
+        cent_hbox = QHBoxLayout()
+        cent_hbox.addWidget(QLabel("    X: "))
+        cent_hbox.addWidget(x_spn_bx)
+        cent_hbox.addWidget(QLabel("    Y: "))
+        cent_hbox.addWidget(y_spn_bx)
+        cent_hbox.addStretch()
+        template_vbox.addLayout(cent_hbox)
 
         self.opn_fil_btn.clicked.connect(self.open_files)
+
+        self.cmd_list = []
+        self.x_beam, self.y_beam = None, None
+        self.second_half = ""
 
         self.defa_dir = str(os.getcwd())
         self.setLayout(template_vbox)
         self.show()
 
-    def gray_me_out(self):
-        self.simple_lin.setEnabled(False)
-        self.opn_fil_btn.setEnabled(False)
+    def x_beam_changed(self, value):
+        self.x_beam = value
+        print "New Beam pos(X) =", self.x_beam
+        self.build_second_half()
 
-    def activate_me(self):
-        self.simple_lin.setEnabled(True)
-        self.opn_fil_btn.setEnabled(True)
+    def y_beam_changed(self, value):
+        self.y_beam = value
+        print "New Beam pos(Y) =", self.y_beam
+        self.build_second_half()
+
+    def build_second_half(self):
+        print self.x_beam, self.y_beam
+        if(self.x_beam != None and self.y_beam != None):
+            self.second_half = "slow_fast_beam_centre=" + str(self.y_beam) + "," + str(self.x_beam)
+            self.put_str_lin()
 
     def open_files(self):
         lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
@@ -176,9 +202,13 @@ class ImportPage(QWidget):
 
         if(len(lst_file_path) > 0):
             new_dir, new_command = get_import_run_string(lst_file_path)
-
-            self.simple_lin.setText(new_command)
+            self.path_file_str = new_command
             self.defa_dir = new_dir
+            self.put_str_lin()
+
+    def put_str_lin(self):
+        self.cmd_list = [self.path_file_str, self.second_half]
+        self.simple_lin.setText(" ".join(self.cmd_list))
 
     def get_arg_obj(self, sys_arg_in):
         print "sys_arg_in =", sys_arg_in
@@ -211,6 +241,15 @@ class ImportPage(QWidget):
 
         for lin_prn in self.command_lst:
             print "lin_prn =", lin_prn
+
+
+    def gray_me_out(self):
+        self.simple_lin.setEnabled(False)
+        self.opn_fil_btn.setEnabled(False)
+
+    def activate_me(self):
+        self.simple_lin.setEnabled(True)
+        self.opn_fil_btn.setEnabled(True)
 
 
 class ParamAdvancedWidget( QWidget):
