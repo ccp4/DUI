@@ -170,6 +170,8 @@ class ImportPage(QWidget):
         cent_hbox.addWidget(y_spn_bx)
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
+        #main_v_box.addWidget(QLabel("\n\n\n\n"))
+        main_v_box.addStretch()
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
@@ -232,12 +234,6 @@ class ImportPage(QWidget):
         print "cmd_lst =", cmd_lst
 
         for single_com in cmd_lst:
-            '''
-            new_single_com = single_com.encode('utf_8')
-            print "new_single_com =", new_single_com
-            print "single_com =", single_com
-            self.command_lst.append(new_single_com.decode('unicode_escape'))
-            '''
             self.command_lst.append(single_com)
 
         self.update_command_lst_low_level.emit(self.command_lst)
@@ -615,7 +611,7 @@ class ParamWidget(QWidget):
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)
 
         v_left_box =  QVBoxLayout()
-        self.my_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        #self.my_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
         self.show()
