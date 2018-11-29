@@ -467,31 +467,19 @@ class TreeNavWidget(QTreeView):
 
 
 class ViewerThread (QThread):
+    """Tracks the lifetime of a subprocess
 
-    def __init__(self, parent = None):
+    Args:
+        process (subprocess.Popen): The process to track
+    """
+    def __init__(self, process):
         super(ViewerThread, self).__init__()
-
-    def get_pid(self, pid_in):
-        self.pid_to_see = pid_in
+        self.process = process
 
     def run(self):
         print "Hi from QThread(run)  ___________________<<< Before Loop >>>"
-        my_proc = psutil.Process(self.pid_to_see)
 
-        my_proc_stat = my_proc.status()
-        print "my_proc_stat =", my_proc_stat
-
-        while(my_proc_stat == 'running' or
-              my_proc_stat == 'sleeping' or
-              my_proc_stat == 'disk-sleep' ):
-
-            try:
-                my_proc_stat = my_proc.status()
-                time.sleep(0.1)
-
-            except:
-                print "proc disappeared"
-                my_proc_stat = 'None'
+        self.process.wait()
 
         print "_________________________________________>>> Loop ended <<<"
 
@@ -529,55 +517,52 @@ class ExternalProcDialog(QDialog):
 
         first_pikl_path = pickle_path[0]
 
-        if(self.use_shell == True):
-            cmd_to_run = command_in + " " + str(json_path)
-            if(first_pikl_path != None):
-                cmd_to_run += " " + str(first_pikl_path)
-
-        else:
-            cmd_to_run = [command_in, str(json_path)]
-            if(first_pikl_path != None):
-                cmd_to_run.append(str(first_pikl_path))
-
-        self.thrd = ViewerThread()
-
+        # Build the command
+        cmd_to_run = [command_in, str(json_path)]
+        if(first_pikl_path != None):
+            cmd_to_run.append(str(first_pikl_path))
+        # If using shell, this needs to be a string
+        if self.use_shell == True:
+            cmd_to_run = " ".join(cmd_to_run)
 
         cwd_path = sys_arg.directory + os.sep + "dui_files"
         self.phil_path = cwd_path + os.sep + "find_spots.phil"
         try:
             os.remove(self.phil_path)
-
         except:
             print "no ", self.phil_path, " found"
 
-        print "\n running Popen>>>", cmd_to_run, ", ", self.use_shell, "<<< \n"
+        print "\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<"
         self.my_process = subprocess.Popen(args = cmd_to_run, shell = self.use_shell,
                                            cwd = cwd_path)
+        print("Running PID {}".format(self.my_process.pid))
 
-        time.sleep(0.2)
-        self.proc_pid = self.my_process.pid
-        print "self.proc_pid =", self.proc_pid
-        time.sleep(0.2)
-        self.thrd.get_pid(self.proc_pid)
-
+        # Track the process status in a separate thread
+        self.thrd = ViewerThread(self.my_process)
         self.thrd.finished.connect(self.child_closed)
         self.thrd.start()
 
+        # Show this dialog
         self.exec_()
 
     def kill_my_proc(self):
+        """Kill the subprocess early"""
         print "self.kill_my_proc"
         self.read_phil_file.emit(self.phil_path)
-        print "time to kill", self.proc_pid
-        kill_w_child(self.proc_pid)
+
+        kill_w_child(self.my_process.pid)
+
         self.done(0)
 
 
     def child_closed(self):
+        """The child process has closed by itself"""
         print "after ...close()"
-        self.kill_my_proc()
+        # Just close ourself
+        self.done(0)
 
     def closeEvent(self, event):
+        """User has clicked 'close' window decorator on dialog box"""
         print "from << closeEvent  (QDialog) >>"
         self.kill_my_proc()
 
