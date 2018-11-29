@@ -23,12 +23,18 @@ from __future__ import absolute_import, division, print_function
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import os
+import subprocess
+import sys
+import time
+
+import psutil
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
 from .cli_utils import get_next_step, sys_arg, get_phil_par
-import sys, os, subprocess, psutil, time
 
 def kill_w_child(pid_num):
     """Kills a process and it's entire child process tree.
@@ -497,10 +503,12 @@ class ExternalProcDialog(QDialog):
         parent (QWidget): The parent for the dialog. Passed to QDialog.
 
     Attributes:
-        read_phil_file (pyqtSignal): A .phil file has been found after closing
+        outputFileFound (pyqtSignal):
+            A named output file was found. Signal is called with a list
+            of full paths to the output files.
     """
 
-    read_phil_file = pyqtSignal(str)
+    outputFileFound = pyqtSignal(list)
 
     def __init__(self, parent=None):
         super(ExternalProcDialog, self).__init__(parent)
@@ -525,8 +533,10 @@ class ExternalProcDialog(QDialog):
         self.setModal(True)
         self.setWindowTitle("External Tool")
 
+        self.my_process = None
+        self.check_for = []
 
-    def run_my_proc(self, command, json_path, pickle_path):
+    def run_my_proc(self, command, json_path, pickle_path, check_for=None):
         """Run a process.
 
         Args:
@@ -536,6 +546,10 @@ class ExternalProcDialog(QDialog):
             pickle_path (Sequence[Optional[str]]):
                 An additional path to a pickle to pass in as an argument.
                 Currently, all except the first argument is ignored.
+            check_for (Sequence[str]):
+                Files to look for. Anything named here will be removed
+                before running, and a outputFileFound signal sent after
+                running with a list of full paths to each file found.
         """
         assert isinstance(json_path, basestring)
         # This function previously had strings as default parameters
@@ -544,6 +558,8 @@ class ExternalProcDialog(QDialog):
         assert not isinstance(pickle_path, basestring)
         # Since we ignore everything after [0] assert they are None
         assert all(x is None for x in pickle_path[1:])
+        # Only one process running from each class
+        assert self.my_process is None
 
 
         # Build the command
@@ -552,15 +568,20 @@ class ExternalProcDialog(QDialog):
         if first_pikl_path is not None:
             cmd_to_run.append(str(first_pikl_path))
 
-        cwd_path = sys_arg.directory + os.sep + "dui_files"
-        self.phil_path = cwd_path + os.sep + "find_spots.phil"
-        try:
-            os.remove(self.phil_path)
-        except:
-            print(("no ", self.phil_path, " found"))
+        # Save the working directory
+        self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
+
+        # Make sure any files we are looking for are removed
+        self.check_for = check_for or []
+        for check_file in self.check_for:
+            try:
+                os.remove(os.path.join(self.cwd_path, check_file))
+                print("Removed potential output file {}".format(check_file))
+            except OSError:
+                pass
 
         print("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
-        self.my_process = subprocess.Popen(args=cmd_to_run, cwd=cwd_path)
+        self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
         print("Running PID {}".format(self.my_process.pid))
 
         # Track the process status in a separate thread
@@ -574,28 +595,37 @@ class ExternalProcDialog(QDialog):
     def kill_my_proc(self):
         """Kill the subprocess early"""
         print("self.kill_my_proc")
-        self._emit_phil_signals()
+        self.my_process = None
         kill_w_child(self.my_process.pid)
+        self._check_for_output_files()
         self.done(0)
 
     def child_closed(self):
         """The child process has closed by itself"""
         print("after ...close()")
-        self._emit_phil_signals()
+        self.my_process = None
+        self._check_for_output_files()
         # Just close ourself
         self.done(0)
 
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
         print("from << closeEvent  (QDialog) >>")
-        self._emit_phil_signals()
+        self.my_process = None
+        self._check_for_output_files()
         self.kill_my_proc()
 
-    def _emit_phil_signals(self):
+    def _check_for_output_files(self):
         """Send out any messages about .phil files"""
         # Do we have a spotfinding .phil file to read?
-        if os.path.isfile(self.phil_path):
-            self.read_phil_file.emit(self.phil_path)
+        found_checks = []
+        for filename in self.check_for:
+            full_path = os.path.join(self.cwd_path, filename)
+            if os.path.isfile(full_path):
+                print("Found output file {}".format(filename))
+                found_checks.append(full_path)
+        if found_checks:
+            self.outputFileFound.emit(found_checks)
 
 
 class OuterCaller(QWidget):
@@ -616,7 +646,7 @@ class OuterCaller(QWidget):
         v_box.addWidget(img_but)
 
         self.diag = ExternalProcDialog(parent=self.window())
-        self.diag.read_phil_file.connect(self.check_phil_is)
+        self.diag.outputFileFound.connect(self.check_for_phil)
         self.setLayout(v_box)
         self.show()
 
@@ -632,14 +662,20 @@ class OuterCaller(QWidget):
     def run_img_dialg(self):
         self.diag.run_my_proc("dials.image_viewer",
             json_path=self.my_json,
-            pickle_path=self.my_pick)
+            pickle_path=self.my_pick,
+            check_for=["find_spots.phil", "mask.phil"])
 
-    def check_phil_is(self, path_to_pass):
-        if(os.path.isfile(path_to_pass)):
-            print("\n time to read:", path_to_pass, "\n")
-            lst_params = get_phil_par(path_to_pass)
-            self.pass_parmam_lst.emit(lst_params)
+    def check_for_phil(self, output_files):
+        print("Output files:")
+        print(output_files)
 
+        for filename in output_files:
+            if(filename.ends_with("find_spots.phil")):
+                print("\n time to read:", path_to_pass, "\n")
+                lst_params = get_phil_par(path_to_pass)
+                self.pass_parmam_lst.emit(lst_params)
+            else:
+                print("Not sure how to handle", filename)
 
 class CliOutView(QTextEdit):
     def __init__(self, app = None):
