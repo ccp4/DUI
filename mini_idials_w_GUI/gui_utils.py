@@ -663,7 +663,7 @@ class OuterCaller(QWidget):
         self.diag.run_my_proc("dials.image_viewer",
             json_path=self.my_json,
             pickle_path=self.my_pick,
-            check_for=["find_spots.phil", "mask.phil"])
+            check_for=["find_spots.phil", "mask.phil", "mask.pickle"])
 
     def check_for_phil(self, output_files):
         print("Output files:")
