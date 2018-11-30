@@ -143,14 +143,14 @@ class ImportPage(QWidget):
         self.simple_lin.setText(" ? ")
         self.simple_lin.textChanged.connect(self.update_command)
 
-        x_spn_bx = QSpinBox()
-        x_spn_bx.setMaximum(99999)
-        #x_spn_bx.setValue(6.0)
-        y_spn_bx = QSpinBox()
-        y_spn_bx.setMaximum(99999)
-        #y_spn_bx.setValue(6.0)
-        x_spn_bx.valueChanged.connect(self.x_beam_changed)
-        y_spn_bx.valueChanged.connect(self.y_beam_changed)
+        self.x_spn_bx = QSpinBox()
+        self.x_spn_bx.setMaximum(99999)
+        #self.x_spn_bx.setValue(6.0)
+        self.y_spn_bx = QSpinBox()
+        self.y_spn_bx.setMaximum(99999)
+        #self.y_spn_bx.setValue(6.0)
+        self.x_spn_bx.valueChanged.connect(self.x_beam_changed)
+        self.y_spn_bx.valueChanged.connect(self.y_beam_changed)
 
 
         self.chk_invert = QCheckBox("Invert Rotation Axis")
@@ -168,12 +168,15 @@ class ImportPage(QWidget):
         main_v_box.addWidget(step_label)
         main_v_box.addWidget(self.opn_fil_btn)
         main_v_box.addWidget(self.simple_lin)
-        main_v_box.addWidget(QLabel("\n\n Beam Centre"))
+        self.b_cetre_label = QLabel("\n\n Beam Centre")
+        main_v_box.addWidget(self.b_cetre_label)
         cent_hbox = QHBoxLayout()
-        cent_hbox.addWidget(QLabel("    X: "))
-        cent_hbox.addWidget(x_spn_bx)
-        cent_hbox.addWidget(QLabel("    Y: "))
-        cent_hbox.addWidget(y_spn_bx)
+        self.x_label = QLabel("    X: ")
+        cent_hbox.addWidget(self.x_label)
+        cent_hbox.addWidget(self.x_spn_bx)
+        self.y_label = QLabel("    Y: ")
+        cent_hbox.addWidget(self.y_label)
+        cent_hbox.addWidget(self.y_spn_bx)
         cent_hbox.addWidget(QLabel(" \n "))
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
@@ -267,14 +270,25 @@ class ImportPage(QWidget):
         for lin_prn in self.command_lst:
             print "lin_prn =", lin_prn
 
-
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
         self.opn_fil_btn.setEnabled(False)
+        self.x_spn_bx.setEnabled(False)
+        self.y_spn_bx.setEnabled(False)
+        self.x_label.setEnabled(False)
+        self.y_label.setEnabled(False)
+        self.b_cetre_label.setEnabled(False)
+        self.chk_invert.setEnabled(False)
 
     def activate_me(self):
         self.simple_lin.setEnabled(True)
         self.opn_fil_btn.setEnabled(True)
+        self.y_spn_bx.setEnabled(True)
+        self.x_spn_bx.setEnabled(True)
+        self.x_label.setEnabled(True)
+        self.y_label.setEnabled(True)
+        self.b_cetre_label.setEnabled(True)
+        self.chk_invert.setEnabled(True)
 
 
 class ParamAdvancedWidget( QWidget):
@@ -461,8 +475,7 @@ class ParamMainWidget( QWidget):
             for widg in bg_widg:
                 try:
                     if(widg.local_path == str_path):
-                        # No idea what tmp_lst is but some widgets don't have it
-                        if not hasattr(widg, 'tmp_lst') or widg.tmp_lst is None:
+                        if(widg.tmp_lst == None):
                             try:
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
