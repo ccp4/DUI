@@ -409,6 +409,7 @@ class TreeNavWidget(QTreeView):
         print("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
+        self.setIndentation(10)
 
         header_view = self.header()
         header_view.setResizeMode(QHeaderView.ResizeToContents)
