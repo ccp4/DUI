@@ -43,4 +43,4 @@ setup(
 )
 
 # TODO(nick): Work out how to get requirements working, including non-pip like PyQT
-# install_requires=['PyQt4','psutil'],
+# install_requires=['PyQt4','psutil', 'numpy'],

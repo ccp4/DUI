@@ -19,9 +19,12 @@ _*.nb
 .git-notifier*
 git-notifier.log
 .gitversion
+*.egg-info/
 
 doc/sphinx/build
 doc/sphinx/documentation/tutorials/logs
 doc/sphinx/documentation/tutorials/logs_ccp4
 doc/sphinx/documentation/tutorials/logs_detail_betalactamase
 doc/sphinx/installation.stable_release.json
+
+.vscode/
