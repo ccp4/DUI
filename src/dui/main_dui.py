@@ -1,78 +1,91 @@
-'''
+"""
 DUI's main Widget launcher
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
-'''
+"""
 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import sys, os
+from __future__ import absolute_import, division, print_function
+
+import argparse
+import logging
+import os
+import sys
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
-from m_idials_gui import MainWidget
-from cli_utils import sys_arg
+from .cli_utils import sys_arg
+
+logger = logging.getLogger(__name__)
+
 
 def main():
+    # Process any command arguments
+    parser = argparse.ArgumentParser(
+        description="DUI, the dials GUI",
+        usage="dui [-h|--help] [-v[v]][template=TEMPLATE] [directory=DIRECTORY]",
+    )
+    parser.add_argument("positionals", type=str, nargs="*", help=argparse.SUPPRESS)
+    parser.add_argument("--verbose", "-v", action="count")
+    args = parser.parse_args()
 
-    call_arg = sys.argv
+    # Set up the logger to only show warnings unless -v (info) or -vv (debug)
+    if args.verbose == 1:
+        logging.basicConfig(level=logging.INFO)
+    elif args.verbose > 1:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        # The default logging level is same as before - print everything out
+        # logging.basicConfig(level=logging.WARN)
+        logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
-    if(len(call_arg) > 1):
-        for par_str in call_arg[1:]:
-            if(par_str == "e" or par_str == "-e" or
-                    par_str == "explicit" or par_str == "--explicit"):
+    # Process the phil-style parameters
+    for arg in args.positionals[:]:
+        if arg.startswith("template="):
+            sys_arg.template = arg[len("template=") :]
+            args.positionals.remove(arg)
+        elif arg.startswith("directory="):
+            sys_arg.directory = os.path.abspath(arg[len("directory=") :])
+            args.positionals.remove(arg)
 
-                sys_arg.make_next = False
-                sys_arg.run_all = False
-                print "Running in << explicit >> mode"
+    # Warn if any remaining (unknown) parameters given
+    if args.positionals:
+        logger.warning(
+            "Unknown parameter%s %s",
+            "s" if len(args.positionals) > 1 else "",
+            " ".join("'{}'".format(x) for x in args.positionals),
+        )
+        # Should we exit here? Maybe QT can handle it(???)
 
-            elif(par_str == "a" or par_str == "-a" or
-                 par_str == "automatic" or par_str == "--automatic"):
+    logger.info("sys_arg.template =%s", sys_arg.template)
+    logger.info("sys_arg.directory=%s", sys_arg.directory)
 
-                sys_arg.make_next = True
-                sys_arg.run_all = False
-                print "Running in << automatic >> mode"
+    # Inline import so that we can load this after logging setup
+    from .m_idials_gui import MainWidget
 
-            elif(par_str == "sa" or par_str == "-sa" or
-                 par_str == "superautomatic" or par_str == "--superautomatic"):
-
-                sys_arg.make_next = True
-                sys_arg.run_all = True
-                print "Running in << SUPER automatic >> mode"
-
-            elif(par_str[0:9] == "template="):
-                sys_arg.template = par_str[9:]
-
-            elif(par_str[0:10] == "directory="):
-                sys_arg.directory = par_str[10:]
-
-    sys_arg.directory = os.path.abspath(sys_arg.directory)
-
-    print "sys_arg.template=", sys_arg.template
-    print "sys_arg.directory=", sys_arg.directory
-    app =  QApplication(call_arg)
+    app = QApplication(sys.argv)
     ex = MainWidget()
     ex.show()
     sys.exit(app.exec_())
 
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     main()
-

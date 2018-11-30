@@ -22,14 +22,18 @@ copyright (c) CCP4 - DLS
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
+import sys
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
+
 import numpy as np
 
 from dials_viewer_ext import rgb_img
-
 from dials.array_family import flex
-import sys
+
+logger = logging.getLogger(__name__)
 
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val = 100, min_val = 0, text = "Working"):
@@ -206,12 +210,11 @@ try:
     import lst_ext
     find_closer_hkl = lst_ext.find_closer_hkl_func
     list_arr = lst_ext.arrange_list
-    print "running C++ lst_ext"
-
+    logger.debug("running C++ lst_ext")
 except:
     find_closer_hkl = py_find_closer_hkl_func
     list_arr = py_list_arange_func
-    print "running Python version of lst_ext C++ Module"
+    logger.debug("running Python version of lst_ext C++ Module")
 
 def find_hkl_near(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
