@@ -514,7 +514,7 @@ class MainWidget(QMainWindow):
                 print "Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)"
                 path_to_mask_pickle = try_find_prev_mask_pickle(self.idials_runner.current_node)
                 if(path_to_mask_pickle != None):
-                    self.pass_parmams(self, ["lookup.mask=" + path_to_mask_pickle])
+                    self.pass_parmams(["lookup.mask=" + path_to_mask_pickle])
 
             else:
                 print "self.idials_runner.current_node.command_lst[0] =", self.idials_runner.current_node.command_lst[0]
