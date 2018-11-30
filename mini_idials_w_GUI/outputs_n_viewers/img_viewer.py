@@ -195,6 +195,9 @@ class ImgPainter(QWidget):
         self.yb = yb
 
     def paintEvent(self, event):
+
+
+
         if(self.img == None):
             return
 
@@ -208,9 +211,14 @@ class ImgPainter(QWidget):
             painter = QPainter(self)
 
             indexed_pen = QPen()  # creates a default indexed_pen
-            #indexed_pen.setBrush(Qt.green)
-            #indexed_pen.setBrush(QColor(80, 200, 0))
-            indexed_pen.setBrush(QColor(155, 255, 0))
+            if(self.my_parent.palette == "white2black"):
+                indexed_pen.setBrush(Qt.blue)
+
+            elif(self.my_parent.palette == "black2white"):
+                indexed_pen.setBrush(Qt.cyan)
+
+            else:
+                indexed_pen.setBrush(Qt.green)
 
             indexed_pen.setStyle(Qt.SolidLine)
 
@@ -221,8 +229,12 @@ class ImgPainter(QWidget):
                 indexed_pen.setWidth(0.0)
 
             non_indexed_pen = QPen()  # creates a default non_indexed_pen
-            non_indexed_pen.setBrush(QColor(75, 150, 200))
-            #non_indexed_pen.setBrush(Qt.magenta)
+            if(self.my_parent.palette == "white2black" or self.my_parent.palette == "black2white"):
+                non_indexed_pen.setBrush(Qt.red)
+                #non_indexed_pen.setBrush(Qt.magenta)
+
+            else:
+                non_indexed_pen.setBrush(QColor(75, 150, 200))
 
             if(self.my_scale >= 5.0):
                 non_indexed_pen.setStyle(Qt.DotLine)
