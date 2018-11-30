@@ -459,23 +459,27 @@ class MainWidget(QMainWindow):
 
 
     def pass_parmams(self, cmd_lst):
-
-        full_cmd_lst = ["find_spots"]
-        for to_add in cmd_lst:
-            full_cmd_lst.append(to_add)
-
-        print "\n full_cmd_lst =", full_cmd_lst
-
-        my_widget_now = self.centre_par_widget.step_param_widg.currentWidget()
-        if(my_widget_now.my_widget.command_lst[0] == 'find_spots' and
-                self.idials_runner.current_node.success == None):
-
-            self.centre_par_widget.widg_lst[1].my_widget.update_param_w_lst(full_cmd_lst)
-
+        """(We've been passed a parameter by the external tool signal)"""
+        current_parameter_widget = self.centre_par_widget.step_param_widg.currentWidget()
+        action_name = current_parameter_widget.my_widget.command_lst[0]
+        if (
+            action_name in ["find_spots", "integrate"]
+            and self.idials_runner.current_node.success == None
+        ):
+            # As a quick hack to get things working, look for 'lookup.mask'
+            # and if preset add a prefix phil-scope to it
+            lookup_scope_name = {"find_spots": "spotfinder", "integrate": "integration"}[
+                action_name
+            ]
+            full_command = [action_name] + [
+                lookup_scope_name + "." + x if x.startswith("lookup.mask=") else x
+                for x in cmd_lst
+            ]
+            print "\n full_cmd_lst =", full_command
+            current_parameter_widget.my_widget.update_param_w_lst(full_command)
         else:
             print "No need to feed back params"
-            print "my_widget_now.my_widget.command_lst =", my_widget_now.my_widget.command_lst
-
+            print "my_widget_now.my_widget.command_lst =", current_parameter_widget.my_widget.command_lst
 
 
     def update_low_level_command_lst(self, command_lst):

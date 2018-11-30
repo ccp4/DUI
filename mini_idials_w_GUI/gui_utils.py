@@ -23,6 +23,7 @@ from __future__ import absolute_import, division, print_function
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
 import os
 import subprocess
 import sys
@@ -35,6 +36,8 @@ from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
 from .cli_utils import get_next_step, sys_arg, get_phil_par
+
+logger = logging.getLogger(__name__)
 
 def kill_w_child(pid_num):
     """Kills a process and it's entire child process tree.
@@ -666,14 +669,19 @@ class OuterCaller(QWidget):
             check_for=["find_spots.phil", "mask.phil", "mask.pickle"])
 
     def check_for_phil(self, output_files):
-        print("Output files:")
-        print(output_files)
+        print("Output files:", output_files)
 
         for filename in output_files:
             if(filename.endswith("find_spots.phil")):
                 print("\n time to read:", filename, "\n")
                 lst_params = get_phil_par(filename)
+                print("Emitting", repr(lst_params))
                 self.pass_parmam_lst.emit(lst_params)
+            elif filename.endswith("mask.pickle"):
+                logger.debug("Found mask; emitting")
+                # As a quick hack, broadcast lookup.mask and rewrite in catch
+                phil_parms = ["lookup.mask={}".format(filename)]
+                self.pass_parmam_lst.emit(phil_parms)
             else:
                 print("Not sure how to handle", filename)
 
