@@ -152,6 +152,12 @@ class ImportPage(QWidget):
         x_spn_bx.valueChanged.connect(self.x_beam_changed)
         y_spn_bx.valueChanged.connect(self.y_beam_changed)
 
+
+        self.chk_invert = QCheckBox("Invert Rotation Axis")
+        self.chk_invert.setChecked(False)
+        self.chk_invert.stateChanged.connect(self.inv_rota_changed)
+
+
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
 
         main_path = get_main_path()
@@ -168,9 +174,10 @@ class ImportPage(QWidget):
         cent_hbox.addWidget(x_spn_bx)
         cent_hbox.addWidget(QLabel("    Y: "))
         cent_hbox.addWidget(y_spn_bx)
+        cent_hbox.addWidget(QLabel(" \n "))
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
-        #main_v_box.addWidget(QLabel("\n\n\n\n"))
+        main_v_box.addWidget(self.chk_invert)
         main_v_box.addStretch()
 
         self.opn_fil_btn.clicked.connect(self.open_files)
@@ -179,10 +186,21 @@ class ImportPage(QWidget):
         self.x_beam, self.y_beam = None, None
         self.path_file_str = ""
         self.second_half = ""
+        self.third_half = ""
 
         self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
         self.show()
+
+    def inv_rota_changed(self):
+        print "self.chk_invert.checkState():", self.chk_invert.checkState()
+        if(self.chk_invert.checkState()):
+            self.third_half = "invert_rotation_axis=True"
+
+        else:
+            self.third_half = ""
+
+        self.put_str_lin()
 
     def x_beam_changed(self, value):
         self.x_beam = value
@@ -212,7 +230,9 @@ class ImportPage(QWidget):
             self.put_str_lin()
 
     def put_str_lin(self):
-        self.cmd_list = [self.path_file_str, self.second_half]
+        self.cmd_list = [self.path_file_str,
+                         self.second_half.lstrip(),
+                         self.third_half.lstrip()]
         txt_lin = " ".join(self.cmd_list).rstrip()
         self.simple_lin.setText(txt_lin)
 
