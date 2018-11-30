@@ -39,6 +39,27 @@ from .cli_utils import get_next_step, sys_arg, get_phil_par
 
 logger = logging.getLogger(__name__)
 
+def try_find_prev_mask_pickle(cur_nod):
+    pickle_path = None
+    my_node = cur_nod
+    while pickle_path == None:
+        my_node = my_node.prev_step
+        try:
+            if(my_node.command_lst[0] == "find_spots"):
+                print("found find_spots")
+                for command in my_node.command_lst:
+                    if(command.startswith("spotfinder.lookup.mask=")):
+                        print("Found mask.pickle")
+                        print(my_node.command_lst)
+                        pickle_path = command[23:]
+                        print("my_path =", pickle_path)
+
+        except:
+            print("not getting there")
+            return None
+
+    return pickle_path
+
 def kill_w_child(pid_num):
     """Kills a process and it's entire child process tree.
 
@@ -57,8 +78,10 @@ def kill_w_child(pid_num):
         print("\n\n failed to kill process(es):", e)
 
 
+
 def get_main_path():
     return str(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 def get_import_run_string(in_str_lst):
@@ -555,6 +578,8 @@ class ExternalProcDialog(QDialog):
                 before running, and a outputFileFound signal sent after
                 running with a list of full paths to each file found.
         """
+
+        to_discuss_w_Nick = '''
         assert isinstance(json_path, basestring)
         # This function previously had strings as default parameters
         # but appears to only accept Indexable lists of strings. Make
@@ -564,6 +589,7 @@ class ExternalProcDialog(QDialog):
         assert all(x is None for x in pickle_path[1:])
         # Only one process running from each class
         assert self.my_process is None
+        '''
 
 
         # Build the command

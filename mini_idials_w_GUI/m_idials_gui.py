@@ -37,7 +37,8 @@ from custom_widgets import ParamWidget
 
 from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
      build_command_tip, update_info, update_pbar_msg, kill_w_child, \
-     TreeNavWidget, build_ttip, build_label, MyQButton, get_main_path
+     TreeNavWidget, build_ttip, build_label, MyQButton, get_main_path, \
+     try_find_prev_mask_pickle
 
 widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings",
                   "refine", "integrate", "symmetry", "scale", "export"]
@@ -460,6 +461,9 @@ class MainWidget(QMainWindow):
 
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
+
+        print "\n_________________________________________cmd_lst(pass_parmams) =", cmd_lst, "\n"
+
         current_parameter_widget = self.centre_par_widget.step_param_widg.currentWidget()
         action_name = current_parameter_widget.my_widget.command_lst[0]
         if (
@@ -502,9 +506,21 @@ class MainWidget(QMainWindow):
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
-            print "________________________________________________________________________mkchi\n"
+            print "________________________________________________________________________>>>> mkchi\n"
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
-            print "\n________________________________________________________________________mkchi"
+
+            path_to_mask_pickle = None
+            if(self.idials_runner.current_node.command_lst[0] == "integrate"):
+                print "Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)"
+                path_to_mask_pickle = try_find_prev_mask_pickle(self.idials_runner.current_node)
+                if(path_to_mask_pickle != None):
+                    self.pass_parmams(self, ["lookup.mask=" + path_to_mask_pickle])
+
+            else:
+                print "self.idials_runner.current_node.command_lst[0] =", self.idials_runner.current_node.command_lst[0]
+
+            print "path_to_mask_pickle =", path_to_mask_pickle
+            print "\n________________________________________________________________________mkchi <<<<<"
 
             self.cmd_exe(["clean"])
 
