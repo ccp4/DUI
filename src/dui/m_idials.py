@@ -102,7 +102,6 @@ class Runner(object):
         self.step_list = [root_node]
         self.bigger_lin = 0
         self.current_line = self.bigger_lin
-        self.make_next = True
         self.create_step(root_node)
 
         print "root_node.lin_num =", root_node.lin_num
@@ -143,10 +142,7 @@ class Runner(object):
                 self.create_step(self.current_node)
 
             self.current_node(cmd_lst, ref_to_class)
-            if(self.current_node.success == True and self.make_next == True):
-                self.create_step(self.current_node)
-
-            else:
+            if not self.current_node.success:
                 print "failed step"
 
     def clean(self):
@@ -157,9 +153,7 @@ class Runner(object):
 
         for node in self.step_list:
             if( node != self.current_node and
-                node.success == None and (
-                self.make_next == False or
-                len(node.prev_step.next_step_list) > 1 ) ):
+                node.success == None and len(node.prev_step.next_step_list) > 1):
                 lst_to_rm.append(node)
 
         for node in lst_to_rm:
@@ -302,18 +296,6 @@ class Runner(object):
 if(__name__ == "__main__"):
     tree_output = TreeShow()
 
-    if(len(sys.argv) <= 1):
-        make_next_in = True
-        print "Defaulting to << automatic >> mode"
-
-    elif(str(sys.argv[1]) == "-e"):
-        make_next_in = False
-        print "Running in << explicit >> mode"
-
-    else:
-        make_next_in = True
-        print "Running in << automatic >> mode"
-
     storage_path = sys_arg.directory
 
     try:
@@ -339,7 +321,6 @@ if(__name__ == "__main__"):
 
         os.mkdir(storage_path + "/dui_files")
 
-    idials_runner.make_next = make_next_in
     tree_output(idials_runner)
 
     command = ""
