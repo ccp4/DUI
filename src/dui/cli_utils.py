@@ -31,8 +31,6 @@ class SysArgvData(object):
     '''
     Some data related to how the GUI gets launched from CLI
     '''
-    make_next = False
-    run_all = False
     template = None
     directory = str(os.getcwd())
 

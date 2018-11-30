@@ -287,8 +287,6 @@ class MainWidget(QMainWindow):
             os.mkdir(self.storage_path + "/dui_files")
             refresh_gui = False
 
-        self.idials_runner.make_next = sys_arg.make_next
-
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
 
@@ -302,7 +300,6 @@ class MainWidget(QMainWindow):
 
         self.centre_par_widget = ControlWidget()
         self.centre_par_widget.get_arg_obj(sys_arg)
-        self.run_all = sys_arg.run_all
         self.stop_run_retry = StopRunRetry()
         self.tree_out = TreeNavWidget()
 
@@ -494,19 +491,13 @@ class MainWidget(QMainWindow):
         print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
         print "                                command_lst =", command_lst
 
-        if(self.idials_runner.current_node.success == True and
-                self.idials_runner.make_next == True):
-
-            self.rep_clicked()
-
         self.idials_runner.current_node.command_lst = command_lst
         self.reconnect_when_ready()
 
     def cmd_changed_by_user(self, my_label):
         print "cmd_changed_by_user()"
         tmp_curr = self.idials_runner.current_node
-        if(self.idials_runner.make_next == False and
-                tmp_curr.success == True):
+        if tmp_curr.success == True:
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
@@ -581,24 +572,13 @@ class MainWidget(QMainWindow):
         self.txt_bar.end_motion()
         self.just_reindexed = False
 
-        if(self.idials_runner.make_next == True):
-            tmp_curr = self.idials_runner.current_node.prev_step
-            nxt_cmd = get_next_step(tmp_curr)
-            print "get_next_step(tmp_curr) =", nxt_cmd
-            if(nxt_cmd != "reindex" and tmp_curr.success == True):
-                self.centre_par_widget.set_widget(nxt_cmd = nxt_cmd)
-
-            self.idials_runner.current_node.command_lst[0] = nxt_cmd
-
-        else:
-            tmp_curr = self.idials_runner.current_node
+        tmp_curr = self.idials_runner.current_node
 
         if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
                 tmp_curr.success == True):
 
-            if(self.idials_runner.make_next == False):
-                self.idials_runner.run(command = ["mkchi"],
-                                        ref_to_class = None)
+            self.idials_runner.run(command = ["mkchi"],
+                                    ref_to_class = None)
 
             self.idials_runner.current_node.command_lst[0] = "reindex"
 
@@ -611,11 +591,6 @@ class MainWidget(QMainWindow):
 
             except:
                 print "no need to close reindex table"
-
-        if(tmp_curr.command_lst[0] != "refine_bravais_settings" and
-                self.run_all == True):
-
-            self.run_clicked()
 
         self.check_reindex_pop()
         self.check_gray_outs()
@@ -678,8 +653,7 @@ class MainWidget(QMainWindow):
                                 self.idials_runner.current_line)
 
         tmp_cur_nod = self.idials_runner.current_node
-        if(self.idials_runner.make_next == False and
-                len(tmp_cur_nod.next_step_list) == 0 and
+        if (len(tmp_cur_nod.next_step_list) == 0 and
                 tmp_cur_nod.success == True):
 
             nod_ref = tmp_cur_nod
