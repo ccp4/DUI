@@ -461,7 +461,8 @@ class ParamMainWidget( QWidget):
             for widg in bg_widg:
                 try:
                     if(widg.local_path == str_path):
-                        if(widg.tmp_lst == None):
+                        # No idea what tmp_lst is but some widgets don't have it
+                        if not hasattr(widg, 'tmp_lst') or widg.tmp_lst is None:
                             try:
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
