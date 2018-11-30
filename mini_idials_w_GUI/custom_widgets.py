@@ -145,9 +145,12 @@ class ImportPage(QWidget):
 
         self.x_spn_bx = QSpinBox()
         self.x_spn_bx.setMaximum(99999)
+        self.x_spn_bx.setSpecialValueText("Auto")
         #self.x_spn_bx.setValue(6.0)
         self.y_spn_bx = QSpinBox()
         self.y_spn_bx.setMaximum(99999)
+        self.y_spn_bx.setSpecialValueText("Auto")
+
         #self.y_spn_bx.setValue(6.0)
         self.x_spn_bx.valueChanged.connect(self.x_beam_changed)
         self.y_spn_bx.valueChanged.connect(self.y_beam_changed)
@@ -186,7 +189,7 @@ class ImportPage(QWidget):
         self.opn_fil_btn.clicked.connect(self.open_files)
 
         self.cmd_list = []
-        self.x_beam, self.y_beam = None, None
+        self.x_beam, self.y_beam = 0.0, 0.0
         self.path_file_str = ""
         self.second_half = ""
         self.third_half = ""
@@ -217,9 +220,13 @@ class ImportPage(QWidget):
 
     def build_second_half(self):
         print self.x_beam, self.y_beam
-        if(self.x_beam != None and self.y_beam != None):
+        if(self.x_beam != 0.0 and self.y_beam != 0.0):
             self.second_half = "slow_fast_beam_centre=" + str(self.y_beam) + "," + str(self.x_beam)
-            self.put_str_lin()
+
+        else:
+            self.second_half = ""
+
+        self.put_str_lin()
 
     def open_files(self):
         lst_file_path =  QFileDialog.getOpenFileNames(self, "Open File(s)",
