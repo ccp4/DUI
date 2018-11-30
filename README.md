@@ -1,4 +1,4 @@
-DUI: a Graphical Interface for DIALS
+# DUI: a Graphical Interface for DIALS
 
 DIALS (https://dials.github.io) is a set of command-line tools for
 processing X-ray diffraction data - the Dials User Interface (DUI) is
