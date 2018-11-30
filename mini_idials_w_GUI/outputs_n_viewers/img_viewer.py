@@ -217,6 +217,9 @@ class ImgPainter(QWidget):
             elif(self.my_parent.palette == "black2white"):
                 indexed_pen.setBrush(Qt.cyan)
 
+            elif(self.my_parent.palette == "hot descend"):
+                indexed_pen.setBrush(Qt.magenta)
+
             else:
                 indexed_pen.setBrush(Qt.green)
 
