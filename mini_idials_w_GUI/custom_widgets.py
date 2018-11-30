@@ -234,6 +234,9 @@ class ImportPage(QWidget):
                          self.second_half.lstrip(),
                          self.third_half.lstrip()]
         txt_lin = " ".join(self.cmd_list).rstrip()
+        while '  ' in txt_lin:
+            txt_lin = txt_lin.replace('  ', ' ')
+
         self.simple_lin.setText(txt_lin)
 
         print "self.simple_lin.setText:<<" + txt_lin + ">>"
