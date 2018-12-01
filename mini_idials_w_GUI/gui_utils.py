@@ -52,7 +52,7 @@ def try_find_prev_mask_pickle(cur_nod):
                         print("Found mask.pickle")
                         print(my_node.command_lst)
                         pickle_path = command[23:]
-                        print("\n\n____________________my_path =", pickle_path, "\n\n")
+                        print("\n my_path =", pickle_path, "\n")
                         if os.path.isfile(pickle_path):
                             print("file is still there")
 
