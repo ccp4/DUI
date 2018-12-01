@@ -360,7 +360,7 @@ class InfoWidget( QWidget):
         self.setLayout(my_main_box)
         self.show()
 
-    def update_data(self, exp_json_path = None, refl_pikl_path = None):
+    def update_data(self, exp_json_path = None, refl_pikl_path = None, try_rm_phil = None):
 
         print "\n\nrefl_pikl_path =", refl_pikl_path
         print "exp_json_path =", exp_json_path,"\n"

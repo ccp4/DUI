@@ -306,7 +306,15 @@ def update_info(main_obj):
             main_obj.cur_pick = new_ref_pikl
             main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
+    try_rm_phil = None
+
     if(tmp_curr.success == None):
+        if(
+            tmp_curr.command_lst[0] == "find_spots" or
+            tmp_curr.command_lst[0] == "integrate"
+        ):
+            try_rm_phil = True
+
         tmp_curr = tmp_curr.prev_step
 
     uni_json = tmp_curr.json_file_out
@@ -317,7 +325,8 @@ def update_info(main_obj):
     main_obj.img_view.update_exp(main_obj.info_widget.all_data.ref2exp)
 
     main_obj.ext_view.update_data(new_pick = new_ref_pikl,
-                                  new_json = uni_json)
+                                  new_json = uni_json,
+                                  try_rm_phil = try_rm_phil)
 
     try:
         xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
@@ -568,7 +577,8 @@ class ExternalProcDialog(QDialog):
         self.my_process = None
         self.check_for = []
 
-    def run_my_proc(self, command, json_path, pickle_path, check_for=None):
+    def run_my_proc(self, command, json_path, pickle_path,
+                    check_for = None, try_rm_phil = None):
         """Run a process.
 
         Args:
@@ -607,13 +617,15 @@ class ExternalProcDialog(QDialog):
         self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
         # Make sure any files we are looking for are removed
-        self.check_for = check_for or []
-        for check_file in self.check_for:
-            try:
-                os.remove(os.path.join(self.cwd_path, check_file))
-                print("Removed potential output file {}".format(check_file))
-            except OSError:
-                pass
+        print("try_rm_phil =", try_rm_phil)
+        if(try_rm_phil == True):
+            self.check_for = check_for or []
+            for check_file in self.check_for:
+                try:
+                    os.remove(os.path.join(self.cwd_path, check_file))
+                    print("Removed potential output file {}".format(check_file))
+                except OSError:
+                    pass
 
         print("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
@@ -684,20 +696,24 @@ class OuterCaller(QWidget):
         self.setLayout(v_box)
         self.show()
 
-    def update_data(self, new_pick = None, new_json = None):
+    def update_data(self, new_pick = None, new_json = None, try_rm_phil = None):
         self.my_pick = new_pick
         self.my_json = new_json
+        self.try_rm_phil = try_rm_phil
 
     def run_recip_dialg(self):
-        self.diag.run_my_proc("dials.reciprocal_lattice_viewer",
+        self.diag.run_my_proc(
+            "dials.reciprocal_lattice_viewer",
             json_path=self.my_json,
             pickle_path=self.my_pick)
 
     def run_img_dialg(self):
-        self.diag.run_my_proc("dials.image_viewer",
+        self.diag.run_my_proc(
+            "dials.image_viewer",
             json_path=self.my_json,
             pickle_path=self.my_pick,
-            check_for=["find_spots.phil", "mask.phil", "mask.pickle"])
+            check_for=["find_spots.phil", "mask.phil", "mask.pickle"],
+            try_rm_phil = self.try_rm_phil)
 
     def check_for_phil(self, output_files):
         print("Output files:", output_files)
