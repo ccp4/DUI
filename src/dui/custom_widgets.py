@@ -184,7 +184,7 @@ class ImportPage(QWidget):
         self.y_label = QLabel("    Y: ")
         cent_hbox.addWidget(self.y_label)
         cent_hbox.addWidget(self.y_spn_bx)
-        cent_hbox.addWidget(QLabel(" \n "))
+    #    cent_hbox.addWidget(QLabel(" \n "))
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
         main_v_box.addWidget(self.chk_invert)
