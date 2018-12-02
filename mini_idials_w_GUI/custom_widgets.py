@@ -481,8 +481,8 @@ class ParamMainWidget( QWidget):
                        self.simpler_widget.lst_var_widg):
             for widg in bg_widg:
                 try:
-                    if(widg.local_path == str_path):
-                        if(widg.tmp_lst == None):
+                    if widg.local_path == str_path:
+                        if not hasattr(widg, "tmp_lst") or widg.tmp_lst == None:
                             try:
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
