@@ -606,14 +606,14 @@ class ExternalProcDialog(QDialog):
         # Save the working directory
         self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-        # Make sure any files we are looking for are removed
         self.check_for = check_for or []
+        # Store metadata about the files if they exist, to check if they changed
+        self.check_file_status = {}
         for check_file in self.check_for:
-            try:
-                os.remove(os.path.join(self.cwd_path, check_file))
-                print("Removed potential output file {}".format(check_file))
-            except OSError:
-                pass
+            full_path = os.path.join(self.cwd_path, check_file)
+            if os.path.exists(full_path):
+                logger.debug("File %s exists - collecting metadata", full_path)
+                self.check_file_status[check_file] = os.stat(full_path)
 
         print("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
@@ -650,14 +650,25 @@ class ExternalProcDialog(QDialog):
         self.kill_my_proc()
 
     def _check_for_output_files(self):
-        """Send out any messages about .phil files"""
-        # Do we have a spotfinding .phil file to read?
+        """Send out any signals about created or changed output files"""
         found_checks = []
         for filename in self.check_for:
             full_path = os.path.join(self.cwd_path, filename)
-            if os.path.isfile(full_path):
+            if filename in self.check_file_status:
+                # If this file existed, see if it has changed
+                try:
+                    new_stat = os.stat(full_path)
+                    old_stat = self.check_file_status[filename]
+                    if (new_stat.st_mtime, new_stat.st_size) != (old_stat.st_mtime, old_stat.st_size):
+                        logger.info("Size/mtime of %s has changed - reading as new file", filename)
+                        found_checks.append(full_path)
+                except OSError as e:
+                    logger.warning("OSError (%s) when trying to stat file that existed before external", e)
+            elif os.path.isfile(full_path):
+                # The file didn't exist before - definitely new!
                 print("Found output file {}".format(filename))
                 found_checks.append(full_path)
+
         if found_checks:
             self.outputFileFound.emit(found_checks)
 
@@ -697,14 +708,15 @@ class OuterCaller(QWidget):
         self.diag.run_my_proc("dials.image_viewer",
             json_path=self.my_json,
             pickle_path=self.my_pick,
-            check_for=["find_spots.phil", "mask.phil", "mask.pickle"])
+            check_for=["find_spots.phil", "mask.pickle"])
 
     def check_for_phil(self, output_files):
+        """Slot function triggered by new files created by external process"""
         print("Output files:", output_files)
 
         for filename in output_files:
             if(filename.endswith("find_spots.phil")):
-                print("\n time to read:", filename, "\n")
+                print("Reading spotfinding settings:", filename, "\n")
                 lst_params = get_phil_par(filename)
                 print("Emitting", repr(lst_params))
                 self.pass_parmam_lst.emit(lst_params)
