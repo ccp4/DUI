@@ -318,9 +318,13 @@ class MainWidget(QMainWindow):
         v_control_splitter = QSplitter()
         v_control_splitter.setOrientation(Qt.Vertical)
 
+        # Create the scroll area to hold the parameter pages
         ParamScrollArea = QScrollArea()
         ParamScrollArea.setWidget(self.centre_par_widget.step_param_widg)
         ParamScrollArea.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        scroll_layout = QVBoxLayout()
+        scroll_layout.addWidget(self.centre_par_widget.step_param_widg)
+        ParamScrollArea.setLayout(scroll_layout)
 
         v_control_splitter.addWidget(self.tree_out)
         v_control_splitter.addWidget(ParamScrollArea)
