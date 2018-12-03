@@ -1,26 +1,26 @@
-'''
+"""
 DUI's most central gidgets
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
-'''
+"""
 from __future__ import print_function
 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -36,14 +36,33 @@ from outputs_gui import InfoWidget
 from dynamic_reindex_gui import MyReindexOpts
 from custom_widgets import ParamWidget
 
-from gui_utils import CliOutView, Text_w_Bar, OuterCaller, \
-     build_command_tip, update_info, update_pbar_msg, kill_w_child, \
-     TreeNavWidget, build_ttip, build_label, MyQButton, get_main_path, \
-     try_find_prev_mask_pickle
+from gui_utils import (
+    CliOutView,
+    Text_w_Bar,
+    OuterCaller,
+    build_command_tip,
+    update_info,
+    update_pbar_msg,
+    kill_w_child,
+    TreeNavWidget,
+    build_ttip,
+    build_label,
+    MyQButton,
+    get_main_path,
+    try_find_prev_mask_pickle,
+)
 
-widg_name_list = ["import", "find_spots", "index", "refine_bravais_settings",
-                  "refine", "integrate", "symmetry", "scale", "export"]
-
+widg_name_list = [
+    "import",
+    "find_spots",
+    "index",
+    "refine_bravais_settings",
+    "refine",
+    "integrate",
+    "symmetry",
+    "scale",
+    "export",
+]
 
 
 class CommandThread(QThread):
@@ -51,7 +70,7 @@ class CommandThread(QThread):
     str_print_signal = pyqtSignal(str)
     str_fail_signal = pyqtSignal()
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(CommandThread, self).__init__()
 
     def __call__(self, cmd_to_run, ref_to_controler):
@@ -60,7 +79,7 @@ class CommandThread(QThread):
         self.start()
 
     def run(self):
-        self.ref_to_controler.run(command = self.cmd_to_run, ref_to_class = self)
+        self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
 
     def emit_print_signal(self, str_lin):
         self.str_print_signal.emit(str_lin)
@@ -68,12 +87,13 @@ class CommandThread(QThread):
     def emit_fail_signal(self):
         self.str_fail_signal.emit()
 
+
 class ControlWidget(QWidget):
 
     user_changed = pyqtSignal(str)
     update_command_lst_high_level = pyqtSignal(list)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(ControlWidget, self).__init__()
 
         main_path = get_main_path()
@@ -101,7 +121,7 @@ class ControlWidget(QWidget):
         lst_grayed_icons_path.append(main_path + "/resources/scale_grayed.png")
         lst_grayed_icons_path.append(main_path + "/resources/export_grayed.png")
 
-        top_box =  QVBoxLayout()
+        top_box = QVBoxLayout()
 
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []
@@ -109,15 +129,14 @@ class ControlWidget(QWidget):
 
         print("\n\n\n\n")
 
-
         lst_heights = []
         lst_widths = []
 
         for num, step_name in enumerate(widg_name_list):
 
             tmp_ico = QIcon()
-            tmp_ico.addFile(lst_icons_path[num], mode = QIcon.Normal)
-            tmp_ico.addFile(lst_grayed_icons_path[num], mode = QIcon.Disabled)
+            tmp_ico.addFile(lst_icons_path[num], mode=QIcon.Normal)
+            tmp_ico.addFile(lst_grayed_icons_path[num], mode=QIcon.Disabled)
 
             ttip = build_ttip(step_name)
 
@@ -125,11 +144,11 @@ class ControlWidget(QWidget):
             new_btn.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
             new_btn.intro_content(step_name, tmp_ico, ttip)
 
-            if(num > 0):
+            if num > 0:
                 new_btn.clicked.connect(self.btn_clicked)
                 top_box.addWidget(new_btn)
 
-            elif(num == 0):
+            elif num == 0:
                 new_btn.hide()
 
             param_widg = ParamWidget(step_name)
@@ -165,12 +184,12 @@ class ControlWidget(QWidget):
     def get_arg_obj(self, sys_arg_in):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
 
-    def set_widget(self, nxt_cmd = None, curr_step = None):
+    def set_widget(self, nxt_cmd=None, curr_step=None):
 
         found_label = False
 
         for widget in self.widg_lst:
-            if(widget.my_label == nxt_cmd):
+            if widget.my_label == nxt_cmd:
                 self.step_param_widg.setCurrentWidget(widget)
                 found_label = True
                 try:
@@ -179,7 +198,7 @@ class ControlWidget(QWidget):
                 except:
                     print("\n Unable to update params\n")
 
-        if(found_label == False and nxt_cmd == "reindex"):
+        if found_label == False and nxt_cmd == "reindex":
             print("assuming reindex mode")
             widget_now = self.widg_lst[3]
             self.step_param_widg.setCurrentWidget(widget_now)
@@ -203,13 +222,12 @@ class ControlWidget(QWidget):
 
         for btn in self.btn_lst:
             for cmd_str in lst_nxt:
-                if(btn.cmd_n1 == cmd_str):
+                if btn.cmd_n1 == cmd_str:
                     btn.setEnabled(True)
 
 
 class StopRunRetry(QWidget):
-
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(StopRunRetry, self).__init__()
 
         main_path = get_main_path()
@@ -218,26 +236,26 @@ class StopRunRetry(QWidget):
 
         self.repeat_btn = QPushButton("\n Retry \n", self)
 
-        re_try_icon_path = str(main_path +
-                              "/resources/re_try.png")
-        re_try_grayed_path = str(main_path +
-                              "/resources/re_try_grayed.png")
+        re_try_icon_path = str(main_path + "/resources/re_try.png")
+        re_try_grayed_path = str(main_path + "/resources/re_try_grayed.png")
         tmp_ico = QIcon()
-        tmp_ico.addFile(re_try_icon_path, mode = QIcon.Normal)
-        tmp_ico.addFile(re_try_grayed_path, mode = QIcon.Disabled)
+        tmp_ico.addFile(re_try_icon_path, mode=QIcon.Normal)
+        tmp_ico.addFile(re_try_grayed_path, mode=QIcon.Disabled)
 
         self.repeat_btn.setIcon(tmp_ico)
         self.repeat_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.repeat_btn)
 
         self.run_btn = QPushButton("\n  Run  \n", self)
-        self.dials_logo_path = str(main_path +
-                              "/resources/DIALS_Logo_smaller_centred.png")
-        dials_grayed_path = str(main_path +
-                                "/resources/DIALS_Logo_smaller_centred_grayed.png")
+        self.dials_logo_path = str(
+            main_path + "/resources/DIALS_Logo_smaller_centred.png"
+        )
+        dials_grayed_path = str(
+            main_path + "/resources/DIALS_Logo_smaller_centred_grayed.png"
+        )
         tmp_ico = QIcon()
-        tmp_ico.addFile(self.dials_logo_path, mode = QIcon.Normal)
-        tmp_ico.addFile(dials_grayed_path, mode = QIcon.Disabled)
+        tmp_ico.addFile(self.dials_logo_path, mode=QIcon.Normal)
+        tmp_ico.addFile(dials_grayed_path, mode=QIcon.Disabled)
 
         self.run_btn.setIcon(tmp_ico)
         self.run_btn.setIconSize(QSize(50, 38))
@@ -247,8 +265,8 @@ class StopRunRetry(QWidget):
         stop_logo_path = str(main_path + "/resources/stop.png")
         stop_grayed_path = str(main_path + "/resources/stop_grayed.png")
         tmp_ico = QIcon()
-        tmp_ico.addFile(stop_logo_path, mode = QIcon.Normal)
-        tmp_ico.addFile(stop_grayed_path, mode = QIcon.Disabled)
+        tmp_ico.addFile(stop_logo_path, mode=QIcon.Normal)
+        tmp_ico.addFile(stop_grayed_path, mode=QIcon.Disabled)
         self.stop_btn.setIcon(tmp_ico)
         self.stop_btn.setIconSize(QSize(50, 38))
         ctrl_box.addWidget(self.stop_btn)
@@ -262,12 +280,11 @@ class MainWidget(QMainWindow):
         super(MainWidget, self).__init__()
         self.storage_path = sys_arg.directory
         try:
-            with open (self.storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
+            with open(self.storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
                 self.idials_runner = pickle.load(bkp_in)
 
-
-            #TODO sometimes the following error appears
-            #Attribute not found
+            # TODO sometimes the following error appears
+            # Attribute not found
             #'module' object has no attribute 'CommandNode'
 
             refresh_gui = True
@@ -280,10 +297,11 @@ class MainWidget(QMainWindow):
 
             try:
                 import shutil
+
                 shutil.rmtree(self.storage_path + "/dui_files")
 
             except:
-                print("failed to do \"shutil.rmtree(\"/dui_files\")\"")
+                print('failed to do "shutil.rmtree("/dui_files")"')
 
             os.mkdir(self.storage_path + "/dui_files")
             refresh_gui = False
@@ -385,16 +403,15 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.setWindowTitle('CCP4 DUI')
+        self.setWindowTitle("CCP4 DUI")
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
         self.just_reindexed = False
         self.user_stoped = False
         self.reconnect_when_ready()
 
-        if(refresh_gui == True):
+        if refresh_gui == True:
             self.refresh_my_gui()
-
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)
@@ -407,9 +424,11 @@ class MainWidget(QMainWindow):
 
         self.centre_par_widget.user_changed.connect(self.cmd_changed_by_user)
         self.centre_par_widget.update_command_lst_high_level.connect(
-                          self.update_low_level_command_lst)
+            self.update_low_level_command_lst
+        )
         self.centre_par_widget.step_param_widg.currentChanged.connect(
-                                          self.cmd_changed_by_any)
+            self.cmd_changed_by_any
+        )
         self.check_gray_outs()
 
     def disconnect_while_running(self):
@@ -434,21 +453,21 @@ class MainWidget(QMainWindow):
         self.stop_run_retry.stop_btn.setEnabled(False)
         self.stop_run_retry.run_btn.setEnabled(False)
 
-        if(self.user_stoped == True):
+        if self.user_stoped == True:
             self.idials_runner.current_node.success = None
 
-        if(self.idials_runner.current_node.success == None):
+        if self.idials_runner.current_node.success == None:
             self.stop_run_retry.run_btn.setEnabled(True)
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.activate_me()
 
         else:
 
-            if(self.idials_runner.current_node.command_lst[0] != "export"):
+            if self.idials_runner.current_node.command_lst[0] != "export":
                 self.stop_run_retry.repeat_btn.setEnabled(True)
 
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
 
-        if(self.idials_runner.current_node.command_lst[0] == "reindex"):
+        if self.idials_runner.current_node.command_lst[0] == "reindex":
             self.stop_run_retry.run_btn.setEnabled(False)
             self.stop_run_retry.repeat_btn.setEnabled(False)
 
@@ -460,13 +479,18 @@ class MainWidget(QMainWindow):
         self.view_tab_num = num
         update_info(self)
 
-
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
 
-        print("\n_________________________________________cmd_lst(pass_parmams) =", cmd_lst, "\n")
+        print(
+            "\n_________________________________________cmd_lst(pass_parmams) =",
+            cmd_lst,
+            "\n",
+        )
 
-        current_parameter_widget = self.centre_par_widget.step_param_widg.currentWidget()
+        current_parameter_widget = (
+            self.centre_par_widget.step_param_widg.currentWidget()
+        )
         action_name = current_parameter_widget.my_widget.command_lst[0]
         if (
             action_name in ["find_spots", "integrate"]
@@ -474,9 +498,10 @@ class MainWidget(QMainWindow):
         ):
             # As a quick hack to get things working, look for 'lookup.mask'
             # and if preset add a prefix phil-scope to it
-            lookup_scope_name = {"find_spots": "spotfinder", "integrate": "integration"}[
-                action_name
-            ]
+            lookup_scope_name = {
+                "find_spots": "spotfinder",
+                "integrate": "integration",
+            }[action_name]
             full_command = [action_name] + [
                 lookup_scope_name + "." + x if x.startswith("lookup.mask=") else x
                 for x in cmd_lst
@@ -485,11 +510,16 @@ class MainWidget(QMainWindow):
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
         else:
             print("No need to feed back params")
-            print("my_widget_now.my_widget.command_lst =", current_parameter_widget.my_widget.command_lst)
-
+            print(
+                "my_widget_now.my_widget.command_lst =",
+                current_parameter_widget.my_widget.command_lst,
+            )
 
     def update_low_level_command_lst(self, command_lst):
-        print("self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst)
+        print(
+            "self.idials_runner.current_node.command_lst =",
+            self.idials_runner.current_node.command_lst,
+        )
         print("                                command_lst =", command_lst)
 
         self.idials_runner.current_node.command_lst = command_lst
@@ -502,25 +532,36 @@ class MainWidget(QMainWindow):
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
-            print("________________________________________________________________________>>>> mkchi\n")
+            print(
+                "________________________________________________________________________>>>> mkchi\n"
+            )
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None
-            if(self.idials_runner.current_node.command_lst[0] == "integrate"):
-                print("Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)")
-                path_to_mask_pickle = try_find_prev_mask_pickle(self.idials_runner.current_node)
-                if(path_to_mask_pickle != None):
+            if self.idials_runner.current_node.command_lst[0] == "integrate":
+                print(
+                    "Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)"
+                )
+                path_to_mask_pickle = try_find_prev_mask_pickle(
+                    self.idials_runner.current_node
+                )
+                if path_to_mask_pickle != None:
                     self.pass_parmams(["lookup.mask=" + path_to_mask_pickle])
 
             else:
-                print("self.idials_runner.current_node.command_lst[0] =", self.idials_runner.current_node.command_lst[0])
+                print(
+                    "self.idials_runner.current_node.command_lst[0] =",
+                    self.idials_runner.current_node.command_lst[0],
+                )
 
             print("path_to_mask_pickle =", path_to_mask_pickle)
-            print("\n________________________________________________________________________mkchi <<<<<")
+            print(
+                "\n________________________________________________________________________mkchi <<<<<"
+            )
 
             self.cmd_exe(["clean"])
 
-        elif(tmp_curr.success == None):
+        elif tmp_curr.success == None:
             self.idials_runner.current_node.command_lst = [str(my_label)]
             self.reconnect_when_ready()
 
@@ -537,7 +578,7 @@ class MainWidget(QMainWindow):
 
     def stop_clicked(self):
         print("\n\n <<< Stop clicked >>> \n\n")
-        #TODO fix spelling on << dials_command >>
+        # TODO fix spelling on << dials_command >>
         pr_to_kill = self.idials_runner.current_node.dials_command.my_pid
         print("self.idials_runner.current_node.dials_command.my_pid =", pr_to_kill)
         self.user_stoped = True
@@ -545,20 +586,25 @@ class MainWidget(QMainWindow):
 
     def run_clicked(self):
         print("run_clicked")
-        print("...currentWidget(ref) =", self.centre_par_widget.step_param_widg.currentWidget())
-        cmd_tmp = self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
+        print(
+            "...currentWidget(ref) =",
+            self.centre_par_widget.step_param_widg.currentWidget(),
+        )
+        cmd_tmp = (
+            self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
+        )
         print("cmd_tmp =", cmd_tmp)
         self.cmd_launch(cmd_tmp)
 
     def cmd_exe(self, new_cmd):
-        #Running NOT in parallel
+        # Running NOT in parallel
         update_info(self)
-        self.idials_runner.run(command = new_cmd, ref_to_class = None)
+        self.idials_runner.run(command=new_cmd, ref_to_class=None)
         self.check_reindex_pop()
         self.reconnect_when_ready()
 
     def cmd_launch(self, new_cmd):
-        #Running WITH theading
+        # Running WITH theading
         self.cli_out.clear()
         self.cli_out.make_green()
         self.txt_bar.start_motion()
@@ -575,16 +621,16 @@ class MainWidget(QMainWindow):
 
         tmp_curr = self.idials_runner.current_node
 
-        if(tmp_curr.command_lst[0] == "refine_bravais_settings" and
-                tmp_curr.success == True):
+        if (
+            tmp_curr.command_lst[0] == "refine_bravais_settings"
+            and tmp_curr.success == True
+        ):
 
-            self.idials_runner.run(command = ["mkchi"],
-                                    ref_to_class = None)
+            self.idials_runner.run(command=["mkchi"], ref_to_class=None)
 
             self.idials_runner.current_node.command_lst[0] = "reindex"
 
-        elif(tmp_curr.command_lst[0] == "reindex" and
-                tmp_curr.success == True):
+        elif tmp_curr.command_lst[0] == "reindex" and tmp_curr.success == True:
 
             self.just_reindexed = True
             try:
@@ -602,43 +648,47 @@ class MainWidget(QMainWindow):
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
-        if(tmp_curr.success != True):
+        if tmp_curr.success != True:
             tmp_curr = tmp_curr.prev_step
 
-        cmd_connects = {"Root"                    : ["import"] ,
-                        "import"                  : ["find_spots"] ,
-                        "find_spots"              : ["index"] ,
-                        "index"                   : ["refine_bravais_settings", "refine", "integrate"] ,
-                        "refine_bravais_settings" : [None] ,
-                        "reindex"                 : ["refine", "integrate"] ,
-                        "refine"                  : ["refine", "integrate"] ,
-                        "integrate"               : ["symmetry", "scale", "export"] ,
-                        "symmetry"                : ["scale", "export"] ,
-                        "scale"                   : ["symmetry", "export"] ,
-                        "export"                  : [None] ,
-                        "None"                    : [None] }
+        cmd_connects = {
+            "Root": ["import"],
+            "import": ["find_spots"],
+            "find_spots": ["index"],
+            "index": ["refine_bravais_settings", "refine", "integrate"],
+            "refine_bravais_settings": [None],
+            "reindex": ["refine", "integrate"],
+            "refine": ["refine", "integrate"],
+            "integrate": ["symmetry", "scale", "export"],
+            "symmetry": ["scale", "export"],
+            "scale": ["symmetry", "export"],
+            "export": [None],
+            "None": [None],
+        }
 
         lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        if(tmp_curr.command_lst[0] == "reindex" and
-                self.just_reindexed == False):
+        if tmp_curr.command_lst[0] == "reindex" and self.just_reindexed == False:
 
             try:
                 self.my_pop = MyReindexOpts()
-                self.my_pop.set_ref(in_json_path = tmp_curr.prev_step.json_file_out, lin_num = tmp_curr.prev_step.lin_num)
+                self.my_pop.set_ref(
+                    in_json_path=tmp_curr.prev_step.json_file_out,
+                    lin_num=tmp_curr.prev_step.lin_num,
+                )
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
                 print("str(my_err) =", str(my_err))
                 print("my_err.__doc__ =", my_err.__doc__)
                 print("my_err.message =", my_err.message)
-                if(str(my_err)[0:36] == '[Errno 2] No such file or directory:'):
+                if str(my_err)[0:36] == "[Errno 2] No such file or directory:":
                     print("\n interrupted refine_bravais_settings \n")
 
-            #TODO find an elegant way to interrupt and remove nodes
+            # TODO find an elegant way to interrupt and remove nodes
 
         else:
             try:
@@ -650,12 +700,12 @@ class MainWidget(QMainWindow):
         self.just_reindexed = False
 
     def update_nav_tree(self):
-        self.tree_out.update_me(self.idials_runner.step_list[0],
-                                self.idials_runner.current_line)
+        self.tree_out.update_me(
+            self.idials_runner.step_list[0], self.idials_runner.current_line
+        )
 
         tmp_cur_nod = self.idials_runner.current_node
-        if (len(tmp_cur_nod.next_step_list) == 0 and
-                tmp_cur_nod.success == True):
+        if len(tmp_cur_nod.next_step_list) == 0 and tmp_cur_nod.success == True:
 
             nod_ref = tmp_cur_nod
 
@@ -680,12 +730,17 @@ class MainWidget(QMainWindow):
         for err_lin in curr_step.dials_command.tmp_std_all:
             print(err_lin)
 
-
         print("curr_step.lin_num =", curr_step.lin_num)
-        err_log_file_out = self.storage_path + "/dui_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
+        err_log_file_out = (
+            self.storage_path
+            + "/dui_files"
+            + os.sep
+            + str(curr_step.lin_num)
+            + "_err_out.log"
+        )
         print("err_log_file_out =", err_log_file_out, "\n")
 
-        fil_obj = open(err_log_file_out, 'w')
+        fil_obj = open(err_log_file_out, "w")
         for err_lin in curr_step.dials_command.tmp_std_all:
             fil_obj.write(err_lin)
             fil_obj.write("\n")
@@ -704,11 +759,12 @@ class MainWidget(QMainWindow):
         print("\n it_index =", it_index)
         print(" type(it_index) =", type(it_index))
 
-        if(self.tree_clickable == True):
-            #TODO Think of a more robust way to "disconnect" ... next line
+        if self.tree_clickable == True:
+            # TODO Think of a more robust way to "disconnect" ... next line
             try:
                 self.centre_par_widget.update_command_lst_high_level.disconnect(
-                                self.update_low_level_command_lst)
+                    self.update_low_level_command_lst
+                )
             except:
                 print("<< update_low_level_command_lst >> already disconnected")
 
@@ -719,8 +775,10 @@ class MainWidget(QMainWindow):
             print("clicked item lin_num (self.tree_out.std_mod) =", lin_num)
             cmd_ovr = "goto " + str(lin_num)
             self.cmd_exe(cmd_ovr)
-            self.centre_par_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
-                                        curr_step = self.idials_runner.current_node)
+            self.centre_par_widget.set_widget(
+                nxt_cmd=item.idials_node.command_lst[0],
+                curr_step=self.idials_runner.current_node,
+            )
 
             self.check_reindex_pop()
             update_info(self)
@@ -728,7 +786,8 @@ class MainWidget(QMainWindow):
             self.reconnect_when_ready()
 
             self.centre_par_widget.update_command_lst_high_level.connect(
-                            self.update_low_level_command_lst)
+                self.update_low_level_command_lst
+            )
 
     def refresh_my_gui(self):
 
@@ -737,8 +796,10 @@ class MainWidget(QMainWindow):
         print("doing goto: ", lin_num)
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
-        self.centre_par_widget.set_widget(nxt_cmd = self.idials_runner.current_node.command_lst[0],
-                                    curr_step = self.idials_runner.current_node)
+        self.centre_par_widget.set_widget(
+            nxt_cmd=self.idials_runner.current_node.command_lst[0],
+            curr_step=self.idials_runner.current_node,
+        )
 
         self.check_reindex_pop()
         update_info(self)
@@ -748,9 +809,8 @@ class MainWidget(QMainWindow):
         print("\n\n_________________________________________ ... refreshing GUI \n\n")
 
     def closeEvent(self, event):
-            try:
-                self.my_pop.close()
+        try:
+            self.my_pop.close()
 
-            except:
-                print("no need to close reindex table")
-
+        except:
+            print("no need to close reindex table")

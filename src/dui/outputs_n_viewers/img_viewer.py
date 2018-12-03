@@ -1,26 +1,26 @@
-'''
+"""
 iDIALS GUI's image viewer
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
-'''
+"""
 from __future__ import print_function
 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -32,10 +32,15 @@ from dials.array_family import flex
 
 from mini_idials_w_GUI.gui_utils import get_main_path
 
-from img_view_tools import build_qimg, draw_palette_label, find_hkl_near, \
-                           list_arrange, list_p_arrange
+from img_view_tools import (
+    build_qimg,
+    draw_palette_label,
+    find_hkl_near,
+    list_arrange,
+    list_p_arrange,
+)
 
-QGLWidget_test = '''
+QGLWidget_test = """
 try:
     from PyQt4.QtOpenGL import QGLWidget
     from OpenGL import GL
@@ -44,13 +49,13 @@ try:
 except:
     print "Failed to import OpenGL"
     MyQWidgetWithQPainter = QWidget
-#'''
+#"""
 
 MyQWidgetWithQPainter = QWidget
 
-class ImgPainter(QWidget):
 
-    def __init__(self, parent = None):
+class ImgPainter(QWidget):
+    def __init__(self, parent=None):
         super(ImgPainter, self).__init__()
         self.my_parent = parent
 
@@ -78,7 +83,7 @@ class ImgPainter(QWidget):
 
             self.my_parent.update_info_label(pix_col, pix_row)
 
-            if(self.my_parent.rad_but_near_hkl.isChecked() == True):
+            if self.my_parent.rad_but_near_hkl.isChecked() == True:
                 self.find_closer_hkl(self.x_pos, self.y_pos)
 
             else:
@@ -87,29 +92,29 @@ class ImgPainter(QWidget):
         elif event.buttons() == Qt.LeftButton:
             dx = event.x() - self.x_pos
             dy = event.y() - self.y_pos
-            self.move_scrollbar(scrollBar = self.p_h_svar(), dst = dx)
-            self.move_scrollbar(scrollBar = self.p_v_svar(), dst = dy)
+            self.move_scrollbar(scrollBar=self.p_h_svar(), dst=dx)
+            self.move_scrollbar(scrollBar=self.p_v_svar(), dst=dy)
 
         elif event.buttons() == Qt.RightButton:
             print("Right click drag")
 
-        #TODO find out how does this works despite
+        # TODO find out how does this works despite
         #               NOT updating
         #      self.x_pos and self.y_pos always
 
     def wheelEvent(self, event):
 
-        if(event.delta() > 0.0 and self.my_scale < 100.0):
+        if event.delta() > 0.0 and self.my_scale < 100.0:
             scale_factor = 1.1
 
-        elif(event.delta() < 0.0 and self.my_scale > 0.2):
+        elif event.delta() < 0.0 and self.my_scale > 0.2:
             scale_factor = 0.9
 
         else:
             scale_factor = None
             print("reaching scale limit")
 
-        if(scale_factor != None):
+        if scale_factor != None:
 
             self.my_scale *= scale_factor
 
@@ -119,18 +124,22 @@ class ImgPainter(QWidget):
             border_dx = float(event.x() - h_scr_bar)
             border_dy = float(event.y() - v_scr_bar)
 
-            h_new_pbar_pos = int(scale_factor * h_scr_bar +  (scale_factor - 1.0) * border_dx )
-            v_new_pbar_pos = int(scale_factor * v_scr_bar +  (scale_factor - 1.0) * border_dy )
+            h_new_pbar_pos = int(
+                scale_factor * h_scr_bar + (scale_factor - 1.0) * border_dx
+            )
+            v_new_pbar_pos = int(
+                scale_factor * v_scr_bar + (scale_factor - 1.0) * border_dy
+            )
 
             self.update()
 
-            self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_new_pbar_pos)
-            self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_new_pbar_pos)
+            self.move_scrollbar(scrollBar=self.p_h_svar(), new_pos=h_new_pbar_pos)
+            self.move_scrollbar(scrollBar=self.p_v_svar(), new_pos=v_new_pbar_pos)
 
-    def scale2fact(self, new_scale = None):
+    def scale2fact(self, new_scale=None):
         old_scale = float(self.my_scale)
 
-        if(new_scale == None):
+        if new_scale == None:
             self.my_scale = 1.0
 
         else:
@@ -141,46 +150,49 @@ class ImgPainter(QWidget):
 
         h_scr_bar = float(self.p_h_svar().value())
         v_scr_bar = float(self.p_v_svar().value())
-        self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_scr_bar * scale_factor)
-        self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_scr_bar * scale_factor)
+        self.move_scrollbar(scrollBar=self.p_h_svar(), new_pos=h_scr_bar * scale_factor)
+        self.move_scrollbar(scrollBar=self.p_v_svar(), new_pos=v_scr_bar * scale_factor)
         print("rescaling to:", self.my_scale)
 
-    def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
-        if(dst != None):
+    def move_scrollbar(self, scrollBar=None, dst=None, new_pos=None):
+        if dst != None:
             old_val = scrollBar.value()
             scrollBar.setValue(old_val - dst)
 
-        if(new_pos != None):
+        if new_pos != None:
             scrollBar.setValue(new_pos)
 
     def find_closer_hkl(self, x_mouse, y_mouse):
-        if(self.pre_flat_data != None and self.user_choice[1]):
+        if self.pre_flat_data != None and self.user_choice[1]:
             tmp_flat_data = self.pre_flat_data
 
-        elif(self.obs_flat_data != None and self.user_choice[0]):
+        elif self.obs_flat_data != None and self.user_choice[0]:
             tmp_flat_data = self.obs_flat_data
 
         else:
             tmp_flat_data = None
 
-        if(tmp_flat_data != None):
+        if tmp_flat_data != None:
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             try:
-                closer_hkl, closer_slice = find_hkl_near(x_mouse_scaled,
-                                                        y_mouse_scaled,
-                                                        tmp_flat_data)
+                closer_hkl, closer_slice = find_hkl_near(
+                    x_mouse_scaled, y_mouse_scaled, tmp_flat_data
+                )
 
                 self.closer_ref = [closer_hkl, closer_slice]
                 self.update()
 
             except:
-                print("Failed to find closer HKL", end=' ')
+                print("Failed to find closer HKL", end=" ")
 
-    def set_img_pix(self, q_img = None,
-                    obs_flat_data_in = None,
-                    pre_flat_data_in = None,
-                    user_choice_in = (None, None)):
+    def set_img_pix(
+        self,
+        q_img=None,
+        obs_flat_data_in=None,
+        pre_flat_data_in=None,
+        user_choice_in=(None, None),
+    ):
 
         self.img = q_img
         self.obs_flat_data = obs_flat_data_in
@@ -197,9 +209,7 @@ class ImgPainter(QWidget):
 
     def paintEvent(self, event):
 
-
-
-        if(self.img == None):
+        if self.img == None:
             return
 
         else:
@@ -212,13 +222,13 @@ class ImgPainter(QWidget):
             painter = QPainter(self)
 
             indexed_pen = QPen()  # creates a default indexed_pen
-            if(self.my_parent.palette == "white2black"):
+            if self.my_parent.palette == "white2black":
                 indexed_pen.setBrush(Qt.blue)
 
-            elif(self.my_parent.palette == "black2white"):
+            elif self.my_parent.palette == "black2white":
                 indexed_pen.setBrush(Qt.cyan)
 
-            elif(self.my_parent.palette == "hot descend"):
+            elif self.my_parent.palette == "hot descend":
                 indexed_pen.setBrush(Qt.magenta)
 
             else:
@@ -226,21 +236,24 @@ class ImgPainter(QWidget):
 
             indexed_pen.setStyle(Qt.SolidLine)
 
-            if(self.my_scale >= 5.0):
+            if self.my_scale >= 5.0:
                 indexed_pen.setWidth(self.my_scale / 3.5)
 
             else:
                 indexed_pen.setWidth(0.0)
 
             non_indexed_pen = QPen()  # creates a default non_indexed_pen
-            if(self.my_parent.palette == "white2black" or self.my_parent.palette == "black2white"):
+            if (
+                self.my_parent.palette == "white2black"
+                or self.my_parent.palette == "black2white"
+            ):
                 non_indexed_pen.setBrush(Qt.red)
-                #non_indexed_pen.setBrush(Qt.magenta)
+                # non_indexed_pen.setBrush(Qt.magenta)
 
             else:
                 non_indexed_pen.setBrush(QColor(75, 150, 200))
 
-            if(self.my_scale >= 5.0):
+            if self.my_scale >= 5.0:
                 non_indexed_pen.setStyle(Qt.DotLine)
                 non_indexed_pen.setWidth(self.my_scale / 3.5)
 
@@ -249,21 +262,23 @@ class ImgPainter(QWidget):
                 non_indexed_pen.setWidth(0.0)
 
             painter.drawPixmap(rect, pixmap)
-            #painter.setFont(QFont("Monospace", 22))
-            #painter.setFont(QFont("FreeMono", 22))
+            # painter.setFont(QFont("Monospace", 22))
+            # painter.setFont(QFont("FreeMono", 22))
 
-            if(self.obs_flat_data != None and
-                    self.my_parent.chk_box_show.checkState() and
-                    self.pre_flat_data !=None):
+            if (
+                self.obs_flat_data != None
+                and self.my_parent.chk_box_show.checkState()
+                and self.pre_flat_data != None
+            ):
 
-                #print "len(self.obs_flat_data) =", len(self.obs_flat_data)
+                # print "len(self.obs_flat_data) =", len(self.obs_flat_data)
 
                 tmp_font = QFont()
                 tmp_font.setPixelSize(int(5.5 * self.my_scale))
-                #TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
+                # TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
                 painter.setFont(tmp_font)
                 lst_tmp_hkl = None
-                if(self.user_choice[0]):
+                if self.user_choice[0]:
                     try:
                         for j, img_flat_data in enumerate(self.obs_flat_data):
                             for i, reflection in enumerate(img_flat_data):
@@ -271,10 +286,14 @@ class ImgPainter(QWidget):
                                 y = float(reflection[1])
                                 width = float(reflection[2])
                                 height = float(reflection[3])
-                                rectangle = QRectF(x * self.my_scale, y * self.my_scale,
-                                                width * self.my_scale, height * self.my_scale)
+                                rectangle = QRectF(
+                                    x * self.my_scale,
+                                    y * self.my_scale,
+                                    width * self.my_scale,
+                                    height * self.my_scale,
+                                )
 
-                                if(reflection[4] == "NOT indexed"):
+                                if reflection[4] == "NOT indexed":
                                     painter.setPen(non_indexed_pen)
 
                                 else:
@@ -286,14 +305,14 @@ class ImgPainter(QWidget):
                     except:
                         print("No reflection (Obsevations) to show ... None type")
 
-                if(self.user_choice[1]):
+                if self.user_choice[1]:
                     try:
                         for j, img_flat_data in enumerate(self.pre_flat_data):
                             for i, reflection in enumerate(img_flat_data):
 
                                 x = float(reflection[0]) + 1.0
                                 y = float(reflection[1]) + 1.0
-                                if(reflection[4] == "NOT indexed"):
+                                if reflection[4] == "NOT indexed":
                                     painter.setPen(non_indexed_pen)
 
                                 else:
@@ -302,25 +321,33 @@ class ImgPainter(QWidget):
                                 cross_size = float(reflection[2]) + 1.0
                                 cross_2_size = float(reflection[3])
 
-                                painter.drawLine(x * self.my_scale,
-                                                (y - cross_size) * self.my_scale,
-                                                x * self.my_scale,
-                                                (y + cross_size) * self.my_scale)
+                                painter.drawLine(
+                                    x * self.my_scale,
+                                    (y - cross_size) * self.my_scale,
+                                    x * self.my_scale,
+                                    (y + cross_size) * self.my_scale,
+                                )
 
-                                painter.drawLine((x + cross_size) * self.my_scale,
-                                                y * self.my_scale,
-                                                (x - cross_size) * self.my_scale,
-                                                y * self.my_scale)
+                                painter.drawLine(
+                                    (x + cross_size) * self.my_scale,
+                                    y * self.my_scale,
+                                    (x - cross_size) * self.my_scale,
+                                    y * self.my_scale,
+                                )
 
-                                painter.drawLine((x - cross_2_size) * self.my_scale,
-                                                (y - cross_2_size) * self.my_scale,
-                                                (x + cross_2_size) * self.my_scale,
-                                                (y + cross_2_size) * self.my_scale)
+                                painter.drawLine(
+                                    (x - cross_2_size) * self.my_scale,
+                                    (y - cross_2_size) * self.my_scale,
+                                    (x + cross_2_size) * self.my_scale,
+                                    (y + cross_2_size) * self.my_scale,
+                                )
 
-                                painter.drawLine((x + cross_2_size) * self.my_scale,
-                                                (y - cross_2_size) * self.my_scale,
-                                                (x - cross_2_size) * self.my_scale,
-                                                (y + cross_2_size) * self.my_scale)
+                                painter.drawLine(
+                                    (x + cross_2_size) * self.my_scale,
+                                    (y - cross_2_size) * self.my_scale,
+                                    (x - cross_2_size) * self.my_scale,
+                                    (y + cross_2_size) * self.my_scale,
+                                )
 
                                 lst_tmp_hkl = self.pre_flat_data
 
@@ -332,39 +359,56 @@ class ImgPainter(QWidget):
                         for i, reflection in enumerate(img_flat_data):
                             x = float(reflection[0]) + 1.0
                             y = float(reflection[1]) + 1.0
-                            if(reflection[4] == "NOT indexed"):
+                            if reflection[4] == "NOT indexed":
                                 painter.setPen(non_indexed_pen)
 
                             else:
                                 painter.setPen(indexed_pen)
 
-                            if(self.my_parent.rad_but_all_hkl.isChecked() == True and
-                                    reflection[4] != "" and reflection[4] != "NOT indexed"):
+                            if (
+                                self.my_parent.rad_but_all_hkl.isChecked() == True
+                                and reflection[4] != ""
+                                and reflection[4] != "NOT indexed"
+                            ):
 
-                                painter.drawText(QPoint(int(x * self.my_scale),
-                                                    int(y * self.my_scale)),  reflection[4])
+                                painter.drawText(
+                                    QPoint(
+                                        int(x * self.my_scale), int(y * self.my_scale)
+                                    ),
+                                    reflection[4],
+                                )
 
-                            elif(self.my_parent.rad_but_near_hkl.isChecked() == True and
-                                    self.closer_ref == [i, j]):
+                            elif self.my_parent.rad_but_near_hkl.isChecked() == True and self.closer_ref == [
+                                i,
+                                j,
+                            ]:
 
-                                painter.drawText( QPoint(int(x * self.my_scale),
-                                                int(y * self.my_scale)),  reflection[4])
+                                painter.drawText(
+                                    QPoint(
+                                        int(x * self.my_scale), int(y * self.my_scale)
+                                    ),
+                                    reflection[4],
+                                )
 
                 except:
-                    print("Failed to show HKLs", end=' ')
+                    print("Failed to show HKLs", end=" ")
 
-                if(self.xb != None and self.yb != None):
+                if self.xb != None and self.yb != None:
                     painter.setPen(indexed_pen)
                     cen_siz = 40.0
-                    painter.drawLine(int(self.xb * self.my_scale),
-                                     int((self.yb - cen_siz) * self.my_scale),
-                                     int(self.xb * self.my_scale),
-                                     int((self.yb + cen_siz) * self.my_scale))
+                    painter.drawLine(
+                        int(self.xb * self.my_scale),
+                        int((self.yb - cen_siz) * self.my_scale),
+                        int(self.xb * self.my_scale),
+                        int((self.yb + cen_siz) * self.my_scale),
+                    )
 
-                    painter.drawLine(int((self.xb + cen_siz) * self.my_scale),
-                                     int(self.yb * self.my_scale),
-                                     int((self.xb - cen_siz) * self.my_scale),
-                                     int(self.yb * self.my_scale))
+                    painter.drawLine(
+                        int((self.xb + cen_siz) * self.my_scale),
+                        int(self.yb * self.my_scale),
+                        int((self.xb - cen_siz) * self.my_scale),
+                        int(self.yb * self.my_scale),
+                    )
 
                 else:
                     print("No xb,yb provided")
@@ -399,21 +443,21 @@ class PopPaletteMenu(QMenu):
         main_layout = QVBoxLayout()
 
         slider_max_Hlayout = QHBoxLayout()
-        slider_max_Hlayout.addWidget(QLabel(" ")) # Left side margin
+        slider_max_Hlayout.addWidget(QLabel(" "))  # Left side margin
         slider_max_Hlayout.addWidget(self.my_parent.slider_max)
-        slider_max_Hlayout.addWidget(QLabel(" ")) # Right side margin
+        slider_max_Hlayout.addWidget(QLabel(" "))  # Right side margin
         main_layout.addLayout(slider_max_Hlayout)
 
         palette_Hlayout = QHBoxLayout()
-        palette_Hlayout.addWidget(QLabel("   ")) # Left side margin
+        palette_Hlayout.addWidget(QLabel("   "))  # Left side margin
         palette_Hlayout.addWidget(self.my_parent.palette_label)
-        palette_Hlayout.addWidget(QLabel("   ")) # Right side margin
+        palette_Hlayout.addWidget(QLabel("   "))  # Right side margin
         main_layout.addLayout(palette_Hlayout)
 
         slider_min_Hlayout = QHBoxLayout()
-        slider_min_Hlayout.addWidget(QLabel(" ")) # Left side margin
+        slider_min_Hlayout.addWidget(QLabel(" "))  # Left side margin
         slider_min_Hlayout.addWidget(self.my_parent.slider_min)
-        slider_min_Hlayout.addWidget(QLabel(" ")) # Right side margin
+        slider_min_Hlayout.addWidget(QLabel(" "))  # Right side margin
         main_layout.addLayout(slider_min_Hlayout)
 
         main_layout.addWidget(self.my_parent.slider_min)
@@ -427,29 +471,35 @@ class PopPaletteMenu(QMenu):
         print("repainting")
         try:
 
-            self.my_parent.palette_label.setPixmap(QPixmap(self.my_parent.palette_qimg(
-                                                   draw_palette_label(self.my_parent.i_min,
-                                                                      self.my_parent.i_max),
-                                                                      self.my_parent.palette,
-                                                                      self.my_parent.i_min,
-                                                                      self.my_parent.i_max)))
+            self.my_parent.palette_label.setPixmap(
+                QPixmap(
+                    self.my_parent.palette_qimg(
+                        draw_palette_label(self.my_parent.i_min, self.my_parent.i_max),
+                        self.my_parent.palette,
+                        self.my_parent.i_min,
+                        self.my_parent.i_max,
+                    )
+                )
+            )
 
         except:
             print("no (...my_sweep) yet, skipping palette label paint")
 
     def slider_max_changed(self, value):
-        if(self.my_parent.slider_min.sliderPosition() > value - 15):
+        if self.my_parent.slider_min.sliderPosition() > value - 15:
             self.my_parent.slider_min.setValue(value - 15)
 
-        self.sliders_changed.emit(int(value),
-                                  int(self.my_parent.slider_min.sliderPosition()))
+        self.sliders_changed.emit(
+            int(value), int(self.my_parent.slider_min.sliderPosition())
+        )
 
     def slider_min_changed(self, value):
-        if(self.my_parent.slider_max.sliderPosition() < value + 15):
+        if self.my_parent.slider_max.sliderPosition() < value + 15:
             self.my_parent.slider_max.setValue(value + 15)
 
-        self.sliders_changed.emit(int(self.my_parent.slider_max.sliderPosition()),
-                                  int(value))
+        self.sliders_changed.emit(
+            int(self.my_parent.slider_max.sliderPosition()), int(value)
+        )
 
 
 class PopBigMenu(QMenu):
@@ -459,14 +509,14 @@ class PopBigMenu(QMenu):
     def __init__(self, parent=None):
         super(PopBigMenu, self).__init__(parent)
         self.my_parent = parent
-        #self.isTearOffEnabled()
+        # self.isTearOffEnabled()
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
-        info_grp =  QGroupBox("Reflection Info ")
+        info_grp = QGroupBox("Reflection Info ")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
@@ -499,7 +549,7 @@ class PopBigMenu(QMenu):
 
 
 class MyImgWin(QWidget):
-    def __init__(self, json_file_path = None, pckl_file_path = None):
+    def __init__(self, json_file_path=None, pckl_file_path=None):
         super(MyImgWin, self).__init__()
 
         self.my_scrollable = QScrollArea()
@@ -513,7 +563,7 @@ class MyImgWin(QWidget):
         max_min_validator = QIntValidator(-5, 999999, self)
 
         sys_font = QFont()
-        sys_font_point_size =  sys_font.pointSize()
+        sys_font_point_size = sys_font.pointSize()
         self.video_timer = QTimer(self)
 
         self.i_min = -3
@@ -558,7 +608,7 @@ class MyImgWin(QWidget):
         ref_type_group_box_layout.addWidget(self.rad_but_fnd_hkl)
         ref_type_group_box_layout.addWidget(self.rad_but_pre_hkl)
 
-        type_grp =  QGroupBox("Reflection Type ")
+        type_grp = QGroupBox("Reflection Type ")
         type_grp.setLayout(ref_type_group_box_layout)
 
         self.palette_select = QComboBox()
@@ -569,22 +619,22 @@ class MyImgWin(QWidget):
 
         self.palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
 
-        self.btn_first =  QPushButton(' I< ')
+        self.btn_first = QPushButton(" I< ")
         self.btn_first.setMinimumWidth(1)
         self.btn_first.clicked.connect(self.btn_first_clicked)
-        self.btn_rev =   QPushButton(' << ')
+        self.btn_rev = QPushButton(" << ")
         self.btn_rev.setMinimumWidth(1)
         self.btn_rev.clicked.connect(self.btn_rev_clicked)
-        self.btn_prev =  QPushButton(' < ')
+        self.btn_prev = QPushButton(" < ")
         self.btn_prev.setMinimumWidth(1)
         self.btn_prev.clicked.connect(self.btn_prev_clicked)
-        self.btn_next =  QPushButton(' > ')
+        self.btn_next = QPushButton(" > ")
         self.btn_next.setMinimumWidth(1)
         self.btn_next.clicked.connect(self.btn_next_clicked)
-        self.btn_ffw =   QPushButton(' >> ')
+        self.btn_ffw = QPushButton(" >> ")
         self.btn_ffw.setMinimumWidth(1)
         self.btn_ffw.clicked.connect(self.btn_ffw_clicked)
-        self.btn_last =  QPushButton(' >I ')
+        self.btn_last = QPushButton(" >I ")
         self.btn_last.setMinimumWidth(1)
         self.btn_last.clicked.connect(self.btn_last_clicked)
 
@@ -605,11 +655,11 @@ class MyImgWin(QWidget):
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
 
-        big_menu_but = QPushButton('Viewing Tools  ...  ')
+        big_menu_but = QPushButton("Viewing Tools  ...  ")
         pop_big_menu = PopBigMenu(self)
         big_menu_but.setMenu(pop_big_menu)
 
-        palette_menu_but = QPushButton('Palette Tuning')
+        palette_menu_but = QPushButton("Palette Tuning")
         pop_palette_menu = PopPaletteMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
@@ -638,7 +688,7 @@ class MyImgWin(QWidget):
         self.current_qimg = build_qimg()
         self.contrast_initiated = False
 
-        if(json_file_path == None):
+        if json_file_path == None:
             print("\n no datablock given \n")
             n_of_imgs = 1
 
@@ -688,13 +738,12 @@ class MyImgWin(QWidget):
         self.setLayout(my_box)
         self.show()
 
-        #changing default palette:
+        # changing default palette:
 
         self.palette_select.setCurrentIndex(3)
 
-
     def ini_contrast(self):
-        if(self.contrast_initiated == False):
+        if self.contrast_initiated == False:
             try:
                 n_of_imgs = len(self.my_sweep.indices())
                 print("n_of_imgs(ini_contrast) =", n_of_imgs)
@@ -704,11 +753,11 @@ class MyImgWin(QWidget):
                 img_arr_n2 = self.my_sweep.get_raw_data(2)[0]
 
                 tst_sample = (
-                              img_arr_n0[0:25,0:25].as_double()
-                            + img_arr_n1[0:25,0:25].as_double()
-                            + img_arr_n2[0:25,0:25].as_double()
-                              ) / 3.0
-                print("tst_sample =",  tst_sample)
+                    img_arr_n0[0:25, 0:25].as_double()
+                    + img_arr_n1[0:25, 0:25].as_double()
+                    + img_arr_n2[0:25, 0:25].as_double()
+                ) / 3.0
+                print("tst_sample =", tst_sample)
 
                 i_mean = flex.mean(tst_sample)
                 tst_new_max = (i_mean + 1) * 25
@@ -723,7 +772,7 @@ class MyImgWin(QWidget):
                 print("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
-        if(json_file_path != None):
+        if json_file_path != None:
             try:
                 datablocks = DataBlockFactory.from_json_file(json_file_path)
                 ##TODO check length of datablock for safety
@@ -735,7 +784,9 @@ class MyImgWin(QWidget):
                 print("Failed to load images from  datablock.json")
 
             try:
-                print("self.my_sweep.get_array_range() =", self.my_sweep.get_array_range())
+                print(
+                    "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
+                )
                 n_of_imgs = len(self.my_sweep.indices())
                 print("n_of_imgs =", n_of_imgs)
 
@@ -766,15 +817,15 @@ class MyImgWin(QWidget):
         a_ratio_pt = pt_width / pt_height
         a_ratio_sc = sc_width / sc_height
 
-        if(a_ratio_pt > a_ratio_sc):
-            self.my_painter.scale2fact( sc_width / pt_width )
+        if a_ratio_pt > a_ratio_sc:
+            self.my_painter.scale2fact(sc_width / pt_width)
         else:
-            self.my_painter.scale2fact( sc_height / pt_height )
+            self.my_painter.scale2fact(sc_height / pt_height)
 
     def ini_reflection_table(self, pckl_file_path):
         print("\npickle file(s) =", pckl_file_path)
 
-        if(pckl_file_path[0] != None):
+        if pckl_file_path[0] != None:
             print("\npickle file (found) =", pckl_file_path[0])
             try:
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
@@ -790,8 +841,10 @@ class MyImgWin(QWidget):
 
                 n_imgs = self.img_select.maximum()
                 self.find_spt_flat_data_lst = []
-                if(n_imgs > 0):
-                    self.find_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
+                if n_imgs > 0:
+                    self.find_spt_flat_data_lst = list_arrange(
+                        bbox_col, hkl_col, n_imgs
+                    )
 
                 else:
                     print("empty IMG lst")
@@ -814,8 +867,10 @@ class MyImgWin(QWidget):
 
                 n_imgs = self.img_select.maximum()
                 self.pred_spt_flat_data_lst = []
-                if(n_imgs > 0):
-                    self.pred_spt_flat_data_lst = list_p_arrange(pos_col, hkl_col, n_imgs)
+                if n_imgs > 0:
+                    self.pred_spt_flat_data_lst = list_p_arrange(
+                        pos_col, hkl_col, n_imgs
+                    )
 
             except:
                 self.pred_spt_flat_data_lst = [None]
@@ -847,8 +902,14 @@ class MyImgWin(QWidget):
 
     def update_info_label(self, x_pos, y_pos):
         try:
-            new_label_txt = "  X = " + str(x_pos) + " ,  Y = " + str(y_pos) \
-                            + " ,  I = " + str(self.img_arr[y_pos, x_pos])
+            new_label_txt = (
+                "  X = "
+                + str(x_pos)
+                + " ,  Y = "
+                + str(y_pos)
+                + " ,  I = "
+                + str(self.img_arr[y_pos, x_pos])
+            )
 
         except:
             new_label_txt = "X, Y, I = ?,?,?"
@@ -867,60 +928,75 @@ class MyImgWin(QWidget):
         self.info_label.setText(new_label_txt)
 
     def set_img(self):
-        if(self.my_sweep != None):
+        if self.my_sweep != None:
             img_pos = self.img_num - 1
 
             loc_stk_siz = self.stack_size
 
-            if(loc_stk_siz == 1):
+            if loc_stk_siz == 1:
                 self.img_arr = self.my_sweep.get_raw_data(img_pos)[0]
 
-            elif(loc_stk_siz > 1):
+            elif loc_stk_siz > 1:
 
-                if(img_pos + loc_stk_siz > len(self.my_sweep.indices()) - 1):
+                if img_pos + loc_stk_siz > len(self.my_sweep.indices()) - 1:
                     loc_stk_siz = len(self.my_sweep.indices()) - img_pos
 
                 loc_scale = 1.0 / float(loc_stk_siz)
-                self.img_arr = self.my_sweep.get_raw_data(img_pos)[0].as_double() * loc_scale
+                self.img_arr = (
+                    self.my_sweep.get_raw_data(img_pos)[0].as_double() * loc_scale
+                )
 
                 for times in xrange(1, loc_stk_siz):
                     pos_to_add = (img_pos) + times
-                    self.img_arr = self.img_arr \
-                    + self.my_sweep.get_raw_data(pos_to_add)[0].as_double() * loc_scale
+                    self.img_arr = (
+                        self.img_arr
+                        + self.my_sweep.get_raw_data(pos_to_add)[0].as_double()
+                        * loc_scale
+                    )
 
-            if(self.find_spt_flat_data_lst == [None] and
-                    self.pred_spt_flat_data_lst == [None]):
+            if self.find_spt_flat_data_lst == [
+                None
+            ] and self.pred_spt_flat_data_lst == [None]:
 
-                self.my_painter.set_img_pix(self.current_qimg(self.img_arr,
-                                                              self.palette,
-                                                              self.i_min,
-                                                              self.i_max))
+                self.my_painter.set_img_pix(
+                    self.current_qimg(
+                        self.img_arr, self.palette, self.i_min, self.i_max
+                    )
+                )
 
             else:
-                self.my_painter.set_img_pix(q_img =
-                                            self.current_qimg(self.img_arr,
-                                            self.palette,
-                                            self.i_min,
-                                            self.i_max),
-                                            obs_flat_data_in =
-                                            self.find_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz],
-                                            pre_flat_data_in =
-                                            self.pred_spt_flat_data_lst[img_pos:img_pos + loc_stk_siz],
-                                            user_choice_in =
-                                            (self.rad_but_fnd_hkl.checkState(),
-                                            self.rad_but_pre_hkl.checkState()))
+                self.my_painter.set_img_pix(
+                    q_img=self.current_qimg(
+                        self.img_arr, self.palette, self.i_min, self.i_max
+                    ),
+                    obs_flat_data_in=self.find_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    pre_flat_data_in=self.pred_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    user_choice_in=(
+                        self.rad_but_fnd_hkl.checkState(),
+                        self.rad_but_pre_hkl.checkState(),
+                    ),
+                )
 
-        self.palette_label.setPixmap(QPixmap(self.palette_qimg(
-                                             draw_palette_label(self.i_min, self.i_max),
-                                                                self.palette,
-                                                                self.i_min,
-                                                                self.i_max)))
-
+        self.palette_label.setPixmap(
+            QPixmap(
+                self.palette_qimg(
+                    draw_palette_label(self.i_min, self.i_max),
+                    self.palette,
+                    self.i_min,
+                    self.i_max,
+                )
+            )
+        )
 
         print("\n self.i_min =", self.i_min)
         print(" self.i_max =", self.i_max, "\n")
+
     def btn_play_clicked(self):
-        if(self.video_timer.isActive()):
+        if self.video_timer.isActive():
             print("Stoping video")
             self.video_timer.stop()
             try:
@@ -971,30 +1047,30 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def btn_first_clicked(self):
-        #TODO have a look at why is unable to go to
-        #TODO the very first image sometimes
+        # TODO have a look at why is unable to go to
+        # TODO the very first image sometimes
 
         self.img_num = 1
         self.img_select.setValue(self.img_num)
 
     def btn_rev_clicked(self):
         self.img_num -= 10
-        if(self.img_num < 1):
+        if self.img_num < 1:
             self.img_num = 1
 
         self.img_select.setValue(self.img_num)
 
     def btn_prev_clicked(self):
         self.img_num -= self.img_step_val
-        if(self.img_num < 1):
+        if self.img_num < 1:
             self.img_num = 1
 
         self.img_select.setValue(self.img_num)
 
     def btn_next_clicked(self):
         self.img_num += self.img_step_val
-        if(self.img_num > self.img_select.maximum()):
-            if(self.video_timer.isActive() == True):
+        if self.img_num > self.img_select.maximum():
+            if self.video_timer.isActive() == True:
                 self.img_num = 1
 
             else:
@@ -1004,7 +1080,7 @@ class MyImgWin(QWidget):
 
     def btn_ffw_clicked(self):
         self.img_num += 10
-        if(self.img_num > self.img_select.maximum()):
+        if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
 
         self.img_select.setValue(self.img_num)
@@ -1022,22 +1098,22 @@ class MyImgWin(QWidget):
 
     def img_changed_by_user(self, value):
         self.img_num = value
-        if(self.img_num > self.img_select.maximum()):
+        if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
             self.img_select.setValue(self.img_num)
 
         self.set_img()
 
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     print("sys.argv =", sys.argv)
     print("len(sys.argv) =", len(sys.argv))
 
-    if(len(sys.argv) > 1):
+    if len(sys.argv) > 1:
         img_path = sys.argv[1]
-        if(len(sys.argv) > 2):
+        if len(sys.argv) > 2:
             pckl_file_path = sys.argv[2]
 
         else:
@@ -1049,8 +1125,6 @@ if(__name__ == "__main__"):
     print("img_path =", img_path)
     print("pckl_file_path =", pckl_file_path)
 
-
     diag = MyImgWin(img_path, [pckl_file_path, None])
     sys.exit(app.exec_())
     app.exec_()
-

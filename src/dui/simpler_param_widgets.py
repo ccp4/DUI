@@ -1,26 +1,26 @@
-'''
+"""
 DUI's command simple stacked widgets
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
-'''
+"""
 from __future__ import print_function
 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -29,10 +29,11 @@ import os, sys
 
 import libtbx.introspection
 
+
 class ResetButton(QPushButton):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(ResetButton, self).__init__()
-        self.setContentsMargins(-5,-1,-5,-1)
+        self.setContentsMargins(-5, -1, -5, -1)
 
         my_label = QLabel("Reset to Default")
         v_box = QVBoxLayout()
@@ -41,18 +42,18 @@ class ResetButton(QPushButton):
         self.show()
 
 
-class FindspotsSimplerParameterTab( QWidget):
-    '''
+class FindspotsSimplerParameterTab(QWidget):
+    """
     This widget is the tool for tunning the simpler and most common parameters
     in the spot-finder, this widget is the first to appear once the button
     "Find Sots" at the left side of the GUI is clicked
-    '''
+    """
 
     item_changed = pyqtSignal(str, str)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
-        #self.param_widget_parent = parent.param_widget_parent
+        # self.param_widget_parent = parent.param_widget_parent
 
         xds_gain_label = QLabel("Gain")
         xds_gain_spn_bx = QDoubleSpinBox()
@@ -62,18 +63,24 @@ class FindspotsSimplerParameterTab( QWidget):
         xds_sigma_background_label = QLabel("Sigma Background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
         xds_sigma_background_spn_bx.setValue(6.0)
-        xds_sigma_background_spn_bx.local_path = "spotfinder.threshold.dispersion.sigma_background"
+        xds_sigma_background_spn_bx.local_path = (
+            "spotfinder.threshold.dispersion.sigma_background"
+        )
         xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         xds_sigma_strong_label = QLabel("Sigma Strong")
         xds_sigma_strong_spn_bx = QDoubleSpinBox()
         xds_sigma_strong_spn_bx.setValue(3.0)
-        xds_sigma_strong_spn_bx.local_path = "spotfinder.threshold.dispersion.sigma_strong"
+        xds_sigma_strong_spn_bx.local_path = (
+            "spotfinder.threshold.dispersion.sigma_strong"
+        )
         xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         xds_global_threshold_label = QLabel("Global Threshold")
         xds_global_threshold_spn_bx = QDoubleSpinBox()
-        xds_global_threshold_spn_bx.local_path = "spotfinder.threshold.dispersion.global_threshold"
+        xds_global_threshold_spn_bx.local_path = (
+            "spotfinder.threshold.dispersion.global_threshold"
+        )
         xds_global_threshold_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         localLayout = QVBoxLayout()
@@ -98,17 +105,14 @@ class FindspotsSimplerParameterTab( QWidget):
         xds_global_threshold_hb.addWidget(xds_global_threshold_spn_bx)
         localLayout.addLayout(xds_global_threshold_hb)
 
-
-        hbox_lay_nproc =  QHBoxLayout()
+        hbox_lay_nproc = QHBoxLayout()
         label_nproc = QLabel("Number of Jobs")
-        #label_nproc.setPalette(palette_object)
-        #label_nproc.setFont( QFont("Monospace", 10))
+        # label_nproc.setPalette(palette_object)
+        # label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
-
 
         self.box_nproc = QSpinBox()
         self.box_nproc.local_path = "spotfinder.mp.nproc"
-
 
         self.box_nproc.valueChanged.connect(self.spnbox_changed)
         hbox_lay_nproc.addWidget(self.box_nproc)
@@ -137,7 +141,7 @@ class FindspotsSimplerParameterTab( QWidget):
         print(value)
         str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
@@ -146,26 +150,26 @@ class FindspotsSimplerParameterTab( QWidget):
         return cpu_max_proc
 
 
-class IndexSimplerParamTab( QWidget):
-    '''
+class IndexSimplerParamTab(QWidget):
+    """
     This widget is the tool for tunning the simpler and most common parameters
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
-    '''
+    """
 
     item_changed = pyqtSignal(str, str)
 
-    def __init__(self, phl_obj = None, parent=None):
+    def __init__(self, phl_obj=None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
 
-        #self.param_widget_parent = parent.param_widget_parent
-        #indexing_method_check = QCheckBox("indexing.method")
+        # self.param_widget_parent = parent.param_widget_parent
+        # indexing_method_check = QCheckBox("indexing.method")
 
-        hbox_method =  QHBoxLayout()
+        hbox_method = QHBoxLayout()
         label_method_62 = QLabel("Indexing Method")
         hbox_method.addWidget(label_method_62)
         box_method_62 = QComboBox()
-        box_method_62.tmp_lst=[]
+        box_method_62.tmp_lst = []
         box_method_62.local_path = "indexing.method"
         box_method_62.tmp_lst.append("fft3d")
         box_method_62.tmp_lst.append("fft1d")
@@ -182,7 +186,6 @@ class IndexSimplerParamTab( QWidget):
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
         localLayout.addStretch()
-
 
         self.setLayout(localLayout)
 
@@ -202,19 +205,19 @@ class IndexSimplerParamTab( QWidget):
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
 
 class RefineBravaiSimplerParamTab(QWidget):
-    #TODO some doc string here
+    # TODO some doc string here
 
     item_changed = pyqtSignal(str, str)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(RefineBravaiSimplerParamTab, self).__init__()
 
-        hbox_lay_scan_varying =  QHBoxLayout()
+        hbox_lay_scan_varying = QHBoxLayout()
         localLayout = QVBoxLayout()
         label_scan_varying = QLabel("Scan Varying Refinement")
 
@@ -222,7 +225,7 @@ class RefineBravaiSimplerParamTab(QWidget):
 
         box_scan_varying = QComboBox()
         box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst = []
         box_scan_varying.tmp_lst.append("True")
         box_scan_varying.tmp_lst.append("False")
         for lst_itm in box_scan_varying.tmp_lst:
@@ -248,26 +251,26 @@ class RefineBravaiSimplerParamTab(QWidget):
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
 
-class RefineSimplerParamTab( QWidget):
-    '''
+class RefineSimplerParamTab(QWidget):
+    """
     This widget is the tool for tunning the simpler and most common parameters
     in the refiner, this widget is the first to appear once the button
     "Refine" at the left side of the GUI is clicked
-    '''
+    """
 
     item_changed = pyqtSignal(str, str)
     item_to_remove = pyqtSignal(str)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__()
-        #self.param_widget_parent = parent.param_widget_parent
+        # self.param_widget_parent = parent.param_widget_parent
         localLayout = QVBoxLayout()
 
-        hbox_lay_scan_varying =  QHBoxLayout()
+        hbox_lay_scan_varying = QHBoxLayout()
 
         label_scan_varying = QLabel("Scan Varying Refinement")
 
@@ -275,7 +278,7 @@ class RefineSimplerParamTab( QWidget):
 
         box_scan_varying = QComboBox()
         box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst=[]
+        box_scan_varying.tmp_lst = []
         box_scan_varying.tmp_lst.append("True")
         box_scan_varying.tmp_lst.append("False")
 
@@ -287,13 +290,13 @@ class RefineSimplerParamTab( QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        '''
+        """
         beam {
           fix = all *in_spindle_plane out_spindle_plane *wavelength
         }
-        '''
+        """
 
-        this_will_change_drastically_after_git_push_part_1 = '''
+        this_will_change_drastically_after_git_push_part_1 = """
         hbox_lay_beam_fix =  QHBoxLayout()
         label_beam_fix = QLabel("Beam Fix Parameters")
 
@@ -316,11 +319,11 @@ class RefineSimplerParamTab( QWidget):
         box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_beam_fix.addWidget(box_beam_fix)
         localLayout.addLayout(hbox_lay_beam_fix)
-        '''
-        #crystal {
-        #fix = all cell orientation
-        #}
-        this_will_change_drastically_after_git_push_part_2 = '''
+        """
+        # crystal {
+        # fix = all cell orientation
+        # }
+        this_will_change_drastically_after_git_push_part_2 = """
         hbox_lay_crystal_fix =  QHBoxLayout()
         label_crystal_fix = QLabel("Crystal Fix Parameters")
 
@@ -342,11 +345,11 @@ class RefineSimplerParamTab( QWidget):
         box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_crystal_fix.addWidget(box_crystal_fix)
         localLayout.addLayout(hbox_lay_crystal_fix)
-        '''
-        #detector {
-        #fix = all position orientation
-        #}
-        this_will_change_drastically_after_git_push_part_3 = '''
+        """
+        # detector {
+        # fix = all position orientation
+        # }
+        this_will_change_drastically_after_git_push_part_3 = """
         hbox_lay_detector_fix =  QHBoxLayout()
         label_detector_fix = QLabel("Detector Fix Parameters")
 
@@ -368,12 +371,12 @@ class RefineSimplerParamTab( QWidget):
         box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_detector_fix.addWidget(box_detector_fix)
         localLayout.addLayout(hbox_lay_detector_fix)
-        '''
-        #goniometer {
-        #fix = *all in_beam_plane out_beam_plane
+        """
+        # goniometer {
+        # fix = *all in_beam_plane out_beam_plane
         #
-        #}
-        this_will_change_drastically_after_git_push_part_4 = '''
+        # }
+        this_will_change_drastically_after_git_push_part_4 = """
         hbox_lay_goniometer_fix =  QHBoxLayout()
         label_goniometer_fix = QLabel("Goniometer Fix Parameters")
 
@@ -395,19 +398,19 @@ class RefineSimplerParamTab( QWidget):
         box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
         localLayout.addLayout(hbox_lay_goniometer_fix)
-        '''
-        #reflections {
+        """
+        # reflections {
         #    outlier {
         #      algorithm = null *auto mcd tukey sauter_poon
         #    }
         #  }
-        hbox_lay_outlier_algorithm =  QHBoxLayout()
+        hbox_lay_outlier_algorithm = QHBoxLayout()
         label_outlier_algorithm = QLabel("Outlier Rejection Algorithm")
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
         box_outlier_algorithm = QComboBox()
         box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
-        box_outlier_algorithm.tmp_lst=[]
+        box_outlier_algorithm.tmp_lst = []
         box_outlier_algorithm.tmp_lst.append("null")
         box_outlier_algorithm.tmp_lst.append("auto")
         box_outlier_algorithm.tmp_lst.append("mcd")
@@ -433,7 +436,7 @@ class RefineSimplerParamTab( QWidget):
         self.lst_var_widg.append(box_scan_varying)
         self.lst_var_widg.append(label_scan_varying)
 
-        '''
+        """
         self.lst_var_widg.append(box_beam_fix)
         self.lst_var_widg.append(label_beam_fix)
 
@@ -445,7 +448,7 @@ class RefineSimplerParamTab( QWidget):
 
         self.lst_var_widg.append(box_goniometer_fix)
         self.lst_var_widg.append(label_goniometer_fix)
-        '''
+        """
 
         self.lst_var_widg.append(box_outlier_algorithm)
         self.lst_var_widg.append(label_outlier_algorithm)
@@ -457,7 +460,7 @@ class RefineSimplerParamTab( QWidget):
         str_path = str(sender.local_path)
         print("str(sender.local_path) =", str(sender.local_path))
 
-        if(str_value == "none"):
+        if str_value == "none":
             print("trying to emit [item_to_remove] =", str_path)
             self.item_to_remove.emit(str_path)
 
@@ -465,28 +468,27 @@ class RefineSimplerParamTab( QWidget):
             self.item_changed.emit(str_path, str_value)
 
 
-
-class IntegrateSimplerParamTab( QWidget):
-    '''
+class IntegrateSimplerParamTab(QWidget):
+    """
     This widget is the tool for tunning the simpler and most common parameters
     in the integrate algorithm, this widget is the first to appear once the button
     "Integrate" at the left side of the GUI is clicked
-    '''
+    """
 
     item_changed = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
-        #self.param_widget_parent = parent.param_widget_parent
+        # self.param_widget_parent = parent.param_widget_parent
 
         localLayout = QVBoxLayout()
-        PrFit_lay_out =  QHBoxLayout()
+        PrFit_lay_out = QHBoxLayout()
         label_PrFit = QLabel("Use Profile Fitting")
         PrFit_lay_out.addWidget(label_PrFit)
 
         PrFit_comb_bx = QComboBox()
         PrFit_comb_bx.local_path = "integration.profile.fitting"
-        PrFit_comb_bx.tmp_lst=[]
+        PrFit_comb_bx.tmp_lst = []
         PrFit_comb_bx.tmp_lst.append("True")
         PrFit_comb_bx.tmp_lst.append("False")
 
@@ -496,13 +498,13 @@ class IntegrateSimplerParamTab( QWidget):
         PrFit_lay_out.addWidget(PrFit_comb_bx)
         localLayout.addLayout(PrFit_lay_out)
 
-        hbox_lay_algorithm_53 =  QHBoxLayout()
+        hbox_lay_algorithm_53 = QHBoxLayout()
         label_algorithm_53 = QLabel("Background Algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
         box_algorithm_53 = QComboBox()
         box_algorithm_53.local_path = "integration.background.algorithm"
-        box_algorithm_53.tmp_lst=[]
+        box_algorithm_53.tmp_lst = []
         box_algorithm_53.tmp_lst.append("simple")
         box_algorithm_53.tmp_lst.append("null")
         box_algorithm_53.tmp_lst.append("median")
@@ -516,9 +518,9 @@ class IntegrateSimplerParamTab( QWidget):
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
 
-        hbox_lay_nproc =  QHBoxLayout()
+        hbox_lay_nproc = QHBoxLayout()
         label_nproc = QLabel("Number of Jobs")
-        #label_nproc.setFont( QFont("Monospace", 10))
+        # label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
 
         self.box_nproc = QSpinBox()
@@ -551,7 +553,7 @@ class IntegrateSimplerParamTab( QWidget):
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
     def spnbox_changed(self, value):
@@ -568,21 +570,19 @@ class IntegrateSimplerParamTab( QWidget):
         return cpu_max_proc
 
 
-
-
 class SymmetrySimplerParamTab(QWidget):
-    '''
+    """
     This widget is the tool for tunning the simpler and most common parameters
     in the symmetry command, this widget is the first to appear once the button
     "Symmetry" at the left side of the GUI is clicked
-    '''
+    """
 
     item_changed = pyqtSignal(str, str)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(SymmetrySimplerParamTab, self).__init__()
 
-        hbox_d_min =  QHBoxLayout()
+        hbox_d_min = QHBoxLayout()
         localLayout = QVBoxLayout()
         label_d_min = QLabel("d_min")
 
@@ -619,27 +619,27 @@ class SymmetrySimplerParamTab(QWidget):
 
 class ScaleSimplerParamTab(QWidget):
 
-    '''
+    """
     This widget is the tool for tunning the simpler and most common parameters
     in the scale command, this widget is the first to appear once the button
     "Scale" at the left side of the GUI is clicked
-    '''
+    """
 
     item_changed = pyqtSignal(str, str)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(ScaleSimplerParamTab, self).__init__()
 
         localLayout = QVBoxLayout()
 
-        hbox_lay_mod =  QHBoxLayout()
+        hbox_lay_mod = QHBoxLayout()
         label_mod = QLabel("Model")
 
         hbox_lay_mod.addWidget(label_mod)
 
         box_mod = QComboBox()
         box_mod.local_path = "model"
-        box_mod.tmp_lst=[]
+        box_mod.tmp_lst = []
         box_mod.tmp_lst.append("physical")
         box_mod.tmp_lst.append("array")
         box_mod.tmp_lst.append("KB")
@@ -649,14 +649,14 @@ class ScaleSimplerParamTab(QWidget):
         box_mod.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_mod.addWidget(box_mod)
 
-        hbox_lay_wgh_opt_err =  QHBoxLayout()
+        hbox_lay_wgh_opt_err = QHBoxLayout()
         label_wgh_opt_err = QLabel("Optimise Weights")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
 
         box_wgh_opt_err = QComboBox()
         box_wgh_opt_err.local_path = "weighting.optimise_errors"
-        box_wgh_opt_err.tmp_lst=[]
+        box_wgh_opt_err.tmp_lst = []
         box_wgh_opt_err.tmp_lst.append("True")
         box_wgh_opt_err.tmp_lst.append("False")
         for lst_itm in box_wgh_opt_err.tmp_lst:
@@ -699,7 +699,7 @@ class ScaleSimplerParamTab(QWidget):
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
 
-        #self.param_widget_parent.update_lin_txt(str_path, str_value)
+        # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
     def spnbox_changed(self, value):
@@ -710,18 +710,18 @@ class ScaleSimplerParamTab(QWidget):
 
         self.item_changed.emit(str_path, str_value)
 
-class TmpTstWidget( QWidget):
 
-    def __init__(self, parent = None):
+class TmpTstWidget(QWidget):
+    def __init__(self, parent=None):
         super(TmpTstWidget, self).__init__()
-        #self.param_widget_parent = self
+        # self.param_widget_parent = self
 
         my_widget = RefineSimplerParamTab(self)
 
-        #my_widget = FindspotsSimplerParameterTab(self)
-        #my_widget = SymmetrySimplerParamTab(self)
-        #my_widget = ScaleSimplerParamTab(self)
-        #my_widget = ExportSimplerParamTab(self)
+        # my_widget = FindspotsSimplerParameterTab(self)
+        # my_widget = SymmetrySimplerParamTab(self)
+        # my_widget = ScaleSimplerParamTab(self)
+        # my_widget = ExportSimplerParamTab(self)
 
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)
@@ -729,8 +729,7 @@ class TmpTstWidget( QWidget):
         self.show()
 
 
-if(__name__ == "__main__"):
-    app =  QApplication(sys.argv)
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
     ex = TmpTstWidget()
     sys.exit(app.exec_())
-
