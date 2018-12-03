@@ -1,49 +1,58 @@
 #!/usr/bin/python
-'''
+"""
 DUI's management of CLI commands and navigation tree
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
-'''
+"""
 from __future__ import print_function
 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
 import sys
 import pickle
-from cli_utils import print_list, TreeShow, DialsCommand, sys_arg, \
-     generate_report, build_command_lst, get_next_step, generate_predict
+from cli_utils import (
+    print_list,
+    TreeShow,
+    DialsCommand,
+    sys_arg,
+    generate_report,
+    build_command_lst,
+    get_next_step,
+    generate_predict,
+)
+
 
 class CommandNode(object):
     dials_com_lst = [
-    'import',
-    'find_spots',
-    'index',
-    'refine_bravais_settings',
-    'reindex',
-    'refine',
-    'integrate',
-    'symmetry',
-    'scale',
-    'export',
+        "import",
+        "find_spots",
+        "index",
+        "refine_bravais_settings",
+        "reindex",
+        "refine",
+        "integrate",
+        "symmetry",
+        "scale",
+        "export",
     ]
 
-    def __init__(self, prev_step = None):
+    def __init__(self, prev_step=None):
         self.lin_num = 0
         self.next_step_list = []
         self.prev_step = prev_step
@@ -60,22 +69,23 @@ class CommandNode(object):
         self.json_sym_out = None
 
         self.dials_command = DialsCommand()
-        #self.work_dir = os.getcwd()
+        # self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
         self.command_lst = cmd_lst
-        if(cmd_lst[0] == "fail"):
-            #testing virtual failed step
+        if cmd_lst[0] == "fail":
+            # testing virtual failed step
             print("\n intentionally FAILED for testing \n")
             self.success = False
 
         else:
-            if(cmd_lst[0] in self.dials_com_lst):
+            if cmd_lst[0] in self.dials_com_lst:
                 self.build_command(cmd_lst)
-                self.success = self.dials_command( lst_cmd_to_run = self.cmd_lst_to_run,
-                                                 ref_to_class = ref_to_class)
+                self.success = self.dials_command(
+                    lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
+                )
 
-                if(self.success == True):
+                if self.success == True:
                     self.report_out = generate_report(self)
                     self.predict_pickle_out = generate_predict(self)
 
@@ -95,9 +105,8 @@ class CommandNode(object):
 
 
 class Runner(object):
-
     def __init__(self):
-        root_node = CommandNode(prev_step = None)
+        root_node = CommandNode(prev_step=None)
         root_node.success = True
         root_node.command_lst = ["Root"]
         self.step_list = [root_node]
@@ -106,30 +115,30 @@ class Runner(object):
         self.create_step(root_node)
 
         print("root_node.lin_num =", root_node.lin_num)
-        #self.current_node = root_node
+        # self.current_node = root_node
 
     def run(self, command, ref_to_class):
 
-        #TODO verify the step actually runs and give the proper output files
+        # TODO verify the step actually runs and give the proper output files
 
-        if(type(command) is str):
+        if type(command) is str:
             cmd_lst = command.split()
         else:
             cmd_lst = command
 
-        if(cmd_lst[0] == "goto"):
+        if cmd_lst[0] == "goto":
             self.goto(int(cmd_lst[1]))
 
-        elif(cmd_lst[0] == "slist"):
+        elif cmd_lst[0] == "slist":
             self.slist()
 
-        elif(cmd_lst[0] == "clean"):
+        elif cmd_lst[0] == "clean":
             self.clean()
 
-        elif(cmd_lst[0] == "mkchi"):
+        elif cmd_lst[0] == "mkchi":
             self.create_step(self.current_node)
 
-        elif(cmd_lst[0] == "mksib"):
+        elif cmd_lst[0] == "mksib":
             old_command_lst = self.current_node.command_lst
             self.goto_prev()
             print("forking")
@@ -137,7 +146,7 @@ class Runner(object):
             self.current_node.edit_list(old_command_lst)
 
         else:
-            if(self.current_node.success == True):
+            if self.current_node.success == True:
                 self.goto_prev()
                 print("forking")
                 self.create_step(self.current_node)
@@ -153,8 +162,11 @@ class Runner(object):
         lst_to_rm = []
 
         for node in self.step_list:
-            if( node != self.current_node and
-                node.success == None and len(node.prev_step.next_step_list) > 1):
+            if (
+                node != self.current_node
+                and node.success == None
+                and len(node.prev_step.next_step_list) > 1
+            ):
                 lst_to_rm.append(node)
 
         for node in lst_to_rm:
@@ -164,7 +176,7 @@ class Runner(object):
         print("self.current_line =", self.current_line, "\n")
 
     def create_step(self, prev_step):
-        new_step = CommandNode(prev_step = prev_step)
+        new_step = CommandNode(prev_step=prev_step)
         self.bigger_lin += 1
         new_step.lin_num = self.bigger_lin
         prev_step.next_step_list.append(new_step)
@@ -182,7 +194,7 @@ class Runner(object):
         self.current_line = new_lin
 
         for node in self.step_list:
-            if(node.lin_num == self.current_line):
+            if node.lin_num == self.current_line:
                 self.current_node = node
 
     def get_current_node():
@@ -196,8 +208,7 @@ class Runner(object):
         except:
             html_rep = None
 
-
-        old_style = '''
+        old_style = """
         if(self.current_node.success == True):
             html_rep = self.current_node.report_out
 
@@ -207,7 +218,7 @@ class Runner(object):
 
             except:
                 html_rep = None
-        '''
+        """
 
         return html_rep
 
@@ -217,14 +228,14 @@ class Runner(object):
         path_to_json = None
 
         while True:
-            if(tmp_cur.command_lst == [None]):
+            if tmp_cur.command_lst == [None]:
                 tmp_cur = tmp_cur.prev_step
 
-            elif(tmp_cur.success == True and tmp_cur.command_lst[0] == "import"):
+            elif tmp_cur.success == True and tmp_cur.command_lst[0] == "import":
                 path_to_json = tmp_cur.json_file_out
                 break
 
-            elif(tmp_cur.command_lst[0] == "Root" or tmp_cur.success == False):
+            elif tmp_cur.command_lst[0] == "Root" or tmp_cur.success == False:
                 break
 
             else:
@@ -247,13 +258,15 @@ class Runner(object):
     def get_experiment_path(self):
         path_to_json = None
         tmp_cur = self.current_node
-        if(tmp_cur.command_lst == [None]):
-           tmp_cur = tmp_cur.prev_step
+        if tmp_cur.command_lst == [None]:
+            tmp_cur = tmp_cur.prev_step
 
-        if(tmp_cur.command_lst[0] != "Root" and
-          tmp_cur.command_lst[0] != "import" and
-          tmp_cur.command_lst[0] != "find_spots" and
-          tmp_cur.success == True):
+        if (
+            tmp_cur.command_lst[0] != "Root"
+            and tmp_cur.command_lst[0] != "import"
+            and tmp_cur.command_lst[0] != "find_spots"
+            and tmp_cur.success == True
+        ):
 
             try:
                 path_to_json = tmp_cur.json_file_out
@@ -265,12 +278,14 @@ class Runner(object):
 
     def get_reflections_path(self):
         tmp_cur = self.current_node
-        if(tmp_cur.command_lst == [None]):
+        if tmp_cur.command_lst == [None]:
             tmp_cur = tmp_cur.prev_step
 
-        if(tmp_cur.command_lst[0] == "Root" or
-                tmp_cur.command_lst[0] == "import" or
-                tmp_cur.success != True):
+        if (
+            tmp_cur.command_lst[0] == "Root"
+            or tmp_cur.command_lst[0] == "import"
+            or tmp_cur.success != True
+        ):
 
             return None, None
 
@@ -294,17 +309,17 @@ class Runner(object):
         print_list(self.step_list, self.current_line)
 
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     tree_output = TreeShow()
 
     storage_path = sys_arg.directory
 
     try:
-        with open (storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
+        with open(storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
             idials_runner = pickle.load(bkp_in)
 
-        #TODO sometimes the following error appears
-        #Attribute not found
+        # TODO sometimes the following error appears
+        # Attribute not found
         #'module' object has no attribute 'CommandNode'
 
     except Exception as e:
@@ -315,21 +330,22 @@ if(__name__ == "__main__"):
 
         try:
             import shutil
+
             shutil.rmtree(storage_path + "/dui_files")
 
         except:
-            print("failed to do \"shutil.rmtree(\"/dui_files\")\"")
+            print('failed to do "shutil.rmtree("/dui_files")"')
 
         os.mkdir(storage_path + "/dui_files")
 
     tree_output(idials_runner)
 
     command = ""
-    while(command.strip() != 'exit' and command.strip() != 'quit'):
+    while command.strip() != "exit" and command.strip() != "quit":
         try:
             inp_str = "lin [" + str(idials_runner.current_line) + "] >>> "
             command = str(raw_input(inp_str))
-            if(command == ""):
+            if command == "":
                 print("converting empty line in self.slist()")
                 command = "slist"
 
@@ -341,7 +357,5 @@ if(__name__ == "__main__"):
         tree_output(idials_runner)
         nxt_str = idials_runner.get_next_from_here()
 
-
         with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(idials_runner, bkp_out)
-

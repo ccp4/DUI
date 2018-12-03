@@ -1,32 +1,34 @@
-'''
+"""
 low level handling info for outputs in DUI
 
 Author: Luis Fuentes-Montero (Luiso)
 With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
-'''
+"""
 from __future__ import print_function
 
-#This program is free software; you can redistribute it and/or
-#modify it under the terms of the GNU General Public License
-#as published by the Free Software Foundation; either version 2
-#of the License, or (at your option) any later version.
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program; if not, write to the Free Software
-#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from dxtbx.model.experiment_list import ExperimentListFactory
 from dxtbx.model import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
 import json, sys
+
+
 class InfoData(object):
     def __init__(self):
 
@@ -46,7 +48,7 @@ class InfoData(object):
         self.yb = None
         self.dd = None
 
-        self.w_lambda =None
+        self.w_lambda = None
 
         self.img_ran1 = None
         self.img_ran2 = None
@@ -69,10 +71,11 @@ class InfoData(object):
         self.tmpl_str = None
         self.ref2exp = None
 
-def update_all_data(reflections_path = None, experiments_path = None):
+
+def update_all_data(reflections_path=None, experiments_path=None):
     dat = InfoData()
 
-    if(reflections_path != None):
+    if reflections_path != None:
 
         try:
             refl_tabl = flex.reflection_table.from_pickle(reflections_path)
@@ -80,27 +83,36 @@ def update_all_data(reflections_path = None, experiments_path = None):
             print("dat.n_strng =", dat.n_strng)
             dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
             print("dat.n_index =", dat.n_index)
-            dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(True)
+            dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(
+                True
+            )
             print("dat.n_refnd =", dat.n_refnd)
-            dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(True)
+            dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(
+                True
+            )
             print("dat.n_integ_sum =", dat.n_integ_sum)
-            dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(True)
+            dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(
+                True
+            )
             print("dat.n_integ_prf =", dat.n_integ_prf)
 
         except:
             print("failed to find reflections")
             print("reflections_path =", reflections_path)
 
-    if(experiments_path != None):
+    if experiments_path != None:
 
         print("trying experiments")
         try:
             experiments = ExperimentListFactory.from_json_file(
-                          experiments_path, check_format=False)
+                experiments_path, check_format=False
+            )
         except:
             try:
                 # FIXME here only take the first datablock. What if there are more?
-                datablock = DataBlockFactory.from_serialized_format(experiments_path, check_format=False)[0]
+                datablock = DataBlockFactory.from_serialized_format(
+                    experiments_path, check_format=False
+                )[0]
 
                 # FIXME here only take the first model from each
                 beam = datablock.unique_beams()[0]
@@ -108,9 +120,8 @@ def update_all_data(reflections_path = None, experiments_path = None):
                 scan = datablock.unique_scans()[0]
 
                 # build a pseudo ExperimentList (with empty crystals)
-                experiments=ExperimentList()
-                experiments.append(Experiment(
-                    beam=beam, detector=detector, scan=scan))
+                experiments = ExperimentList()
+                experiments.append(Experiment(beam=beam, detector=detector, scan=scan))
 
             except ValueError:
                 print("failed to read json file")
@@ -145,6 +156,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
             dat.spg_group = sg
 
             from scitbx import matrix
+
             u_mat = matrix.sqr(exp.crystal.get_U())
 
             dat.u11 = b_mat[0]
@@ -168,8 +180,9 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
         # Get detector data
         # assume details for the panel the beam intersects are the same for the whole detector
-        pnl_beam_intersects, (beam_x, beam_y) = \
-            exp.detector.get_ray_intersection(exp.beam.get_s0())
+        pnl_beam_intersects, (beam_x, beam_y) = exp.detector.get_ray_intersection(
+            exp.beam.get_s0()
+        )
         pnl = exp.detector[pnl_beam_intersects]
         print("beam_x, beam_y =", beam_x, beam_y)
 
@@ -188,7 +201,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
         # is the next line right? check what dials.show does
         dat.e_time = max(exp.scan.get_exposure_times())
-        #print set(exp.scan.get_exposure_times())
+        # print set(exp.scan.get_exposure_times())
 
         dat.n_pans = len(exp.detector)
         dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()
@@ -201,16 +214,15 @@ def update_all_data(reflections_path = None, experiments_path = None):
             with open(experiments_path) as infile:
                 json_info = json.load(infile)
 
-
-            if(type(json_info) is dict):
+            if type(json_info) is dict:
                 print("found Dictionary")
-                imageset = json_info['imageset']
+                imageset = json_info["imageset"]
 
-            elif(type(json_info) is list):
+            elif type(json_info) is list:
                 print("found List")
-                imageset = json_info[0]['imageset']
+                imageset = json_info[0]["imageset"]
 
-            dat.tmpl_str = imageset[0]['template']
+            dat.tmpl_str = imageset[0]["template"]
 
             print("dat.tmpl_str =", dat.tmpl_str)
 
@@ -226,7 +238,7 @@ def update_all_data(reflections_path = None, experiments_path = None):
 
     return dat
 
-if(__name__ == "__main__"):
-    # This should be called with two paths adden in console
-    update_all_data(reflections_path = sys.argv[1], experiments_path = sys.argv[2])
 
+if __name__ == "__main__":
+    # This should be called with two paths adden in console
+    update_all_data(reflections_path=sys.argv[1], experiments_path=sys.argv[2])
