@@ -1,4 +1,4 @@
 #!/bin/sh -e
 export BOOST_ADAPTBX_SIGNALS_DEFAULT=1
 export BOOST_ADAPTBX_FPE_DEFAULT=1
-ccp4-python -m mini_idials_w_GUI.main_dui "${1}" "${2}"
+ccp4-python -m dui.main_dui "${1}" "${2}"
