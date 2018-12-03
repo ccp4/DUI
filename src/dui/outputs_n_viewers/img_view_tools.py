@@ -7,6 +7,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+from __future__ import print_function
 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -67,11 +68,11 @@ def draw_palette_label(i_min, i_max):
 
     if(i_max > 500):
         i_max = 500
-        print "reshaping i_max in shown palette bitmap"
+        print("reshaping i_max in shown palette bitmap")
 
     if(i_min < -3):
         i_min = -3
-        print "reshaping i_min in shown palette bitmap"
+        print("reshaping i_min in shown palette bitmap")
 
     scale_size = int(i_max - i_min)
     np_img_arr = np.zeros((50, 503), dtype=np.double)
@@ -89,7 +90,7 @@ def draw_palette_label(i_min, i_max):
             np_img_arr[0:50,lbound:ubound] = ascending_img_arr[0:50, 0:scale_size]
 
         except:
-            print "something went wrong with the creation of palette bitmap"
+            print("something went wrong with the creation of palette bitmap")
 
     tmp_flex_arr = flex.double(np_img_arr)
     return tmp_flex_arr
@@ -122,7 +123,7 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
 
     txt_lab = "updating Predicted Reflections Data:"
     my_bar = ProgBarBox(min_val = 0, max_val = len(pos_col), text = txt_lab)
-    print " len(pos_col) =", len(pos_col)
+    print(" len(pos_col) =", len(pos_col))
 
     for i, pos_tri in enumerate(pos_col):
         #print "pos_tri =", pos_tri
@@ -172,7 +173,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
     txt_lab = "updating Observed Reflections Data:"
     my_bar = ProgBarBox(min_val = 0, max_val = len(bbox_lst), text = txt_lab)
 
-    print "len(bbox_lst) =", len(bbox_lst)
+    print("len(bbox_lst) =", len(bbox_lst))
 
     for i, ref_box in enumerate(bbox_lst):
         my_bar(i)

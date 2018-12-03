@@ -7,6 +7,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+from __future__ import print_function
 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -53,14 +54,14 @@ def prn_lst_lst_cmd(last_idials_node):
         cur_nod = cur_nod.prev_step
 
     for prn_lin in reversed(lst_simpl_cmd):
-        print prn_lin
+        print(prn_lin)
 
-    print "\n"
+    print("\n")
 
     for prn_lin in reversed(lst_full_cmd):
-        print prn_lin
+        print(prn_lin)
 
-    print "\n\n"
+    print("\n\n")
 
 
 def get_next_step(node_obj):
@@ -109,12 +110,12 @@ class tree_2_lineal(object):
                 self.deep_in_rec(single_obj.objects)
 
             else:
-                print "\n\n _____________ <<< WARNING neither definition or scope\n\n"
+                print("\n\n _____________ <<< WARNING neither definition or scope\n\n")
 
 
 def get_phil_par(path_to_file):
 
-    print "path_to_file =", path_to_file
+    print("path_to_file =", path_to_file)
     p_obj = libtbx.phil.parse(
             input_string=None,
             source_info=None,
@@ -122,7 +123,7 @@ def get_phil_par(path_to_file):
             converter_registry=None,
             process_includes=False
             )
-    print "p_obj =", p_obj
+    print("p_obj =", p_obj)
     lst_obj = tree_2_lineal(p_obj.objects)
     multipl_phil_lst = lst_obj()
 
@@ -134,7 +135,7 @@ def get_phil_par(path_to_file):
                 str_par = str(obj.full_path()) + "="
                 str_val = ''
                 obj_ext = obj.extract()
-                print "obj_ext =", obj_ext
+                print("obj_ext =", obj_ext)
                 if(type(obj_ext) is list):
                     for nm, single_val in enumerate(obj_ext):
                         if(nm > 0):
@@ -148,11 +149,11 @@ def get_phil_par(path_to_file):
                 str_par += str_val
 
             except:
-                print "\n\n failed to get obj & par \n\n"
+                print("\n\n failed to get obj & par \n\n")
 
             lst_str_commands.append(str_par)
 
-    print "\n lst_str_commands =", lst_str_commands
+    print("\n lst_str_commands =", lst_str_commands)
     return lst_str_commands
 
 
@@ -349,7 +350,7 @@ def generate_predict(node_obj):
             pre_fil = run_path + os.sep + str(current_lin) + "_predict.pickle"
             pred_outp = " output=" + pre_fil
             pred_cmd = "dials.predict " + str(exp_inp) + pred_outp
-            print "predict command: ", pred_cmd, "\n\n"
+            print("predict command: ", pred_cmd, "\n\n")
 
             gen_pred_proc = subprocess.Popen(pred_cmd, shell = True)
             gen_pred_proc.wait()
@@ -357,14 +358,14 @@ def generate_predict(node_obj):
             pre_out = pre_fil
 
             if(os.path.exists(pre_out)):
-                print "\ngenerated predictions at: ", pre_out, "\n"
+                print("\ngenerated predictions at: ", pre_out, "\n")
 
             else:
-                print "\n path to predictions NOT generated"
+                print("\n path to predictions NOT generated")
                 pre_out = None
 
         except:
-            print "Failed adding path to predictions"
+            print("Failed adding path to predictions")
             pre_out = None
 
     return pre_out
@@ -390,21 +391,21 @@ def generate_report(node_obj):
             #rep_cmd = ["dials.report", exp_inp, refl_inp, deps_outp, html_outp]
             rep_cmd = "dials.report " + str(exp_inp) + " " + str(refl_inp) + " " + deps_outp + " " + html_outp
 
-        print "rep_cmd =", rep_cmd
+        print("rep_cmd =", rep_cmd)
 
         try:
             gen_rep_proc = subprocess.Popen(rep_cmd, shell = True)
             gen_rep_proc.wait()
 
             rep_out = htm_fil
-            print "generated report at: ", rep_out
+            print("generated report at: ", rep_out)
 
         except:
             rep_out = None
-            print "Someting went wrong in report level 2"
+            print("Someting went wrong in report level 2")
 
     else:
-        print "NO report needed for this step"
+        print("NO report needed for this step")
         rep_out = None
 
     return rep_out
@@ -412,11 +413,11 @@ def generate_report(node_obj):
 
 class DialsCommand(object):
     def __init__(self):
-        print "creating new DialsCommand (obj)"
+        print("creating new DialsCommand (obj)")
         self.full_cmd_lst = None
 
         os_name = os.name
-        print "\n Running process on ", os_name, "\n\n"
+        print("\n Running process on ", os_name, "\n\n")
         if(os_name == "nt"):
             self.use_shell = True
         else:
@@ -424,11 +425,11 @@ class DialsCommand(object):
 
     def __call__(self, lst_cmd_to_run = None, ref_to_class = None):
         try:
-            print "\n [[ running >> \n"
+            print("\n [[ running >> \n")
             single_string = ""
 
             for lin_to_prn in lst_cmd_to_run:
-                print lin_to_prn
+                print(lin_to_prn)
 
                 single_string += lin_to_prn
                 single_string += " "
@@ -439,7 +440,7 @@ class DialsCommand(object):
             else:
                 run_cmd = lst_cmd_to_run
 
-            print "\n<<<"
+            print("\n<<<")
 
             self.tmp_std_all = []
 
@@ -451,7 +452,7 @@ class DialsCommand(object):
 
             self.my_pid = my_process.pid
 
-            print "process PID =", self.my_pid
+            print("process PID =", self.my_pid)
 
             for line in iter(my_process.stdout.readline, b''):
                 single_line = line[0:len(line)-1]
@@ -460,9 +461,9 @@ class DialsCommand(object):
                     self.tmp_std_all.append(single_line)
 
                 except:
-                    print single_line
+                    print(single_line)
 
-            print "Done print loop"
+            print("Done print loop")
 
             my_process.wait()
             my_process.stdout.close()
@@ -477,21 +478,21 @@ class DialsCommand(object):
                     ref_to_class.emit_fail_signal()
 
                 except:
-                    print "Failed"
+                    print("Failed")
 
-            print "Done all step"
+            print("Done all step")
 
         except Exception as my_err:
-            print "error =", my_err, "\n"
+            print("error =", my_err, "\n")
             local_success = False
-            print "\n FAIL call"
+            print("\n FAIL call")
 
         self.full_cmd_lst = lst_cmd_to_run
         return local_success
 
 
 def print_list(lst, curr):
-    print "__________________________listing:"
+    print("__________________________listing:")
     for uni in lst:
         stp_str = str(uni.lin_num) + " " + str(uni.success) + " comm: " + str(uni.command_lst)
 
@@ -512,7 +513,7 @@ def print_list(lst, curr):
         if(curr == uni.lin_num):
             stp_str += "                           <<< here I am <<<"
 
-        print stp_str
+        print(stp_str)
 
 
 class TreeShow(object):
@@ -521,17 +522,17 @@ class TreeShow(object):
         self.ind_lin = "------"
 
     def __call__(self, my_runner):
-        print
-        print "status "
-        print " |  lin num "
-        print " |   |  command "
-        print " |   |   | "
-        print "------------------"
+        print()
+        print("status ")
+        print(" |  lin num ")
+        print(" |   |  command ")
+        print(" |   |   | ")
+        print("------------------")
         self.max_indent = 0
         self.str_lst = []
         self.add_tree(step = my_runner.step_list[0], indent = 0)
         self.tree_print(my_runner.current_line)
-        print "---------------------" + self.max_indent * self.ind_lin
+        print("---------------------" + self.max_indent * self.ind_lin)
 
     def add_tree(self, step = None, indent = None):
         if(step.success == True):
@@ -585,5 +586,5 @@ class TreeShow(object):
                 self.tree_dat[pos][0] += str_here + "   <<< here "
 
         for prn_str in self.tree_dat:
-            print prn_str[0]
+            print(prn_str[0])
 

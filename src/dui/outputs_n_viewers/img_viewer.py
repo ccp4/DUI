@@ -6,6 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+from __future__ import print_function
 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -90,7 +91,7 @@ class ImgPainter(QWidget):
             self.move_scrollbar(scrollBar = self.p_v_svar(), dst = dy)
 
         elif event.buttons() == Qt.RightButton:
-            print "Right click drag"
+            print("Right click drag")
 
         #TODO find out how does this works despite
         #               NOT updating
@@ -106,7 +107,7 @@ class ImgPainter(QWidget):
 
         else:
             scale_factor = None
-            print "reaching scale limit"
+            print("reaching scale limit")
 
         if(scale_factor != None):
 
@@ -142,7 +143,7 @@ class ImgPainter(QWidget):
         v_scr_bar = float(self.p_v_svar().value())
         self.move_scrollbar(scrollBar = self.p_h_svar(), new_pos = h_scr_bar * scale_factor)
         self.move_scrollbar(scrollBar = self.p_v_svar(), new_pos = v_scr_bar * scale_factor)
-        print "rescaling to:", self.my_scale
+        print("rescaling to:", self.my_scale)
 
     def move_scrollbar(self, scrollBar = None, dst = None, new_pos = None):
         if(dst != None):
@@ -174,7 +175,7 @@ class ImgPainter(QWidget):
                 self.update()
 
             except:
-                print "Failed to find closer HKL",
+                print("Failed to find closer HKL", end=' ')
 
     def set_img_pix(self, q_img = None,
                     obs_flat_data_in = None,
@@ -283,7 +284,7 @@ class ImgPainter(QWidget):
                                 lst_tmp_hkl = self.obs_flat_data
 
                     except:
-                        print "No reflection (Obsevations) to show ... None type"
+                        print("No reflection (Obsevations) to show ... None type")
 
                 if(self.user_choice[1]):
                     try:
@@ -324,7 +325,7 @@ class ImgPainter(QWidget):
                                 lst_tmp_hkl = self.pre_flat_data
 
                     except:
-                        print "No reflection (Predictions) to show ... None type"
+                        print("No reflection (Predictions) to show ... None type")
 
                 try:
                     for j, img_flat_data in enumerate(lst_tmp_hkl):
@@ -350,7 +351,7 @@ class ImgPainter(QWidget):
                                                 int(y * self.my_scale)),  reflection[4])
 
                 except:
-                    print "Failed to show HKLs",
+                    print("Failed to show HKLs", end=' ')
 
                 if(self.xb != None and self.yb != None):
                     painter.setPen(indexed_pen)
@@ -366,7 +367,7 @@ class ImgPainter(QWidget):
                                      int(self.yb * self.my_scale))
 
                 else:
-                    print "No xb,yb provided"
+                    print("No xb,yb provided")
 
             painter.end()
 
@@ -418,12 +419,12 @@ class PopPaletteMenu(QMenu):
         main_layout.addWidget(self.my_parent.slider_min)
         main_layout.addLayout(colour_box)
 
-        print "...geometry().width() =", self.my_parent.slider_min.geometry().width()
+        print("...geometry().width() =", self.my_parent.slider_min.geometry().width())
         self.setLayout(main_layout)
         self.show()
 
     def showEvent(self, event):
-        print "repainting"
+        print("repainting")
         try:
 
             self.my_parent.palette_label.setPixmap(QPixmap(self.my_parent.palette_qimg(
@@ -434,7 +435,7 @@ class PopPaletteMenu(QMenu):
                                                                       self.my_parent.i_max)))
 
         except:
-            print "no (...my_sweep) yet, skipping palette label paint"
+            print("no (...my_sweep) yet, skipping palette label paint")
 
     def slider_max_changed(self, value):
         if(self.my_parent.slider_min.sliderPosition() > value - 15):
@@ -638,7 +639,7 @@ class MyImgWin(QWidget):
         self.contrast_initiated = False
 
         if(json_file_path == None):
-            print "\n no datablock given \n"
+            print("\n no datablock given \n")
             n_of_imgs = 1
 
         else:
@@ -648,7 +649,7 @@ class MyImgWin(QWidget):
             self.ini_reflection_table(pckl_file_path)
 
         except:
-            print "No pickle file given"
+            print("No pickle file given")
 
         self.set_img()
 
@@ -696,7 +697,7 @@ class MyImgWin(QWidget):
         if(self.contrast_initiated == False):
             try:
                 n_of_imgs = len(self.my_sweep.indices())
-                print "n_of_imgs(ini_contrast) =", n_of_imgs
+                print("n_of_imgs(ini_contrast) =", n_of_imgs)
 
                 img_arr_n0 = self.my_sweep.get_raw_data(0)[0]
                 img_arr_n1 = self.my_sweep.get_raw_data(1)[0]
@@ -707,19 +708,19 @@ class MyImgWin(QWidget):
                             + img_arr_n1[0:25,0:25].as_double()
                             + img_arr_n2[0:25,0:25].as_double()
                               ) / 3.0
-                print "tst_sample =",  tst_sample
+                print("tst_sample =",  tst_sample)
 
                 i_mean = flex.mean(tst_sample)
                 tst_new_max = (i_mean + 1) * 25
 
-                print "flex.mean(tst_sample) =", i_mean
-                print "tst_new_max =", tst_new_max
+                print("flex.mean(tst_sample) =", i_mean)
+                print("tst_new_max =", tst_new_max)
                 self.try_change_max(tst_new_max)
                 self.try_change_min(-3)
                 self.contrast_initiated = True
 
             except:
-                print "Unable to calculate mean and adjust contrast"
+                print("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
         if(json_file_path != None):
@@ -731,12 +732,12 @@ class MyImgWin(QWidget):
                 self.img_select.clear()
 
             except:
-                print "Failed to load images from  datablock.json"
+                print("Failed to load images from  datablock.json")
 
             try:
-                print "self.my_sweep.get_array_range() =", self.my_sweep.get_array_range()
+                print("self.my_sweep.get_array_range() =", self.my_sweep.get_array_range())
                 n_of_imgs = len(self.my_sweep.indices())
-                print "n_of_imgs =", n_of_imgs
+                print("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -748,7 +749,7 @@ class MyImgWin(QWidget):
                 self.num_of_imgs_to_add.setMinimum(1)
 
             except:
-                print "Failed to set up IMG control dialog"
+                print("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
         self.ini_contrast()
@@ -771,14 +772,14 @@ class MyImgWin(QWidget):
             self.my_painter.scale2fact( sc_height / pt_height )
 
     def ini_reflection_table(self, pckl_file_path):
-        print "\npickle file(s) =", pckl_file_path
+        print("\npickle file(s) =", pckl_file_path)
 
         if(pckl_file_path[0] != None):
-            print "\npickle file (found) =", pckl_file_path[0]
+            print("\npickle file (found) =", pckl_file_path[0])
             try:
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
-                print "table =", table
-                print "len(table) = ", len(table)
+                print("table =", table)
+                print("len(table) = ", len(table))
                 n_refs = len(table)
                 bbox_col = map(list, table["bbox"])
                 try:
@@ -793,16 +794,16 @@ class MyImgWin(QWidget):
                     self.find_spt_flat_data_lst = list_arrange(bbox_col, hkl_col, n_imgs)
 
                 else:
-                    print "empty IMG lst"
+                    print("empty IMG lst")
 
             except:
                 self.find_spt_flat_data_lst = [None]
-                print "\n something failed with the reflection pickle \n\n"
+                print("\n something failed with the reflection pickle \n\n")
 
             try:
                 table = flex.reflection_table.from_pickle(pckl_file_path[1])
-                print "table =", table
-                print "len(table) = ", len(table)
+                print("table =", table)
+                print("len(table) = ", len(table))
                 n_refs = len(table)
                 pos_col = map(list, table["xyzcal.px"])
                 try:
@@ -818,7 +819,7 @@ class MyImgWin(QWidget):
 
             except:
                 self.pred_spt_flat_data_lst = [None]
-                print "\n something failed with the reflection pickle \n\n"
+                print("\n something failed with the reflection pickle \n\n")
 
         else:
             self.find_spt_flat_data_lst = [None]
@@ -836,13 +837,13 @@ class MyImgWin(QWidget):
         self.my_painter.scale2fact(0.8)
 
     def update_beam_centre(self, xb, yb):
-        print " update_beam_centre"
-        print "new x,y =", xb, yb
+        print(" update_beam_centre")
+        print("new x,y =", xb, yb)
         self.my_painter.update_my_beam_centre(xb, yb)
 
     def update_exp(self, reference):
         self.ref2exp = reference
-        print "\n update_exp(self, reference) \n"
+        print("\n update_exp(self, reference) \n")
 
     def update_info_label(self, x_pos, y_pos):
         try:
@@ -916,20 +917,20 @@ class MyImgWin(QWidget):
                                                                 self.i_max)))
 
 
-        print "\n self.i_min =", self.i_min
-        print " self.i_max =", self.i_max, "\n"
+        print("\n self.i_min =", self.i_min)
+        print(" self.i_max =", self.i_max, "\n")
     def btn_play_clicked(self):
         if(self.video_timer.isActive()):
-            print "Stoping video"
+            print("Stoping video")
             self.video_timer.stop()
             try:
                 self.video_timer.timeout.disconnect()
 
             except:
-                print "unable to disconnect timer again"
+                print("unable to disconnect timer again")
 
         else:
-            print "Playing Video"
+            print("Playing Video")
             self.video_timer.timeout.connect(self.btn_next_clicked)
             self.video_timer.start(1)
 
@@ -1031,8 +1032,8 @@ class MyImgWin(QWidget):
 if(__name__ == "__main__"):
 
     app = QApplication(sys.argv)
-    print "sys.argv =", sys.argv
-    print "len(sys.argv) =", len(sys.argv)
+    print("sys.argv =", sys.argv)
+    print("len(sys.argv) =", len(sys.argv))
 
     if(len(sys.argv) > 1):
         img_path = sys.argv[1]
@@ -1045,8 +1046,8 @@ if(__name__ == "__main__"):
     else:
         img_path = None
 
-    print "img_path =", img_path
-    print "pckl_file_path =", pckl_file_path
+    print("img_path =", img_path)
+    print("pckl_file_path =", pckl_file_path)
 
 
     diag = MyImgWin(img_path, [pckl_file_path, None])

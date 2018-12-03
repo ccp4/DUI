@@ -6,6 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+from __future__ import print_function
 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -76,7 +77,7 @@ class ControlWidget(QWidget):
         super(ControlWidget, self).__init__()
 
         main_path = get_main_path()
-        print "main_path =", main_path
+        print("main_path =", main_path)
 
         lst_icons_path = []
         lst_icons_path.append(main_path + "/resources/import.png")
@@ -106,7 +107,7 @@ class ControlWidget(QWidget):
         self.widg_lst = []
         self.btn_lst = []
 
-        print "\n\n\n\n"
+        print("\n\n\n\n")
 
 
         lst_heights = []
@@ -143,20 +144,20 @@ class ControlWidget(QWidget):
             lst_heights.append(param_widg.height())
             lst_widths.append(param_widg.width())
 
-        print "lst_heights =", lst_heights
-        print "max(lst_heights) =", max(lst_heights)
+        print("lst_heights =", lst_heights)
+        print("max(lst_heights) =", max(lst_heights))
 
-        print "lst_widths =", lst_widths
-        print "max(lst_widths) =", max(lst_widths)
+        print("lst_widths =", lst_widths)
+        print("max(lst_widths) =", max(lst_widths))
 
         self.setLayout(top_box)
 
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.show()
 
-        print "self.height =", self.height()
-        print "self.width =", self.width()
-        print "\n\n\n\n"
+        print("self.height =", self.height())
+        print("self.width =", self.width())
+        print("\n\n\n\n")
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit(command_lst)
@@ -176,20 +177,20 @@ class ControlWidget(QWidget):
                     widget.update_param(curr_step)
 
                 except:
-                    print "\n Unable to update params\n"
+                    print("\n Unable to update params\n")
 
         if(found_label == False and nxt_cmd == "reindex"):
-            print "assuming reindex mode"
+            print("assuming reindex mode")
             widget_now = self.widg_lst[3]
             self.step_param_widg.setCurrentWidget(widget_now)
 
     def btn_clicked(self):
-        print "btn_clicked"
+        print("btn_clicked")
         my_sender = self.sender()
         self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
         self.user_changed.emit(my_sender.pr_widg.my_label)
 
-        print "my_sender.pr_widg.my_label =", my_sender.pr_widg.my_label
+        print("my_sender.pr_widg.my_label =", my_sender.pr_widg.my_label)
         command_lst = [str(my_sender.pr_widg.my_label)]
         self.update_command_lst_high_level.emit(command_lst)
 
@@ -272,9 +273,9 @@ class MainWidget(QMainWindow):
             refresh_gui = True
 
         except Exception as e:
-            print "str(e) =", str(e)
-            print "e.__doc__ =", e.__doc__
-            print "e.message =", e.message
+            print("str(e) =", str(e))
+            print("e.__doc__ =", e.__doc__)
+            print("e.message =", e.message)
             self.idials_runner = Runner()
 
             try:
@@ -282,7 +283,7 @@ class MainWidget(QMainWindow):
                 shutil.rmtree(self.storage_path + "/dui_files")
 
             except:
-                print "failed to do \"shutil.rmtree(\"/dui_files\")\""
+                print("failed to do \"shutil.rmtree(\"/dui_files\")\"")
 
             os.mkdir(self.storage_path + "/dui_files")
             refresh_gui = False
@@ -463,7 +464,7 @@ class MainWidget(QMainWindow):
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
 
-        print "\n_________________________________________cmd_lst(pass_parmams) =", cmd_lst, "\n"
+        print("\n_________________________________________cmd_lst(pass_parmams) =", cmd_lst, "\n")
 
         current_parameter_widget = self.centre_par_widget.step_param_widg.currentWidget()
         action_name = current_parameter_widget.my_widget.command_lst[0]
@@ -480,42 +481,42 @@ class MainWidget(QMainWindow):
                 lookup_scope_name + "." + x if x.startswith("lookup.mask=") else x
                 for x in cmd_lst
             ]
-            print "\n full_cmd_lst =", full_command
+            print("\n full_cmd_lst =", full_command)
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
         else:
-            print "No need to feed back params"
-            print "my_widget_now.my_widget.command_lst =", current_parameter_widget.my_widget.command_lst
+            print("No need to feed back params")
+            print("my_widget_now.my_widget.command_lst =", current_parameter_widget.my_widget.command_lst)
 
 
     def update_low_level_command_lst(self, command_lst):
-        print "self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst
-        print "                                command_lst =", command_lst
+        print("self.idials_runner.current_node.command_lst =", self.idials_runner.current_node.command_lst)
+        print("                                command_lst =", command_lst)
 
         self.idials_runner.current_node.command_lst = command_lst
         self.reconnect_when_ready()
 
     def cmd_changed_by_user(self, my_label):
-        print "cmd_changed_by_user()"
+        print("cmd_changed_by_user()")
         tmp_curr = self.idials_runner.current_node
         if tmp_curr.success == True:
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
-            print "________________________________________________________________________>>>> mkchi\n"
+            print("________________________________________________________________________>>>> mkchi\n")
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None
             if(self.idials_runner.current_node.command_lst[0] == "integrate"):
-                print "Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)"
+                print("Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)")
                 path_to_mask_pickle = try_find_prev_mask_pickle(self.idials_runner.current_node)
                 if(path_to_mask_pickle != None):
                     self.pass_parmams(["lookup.mask=" + path_to_mask_pickle])
 
             else:
-                print "self.idials_runner.current_node.command_lst[0] =", self.idials_runner.current_node.command_lst[0]
+                print("self.idials_runner.current_node.command_lst[0] =", self.idials_runner.current_node.command_lst[0])
 
-            print "path_to_mask_pickle =", path_to_mask_pickle
-            print "\n________________________________________________________________________mkchi <<<<<"
+            print("path_to_mask_pickle =", path_to_mask_pickle)
+            print("\n________________________________________________________________________mkchi <<<<<")
 
             self.cmd_exe(["clean"])
 
@@ -529,24 +530,24 @@ class MainWidget(QMainWindow):
         self.reconnect_when_ready()
 
     def rep_clicked(self):
-        print "rep_clicked"
+        print("rep_clicked")
         self.cmd_exe(["mksib"])
         self.cmd_exe(["clean"])
         self.check_gray_outs()
 
     def stop_clicked(self):
-        print "\n\n <<< Stop clicked >>> \n\n"
+        print("\n\n <<< Stop clicked >>> \n\n")
         #TODO fix spelling on << dials_command >>
         pr_to_kill = self.idials_runner.current_node.dials_command.my_pid
-        print "self.idials_runner.current_node.dials_command.my_pid =", pr_to_kill
+        print("self.idials_runner.current_node.dials_command.my_pid =", pr_to_kill)
         self.user_stoped = True
         kill_w_child(pr_to_kill)
 
     def run_clicked(self):
-        print "run_clicked"
-        print "...currentWidget(ref) =", self.centre_par_widget.step_param_widg.currentWidget()
+        print("run_clicked")
+        print("...currentWidget(ref) =", self.centre_par_widget.step_param_widg.currentWidget())
         cmd_tmp = self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
-        print "cmd_tmp =", cmd_tmp
+        print("cmd_tmp =", cmd_tmp)
         self.cmd_launch(cmd_tmp)
 
     def cmd_exe(self, new_cmd):
@@ -590,7 +591,7 @@ class MainWidget(QMainWindow):
                 self.my_pop.close()
 
             except:
-                print "no need to close reindex table"
+                print("no need to close reindex table")
 
         self.check_reindex_pop()
         self.check_gray_outs()
@@ -631,11 +632,11 @@ class MainWidget(QMainWindow):
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
-                print "str(my_err) =", str(my_err)
-                print "my_err.__doc__ =", my_err.__doc__
-                print "my_err.message =", my_err.message
+                print("str(my_err) =", str(my_err))
+                print("my_err.__doc__ =", my_err.__doc__)
+                print("my_err.message =", my_err.message)
                 if(str(my_err)[0:36] == '[Errno 2] No such file or directory:'):
-                    print "\n interrupted refine_bravais_settings \n"
+                    print("\n interrupted refine_bravais_settings \n")
 
             #TODO find an elegant way to interrupt and remove nodes
 
@@ -644,7 +645,7 @@ class MainWidget(QMainWindow):
                 self.my_pop.close()
 
             except:
-                print "no need to close reindex table"
+                print("no need to close reindex table")
 
         self.just_reindexed = False
 
@@ -665,24 +666,24 @@ class MainWidget(QMainWindow):
             self.check_gray_outs(nod_ref)
 
         except:
-            print "failed to << check_gray_outs() >>"
+            print("failed to << check_gray_outs() >>")
 
         update_pbar_msg(self)
 
     def after_failed(self):
-        print "\n FAILED STEP:"
+        print("\n FAILED STEP:")
         self.update_nav_tree()
         self.txt_bar.end_motion()
 
         curr_step = self.idials_runner.current_node
 
         for err_lin in curr_step.dials_command.tmp_std_all:
-            print err_lin
+            print(err_lin)
 
 
-        print "curr_step.lin_num =", curr_step.lin_num
+        print("curr_step.lin_num =", curr_step.lin_num)
         err_log_file_out = self.storage_path + "/dui_files" + os.sep +  str(curr_step.lin_num) + "_err_out.log"
-        print "err_log_file_out =", err_log_file_out, "\n"
+        print("err_log_file_out =", err_log_file_out, "\n")
 
         fil_obj = open(err_log_file_out, 'w')
         for err_lin in curr_step.dials_command.tmp_std_all:
@@ -694,14 +695,14 @@ class MainWidget(QMainWindow):
 
     def opt_dobl_clicked(self, row):
         re_idx = row + 1
-        print "Solution clicked =", re_idx
+        print("Solution clicked =", re_idx)
         cmd_tmp = "reindex solution=" + str(re_idx)
         self.cmd_launch(cmd_tmp)
 
     def node_clicked(self, it_index):
 
-        print "\n it_index =", it_index
-        print " type(it_index) =", type(it_index)
+        print("\n it_index =", it_index)
+        print(" type(it_index) =", type(it_index))
 
         if(self.tree_clickable == True):
             #TODO Think of a more robust way to "disconnect" ... next line
@@ -709,13 +710,13 @@ class MainWidget(QMainWindow):
                 self.centre_par_widget.update_command_lst_high_level.disconnect(
                                 self.update_low_level_command_lst)
             except:
-                print "<< update_low_level_command_lst >> already disconnected"
+                print("<< update_low_level_command_lst >> already disconnected")
 
-            print "TreeNavWidget(node_clicked)"
+            print("TreeNavWidget(node_clicked)")
             item = self.tree_out.std_mod.itemFromIndex(it_index)
             prn_lst_lst_cmd(item.idials_node)
             lin_num = item.idials_node.lin_num
-            print "clicked item lin_num (self.tree_out.std_mod) =", lin_num
+            print("clicked item lin_num (self.tree_out.std_mod) =", lin_num)
             cmd_ovr = "goto " + str(lin_num)
             self.cmd_exe(cmd_ovr)
             self.centre_par_widget.set_widget(nxt_cmd = item.idials_node.command_lst[0],
@@ -733,7 +734,7 @@ class MainWidget(QMainWindow):
 
         prn_lst_lst_cmd(self.idials_runner.current_node)
         lin_num = self.idials_runner.current_node.lin_num
-        print "doing goto: ", lin_num
+        print("doing goto: ", lin_num)
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
         self.centre_par_widget.set_widget(nxt_cmd = self.idials_runner.current_node.command_lst[0],
@@ -744,12 +745,12 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        print "\n\n_________________________________________ ... refreshing GUI \n\n"
+        print("\n\n_________________________________________ ... refreshing GUI \n\n")
 
     def closeEvent(self, event):
             try:
                 self.my_pop.close()
 
             except:
-                print "no need to close reindex table"
+                print("no need to close reindex table")
 
