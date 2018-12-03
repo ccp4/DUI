@@ -6,6 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+from __future__ import print_function
 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -32,7 +33,7 @@ try:
   # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
   import scipy.linalg # import dependency
 
-except ImportError, e:
+except ImportError as e:
   pass
 
 
@@ -87,11 +88,11 @@ class tree_2_lineal(object):
                     self.deep_in_rec(single_obj.objects)
 
                 else:
-                    print "The \"", single_obj.name, "\" set of parameters is automatically handled by idials"
+                    print("The \"", single_obj.name, "\" set of parameters is automatically handled by idials")
                     #pass
 
             else:
-                print "\n _____________ <<< WARNING neither definition or scope\n"
+                print("\n _____________ <<< WARNING neither definition or scope\n")
                 #pass
 
 
@@ -140,9 +141,9 @@ class PhilWidget( QWidget):
             labl_obj.setStyleSheet(labl_obj.style_orign)
 
         if(len(value) > 1):
-            print "user searching for:", value
+            print("user searching for:", value)
             pos_str = None
-            print "len =", len(value)
+            print("len =", len(value))
 
             for nm, labl_obj in enumerate(self.lst_label_widg):
                 labl_text = labl_obj.text()
@@ -151,7 +152,7 @@ class PhilWidget( QWidget):
                     labl_obj.setStyleSheet("color: rgba(0, 155, 255, 255);"
                                            "background-color: yellow;")
 
-                    print "pos_str =", nm
+                    print("pos_str =", nm)
 
             #TODO make sure this keeps colours of grayed state
 
@@ -344,11 +345,11 @@ class PhilWidget( QWidget):
 
 
         #debugging = '''
-        print "\n\n Non added parameters:"
+        print("\n\n Non added parameters:")
         for lin_to_print in non_added_lst:
-            print lin_to_print
+            print(lin_to_print)
 
-        print "\n\n"
+        print("\n\n")
         #'''
 
     def spnbox_changed(self, value):
@@ -359,24 +360,24 @@ class PhilWidget( QWidget):
         else:
             str_value = str(value)
 
-        print "sender =", sender
-        print "spnbox_changed to:",
-        print str_value
-        print "local_path =",
+        print("sender =", sender)
+        print("spnbox_changed to:", end=' ')
+        print(str_value)
+        print("local_path =", end=' ')
         str_path = str(sender.local_path)
-        print "local_path =", str_path
+        print("local_path =", str_path)
 
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
     def combobox_changed(self, value):
         sender = self.sender()
-        print "combobox_changed to: ",
+        print("combobox_changed to: ", end=' ')
         str_value = str(sender.tmp_lst[value])
-        print str_value
-        print "local_path =",
+        print(str_value)
+        print("local_path =", end=' ')
         str_path = str(sender.local_path)
-        print str_path
+        print(str_path)
 
         #self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
@@ -395,9 +396,9 @@ class TstTmpWidget( QWidget):
         self.show()
 
     def update_lin_txt(self, new_path, new_value):
-        print "new_path =", new_path
-        print "new_value =", new_value
-        print "from update_lin_txt(self) in TstTmpWidget"
+        print("new_path =", new_path)
+        print("new_value =", new_value)
+        print("from update_lin_txt(self) in TstTmpWidget")
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys, os
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -10,7 +11,7 @@ class WebTab(QWidget):
     def __init__(self):
         super(WebTab, self).__init__()
 
-        print " QWebSettings.JavascriptEnabled =",  QWebSettings.JavascriptEnabled
+        print(" QWebSettings.JavascriptEnabled =",  QWebSettings.JavascriptEnabled)
         QWebSettings.JavascriptEnabled = True
 
         self.dummy_html = '''<html>
@@ -23,7 +24,7 @@ class WebTab(QWidget):
             </html>'''
 
         self.web =  QWebView()
-        print "No need to load HTML file yet\n"
+        print("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
 
         hbox = QHBoxLayout()
@@ -33,30 +34,30 @@ class WebTab(QWidget):
 
     def update_page(self, new_path = None):
         try:
-            print "\n >> update_page(", new_path, ")"
+            print("\n >> update_page(", new_path, ")")
             new_path = os.path.abspath(new_path)
 
             #new_path = "file://" + new_path # unix way
             new_path = "file:///" + new_path # Windows way(seems to work on Unix too)
-            print " >> new_path:", new_path, "\n"
+            print(" >> new_path:", new_path, "\n")
             self.web.load(QUrl(new_path))
 
-            print " Loading ", new_path
+            print(" Loading ", new_path)
 
             txt_lab = "updating Report view:"
             self.my_bar = ProgBarBox(min_val = 0, max_val = 10, text = txt_lab)
             self.my_bar(5)
 
         except:
-            print "\n failed to show <<", new_path, ">>  on web view "
+            print("\n failed to show <<", new_path, ">>  on web view ")
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
-        print "HTML Load(ok) =", ok_bool
+        print("HTML Load(ok) =", ok_bool)
         if(ok_bool == False):
             self.web.setHtml(self.dummy_html)
 
-        print " finished Loading HTML "
+        print(" finished Loading HTML ")
         self.my_bar.ended()
 
 class TmpTstWidget( QWidget):

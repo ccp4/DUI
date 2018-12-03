@@ -6,6 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 '''
+from __future__ import print_function
 
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
@@ -362,8 +363,8 @@ class InfoWidget( QWidget):
 
     def update_data(self, exp_json_path = None, refl_pikl_path = None):
 
-        print "\n\nrefl_pikl_path =", refl_pikl_path
-        print "exp_json_path =", exp_json_path,"\n"
+        print("\n\nrefl_pikl_path =", refl_pikl_path)
+        print("exp_json_path =", exp_json_path,"\n")
 
         try:
 
@@ -371,7 +372,7 @@ class InfoWidget( QWidget):
                                             reflections_path = refl_pikl_path[0])
 
         except:
-            print "unable to update data panel"
+            print("unable to update data panel")
             self.all_data = update_all_data(experiments_path = None,
                                             reflections_path = None)
 
@@ -428,7 +429,7 @@ class InfoWidget( QWidget):
 
 if( __name__ == "__main__" ):
 
-    print "\n sys.argv(s) =", sys.argv[1], sys.argv[2], "\n"
+    print("\n sys.argv(s) =", sys.argv[1], sys.argv[2], "\n")
     app =  QApplication(sys.argv)
     ex = InfoWidget()
 
