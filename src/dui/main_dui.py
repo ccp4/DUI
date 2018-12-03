@@ -44,18 +44,20 @@ def main():
         usage="dui [-h|--help] [-v[v]][template=TEMPLATE] [directory=DIRECTORY]",
     )
     parser.add_argument("positionals", type=str, nargs="*", help=argparse.SUPPRESS)
-    parser.add_argument("--verbose", "-v", action="count")
+    parser.add_argument("--verbose", "-v", action="count", default=0)
     args = parser.parse_args()
 
     # Set up the logger to only show warnings unless -v (info) or -vv (debug)
-    if args.verbose == 1:
+    assert args.verbose >= 0
+    if args.verbose == 0:
+        # By default, show INFO but without notation
+        logging.basicConfig(level=logging.WARN, format="%(message)s")
+    elif args.verbose == 1:
+        # Verbose is same as default but has origin info
         logging.basicConfig(level=logging.INFO)
     elif args.verbose > 1:
+        # More debug levels show everything
         logging.basicConfig(level=logging.DEBUG)
-    else:
-        # The default logging level is same as before - print everything out
-        # logging.basicConfig(level=logging.WARN)
-        logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
     # Process the phil-style parameters
     for arg in args.positionals[:]:

@@ -7,7 +7,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,10 +23,12 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
 import os
-import sys
 import pickle
-from cli_utils import (
+import sys
+
+from .cli_utils import (
     print_list,
     TreeShow,
     DialsCommand,
@@ -36,6 +38,8 @@ from cli_utils import (
     get_next_step,
     generate_predict,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class CommandNode(object):
@@ -75,7 +79,7 @@ class CommandNode(object):
         self.command_lst = cmd_lst
         if cmd_lst[0] == "fail":
             # testing virtual failed step
-            print("\n intentionally FAILED for testing \n")
+            logger.debug("\n intentionally FAILED for testing \n")
             self.success = False
 
         else:
@@ -90,7 +94,7 @@ class CommandNode(object):
                     self.predict_pickle_out = generate_predict(self)
 
             else:
-                print("NOT dials command")
+                logger.debug("NOT dials command")
                 self.success = False
 
     def edit_list(self, cmd_lst):
@@ -98,7 +102,7 @@ class CommandNode(object):
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
-        print("cmd_lst_to_run =", self.cmd_lst_to_run)
+        logger.debug("cmd_lst_to_run = %s", self.cmd_lst_to_run)
 
     def get_next_step(self):
         return get_next_step(self)
@@ -114,7 +118,7 @@ class Runner(object):
         self.current_line = self.bigger_lin
         self.create_step(root_node)
 
-        print("root_node.lin_num =", root_node.lin_num)
+        logger.debug("root_node.lin_num = %s", root_node.lin_num)
         # self.current_node = root_node
 
     def run(self, command, ref_to_class):
@@ -141,23 +145,23 @@ class Runner(object):
         elif cmd_lst[0] == "mksib":
             old_command_lst = self.current_node.command_lst
             self.goto_prev()
-            print("forking")
+            logger.debug("forking")
             self.create_step(self.current_node)
             self.current_node.edit_list(old_command_lst)
 
         else:
             if self.current_node.success == True:
                 self.goto_prev()
-                print("forking")
+                logger.debug("forking")
                 self.create_step(self.current_node)
 
             self.current_node(cmd_lst, ref_to_class)
             if not self.current_node.success:
-                print("failed step")
+                logger.debug("failed step")
 
     def clean(self):
-        print("\n Cleaning")
-        print("self.current_line =", self.current_line)
+        logger.debug("\n Cleaning")
+        logger.debug("self.current_line = %s", self.current_line)
 
         lst_to_rm = []
 
@@ -173,7 +177,7 @@ class Runner(object):
             node.prev_step.next_step_list.remove(node)
             self.step_list.remove(node)
 
-        print("self.current_line =", self.current_line, "\n")
+        logger.debug("self.current_line = %s %s", self.current_line, "\n")
 
     def create_step(self, prev_step):
         new_step = CommandNode(prev_step=prev_step)
@@ -188,7 +192,7 @@ class Runner(object):
             self.goto(self.current_node.prev_step.lin_num)
 
         except:
-            print("can NOT fork <None> node ")
+            logger.debug("can NOT fork <None> node ")
 
     def goto(self, new_lin):
         self.current_line = new_lin
@@ -251,7 +255,7 @@ class Runner(object):
             path_to_log = self.current_node.log_file_out
 
         except:
-            print("failed to retrieve log path")
+            logger.debug("failed to retrieve log path")
 
         return path_to_log
 
@@ -272,7 +276,7 @@ class Runner(object):
                 path_to_json = tmp_cur.json_file_out
 
             except:
-                print("no experimet json file available")
+                logger.debug("no experimet json file available")
 
         return path_to_json
 
@@ -297,7 +301,7 @@ class Runner(object):
             pre_pkl = tmp_cur.predict_pickle_out
 
         except:
-            print("no pickle file available")
+            logger.debug("no pickle file available")
 
         return ref_pkl, pre_pkl
 
@@ -305,7 +309,7 @@ class Runner(object):
         return self.current_node.get_next_step()
 
     def slist(self):
-        print("printing in steps list mode: \n")
+        logger.debug("printing in steps list mode: \n")
         print_list(self.step_list, self.current_line)
 
 
@@ -323,9 +327,9 @@ if __name__ == "__main__":
         #'module' object has no attribute 'CommandNode'
 
     except Exception as e:
-        print("str(e) =", str(e))
-        print("e.__doc__ =", e.__doc__)
-        print("e.message =", e.message)
+        logger.debug("str(e) = %s", str(e))
+        logger.debug("e.__doc__ = %s", e.__doc__)
+        logger.debug("e.message = %s", e.message)
         idials_runner = Runner()
 
         try:
@@ -334,7 +338,7 @@ if __name__ == "__main__":
             shutil.rmtree(storage_path + "/dui_files")
 
         except:
-            print('failed to do "shutil.rmtree("/dui_files")"')
+            logger.debug('failed to do "shutil.rmtree("/dui_files")"')
 
         os.mkdir(storage_path + "/dui_files")
 
@@ -346,11 +350,11 @@ if __name__ == "__main__":
             inp_str = "lin [" + str(idials_runner.current_line) + "] >>> "
             command = str(raw_input(inp_str))
             if command == "":
-                print("converting empty line in self.slist()")
+                logger.debug("converting empty line in self.slist()")
                 command = "slist"
 
         except:
-            print(" ... interrupting")
+            logger.debug(" ... interrupting")
             sys.exit(0)
 
         idials_runner.run(command, None)

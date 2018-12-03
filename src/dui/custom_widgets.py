@@ -6,7 +6,8 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,13 +23,27 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
+import os
+import sys
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import os, sys
+from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
+from dials.command_line.index import phil_scope as phil_scope_index
+from dials.command_line.refine_bravais_settings import (
+    phil_scope as phil_scope_r_b_settings,
+)
+from dials.command_line.refine import phil_scope as phil_scope_refine
+from dials.command_line.integrate import phil_scope as phil_scope_integrate
+from dials.command_line.symmetry import phil_scope as phil_scope_symetry
+from dials.command_line.scale import phil_scope as phil_scope_scale
+from dials.command_line.export import phil_scope as phil_scope_export
 
-from params_live_gui_generator import PhilWidget
-from simpler_param_widgets import (
+from .gui_utils import get_import_run_string, get_main_path
+from .params_live_gui_generator import PhilWidget
+from .simpler_param_widgets import (
     FindspotsSimplerParameterTab,
     IndexSimplerParamTab,
     RefineBravaiSimplerParamTab,
@@ -36,22 +51,9 @@ from simpler_param_widgets import (
     IntegrateSimplerParamTab,
     SymmetrySimplerParamTab,
     ScaleSimplerParamTab,
-)  # , ExportSimplerParamTab
-
-from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
-from dials.command_line.index import phil_scope as phil_scope_index
-
-from dials.command_line.refine_bravais_settings import (
-    phil_scope as phil_scope_r_b_settings,
 )
 
-from dials.command_line.refine import phil_scope as phil_scope_refine
-from dials.command_line.integrate import phil_scope as phil_scope_integrate
-from dials.command_line.symmetry import phil_scope as phil_scope_symetry
-from dials.command_line.scale import phil_scope as phil_scope_scale
-from dials.command_line.export import phil_scope as phil_scope_export
-
-from gui_utils import get_import_run_string, get_main_path
+logger = logging.getLogger(__name__)
 
 
 class ExportPage(QWidget):
@@ -99,21 +101,21 @@ class ExportPage(QWidget):
         self.command_lst = ["export"]
 
         param1_com = str(self.simple_lin.text())
-        print("param1_com =", param1_com)
+        logger.debug("param1_com = %s", param1_com)
 
         self.command_lst.append("mtz.hklout=" + param1_com)
 
         if self.check_scale.checkState():
             param2_com = "intensity=scale"
-            print("param2_com =", param2_com)
+            logger.debug("param2_com = %s", param2_com)
 
             self.command_lst.append(param2_com)
 
         self.update_command_lst_low_level.emit(self.command_lst)
-        print("self.command_lst =", self.command_lst)
+        logger.debug("self.command_lst = %s", self.command_lst)
 
         for lin_prn in self.command_lst:
-            print("lin_prn =", lin_prn)
+            logger.debug("lin_prn = %s", lin_prn)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -166,7 +168,7 @@ class ImportPage(QWidget):
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
 
         main_path = get_main_path()
-        print("main_path =", main_path)
+        logger.debug("main_path = %s", main_path)
         self.opn_fil_btn.setIcon(QIcon(main_path + "/resources/import.png"))
         self.opn_fil_btn.setIconSize(QSize(80, 48))
 
@@ -201,7 +203,7 @@ class ImportPage(QWidget):
         self.show()
 
     def inv_rota_changed(self):
-        print("self.chk_invert.checkState():", self.chk_invert.checkState())
+        logger.debug("self.chk_invert.checkState(): %s", self.chk_invert.checkState())
         if self.chk_invert.checkState():
             self.third_half = "invert_rotation_axis=True"
 
@@ -212,16 +214,16 @@ class ImportPage(QWidget):
 
     def x_beam_changed(self, value):
         self.x_beam = value
-        print("New Beam pos(X) =", self.x_beam)
+        logger.debug("New Beam pos(X) = %s", self.x_beam)
         self.build_second_half()
 
     def y_beam_changed(self, value):
         self.y_beam = value
-        print("New Beam pos(Y) =", self.y_beam)
+        logger.debug("New Beam pos(Y) = %s", self.y_beam)
         self.build_second_half()
 
     def build_second_half(self):
-        print(self.x_beam, self.y_beam)
+        logger.debug("%s %s", self.x_beam, self.y_beam)
         if self.x_beam != 0.0 and self.y_beam != 0.0:
             self.second_half = (
                 "slow_fast_beam_centre=" + str(self.y_beam) + "," + str(self.x_beam)
@@ -255,33 +257,33 @@ class ImportPage(QWidget):
 
         self.simple_lin.setText(txt_lin)
 
-        print("self.simple_lin.setText:<<" + txt_lin + ">>")
+        logger.debug("self.simple_lin.setText:<<" + txt_lin + ">>")
 
     def get_arg_obj(self, sys_arg_in):
-        print("sys_arg_in =", sys_arg_in)
+        logger.debug("sys_arg_in = %s", sys_arg_in)
         if sys_arg_in.template != None:
             str_arg = str(sys_arg_in.template)
             self.simple_lin.setText(str_arg)
 
     def update_command(self):
-        print("action_simple")
+        logger.debug("action_simple")
         self.command_lst = ["import"]
         param_com = str(self.simple_lin.text())
-        print("param_com =", param_com)
+        logger.debug("param_com = %s", param_com)
 
         cmd_lst = param_com.split(" ")
-        print("cmd_lst =", cmd_lst)
+        logger.debug("cmd_lst = %s", cmd_lst)
 
         for single_com in cmd_lst:
             self.command_lst.append(single_com)
 
         self.update_command_lst_low_level.emit(self.command_lst)
-        print("self.command_lst =", self.command_lst)
+        logger.debug("self.command_lst = %s", self.command_lst)
 
-        print("\n loop print \n")
+        logger.debug("\n loop print \n")
 
         for lin_prn in self.command_lst:
-            print("lin_prn =", lin_prn)
+            logger.debug("lin_prn = %s", lin_prn)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -373,9 +375,9 @@ def string2pair(str_in):
 def buils_lst_pair(lst_in):
     lst_pair = []
     for par_str in lst_in[1 : len(lst_in)]:
-        print("par_str =", par_str)
+        logger.debug("par_str = %s", par_str)
         pair = string2pair(par_str)
-        print("pair =", pair)
+        logger.debug("pair = %s", pair)
         lst_pair.append(pair)
 
     return lst_pair
@@ -395,7 +397,7 @@ class ParamMainWidget(QWidget):
             self.my_phl_obj = phl_obj
             self.simp_widg_in = simp_widg
         except:
-            print("\n\n\n something went wrong here wiht the phil object \n\n\n")
+            logger.debug("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
 
@@ -422,13 +424,15 @@ class ParamMainWidget(QWidget):
             self.simpler_widget.item_changed.connect(self.update_advanced_widget)
 
         except:
-            print("found self.simpler_widget without << item_changed >> signal")
+            logger.debug("found self.simpler_widget without << item_changed >> signal")
 
         try:
             self.simpler_widget.item_to_remove.connect(self.remove_one_par)
 
         except:
-            print("found self.simpler_widget without << item_to_remove >> signal")
+            logger.debug(
+                "found self.simpler_widget without << item_to_remove >> signal"
+            )
 
         self.reset_btn = self.simpler_widget.inner_reset_btn
         self.dual_level_tab.addTab(self.simpler_widget, "Simple")
@@ -436,7 +440,7 @@ class ParamMainWidget(QWidget):
         self.reset_btn.clicked.connect(self.reset_par)
 
     def reset_par(self):
-        print("Reseting")
+        logger.debug("Reseting")
 
         for i in reversed(range(self._vbox.count())):
             widgetToRemove = self._vbox.itemAt(i).widget()
@@ -448,25 +452,25 @@ class ParamMainWidget(QWidget):
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
 
-        print("<< inner >>self.command_lst =", self.command_lst)
+        logger.debug("<< inner >>self.command_lst = %s", self.command_lst)
         self.command_lst = [self.command_lst[0]]
         self.lst_pair = []
-        print("<< inner >>self.command_lst =", self.command_lst)
+        logger.debug("<< inner >>self.command_lst = %s", self.command_lst)
 
         self.update_command_lst_low_level.emit(self.command_lst)
 
         try:
             max_nproc = self.simpler_widget.set_max_nproc()
             if max_nproc > 1:
-                print("\n time to raise nproc to:", max_nproc, " \n")
+                logger.debug("\n time to raise nproc to: %s %s", max_nproc, " \n")
                 self.raise_nproc_str = (
                     str(self.simpler_widget.box_nproc.local_path) + "=" + str(max_nproc)
                 )
                 QTimer.singleShot(1000, self.raise_nproc_to_max)
-                print("tst 03")
+                logger.debug("tst 03")
 
         except:
-            print("\n This step runs as fast as it can with nproc = 1 \n")
+            logger.debug("\n This step runs as fast as it can with nproc = 1 \n")
 
     def raise_nproc_to_max(self):
         found_nproc = False
@@ -496,10 +500,12 @@ class ParamMainWidget(QWidget):
                                 try:
                                     str_val = str(str_value)
                                     widg.setText(str_val)
-                                    print("widg.local_path =", widg.local_path)
+                                    logger.debug(
+                                        "widg.local_path = %s", widg.local_path
+                                    )
 
                                 except:
-                                    print(
+                                    logger.debug(
                                         "\n\n Type Mismatch while searching for twin parameter \n\n"
                                     )
 
@@ -507,26 +513,28 @@ class ParamMainWidget(QWidget):
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
                                     try:
-                                        print("found val, v=", val)
+                                        logger.debug("found val, v= %s", val)
                                         widg.setCurrentIndex(pos)
 
                                     except:
-                                        print("failed to:")
-                                        print("widg.setCurrentIndex(pos)")
+                                        logger.debug("failed to:")
+                                        logger.debug("widg.setCurrentIndex(pos)")
 
                 except:
                     pass
 
-        print("finished update_advanced_widget")
+        logger.debug("finished update_advanced_widget")
 
     def update_simpler_widget(self, str_path, str_value):
 
-        print("update_simpler_widget(", str_path, ", ", str_value, ")")
+        logger.debug(
+            "update_simpler_widget( %s %s %s %s", str_path, ", ", str_value, ")"
+        )
 
         for widg in self.simpler_widget.lst_var_widg:
             try:
                 if widg.local_path == str_path:
-                    print("found << widg.local_path == str_path >> ")
+                    logger.debug("found << widg.local_path == str_path >> ")
 
                     try:
                         num_val = float(str_value)
@@ -536,14 +544,16 @@ class ParamMainWidget(QWidget):
                         try:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
-                                    print("found val, v=", val)
+                                    logger.debug("found val, v= %s", val)
                                     widg.setCurrentIndex(pos)
 
                         except:
-                            print("\n\n Type Mismatch in simpler_param_widgets \n\n")
+                            logger.debug(
+                                "\n\n Type Mismatch in simpler_param_widgets \n\n"
+                            )
 
             except:
-                print("skip label_str")
+                logger.debug("skip label_str")
 
     def update_lin_txt(self, str_path, str_value):
         cmd_to_run = str_path + "=" + str_value
@@ -556,34 +566,34 @@ class ParamMainWidget(QWidget):
 
     def update_param_w_lst(self, lst_in, do_reset=True):
 
-        print("update_param_w_lst(self, ", lst_in, ")")
+        logger.debug("update_param_w_lst(self,  %s %s", lst_in, ")")
         if do_reset == True:
             self.reset_par()
 
-        print("_________________ after reset_par")
+        logger.debug("_________________ after reset_par")
         if len(lst_in) > 1:
-            print("restoring advanced widgets")
+            logger.debug("restoring advanced widgets")
             self.lst_pair = buils_lst_pair(lst_in)
-            print("lst_pair done")
+            logger.debug("lst_pair done")
             self.command_lst = build_lst_str(lst_in[0], self.lst_pair)
-            print("looping thru params")
+            logger.debug("looping thru params")
             for pair in self.lst_pair:
                 self.update_advanced_widget(pair[0], pair[1])
 
         else:
-            print("updating with no parameters")
+            logger.debug("updating with no parameters")
             self.lst_pair = []
             self.command_lst = lst_in
-            print("")
+            logger.debug("")
 
-        print("after update widgets")
+        logger.debug("after update widgets")
 
     def remove_one_par(self, path_str):
-        print("\n removing:", path_str, "parameter \n")
+        logger.debug("\n removing: %s %s", path_str, "parameter \n")
         nxt_lst = []
         for single_param in self.command_lst:
             if str(path_str) in single_param:
-                print("found: ", single_param)
+                logger.debug("found:  %s", single_param)
 
             else:
                 nxt_lst.append(str(single_param))
@@ -679,7 +689,7 @@ class ParamWidget(QWidget):
 
     def update_param(self, curr_step):
 
-        print("update_param(", curr_step.command_lst, ")")
+        logger.debug("update_param( %s %s", curr_step.command_lst, ")")
         self.my_widget.update_param_w_lst(curr_step.command_lst)
 
     def update_parent_lst(self, command_lst):

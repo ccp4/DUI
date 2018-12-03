@@ -7,6 +7,9 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
+
+from __future__ import absolute_import, division, print_function
+
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2

@@ -6,7 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,12 +22,16 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
+import os
+import sys
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import os, sys
-
 import libtbx.introspection
+
+logger = logging.getLogger(__name__)
 
 
 class ResetButton(QPushButton):
@@ -138,7 +142,7 @@ class FindspotsSimplerParameterTab(QWidget):
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
-        print(value)
+        logger.debug(value)
         str_path = str(sender.local_path)
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
@@ -458,10 +462,10 @@ class RefineSimplerParamTab(QWidget):
         sender = self.sender()
         str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
-        print("str(sender.local_path) =", str(sender.local_path))
+        logger.debug("str(sender.local_path) = %s", str(sender.local_path))
 
         if str_value == "none":
-            print("trying to emit [item_to_remove] =", str_path)
+            logger.debug("trying to emit [item_to_remove] = %s", str_path)
             self.item_to_remove.emit(str_path)
 
         else:
@@ -559,7 +563,7 @@ class IntegrateSimplerParamTab(QWidget):
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
-        print(value)
+        logger.debug(value)
         str_path = str(sender.local_path)
 
         self.item_changed.emit(str_path, str_value)
@@ -611,7 +615,7 @@ class SymmetrySimplerParamTab(QWidget):
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
-        print(value)
+        logger.debug(value)
         str_path = str(sender.local_path)
 
         self.item_changed.emit(str_path, str_value)
@@ -705,7 +709,7 @@ class ScaleSimplerParamTab(QWidget):
     def spnbox_changed(self, value):
         sender = self.sender()
         str_value = str(value)
-        print(value)
+        logger.debug(value)
         str_path = str(sender.local_path)
 
         self.item_changed.emit(str_path, str_value)

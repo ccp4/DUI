@@ -6,7 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,29 +22,26 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
+import sys
 
 # FIXME Copied from dials.index.py. This is needed here because scipy needs to
 # be imported before cctbx otherwise there will be a segmentation fault. This
 # should be fixed in dials.index so that we don't need to import here.
-
 try:
     # try importing scipy.linalg before any cctbx modules, otherwise we
     # sometimes get a segmentation fault/core dump if it is imported after
     # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
     import scipy.linalg  # import dependency
-
 except ImportError as e:
     pass
-
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from dials.command_line.find_spots import phil_scope
 
-# from dials.command_line.refine_bravais_settings import phil_scope
-
-import sys
+logger = logging.getLogger(__name__)
 
 
 class ScopeData(object):
@@ -91,15 +88,17 @@ class tree_2_lineal(object):
                     self.deep_in_rec(single_obj.objects)
 
                 else:
-                    print(
-                        'The "',
+                    logger.debug(
+                        'The " %s %s',
                         single_obj.name,
                         '" set of parameters is automatically handled by idials',
                     )
                     # pass
 
             else:
-                print("\n _____________ <<< WARNING neither definition or scope\n")
+                logger.debug(
+                    "\n _____________ <<< WARNING neither definition or scope\n"
+                )
                 # pass
 
 
@@ -150,9 +149,9 @@ class PhilWidget(QWidget):
             labl_obj.setStyleSheet(labl_obj.style_orign)
 
         if len(value) > 1:
-            print("user searching for:", value)
+            logger.debug("user searching for: %s", value)
             pos_str = None
-            print("len =", len(value))
+            logger.debug("len = %s", len(value))
 
             for nm, labl_obj in enumerate(self.lst_label_widg):
                 labl_text = labl_obj.text()
@@ -162,7 +161,7 @@ class PhilWidget(QWidget):
                         "color: rgba(0, 155, 255, 255);" "background-color: yellow;"
                     )
 
-                    print("pos_str =", nm)
+                    logger.debug("pos_str = %s", nm)
 
             # TODO make sure this keeps colours of grayed state
 
@@ -359,11 +358,11 @@ class PhilWidget(QWidget):
                     self.bg_box.addLayout(tmp_h_box)
 
         # debugging = '''
-        print("\n\n Non added parameters:")
+        logger.debug("\n\n Non added parameters:")
         for lin_to_print in non_added_lst:
-            print(lin_to_print)
+            logger.debug(lin_to_print)
 
-        print("\n\n")
+        logger.debug("\n\n")
         #'''
 
     def spnbox_changed(self, value):
@@ -374,24 +373,20 @@ class PhilWidget(QWidget):
         else:
             str_value = str(value)
 
-        print("sender =", sender)
-        print("spnbox_changed to:", end=" ")
-        print(str_value)
-        print("local_path =", end=" ")
+        logger.debug("sender = %s", sender)
+        logger.debug("spnbox_changed to: %s", str_value)
         str_path = str(sender.local_path)
-        print("local_path =", str_path)
+        logger.debug("local_path = %s", str_path)
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
     def combobox_changed(self, value):
         sender = self.sender()
-        print("combobox_changed to: ", end=" ")
         str_value = str(sender.tmp_lst[value])
-        print(str_value)
-        print("local_path =", end=" ")
+        logger.debug("combobox_changed to:  %s", str_value)
         str_path = str(sender.local_path)
-        print(str_path)
+        logger.debug("local_path = %s", str_path)
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
@@ -412,9 +407,9 @@ class TstTmpWidget(QWidget):
         self.show()
 
     def update_lin_txt(self, new_path, new_value):
-        print("new_path =", new_path)
-        print("new_value =", new_value)
-        print("from update_lin_txt(self) in TstTmpWidget")
+        logger.debug("new_path = %s", new_path)
+        logger.debug("new_value = %s", new_value)
+        logger.debug("from update_lin_txt(self) in TstTmpWidget")
 
 
 if __name__ == "__main__":

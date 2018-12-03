@@ -6,7 +6,8 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,11 +22,15 @@ from __future__ import print_function
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+import json
+import logging
+import sys
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import sys
-import json
+logger = logging.getLogger(__name__)
 
 copied_from_SymmetryExpert_d_py = """
 lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
@@ -156,23 +161,23 @@ def heather_text_from_lin(lin_num, j_path):
     for pos1, single_lin1 in enumerate(all_lines):
         if str(single_lin1[0:19]) == "Chiral space groups":
             start_block = pos1
-            print("start_block =", start_block)
+            logger.debug("start_block = %s", start_block)
 
             for pos2, single_lin2 in enumerate(all_lines[start_block:]):
                 n_of_lines += 1
                 if str(single_lin2[0:19]) == "-------------------":
                     end_block = pos2 + start_block
-                    print("end_block =", end_block)
+                    logger.debug("end_block = %s", end_block)
                     break
 
             break
 
-    print("start_block, end_block =", start_block, end_block)
+    logger.debug("start_block, end_block = %s %s", start_block, end_block)
 
     for single_lin in all_lines[start_block:end_block]:
         multi_lin_txt += single_lin
 
-    print("\n\n\n here 2 \n")
+    logger.debug("\n\n\n here 2 \n")
 
     return multi_lin_txt, n_of_lines
 
@@ -251,7 +256,7 @@ class ReindexTable(QTableWidget):
         self.show()
 
     def opt_clicked(self, row, col):
-        print("Solution clicked =", row + 1)
+        logger.debug("Solution clicked = %s", row + 1)
         p_h_svar = self.horizontalScrollBar().value()
         p_v_svar = self.verticalScrollBar().value()
 
@@ -272,7 +277,7 @@ class ReindexTable(QTableWidget):
     def opt_pick(self, row):
 
         if self.tmp_sel == row:
-            print("\n selecting opt:", row + 1, "\n")
+            logger.debug("\n selecting opt: %s %s", row + 1, "\n")
             self.opt_signal.emit(row)
 
         self.tmp_sel = row
@@ -284,20 +289,20 @@ class ReindexTable(QTableWidget):
                 if row > bst_sol:
                     bst_sol = row
 
-        print("bst_sol = ", bst_sol)
+        logger.debug("bst_sol =  %s", bst_sol)
 
         return bst_sol
 
     def add_opts_lst(self, lst_labels=None, json_path=None, selected_pos=None):
 
         if lst_labels == None:
-            print("json_path =", json_path)
+            logger.debug("json_path = %s", json_path)
             self.list_labl = ops_list_from_json(json_path)
 
         n_row = len(self.list_labl)
-        print("n_row =", n_row)
+        logger.debug("n_row = %s", n_row)
         n_col = len(self.list_labl[0])
-        print("n_col =", n_col)
+        logger.debug("n_col = %s", n_col)
 
         self.setRowCount(n_row)
         self.setColumnCount(n_col - 1)
@@ -363,7 +368,7 @@ class ReindexTable(QTableWidget):
 
     def del_opts_lst(self):
 
-        print("del_opts_lst")
+        logger.debug("del_opts_lst")
         self.clear()
         self.setRowCount(1)
         self.setColumnCount(1)
@@ -388,7 +393,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
     def doit(self):
-        print("Opening a new popup window")
+        logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
         # self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary_tweak_01.json")
         # self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/th8_2_data_bravais_summary.json")
@@ -398,11 +403,11 @@ class MainWindow(QMainWindow):
         # self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
 
     def opt_picked(self, opt_num):
-        print("\n from dynamic_reindex_gui.py MainWindow")
-        print("opt_num =", opt_num, "\n")
+        logger.debug("\n from dynamic_reindex_gui.py MainWindow")
+        logger.debug("opt_num = %s %s", opt_num, "\n")
 
     def closeEvent(self, event):
-        print("<< closeEvent ( from QMainWindow) >>")
+        logger.debug("<< closeEvent ( from QMainWindow) >>")
         if self.my_pop != None:
             self.my_pop.close()
 

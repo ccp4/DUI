@@ -1,6 +1,11 @@
-from __future__ import print_function
-from subprocess import call as shell_call
+"""
+(Nick) - Appears to be file to compile optional C++ extension?
+         Potentially unused in normal runnning?
+"""
+from __future__ import absolute_import, division, print_function
+
 from distutils import sysconfig
+from subprocess import call as shell_call
 
 obj_name = "lst_ext"
 inc_path = sysconfig.get_python_inc()
