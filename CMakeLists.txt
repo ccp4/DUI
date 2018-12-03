@@ -10,7 +10,7 @@ install(
 
 install(
     DIRECTORY
-        mini_idials_w_GUI
+        src/dui
     DESTINATION
         lib/py2/site-packages
 )
