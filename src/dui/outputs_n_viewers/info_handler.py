@@ -6,7 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,11 +22,16 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
+import json
+import sys
+
 from dxtbx.model.experiment_list import ExperimentListFactory
 from dxtbx.model import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
-import json, sys
+
+logger = logging.getLogger(__name__)
 
 
 class InfoData(object):
@@ -80,29 +85,29 @@ def update_all_data(reflections_path=None, experiments_path=None):
         try:
             refl_tabl = flex.reflection_table.from_pickle(reflections_path)
             dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
-            print("dat.n_strng =", dat.n_strng)
+            logger.debug("dat.n_strng = %s", dat.n_strng)
             dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
-            print("dat.n_index =", dat.n_index)
+            logger.debug("dat.n_index = %s", dat.n_index)
             dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(
                 True
             )
-            print("dat.n_refnd =", dat.n_refnd)
+            logger.debug("dat.n_refnd = %s", dat.n_refnd)
             dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(
                 True
             )
-            print("dat.n_integ_sum =", dat.n_integ_sum)
+            logger.debug("dat.n_integ_sum = %s", dat.n_integ_sum)
             dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(
                 True
             )
-            print("dat.n_integ_prf =", dat.n_integ_prf)
+            logger.debug("dat.n_integ_prf = %s", dat.n_integ_prf)
 
         except:
-            print("failed to find reflections")
-            print("reflections_path =", reflections_path)
+            logger.debug("failed to find reflections")
+            logger.debug("reflections_path = %s", reflections_path)
 
     if experiments_path != None:
 
-        print("trying experiments")
+        logger.debug("trying experiments")
         try:
             experiments = ExperimentListFactory.from_json_file(
                 experiments_path, check_format=False
@@ -124,11 +129,11 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 experiments.append(Experiment(beam=beam, detector=detector, scan=scan))
 
             except ValueError:
-                print("failed to read json file")
-                print("experiments_path =", experiments_path)
+                logger.debug("failed to read json file")
+                logger.debug("experiments_path = %s", experiments_path)
                 return dat
 
-        print("len(experiments)", len(experiments))
+        logger.debug("len(experiments) %s", len(experiments))
 
         # FIXME take just the first experiment. What if there are more?
         exp = experiments[0]
@@ -139,7 +144,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
 
             exp_crystal = exp.crystal
-            print("exp_crystal = ", exp_crystal)
+            logger.debug("exp_crystal =  %s", exp_crystal)
             b_mat = exp.crystal.get_B()
             dat.b11 = b_mat[0]
             dat.b12 = b_mat[1]
@@ -152,7 +157,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.b33 = b_mat[8]
 
             sg = str(exp.crystal.get_space_group().info())
-            print("spgr = ", sg)
+            logger.debug("spgr =  %s", sg)
             dat.spg_group = sg
 
             from scitbx import matrix
@@ -170,9 +175,9 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.u33 = b_mat[8]
 
             rot_angs = u_mat.r3_rotation_matrix_as_x_y_z_angles(deg=True)
-            print("u_mat =", u_mat)
+            logger.debug("u_mat = %s", u_mat)
 
-            print("rot_angs =", rot_angs)
+            logger.debug("rot_angs = %s", rot_angs)
             dat.r1, dat.r2, dat.r3 = rot_angs
 
         # Get beam data
@@ -184,15 +189,15 @@ def update_all_data(reflections_path=None, experiments_path=None):
             exp.beam.get_s0()
         )
         pnl = exp.detector[pnl_beam_intersects]
-        print("beam_x, beam_y =", beam_x, beam_y)
+        logger.debug("beam_x, beam_y = %s %s", beam_x, beam_y)
 
         dat.xb = beam_x
         dat.yb = beam_y
 
         dist = pnl.get_distance()
 
-        print("pnl_beam_intersects             ", pnl_beam_intersects)
-        print("dist                            ", dist)
+        logger.debug("pnl_beam_intersects              %s", pnl_beam_intersects)
+        logger.debug("dist                             %s", dist)
 
         dat.dd = dist
 
@@ -215,25 +220,25 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 json_info = json.load(infile)
 
             if type(json_info) is dict:
-                print("found Dictionary")
+                logger.debug("found Dictionary")
                 imageset = json_info["imageset"]
 
             elif type(json_info) is list:
-                print("found List")
+                logger.debug("found List")
                 imageset = json_info[0]["imageset"]
 
             dat.tmpl_str = imageset[0]["template"]
 
-            print("dat.tmpl_str =", dat.tmpl_str)
+            logger.debug("dat.tmpl_str = %s", dat.tmpl_str)
 
         except:
-            print("failed to find template in JSON file")
+            logger.debug("failed to find template in JSON file")
 
     try:
         dat.ref2exp = exp
 
     except:
-        print("unable to get experiment from path")
+        logger.debug("unable to get experiment from path")
         dat.ref2exp = None
 
     return dat

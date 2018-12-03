@@ -30,7 +30,6 @@ import sys
 import time
 
 import psutil
-
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
@@ -47,22 +46,22 @@ def try_find_prev_mask_pickle(cur_nod):
         my_node = my_node.prev_step
         try:
             if my_node.command_lst[0] == "find_spots":
-                print("found find_spots")
+                logger.debug("found find_spots")
                 for command in my_node.command_lst:
                     if command.startswith("spotfinder.lookup.mask="):
-                        print("Found mask.pickle")
-                        print(my_node.command_lst)
+                        logger.debug("Found mask.pickle")
+                        logger.debug(my_node.command_lst)
                         pickle_path = command[23:]
-                        print("\n my_path =", pickle_path, "\n")
+                        logger.debug("\n my_path = %s %s", pickle_path, "\n")
                         if os.path.isfile(pickle_path):
-                            print("file is still there")
+                            logger.debug("file is still there")
 
                         else:
-                            print("file no longer there")
+                            logger.debug("file no longer there")
                             pickle_path = None
 
         except:
-            print("not getting there")
+            logger.debug("not getting there")
             return None
 
     return pickle_path
@@ -74,7 +73,7 @@ def kill_w_child(pid_num):
     Args:
         pid_num (int): The PID of the parent process to kill
     """
-    print("attempting to kill pid #:", pid_num)
+    logger.debug("attempting to kill pid #: %s", pid_num)
     try:
         parent_proc = psutil.Process(pid_num)
         for child in parent_proc.children(
@@ -85,7 +84,7 @@ def kill_w_child(pid_num):
         parent_proc.kill()
 
     except Exception as e:
-        print("\n\n failed to kill process(es):", e)
+        logger.debug("\n\n failed to kill process(es): %s", e)
 
 
 def get_main_path():
@@ -94,10 +93,10 @@ def get_main_path():
 
 def get_import_run_string(in_str_lst):
 
-    print("in_str_lst =", in_str_lst)
+    logger.debug("in_str_lst = %s", in_str_lst)
 
     selected_file_path = str(in_str_lst[0])
-    print("selected_file_path =", selected_file_path)
+    logger.debug("selected_file_path = %s", selected_file_path)
 
     fnd_sep = False
     sep_chr = None
@@ -106,21 +105,21 @@ def get_import_run_string(in_str_lst):
             dir_pos_sep = pos
 
             if fnd_sep == True and sep_chr != single_char:
-                print("inconsistent dir separator")
+                logger.debug("inconsistent dir separator")
                 return None
 
             fnd_sep = True
             sep_chr = single_char
 
     if fnd_sep == False:
-        print("Failed to find dir path")
+        logger.debug("Failed to find dir path")
         return None
 
     dir_path = selected_file_path[:dir_pos_sep]
 
     # TODO test if the next << if >> is actually needed
     if dir_path[0:3] == "(u'":
-        print('dir_path[0:3] == "(u\'"')
+        logger.debug('dir_path[0:3] == "(u\'"')
         dir_path = dir_path[3:]
 
     templ_r_side = selected_file_path[dir_pos_sep:]
@@ -132,7 +131,7 @@ def get_import_run_string(in_str_lst):
     left_sd_name = templ_r_side[:ext_pos_sep]
     ext_name = templ_r_side[ext_pos_sep:]
     if ext_name == ".h5" or ext_name == ".nxs":
-        print("found h5 or nxs file")
+        logger.debug("found h5 or nxs file")
         file_name = left_sd_name
         file_name = file_name + ext_name
         tail_size = 0
@@ -188,7 +187,7 @@ def get_import_run_string(in_str_lst):
 
         pos_last_num += 1
 
-        print("pos_last_num =", pos_last_num)
+        logger.debug("pos_last_num = %s", pos_last_num)
 
         if pos_last_num > 1:
             lst_num_str = []
@@ -199,18 +198,18 @@ def get_import_run_string(in_str_lst):
                         int(single_string[pos_last_num - tail_size : pos_last_num])
                     )
 
-                print("lst_num_str =", lst_num_str)
+                logger.debug("lst_num_str = %s", lst_num_str)
                 img_range = [min(lst_num_str), max(lst_num_str)]
 
             except:
-                print("something went wrong with the range thing 01")
+                logger.debug("something went wrong with the range thing 01")
                 img_range = None
 
         else:
-            print("something went wrong with the range thing 02")
+            logger.debug("something went wrong with the range thing 02")
             img_range = None
 
-    print("out_str( template mode ) =", out_str)
+    logger.debug("out_str( template mode ) = %s", out_str)
 
     new_cmd = ""
     for single_char in out_str:
@@ -224,13 +223,13 @@ def get_import_run_string(in_str_lst):
         prev_char = single_char
 
     out_str = new_cmd
-    print("img_range =", img_range)
+    logger.debug("img_range = %s", img_range)
 
     if img_range != None:
         out_str += " image_range=" + str(img_range[0]) + "," + str(img_range[1])
 
-    print("out_str( * mode ) =", out_str, "\n")
-    print("dir_path =", dir_path)
+    logger.debug("out_str( * mode ) = %s %s", out_str, "\n")
+    logger.debug("dir_path = %s", dir_path)
 
     return dir_path, out_str
 
@@ -354,11 +353,11 @@ def update_pbar_msg(main_obj):
 
     elif tmp_curr.success == None:
         if tmp_curr.lin_num == 1:
-            print("tmp_curr.lin_num == 1")
+            logger.debug("tmp_curr.lin_num == 1")
             templ_text = (
                 main_obj.centre_par_widget.step_param_widg.currentWidget().my_widget.simple_lin.text()
             )
-            print("templ_text =", templ_text)
+            logger.debug("templ_text = %s", templ_text)
             if templ_text == " ? ":
                 txt = "click << Select File(s) >> or edit input line "
 
@@ -379,7 +378,7 @@ def update_pbar_msg(main_obj):
             txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
 
     main_obj.txt_bar.setText(txt)
-    print("update_pbar_msg =", txt)
+    logger.debug("update_pbar_msg = %s", txt)
 
 
 def get_lab_txt(com_nam):
@@ -448,7 +447,7 @@ class MyQButton(QPushButton):
 class TreeNavWidget(QTreeView):
     def __init__(self, parent=None):
         super(TreeNavWidget, self).__init__()
-        print("TreeNavWidget(__init__)")
+        logger.debug("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
         self.setIndentation(10)
@@ -460,7 +459,7 @@ class TreeNavWidget(QTreeView):
     def update_me(self, root_node, lst_path_idx):
         self.lst_idx = lst_path_idx
 
-        print(self.lst_idx)
+        logger.debug(self.lst_idx)
 
         self.std_mod = QStandardItemModel(self)
         self.recursive_node(root_node, self.std_mod)
@@ -533,11 +532,11 @@ class ViewerThread(QThread):
         self.process = process
 
     def run(self):
-        print("Hi from QThread(run)  ___________________<<< Before Loop >>>")
+        logger.debug("Hi from QThread(run)  ___________________<<< Before Loop >>>")
 
         self.process.wait()
 
-        print("_________________________________________>>> Loop ended <<<")
+        logger.debug("_________________________________________>>> Loop ended <<<")
 
 
 class ExternalProcDialog(QDialog):
@@ -626,9 +625,9 @@ class ExternalProcDialog(QDialog):
                 logger.debug("File %s exists - collecting metadata", full_path)
                 self.check_file_status[check_file] = os.stat(full_path)
 
-        print("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
+        logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
-        print("Running PID {}".format(self.my_process.pid))
+        logger.debug("Running PID {}".format(self.my_process.pid))
 
         # Track the process status in a separate thread
         self.thrd = ViewerThread(self.my_process)
@@ -640,7 +639,7 @@ class ExternalProcDialog(QDialog):
 
     def kill_my_proc(self):
         """Kill the subprocess early"""
-        print("self.kill_my_proc")
+        logger.debug("self.kill_my_proc")
         kill_w_child(self.my_process.pid)
         self.my_process = None
         self._check_for_output_files()
@@ -648,7 +647,7 @@ class ExternalProcDialog(QDialog):
 
     def child_closed(self):
         """The child process has closed by itself"""
-        print("after ...close()")
+        logger.debug("after ...close()")
         self.my_process = None
         self._check_for_output_files()
         # Just close ourself
@@ -656,7 +655,7 @@ class ExternalProcDialog(QDialog):
 
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
-        print("from << closeEvent  (QDialog) >>")
+        logger.debug("from << closeEvent  (QDialog) >>")
         self._check_for_output_files()
         self.kill_my_proc()
 
@@ -686,7 +685,7 @@ class ExternalProcDialog(QDialog):
                     )
             elif os.path.isfile(full_path):
                 # The file didn't exist before - definitely new!
-                print("Found output file {}".format(filename))
+                logger.debug("Found output file {}".format(filename))
                 found_checks.append(full_path)
 
         if found_checks:
@@ -736,13 +735,13 @@ class OuterCaller(QWidget):
 
     def check_for_phil(self, output_files):
         """Slot function triggered by new files created by external process"""
-        print("Output files:", output_files)
+        logger.debug("Output files: %s", output_files)
 
         for filename in output_files:
             if filename.endswith("find_spots.phil"):
-                print("Reading spotfinding settings:", filename, "\n")
+                logger.debug("Reading spotfinding settings: %s %s", filename, "\n")
                 lst_params = get_phil_par(filename)
-                print("Emitting", repr(lst_params))
+                logger.debug("Emitting %s", repr(lst_params))
                 self.pass_parmam_lst.emit(lst_params)
             elif filename.endswith("mask.pickle"):
                 logger.debug("Found mask; emitting")
@@ -750,7 +749,7 @@ class OuterCaller(QWidget):
                 phil_parms = ["lookup.mask={}".format(filename)]
                 self.pass_parmam_lst.emit(phil_parms)
             else:
-                print("Not sure how to handle", filename)
+                logger.debug("Not sure how to handle %s", filename)
 
 
 class CliOutView(QTextEdit):
@@ -765,20 +764,20 @@ class CliOutView(QTextEdit):
             self.append(ed_str)
 
         except:
-            print("unwritable char <<", str_to_print, ">>", end=" ")
+            logger.debug("unwritable char << %s %s", str_to_print, ">>")
 
     def make_red(self):
-        print("turning log fonts to RED")
+        logger.debug("turning log fonts to RED")
         style_orign = "color: rgba(220, 0, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_green(self):
-        print("turning log fonts to GREEN")
+        logger.debug("turning log fonts to GREEN")
         style_orign = "color: rgba(0, 125, 0, 255)"
         self.setStyleSheet(style_orign)
 
     def make_blue(self):
-        print("turning log fonts to BLUE")
+        logger.debug("turning log fonts to BLUE")
         style_orign = "color: rgba(0, 0, 125, 255)"
         self.setStyleSheet(style_orign)
 
@@ -795,19 +794,19 @@ class CliOutView(QTextEdit):
         else:
             self.make_green()
 
-        print(" path_to_log =", path_to_log)
+        logger.debug(" path_to_log = %s", path_to_log)
 
         try:
             fil_obj = open(path_to_log, "r")
             lst_lin = fil_obj.readlines()
 
         except:
-            print("Failed to read log file")
+            logger.debug("Failed to read log file")
             lst_lin = ["Ready to Run:"]
             self.make_green()
 
         self.clear()
-        print("success =", success, "refresh_txt")
+        logger.debug("success = %s %s", success, "refresh_txt")
 
         for lin in lst_lin:
             self.add_txt(lin)
@@ -818,7 +817,7 @@ class Text_w_Bar(QProgressBar):
         super(Text_w_Bar, self).__init__()
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
-        print("test setStyle(QStyleFactory.create())")
+        logger.debug("test setStyle(QStyleFactory.create())")
         try:
             self.setStyle(QStyleFactory.create("cleanlooks"))
             # self.setStyle(QStyleFactory.create("Plastique"))
@@ -826,7 +825,7 @@ class Text_w_Bar(QProgressBar):
             # self.setStyle(QStyleFactory.create("motif"))
 
         except:
-            print("Failed to setStyle()")
+            logger.debug("Failed to setStyle()")
 
     def setText(self, text):
         if len(text) > 2:
@@ -837,12 +836,12 @@ class Text_w_Bar(QProgressBar):
         return self._text
 
     def start_motion(self):
-        print("starting motion")
+        logger.debug("starting motion")
         self.setRange(0, 0)
 
     def end_motion(self):
         self.setRange(0, 1)
-        print("ending motion")
+        logger.debug("ending motion")
 
 
 class MainWidget(QMainWindow):

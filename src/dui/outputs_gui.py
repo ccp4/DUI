@@ -6,7 +6,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,12 +22,15 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+import logging
 import sys
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from outputs_n_viewers.info_handler import InfoData, update_all_data
+from .outputs_n_viewers.info_handler import InfoData, update_all_data
+
+logger = logging.getLogger(__name__)
 
 
 def update_data_label(data_label, data_info, n_dec=2):
@@ -361,8 +364,8 @@ class InfoWidget(QWidget):
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
 
-        print("\n\nrefl_pikl_path =", refl_pikl_path)
-        print("exp_json_path =", exp_json_path, "\n")
+        logger.debug("\n\nrefl_pikl_path = %s", refl_pikl_path)
+        logger.debug("exp_json_path = %s %s", exp_json_path, "\n")
 
         try:
 
@@ -371,7 +374,7 @@ class InfoWidget(QWidget):
             )
 
         except:
-            print("unable to update data panel")
+            logger.debug("unable to update data panel")
             self.all_data = update_all_data(
                 experiments_path=None, reflections_path=None
             )
@@ -429,7 +432,7 @@ class InfoWidget(QWidget):
 
 if __name__ == "__main__":
 
-    print("\n sys.argv(s) =", sys.argv[1], sys.argv[2], "\n")
+    logger.debug("\n sys.argv(s) = %s %s %s", sys.argv[1], sys.argv[2], "\n")
     app = QApplication(sys.argv)
     ex = InfoWidget()
 

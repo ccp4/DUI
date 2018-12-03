@@ -7,7 +7,7 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,10 +23,14 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import subprocess
 import json
+import logging
 import os
+import subprocess
+
 import libtbx.phil
+
+logger = logging.getLogger(__name__)
 
 
 class SysArgvData(object):
@@ -59,14 +63,14 @@ def prn_lst_lst_cmd(last_idials_node):
         cur_nod = cur_nod.prev_step
 
     for prn_lin in reversed(lst_simpl_cmd):
-        print(prn_lin)
+        logger.debug(prn_lin)
 
-    print("\n")
+    logger.debug("\n")
 
     for prn_lin in reversed(lst_full_cmd):
-        print(prn_lin)
+        logger.debug(prn_lin)
 
-    print("\n\n")
+    logger.debug("\n\n")
 
 
 def get_next_step(node_obj):
@@ -118,12 +122,14 @@ class tree_2_lineal(object):
                 self.deep_in_rec(single_obj.objects)
 
             else:
-                print("\n\n _____________ <<< WARNING neither definition or scope\n\n")
+                logger.debug(
+                    "\n\n _____________ <<< WARNING neither definition or scope\n\n"
+                )
 
 
 def get_phil_par(path_to_file):
 
-    print("path_to_file =", path_to_file)
+    logger.debug("path_to_file = %s", path_to_file)
     p_obj = libtbx.phil.parse(
         input_string=None,
         source_info=None,
@@ -131,7 +137,7 @@ def get_phil_par(path_to_file):
         converter_registry=None,
         process_includes=False,
     )
-    print("p_obj =", p_obj)
+    logger.debug("p_obj = %s", p_obj)
     lst_obj = tree_2_lineal(p_obj.objects)
     multipl_phil_lst = lst_obj()
 
@@ -143,7 +149,7 @@ def get_phil_par(path_to_file):
                 str_par = str(obj.full_path()) + "="
                 str_val = ""
                 obj_ext = obj.extract()
-                print("obj_ext =", obj_ext)
+                logger.debug("obj_ext = %s", obj_ext)
                 if type(obj_ext) is list:
                     for nm, single_val in enumerate(obj_ext):
                         if nm > 0:
@@ -157,11 +163,11 @@ def get_phil_par(path_to_file):
                 str_par += str_val
 
             except:
-                print("\n\n failed to get obj & par \n\n")
+                logger.debug("\n\n failed to get obj & par \n\n")
 
             lst_str_commands.append(str_par)
 
-    print("\n lst_str_commands =", lst_str_commands)
+    logger.debug("\n lst_str_commands = %s", lst_str_commands)
     return lst_str_commands
 
 
@@ -422,7 +428,7 @@ def generate_predict(node_obj):
             pre_fil = run_path + os.sep + str(current_lin) + "_predict.pickle"
             pred_outp = " output=" + pre_fil
             pred_cmd = "dials.predict " + str(exp_inp) + pred_outp
-            print("predict command: ", pred_cmd, "\n\n")
+            logger.debug("predict command:  %s %s", pred_cmd, "\n\n")
 
             gen_pred_proc = subprocess.Popen(pred_cmd, shell=True)
             gen_pred_proc.wait()
@@ -430,14 +436,14 @@ def generate_predict(node_obj):
             pre_out = pre_fil
 
             if os.path.exists(pre_out):
-                print("\ngenerated predictions at: ", pre_out, "\n")
+                logger.debug("\ngenerated predictions at:  %s %s", pre_out, "\n")
 
             else:
-                print("\n path to predictions NOT generated")
+                logger.debug("\n path to predictions NOT generated")
                 pre_out = None
 
         except:
-            print("Failed adding path to predictions")
+            logger.debug("Failed adding path to predictions")
             pre_out = None
 
     return pre_out
@@ -472,21 +478,21 @@ def generate_report(node_obj):
                 + html_outp
             )
 
-        print("rep_cmd =", rep_cmd)
+        logger.debug("rep_cmd = %s", rep_cmd)
 
         try:
             gen_rep_proc = subprocess.Popen(rep_cmd, shell=True)
             gen_rep_proc.wait()
 
             rep_out = htm_fil
-            print("generated report at: ", rep_out)
+            logger.debug("generated report at:  %s", rep_out)
 
         except:
             rep_out = None
-            print("Someting went wrong in report level 2")
+            logger.debug("Someting went wrong in report level 2")
 
     else:
-        print("NO report needed for this step")
+        logger.debug("NO report needed for this step")
         rep_out = None
 
     return rep_out
@@ -494,11 +500,11 @@ def generate_report(node_obj):
 
 class DialsCommand(object):
     def __init__(self):
-        print("creating new DialsCommand (obj)")
+        logger.debug("creating new DialsCommand (obj)")
         self.full_cmd_lst = None
 
         os_name = os.name
-        print("\n Running process on ", os_name, "\n\n")
+        logger.debug("\n Running process on  %s %s", os_name, "\n\n")
         if os_name == "nt":
             self.use_shell = True
         else:
@@ -506,11 +512,11 @@ class DialsCommand(object):
 
     def __call__(self, lst_cmd_to_run=None, ref_to_class=None):
         try:
-            print("\n [[ running >> \n")
+            logger.debug("\n [[ running >> \n")
             single_string = ""
 
             for lin_to_prn in lst_cmd_to_run:
-                print(lin_to_prn)
+                logger.debug(lin_to_prn)
 
                 single_string += lin_to_prn
                 single_string += " "
@@ -521,7 +527,7 @@ class DialsCommand(object):
             else:
                 run_cmd = lst_cmd_to_run
 
-            print("\n<<<")
+            logger.debug("\n<<<")
 
             self.tmp_std_all = []
 
@@ -535,7 +541,7 @@ class DialsCommand(object):
 
             self.my_pid = my_process.pid
 
-            print("process PID =", self.my_pid)
+            logger.debug("process PID = %s", self.my_pid)
 
             for line in iter(my_process.stdout.readline, b""):
                 single_line = line[0 : len(line) - 1]
@@ -544,9 +550,9 @@ class DialsCommand(object):
                     self.tmp_std_all.append(single_line)
 
                 except:
-                    print(single_line)
+                    logger.debug(single_line)
 
-            print("Done print loop")
+            logger.debug("Done print loop")
 
             my_process.wait()
             my_process.stdout.close()
@@ -561,21 +567,21 @@ class DialsCommand(object):
                     ref_to_class.emit_fail_signal()
 
                 except:
-                    print("Failed")
+                    logger.debug("Failed")
 
-            print("Done all step")
+            logger.debug("Done all step")
 
         except Exception as my_err:
-            print("error =", my_err, "\n")
+            logger.debug("error = %s %s", my_err, "\n")
             local_success = False
-            print("\n FAIL call")
+            logger.debug("\n FAIL call")
 
         self.full_cmd_lst = lst_cmd_to_run
         return local_success
 
 
 def print_list(lst, curr):
-    print("__________________________listing:")
+    logger.debug("__________________________listing:")
     for uni in lst:
         stp_str = (
             str(uni.lin_num) + " " + str(uni.success) + " comm: " + str(uni.command_lst)
@@ -598,7 +604,7 @@ def print_list(lst, curr):
         if curr == uni.lin_num:
             stp_str += "                           <<< here I am <<<"
 
-        print(stp_str)
+        logger.debug(stp_str)
 
 
 class TreeShow(object):
@@ -607,17 +613,17 @@ class TreeShow(object):
         self.ind_lin = "------"
 
     def __call__(self, my_runner):
-        print()
-        print("status ")
-        print(" |  lin num ")
-        print(" |   |  command ")
-        print(" |   |   | ")
-        print("------------------")
+        logger.debug("")
+        logger.debug("status ")
+        logger.debug(" |  lin num ")
+        logger.debug(" |   |  command ")
+        logger.debug(" |   |   | ")
+        logger.debug("------------------")
         self.max_indent = 0
         self.str_lst = []
         self.add_tree(step=my_runner.step_list[0], indent=0)
         self.tree_print(my_runner.current_line)
-        print("---------------------" + self.max_indent * self.ind_lin)
+        logger.debug("---------------------" + self.max_indent * self.ind_lin)
 
     def add_tree(self, step=None, indent=None):
         if step.success == True:
@@ -671,4 +677,4 @@ class TreeShow(object):
                 self.tree_dat[pos][0] += str_here + "   <<< here "
 
         for prn_str in self.tree_dat:
-            print(prn_str[0])
+            logger.debug(prn_str[0])
