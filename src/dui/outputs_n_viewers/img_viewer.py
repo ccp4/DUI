@@ -279,9 +279,13 @@ class ImgPainter(QWidget):
                 # print "len(self.obs_flat_data) =", len(self.obs_flat_data)
 
                 tmp_font = QFont()
-                tmp_font.setPixelSize(int(5.5 * self.my_scale))
+                # Work out how big the text will be and don't show if 0px
+                font_pixel_size = int(5.5 * self.my_scale)
+                draw_text = font_pixel_size > 0
+                if draw_text:
+                    tmp_font.setPixelSize(font_pixel_size)
+                    painter.setFont(tmp_font)
                 # TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
-                painter.setFont(tmp_font)
                 lst_tmp_hkl = None
                 if self.user_choice[0]:
                     try:
@@ -364,43 +368,46 @@ class ImgPainter(QWidget):
                         )
 
                 try:
-                    for j, img_flat_data in enumerate(lst_tmp_hkl):
-                        for i, reflection in enumerate(img_flat_data):
-                            x = float(reflection[0]) + 1.0
-                            y = float(reflection[1]) + 1.0
-                            if reflection[4] == "NOT indexed":
-                                painter.setPen(non_indexed_pen)
+                    if draw_text:
+                        for j, img_flat_data in enumerate(lst_tmp_hkl):
+                            for i, reflection in enumerate(img_flat_data):
+                                x = float(reflection[0]) + 1.0
+                                y = float(reflection[1]) + 1.0
+                                if reflection[4] == "NOT indexed":
+                                    painter.setPen(non_indexed_pen)
 
-                            else:
-                                painter.setPen(indexed_pen)
+                                else:
+                                    painter.setPen(indexed_pen)
 
-                            if (
-                                self.my_parent.rad_but_all_hkl.isChecked() == True
-                                and reflection[4] != ""
-                                and reflection[4] != "NOT indexed"
-                            ):
+                                if (
+                                    self.my_parent.rad_but_all_hkl.isChecked() == True
+                                    and reflection[4] != ""
+                                    and reflection[4] != "NOT indexed"
+                                ):
 
-                                painter.drawText(
-                                    QPoint(
-                                        int(x * self.my_scale), int(y * self.my_scale)
-                                    ),
-                                    reflection[4],
-                                )
+                                    painter.drawText(
+                                        QPoint(
+                                            int(x * self.my_scale),
+                                            int(y * self.my_scale),
+                                        ),
+                                        reflection[4],
+                                    )
 
-                            elif self.my_parent.rad_but_near_hkl.isChecked() == True and self.closer_ref == [
-                                i,
-                                j,
-                            ]:
+                                elif self.my_parent.rad_but_near_hkl.isChecked() == True and self.closer_ref == [
+                                    i,
+                                    j,
+                                ]:
 
-                                painter.drawText(
-                                    QPoint(
-                                        int(x * self.my_scale), int(y * self.my_scale)
-                                    ),
-                                    reflection[4],
-                                )
+                                    painter.drawText(
+                                        QPoint(
+                                            int(x * self.my_scale),
+                                            int(y * self.my_scale),
+                                        ),
+                                        reflection[4],
+                                    )
 
-                except:
-                    logger.debug("Failed to show HKLs")
+                except BaseException as e:
+                    logger.error("Failed to show HKLs: %s", e)
 
                 if self.xb != None and self.yb != None:
                     painter.setPen(indexed_pen)
