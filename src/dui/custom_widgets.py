@@ -36,7 +36,8 @@ from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 from dials.command_line.symmetry import phil_scope as phil_scope_symetry
 from dials.command_line.scale import phil_scope as phil_scope_scale
-from dials.command_line.export import phil_scope as phil_scope_export
+
+# from dials.command_line.export import phil_scope as phil_scope_export
 
 from .gui_utils import get_import_run_string, get_main_path
 from .params_live_gui_generator import PhilWidget
@@ -63,7 +64,6 @@ from .qt import (
     QPushButton,
     QScrollArea,
     QSize,
-    QSizePolicy,
     QSpinBox,
     QTabWidget,
     QTimer,
@@ -280,7 +280,7 @@ class ImportPage(QWidget):
 
     def get_arg_obj(self, sys_arg_in):
         logger.debug("sys_arg_in = %s", sys_arg_in)
-        if sys_arg_in.template != None:
+        if sys_arg_in.template is not None:
             str_arg = str(sys_arg_in.template)
             self.simple_lin.setText(str_arg)
 
@@ -355,13 +355,12 @@ def update_lst_pair(lst_ini, str_path, str_value):
         if pair[0] == str_path:
             new_pair = [str_path, str_value]
             found = True
-
         else:
             new_pair = pair
 
         new_lst.append(new_pair)
 
-    if found == False:
+    if not found:
         new_lst.append([str_path, str_value])
 
     return new_lst
@@ -386,7 +385,6 @@ def string2pair(str_in):
     pair = None
     for pos, single_char in enumerate(str_in):
         if single_char == "=":
-            eq_pos = pos
             pair = [str_in[0:pos], str_in[pos + 1 :]]
             return pair
 
@@ -415,7 +413,10 @@ class ParamMainWidget(QWidget):
         try:
             self.my_phl_obj = phl_obj
             self.simp_widg_in = simp_widg
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
@@ -441,14 +442,18 @@ class ParamMainWidget(QWidget):
 
         try:
             self.simpler_widget.item_changed.connect(self.update_advanced_widget)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("found self.simpler_widget without << item_changed >> signal")
 
         try:
             self.simpler_widget.item_to_remove.connect(self.remove_one_par)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug(
                 "found self.simpler_widget without << item_to_remove >> signal"
             )
@@ -487,8 +492,10 @@ class ParamMainWidget(QWidget):
                 )
                 QTimer.singleShot(1000, self.raise_nproc_to_max)
                 logger.debug("tst 03")
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("\n This step runs as fast as it can with nproc = 1 \n")
 
     def raise_nproc_to_max(self):
@@ -497,7 +504,7 @@ class ParamMainWidget(QWidget):
             if "mp.nproc" in single_par:
                 found_nproc = True
 
-        if found_nproc == False:
+        if not found_nproc:
             self.command_lst.append(self.raise_nproc_str)
             self.update_command_lst_low_level.emit(self.command_lst)
 
@@ -510,12 +517,11 @@ class ParamMainWidget(QWidget):
             for widg in bg_widg:
                 try:
                     if widg.local_path == str_path:
-                        if not hasattr(widg, "tmp_lst") or widg.tmp_lst == None:
+                        if not hasattr(widg, "tmp_lst") or widg.tmp_lst is None:
                             try:
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
-
-                            except:
+                            except ValueError:
                                 try:
                                     str_val = str(str_value)
                                     widg.setText(str_val)
@@ -523,9 +529,16 @@ class ParamMainWidget(QWidget):
                                         "widg.local_path = %s", widg.local_path
                                     )
 
-                                except:
+                                except BaseException as e:
+                                    # We don't want to catch bare exceptions but don't
+                                    # know what this was supposed to catch. Log it.
+                                    logger.error(
+                                        "Caught unknown exception type %s: %s",
+                                        type(e).__name__,
+                                        e,
+                                    )
                                     logger.debug(
-                                        "\n\n Type Mismatch while searching for twin parameter \n\n"
+                                        "Type mismatch searching for twin parameter"
                                     )
 
                         else:
@@ -534,13 +547,19 @@ class ParamMainWidget(QWidget):
                                     try:
                                         logger.debug("found val, v= %s", val)
                                         widg.setCurrentIndex(pos)
-
-                                    except:
+                                    except BaseException as e:
+                                        # We don't want to catch bare exceptions but
+                                        # dont know what this was supposed to catch.
+                                        logger.error("Caught unknown exception: %s", e)
                                         logger.debug("failed to:")
                                         logger.debug("widg.setCurrentIndex(pos)")
 
-                except:
-                    pass
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
 
         logger.debug("finished update_advanced_widget")
 
@@ -554,28 +573,36 @@ class ParamMainWidget(QWidget):
             try:
                 if widg.local_path == str_path:
                     logger.debug("found << widg.local_path == str_path >> ")
-
                     try:
                         num_val = float(str_value)
                         widg.setValue(num_val)
-
-                    except:
+                    except ValueError:
                         try:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
                                     logger.debug("found val, v= %s", val)
                                     widg.setCurrentIndex(pos)
-
-                        except:
+                        except BaseException as e:
+                            # We don't want to catch bare exceptions but don't know
+                            # what this was supposed to catch. Log it.
+                            logger.error(
+                                "Caught unknown exception type %s: %s",
+                                type(e).__name__,
+                                e,
+                            )
                             logger.debug(
                                 "\n\n Type Mismatch in simpler_param_widgets \n\n"
                             )
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("skip label_str")
 
     def update_lin_txt(self, str_path, str_value):
-        cmd_to_run = str_path + "=" + str_value
+        # cmd_to_run = str_path + "=" + str_value
         self.update_advanced_widget(str_path, str_value)
         self.update_simpler_widget(str_path, str_value)
 
@@ -585,8 +612,8 @@ class ParamMainWidget(QWidget):
 
     def update_param_w_lst(self, lst_in, do_reset=True):
 
-        logger.debug("update_param_w_lst(self,  %s %s", lst_in, ")")
-        if do_reset == True:
+        logger.debug("update_param_w_lst(self,  %s)", lst_in)
+        if do_reset:
             self.reset_par()
 
         logger.debug("_________________ after reset_par")
@@ -634,8 +661,12 @@ class ParamMainWidget(QWidget):
 
                 try:
                     widg.setEnabled(False)
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     pass
 
     def activate_me(self):
@@ -651,13 +682,22 @@ class ParamMainWidget(QWidget):
                 widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
                 try:
                     widg.setStyleSheet(widg.style_orign)
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     pass
 
                 try:
                     widg.setEnabled(True)
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     pass
 
 
@@ -701,7 +741,6 @@ class ParamWidget(QWidget):
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)
 
         v_left_box = QVBoxLayout()
-        # self.my_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
         self.show()

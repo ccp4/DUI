@@ -32,7 +32,7 @@ try:
     # try importing scipy.linalg before any cctbx modules, otherwise we
     # sometimes get a segmentation fault/core dump if it is imported after
     # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
-    import scipy.linalg  # import dependency
+    import scipy.linalg  # noqa
 except ImportError as e:
     pass
 
@@ -40,16 +40,13 @@ from dials.command_line.find_spots import phil_scope
 
 from .qt import (
     QApplication,
-    QColor,
     QComboBox,
     QDoubleSpinBox,
     QFont,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QPalette,
     QSpinBox,
-    Qt,
     QVBoxLayout,
     QWidget,
     Signal,
@@ -119,32 +116,9 @@ class tree_2_lineal(object):
 class PhilWidget(QWidget):
     item_changed = Signal(str, str)
 
-    def __init__(
-        self, phl_obj, parent=None
-    ):  # TODO fix the order of this two parameters
+    def __init__(self, phl_obj, parent=None):
+        # TODO fix the order of this two parameters
         super(PhilWidget, self).__init__(parent)
-        # self.param_widget_parent = parent.param_widget_parent
-
-        # self.win_pal = QPalette()
-        # self.win_pal.setColor(QPalette.Window, QColor(125, 125, 125, 1))
-        ##self.win_pal.setColor(QPalette.Background, Qt.white)
-        # self.setAutoFillBackground(True)
-        # self.setPalette(self.win_pal)
-        #
-        ##std_bkgr = self.palette().color(self.backgroundRole())
-        #
-        # self.plt_scp = QPalette()
-        # self.plt_scp.setColor(QPalette.WindowText, QColor(85, 85, 85, 255))
-        ##self.plt_scp.setColor(QPalette.Background, std_bkgr)
-        #
-        # self.plt_obj = QPalette()
-        # self.plt_obj.setColor(QPalette.WindowText, Qt.black)
-        ##self.plt_obj.setColor(QPalette.Background, std_bkgr)
-        #
-        #
-        # self.plt_fnd = QPalette()
-        # self.plt_fnd.setColor(QPalette.WindowText, QColor(0, 0, 255, 255))
-        # self.plt_fnd.setColor(QPalette.Background, QColor(255, 255, 0, 255))
 
         self.bg_box = QVBoxLayout(self)
 
@@ -164,7 +138,6 @@ class PhilWidget(QWidget):
 
         if len(value) > 1:
             logger.debug("user searching for: %s", value)
-            pos_str = None
             logger.debug("len = %s", len(value))
 
             for nm, labl_obj in enumerate(self.lst_label_widg):
@@ -303,32 +276,30 @@ class PhilWidget(QWidget):
 
                     elif obj.type.phil_type == "choice":
                         # remember to ask david about the issue here
-                        before_patch = """
-                        tmp_widg = QComboBox()
+                        # tmp_widg = QComboBox()
 
-                        tmp_widg.tmp_lst=[]
-                        pos = 0
-                        found_choise = False
-                        for num, opt in enumerate(obj.words):
-                            opt = str(opt)
-                            if(opt[0] == "*"):
-                                found_choise = True
-                                opt = opt[1:]
-                                pos = num
-                                tmp_str += "                          " + opt
+                        # tmp_widg.tmp_lst=[]
+                        # pos = 0
+                        # found_choise = False
+                        # for num, opt in enumerate(obj.words):
+                        #     opt = str(opt)
+                        #     if(opt[0] == "*"):
+                        #         found_choise = True
+                        #         opt = opt[1:]
+                        #         pos = num
+                        #         tmp_str += "                          " + opt
 
-                            tmp_widg.tmp_lst.append(opt)
+                        #     tmp_widg.tmp_lst.append(opt)
 
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
+                        # for lst_itm in tmp_widg.tmp_lst:
+                        #     tmp_widg.addItem(lst_itm)
 
-                        tmp_widg.setCurrentIndex(pos)
-                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+                        # tmp_widg.setCurrentIndex(pos)
+                        # tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        if(found_choise == False):
-                            tmp_str = None
-                            non_added_lst.append(str(obj.full_path()))
-                        """
+                        # if(found_choise == False):
+                        #     tmp_str = None
+                        #     non_added_lst.append(str(obj.full_path()))
                         # begins pathed version
                         tmp_widg = QComboBox()
 
@@ -345,7 +316,7 @@ class PhilWidget(QWidget):
 
                             tmp_widg.tmp_lst.append(opt)
 
-                        if found_choise == False:
+                        if not found_choise:
                             tmp_str += "                          " + str(obj.extract())
 
                         for lst_itm in tmp_widg.tmp_lst:
@@ -364,7 +335,7 @@ class PhilWidget(QWidget):
                     # tmp_widg.tmp_lst = None
                     tmp_str += "                          " + str(obj.extract())
 
-                if tmp_str != None:
+                if tmp_str is not None:
                     tmp_widg.local_path = str(obj.full_path())
                     # tmp_h_box.addStretch()
                     tmp_h_box.addWidget(tmp_widg)
@@ -372,16 +343,13 @@ class PhilWidget(QWidget):
                     self.bg_box.addLayout(tmp_h_box)
 
         # debugging = '''
-        logger.debug("\n\n Non added parameters:")
+        logger.debug("Non added parameters:")
         for lin_to_print in non_added_lst:
             logger.debug(lin_to_print)
 
-        logger.debug("\n\n")
-        #'''
-
     def spnbox_changed(self, value):
         sender = self.sender()
-        if sender.str_defl != None and float(value) == 0.0:
+        if sender.str_defl is not None and float(value) == 0.0:
             str_value = sender.str_defl
 
         else:

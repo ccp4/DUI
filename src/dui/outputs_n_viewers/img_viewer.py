@@ -23,9 +23,7 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
-import os
 import sys
-import time
 
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
@@ -104,7 +102,7 @@ class ImgPainter(QWidget):
 
             self.my_parent.update_info_label(pix_col, pix_row)
 
-            if self.my_parent.rad_but_near_hkl.isChecked() == True:
+            if self.my_parent.rad_but_near_hkl.isChecked():
                 self.find_closer_hkl(self.x_pos, self.y_pos)
 
             else:
@@ -135,7 +133,7 @@ class ImgPainter(QWidget):
             scale_factor = None
             logger.debug("reaching scale limit")
 
-        if scale_factor != None:
+        if scale_factor is not None:
 
             self.my_scale *= scale_factor
 
@@ -160,9 +158,8 @@ class ImgPainter(QWidget):
     def scale2fact(self, new_scale=None):
         old_scale = float(self.my_scale)
 
-        if new_scale == None:
+        if new_scale is None:
             self.my_scale = 1.0
-
         else:
             self.my_scale *= new_scale
 
@@ -176,24 +173,24 @@ class ImgPainter(QWidget):
         logger.debug("rescaling to: %s", self.my_scale)
 
     def move_scrollbar(self, scrollBar=None, dst=None, new_pos=None):
-        if dst != None:
+        if dst is not None:
             old_val = scrollBar.value()
             scrollBar.setValue(old_val - dst)
 
-        if new_pos != None:
+        if new_pos is not None:
             scrollBar.setValue(new_pos)
 
     def find_closer_hkl(self, x_mouse, y_mouse):
-        if self.pre_flat_data != None and self.user_choice[1]:
+        if self.pre_flat_data is not None and self.user_choice[1]:
             tmp_flat_data = self.pre_flat_data
 
-        elif self.obs_flat_data != None and self.user_choice[0]:
+        elif self.obs_flat_data is not None and self.user_choice[0]:
             tmp_flat_data = self.obs_flat_data
 
         else:
             tmp_flat_data = None
 
-        if tmp_flat_data != None:
+        if tmp_flat_data is not None:
             x_mouse_scaled = float(x_mouse) / self.my_scale
             y_mouse_scaled = float(y_mouse) / self.my_scale
             try:
@@ -203,8 +200,12 @@ class ImgPainter(QWidget):
 
                 self.closer_ref = [closer_hkl, closer_slice]
                 self.update()
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("Failed to find closer HKL")
 
     def set_img_pix(
@@ -228,224 +229,223 @@ class ImgPainter(QWidget):
         self.xb = xb
         self.yb = yb
 
-    def paintEvent(self, event):
+    def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
+        """
+        Draw a single HKL entry
 
-        if self.img == None:
+        This takes lots of logic from outside, currently
+        """
+        x = float(reflection[0]) + 1.0
+        y = float(reflection[1]) + 1.0
+        if reflection[4] == "NOT indexed":
+            painter.setPen(non_indexed_pen)
+        else:
+            painter.setPen(indexed_pen)
+
+        if (
+            self.my_parent.rad_but_all_hkl.isChecked()
+            and reflection[4] != ""
+            and reflection[4] != "NOT indexed"
+        ):
+            painter.drawText(
+                QPoint(int(x * self.my_scale), int(y * self.my_scale)), reflection[4]
+            )
+        elif self.my_parent.rad_but_near_hkl.isChecked() and self.closer_ref == [i, j]:
+            painter.drawText(
+                QPoint(int(x * self.my_scale), int(y * self.my_scale)), reflection[4]
+            )
+
+    def paintEvent(self, event):
+        if self.img is None:
             return
 
+        scaled_width = int(self.img_width * self.my_scale)
+        scaled_height = int(self.img_height * self.my_scale)
+        self.resize(scaled_width, scaled_height)
+
+        rect = QRect(0, 0, scaled_width, scaled_height)
+        pixmap = QPixmap(self.img)
+        painter = QPainter(self)
+
+        indexed_pen = QPen()  # creates a default indexed_pen
+        if self.my_parent.palette == "white2black":
+            indexed_pen.setBrush(Qt.blue)
+
+        elif self.my_parent.palette == "black2white":
+            indexed_pen.setBrush(Qt.cyan)
+
+        elif self.my_parent.palette == "hot descend":
+            indexed_pen.setBrush(Qt.magenta)
+
         else:
-            scaled_width = int(self.img_width * self.my_scale)
-            scaled_height = int(self.img_height * self.my_scale)
-            self.resize(scaled_width, scaled_height)
+            indexed_pen.setBrush(Qt.green)
 
-            rect = QRect(0, 0, scaled_width, scaled_height)
-            pixmap = QPixmap(self.img)
-            painter = QPainter(self)
+        indexed_pen.setStyle(Qt.SolidLine)
 
-            indexed_pen = QPen()  # creates a default indexed_pen
-            if self.my_parent.palette == "white2black":
-                indexed_pen.setBrush(Qt.blue)
+        if self.my_scale >= 5.0:
+            indexed_pen.setWidth(self.my_scale / 3.5)
 
-            elif self.my_parent.palette == "black2white":
-                indexed_pen.setBrush(Qt.cyan)
+        else:
+            indexed_pen.setWidth(0.0)
 
-            elif self.my_parent.palette == "hot descend":
-                indexed_pen.setBrush(Qt.magenta)
+        non_indexed_pen = QPen()  # creates a default non_indexed_pen
+        if (
+            self.my_parent.palette == "white2black"
+            or self.my_parent.palette == "black2white"
+        ):
+            non_indexed_pen.setBrush(Qt.red)
+            # non_indexed_pen.setBrush(Qt.magenta)
 
-            else:
-                indexed_pen.setBrush(Qt.green)
+        else:
+            non_indexed_pen.setBrush(QColor(75, 150, 200))
 
-            indexed_pen.setStyle(Qt.SolidLine)
+        if self.my_scale >= 5.0:
+            non_indexed_pen.setStyle(Qt.DotLine)
+            non_indexed_pen.setWidth(self.my_scale / 3.5)
 
-            if self.my_scale >= 5.0:
-                indexed_pen.setWidth(self.my_scale / 3.5)
+        else:
+            non_indexed_pen.setStyle(Qt.SolidLine)
+            non_indexed_pen.setWidth(0.0)
 
-            else:
-                indexed_pen.setWidth(0.0)
+        painter.drawPixmap(rect, pixmap)
+        # painter.setFont(QFont("Monospace", 22))
+        # painter.setFont(QFont("FreeMono", 22))
 
-            non_indexed_pen = QPen()  # creates a default non_indexed_pen
-            if (
-                self.my_parent.palette == "white2black"
-                or self.my_parent.palette == "black2white"
-            ):
-                non_indexed_pen.setBrush(Qt.red)
-                # non_indexed_pen.setBrush(Qt.magenta)
+        if (
+            self.obs_flat_data is not None
+            and self.my_parent.chk_box_show.checkState()
+            and self.pre_flat_data is not None
+        ):
 
-            else:
-                non_indexed_pen.setBrush(QColor(75, 150, 200))
+            # print "len(self.obs_flat_data) =", len(self.obs_flat_data)
 
-            if self.my_scale >= 5.0:
-                non_indexed_pen.setStyle(Qt.DotLine)
-                non_indexed_pen.setWidth(self.my_scale / 3.5)
-
-            else:
-                non_indexed_pen.setStyle(Qt.SolidLine)
-                non_indexed_pen.setWidth(0.0)
-
-            painter.drawPixmap(rect, pixmap)
-            # painter.setFont(QFont("Monospace", 22))
-            # painter.setFont(QFont("FreeMono", 22))
-
-            if (
-                self.obs_flat_data != None
-                and self.my_parent.chk_box_show.checkState()
-                and self.pre_flat_data != None
-            ):
-
-                # print "len(self.obs_flat_data) =", len(self.obs_flat_data)
-
-                tmp_font = QFont()
-                # Work out how big the text will be and don't show if 0px
-                font_pixel_size = int(5.5 * self.my_scale)
-                draw_text = font_pixel_size > 0
-                if draw_text:
-                    tmp_font.setPixelSize(font_pixel_size)
-                    painter.setFont(tmp_font)
-                # TODO consider "tmp_font.setPointSize(..." instead of "tmp_font.setPixelSize(..."
-                lst_tmp_hkl = None
-                if self.user_choice[0]:
-                    try:
-                        for j, img_flat_data in enumerate(self.obs_flat_data):
-                            for i, reflection in enumerate(img_flat_data):
-                                x = float(reflection[0])
-                                y = float(reflection[1])
-                                width = float(reflection[2])
-                                height = float(reflection[3])
-                                rectangle = QRectF(
-                                    x * self.my_scale,
-                                    y * self.my_scale,
-                                    width * self.my_scale,
-                                    height * self.my_scale,
-                                )
-
-                                if reflection[4] == "NOT indexed":
-                                    painter.setPen(non_indexed_pen)
-
-                                else:
-                                    painter.setPen(indexed_pen)
-
-                                painter.drawRect(rectangle)
-                                lst_tmp_hkl = self.obs_flat_data
-
-                    except:
-                        logger.debug(
-                            "No reflection (Obsevations) to show ... None type"
-                        )
-
-                if self.user_choice[1]:
-                    try:
-                        for j, img_flat_data in enumerate(self.pre_flat_data):
-                            for i, reflection in enumerate(img_flat_data):
-
-                                x = float(reflection[0]) + 1.0
-                                y = float(reflection[1]) + 1.0
-                                if reflection[4] == "NOT indexed":
-                                    painter.setPen(non_indexed_pen)
-
-                                else:
-                                    painter.setPen(indexed_pen)
-
-                                cross_size = float(reflection[2]) + 1.0
-                                cross_2_size = float(reflection[3])
-
-                                painter.drawLine(
-                                    x * self.my_scale,
-                                    (y - cross_size) * self.my_scale,
-                                    x * self.my_scale,
-                                    (y + cross_size) * self.my_scale,
-                                )
-
-                                painter.drawLine(
-                                    (x + cross_size) * self.my_scale,
-                                    y * self.my_scale,
-                                    (x - cross_size) * self.my_scale,
-                                    y * self.my_scale,
-                                )
-
-                                painter.drawLine(
-                                    (x - cross_2_size) * self.my_scale,
-                                    (y - cross_2_size) * self.my_scale,
-                                    (x + cross_2_size) * self.my_scale,
-                                    (y + cross_2_size) * self.my_scale,
-                                )
-
-                                painter.drawLine(
-                                    (x + cross_2_size) * self.my_scale,
-                                    (y - cross_2_size) * self.my_scale,
-                                    (x - cross_2_size) * self.my_scale,
-                                    (y + cross_2_size) * self.my_scale,
-                                )
-
-                                lst_tmp_hkl = self.pre_flat_data
-
-                    except:
-                        logger.debug(
-                            "No reflection (Predictions) to show ... None type"
-                        )
-
+            tmp_font = QFont()
+            # Work out how big the text will be and don't show if 0px
+            font_pixel_size = int(5.5 * self.my_scale)
+            draw_text = font_pixel_size > 0
+            if draw_text:
+                tmp_font.setPixelSize(font_pixel_size)
+                painter.setFont(tmp_font)
+            # TODO consider "tmp_font.setPointSize(..."
+            #   instead of "tmp_font.setPixelSize(..."
+            lst_tmp_hkl = None
+            if self.user_choice[0]:
                 try:
-                    if draw_text:
-                        for j, img_flat_data in enumerate(lst_tmp_hkl):
-                            for i, reflection in enumerate(img_flat_data):
-                                x = float(reflection[0]) + 1.0
-                                y = float(reflection[1]) + 1.0
-                                if reflection[4] == "NOT indexed":
-                                    painter.setPen(non_indexed_pen)
+                    for j, img_flat_data in enumerate(self.obs_flat_data):
+                        for i, reflection in enumerate(img_flat_data):
+                            x = float(reflection[0])
+                            y = float(reflection[1])
+                            width = float(reflection[2])
+                            height = float(reflection[3])
+                            rectangle = QRectF(
+                                x * self.my_scale,
+                                y * self.my_scale,
+                                width * self.my_scale,
+                                height * self.my_scale,
+                            )
 
-                                else:
-                                    painter.setPen(indexed_pen)
+                            if reflection[4] == "NOT indexed":
+                                painter.setPen(non_indexed_pen)
 
-                                if (
-                                    self.my_parent.rad_but_all_hkl.isChecked() == True
-                                    and reflection[4] != ""
-                                    and reflection[4] != "NOT indexed"
-                                ):
+                            else:
+                                painter.setPen(indexed_pen)
 
-                                    painter.drawText(
-                                        QPoint(
-                                            int(x * self.my_scale),
-                                            int(y * self.my_scale),
-                                        ),
-                                        reflection[4],
-                                    )
-
-                                elif self.my_parent.rad_but_near_hkl.isChecked() == True and self.closer_ref == [
-                                    i,
-                                    j,
-                                ]:
-
-                                    painter.drawText(
-                                        QPoint(
-                                            int(x * self.my_scale),
-                                            int(y * self.my_scale),
-                                        ),
-                                        reflection[4],
-                                    )
+                            painter.drawRect(rectangle)
+                            lst_tmp_hkl = self.obs_flat_data
 
                 except BaseException as e:
-                    logger.error("Failed to show HKLs: %s", e)
-
-                if self.xb != None and self.yb != None:
-                    painter.setPen(indexed_pen)
-                    cen_siz = 40.0
-                    painter.drawLine(
-                        int(self.xb * self.my_scale),
-                        int((self.yb - cen_siz) * self.my_scale),
-                        int(self.xb * self.my_scale),
-                        int((self.yb + cen_siz) * self.my_scale),
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
+                    logger.debug("No reflection (Obsevations) to show ... None type")
 
-                    painter.drawLine(
-                        int((self.xb + cen_siz) * self.my_scale),
-                        int(self.yb * self.my_scale),
-                        int((self.xb - cen_siz) * self.my_scale),
-                        int(self.yb * self.my_scale),
+            if self.user_choice[1]:
+                try:
+                    for j, img_flat_data in enumerate(self.pre_flat_data):
+                        for i, reflection in enumerate(img_flat_data):
+
+                            x = float(reflection[0]) + 1.0
+                            y = float(reflection[1]) + 1.0
+                            if reflection[4] == "NOT indexed":
+                                painter.setPen(non_indexed_pen)
+
+                            else:
+                                painter.setPen(indexed_pen)
+
+                            cross_size = float(reflection[2]) + 1.0
+                            cross_2_size = float(reflection[3])
+
+                            painter.drawLine(
+                                x * self.my_scale,
+                                (y - cross_size) * self.my_scale,
+                                x * self.my_scale,
+                                (y + cross_size) * self.my_scale,
+                            )
+
+                            painter.drawLine(
+                                (x + cross_size) * self.my_scale,
+                                y * self.my_scale,
+                                (x - cross_size) * self.my_scale,
+                                y * self.my_scale,
+                            )
+
+                            painter.drawLine(
+                                (x - cross_2_size) * self.my_scale,
+                                (y - cross_2_size) * self.my_scale,
+                                (x + cross_2_size) * self.my_scale,
+                                (y + cross_2_size) * self.my_scale,
+                            )
+
+                            painter.drawLine(
+                                (x + cross_2_size) * self.my_scale,
+                                (y - cross_2_size) * self.my_scale,
+                                (x - cross_2_size) * self.my_scale,
+                                (y + cross_2_size) * self.my_scale,
+                            )
+
+                            lst_tmp_hkl = self.pre_flat_data
+
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
+                    logger.debug("No reflection (Predictions) to show ... None type")
 
-                else:
-                    logger.debug("No xb,yb provided")
+            try:
+                if draw_text:
+                    for j, img_flat_data in enumerate(lst_tmp_hkl):
+                        for i, reflection in enumerate(img_flat_data):
+                            self._draw_hkl(
+                                reflection, painter, indexed_pen, non_indexed_pen, i, j
+                            )
+            except BaseException as e:
+                logger.error("Failed to show HKLs: %s", e)
 
-            painter.end()
+            if self.xb is not None and self.yb is not None:
+                painter.setPen(indexed_pen)
+                cen_siz = 40.0
+                painter.drawLine(
+                    int(self.xb * self.my_scale),
+                    int((self.yb - cen_siz) * self.my_scale),
+                    int(self.xb * self.my_scale),
+                    int((self.yb + cen_siz) * self.my_scale),
+                )
+
+                painter.drawLine(
+                    int((self.xb + cen_siz) * self.my_scale),
+                    int(self.yb * self.my_scale),
+                    int((self.xb - cen_siz) * self.my_scale),
+                    int(self.yb * self.my_scale),
+                )
+
+            else:
+                logger.debug("No xb,yb provided")
+
+        painter.end()
 
 
 class PopPaletteMenu(QMenu):
@@ -516,7 +516,10 @@ class PopPaletteMenu(QMenu):
                 )
             )
 
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("no (...my_sweep) yet, skipping palette label paint")
 
     def slider_max_changed(self, value):
@@ -722,17 +725,19 @@ class MyImgWin(QWidget):
         self.current_qimg = build_qimg()
         self.contrast_initiated = False
 
-        if json_file_path == None:
+        if json_file_path is None:
             logger.debug("\n no datablock given \n")
-            n_of_imgs = 1
+            # n_of_imgs = 1
 
         else:
             self.ini_datablock(json_file_path)
 
         try:
             self.ini_reflection_table(pckl_file_path)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("No pickle file given")
 
         self.set_img()
@@ -777,7 +782,7 @@ class MyImgWin(QWidget):
         self.palette_select.setCurrentIndex(3)
 
     def ini_contrast(self):
-        if self.contrast_initiated == False:
+        if not self.contrast_initiated:
             try:
                 n_of_imgs = len(self.my_sweep.indices())
                 logger.debug("n_of_imgs(ini_contrast) = %s", n_of_imgs)
@@ -801,20 +806,28 @@ class MyImgWin(QWidget):
                 self.try_change_max(tst_new_max)
                 self.try_change_min(-3)
                 self.contrast_initiated = True
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
-        if json_file_path != None:
+        if json_file_path is not None:
             try:
                 datablocks = DataBlockFactory.from_json_file(json_file_path)
-                ##TODO check length of datablock for safety
+                # TODO check length of datablock for safety
                 datablock = datablocks[0]
                 self.my_sweep = datablock.extract_sweeps()[0]
                 self.img_select.clear()
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("Failed to load images from  datablock.json")
 
             try:
@@ -834,7 +847,12 @@ class MyImgWin(QWidget):
                 self.num_of_imgs_to_add.setMaximum(n_of_imgs)
                 self.num_of_imgs_to_add.setMinimum(1)
 
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
@@ -860,18 +878,22 @@ class MyImgWin(QWidget):
     def ini_reflection_table(self, pckl_file_path):
         logger.debug("\npickle file(s) = %s", pckl_file_path)
 
-        if pckl_file_path[0] != None:
+        if pckl_file_path[0] is not None:
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
-                n_refs = len(table)
+                # n_refs = len(table)
                 bbox_col = map(list, table["bbox"])
                 try:
                     hkl_col = map(str, table["miller_index"])
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     hkl_col = []
 
                 n_imgs = self.img_select.maximum()
@@ -884,7 +906,12 @@ class MyImgWin(QWidget):
                 else:
                     logger.debug("empty IMG lst")
 
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 self.find_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
@@ -892,12 +919,16 @@ class MyImgWin(QWidget):
                 table = flex.reflection_table.from_pickle(pckl_file_path[1])
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
-                n_refs = len(table)
+                # n_refs = len(table)
                 pos_col = map(list, table["xyzcal.px"])
                 try:
                     hkl_col = map(str, table["miller_index"])
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     hkl_col = []
 
                 n_imgs = self.img_select.maximum()
@@ -907,7 +938,12 @@ class MyImgWin(QWidget):
                         pos_col, hkl_col, n_imgs
                     )
 
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 self.pred_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
@@ -945,25 +981,29 @@ class MyImgWin(QWidget):
                 + " ,  I = "
                 + str(self.img_arr[y_pos, x_pos])
             )
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             new_label_txt = "X, Y, I = ?,?,?"
 
         try:
-            mydetector = self.ref2exp.detector
+            # mydetector = self.ref2exp.detector
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
             res_str = str("{:6.1f}".format(res_float))
             new_label_txt += " ,  resolution = " + res_str + " " + u"\u00C5"
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             new_label_txt += " ,  resolution = ?"
 
         self.info_label.setText(new_label_txt)
 
     def set_img(self):
-        if self.my_sweep != None:
+        if self.my_sweep is not None:
             img_pos = self.img_num - 1
 
             loc_stk_siz = self.stack_size
@@ -1036,8 +1076,12 @@ class MyImgWin(QWidget):
             self.video_timer.stop()
             try:
                 self.video_timer.timeout.disconnect()
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("unable to disconnect timer again")
 
         else:
@@ -1057,8 +1101,7 @@ class MyImgWin(QWidget):
     def try_change_min(self, new_value):
         try:
             self.i_min = int(new_value)
-
-        except:
+        except ValueError:
             self.i_min = 0
 
         self.slider_min.setValue(self.i_min)
@@ -1070,8 +1113,7 @@ class MyImgWin(QWidget):
     def try_change_max(self, new_value):
         try:
             self.i_max = int(new_value)
-
-        except:
+        except ValueError:
             self.i_max = 0
 
         self.slider_max.setValue(self.i_max)
@@ -1105,9 +1147,8 @@ class MyImgWin(QWidget):
     def btn_next_clicked(self):
         self.img_num += self.img_step_val
         if self.img_num > self.img_select.maximum():
-            if self.video_timer.isActive() == True:
+            if self.video_timer.isActive():
                 self.img_num = 1
-
             else:
                 self.img_num = self.img_select.maximum()
 

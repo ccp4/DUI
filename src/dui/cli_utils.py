@@ -162,7 +162,12 @@ def get_phil_par(path_to_file):
 
                 str_par += str_val
 
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("\n\n failed to get obj & par \n\n")
 
             lst_str_commands.append(str_par)
@@ -300,7 +305,10 @@ def build_command_lst(node_obj, cmd_lst):
                 sol_num = int(cmd_lst[1][9:])
             else:
                 sol_num = 1
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
 
         pickle_file_in = node_obj.prev_step.prev_step.refl_pickle_file_out
@@ -442,7 +450,10 @@ def generate_predict(node_obj):
                 logger.debug("\n path to predictions NOT generated")
                 pre_out = None
 
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("Failed adding path to predictions")
             pre_out = None
 
@@ -487,7 +498,10 @@ def generate_report(node_obj):
             rep_out = htm_fil
             logger.debug("generated report at:  %s", rep_out)
 
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             rep_out = None
             logger.debug("Someting went wrong in report level 2")
 
@@ -521,9 +535,8 @@ class DialsCommand(object):
                 single_string += lin_to_prn
                 single_string += " "
 
-            if self.use_shell == True:
+            if self.use_shell:
                 run_cmd = single_string
-
             else:
                 run_cmd = lst_cmd_to_run
 
@@ -548,8 +561,12 @@ class DialsCommand(object):
                 try:
                     ref_to_class.emit_print_signal(single_line)
                     self.tmp_std_all.append(single_line)
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     logger.debug(single_line)
 
             logger.debug("Done print loop")
@@ -565,8 +582,12 @@ class DialsCommand(object):
                 # TODO handle error outputs
                 try:
                     ref_to_class.emit_fail_signal()
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     logger.debug("Failed")
 
             logger.debug("Done all step")
@@ -589,15 +610,16 @@ def print_list(lst, curr):
 
         try:
             stp_str += " prev: " + str(uni.prev_step.lin_num)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             stp_str += " prev: None"
 
         stp_str += " nxt: "
         if len(uni.next_step_list) > 0:
             for nxt_uni in uni.next_step_list:
                 stp_str += "  " + str(nxt_uni.lin_num)
-
         else:
             stp_str += "empty"
 
@@ -626,18 +648,16 @@ class TreeShow(object):
         logger.debug("---------------------" + self.max_indent * self.ind_lin)
 
     def add_tree(self, step=None, indent=None):
-        if step.success == True:
+        if step.success is True:
             stp_prn = " S "
-
-        elif step.success == False:
+        elif step.success is False:
             stp_prn = " F "
-
         else:
             stp_prn = " N "
 
         str_lin_num = "{0:3}".format(int(step.lin_num))
 
-        stp_prn += str_lin_num + self.ind_spc * indent + "   \___"
+        stp_prn += str_lin_num + self.ind_spc * indent + r"   \___"
         stp_prn += str(step.command_lst[0])
 
         self.str_lst.append([stp_prn, indent, int(step.lin_num)])

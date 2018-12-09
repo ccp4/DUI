@@ -23,17 +23,14 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
-import os
 import sys
 
 import libtbx.introspection
 
 from .qt import (
     QApplication,
-    QCheckBox,
     QComboBox,
     QDoubleSpinBox,
-    QFont,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -147,8 +144,12 @@ class FindspotsSimplerParameterTab(QWidget):
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
                     self.lst_var_widg.append(local_widget)
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 pass
 
     def spnbox_changed(self, value):
@@ -212,8 +213,12 @@ class IndexSimplerParamTab(QWidget):
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
                     self.lst_var_widg.append(local_widget)
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 pass
 
     def combobox_changed(self, value):
@@ -312,109 +317,109 @@ class RefineSimplerParamTab(QWidget):
         }
         """
 
-        this_will_change_drastically_after_git_push_part_1 = """
-        hbox_lay_beam_fix =  QHBoxLayout()
-        label_beam_fix = QLabel("Beam Fix Parameters")
+        # Block out refiner behaviour for now until we work out a better way-
+        # hbox_lay_beam_fix =  QHBoxLayout()
+        # label_beam_fix = QLabel("Beam Fix Parameters")
 
-        hbox_lay_beam_fix.addWidget(label_beam_fix)
-        box_beam_fix = QComboBox()
-        box_beam_fix.local_path = "refinement.parameterisation.beam.fix"
-        box_beam_fix.tmp_lst=[]
-        box_beam_fix.tmp_lst.append("all")
-        box_beam_fix.tmp_lst.append("in_spindle_plane")
-        box_beam_fix.tmp_lst.append("out_spindle_plane")
-        box_beam_fix.tmp_lst.append("wavelength")
-        box_beam_fix.tmp_lst.append("none")
+        # hbox_lay_beam_fix.addWidget(label_beam_fix)
+        # box_beam_fix = QComboBox()
+        # box_beam_fix.local_path = "refinement.parameterisation.beam.fix"
+        # box_beam_fix.tmp_lst=[]
+        # box_beam_fix.tmp_lst.append("all")
+        # box_beam_fix.tmp_lst.append("in_spindle_plane")
+        # box_beam_fix.tmp_lst.append("out_spindle_plane")
+        # box_beam_fix.tmp_lst.append("wavelength")
+        # box_beam_fix.tmp_lst.append("none")
 
-        for lst_itm in box_beam_fix.tmp_lst:
-            box_beam_fix.addItem(lst_itm)
+        # for lst_itm in box_beam_fix.tmp_lst:
+        #     box_beam_fix.addItem(lst_itm)
 
-        #box_beam_fix.setCurrentIndex(3)
-        box_beam_fix.setCurrentIndex(4)
+        # #box_beam_fix.setCurrentIndex(3)
+        # box_beam_fix.setCurrentIndex(4)
 
-        box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_beam_fix.addWidget(box_beam_fix)
-        localLayout.addLayout(hbox_lay_beam_fix)
-        """
+        # box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
+        # hbox_lay_beam_fix.addWidget(box_beam_fix)
+        # localLayout.addLayout(hbox_lay_beam_fix)
+
         # crystal {
         # fix = all cell orientation
         # }
-        this_will_change_drastically_after_git_push_part_2 = """
-        hbox_lay_crystal_fix =  QHBoxLayout()
-        label_crystal_fix = QLabel("Crystal Fix Parameters")
 
-        hbox_lay_crystal_fix.addWidget(label_crystal_fix)
-        box_crystal_fix = QComboBox()
-        box_crystal_fix.local_path = "refinement.parameterisation.crystal.fix"
-        box_crystal_fix.tmp_lst=[]
-        box_crystal_fix.tmp_lst.append("all")
-        box_crystal_fix.tmp_lst.append("cell")
-        box_crystal_fix.tmp_lst.append("orientation")
-        box_crystal_fix.tmp_lst.append("none")
+        # hbox_lay_crystal_fix =  QHBoxLayout()
+        # label_crystal_fix = QLabel("Crystal Fix Parameters")
 
-        for lst_itm in box_crystal_fix.tmp_lst:
-            box_crystal_fix.addItem(lst_itm)
+        # hbox_lay_crystal_fix.addWidget(label_crystal_fix)
+        # box_crystal_fix = QComboBox()
+        # box_crystal_fix.local_path = "refinement.parameterisation.crystal.fix"
+        # box_crystal_fix.tmp_lst=[]
+        # box_crystal_fix.tmp_lst.append("all")
+        # box_crystal_fix.tmp_lst.append("cell")
+        # box_crystal_fix.tmp_lst.append("orientation")
+        # box_crystal_fix.tmp_lst.append("none")
 
-        #box_crystal_fix.setCurrentIndex(0)
-        box_crystal_fix.setCurrentIndex(3)
+        # for lst_itm in box_crystal_fix.tmp_lst:
+        #     box_crystal_fix.addItem(lst_itm)
 
-        box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_crystal_fix.addWidget(box_crystal_fix)
-        localLayout.addLayout(hbox_lay_crystal_fix)
-        """
+        # #box_crystal_fix.setCurrentIndex(0)
+        # box_crystal_fix.setCurrentIndex(3)
+
+        # box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
+        # hbox_lay_crystal_fix.addWidget(box_crystal_fix)
+        # localLayout.addLayout(hbox_lay_crystal_fix)
+
         # detector {
         # fix = all position orientation
         # }
-        this_will_change_drastically_after_git_push_part_3 = """
-        hbox_lay_detector_fix =  QHBoxLayout()
-        label_detector_fix = QLabel("Detector Fix Parameters")
 
-        hbox_lay_detector_fix.addWidget(label_detector_fix)
-        box_detector_fix = QComboBox()
-        box_detector_fix.local_path = "refinement.parameterisation.detector.fix"
-        box_detector_fix.tmp_lst=[]
-        box_detector_fix.tmp_lst.append("all")
-        box_detector_fix.tmp_lst.append("position")
-        box_detector_fix.tmp_lst.append("orientation")
-        box_detector_fix.tmp_lst.append("none")
+        # hbox_lay_detector_fix =  QHBoxLayout()
+        # label_detector_fix = QLabel("Detector Fix Parameters")
 
-        for lst_itm in box_detector_fix.tmp_lst:
-            box_detector_fix.addItem(lst_itm)
+        # hbox_lay_detector_fix.addWidget(label_detector_fix)
+        # box_detector_fix = QComboBox()
+        # box_detector_fix.local_path = "refinement.parameterisation.detector.fix"
+        # box_detector_fix.tmp_lst=[]
+        # box_detector_fix.tmp_lst.append("all")
+        # box_detector_fix.tmp_lst.append("position")
+        # box_detector_fix.tmp_lst.append("orientation")
+        # box_detector_fix.tmp_lst.append("none")
 
-        #box_detector_fix.setCurrentIndex(0)
-        box_detector_fix.setCurrentIndex(3)
+        # for lst_itm in box_detector_fix.tmp_lst:
+        #     box_detector_fix.addItem(lst_itm)
 
-        box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_detector_fix.addWidget(box_detector_fix)
-        localLayout.addLayout(hbox_lay_detector_fix)
-        """
+        # #box_detector_fix.setCurrentIndex(0)
+        # box_detector_fix.setCurrentIndex(3)
+
+        # box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
+        # hbox_lay_detector_fix.addWidget(box_detector_fix)
+        # localLayout.addLayout(hbox_lay_detector_fix)
+
         # goniometer {
         # fix = *all in_beam_plane out_beam_plane
         #
         # }
-        this_will_change_drastically_after_git_push_part_4 = """
-        hbox_lay_goniometer_fix =  QHBoxLayout()
-        label_goniometer_fix = QLabel("Goniometer Fix Parameters")
 
-        hbox_lay_goniometer_fix.addWidget(label_goniometer_fix)
-        box_goniometer_fix = QComboBox()
-        box_goniometer_fix.local_path = "refinement.parameterisation.goniometer.fix"
-        box_goniometer_fix.tmp_lst=[]
-        box_goniometer_fix.tmp_lst.append("all")
-        box_goniometer_fix.tmp_lst.append("in_beam_plane")
-        box_goniometer_fix.tmp_lst.append("out_beam_plane")
-        box_goniometer_fix.tmp_lst.append("none")
+        # hbox_lay_goniometer_fix =  QHBoxLayout()
+        # label_goniometer_fix = QLabel("Goniometer Fix Parameters")
 
-        for lst_itm in box_goniometer_fix.tmp_lst:
-            box_goniometer_fix.addItem(lst_itm)
+        # hbox_lay_goniometer_fix.addWidget(label_goniometer_fix)
+        # box_goniometer_fix = QComboBox()
+        # box_goniometer_fix.local_path = "refinement.parameterisation.goniometer.fix"
+        # box_goniometer_fix.tmp_lst=[]
+        # box_goniometer_fix.tmp_lst.append("all")
+        # box_goniometer_fix.tmp_lst.append("in_beam_plane")
+        # box_goniometer_fix.tmp_lst.append("out_beam_plane")
+        # box_goniometer_fix.tmp_lst.append("none")
 
-        #box_goniometer_fix.setCurrentIndex(0)
-        box_goniometer_fix.setCurrentIndex(3)
+        # for lst_itm in box_goniometer_fix.tmp_lst:
+        #     box_goniometer_fix.addItem(lst_itm)
 
-        box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
-        localLayout.addLayout(hbox_lay_goniometer_fix)
-        """
+        # #box_goniometer_fix.setCurrentIndex(0)
+        # box_goniometer_fix.setCurrentIndex(3)
+
+        # box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
+        # hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
+        # localLayout.addLayout(hbox_lay_goniometer_fix)
+
         # reflections {
         #    outlier {
         #      algorithm = null *auto mcd tukey sauter_poon
@@ -560,8 +565,12 @@ class IntegrateSimplerParamTab(QWidget):
                 for j in xrange(upper_box.count()):
                     local_widget = upper_box.itemAt(j).widget()
                     self.lst_var_widg.append(local_widget)
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 pass
 
     def combobox_changed(self, value):

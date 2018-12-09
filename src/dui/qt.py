@@ -2,6 +2,9 @@
 QT Cross-compatibility for DUI
 """
 
+# Because we *-import as a shim in this file, ignore for flake8 purposes
+# flake8: noqa
+
 from __future__ import absolute_import, division, print_function
 
 import logging

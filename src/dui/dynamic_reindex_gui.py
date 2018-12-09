@@ -65,8 +65,7 @@ def choice_if_decimal(num_in):
 
 
 def ops_list_from_json(json_path=None):
-    if json_path == None:
-        # json_path = "../../../dui_test/only_9_img/dui_idials_GUI_tst_17/dials-1/8_refine_bravais_settings/bravais_summary.json"
+    if json_path is None:
         return None
 
     with open(json_path) as json_file:
@@ -87,10 +86,10 @@ def ops_list_from_json(json_path=None):
                 if "Non" in min_cc_str:
                     min_cc_str = "    - "
 
-                # print "__________________________________________ type(min_cc_val) =", type(min_cc_val)
                 # TODO the format here is not always giving the same with
 
-                # TODO think about someting like: "aa = list(round(i, ndigits=6) for i in aa)"
+                # TODO think about someting like:
+                #   "aa = list(round(i, ndigits=6) for i in aa)"
 
             elif inner_key == "max_cc":
                 max_cc_val = value["max_cc"]
@@ -99,10 +98,12 @@ def ops_list_from_json(json_path=None):
                 if "Non" in max_cc_str:
                     max_cc_str = "    - "
 
-                # print "__________________________________________ type(max_cc_val) =", type(max_cc_val)
+                # print "__________________________________________
+                # type(max_cc_val) =", type(max_cc_val)
                 # TODO the format here is not always giving the same with
 
-                # TODO think about someting like: "aa = list(round(i, ndigits=6) for i in aa)"
+                # TODO think about someting like:
+                #   "aa = list(round(i, ndigits=6) for i in aa)"
 
             elif inner_key == "bravais":
                 bravais_val = value["bravais"]
@@ -111,11 +112,10 @@ def ops_list_from_json(json_path=None):
             elif inner_key == "max_angular_difference":
                 angular_diff_val = value["max_angular_difference"]
                 angular_diff_str = " {:7.2} ".format(angular_diff_val)
-
             elif inner_key == "correlation_coefficients":
-                corr_coeff_val = value["correlation_coefficients"]
-                corr_coeff_str = str(corr_coeff_val)
-
+                # corr_coeff_val = value["correlation_coefficients"]
+                # corr_coeff_str = str(corr_coeff_val)
+                pass
             elif inner_key == "unit_cell":
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
@@ -127,13 +127,14 @@ def ops_list_from_json(json_path=None):
                 unit_cell_str_apl = choice_if_decimal(uc_a[0])
                 unit_cell_str_bet = choice_if_decimal(uc_a[1])
                 unit_cell_str_gam = choice_if_decimal(uc_a[2])
-
             elif inner_key == "recommended":
                 recommended_val = value["recommended"]
-                if recommended_val == True:
+                if recommended_val:
                     recommended_str = " Y"
                 else:
                     recommended_str = " N"
+            else:
+                logger.warning("Fell off end of key list with inner_key=%s", inner_key)
 
         single_lin_lst = [
             int(key),
@@ -205,7 +206,7 @@ class MyReindexOpts(QWidget):
         self.my_inner_table = ReindexTable(self)
         self.my_inner_table.add_opts_lst(json_path=in_json_path)
 
-        if self.my_inner_table.rec_col != None:
+        if self.my_inner_table.rec_col is not None:
             my_solu = self.my_inner_table.find_best_solu()
             self.my_inner_table.opt_clicked(my_solu, 0)
 
@@ -215,7 +216,10 @@ class MyReindexOpts(QWidget):
                 self.my_inner_table.tmp_sel + 1
             )
 
-        except:
+        except BaseException as e:
+            # Since we don't know exactly what this was supposed to be
+            # - AttributeError? We don't know how to cleanly catch
+            logger.error("Unknown exception catch caught. Was: %s", e)
             recomd_str += "(no best solution could be automatically determined)"
 
         bot_box = QHBoxLayout()
@@ -239,10 +243,6 @@ class MyReindexOpts(QWidget):
 
         n_row = self.my_inner_table.rowCount()
         row_height = self.my_inner_table.rowHeight(1)
-        tmp_off = """
-        tot_heght = int((float(n_row) + 3.8) * float(row_height))
-        tot_heght += int((float(v_heather_size)) * float(row_height * .4))
-        """
         tot_heght = int((float(n_row)) * float(row_height))
         tot_heght += int((float(v_heather_size + 2)) * float(row_height * 0.62))
 
@@ -270,8 +270,8 @@ class ReindexTable(QTableWidget):
 
     def opt_clicked(self, row, col):
         logger.debug("Solution clicked = %s", row + 1)
-        p_h_svar = self.horizontalScrollBar().value()
-        p_v_svar = self.verticalScrollBar().value()
+        # p_h_svar = self.horizontalScrollBar().value()
+        # p_v_svar = self.verticalScrollBar().value()
 
         v_sliderValue = self.v_sliderBar.value()
         h_sliderValue = self.h_sliderBar.value()
@@ -308,7 +308,7 @@ class ReindexTable(QTableWidget):
 
     def add_opts_lst(self, lst_labels=None, json_path=None, selected_pos=None):
 
-        if lst_labels == None:
+        if lst_labels is None:
             logger.debug("json_path = %s", json_path)
             self.list_labl = ops_list_from_json(json_path)
 
@@ -408,10 +408,8 @@ class MainWindow(QMainWindow):
     def doit(self):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
-        # self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary_tweak_01.json")
-        # self.my_pop.set_ref(in_json_path = "../tests_n_old_versions/json_data_for_testing/th8_2_data_bravais_summary.json")
         self.my_pop.set_ref(
-            in_json_path="../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary.json"
+            in_json_path="../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary.json"  # noqa
         )
         # self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
 
@@ -421,7 +419,7 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         logger.debug("<< closeEvent ( from QMainWindow) >>")
-        if self.my_pop != None:
+        if self.my_pop is not None:
             self.my_pop.close()
 
 

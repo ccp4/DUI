@@ -25,8 +25,7 @@ from __future__ import absolute_import, division, print_function
 import logging
 import os
 import pickle
-import sys
-import time
+import shutil
 
 from .dynamic_reindex_gui import MyReindexOpts
 from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
@@ -35,13 +34,13 @@ from .gui_utils import (
     CliOutView,
     Text_w_Bar,
     OuterCaller,
-    build_command_tip,
+    # build_command_tip,
     update_info,
     update_pbar_msg,
     kill_w_child,
     TreeNavWidget,
     build_ttip,
-    build_label,
+    # build_label,
     MyQButton,
     get_main_path,
     try_find_prev_mask_pickle,
@@ -213,11 +212,15 @@ class ControlWidget(QWidget):
                 found_label = True
                 try:
                     widget.update_param(curr_step)
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     logger.debug("\n Unable to update params\n")
 
-        if found_label == False and nxt_cmd == "reindex":
+        if not found_label and nxt_cmd == "reindex":
             logger.debug("assuming reindex mode")
             widget_now = self.widg_lst[3]
             self.step_param_widg.setCurrentWidget(widget_now)
@@ -304,7 +307,7 @@ class MainWidget(QMainWindow):
 
             # TODO sometimes the following error appears
             # Attribute not found
-            #'module' object has no attribute 'CommandNode'
+            #   'module' object has no attribute 'CommandNode'
 
             refresh_gui = True
 
@@ -315,11 +318,8 @@ class MainWidget(QMainWindow):
             self.idials_runner = Runner()
 
             try:
-                import shutil
-
                 shutil.rmtree(self.storage_path + "/dui_files")
-
-            except:
+            except OSError:
                 logger.debug('failed to do "shutil.rmtree("/dui_files")"')
 
             os.mkdir(self.storage_path + "/dui_files")
@@ -429,7 +429,7 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
         self.reconnect_when_ready()
 
-        if refresh_gui == True:
+        if refresh_gui:
             self.refresh_my_gui()
 
     def connect_all(self):
@@ -472,19 +472,17 @@ class MainWidget(QMainWindow):
         self.stop_run_retry.stop_btn.setEnabled(False)
         self.stop_run_retry.run_btn.setEnabled(False)
 
-        if self.user_stoped == True:
+        if self.user_stoped:
             self.idials_runner.current_node.success = None
 
-        if self.idials_runner.current_node.success == None:
+        my_widget = self.centre_par_widget.step_param_widg.currentWidget().my_widget
+        if self.idials_runner.current_node.success is None:
             self.stop_run_retry.run_btn.setEnabled(True)
-            self.centre_par_widget.step_param_widg.currentWidget().my_widget.activate_me()
-
+            my_widget.activate_me()
         else:
-
             if self.idials_runner.current_node.command_lst[0] != "export":
                 self.stop_run_retry.repeat_btn.setEnabled(True)
-
-            self.centre_par_widget.step_param_widg.currentWidget().my_widget.gray_me_out()
+            my_widget.gray_me_out()
 
         if self.idials_runner.current_node.command_lst[0] == "reindex":
             self.stop_run_retry.run_btn.setEnabled(False)
@@ -513,7 +511,7 @@ class MainWidget(QMainWindow):
         action_name = current_parameter_widget.my_widget.command_lst[0]
         if (
             action_name in ["find_spots", "integrate"]
-            and self.idials_runner.current_node.success == None
+            and self.idials_runner.current_node.success is None
         ):
             # As a quick hack to get things working, look for 'lookup.mask'
             # and if preset add a prefix phil-scope to it
@@ -547,24 +545,22 @@ class MainWidget(QMainWindow):
     def cmd_changed_by_user(self, my_label):
         logger.debug("cmd_changed_by_user()")
         tmp_curr = self.idials_runner.current_node
-        if tmp_curr.success == True:
+        if tmp_curr.success is True:
 
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.command_lst = [str(my_label)]
             logger.debug(
-                "________________________________________________________________________>>>> mkchi\n"
+                "_________________________________________________________>>>> mkchi\n"
             )
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None
             if self.idials_runner.current_node.command_lst[0] == "integrate":
-                logger.debug(
-                    "Running:  try_find_prev_mask_pickle(self.idials_runner.current_node)"
-                )
+                logger.debug("Running: try_find_prev_mask_pickle")
                 path_to_mask_pickle = try_find_prev_mask_pickle(
                     self.idials_runner.current_node
                 )
-                if path_to_mask_pickle != None:
+                if path_to_mask_pickle is not None:
                     self.pass_parmams(["lookup.mask=" + path_to_mask_pickle])
 
             else:
@@ -575,12 +571,12 @@ class MainWidget(QMainWindow):
 
             logger.debug("path_to_mask_pickle = %s", path_to_mask_pickle)
             logger.debug(
-                "\n________________________________________________________________________mkchi <<<<<"
+                "\n______________________________________________________mkchi <<<<<"
             )
 
             self.cmd_exe(["clean"])
 
-        elif tmp_curr.success == None:
+        elif tmp_curr.success is None:
             self.idials_runner.current_node.command_lst = [str(my_label)]
             self.reconnect_when_ready()
 
@@ -644,20 +640,24 @@ class MainWidget(QMainWindow):
 
         if (
             tmp_curr.command_lst[0] == "refine_bravais_settings"
-            and tmp_curr.success == True
+            and tmp_curr.success is True
         ):
 
             self.idials_runner.run(command=["mkchi"], ref_to_class=None)
 
             self.idials_runner.current_node.command_lst[0] = "reindex"
 
-        elif tmp_curr.command_lst[0] == "reindex" and tmp_curr.success == True:
+        elif tmp_curr.command_lst[0] == "reindex" and tmp_curr.success is True:
 
             self.just_reindexed = True
             try:
                 self.my_pop.close()
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("no need to close reindex table")
 
         self.check_reindex_pop()
@@ -669,7 +669,7 @@ class MainWidget(QMainWindow):
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
-        if tmp_curr.success != True:
+        if tmp_curr.success is not True:
             tmp_curr = tmp_curr.prev_step
 
         cmd_connects = {
@@ -692,7 +692,7 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        if tmp_curr.command_lst[0] == "reindex" and self.just_reindexed == False:
+        if tmp_curr.command_lst[0] == "reindex" and not self.just_reindexed:
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -714,8 +714,12 @@ class MainWidget(QMainWindow):
         else:
             try:
                 self.my_pop.close()
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("no need to close reindex table")
 
         self.just_reindexed = False
@@ -726,7 +730,7 @@ class MainWidget(QMainWindow):
         )
 
         tmp_cur_nod = self.idials_runner.current_node
-        if len(tmp_cur_nod.next_step_list) == 0 and tmp_cur_nod.success == True:
+        if len(tmp_cur_nod.next_step_list) == 0 and tmp_cur_nod.success is True:
 
             nod_ref = tmp_cur_nod
 
@@ -735,8 +739,10 @@ class MainWidget(QMainWindow):
 
         try:
             self.check_gray_outs(nod_ref)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type: %s", e)
             logger.debug("failed to << check_gray_outs() >>")
 
         update_pbar_msg(self)
@@ -780,13 +786,18 @@ class MainWidget(QMainWindow):
         logger.debug("\n it_index = %s", it_index)
         logger.debug(" type(it_index) = %s", type(it_index))
 
-        if self.tree_clickable == True:
+        if self.tree_clickable:
             # TODO Think of a more robust way to "disconnect" ... next line
             try:
                 self.centre_par_widget.update_command_lst_high_level.disconnect(
                     self.update_low_level_command_lst
                 )
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("<< update_low_level_command_lst >> already disconnected")
 
             logger.debug("TreeNavWidget(node_clicked)")
@@ -834,6 +845,8 @@ class MainWidget(QMainWindow):
     def closeEvent(self, event):
         try:
             self.my_pop.close()
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("no need to close reindex table")

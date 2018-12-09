@@ -23,7 +23,6 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
-import sys
 
 import numpy as np
 
@@ -87,8 +86,10 @@ def draw_palette_label(i_min, i_max):
             lbound = int(i_min) + 3
             ubound = int(i_max) + 3
             np_img_arr[0:50, lbound:ubound] = ascending_img_arr[0:50, 0:scale_size]
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("something went wrong with the creation of palette bitmap")
 
     tmp_flex_arr = flex.double(np_img_arr)
@@ -208,7 +209,7 @@ try:
     find_closer_hkl = lst_ext.find_closer_hkl_func
     list_arr = lst_ext.arrange_list
     logger.debug("running C++ lst_ext")
-except:
+except ImportError:
     find_closer_hkl = py_find_closer_hkl_func
     list_arr = py_list_arange_func
     logger.debug("running Python version of lst_ext C++ Module")
@@ -243,7 +244,7 @@ class img_w_cpp(object):
         palette="hot ascend",
     ):
 
-        err_code = self.wx_bmp_arr.set_min_max(i_min, i_max)
+        self.wx_bmp_arr.set_min_max(i_min, i_max)
 
         if palette == "black2white":
             palette_num = 1

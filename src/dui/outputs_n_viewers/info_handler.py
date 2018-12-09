@@ -80,7 +80,7 @@ class InfoData(object):
 def update_all_data(reflections_path=None, experiments_path=None):
     dat = InfoData()
 
-    if reflections_path != None:
+    if reflections_path is not None:
 
         try:
             refl_tabl = flex.reflection_table.from_pickle(reflections_path)
@@ -101,18 +101,25 @@ def update_all_data(reflections_path=None, experiments_path=None):
             )
             logger.debug("dat.n_integ_prf = %s", dat.n_integ_prf)
 
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+
             logger.debug("failed to find reflections")
             logger.debug("reflections_path = %s", reflections_path)
 
-    if experiments_path != None:
+    if experiments_path is not None:
 
         logger.debug("trying experiments")
         try:
             experiments = ExperimentListFactory.from_json_file(
                 experiments_path, check_format=False
             )
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             try:
                 # FIXME here only take the first datablock. What if there are more?
                 datablock = DataBlockFactory.from_serialized_format(
@@ -184,7 +191,8 @@ def update_all_data(reflections_path=None, experiments_path=None):
         dat.w_lambda = exp.beam.get_wavelength()
 
         # Get detector data
-        # assume details for the panel the beam intersects are the same for the whole detector
+        # assume details for the panel the beam intersects are the same
+        # for the whole detector
         pnl_beam_intersects, (beam_x, beam_y) = exp.detector.get_ray_intersection(
             exp.beam.get_s0()
         )
@@ -231,13 +239,17 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
             logger.debug("dat.tmpl_str = %s", dat.tmpl_str)
 
-        except:
+        except (KeyError, IndexError):
             logger.debug("failed to find template in JSON file")
 
     try:
         dat.ref2exp = exp
 
-    except:
+    except BaseException as e:
+        # We don't want to catch bare exceptions but don't know
+        # what this was supposed to catch. Log it.
+        logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+
         logger.debug("unable to get experiment from path")
         dat.ref2exp = None
 

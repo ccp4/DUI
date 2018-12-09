@@ -27,7 +27,6 @@ import logging
 import os
 import subprocess
 import sys
-import time
 
 import psutil
 
@@ -63,7 +62,7 @@ logger = logging.getLogger(__name__)
 def try_find_prev_mask_pickle(cur_nod):
     pickle_path = None
     my_node = cur_nod
-    while pickle_path == None:
+    while pickle_path is None:
         my_node = my_node.prev_step
         try:
             if my_node.command_lst[0] == "find_spots":
@@ -80,8 +79,10 @@ def try_find_prev_mask_pickle(cur_nod):
                         else:
                             logger.debug("file no longer there")
                             pickle_path = None
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("not getting there")
             return None
 
@@ -113,7 +114,18 @@ def get_main_path():
 
 
 def get_import_run_string(in_str_lst):
+    """???UNCERTAIN ON BEHAVIOUR???
+    Appears to calculate the dials.import filename, image_range string
 
+    Args:
+        in_str_lst ([str]): List of files to open
+
+    Returns:
+        (Tuple[str,str]):
+            dir_path, import_string where dir_path is the location of the
+            data, and import_string is the string containing parts to pass
+            to dials.import.
+    """
     logger.debug("in_str_lst = %s", in_str_lst)
 
     selected_file_path = str(in_str_lst[0])
@@ -125,18 +137,25 @@ def get_import_run_string(in_str_lst):
         if single_char == "/" or single_char == "\\":
             dir_pos_sep = pos
 
-            if fnd_sep == True and sep_chr != single_char:
+            if fnd_sep and sep_chr != single_char:
                 logger.debug("inconsistent dir separator")
                 return None
 
             fnd_sep = True
             sep_chr = single_char
 
-    if fnd_sep == False:
+    if not fnd_sep:
         logger.debug("Failed to find dir path")
         return None
 
     dir_path = selected_file_path[:dir_pos_sep]
+    # Check to see if this is identical to dirname
+    if dir_path != os.path.dirname(selected_file_path):
+        logger.warning(
+            "Validation: get_import_run_string '%s' != '%s'",
+            dir_path,
+            os.path.dirname(selected_file_path),
+        )
 
     # TODO test if the next << if >> is actually needed
     if dir_path[0:3] == "(u'":
@@ -196,10 +215,13 @@ def get_import_run_string(in_str_lst):
                 try:
                     if single_string[pos] != single_char:
                         all_equal = False
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error("Caught unknown exception type: %s", e)
                     all_equal = False
 
-            if all_equal == True:
+            if all_equal:
                 out_str = out_str + single_char
 
             else:
@@ -222,10 +244,12 @@ def get_import_run_string(in_str_lst):
                 logger.debug("lst_num_str = %s", lst_num_str)
                 img_range = [min(lst_num_str), max(lst_num_str)]
 
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error("Caught unknown exception type: %s", e)
                 logger.debug("something went wrong with the range thing 01")
                 img_range = None
-
         else:
             logger.debug("something went wrong with the range thing 02")
             img_range = None
@@ -246,7 +270,7 @@ def get_import_run_string(in_str_lst):
     out_str = new_cmd
     logger.debug("img_range = %s", img_range)
 
-    if img_range != None:
+    if img_range is not None:
         out_str += " image_range=" + str(img_range[0]) + "," + str(img_range[1])
 
     logger.debug("out_str( * mode ) = %s %s", out_str, "\n")
@@ -335,7 +359,7 @@ def update_info(main_obj):
             main_obj.cur_pick = new_ref_pikl
             main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
 
-    if tmp_curr.success == None:
+    if tmp_curr.success is None:
         tmp_curr = tmp_curr.prev_step
 
     uni_json = tmp_curr.json_file_out
@@ -352,7 +376,10 @@ def update_info(main_obj):
         xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
         yb = main_obj.info_widget.all_data.yb / main_obj.info_widget.all_data.y_px_size
 
-    except:
+    except BaseException as e:
+        # We don't want to catch bare exceptions but don't know
+        # what this was supposed to catch. Log it.
+        logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
         xb, yb = None, None
 
     main_obj.img_view.update_beam_centre(xb, yb)
@@ -362,38 +389,29 @@ def update_pbar_msg(main_obj):
     tmp_curr = main_obj.idials_runner.current_node
     txt = str(tmp_curr.command_lst[0])
 
-    if tmp_curr.success == False:
+    if tmp_curr.success is False:
         txt = "click << Retry >> or navigate backwards in the tree"
-
-    elif txt == "refine_bravais_settings" and tmp_curr.success == True:
-
+    elif txt == "refine_bravais_settings" and tmp_curr.success:
         txt = "click << Retry >> or navigate elsewhere in the tree"
-
-    elif txt == "reindex" and tmp_curr.success == None:
+    elif txt == "reindex" and tmp_curr.success is None:
         txt = "click the blue row to run reindex"
-
-    elif tmp_curr.success == None:
+    elif tmp_curr.success is None:
         if tmp_curr.lin_num == 1:
             logger.debug("tmp_curr.lin_num == 1")
-            templ_text = (
-                main_obj.centre_par_widget.step_param_widg.currentWidget().my_widget.simple_lin.text()
-            )
+            current_widget = main_obj.centre_par_widget.step_param_widg.currentWidget()
+            templ_text = current_widget.my_widget.simple_lin.text()
             logger.debug("templ_text = %s", templ_text)
             if templ_text == " ? ":
                 txt = "click << Select File(s) >> or edit input line "
-
             else:
                 txt = "click dials icon to run import"
-
         else:
             txt = "click dials icon to run " + txt
-
     else:
         nxt_cmd = get_next_step(tmp_curr)
 
-        if nxt_cmd == None:
+        if nxt_cmd is None:
             txt = "Done"
-
         else:
             lab_nxt_cmd = get_lab_txt(nxt_cmd)
             txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
@@ -499,17 +517,19 @@ class TreeNavWidget(QTreeView):
             for child_node in root_node.next_step_list:
                 if child_node.command_lst != [None]:
                     child_node_name = str(child_node.command_lst[0])
-
-                elif child_node.success == None:
+                elif child_node.success is None:
                     child_node_name = "* None *"
-
                 else:
                     child_node_name = " ? None ? "
 
                 try:
                     child_node_tip = build_command_tip(child_node.command_lst)
-
-                except:
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    logger.error(
+                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    )
                     child_node_tip = "None"
 
                 new_item = QStandardItem(child_node_name)
@@ -518,24 +538,19 @@ class TreeNavWidget(QTreeView):
 
                 if self.lst_idx == child_node.lin_num:
                     new_item.setBackground(Qt.blue)
-                    if child_node.success == None:
+                    if child_node.success is None:
                         new_item.setForeground(Qt.green)
-
-                    elif child_node.success == True:
+                    elif child_node.success is True:
                         new_item.setForeground(Qt.white)
-
-                    elif child_node.success == False:
+                    elif child_node.success is False:
                         new_item.setForeground(Qt.red)
-
                 else:
                     new_item.setBackground(Qt.white)
-                    if child_node.success == None:
+                    if child_node.success is None:
                         new_item.setForeground(Qt.green)
-
-                    elif child_node.success == True:
+                    elif child_node.success is True:
                         new_item.setForeground(Qt.blue)
-
-                    elif child_node.success == False:
+                    elif child_node.success is False:
                         new_item.setForeground(Qt.red)
 
                 new_item.setEditable(False)  # not letting the user edit it
@@ -619,17 +634,15 @@ class ExternalProcDialog(QDialog):
                 running with a list of full paths to each file found.
         """
 
-        to_discuss_w_Nick = """
-        assert isinstance(json_path, basestring)
-        # This function previously had strings as default parameters
-        # but appears to only accept Indexable lists of strings. Make
-        # sure we never try to use strings
-        assert not isinstance(pickle_path, basestring)
-        # Since we ignore everything after [0] assert they are None
-        assert all(x is None for x in pickle_path[1:])
-        # Only one process running from each class
-        assert self.my_process is None
-        """
+        # assert isinstance(json_path, basestring)
+        # # This function previously had strings as default parameters
+        # # but appears to only accept Indexable lists of strings. Make
+        # # sure we never try to use strings
+        # assert not isinstance(pickle_path, basestring)
+        # # Since we ignore everything after [0] assert they are None
+        # assert all(x is None for x in pickle_path[1:])
+        # # Only one process running from each class
+        # assert self.my_process is None
 
         # Build the command
         cmd_to_run = [command, str(json_path)]
@@ -704,8 +717,7 @@ class ExternalProcDialog(QDialog):
                         found_checks.append(full_path)
                 except OSError as e:
                     logger.warning(
-                        "OSError (%s) when trying to stat file that existed before external",
-                        e,
+                        "OSError (%s) trying to stat file that previously existed", e
                     )
             elif os.path.isfile(full_path):
                 # The file didn't exist before - definitely new!
@@ -786,8 +798,10 @@ class CliOutView(QTextEdit):
         try:
             ed_str = str(str_to_print).rstrip()
             self.append(ed_str)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("unwritable char << %s %s", str_to_print, ">>")
 
     def make_red(self):
@@ -808,13 +822,11 @@ class CliOutView(QTextEdit):
     def refresh_txt(self, path_to_log, curr_step=None):
         success = curr_step.success
 
-        if success == True:
+        if success is True:
             self.make_blue()
-
-        elif success == False:
+        elif success is False:
             self.make_red()
             path_to_log = curr_step.err_file_out
-
         else:
             self.make_green()
 
@@ -823,8 +835,10 @@ class CliOutView(QTextEdit):
         try:
             fil_obj = open(path_to_log, "r")
             lst_lin = fil_obj.readlines()
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("Failed to read log file")
             lst_lin = ["Ready to Run:"]
             self.make_green()
@@ -847,8 +861,10 @@ class Text_w_Bar(QProgressBar):
             # self.setStyle(QStyleFactory.create("Plastique"))
             # self.setStyle(QStyleFactory.create("cde"))
             # self.setStyle(QStyleFactory.create("motif"))
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("Failed to setStyle()")
 
     def setText(self, text):

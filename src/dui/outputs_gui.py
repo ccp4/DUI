@@ -25,7 +25,7 @@ from __future__ import absolute_import, division, print_function
 import logging
 import sys
 
-from .outputs_n_viewers.info_handler import InfoData, update_all_data
+from .outputs_n_viewers.info_handler import update_all_data
 from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 logger = logging.getLogger(__name__)
@@ -212,13 +212,6 @@ class InfoWidget(QWidget):
         oscil1_v_layout = QVBoxLayout()
         oscil_h_layout.addWidget(QLabel("Oscillation "))
 
-        # oscil1_label = QLabel(" from ")
-        tmp_off = """
-        self.oscil1_data = QLabel(empty_str)
-        #oscil1_v_layout.addWidget(oscil1_label)
-        oscil1_v_layout.addWidget(self.oscil1_data)
-        """
-
         oscil2_v_layout = QVBoxLayout()
         # oscil2_label = QLabel(" to ")
         self.oscil2_data = QLabel(empty_str)
@@ -366,12 +359,13 @@ class InfoWidget(QWidget):
         logger.debug("exp_json_path = %s %s", exp_json_path, "\n")
 
         try:
-
             self.all_data = update_all_data(
                 experiments_path=exp_json_path, reflections_path=refl_pikl_path[0]
             )
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("unable to update data panel")
             self.all_data = update_all_data(
                 experiments_path=None, reflections_path=None

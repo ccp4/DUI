@@ -26,6 +26,7 @@ from __future__ import absolute_import, division, print_function
 import logging
 import os
 import pickle
+import shutil
 import sys
 
 from .cli_utils import (
@@ -89,7 +90,7 @@ class CommandNode(object):
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
 
-                if self.success == True:
+                if self.success is True:
                     self.report_out = generate_report(self)
                     self.predict_pickle_out = generate_predict(self)
 
@@ -150,13 +151,13 @@ class Runner(object):
             self.current_node.edit_list(old_command_lst)
 
         else:
-            if self.current_node.success == True:
+            if self.current_node.success is True:
                 self.goto_prev()
                 logger.debug("forking")
                 self.create_step(self.current_node)
 
             self.current_node(cmd_lst, ref_to_class)
-            if not self.current_node.success:
+            if self.current_node.success is not True:
                 logger.debug("failed step")
 
     def clean(self):
@@ -168,7 +169,7 @@ class Runner(object):
         for node in self.step_list:
             if (
                 node != self.current_node
-                and node.success == None
+                and node.success is None
                 and len(node.prev_step.next_step_list) > 1
             ):
                 lst_to_rm.append(node)
@@ -190,8 +191,10 @@ class Runner(object):
     def goto_prev(self):
         try:
             self.goto(self.current_node.prev_step.lin_num)
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("can NOT fork <None> node ")
 
     def goto(self, new_lin):
@@ -201,28 +204,18 @@ class Runner(object):
             if node.lin_num == self.current_line:
                 self.current_node = node
 
-    def get_current_node():
+    def get_current_node(self):
         return self.current_node
 
     def get_html_report(self):
 
         try:
             html_rep = self.current_node.report_out
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             html_rep = None
-
-        old_style = """
-        if(self.current_node.success == True):
-            html_rep = self.current_node.report_out
-
-        else:
-            try:
-                html_rep = self.current_node.prev_step.report_out
-
-            except:
-                html_rep = None
-        """
 
         return html_rep
 
@@ -235,11 +228,11 @@ class Runner(object):
             if tmp_cur.command_lst == [None]:
                 tmp_cur = tmp_cur.prev_step
 
-            elif tmp_cur.success == True and tmp_cur.command_lst[0] == "import":
+            elif tmp_cur.success is True and tmp_cur.command_lst[0] == "import":
                 path_to_json = tmp_cur.json_file_out
                 break
 
-            elif tmp_cur.command_lst[0] == "Root" or tmp_cur.success == False:
+            elif tmp_cur.command_lst[0] == "Root" or tmp_cur.success is False:
                 break
 
             else:
@@ -253,8 +246,10 @@ class Runner(object):
 
         try:
             path_to_log = self.current_node.log_file_out
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("failed to retrieve log path")
 
         return path_to_log
@@ -269,13 +264,17 @@ class Runner(object):
             tmp_cur.command_lst[0] != "Root"
             and tmp_cur.command_lst[0] != "import"
             and tmp_cur.command_lst[0] != "find_spots"
-            and tmp_cur.success == True
+            and tmp_cur.success is True
         ):
 
             try:
                 path_to_json = tmp_cur.json_file_out
-
-            except:
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.debug("no experimet json file available")
 
         return path_to_json
@@ -288,9 +287,8 @@ class Runner(object):
         if (
             tmp_cur.command_lst[0] == "Root"
             or tmp_cur.command_lst[0] == "import"
-            or tmp_cur.success != True
+            or tmp_cur.success is not True
         ):
-
             return None, None
 
         ref_pkl = None
@@ -299,8 +297,10 @@ class Runner(object):
         try:
             ref_pkl = tmp_cur.refl_pickle_file_out
             pre_pkl = tmp_cur.predict_pickle_out
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("no pickle file available")
 
         return ref_pkl, pre_pkl
@@ -324,7 +324,7 @@ if __name__ == "__main__":
 
         # TODO sometimes the following error appears
         # Attribute not found
-        #'module' object has no attribute 'CommandNode'
+        # 'module' object has no attribute 'CommandNode'
 
     except Exception as e:
         logger.debug("str(e) = %s", str(e))
@@ -333,11 +333,8 @@ if __name__ == "__main__":
         idials_runner = Runner()
 
         try:
-            import shutil
-
             shutil.rmtree(storage_path + "/dui_files")
-
-        except:
+        except OSError:
             logger.debug('failed to do "shutil.rmtree("/dui_files")"')
 
         os.mkdir(storage_path + "/dui_files")
@@ -352,8 +349,10 @@ if __name__ == "__main__":
             if command == "":
                 logger.debug("converting empty line in self.slist()")
                 command = "slist"
-
-        except:
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug(" ... interrupting")
             sys.exit(0)
 

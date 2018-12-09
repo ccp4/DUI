@@ -71,7 +71,7 @@ class WebTab(QWidget):
 
     def load_finished(self, ok_bool):
         logger.debug("HTML Load(ok) = %s", ok_bool)
-        if ok_bool == False:
+        if not ok_bool:
             self.web.setHtml(self.dummy_html)
 
         logger.debug(" finished Loading HTML ")
