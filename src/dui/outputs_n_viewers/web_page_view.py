@@ -35,6 +35,7 @@ class WebTab(QWidget):
         logger.debug("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
 
+        self.my_bar = None
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
         self.setLayout(hbox)
@@ -42,12 +43,12 @@ class WebTab(QWidget):
 
     def update_page(self, new_path=None):
         try:
-            logger.debug("\n >> update_page( %s %s", new_path, ")")
+            logger.debug("\n >> update_page( %s )", new_path)
             new_path = os.path.abspath(new_path)
 
             # new_path = "file://" + new_path # unix way
             new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
-            logger.debug(" >> new_path: %s %s", new_path, "\n")
+            logger.debug(" >> new_path: %s", new_path)
             self.web.load(QUrl(new_path))
 
             logger.debug(" Loading  %s", new_path)
@@ -56,8 +57,10 @@ class WebTab(QWidget):
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
             self.my_bar(5)
 
-        except:
-            logger.debug("\n failed to show << %s %s", new_path, ">>  on web view ")
+        except BaseException as e:
+            # TODO(nick) - Don't know what this generic exception was supposed
+            # to catch so catch all for now and work out what it was supposed to be
+            logger.debug("\n failed to show << %s >>  on web view (%s)", new_path, e)
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
@@ -66,7 +69,8 @@ class WebTab(QWidget):
             self.web.setHtml(self.dummy_html)
 
         logger.debug(" finished Loading HTML ")
-        self.my_bar.ended()
+        if self.my_bar is not None:
+            self.my_bar.ended()
 
 
 class TmpTstWidget(QWidget):
