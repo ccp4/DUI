@@ -28,10 +28,6 @@ import pickle
 import sys
 import time
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtWebKit import *
-
 from .dynamic_reindex_gui import MyReindexOpts
 from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
 from .custom_widgets import ParamWidget
@@ -54,6 +50,24 @@ from .m_idials import Runner
 from .outputs_n_viewers.web_page_view import WebTab
 from .outputs_n_viewers.img_viewer import MyImgWin
 from .outputs_gui import InfoWidget
+from .qt import (
+    QHBoxLayout,
+    QIcon,
+    QMainWindow,
+    QModelIndex,
+    QPushButton,
+    QScrollArea,
+    QSize,
+    QSizePolicy,
+    QSplitter,
+    QStackedWidget,
+    Qt,
+    QTabWidget,
+    QThread,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -72,8 +86,8 @@ widg_name_list = [
 
 class CommandThread(QThread):
 
-    str_print_signal = pyqtSignal(str)
-    str_fail_signal = pyqtSignal()
+    str_print_signal = Signal(str)
+    str_fail_signal = Signal()
 
     def __init__(self, parent=None):
         super(CommandThread, self).__init__()
@@ -95,8 +109,8 @@ class CommandThread(QThread):
 
 class ControlWidget(QWidget):
 
-    user_changed = pyqtSignal(str)
-    update_command_lst_high_level = pyqtSignal(list)
+    user_changed = Signal(str)
+    update_command_lst_high_level = Signal(list)
 
     def __init__(self, parent=None):
         super(ControlWidget, self).__init__()

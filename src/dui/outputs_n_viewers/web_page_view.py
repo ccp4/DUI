@@ -4,11 +4,17 @@ import logging
 import os
 import sys
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtWebKit import *
-
 from .img_view_tools import ProgBarBox
+from ..qt import (
+    QApplication,
+    QHBoxLayout,
+    QPushButton,
+    QUrl,
+    QVBoxLayout,
+    QWebSettings,
+    QWebView,
+    QWidget,
+)
 
 logger = logging.getLogger(__name__)
 

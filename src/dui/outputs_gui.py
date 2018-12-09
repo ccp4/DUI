@@ -25,10 +25,8 @@ from __future__ import absolute_import, division, print_function
 import logging
 import sys
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
 from .outputs_n_viewers.info_handler import InfoData, update_all_data
+from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 logger = logging.getLogger(__name__)
 

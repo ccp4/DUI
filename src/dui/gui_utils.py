@@ -30,11 +30,32 @@ import sys
 import time
 
 import psutil
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtWebKit import *
 
 from .cli_utils import get_next_step, sys_arg, get_phil_par
+from .qt import (
+    QApplication,
+    QDialog,
+    QFont,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QMainWindow,
+    QProgressBar,
+    QPushButton,
+    QSize,
+    QSizePolicy,
+    QStandardItem,
+    QStandardItemModel,
+    QStyleFactory,
+    Qt,
+    QT5,
+    QTextEdit,
+    QThread,
+    QTreeView,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -453,7 +474,10 @@ class TreeNavWidget(QTreeView):
         self.setIndentation(10)
 
         header_view = self.header()
-        header_view.setResizeMode(QHeaderView.ResizeToContents)
+        if QT5:
+            header_view.setSectionResizeMode(QHeaderView.ResizeToContents)
+        else:
+            header_view.setResizeMode(QHeaderView.ResizeToContents)
         header_view.setStretchLastSection(True)
 
     def update_me(self, root_node, lst_path_idx):
@@ -546,12 +570,12 @@ class ExternalProcDialog(QDialog):
         parent (QWidget): The parent for the dialog. Passed to QDialog.
 
     Attributes:
-        outputFileFound (pyqtSignal):
+        outputFileFound (Signal):
             A named output file was found. Signal is called with a list
             of full paths to the output files.
     """
 
-    outputFileFound = pyqtSignal(list)
+    outputFileFound = Signal(list)
 
     def __init__(self, parent=None):
         super(ExternalProcDialog, self).__init__(parent)
@@ -694,7 +718,7 @@ class ExternalProcDialog(QDialog):
 
 class OuterCaller(QWidget):
 
-    pass_parmam_lst = pyqtSignal(list)
+    pass_parmam_lst = Signal(list)
 
     def __init__(self):
         super(OuterCaller, self).__init__()

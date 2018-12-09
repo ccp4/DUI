@@ -27,14 +27,10 @@ import os
 import sys
 import time
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
 from ..gui_utils import get_main_path
-
 from .img_view_tools import (
     build_qimg,
     draw_palette_label,
@@ -42,19 +38,39 @@ from .img_view_tools import (
     list_arrange,
     list_p_arrange,
 )
+from ..qt import (
+    QApplication,
+    QButtonGroup,
+    QCheckBox,
+    QColor,
+    QComboBox,
+    QFont,
+    QGroupBox,
+    QHBoxLayout,
+    QIcon,
+    QIntValidator,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QPainter,
+    QPen,
+    QPixmap,
+    QPoint,
+    QPushButton,
+    QRadioButton,
+    QRect,
+    QRectF,
+    QScrollArea,
+    QSlider,
+    QSpinBox,
+    Qt,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
-
-QGLWidget_test = """
-try:
-    from PyQt4.QtOpenGL import QGLWidget
-    from OpenGL import GL
-    MyQWidgetWithQPainter = QGLWidget
-
-except:
-    print "Failed to import OpenGL"
-    MyQWidgetWithQPainter = QWidget
-#"""
 
 MyQWidgetWithQPainter = QWidget
 
@@ -434,7 +450,7 @@ class ImgPainter(QWidget):
 
 class PopPaletteMenu(QMenu):
 
-    sliders_changed = pyqtSignal(int, int)
+    sliders_changed = Signal(int, int)
 
     def __init__(self, parent=None):
         super(PopPaletteMenu, self).__init__(parent)
@@ -522,7 +538,7 @@ class PopPaletteMenu(QMenu):
 
 class PopBigMenu(QMenu):
 
-    sliders_changed = pyqtSignal(int, int)
+    sliders_changed = Signal(int, int)
 
     def __init__(self, parent=None):
         super(PopBigMenu, self).__init__(parent)

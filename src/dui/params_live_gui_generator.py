@@ -36,10 +36,24 @@ try:
 except ImportError as e:
     pass
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
 from dials.command_line.find_spots import phil_scope
+
+from .qt import (
+    QApplication,
+    QColor,
+    QComboBox,
+    QDoubleSpinBox,
+    QFont,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPalette,
+    QSpinBox,
+    Qt,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +117,7 @@ class tree_2_lineal(object):
 
 
 class PhilWidget(QWidget):
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(
         self, phl_obj, parent=None

@@ -26,11 +26,11 @@ import logging
 import sys
 
 import numpy as np
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
 
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
+
+from ..qt import QImage, QProgressDialog, Qt
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ class ProgBarBox(QProgressDialog):
 
         self.setLabelText(text)
         self.setWindowTitle("updating")
-        self.setCancelButtonText(QString())
+        self.setCancelButtonText("")
         self.setWindowModality(Qt.WindowModal)
         self.show()
 

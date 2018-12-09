@@ -27,9 +27,6 @@ import logging
 import os
 import sys
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
 from dials.command_line.refine_bravais_settings import (
@@ -52,13 +49,35 @@ from .simpler_param_widgets import (
     SymmetrySimplerParamTab,
     ScaleSimplerParamTab,
 )
+from .qt import (
+    QApplication,
+    QCheckBox,
+    QColor,
+    QFileDialog,
+    QFont,
+    QHBoxLayout,
+    QIcon,
+    QLabel,
+    QLineEdit,
+    QPalette,
+    QPushButton,
+    QScrollArea,
+    QSize,
+    QSizePolicy,
+    QSpinBox,
+    QTabWidget,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class ExportPage(QWidget):
 
-    update_command_lst_low_level = pyqtSignal(list)
+    update_command_lst_low_level = Signal(list)
 
     """
     This stacked widget basically helps the user to export by
@@ -126,7 +145,7 @@ class ExportPage(QWidget):
 
 class ImportPage(QWidget):
 
-    update_command_lst_low_level = pyqtSignal(list)
+    update_command_lst_low_level = Signal(list)
 
     """
     This stacked widget basically helps the user to browse the input images
@@ -184,7 +203,7 @@ class ImportPage(QWidget):
         self.y_label = QLabel("    Y: ")
         cent_hbox.addWidget(self.y_label)
         cent_hbox.addWidget(self.y_spn_bx)
-    #    cent_hbox.addWidget(QLabel(" \n "))
+        #    cent_hbox.addWidget(QLabel(" \n "))
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
         main_v_box.addWidget(self.chk_invert)
@@ -385,7 +404,7 @@ def buils_lst_pair(lst_in):
 
 class ParamMainWidget(QWidget):
 
-    update_command_lst_low_level = pyqtSignal(list)
+    update_command_lst_low_level = Signal(list)
 
     def __init__(self, phl_obj=None, simp_widg=None, parent=None, upper_label=None):
         super(ParamMainWidget, self).__init__()
@@ -644,7 +663,7 @@ class ParamMainWidget(QWidget):
 
 class ParamWidget(QWidget):
 
-    update_command_lst_medium_level = pyqtSignal(list)
+    update_command_lst_medium_level = Signal(list)
 
     def __init__(self, label_str):
         super(ParamWidget, self).__init__()

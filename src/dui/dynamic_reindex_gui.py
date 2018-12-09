@@ -27,8 +27,21 @@ import json
 import logging
 import sys
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from .qt import (
+    QApplication,
+    QColor,
+    QFont,
+    QHBoxLayout,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    Qt,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -239,7 +252,7 @@ class MyReindexOpts(QWidget):
 
 
 class ReindexTable(QTableWidget):
-    opt_signal = pyqtSignal(int)
+    opt_signal = Signal(int)
 
     def __init__(self, parent=None):
         super(ReindexTable, self).__init__(parent)

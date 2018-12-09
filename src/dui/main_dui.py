@@ -28,10 +28,6 @@ import logging
 import os
 import sys
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtWebKit import *
-
 from .cli_utils import sys_arg
 
 logger = logging.getLogger(__name__)
@@ -81,6 +77,7 @@ def main():
     logger.info("sys_arg.directory=%s", sys_arg.directory)
 
     # Inline import so that we can load this after logging setup
+    from .qt import QApplication
     from .m_idials_gui import MainWidget
 
     app = QApplication(sys.argv)

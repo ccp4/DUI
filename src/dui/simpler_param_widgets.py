@@ -26,10 +26,22 @@ import logging
 import os
 import sys
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
 import libtbx.introspection
+
+from .qt import (
+    QApplication,
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QFont,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QSpinBox,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +65,7 @@ class FindspotsSimplerParameterTab(QWidget):
     "Find Sots" at the left side of the GUI is clicked
     """
 
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
@@ -161,7 +173,7 @@ class IndexSimplerParamTab(QWidget):
     "Index" at the left side of the GUI is clicked
     """
 
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(self, phl_obj=None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
@@ -216,7 +228,7 @@ class IndexSimplerParamTab(QWidget):
 class RefineBravaiSimplerParamTab(QWidget):
     # TODO some doc string here
 
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(RefineBravaiSimplerParamTab, self).__init__()
@@ -266,8 +278,8 @@ class RefineSimplerParamTab(QWidget):
     "Refine" at the left side of the GUI is clicked
     """
 
-    item_changed = pyqtSignal(str, str)
-    item_to_remove = pyqtSignal(str)
+    item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__()
@@ -479,7 +491,7 @@ class IntegrateSimplerParamTab(QWidget):
     "Integrate" at the left side of the GUI is clicked
     """
 
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
@@ -581,7 +593,7 @@ class SymmetrySimplerParamTab(QWidget):
     "Symmetry" at the left side of the GUI is clicked
     """
 
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(SymmetrySimplerParamTab, self).__init__()
@@ -629,7 +641,7 @@ class ScaleSimplerParamTab(QWidget):
     "Scale" at the left side of the GUI is clicked
     """
 
-    item_changed = pyqtSignal(str, str)
+    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(ScaleSimplerParamTab, self).__init__()
