@@ -311,11 +311,9 @@ class RefineSimplerParamTab(QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        """
-        beam {
-          fix = all *in_spindle_plane out_spindle_plane *wavelength
-        }
-        """
+        # beam {
+        #   fix = all *in_spindle_plane out_spindle_plane *wavelength
+        # }
 
         # Block out refiner behaviour for now until we work out a better way-
         # hbox_lay_beam_fix =  QHBoxLayout()
@@ -457,19 +455,17 @@ class RefineSimplerParamTab(QWidget):
         self.lst_var_widg.append(box_scan_varying)
         self.lst_var_widg.append(label_scan_varying)
 
-        """
-        self.lst_var_widg.append(box_beam_fix)
-        self.lst_var_widg.append(label_beam_fix)
+        # self.lst_var_widg.append(box_beam_fix)
+        # self.lst_var_widg.append(label_beam_fix)
 
-        self.lst_var_widg.append(box_crystal_fix)
-        self.lst_var_widg.append(label_crystal_fix)
+        # self.lst_var_widg.append(box_crystal_fix)
+        # self.lst_var_widg.append(label_crystal_fix)
 
-        self.lst_var_widg.append(box_detector_fix)
-        self.lst_var_widg.append(label_detector_fix)
+        # self.lst_var_widg.append(box_detector_fix)
+        # self.lst_var_widg.append(label_detector_fix)
 
-        self.lst_var_widg.append(box_goniometer_fix)
-        self.lst_var_widg.append(label_goniometer_fix)
-        """
+        # self.lst_var_widg.append(box_goniometer_fix)
+        # self.lst_var_widg.append(label_goniometer_fix)
 
         self.lst_var_widg.append(box_outlier_algorithm)
         self.lst_var_widg.append(label_outlier_algorithm)
