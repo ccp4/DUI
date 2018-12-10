@@ -729,22 +729,6 @@ class MainWidget(QMainWindow):
             self.idials_runner.step_list[0], self.idials_runner.current_line
         )
 
-        tmp_cur_nod = self.idials_runner.current_node
-        if len(tmp_cur_nod.next_step_list) == 0 and tmp_cur_nod.success is True:
-
-            nod_ref = tmp_cur_nod
-
-        else:
-            nod_ref = tmp_cur_nod.prev_step
-
-        try:
-            self.check_gray_outs(nod_ref)
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type: %s", e)
-            logger.debug("failed to << check_gray_outs() >>")
-
         update_pbar_msg(self)
 
     def after_failed(self):
