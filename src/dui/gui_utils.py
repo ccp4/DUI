@@ -25,6 +25,7 @@ from __future__ import absolute_import, division, print_function
 
 import logging
 import os
+import re
 import subprocess
 import sys
 
@@ -114,8 +115,8 @@ def get_main_path():
 
 
 def get_import_run_string(in_str_lst):
-    """???UNCERTAIN ON BEHAVIOUR???
-    Appears to calculate the dials.import filename, image_range string
+    """
+    Calculate the dials.import filename and image_range parameters.
 
     Args:
         in_str_lst ([str]): List of files to open
@@ -124,159 +125,75 @@ def get_import_run_string(in_str_lst):
         (Tuple[str,str]):
             dir_path, import_string where dir_path is the location of the
             data, and import_string is the string containing parts to pass
-            to dials.import.
+            to dials.import. This could be of the forms:
+                '/some/path/single_file_0002.cbf'
+                '/some/path/images_master.nxs'
+                '/some/path/filename_*.cbf'
+                '/some/path/filename_*.cbf image_range=1,100'
     """
-    logger.debug("in_str_lst = %s", in_str_lst)
+    logger.debug("Converting string for import: %s", in_str_lst)
 
-    selected_file_path = str(in_str_lst[0])
-    logger.debug("selected_file_path = %s", selected_file_path)
+    first_file_path = in_str_lst[0]
+    logger.debug("selected_file_path = %s", first_file_path)
 
-    fnd_sep = False
-    sep_chr = None
-    for pos, single_char in enumerate(selected_file_path):
-        if single_char == "/" or single_char == "\\":
-            dir_pos_sep = pos
+    dirname = os.path.dirname(first_file_path)
+    filename = os.path.basename(first_file_path)
+    root_name, ext_name = os.path.splitext(filename)
 
-            if fnd_sep and sep_chr != single_char:
-                logger.debug("inconsistent dir separator")
-                return None
-
-            fnd_sep = True
-            sep_chr = single_char
-
-    if not fnd_sep:
-        logger.debug("Failed to find dir path")
-        return None
-
-    dir_path = selected_file_path[:dir_pos_sep]
-    # Check to see if this is identical to dirname
-    if dir_path != os.path.dirname(selected_file_path):
-        logger.warning(
-            "Validation: get_import_run_string '%s' != '%s'",
-            dir_path,
-            os.path.dirname(selected_file_path),
-        )
-
-    # TODO test if the next << if >> is actually needed
-    if dir_path[0:3] == "(u'":
-        logger.debug('dir_path[0:3] == "(u\'"')
-        dir_path = dir_path[3:]
-
-    templ_r_side = selected_file_path[dir_pos_sep:]
-
-    for pos, single_char in reversed(list(enumerate(templ_r_side))):
-        if single_char == ".":
-            ext_pos_sep = pos
-
-    left_sd_name = templ_r_side[:ext_pos_sep]
-    ext_name = templ_r_side[ext_pos_sep:]
     if ext_name == ".h5" or ext_name == ".nxs":
+        # If HDF5, then we don't have a numeric tail to search for
         logger.debug("found h5 or nxs file")
-        file_name = left_sd_name
-        file_name = file_name + ext_name
         tail_size = 0
-
     else:
-        file_name = left_sd_name
-
-        max_tail_size = int(len(templ_r_side) / 3)
-        for tail_size in xrange(max_tail_size):
-            prev_str = file_name
-            pos_to_replase = len(file_name) - tail_size - 1
-            for num_char in "0123456789":
-                if file_name[pos_to_replase] == num_char:
-                    file_name = (
-                        file_name[:pos_to_replase]
-                        + "#"
-                        + file_name[pos_to_replase + 1 :]
-                    )
-
-            if prev_str == file_name:
-                break
-
-        file_name = file_name + ext_name
-
-    if in_str_lst and len(in_str_lst) == 1:
-        out_str = dir_path + file_name
-        img_range = None
-
-    else:
-        str_lst = []
-        for single_qstring in in_str_lst:
-            str_lst.append(str(single_qstring))
-
-        out_str = ""
-        pos_last_num = 0
-
-        for pos in xrange(len(str_lst[0])):
-            all_equal = True
-            single_char = str_lst[0][pos]
-            for single_string in str_lst:
-                try:
-                    if single_string[pos] != single_char:
-                        all_equal = False
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.error("Caught unknown exception type: %s", e)
-                    all_equal = False
-
-            if all_equal:
-                out_str = out_str + single_char
-
-            else:
-                out_str = out_str + "#"
-                pos_last_num = pos
-
-        pos_last_num += 1
-
-        logger.debug("pos_last_num = %s", pos_last_num)
-
-        if pos_last_num > 1:
-            lst_num_str = []
-            try:
-
-                for single_string in str_lst:
-                    lst_num_str.append(
-                        int(single_string[pos_last_num - tail_size : pos_last_num])
-                    )
-
-                logger.debug("lst_num_str = %s", lst_num_str)
-                img_range = [min(lst_num_str), max(lst_num_str)]
-
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.error("Caught unknown exception type: %s", e)
-                logger.debug("something went wrong with the range thing 01")
-                img_range = None
+        # Find the last span of digits in the filename
+        match = re.search(r"(\d+)[^\d]*$", filename)
+        if match is None:
+            tail_size = 0
         else:
-            logger.debug("something went wrong with the range thing 02")
-            img_range = None
+            tail_size = len(match.group(1))
+            start, end = match.span(1)
+            filename = filename[:start] + "{}" + filename[end:]
 
-    logger.debug("out_str( template mode ) = %s", out_str)
+    # Calculate the range based on what was selected
+    if in_str_lst and len(in_str_lst) == 1:
+        # If we only selected one file, then use that (template at this point)
+        out_str = os.path.join(dirname, filename)
+        image_range = None
+    else:
+        indices = set()
+        # Compile a regex to match every filename in this template
+        pattern = ur"^" + filename.format(ur"(\d{{{}}})".format(tail_size)) + u"$"
+        match_re = re.compile(pattern)
+        # Get the template part of every filename and save as an integer
+        for entry in in_str_lst:
+            try:
+                match = match_re.match(os.path.basename(entry))
+                indices.add(int(match.group(1)))
+            except AttributeError:
+                logger.error(
+                    "Could not extract index from {} with template {}".format(
+                        entry, filename
+                    )
+                )
 
-    new_cmd = ""
-    for single_char in out_str:
+        min_image_range = min(indices)
+        max_image_range = max(indices)
+        image_range = (min_image_range, max_image_range)
 
-        if single_char != "#":
-            new_cmd += single_char
+        # Warn if things were missing - this may be perfectly normal
+        if not indices == set(range(min_image_range, max_image_range + 1)):
+            logger.warning("Non-continuous image range selected - output may be wrong")
 
-        elif prev_char != "#":
-            new_cmd += "*"
+    # Convert anything that looks like a template to a wildcard
+    out_str = filename.format("*")
 
-        prev_char = single_char
+    if image_range is not None:
+        out_str += " image_range={},{}".format(*image_range)
 
-    out_str = new_cmd
-    logger.debug("img_range = %s", img_range)
+    logger.debug("Filename template output = %s", out_str)
+    logger.debug("Filename template dir =    %s", dirname)
 
-    if img_range is not None:
-        out_str += " image_range=" + str(img_range[0]) + "," + str(img_range[1])
-
-    logger.debug("out_str( * mode ) = %s %s", out_str, "\n")
-    logger.debug("dir_path = %s", dir_path)
-
-    return dir_path, out_str
+    return dirname, out_str
 
 
 def build_label(com_nam):
