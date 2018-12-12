@@ -140,6 +140,8 @@ class ControlWidget(QWidget):
         lst_grayed_icons_path.append(main_path + "/resources/export_grayed.png")
 
         top_box = QVBoxLayout()
+        top_box.setMargin(0)
+        top_box.setContentsMargins(0, 0, 0, 0)
 
         self.step_param_widg = QStackedWidget()
         self.widg_lst = []

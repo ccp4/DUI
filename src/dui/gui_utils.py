@@ -359,7 +359,6 @@ def get_lab_txt(com_nam):
 class MyQButton(QPushButton):
     def __init__(self, text="", parent=None):
         super(MyQButton, self).__init__()
-        self.setContentsMargins(-5, -1, -5, -1)
 
     def intro_content(self, my_text, my_icon, my_tool_tip):
 
