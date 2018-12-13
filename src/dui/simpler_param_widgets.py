@@ -33,6 +33,7 @@ from .qt import (
     QDoubleSpinBox,
     QHBoxLayout,
     QLabel,
+    QLayout,
     QPushButton,
     QSpinBox,
     QVBoxLayout,
@@ -41,6 +42,25 @@ from .qt import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _get_all_direct_layout_widget_children(parent):
+    """Walk a widget tree and get all non-QLayout direct children
+
+    Args:
+        parent(QLayout): The layout to walk
+
+    Returns:
+        (List[QWidget]): Any widgets directly attached to layouts in this
+    """
+    children = []
+    if isinstance(parent, QLayout):
+        for child in [parent.itemAt(i) for i in range(parent.count())]:
+            children.extend(_get_all_direct_layout_widget_children(child))
+    elif hasattr(parent, "widget"):
+        if parent.widget():
+            children.append(parent.widget())
+    return children
 
 
 class ResetButton(QPushButton):
@@ -137,20 +157,7 @@ class FindspotsSimplerParameterTab(QWidget):
 
         self.setLayout(localLayout)
 
-        self.lst_var_widg = []
-        for i in xrange(localLayout.count() - 1):
-            upper_box = localLayout.itemAt(i)
-            try:
-                for j in xrange(upper_box.count()):
-                    local_widget = upper_box.itemAt(j).widget()
-                    self.lst_var_widg.append(local_widget)
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.error(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                pass
+        self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
     def spnbox_changed(self, value):
         sender = self.sender()
@@ -206,20 +213,7 @@ class IndexSimplerParamTab(QWidget):
 
         self.setLayout(localLayout)
 
-        self.lst_var_widg = []
-        for i in xrange(localLayout.count() - 1):
-            upper_box = localLayout.itemAt(i)
-            try:
-                for j in xrange(upper_box.count()):
-                    local_widget = upper_box.itemAt(j).widget()
-                    self.lst_var_widg.append(local_widget)
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.error(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                pass
+        self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -554,20 +548,7 @@ class IntegrateSimplerParamTab(QWidget):
         self.setLayout(localLayout)
         self.box_nproc.tmp_lst = None
 
-        self.lst_var_widg = []
-        for i in xrange(localLayout.count() - 1):
-            upper_box = localLayout.itemAt(i)
-            try:
-                for j in xrange(upper_box.count()):
-                    local_widget = upper_box.itemAt(j).widget()
-                    self.lst_var_widg.append(local_widget)
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.error(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                pass
+        self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
     def combobox_changed(self, value):
         sender = self.sender()
