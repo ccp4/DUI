@@ -593,6 +593,7 @@ class MyImgWin(QWidget):
         self.my_painter = ImgPainter(self)
         self.my_scrollable.setWidget(self.my_painter)
 
+        self.img_arr = None
         self.img_select = QSpinBox()
         self.img_step = QSpinBox()
         self.num_of_imgs_to_add = QSpinBox()
@@ -732,12 +733,9 @@ class MyImgWin(QWidget):
         else:
             self.ini_datablock(json_file_path)
 
-        try:
+        if pckl_file_path:
             self.ini_reflection_table(pckl_file_path)
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+        else:
             logger.debug("No pickle file given")
 
         self.set_img()
@@ -974,7 +972,7 @@ class MyImgWin(QWidget):
         logger.debug("\n update_exp(self, reference) \n")
 
     def update_info_label(self, x_pos, y_pos):
-        try:
+        if self.img_arr:
             new_label_txt = (
                 "  X = "
                 + str(x_pos)
@@ -983,23 +981,16 @@ class MyImgWin(QWidget):
                 + " ,  I = "
                 + str(self.img_arr[y_pos, x_pos])
             )
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+        else:
             new_label_txt = "X, Y, I = ?,?,?"
 
-        try:
-            # mydetector = self.ref2exp.detector
+        if self.ref2exp and self.ref2exp.beam:
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
             res_str = str("{:6.1f}".format(res_float))
             new_label_txt += " ,  resolution = " + res_str + " " + u"\u00C5"
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+        else:
             new_label_txt += " ,  resolution = ?"
 
         self.info_label.setText(new_label_txt)

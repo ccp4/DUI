@@ -431,6 +431,8 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
         self.reconnect_when_ready()
 
+        self.my_pop = None
+
         if refresh_gui:
             self.refresh_my_gui()
 
@@ -829,10 +831,5 @@ class MainWidget(QMainWindow):
         )
 
     def closeEvent(self, event):
-        try:
+        if self.my_pop:
             self.my_pop.close()
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("no need to close reindex table")

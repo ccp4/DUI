@@ -79,6 +79,7 @@ class InfoData(object):
 
 def update_all_data(reflections_path=None, experiments_path=None):
     dat = InfoData()
+    dat.ref2exp = None
 
     if reflections_path is not None:
 
@@ -242,16 +243,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except (KeyError, IndexError):
             logger.debug("failed to find template in JSON file")
 
-    try:
         dat.ref2exp = exp
-
-    except BaseException as e:
-        # We don't want to catch bare exceptions but don't know
-        # what this was supposed to catch. Log it.
-        logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
-
-        logger.debug("unable to get experiment from path")
-        dat.ref2exp = None
 
     return dat
 

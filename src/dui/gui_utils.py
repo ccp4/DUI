@@ -292,11 +292,7 @@ def update_info(main_obj):
     try:
         xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
         yb = main_obj.info_widget.all_data.yb / main_obj.info_widget.all_data.y_px_size
-
-    except BaseException as e:
-        # We don't want to catch bare exceptions but don't know
-        # what this was supposed to catch. Log it.
-        logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+    except TypeError:
         xb, yb = None, None
 
     main_obj.img_view.update_beam_centre(xb, yb)

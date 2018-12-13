@@ -358,18 +358,10 @@ class InfoWidget(QWidget):
         logger.debug("\n\nrefl_pikl_path = %s", refl_pikl_path)
         logger.debug("exp_json_path = %s %s", exp_json_path, "\n")
 
-        try:
-            self.all_data = update_all_data(
-                experiments_path=exp_json_path, reflections_path=refl_pikl_path[0]
-            )
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("unable to update data panel")
-            self.all_data = update_all_data(
-                experiments_path=None, reflections_path=None
-            )
+        to_update_pickle_path = refl_pikl_path[0] if refl_pikl_path else None
+        self.all_data = update_all_data(
+            experiments_path=exp_json_path, reflections_path=to_update_pickle_path
+        )
 
         update_data_label(self.a_data, self.all_data.a)
         update_data_label(self.b_data, self.all_data.b)

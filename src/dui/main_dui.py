@@ -53,7 +53,9 @@ def main():
         logging.basicConfig(level=logging.INFO)
     elif args.verbose > 1:
         # More debug levels show everything
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(
+            level=logging.DEBUG, format="%(levelname)s:%(name)s:%(lineno)s %(message)s"
+        )
 
     # Process the phil-style parameters
     for arg in args.positionals[:]:
