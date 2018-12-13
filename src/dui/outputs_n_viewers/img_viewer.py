@@ -656,29 +656,27 @@ class MyImgWin(QWidget):
 
         self.palette_select.currentIndexChanged.connect(self.palette_changed_by_user)
 
-        self.btn_first = QPushButton(" I< ")
-        self.btn_first.setMinimumWidth(1)
-        self.btn_first.clicked.connect(self.btn_first_clicked)
-        self.btn_rev = QPushButton(" << ")
-        self.btn_rev.setMinimumWidth(1)
-        self.btn_rev.clicked.connect(self.btn_rev_clicked)
-        self.btn_prev = QPushButton(" < ")
-        self.btn_prev.setMinimumWidth(1)
-        self.btn_prev.clicked.connect(self.btn_prev_clicked)
-        self.btn_next = QPushButton(" > ")
-        self.btn_next.setMinimumWidth(1)
-        self.btn_next.clicked.connect(self.btn_next_clicked)
-        self.btn_ffw = QPushButton(" >> ")
-        self.btn_ffw.setMinimumWidth(1)
-        self.btn_ffw.clicked.connect(self.btn_ffw_clicked)
-        self.btn_last = QPushButton(" >I ")
-        self.btn_last.setMinimumWidth(1)
-        self.btn_last.clicked.connect(self.btn_last_clicked)
+        self._button_panel = QWidget(self)
+
+        def _create_and_connect(text, slot):
+            """Create a pushbutton for the Play/stop bar"""
+            btn = QPushButton(text, parent=self._button_panel)
+            btn.setMinimumWidth(50)
+            btn.clicked.connect(slot)
+            return btn
+
+        self.btn_first = _create_and_connect("I<", self.btn_first_clicked)
+        self.btn_rev = _create_and_connect("<<", self.btn_rev_clicked)
+        self.btn_prev = _create_and_connect("<", self.btn_prev_clicked)
+        self.btn_next = _create_and_connect(">", self.btn_next_clicked)
+        self.btn_ffw = _create_and_connect(">>", self.btn_ffw_clicked)
+        self.btn_last = _create_and_connect(">I", self.btn_last_clicked)
 
         self.btn_play = QPushButton("Play/Stop Video")
         self.btn_play.clicked.connect(self.btn_play_clicked)
 
         nav_box = QHBoxLayout()
+        nav_box.setMargin(0)
         nav_box.addWidget(self.btn_first)
         nav_box.addWidget(self.btn_rev)
         nav_box.addWidget(self.btn_prev)
@@ -688,6 +686,8 @@ class MyImgWin(QWidget):
         nav_box.addWidget(self.btn_last)
         nav_box.addStretch()
         nav_box.addWidget(self.btn_play)
+
+        self._button_panel.setLayout(nav_box)
 
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
@@ -749,9 +749,8 @@ class MyImgWin(QWidget):
         self.img_step.valueChanged.connect(self.step_changed_by_user)
         self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
 
-        my_box = QVBoxLayout()
-
         top_box = QHBoxLayout()
+        top_box.setMargin(0)
         top_box.addWidget(palette_menu_but)
         top_box.addWidget(big_menu_but)
         top_box.addStretch()
@@ -762,15 +761,18 @@ class MyImgWin(QWidget):
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
         top_left_v_box = QVBoxLayout()
-        top_left_v_box.addLayout(nav_box)
+        top_left_v_box.setMargin(0)
+        top_left_v_box.addWidget(self._button_panel)
         top_left_v_box.addLayout(top_box)
 
         top_hbox = QHBoxLayout()
+        top_hbox.setMargin(0)
         top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
+        my_box = QVBoxLayout()
+        my_box.setMargin(0)
         my_box.addLayout(top_hbox)
-
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
 
