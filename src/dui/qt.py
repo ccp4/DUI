@@ -30,6 +30,21 @@ try:
 except ImportError:
     # Fallback to QT4
     try:
+        # Explicitly choose the v2 APIs for QT4
+        import sip
+
+        try:
+            sip.setapi("QDate", 2)
+            sip.setapi("QDateTime", 2)
+            sip.setapi("QString", 2)
+            sip.setapi("QTextStream", 2)
+            sip.setapi("QTime", 2)
+            sip.setapi("QUrl", 2)
+            sip.setapi("QVariant", 2)
+        except ValueError:
+            # These may have already been set
+            pass
+
         # Primary interface: PyQt4
         from PyQt4.QtGui import *
         from PyQt4.QtCore import *
