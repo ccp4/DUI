@@ -450,10 +450,8 @@ class ParamMainWidget(QWidget):
 
         try:
             self.simpler_widget.item_to_remove.connect(self.remove_one_par)
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+        except AttributeError:
+            # simpler_widget has no item_to_remove
             logger.debug(
                 "found self.simpler_widget without << item_to_remove >> signal"
             )
