@@ -25,6 +25,8 @@ from __future__ import absolute_import, division, print_function
 import logging
 import sys
 
+from dxtbx.model.experiment_list import InvalidExperimentListError
+
 from .outputs_n_viewers.info_handler import update_all_data
 from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
@@ -354,14 +356,34 @@ class InfoWidget(QWidget):
         self.show()
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
+        # TODO: Change interface of function to not recieve list including
+        #       predicted reflections, as long as it doesn't need it
 
         logger.debug("\n\nrefl_pikl_path = %s", refl_pikl_path)
         logger.debug("exp_json_path = %s %s", exp_json_path, "\n")
 
-        to_update_pickle_path = refl_pikl_path[0] if refl_pikl_path else None
-        self.all_data = update_all_data(
-            experiments_path=exp_json_path, reflections_path=to_update_pickle_path
-        )
+        try:
+            try:
+                pickle_to_read = refl_pikl_path[0]
+            except ValueError:
+                pickle_to_read = None
+
+            self.all_data = update_all_data(
+                experiments_path=exp_json_path, reflections_path=pickle_to_read
+            )
+        except InvalidExperimentListError:
+            # Probably an invalid json file - we sometimes try to parse these
+            self.all_data = update_all_data(
+                experiments_path=None, reflections_path=None
+            )
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("unable to update data panel")
+            self.all_data = update_all_data(
+                experiments_path=None, reflections_path=None
+            )
 
         update_data_label(self.a_data, self.all_data.a)
         update_data_label(self.b_data, self.all_data.b)
