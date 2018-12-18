@@ -185,7 +185,7 @@ def get_import_run_string(in_str_lst):
             logger.warning("Non-continuous image range selected - output may be wrong")
 
     # Convert anything that looks like a template to a wildcard
-    out_str = filename.format("*")
+    out_str = os.path.join(dirname, filename.format("*"))
 
     if image_range is not None:
         out_str += " image_range={},{}".format(*image_range)
