@@ -355,6 +355,8 @@ class MainWidget(QMainWindow):
         v_control_splitter = QSplitter()
         v_control_splitter.setOrientation(Qt.Vertical)
 
+
+        '''
         # Create the scroll area to hold the parameter pages
         ParamScrollArea = QScrollArea()
         ParamScrollArea.setWidget(self.centre_par_widget.step_param_widg)
@@ -365,6 +367,12 @@ class MainWidget(QMainWindow):
 
         v_control_splitter.addWidget(self.tree_out)
         v_control_splitter.addWidget(ParamScrollArea)
+        '''
+
+        v_control_splitter.addWidget(self.tree_out)
+        v_control_splitter.addWidget(self.centre_par_widget.step_param_widg)
+
+        ####################################################################
 
         centre_control_box.addWidget(v_control_splitter)
         centre_control_box.addWidget(self.stop_run_retry)
