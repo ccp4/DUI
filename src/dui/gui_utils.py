@@ -162,7 +162,7 @@ def get_import_run_string(in_str_lst):
     else:
         indices = set()
         # Compile a regex to match every filename in this template
-        pattern = ur"^" + filename.format(ur"(\d{{{}}})".format(tail_size)) + u"$"
+        pattern = u"^" + filename.format(u"(\\d{{{}}})".format(tail_size)) + u"$"
         match_re = re.compile(pattern)
         # Get the template part of every filename and save as an integer
         for entry in in_str_lst:
