@@ -144,6 +144,8 @@ class ControlWidget(QWidget):
         top_box.setContentsMargins(0, 0, 0, 0)
 
         self.step_param_widg = QStackedWidget()
+        self.step_param_widg.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
         self.widg_lst = []
         self.btn_lst = []
 
@@ -161,7 +163,7 @@ class ControlWidget(QWidget):
             ttip = build_ttip(step_name)
 
             new_btn = MyQButton(self)
-            new_btn.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+            new_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             new_btn.intro_content(step_name, tmp_ico, ttip)
 
             if num > 0:
@@ -178,7 +180,7 @@ class ControlWidget(QWidget):
             param_widg.update_command_lst_medium_level.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
-            param_widg.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+            param_widg.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
             lst_heights.append(param_widg.height())
             lst_widths.append(param_widg.width())
