@@ -369,7 +369,6 @@ class MyQButton(QPushButton):
         v_box.insertSpacing(1, 4)
 
         h_box_space = QHBoxLayout()
-        #h_box_space.insertSpacing(1, 62)
         h_box_space.insertSpacing(1, 72)
 
         v_box.addLayout(h_box_space)
