@@ -33,7 +33,7 @@ try:
     # sometimes get a segmentation fault/core dump if it is imported after
     # scipy.linalg is a dependency of sklearn.cluster.DBSCAN
     import scipy.linalg  # noqa
-except ImportError as e:
+except ImportError:
     pass
 
 from dials.command_line.find_spots import phil_scope
@@ -128,7 +128,7 @@ class PhilWidget(QWidget):
         self.phil_list2gui(lst_phil_obj)
 
         self.setLayout(self.bg_box)
-        self.show()
+        # self.show()
 
     def user_searching(self, value):
 
@@ -386,7 +386,7 @@ class TstTmpWidget(QWidget):
         my_box = QVBoxLayout()
         my_box.addWidget(inner_widget)
         self.setLayout(my_box)
-        self.show()
+        # self.show()
 
     def update_lin_txt(self, new_path, new_value):
         logger.debug("new_path = %s", new_path)

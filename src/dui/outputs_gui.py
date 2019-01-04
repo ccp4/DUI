@@ -353,7 +353,7 @@ class InfoWidget(QWidget):
         )
 
         self.setLayout(my_main_box)
-        self.show()
+        # self.show()
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
         # TODO: Change interface of function to not recieve list including

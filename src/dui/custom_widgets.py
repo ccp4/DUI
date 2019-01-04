@@ -113,7 +113,7 @@ class ExportPage(QWidget):
 
         main_v_box.addStretch()
         self.setLayout(main_v_box)
-        self.show()
+        # self.show()
 
         self.simple_lin.setText("integrated.mtz")
 
@@ -223,7 +223,7 @@ class ImportPage(QWidget):
 
         self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
-        self.show()
+        # self.show()
 
     def inv_rota_changed(self):
         logger.debug("self.chk_invert.checkState(): %s", self.chk_invert.checkState())
@@ -349,7 +349,7 @@ class ParamAdvancedWidget(QWidget):
 
         vbox.addWidget(scrollArea)
         self.setLayout(vbox)
-        self.show()
+        # self.show()
 
 
 def update_lst_pair(lst_ini, str_path, str_value):
@@ -436,7 +436,7 @@ class ParamMainWidget(QWidget):
         self._vbox.addWidget(self.dual_level_tab)
 
         self.setLayout(self._vbox)
-        self.show()
+        # self.show()
 
     def build_param_widget(self):
         self.dual_level_tab = QTabWidget()
@@ -745,7 +745,7 @@ class ParamWidget(QWidget):
         v_left_box = QVBoxLayout()
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
-        self.show()
+        # self.show()
 
     def update_param(self, curr_step):
 

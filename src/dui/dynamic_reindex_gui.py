@@ -197,61 +197,6 @@ def heather_text_from_lin(lin_num, j_path):
     return multi_lin_txt, n_of_lines
 
 
-class MyReindexOpts(QWidget):
-    def __init__(self, parent=None):
-        super(MyReindexOpts, self).__init__(parent)
-        self.setWindowTitle("Reindex")
-
-    def set_ref(self, in_json_path, lin_num):
-        my_box = QVBoxLayout()
-        self.my_inner_table = ReindexTable(self)
-        self.my_inner_table.add_opts_lst(json_path=in_json_path)
-
-        if self.my_inner_table.rec_col is not None:
-            my_solu = self.my_inner_table.find_best_solu()
-            self.my_inner_table.opt_clicked(my_solu, 0)
-
-        recomd_str = "Select a bravais lattice to enforce: \n"
-        try:
-            recomd_str += "(best guess solution = row {})".format(
-                self.my_inner_table.tmp_sel + 1
-            )
-
-        except BaseException as e:
-            # Since we don't know exactly what this was supposed to be
-            # - AttributeError? We don't know how to cleanly catch
-            logger.error("Unknown exception catch caught. Was: %s", e)
-            recomd_str += "(no best solution could be automatically determined)"
-
-        bot_box = QHBoxLayout()
-        bot_box.addWidget(QLabel(recomd_str))
-        bot_box.addStretch()
-        ok_but = QPushButton("     OK      ")
-        ok_but.clicked.connect(self.my_inner_table.ok_clicked)
-        bot_box.addWidget(ok_but)
-        heather_text, v_heather_size = heather_text_from_lin(lin_num, in_json_path)
-        my_box.addWidget(QLabel(heather_text))
-        my_box.addWidget(self.my_inner_table)
-        my_box.addLayout(bot_box)
-
-        self.setLayout(my_box)
-
-        n_col = self.my_inner_table.columnCount()
-        tot_width = 80
-        for col in range(n_col):
-            loc_width = self.my_inner_table.columnWidth(col)
-            tot_width += loc_width
-
-        n_row = self.my_inner_table.rowCount()
-        row_height = self.my_inner_table.rowHeight(1)
-        tot_heght = int((float(n_row)) * float(row_height))
-        tot_heght += int((float(v_heather_size + 2)) * float(row_height * 0.62))
-
-        self.resize(tot_width, tot_heght)
-        # self.adjustSize()
-        self.show()
-
-
 class ReindexTable(QTableWidget):
     opt_signal = Signal(int)
 
@@ -267,7 +212,7 @@ class ReindexTable(QTableWidget):
 
         sys_font = QFont()
         self.sys_font_point_size = sys_font.pointSize()
-        self.show()
+        # self.show()
 
     def opt_clicked(self, row, col):
         logger.debug("Solution clicked = %s", row + 1)
@@ -386,6 +331,61 @@ class ReindexTable(QTableWidget):
         self.clear()
         self.setRowCount(1)
         self.setColumnCount(1)
+
+
+class MyReindexOpts(QWidget):
+    def __init__(self, parent=None):
+        super(MyReindexOpts, self).__init__(parent)
+        self.setWindowTitle("Reindex")
+
+    def set_ref(self, in_json_path, lin_num):
+        my_box = QVBoxLayout()
+        self.my_inner_table = ReindexTable(self)
+        self.my_inner_table.add_opts_lst(json_path=in_json_path)
+
+        if self.my_inner_table.rec_col is not None:
+            my_solu = self.my_inner_table.find_best_solu()
+            self.my_inner_table.opt_clicked(my_solu, 0)
+
+        recomd_str = "Select a bravais lattice to enforce: \n"
+        try:
+            recomd_str += "(best guess solution = row {})".format(
+                self.my_inner_table.tmp_sel + 1
+            )
+
+        except BaseException as e:
+            # Since we don't know exactly what this was supposed to be
+            # - AttributeError? We don't know how to cleanly catch
+            logger.error("Unknown exception catch caught. Was: %s", e)
+            recomd_str += "(no best solution could be automatically determined)"
+
+        bot_box = QHBoxLayout()
+        bot_box.addWidget(QLabel(recomd_str))
+        bot_box.addStretch()
+        ok_but = QPushButton("     OK      ")
+        ok_but.clicked.connect(self.my_inner_table.ok_clicked)
+        bot_box.addWidget(ok_but)
+        heather_text, v_heather_size = heather_text_from_lin(lin_num, in_json_path)
+        my_box.addWidget(QLabel(heather_text))
+        my_box.addWidget(self.my_inner_table)
+        my_box.addLayout(bot_box)
+
+        self.setLayout(my_box)
+
+        n_col = self.my_inner_table.columnCount()
+        tot_width = 80
+        for col in range(n_col):
+            loc_width = self.my_inner_table.columnWidth(col)
+            tot_width += loc_width
+
+        n_row = self.my_inner_table.rowCount()
+        row_height = self.my_inner_table.rowHeight(1)
+        tot_heght = int((float(n_row)) * float(row_height))
+        tot_heght += int((float(v_heather_size + 2)) * float(row_height * 0.62))
+
+        self.resize(tot_width, tot_heght)
+        # self.adjustSize()
+        self.show()
 
 
 class MainWindow(QMainWindow):

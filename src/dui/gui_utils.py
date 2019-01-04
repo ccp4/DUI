@@ -394,7 +394,7 @@ class MyQButton(QPushButton):
 
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
-        self.show()
+        # self.show()
 
 
 class TreeNavWidget(QTreeView):
@@ -662,7 +662,7 @@ class OuterCaller(QWidget):
         self.diag = ExternalProcDialog(parent=self.window())
         self.diag.outputFileFound.connect(self.check_for_phil)
         self.setLayout(v_box)
-        self.show()
+        # self.show()
 
     def update_data(self, new_pick=None, new_json=None):
         self.my_pick = new_pick
@@ -831,7 +831,7 @@ class MainWidget(QMainWindow):
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
-        self.show()
+        # self.show()
 
     def btn_1_clicked(self):
         self.txt_bar.start_motion()

@@ -194,7 +194,7 @@ class ControlWidget(QWidget):
         self.setLayout(top_box)
 
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.show()
+        # self.show()
 
         logger.debug("self.height = %s", self.height())
         logger.debug("self.width = %s", self.width())
@@ -298,7 +298,7 @@ class StopRunRetry(QWidget):
         ctrl_box.addWidget(self.stop_btn)
 
         self.setLayout(ctrl_box)
-        self.show()
+        # self.show()
 
 
 class MainWidget(QMainWindow):

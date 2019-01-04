@@ -89,7 +89,7 @@ class ImgPainter(QWidget):
         self.img_width = 247
         self.img_height = 253
 
-        self.show()
+        # self.show()
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
@@ -500,7 +500,7 @@ class PopPaletteMenu(QMenu):
             "...geometry().width() = %s", self.my_parent.slider_min.geometry().width()
         )
         self.setLayout(main_layout)
-        self.show()
+        # self.show()
 
     def showEvent(self, event):
         logger.debug("repainting")
@@ -583,7 +583,7 @@ class PopBigMenu(QMenu):
         my_box.addWidget(img_select_group_box)
 
         self.setLayout(my_box)
-        self.show()
+        # self.show()
 
 
 class MyImgWin(QWidget):
@@ -776,7 +776,7 @@ class MyImgWin(QWidget):
         my_box.addWidget(self.info_label)
 
         self.setLayout(my_box)
-        self.show()
+        # self.show()
 
         # changing default palette:
 
