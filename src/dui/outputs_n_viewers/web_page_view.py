@@ -45,7 +45,7 @@ class WebTab(QWidget):
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
         self.setLayout(hbox)
-        self.show()
+        # self.show()
 
     def update_page(self, new_path=None):
         try:
@@ -90,7 +90,7 @@ class TmpTstWidget(QWidget):
         my_box.addWidget(self.my_widget)
         my_box.addWidget(self.btn1)
         self.setLayout(my_box)
-        self.show()
+        # self.show()
 
     def load_page(self):
         self.my_widget.update_page(sys.argv[1])

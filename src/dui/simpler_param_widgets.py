@@ -40,6 +40,7 @@ from .qt import (
     QWidget,
     Signal,
 )
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +73,7 @@ class ResetButton(QPushButton):
         v_box = QVBoxLayout()
         v_box.addWidget(my_label)
         self.setLayout(v_box)
-        self.show()
+        # self.show()
 
 
 class FindspotsSimplerParameterTab(QWidget):
@@ -728,7 +729,7 @@ class TmpTstWidget(QWidget):
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)
         self.setLayout(my_box)
-        self.show()
+        # self.show()
 
 
 if __name__ == "__main__":

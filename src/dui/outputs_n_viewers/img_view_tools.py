@@ -30,6 +30,7 @@ from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
 from ..qt import QImage, QProgressDialog, Qt
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +51,7 @@ class ProgBarBox(QProgressDialog):
         self.setWindowTitle("updating")
         self.setCancelButtonText("")
         self.setWindowModality(Qt.WindowModal)
-        self.show()
+        # self.show()
 
     def __call__(self, updated_val):
         prog_psent = float(updated_val - self.my_min) / self.my_delta
@@ -118,7 +119,7 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
 
 def list_p_arrange(pos_col, hkl_lst, n_imgs):
     img_lst = []
-    for time in xrange(n_imgs):
+    for time in range(n_imgs):
         img_lst.append([])
 
     txt_lab = "updating Predicted Reflections Data:"
@@ -142,7 +143,7 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
         xrs_size = 1
         int_z_centr = int(pos_tri[2])
         max_xrs_siz = 3
-        for idx in xrange(int_z_centr - max_xrs_siz, int_z_centr + max_xrs_siz):
+        for idx in range(int_z_centr - max_xrs_siz, int_z_centr + max_xrs_siz):
             xrs_size = max_xrs_siz - abs(int_z_centr - idx)
             if idx == int_z_centr:
                 size2 = 2
@@ -163,7 +164,7 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
 def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 
     img_lst = []
-    for time in xrange(n_imgs):
+    for time in range(n_imgs):
         img_lst.append([])
 
     txt_lab = "updating Observed Reflections Data:"
@@ -195,7 +196,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
 
             box_dat.append(local_hkl)
 
-        for idx in xrange(ref_box[4], ref_box[5]):
+        for idx in range(ref_box[4], ref_box[5]):
             if idx >= 0 and idx < n_imgs:
                 img_lst[idx].append(box_dat)
     my_bar.ended()
