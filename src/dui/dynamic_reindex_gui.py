@@ -42,6 +42,7 @@ from .qt import (
     QWidget,
     Signal,
 )
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -237,7 +238,7 @@ class MyReindexOpts(QWidget):
 
         n_col = self.my_inner_table.columnCount()
         tot_width = 80
-        for col in xrange(n_col):
+        for col in range(n_col):
             loc_width = self.my_inner_table.columnWidth(col)
             tot_width += loc_width
 

@@ -67,6 +67,7 @@ from ..qt import (
     QWidget,
     Signal,
 )
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -1014,7 +1015,7 @@ class MyImgWin(QWidget):
                     self.my_sweep.get_raw_data(img_pos)[0].as_double() * loc_scale
                 )
 
-                for times in xrange(1, loc_stk_siz):
+                for times in range(1, loc_stk_siz):
                     pos_to_add = (img_pos) + times
                     self.img_arr = (
                         self.img_arr

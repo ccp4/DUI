@@ -56,6 +56,7 @@ from .qt import (
     QWidget,
     Signal,
 )
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 

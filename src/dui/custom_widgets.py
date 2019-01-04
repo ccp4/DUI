@@ -71,6 +71,7 @@ from .qt import (
     QWidget,
     Signal,
 )
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -467,7 +468,7 @@ class ParamMainWidget(QWidget):
     def reset_par(self):
         logger.debug("Reseting")
 
-        for i in reversed(range(self._vbox.count())):
+        for i in reversed(list(range(self._vbox.count()))):
             widgetToRemove = self._vbox.itemAt(i).widget()
             self._vbox.removeWidget(widgetToRemove)
             widgetToRemove.setParent(None)

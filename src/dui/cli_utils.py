@@ -29,6 +29,7 @@ import os
 import subprocess
 
 import libtbx.phil
+from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -680,7 +681,7 @@ class TreeShow(object):
         for pos, loc_lst in enumerate(self.tree_dat):
             if pos > 0:
                 if loc_lst[1] < self.tree_dat[pos - 1][1]:
-                    for up_pos in xrange(pos - 1, 0, -1):
+                    for up_pos in range(pos - 1, 0, -1):
                         pos_in_str = loc_lst[1] * len(self.ind_spc) + 9
                         left_side = self.tree_dat[up_pos][0][0:pos_in_str]
                         right_side = self.tree_dat[up_pos][0][pos_in_str + 1 :]
