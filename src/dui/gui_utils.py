@@ -36,12 +36,12 @@ from .qt import (
     QApplication,
     QDialog,
     QFont,
-    QHBoxLayout,
     QHeaderView,
     QLabel,
     QMainWindow,
     QProgressBar,
     QPushButton,
+    QToolButton,
     QSize,
     QSizePolicy,
     QStandardItem,
@@ -199,6 +199,7 @@ def get_import_run_string(in_str_lst):
 
 def build_label(com_nam):
 
+    """
     label_connects = {
         "import": "import",
         "find_spots": "find  ",
@@ -210,8 +211,21 @@ def build_label(com_nam):
         "scale": "scale",
         "export": "export",
     }
-
     return "\n" * 2 + label_connects[com_nam]
+    """
+    label_connects = {
+        "import": "import",
+        "find_spots": "find",
+        "index": "index",
+        "refine_bravais_settings": "lattice",
+        "refine": "refine",
+        "integrate": "integrate",
+        "symmetry": "symmetry",
+        "scale": "scale",
+        "export": "export",
+    }
+
+    return label_connects[com_nam]
 
 
 def build_ttip(com_nam):
@@ -353,7 +367,7 @@ def get_lab_txt(com_nam):
     return new_com_nam
 
 
-class MyQButton(QPushButton):
+class MyQButton(QToolButton):
     def __init__(self, text="", parent=None):
         super(MyQButton, self).__init__()
 
@@ -365,36 +379,11 @@ class MyQButton(QPushButton):
         self.setToolTip(my_tool_tip)
 
         btn_txt = build_label(my_text)
+        self.setText(btn_txt)
+        self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
-        v_box = QVBoxLayout()
-        v_box.insertSpacing(1, 4)
-
-        h_box_space = QHBoxLayout()
-        h_box_space.insertSpacing(1, 68)
-
-        v_box.addLayout(h_box_space)
-
-        h_box_label = QHBoxLayout()
-        h_box_label.addStretch()
-
-        my_font = QFont()
-        sys_font_point_size = my_font.pointSize()
-        my_font.setPointSize(sys_font_point_size - 2)
-
-        my_label = QLabel(btn_txt)
-        my_label.setMargin(1)
-        my_label.setFont(my_font)
-
-        h_box_label.addWidget(my_label)
-        h_box_label.addStretch()
-
-        v_box.addLayout(h_box_label)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.cmd_n1 = my_text
-        self.setLayout(v_box)
-
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
-        # self.show()
 
 
 class TreeNavWidget(QTreeView):
