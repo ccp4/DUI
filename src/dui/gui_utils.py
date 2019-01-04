@@ -199,20 +199,6 @@ def get_import_run_string(in_str_lst):
 
 def build_label(com_nam):
 
-    """
-    label_connects = {
-        "import": "import",
-        "find_spots": "find  ",
-        "index": "index",
-        "refine_bravais_settings": "lattice",
-        "refine": "refine",
-        "integrate": "integrate",
-        "symmetry": "symmetry",
-        "scale": "scale",
-        "export": "export",
-    }
-    return "\n" * 2 + label_connects[com_nam]
-    """
     label_connects = {
         "import": "import",
         "find_spots": "find",
