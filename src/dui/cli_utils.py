@@ -430,7 +430,7 @@ def generate_predict(node_obj):
     pre_out = None
     run_path = sys_arg.directory + os.sep + "dui_files"
 
-    if node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]:
+    if node_obj.command_lst[0] in node_obj.dials_com_lst[2:-1]:
         try:
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
@@ -704,4 +704,3 @@ class TreeShow(object):
         for prn_str in self.tree_dat:
             # TODO maybe here goes a print print function instead of logger ...
             logger.debug(prn_str[0])
-

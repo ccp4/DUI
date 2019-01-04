@@ -29,6 +29,8 @@ import pickle
 import shutil
 import sys
 
+from six.moves import raw_input
+
 from .cli_utils import (
     print_list,
     TreeShow,
@@ -170,7 +172,8 @@ class Runner(object):
             if (
                 node != self.current_node
                 and node.success is None
-                and len(node.prev_step.next_step_list) > 1
+                # TODO test further if the next line needs removing
+                # and len(node.prev_step.next_step_list) > 1
             ):
                 lst_to_rm.append(node)
 
