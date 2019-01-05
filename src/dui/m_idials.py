@@ -29,7 +29,11 @@ import pickle
 import shutil
 import sys
 
-from six.moves import raw_input
+try:
+    from six.moves import raw_input
+
+except ImportError:
+    print("six.moves NOT working with raw_input")
 
 from .cli_utils import (
     print_list,
