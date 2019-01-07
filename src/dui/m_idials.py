@@ -29,11 +29,7 @@ import pickle
 import shutil
 import sys
 
-try:
-    from six.moves import raw_input
-
-except ImportError:
-    print("six.moves NOT working with raw_input")
+from six.moves import input
 
 from .cli_utils import (
     print_list,
@@ -352,7 +348,7 @@ if __name__ == "__main__":
     while command.strip() != "exit" and command.strip() != "quit":
         try:
             inp_str = "lin [" + str(idials_runner.current_line) + "] >>> "
-            command = str(raw_input(inp_str))
+            command = str(input(inp_str))
             if command == "":
                 logger.debug("converting empty line in self.slist()")
                 command = "slist"
