@@ -107,6 +107,20 @@ class CommandThread(QThread):
 
 
 class ControlWidget(QWidget):
+    """Primarily, the action button widget.
+
+    Also holds as a property (but not in the QT hierarchy) the stage-parameter
+    widgets.
+
+    Attributes:
+        step_param_widg (QStackedWidget):
+            Collection of ParamWidget widgets, one per action parameter page.
+        widg_lst (List[ParamWidget]):
+            Duplicate list of parameter pages added to step_param_widg
+        btn_lst (List[MyQButton]):
+            The actual action button instances. Each has a .pr_widg written
+            by this class that points to the associated ParamWidget instance
+    """
 
     user_changed = Signal(str)
     update_command_lst_high_level = Signal(list)
@@ -149,11 +163,6 @@ class ControlWidget(QWidget):
         self.widg_lst = []
         self.btn_lst = []
 
-        logger.debug("\n\n\n\n")
-
-        lst_heights = []
-        lst_widths = []
-
         for num, step_name in enumerate(widg_name_list):
 
             tmp_ico = QIcon()
@@ -182,23 +191,9 @@ class ControlWidget(QWidget):
 
             param_widg.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-            lst_heights.append(param_widg.height())
-            lst_widths.append(param_widg.width())
-
-        logger.debug("lst_heights = %s", lst_heights)
-        logger.debug("max(lst_heights) = %s", max(lst_heights))
-
-        logger.debug("lst_widths = %s", lst_widths)
-        logger.debug("max(lst_widths) = %s", max(lst_widths))
-
         self.setLayout(top_box)
 
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        # self.show()
-
-        logger.debug("self.height = %s", self.height())
-        logger.debug("self.width = %s", self.width())
-        logger.debug("\n\n\n\n")
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit(command_lst)
