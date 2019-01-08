@@ -79,10 +79,14 @@ def main():
     logger.info("sys_arg.directory=%s", sys_arg.directory)
 
     # Inline import so that we can load this after logging setup
-    from .qt import QApplication
+    from .qt import QApplication, QStyleFactory
     from .m_idials_gui import MainWidget
 
     app = QApplication(sys.argv)
+    logger.debug(
+        "QT Style: %s [%s]", app.style().objectName(), ", ".join(QStyleFactory.keys())
+    )
+
     ex = MainWidget()
     ex.show()
     sys.exit(app.exec_())
