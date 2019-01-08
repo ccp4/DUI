@@ -8,9 +8,9 @@ QT Cross-compatibility for DUI
 from __future__ import absolute_import, division, print_function
 
 import logging
+import os
 
 logger = logging.getLogger(__name__)
-
 
 try:
     # Try preferred interface first - PyQt5
@@ -24,6 +24,8 @@ try:
     Signal = pyqtSignal
 
     QT5 = True
+    # In case we're using pytest-qt, force the same API
+    os.environ["PYTEST_QT_API"] = "pyqt5"
 
     logger.info("Using PyQt5 for QT")
 
@@ -53,6 +55,9 @@ except ImportError:
         Signal = pyqtSignal
 
         QT5 = False
+        # In case we're using pytest-qt, force the same API
+        os.environ["PYTEST_QT_API"] = "pyqt4v2"
+
         logger.info("Using PyQt4 for QT")
 
     except ImportError:
@@ -62,4 +67,7 @@ except ImportError:
         from PySide.QtWebKit import *
 
         QT5 = False
+        # In case we're using pytest-qt, force the same API
+        os.environ["PYTEST_QT_API"] = "pyside"
+
         logger.info("Using PySide for QT")
