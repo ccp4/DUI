@@ -34,16 +34,14 @@ from .gui_utils import (
     CliOutView,
     Text_w_Bar,
     OuterCaller,
-    # build_command_tip,
     update_info,
     update_pbar_msg,
     kill_w_child,
     TreeNavWidget,
-    build_ttip,
-    # build_label,
-    MyQButton,
-    get_main_path,
+    ACTIONS,
+    MyActionButton,
     try_find_prev_mask_pickle,
+    get_main_path,
 )
 from .m_idials import Runner
 from .outputs_n_viewers.web_page_view import WebTab
@@ -69,18 +67,6 @@ from .qt import (
 )
 
 logger = logging.getLogger(__name__)
-
-widg_name_list = [
-    "import",
-    "find_spots",
-    "index",
-    "refine_bravais_settings",
-    "refine",
-    "integrate",
-    "symmetry",
-    "scale",
-    "export",
-]
 
 
 class CommandThread(QThread):
@@ -117,7 +103,7 @@ class ControlWidget(QWidget):
             Collection of ParamWidget widgets, one per action parameter page.
         widg_lst (List[ParamWidget]):
             Duplicate list of parameter pages added to step_param_widg
-        btn_lst (List[MyQButton]):
+        btn_lst (List[MyActionButton]):
             The actual action button instances. Each has a .pr_widg written
             by this class that points to the associated ParamWidget instance
     """
@@ -127,31 +113,6 @@ class ControlWidget(QWidget):
 
     def __init__(self, parent=None):
         super(ControlWidget, self).__init__()
-
-        main_path = get_main_path()
-        logger.debug("main_path = %s", main_path)
-
-        lst_icons_path = []
-        lst_icons_path.append(main_path + "/resources/import.png")
-        lst_icons_path.append(main_path + "/resources/find_spots.png")
-        lst_icons_path.append(main_path + "/resources/index.png")
-        lst_icons_path.append(main_path + "/resources/reindex.png")
-        lst_icons_path.append(main_path + "/resources/refine.png")
-        lst_icons_path.append(main_path + "/resources/integrate.png")
-        lst_icons_path.append(main_path + "/resources/symmetry.png")
-        lst_icons_path.append(main_path + "/resources/scale.png")
-        lst_icons_path.append(main_path + "/resources/export.png")
-
-        lst_grayed_icons_path = []
-        lst_grayed_icons_path.append(main_path + "/resources/import_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/find_spots_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/index_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/reindex_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/refine_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/integrate_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/symmetry_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/scale_grayed.png")
-        lst_grayed_icons_path.append(main_path + "/resources/export_grayed.png")
 
         top_box = QVBoxLayout()
         top_box.setMargin(0)
@@ -163,26 +124,20 @@ class ControlWidget(QWidget):
         self.widg_lst = []
         self.btn_lst = []
 
-        for num, step_name in enumerate(widg_name_list):
-
-            tmp_ico = QIcon()
-            tmp_ico.addFile(lst_icons_path[num], mode=QIcon.Normal)
-            tmp_ico.addFile(lst_grayed_icons_path[num], mode=QIcon.Disabled)
-
-            ttip = build_ttip(step_name)
-
-            new_btn = MyQButton(self)
+        for action in ACTIONS.values():
+            new_btn = MyActionButton(action, parent=self)
             new_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            new_btn.intro_content(step_name, tmp_ico, ttip)
 
-            if num > 0:
+            # Don't add import to our button list for now - but other code
+            # currently assumes the order of this list so we can't not add and
+            # create the parameter pages here
+            if action.id == "import":
+                new_btn.hide()
+            else:
                 new_btn.clicked.connect(self.btn_clicked)
                 top_box.addWidget(new_btn)
 
-            elif num == 0:
-                new_btn.hide()
-
-            param_widg = ParamWidget(step_name)
+            param_widg = ParamWidget(action.id)
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
             self.widg_lst.append(param_widg)
@@ -235,15 +190,22 @@ class ControlWidget(QWidget):
         self.update_command_lst_high_level.emit(command_lst)
 
     def gray_outs_all(self):
+        """Disable all action buttons."""
         for btn in self.btn_lst:
             btn.setEnabled(False)
 
     def gray_outs_from_lst(self, lst_nxt):
+        """
+        Disable any action buttons not in a list.
+
+        Arguments:
+            lst_nxt (List[str]): List of action ID's to leave enabled
+        """
         self.gray_outs_all()
 
         for btn in self.btn_lst:
             for cmd_str in lst_nxt:
-                if btn.cmd_n1 == cmd_str:
+                if btn.action.id == cmd_str:
                     btn.setEnabled(True)
 
 

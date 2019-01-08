@@ -23,6 +23,7 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from collections import OrderedDict, namedtuple
 import logging
 import os
 import re
@@ -37,6 +38,7 @@ from .qt import (
     QDialog,
     QFont,
     QHeaderView,
+    QIcon,
     QLabel,
     QMainWindow,
     QProgressBar,
@@ -59,6 +61,84 @@ from .qt import (
 from six.moves import range
 
 logger = logging.getLogger(__name__)
+
+# Basic tuple to store information about actions
+ActionInformation = namedtuple(
+    "ActionInformation", ["id", "label", "tooltip", "icon", "icon_disabled"]
+)
+
+# Basic implementation of a simple actions lookup table - not a perfect solution
+# but allows partial refactoring to centralised previously scattered info
+ACTIONS = OrderedDict(
+    [
+        (x.id, x)
+        for x in [
+            ActionInformation(
+                id="import",
+                label="import",
+                tooltip="dials.import ...",
+                icon="resources/import.png",
+                icon_disabled="resources/import_grayed.png",
+            ),
+            ActionInformation(
+                id="find_spots",
+                label="find",
+                tooltip="dials.find_spots ...",
+                icon="resources/find_spots.png",
+                icon_disabled="resources/find_spots_grayed.png",
+            ),
+            ActionInformation(
+                id="index",
+                label="index",
+                tooltip="dials.index ...",
+                icon="resources/index.png",
+                icon_disabled="resources/index_grayed.png",
+            ),
+            ActionInformation(
+                id="refine_bravais_settings",
+                label="lattice",
+                tooltip=" dials.refine_bravais_settings\n     +\ndials.reindex ...",
+                icon="resources/reindex.png",
+                icon_disabled="resources/reindex_grayed.png",
+            ),
+            ActionInformation(
+                id="refine",
+                label="refine",
+                tooltip="dials.refine ...",
+                icon="resources/refine.png",
+                icon_disabled="resources/refine_grayed.png",
+            ),
+            ActionInformation(
+                id="integrate",
+                label="integrate",
+                tooltip="dials.integrate ...",
+                icon="resources/integrate.png",
+                icon_disabled="resources/integrate_grayed.png",
+            ),
+            ActionInformation(
+                id="symmetry",
+                label="symmetry",
+                tooltip="dials.symmetry ...",
+                icon="resources/symmetry_grayed.png",
+                icon_disabled="resources/symmetry_grayed.png",
+            ),
+            ActionInformation(
+                id="scale",
+                label="scale",
+                tooltip="dials.scale ...",
+                icon="resources/scale.png",
+                icon_disabled="resources/scale_grayed.png",
+            ),
+            ActionInformation(
+                id="export",
+                label="export",
+                tooltip="dials.export ...",
+                icon="resources/export_grayed.png",
+                icon_disabled="resources/export_grayed.png",
+            ),
+        ]
+    ]
+)
 
 
 def try_find_prev_mask_pickle(cur_nod):
@@ -112,6 +192,7 @@ def kill_w_child(pid_num):
 
 
 def get_main_path():
+    """Get the path of the root of the DUI package"""
     return str(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -197,43 +278,8 @@ def get_import_run_string(in_str_lst):
     return dirname, out_str
 
 
-def build_label(com_nam):
-
-    label_connects = {
-        "import": "import",
-        "find_spots": "find",
-        "index": "index",
-        "refine_bravais_settings": "lattice",
-        "refine": "refine",
-        "integrate": "integrate",
-        "symmetry": "symmetry",
-        "scale": "scale",
-        "export": "export",
-    }
-
-    return label_connects[com_nam]
-
-
-def build_ttip(com_nam):
-
-    tip_connects = {
-        "import": " dials.import ...",
-        "find_spots": " dials.find_spots ...",
-        "index": " dials.index ...",
-        "refine_bravais_settings": " dials.refine_bravais_settings\n"
-        + "         + \n"
-        + " dials.reindex ...",
-        "refine": " dials.refine ...",
-        "integrate": " dials.integrate ...",
-        "symmetry": " dials.symmetry ...",
-        "scale": " dials.scale ...",
-        "export": " dials.export ...",
-    }
-
-    return tip_connects[com_nam]
-
-
 def build_command_tip(command_lst):
+    """Build a tooltip with information about what was actually run"""
     if command_lst == [None]:
         str_tip = "?"
 
@@ -327,49 +373,37 @@ def update_pbar_msg(main_obj):
         if nxt_cmd is None:
             txt = "Done"
         else:
-            lab_nxt_cmd = get_lab_txt(nxt_cmd)
+            lab_nxt_cmd = ACTIONS[nxt_cmd].label
             txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
 
     main_obj.txt_bar.setText(txt)
     logger.debug("update_pbar_msg = %s", txt)
 
 
-def get_lab_txt(com_nam):
+class MyActionButton(QToolButton):
+    def __init__(self, action, parent=None):
+        super(QToolButton, self).__init__(parent=parent)
 
-    cmd_to_labl = {
-        "import": " import ",
-        "find_spots": " find ",
-        "index": " index ",
-        "refine_bravais_settings": " lattice ",
-        "refine": " refine ",
-        "integrate": " integrate",
-        "symmetry": " symmetry",
-        "scale": " scale",
-        "export": " export",
-    }
+        self.action = action
 
-    new_com_nam = cmd_to_labl[com_nam]
+        # Load the icon for this action
+        tmp_ico = QIcon()
+        # TODO(nick): Switch to proper package resource loading?
+        main_path = get_main_path()
+        tmp_ico.addFile(os.path.join(main_path, action.icon), mode=QIcon.Normal)
+        tmp_ico.addFile(
+            os.path.join(main_path, action.icon_disabled), mode=QIcon.Disabled
+        )
 
-    return new_com_nam
-
-
-class MyQButton(QToolButton):
-    def __init__(self, text="", parent=None):
-        super(MyQButton, self).__init__()
-
-    def intro_content(self, my_text, my_icon, my_tool_tip):
-
-        self.setIcon(my_icon)
+        self.setIcon(tmp_ico)
         self.setIconSize(QSize(31, 30))
 
-        self.setToolTip(my_tool_tip)
+        self.setToolTip(action.tooltip)
+        self.setText(action.label)
 
-        btn_txt = build_label(my_text)
-        self.setText(btn_txt)
         self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.cmd_n1 = my_text
 
 
 class TreeNavWidget(QTreeView):
