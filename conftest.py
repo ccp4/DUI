@@ -30,7 +30,7 @@ def qtstyles(request, qtbot):
 
 
 @pytest.fixture
-def screenshots(request):
+def screenshots(qtbot, request):
     """Fixture to simplify making screenshots"""
 
     # Find the repo root
@@ -47,17 +47,37 @@ def screenshots(request):
             self.count = 0
             self.root_path = root_path
 
+        def _filename(self):
+            "Generate a filename from the test name"
+            test_file_name = os.path.splitext(
+                os.path.basename(request.node.parent.name)
+            )[0]
+            return "{}__{}_{}.png".format(test_file_name, request.node.name, self.count)
+
         def saveWidget(self, widget, filename=None):
             """Save a widget screenshot."""
-            if filename is None:
-                test_file_name = os.path.splitext(
-                    os.path.basename(request.node.parent.name)
-                )[0]
-                filename = "{}__{}_{}.png".format(
-                    test_file_name, request.node.name, self.count
-                )
+            filename = filename or self._filename()
             full_path = os.path.join(self.root_path, filename)
             QPixmap.grabWidget(widget).save(full_path)
+            self.count += 1
+
+        def saveWindow(self, window, filename=None):
+            """Save a screenshot of a whole window, with decoration.
+
+            Slower, and mildly more error-prone than saving the widget
+            directly, as it relies on the windowing system.
+            """
+            filename = filename or self._filename()
+            full_path = os.path.join(self.root_path, filename)
+
+            window.activateWindow()
+            window.raise_()
+            qtbot.waitForWindowShown(window)
+
+            desktop = QPixmap.grabWindow(QApplication.desktop().winId())
+            crop = desktop.copy(window.frameGeometry())
+            crop.save(full_path)
+
             self.count += 1
 
     return SSSaver(ss_dir)

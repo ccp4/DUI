@@ -33,4 +33,4 @@ def test_error_dialog(screenshots, tmpdir):
     # Load and show the error dialog for a screenshot
     dialog = loading_error_dialog(excinfo.value.original_traceback)
     dialog.show()
-    screenshots.saveWidget(dialog)
+    screenshots.saveWindow(dialog)
