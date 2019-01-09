@@ -100,12 +100,15 @@ class ControlWidget(QWidget):
 
     Attributes:
         step_param_widg (QStackedWidget):
-            Collection of ParamWidget widgets, one per action parameter page.
-        widg_lst (List[ParamWidget]):
-            Duplicate list of parameter pages added to step_param_widg
+            Physical collection widget that holds every possible parameter page.
+        param_widgets (Dict[str, ParamWidget]):
+            Mapping of action ID to physical widget to handle the parameter page.
         btn_lst (List[MyActionButton]):
             The actual action button instances. Each has a .pr_widg written
-            by this class that points to the associated ParamWidget instance
+            by this class that points to the associated ParamWidget instance,
+            and a .action property to point to the action it represents.
+        user_changed (Signal[str]):
+            A signal emitted when the user has requested a command change
     """
 
     user_changed = Signal(str)
@@ -121,10 +124,23 @@ class ControlWidget(QWidget):
         self.step_param_widg = QStackedWidget()
         self.step_param_widg.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        self.widg_lst = []
+        self.param_widgets = {}
         self.btn_lst = []
 
-        for action in ACTIONS.values():
+        # We only show action buttons for a subset of possible actions
+        button_actions = [
+            "import",  # Leave in for now - currently pages must be precreated
+            "find_spots",
+            "index",
+            "refine_bravais_settings",
+            "refine",
+            "integrate",
+            "symmetry",
+            "scale",
+            "export",
+        ]
+
+        for action in [ACTIONS[x] for x in button_actions]:
             new_btn = MyActionButton(action, parent=self)
             new_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
@@ -134,13 +150,13 @@ class ControlWidget(QWidget):
             if action.id == "import":
                 new_btn.hide()
             else:
-                new_btn.clicked.connect(self.btn_clicked)
+                new_btn.clicked.connect(self._action_button_clicked)
                 top_box.addWidget(new_btn)
 
             param_widg = ParamWidget(action.id)
             new_btn.pr_widg = param_widg
             self.step_param_widg.addWidget(param_widg)
-            self.widg_lst.append(param_widg)
+            self.param_widgets[action.id] = param_widg
             param_widg.update_command_lst_medium_level.connect(self.update_parent_lst)
             self.btn_lst.append(new_btn)
 
@@ -157,36 +173,50 @@ class ControlWidget(QWidget):
         self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
 
     def set_widget(self, nxt_cmd=None, curr_step=None):
+        """Switch to a different action parameter page.
 
-        found_label = False
+        Arguments:
+            nxt_cmd (str):  Action ID for the page to switch to
+            curr_step:      Metadata about the current page state
+        """
+        # Firstly try looking in the params widget lookup table
+        if nxt_cmd in self.param_widgets:
+            widget = self.param_widgets[nxt_cmd]
+            self.step_param_widg.setCurrentWidget(widget)
+            try:
+                widget.update_param(curr_step)
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.error(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
+                logger.debug("\n Unable to update params\n")
+        elif nxt_cmd == "reindex":
+            # Reindex is a special step because it doesn't have it's own page
+            logger.debug("Reindex mode")
+            param_widget = self.param_widgets["refine_bravais_settings"]
+            self.step_param_widg.setCurrentWidget(param_widget)
+        else:
+            logger.error("No action widget found in set_widget")
 
-        for widget in self.widg_lst:
-            if widget.my_label == nxt_cmd:
-                self.step_param_widg.setCurrentWidget(widget)
-                found_label = True
-                try:
-                    widget.update_param(curr_step)
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.error(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
-                    )
-                    logger.debug("\n Unable to update params\n")
+    def _action_button_clicked(self):
+        "Slot: An action button was clicked"
 
-        if not found_label and nxt_cmd == "reindex":
-            logger.debug("assuming reindex mode")
-            widget_now = self.widg_lst[3]
-            self.step_param_widg.setCurrentWidget(widget_now)
-
-    def btn_clicked(self):
-        logger.debug("btn_clicked")
         my_sender = self.sender()
-        self.step_param_widg.setCurrentWidget(my_sender.pr_widg)
-        self.user_changed.emit(my_sender.pr_widg.my_label)
+        logger.debug("Action button clicked - %s", my_sender.action.id)
 
-        logger.debug("my_sender.pr_widg.my_label = %s", my_sender.pr_widg.my_label)
-        command_lst = [str(my_sender.pr_widg.my_label)]
+        # Switch to the pareter page for this action
+        param_page = self.param_widgets[my_sender.action.id]
+        self.step_param_widg.setCurrentWidget(param_page)
+
+        # Appears to: Use my_label as a lookup of the action ID for this parameter page
+        self.user_changed.emit(param_page.my_label)
+        logger.debug(
+            "my_label (action ID?) of parameter widget for clicked action: %s",
+            param_page.my_label,
+        )
+        command_lst = [str(param_page.my_label)]
         self.update_command_lst_high_level.emit(command_lst)
 
     def gray_outs_all(self):
