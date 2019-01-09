@@ -28,22 +28,18 @@ import logging
 import os
 import re
 import subprocess
-import sys
 
 import psutil
 
 from .cli_utils import get_next_step, sys_arg, get_phil_par
 from .qt import (
-    QApplication,
     QDialog,
     QFont,
     QHeaderView,
     QIcon,
     QLabel,
-    QMainWindow,
     QProgressBar,
     QPushButton,
-    QToolButton,
     QSize,
     QSizePolicy,
     QStandardItem,
@@ -53,10 +49,12 @@ from .qt import (
     QT5,
     QTextEdit,
     QThread,
+    QToolButton,
     QTreeView,
     QVBoxLayout,
     QWidget,
     Signal,
+    uic,
 )
 from six.moves import range
 
@@ -194,6 +192,11 @@ def kill_w_child(pid_num):
 def get_main_path():
     """Get the path of the root of the DUI package"""
     return str(os.path.dirname(os.path.abspath(__file__)))
+
+
+def get_package_path(path):
+    """Get the absolute path of something under the DUI package"""
+    return os.path.join(get_main_path(), path)
 
 
 def get_import_run_string(in_str_lst):
@@ -807,63 +810,9 @@ class Text_w_Bar(QProgressBar):
         logger.debug("ending motion")
 
 
-class MainWidget(QMainWindow):
-    """
-    This is a test GUI only used by the developer
-    the user should NEVER see this code running
-    """
-
-    def __init__(self):
-        super(MainWidget, self).__init__()
-        main_box = QVBoxLayout()
-        main_box.addWidget(QLabel("Test dummy GUI"))
-
-        self.tst_view = CliOutView(app=app)
-        main_box.addWidget(self.tst_view)
-        self.txt_bar = Text_w_Bar()
-        main_box.addWidget(self.txt_bar)
-
-        btn1 = QPushButton("\n Do \n", self)
-        btn1.clicked.connect(self.btn_1_clicked)
-        main_box.addWidget(btn1)
-
-        btn2 = QPushButton("\n Stop \n", self)
-        btn2.clicked.connect(self.btn_2_clicked)
-        main_box.addWidget(btn2)
-
-        btn3 = QPushButton("\n refresh text \n", self)
-        btn3.clicked.connect(self.btn_3_clicked)
-        main_box.addWidget(btn3)
-
-        self.n = 1
-
-        self.main_widget = QWidget()
-        self.main_widget.setLayout(main_box)
-        self.setCentralWidget(self.main_widget)
-        # self.show()
-
-    def btn_1_clicked(self):
-        self.txt_bar.start_motion()
-        self.n += 5
-        my_text = str(self.n) + "aaaaa bbbbbb a ccccccccc a" + str(self.n * self.n)
-        self.tst_view.add_txt(my_text)
-        self.txt_bar.setText(my_text)
-
-    def btn_2_clicked(self):
-        my_text = " Done "
-        self.tst_view.add_txt(my_text)
-        self.txt_bar.setText(my_text)
-        self.txt_bar.end_motion()
-
-    def btn_3_clicked(self):
-        # TODO update this path
-        self.tst_view.refresh_txt(
-            "../../dui_test/X4_wide/reuse_area/dials_files/2_find_spots.log"
-        )
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = MainWidget()
-    ex.show()
-    sys.exit(app.exec_())
+def loading_error_dialog(message):
+    """Create an error message about loading in a dialog box."""
+    dialog_filename = get_package_path("resources/error_loading_dialog.ui")
+    dialog = uic.loadUi(dialog_filename)
+    dialog.errorMessage.setPlainText(message)
+    return dialog

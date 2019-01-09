@@ -57,6 +57,10 @@ def main():
             level=logging.DEBUG, format="%(levelname)s:%(name)s:%(lineno)s %(message)s"
         )
 
+    # Turn things off unless at varying depths of verbosity
+    if args.verbose <= 2:
+        logging.getLogger("PyQt4.uic").setLevel(logging.WARNING)
+
     # Process the phil-style parameters
     for arg in args.positionals[:]:
         if arg.startswith("template="):
@@ -80,15 +84,25 @@ def main():
 
     # Inline import so that we can load this after logging setup
     from .qt import QApplication, QStyleFactory
-    from .m_idials_gui import MainWidget
+    from .m_idials_gui import MainWidget, DUIDataLoadingError
+    from .gui_utils import loading_error_dialog
 
     app = QApplication(sys.argv)
     logger.debug(
         "QT Style: %s [%s]", app.style().objectName(), ", ".join(QStyleFactory.keys())
     )
 
-    ex = MainWidget()
+    try:
+        ex = MainWidget()
+    except DUIDataLoadingError as e:
+        ex = loading_error_dialog(e.original_traceback)
+
     ex.show()
+
+    # Needed for a QT4 bug(?) on mac - windows don't steal focus on open
+    ex.activateWindow()
+    ex.raise_()
+
     sys.exit(app.exec_())
 
 

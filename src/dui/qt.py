@@ -19,6 +19,7 @@ try:
     from PyQt5.QtGui import *
     from PyQt5.QtWebKit import *
     from PyQt5.QtWebKitWidgets import *
+    from PyQt5 import uic
 
     # Signal implementation changes slightly across implementations
     Signal = pyqtSignal
@@ -51,6 +52,7 @@ except ImportError:
         from PyQt4.QtGui import *
         from PyQt4.QtCore import *
         from PyQt4.QtWebKit import *
+        from PyQt4 import uic
 
         Signal = pyqtSignal
 
@@ -65,6 +67,7 @@ except ImportError:
         from PySide.QtGui import *
         from PySide.QtCore import *
         from PySide.QtWebKit import *
+        from PySide import uic
 
         QT5 = False
         # In case we're using pytest-qt, force the same API

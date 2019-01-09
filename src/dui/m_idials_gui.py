@@ -25,7 +25,9 @@ from __future__ import absolute_import, division, print_function
 import logging
 import os
 import pickle
-import shutil
+import traceback
+
+from six import raise_from
 
 from .dynamic_reindex_gui import MyReindexOpts
 from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
@@ -289,33 +291,41 @@ class StopRunRetry(QWidget):
         # self.show()
 
 
+class DUIDataLoadingError(Exception):
+    def __init__(self, original):
+        self.original_traceback = original
+
+
+def load_previous_state(dui_files_path):
+    with open(os.path.join(dui_files_path, "dui_files/bkp.pickle"), "rb") as bkp_in:
+        return pickle.load(bkp_in)
+
+
 class MainWidget(QMainWindow):
     def __init__(self):
         super(MainWidget, self).__init__()
+
+        self.my_pop = None  # Any child popup windows. Only bravais_table ATM
         self.storage_path = sys_arg.directory
-        try:
-            with open(self.storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
-                self.idials_runner = pickle.load(bkp_in)
 
-            # TODO sometimes the following error appears
-            # Attribute not found
-            #   'module' object has no attribute 'CommandNode'
+        refresh_gui = False
 
-            refresh_gui = True
-
-        except Exception as e:
-            logger.debug("str(e) = %s", str(e))
-            logger.debug("e.__doc__ = %s", e.__doc__)
-            logger.debug("e.message = %s", e.message)
-            self.idials_runner = Runner()
-
+        # Load the previous state of DUI, if present
+        dui_files_path = os.path.join(self.storage_path, "dui_files")
+        if os.path.isdir(dui_files_path):
             try:
-                shutil.rmtree(self.storage_path + "/dui_files")
-            except OSError:
-                logger.debug('failed to do "shutil.rmtree("/dui_files")"')
-
-            os.mkdir(self.storage_path + "/dui_files")
-            refresh_gui = False
+                self.idials_runner = load_previous_state(dui_files_path)
+                raise RuntimeError("Something something error")
+            except Exception as e:
+                # Something went wrong - tell the user then close
+                msg = traceback.format_exc()
+                logger.error("ERROR LOADING PREVIOUS DATA:\n%s", msg)
+                raise_from(DUIDataLoadingError(msg), e)
+            refresh_gui = True
+        else:
+            # No dui_files path - start with a fresh state
+            os.mkdir(dui_files_path)
+            self.idials_runner = Runner()
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
