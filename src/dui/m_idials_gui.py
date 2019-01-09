@@ -169,8 +169,9 @@ class ControlWidget(QWidget):
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit(command_lst)
 
-    def get_arg_obj(self, sys_arg_in):
-        self.widg_lst[0].my_widget.get_arg_obj(sys_arg_in)
+    def pass_sys_arg_object_to_import(self, sys_arg_in):
+        """Explicitly pass the system argument object to the import page"""
+        self.param_widgets["import"].my_widget.set_arg_obj(sys_arg_in)
 
     def set_widget(self, nxt_cmd=None, curr_step=None):
         """Switch to a different action parameter page.
@@ -328,7 +329,7 @@ class MainWidget(QMainWindow):
         main_box = QVBoxLayout()
 
         self.centre_par_widget = ControlWidget()
-        self.centre_par_widget.get_arg_obj(sys_arg)
+        self.centre_par_widget.pass_sys_arg_object_to_import(sys_arg)
         self.stop_run_retry = StopRunRetry()
         self.tree_out = TreeNavWidget()
 

@@ -282,7 +282,8 @@ class ImportPage(QWidget):
 
         logger.debug("self.simple_lin.setText:<<" + txt_lin + ">>")
 
-    def get_arg_obj(self, sys_arg_in):
+    def set_arg_obj(self, sys_arg_in):
+        """Pass the system argument object to handle launch arguments."""
         logger.debug("sys_arg_in = %s", sys_arg_in)
         if sys_arg_in.template is not None:
             str_arg = str(sys_arg_in.template)
