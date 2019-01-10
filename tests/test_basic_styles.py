@@ -28,6 +28,7 @@ def test_error_dialog(screenshots, tmpdir):
     sys_arg.directory = str(tmpdir)
     # Ensure path is created so DUI tries to load
     (tmpdir / "dui_files").mkdir()
+    (tmpdir / "dui_files" / "bkp.pickle").open("w").close()
     with pytest.raises(DUIDataLoadingError) as excinfo:
         MainWidget()
     # Load and show the error dialog for a screenshot

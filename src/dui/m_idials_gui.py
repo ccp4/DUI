@@ -297,7 +297,7 @@ class DUIDataLoadingError(Exception):
 
 
 def load_previous_state(dui_files_path):
-    with open(os.path.join(dui_files_path, "dui_files/bkp.pickle"), "rb") as bkp_in:
+    with open(os.path.join(dui_files_path, "bkp.pickle"), "rb") as bkp_in:
         return pickle.load(bkp_in)
 
 
@@ -312,10 +312,9 @@ class MainWidget(QMainWindow):
 
         # Load the previous state of DUI, if present
         dui_files_path = os.path.join(self.storage_path, "dui_files")
-        if os.path.isdir(dui_files_path):
+        if os.path.isfile(os.path.join(dui_files_path, "bkp.pickle")):
             try:
                 self.idials_runner = load_previous_state(dui_files_path)
-                raise RuntimeError("Something something error")
             except Exception as e:
                 # Something went wrong - tell the user then close
                 msg = traceback.format_exc()
@@ -324,7 +323,8 @@ class MainWidget(QMainWindow):
             refresh_gui = True
         else:
             # No dui_files path - start with a fresh state
-            os.mkdir(dui_files_path)
+            if not os.path.isdir(dui_files_path):
+                os.mkdir(dui_files_path)
             self.idials_runner = Runner()
 
         self.cli_tree_output = TreeShow()
