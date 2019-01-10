@@ -8,18 +8,18 @@ from dui.qt import QApplication, QPixmap, QStyleFactory
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--gui", action="store_true", default=False, help="Run interactive GUI tests"
+        "--nogui", action="store_true", default=False, help="Don't run GUI tests"
     )
 
 
 def pytest_collection_modifyitems(config, items):
     """Don't run GUI tests unless --gui passed"""
 
-    if not config.getoption("--gui") and len(items) > 1:
-        skip_gui = pytest.mark.skip(reason="need --gui option to run")
-        for item in items:
-            if "gui" in item.keywords:
-                item.add_marker(skip_gui)
+    skip_gui = pytest.mark.skip(reason="--nogui specified - skipping gui tests")
+
+    for item in items:
+        if config.getoption("--nogui") and "gui" in item.keywords:
+            item.add_marker(skip_gui)
 
 
 @pytest.fixture(params=list(QStyleFactory.keys()))
