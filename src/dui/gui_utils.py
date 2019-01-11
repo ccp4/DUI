@@ -131,7 +131,7 @@ ACTIONS = OrderedDict(
                 id="export",
                 label="export",
                 tooltip="dials.export ...",
-                icon="resources/export_grayed.png",
+                icon="resources/export.png",
                 icon_disabled="resources/export_grayed.png",
             ),
         ]
