@@ -117,7 +117,7 @@ ACTIONS = OrderedDict(
                 id="symmetry",
                 label="symmetry",
                 tooltip="dials.symmetry ...",
-                icon="resources/symmetry_grayed.png",
+                icon="resources/symmetry.png",
                 icon_disabled="resources/symmetry_grayed.png",
             ),
             ActionInformation(
