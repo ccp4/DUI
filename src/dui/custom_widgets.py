@@ -27,6 +27,8 @@ import logging
 import os
 import sys
 
+import libtbx.phil
+
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import phil_scope as phil_scope_index
 from dials.command_line.refine_bravais_settings import (
@@ -34,8 +36,18 @@ from dials.command_line.refine_bravais_settings import (
 )
 from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
-from dials.command_line.symmetry import phil_scope as phil_scope_symetry
-from dials.command_line.scale import phil_scope as phil_scope_scale
+
+# HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
+# still runs. This isn't generally robust but solves this specifically
+try:
+    from dials.command_line.symmetry import phil_scope as phil_scope_symetry
+except ImportError:
+    phil_scope_symetry = libtbx.phil.parse("")
+
+try:
+    from dials.command_line.scale import phil_scope as phil_scope_scale
+except ImportError:
+    phil_scope_scale = libtbx.phil.parse("")
 
 # from dials.command_line.export import phil_scope as phil_scope_export
 
