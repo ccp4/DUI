@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="DUI",
+    name="dui",
     version="1.0",
     license="GPL 2.0",
     description="Dials User Interface",
@@ -36,7 +36,7 @@ setup(
                 "src/dui/resources/zoom_plus_ico.png",
                 "src/dui/resources/zoom_ono_one_ico.png",
                 "src/dui/resources/zoom_minus_ico.png",
-                "src/dui/resources/error_loading_dialog.png",
+                "src/dui/resources/error_loading_dialog.ui",
             ],
         )
     ],
