@@ -3,7 +3,7 @@ project(dui NONE)
 
 install(
     FILES
-        LICENSE.txt
+        LICENSE
     DESTINATION
         licenses/License-dui
 )

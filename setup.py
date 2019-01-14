@@ -1,8 +1,15 @@
 from setuptools import setup
+import os
+
+# Read the DUI version out of a version file in the package
+_ver_file = os.path.join(os.path.dirname(__file__), "src", "dui", "_version.py")
+_ver_locals = {}
+exec(open(_ver_file).read(), _ver_locals)
+DUI_VERSION = _ver_locals["__version__"]
 
 setup(
     name="dui",
-    version="1.0",
+    version=DUI_VERSION,
     license="GPL 2.0",
     description="Dials User Interface",
     author="Luis Fuentes-Montero (Luiso)",

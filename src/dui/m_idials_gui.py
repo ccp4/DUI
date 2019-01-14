@@ -29,6 +29,7 @@ import traceback
 
 from six import raise_from
 
+from ._version import __version__
 from .dynamic_reindex_gui import MyReindexOpts
 from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
 from .custom_widgets import ParamWidget
@@ -415,7 +416,7 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.setWindowTitle("CCP4 DUI")
+        self.setWindowTitle("CCP4 DUI - {}".format(__version__))
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
         self.just_reindexed = False
