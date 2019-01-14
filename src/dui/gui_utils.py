@@ -27,6 +27,7 @@ from collections import OrderedDict, namedtuple
 import logging
 import os
 import re
+import sys
 import subprocess
 
 import psutil
@@ -167,6 +168,36 @@ def try_find_prev_mask_pickle(cur_nod):
             return None
 
     return pickle_path
+
+
+# Public domain code by anatoly techtonik <techtonik@gmail.com>
+# from https://gist.github.com/4368898
+def find_executable(executable, path=None):
+    """Find if 'executable' can be run. Looks for it in 'path'
+    (string that lists directories separated by 'os.pathsep';
+    defaults to os.environ['PATH']). Checks for all executable
+    extensions. Returns full path or None if no command is found.
+    """
+    if path is None:
+        path = os.environ["PATH"]
+    paths = path.split(os.pathsep)
+    extlist = [""]
+    if sys.platform == "win32":
+        pathext = os.environ["PATHEXT"].lower().split(os.pathsep)
+        (base, ext) = os.path.splitext(executable)
+        if ext.lower() not in pathext:
+            extlist = pathext
+    for ext in extlist:
+        execname = executable + ext
+        if os.path.isfile(execname):
+            return execname
+        else:
+            for p in paths:
+                f = os.path.join(p, execname)
+                if os.path.isfile(f):
+                    return f
+    else:
+        return None
 
 
 def kill_w_child(pid_num):
@@ -571,7 +602,9 @@ class ExternalProcDialog(QDialog):
         # assert self.my_process is None
 
         # Build the command
-        cmd_to_run = [command, str(json_path)]
+        cmd_to_run = [find_executable(command), str(json_path)]
+        logger.debug("Resolving %s as %s", command, cmd_to_run[0])
+
         first_pikl_path = pickle_path[0]
         if first_pikl_path is not None:
             cmd_to_run.append(str(first_pikl_path))
