@@ -197,7 +197,7 @@ class Runner(object):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("can NOT fork <None> node ")
 
     def goto(self, new_lin):
@@ -217,7 +217,7 @@ class Runner(object):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             html_rep = None
 
         return html_rep
@@ -252,7 +252,7 @@ class Runner(object):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("failed to retrieve log path")
 
         return path_to_log
@@ -275,7 +275,7 @@ class Runner(object):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("no experimet json file available")
@@ -303,7 +303,7 @@ class Runner(object):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("no pickle file available")
 
         return ref_pkl, pre_pkl
@@ -355,7 +355,7 @@ if __name__ == "__main__":
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug(" ... interrupting")
             sys.exit(0)
 

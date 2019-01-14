@@ -433,7 +433,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
@@ -462,7 +462,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("found self.simpler_widget without << item_changed >> signal")
 
         try:
@@ -510,7 +510,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("\n This step runs as fast as it can with nproc = 1 \n")
 
     def raise_nproc_to_max(self):
@@ -547,7 +547,7 @@ class ParamMainWidget(QWidget):
                                 except BaseException as e:
                                     # We don't want to catch bare exceptions but don't
                                     # know what this was supposed to catch. Log it.
-                                    logger.error(
+                                    logger.debug(
                                         "Caught unknown exception type %s: %s",
                                         type(e).__name__,
                                         e,
@@ -565,14 +565,14 @@ class ParamMainWidget(QWidget):
                                     except BaseException as e:
                                         # We don't want to catch bare exceptions but
                                         # dont know what this was supposed to catch.
-                                        logger.error("Caught unknown exception: %s", e)
+                                        logger.debug("Caught unknown exception: %s", e)
                                         logger.debug("failed to:")
                                         logger.debug("widg.setCurrentIndex(pos)")
 
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
 
@@ -600,7 +600,7 @@ class ParamMainWidget(QWidget):
                         except BaseException as e:
                             # We don't want to catch bare exceptions but don't know
                             # what this was supposed to catch. Log it.
-                            logger.error(
+                            logger.debug(
                                 "Caught unknown exception type %s: %s",
                                 type(e).__name__,
                                 e,
@@ -611,7 +611,7 @@ class ParamMainWidget(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("skip label_str")
@@ -679,7 +679,7 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     pass
@@ -700,7 +700,7 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     pass
@@ -710,7 +710,7 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     pass

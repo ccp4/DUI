@@ -90,7 +90,7 @@ def draw_palette_label(i_min, i_max):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("something went wrong with the creation of palette bitmap")
 
     tmp_flex_arr = flex.double(np_img_arr)

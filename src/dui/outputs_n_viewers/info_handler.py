@@ -105,7 +105,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
 
             logger.debug("failed to find reflections")
             logger.debug("reflections_path = %s", reflections_path)
@@ -120,7 +120,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             try:
                 # FIXME here only take the first datablock. What if there are more?
                 datablock = DataBlockFactory.from_serialized_format(

@@ -192,7 +192,7 @@ class ControlWidget(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("\n Unable to update params\n")
@@ -651,7 +651,7 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("no need to close reindex table")
@@ -713,7 +713,7 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("no need to close reindex table")
@@ -775,7 +775,7 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("<< update_low_level_command_lst >> already disconnected")

@@ -163,7 +163,7 @@ def try_find_prev_mask_pickle(cur_nod):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("not getting there")
             return None
 
@@ -484,7 +484,7 @@ class TreeNavWidget(QTreeView):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     child_node_tip = "None"
@@ -760,7 +760,7 @@ class CliOutView(QTextEdit):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("unwritable char << %s %s", str_to_print, ">>")
 
     def make_red(self):
@@ -797,7 +797,7 @@ class CliOutView(QTextEdit):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("Failed to read log file")
             lst_lin = ["Ready to Run:"]
             self.make_green()
@@ -823,7 +823,7 @@ class Text_w_Bar(QProgressBar):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("Failed to setStyle()")
 
     def setText(self, text):

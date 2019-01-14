@@ -204,7 +204,7 @@ class ImgPainter(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("Failed to find closer HKL")
@@ -357,7 +357,7 @@ class ImgPainter(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     logger.debug("No reflection (Obsevations) to show ... None type")
@@ -411,7 +411,7 @@ class ImgPainter(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     logger.debug("No reflection (Predictions) to show ... None type")
@@ -520,7 +520,7 @@ class PopPaletteMenu(QMenu):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("no (...my_sweep) yet, skipping palette label paint")
 
     def slider_max_changed(self, value):
@@ -810,7 +810,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("Unable to calculate mean and adjust contrast")
@@ -826,7 +826,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("Failed to load images from  datablock.json")
@@ -851,7 +851,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("Failed to set up IMG control dialog")
@@ -892,7 +892,7 @@ class MyImgWin(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     hkl_col = []
@@ -910,7 +910,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 self.find_spt_flat_data_lst = [None]
@@ -927,7 +927,7 @@ class MyImgWin(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     hkl_col = []
@@ -942,7 +942,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 self.pred_spt_flat_data_lst = [None]
@@ -1073,7 +1073,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("unable to disconnect timer again")

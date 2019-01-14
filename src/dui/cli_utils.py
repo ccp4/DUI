@@ -166,7 +166,7 @@ def get_phil_par(path_to_file):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.error(
+                logger.debug(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("\n\n failed to get obj & par \n\n")
@@ -309,7 +309,7 @@ def build_command_lst(node_obj, cmd_lst):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
 
         pickle_file_in = node_obj.prev_step.prev_step.refl_pickle_file_out
@@ -454,7 +454,7 @@ def generate_predict(node_obj):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("Failed adding path to predictions")
             pre_out = None
 
@@ -502,7 +502,7 @@ def generate_report(node_obj):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             rep_out = None
             logger.debug("Someting went wrong in report level 2")
 
@@ -565,7 +565,7 @@ class DialsCommand(object):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     logger.debug(single_line)
@@ -586,7 +586,7 @@ class DialsCommand(object):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.error(
+                    logger.debug(
                         "Caught unknown exception type %s: %s", type(e).__name__, e
                     )
                     logger.debug("Failed")
@@ -615,7 +615,7 @@ def print_list(lst, curr):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             stp_str += " prev: None"
 
         stp_str += " nxt: "

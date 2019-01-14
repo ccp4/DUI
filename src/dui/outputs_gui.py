@@ -379,7 +379,7 @@ class InfoWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.error("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.debug("unable to update data panel")
             self.all_data = update_all_data(
                 experiments_path=None, reflections_path=None
