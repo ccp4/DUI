@@ -21,6 +21,9 @@ git-notifier.log
 .gitversion
 *.egg-info/
 
+build/
+dist/
+
 doc/sphinx/build
 doc/sphinx/documentation/tutorials/logs
 doc/sphinx/documentation/tutorials/logs_ccp4
