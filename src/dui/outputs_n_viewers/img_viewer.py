@@ -500,7 +500,7 @@ class PopPaletteMenu(QMenu):
             "...geometry().width() = %s", self.my_parent.slider_min.geometry().width()
         )
         self.setLayout(main_layout)
-        # self.show()
+        self.show()
 
     def showEvent(self, event):
         logger.debug("repainting")
@@ -583,7 +583,7 @@ class PopBigMenu(QMenu):
         my_box.addWidget(img_select_group_box)
 
         self.setLayout(my_box)
-        # self.show()
+        self.show()
 
 
 class MyImgWin(QWidget):
