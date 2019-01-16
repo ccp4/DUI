@@ -530,12 +530,9 @@ class IntegrateSimplerParamTab(QWidget):
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
 
-        ############################################################
         hbox_d_min = QHBoxLayout()
-
         label_d_min = QLabel("d_min")
         hbox_d_min.addWidget(label_d_min)
-
         d_min_spn_bx = QDoubleSpinBox()
         d_min_spn_bx.local_path = "prediction.d_min"
         d_min_spn_bx.setSpecialValueText("Auto")
@@ -543,7 +540,6 @@ class IntegrateSimplerParamTab(QWidget):
         hbox_d_min.addWidget(d_min_spn_bx)
         d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
         localLayout.addLayout(hbox_d_min)
-        ############################################################
 
         hbox_lay_nproc = QHBoxLayout()
         label_nproc = QLabel("Number of Jobs")
