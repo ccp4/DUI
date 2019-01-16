@@ -48,6 +48,8 @@ setup(
                 "src/dui/resources/zoom_ono_one_ico.png",
                 "src/dui/resources/zoom_minus_ico.png",
                 "src/dui/resources/error_loading_dialog.ui",
+                "src/dui/resources/export.png",
+                "src/dui/resources/export_grayed.png",
             ],
         )
     ],
