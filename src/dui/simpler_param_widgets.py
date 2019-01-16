@@ -535,7 +535,7 @@ class IntegrateSimplerParamTab(QWidget):
         hbox_d_min.addWidget(label_d_min)
         d_min_spn_bx = QDoubleSpinBox()
         d_min_spn_bx.local_path = "prediction.d_min"
-        d_min_spn_bx.setSpecialValueText("Auto")
+        d_min_spn_bx.setSpecialValueText("None")
         d_min_spn_bx.setValue(0.0)
         hbox_d_min.addWidget(d_min_spn_bx)
         d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
@@ -683,7 +683,7 @@ class ScaleSimplerParamTab(QWidget):
         d_min_label = QLabel("d_min")
         d_min_spn_bx = QDoubleSpinBox()
         d_min_spn_bx.local_path = "cut_data.d_min"
-        d_min_spn_bx.setSpecialValueText("Auto")
+        d_min_spn_bx.setSpecialValueText("None")
         d_min_spn_bx.setValue(0.0)
         hbox_d_min.addWidget(d_min_label)
         hbox_d_min.addWidget(d_min_spn_bx)
