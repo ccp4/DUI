@@ -32,6 +32,8 @@ import subprocess
 
 import psutil
 
+from dxtbx.sweep_filenames import template_regex, template_regex_from_list
+
 from .cli_utils import get_next_step, sys_arg, get_phil_par
 from .qt import (
     QDialog,
@@ -239,69 +241,54 @@ def get_import_run_string(in_str_lst):
 
     Returns:
         (Tuple[str,str]):
-            dir_path, import_string where dir_path is the location of the
-            data, and import_string is the string containing parts to pass
-            to dials.import. This could be of the forms:
-                '/some/path/single_file_0002.cbf'
-                '/some/path/images_master.nxs'
-                '/some/path/filename_*.cbf'
-                '/some/path/filename_*.cbf image_range=1,100'
+            Tuple containing
+                dir_path (str):
+                    The location of the data. Note: This only appears to
+                    be used for re-opening the data dialog?
+                import_string (str):
+                    The string containing parts to pass to dials.import.
+                    This could be of the forms:
+                        '/some/path/single_file_0002.cbf'
+                        '/some/path/images_master.nxs'
+                        '/some/path/filename_*.cbf'
+                        '/some/path/filename_*.cbf image_range=1,100'
+                    but in other cases may include several filenames...
     """
     logger.debug("Converting string for import: %s", in_str_lst)
 
-    first_file_path = in_str_lst[0]
-    logger.debug("selected_file_path = %s", first_file_path)
-
-    dirname = os.path.dirname(first_file_path)
-    filename = os.path.basename(first_file_path)
-    root_name, ext_name = os.path.splitext(filename)
-
-    if ext_name == ".h5" or ext_name == ".nxs":
-        # If HDF5, then we don't have a numeric tail to search for
-        logger.debug("found h5 or nxs file")
-        tail_size = 0
+    if len(in_str_lst) == 1:
+        template, index = template_regex(in_str_lst[0])
+        indices = [index]
     else:
-        # Find the last span of digits in the filename
-        match = re.search(r"(\d+)[^\d]*$", filename)
-        if match is None:
-            tail_size = 0
-        else:
-            tail_size = len(match.group(1))
-            start, end = match.span(1)
-            filename = filename[:start] + "{}" + filename[end:]
+        try:
+            template, indices = template_regex_from_list(in_str_lst)
+        except (AssertionError, TypeError):
+            template = None
+            indices = None
 
-    # Calculate the range based on what was selected
-    if in_str_lst and len(in_str_lst) == 1:
-        # If we only selected one file, then use that (template at this point)
-        out_str = os.path.join(dirname, filename)
-        image_range = None
-    else:
-        indices = set()
-        # Compile a regex to match every filename in this template
-        pattern = u"^" + filename.format(u"(\\d{{{}}})".format(tail_size)) + u"$"
-        match_re = re.compile(pattern)
-        # Get the template part of every filename and save as an integer
-        for entry in in_str_lst:
-            try:
-                match = match_re.match(os.path.basename(entry))
-                indices.add(int(match.group(1)))
-            except AttributeError:
-                logger.error(
-                    "Could not extract index from {} with template {}".format(
-                        entry, filename
-                    )
-                )
+    if template is None:
+        # Unable to collapse?? Just pass through all filenames as <name>
+        # and trust dials to process
+        return os.path.dirname(in_str_lst[0]), " ".join(in_str_lst)
 
+    dirname = os.path.dirname(template)
+
+    # We're currently using wildcards, so continue with this by
+    # replacing the template placeholder for now.
+    out_str = re.sub("#+", "*", template)
+
+    # Do we have a restricted image range?
+    image_range = None
+    if len(indices) > 1:
         min_image_range = min(indices)
         max_image_range = max(indices)
         image_range = (min_image_range, max_image_range)
 
         # Warn if things were missing - this may be perfectly normal
-        if not indices == set(range(min_image_range, max_image_range + 1)):
+        if not set(indices) == set(range(min_image_range, max_image_range + 1)):
             logger.warning("Non-continuous image range selected - output may be wrong")
-
-    # Convert anything that looks like a template to a wildcard
-    out_str = os.path.join(dirname, filename.format("*"))
+            print(indices)
+            print(list(sorted(set(range(min_image_range, max_image_range + 1)))))
 
     if image_range is not None:
         out_str += " image_range={},{}".format(*image_range)
