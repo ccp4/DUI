@@ -433,7 +433,7 @@ class TreeNavWidget(QTreeView):
         logger.debug("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
-        self.setIndentation(10)
+        self.setIndentation(18)
 
         header_view = self.header()
         if QT5:

@@ -639,18 +639,18 @@ class TreeShow(object):
 
     def __call__(self, my_runner):
         # TODO maybe here goes a print print function instead of logger ...
-        logger.debug("")
-        logger.debug("status ")
-        logger.debug(" |  lin num ")
-        logger.debug(" |   |  command ")
-        logger.debug(" |   |   | ")
-        logger.debug("------------------")
+        print("")
+        print("status ")
+        print(" |  lin num ")
+        print(" |   |  command ")
+        print(" |   |   | ")
+        print("------------------")
         self.max_indent = 0
         self.str_lst = []
         self.add_tree(step=my_runner.step_list[0], indent=0)
         self.tree_print(my_runner.current_line)
         # TODO maybe here goes a print print function instead of logger ...
-        logger.debug("---------------------" + self.max_indent * self.ind_lin)
+        print("---------------------" + self.max_indent * self.ind_lin)
 
     def add_tree(self, step=None, indent=None):
         if step.success is True:
@@ -703,4 +703,4 @@ class TreeShow(object):
 
         for prn_str in self.tree_dat:
             # TODO maybe here goes a print print function instead of logger ...
-            logger.debug(prn_str[0])
+            print(prn_str[0])
