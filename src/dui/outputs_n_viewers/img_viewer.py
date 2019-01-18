@@ -712,8 +712,8 @@ class MyImgWin(QWidget):
         zoom2one_but.setIcon(QIcon(icon_path + "zoom_ono_one_ico.png"))
         zoom2one_but.clicked.connect(self.zoom2one)
 
-        zoom2border_but = QPushButton("zoom2border")
-        #zoom2border_but.setIcon(QIcon(icon_path + " ... add a propper icon here ..."))
+        zoom2border_but = QPushButton()
+        zoom2border_but.setIcon(QIcon(icon_path + "zoom_border.png"))
         zoom2border_but.clicked.connect(self.scale2border)
 
         zoom_out_but = QPushButton()
@@ -758,13 +758,12 @@ class MyImgWin(QWidget):
         top_box.addWidget(big_menu_but)
         top_box.addStretch()
 
-
         mid_box = QHBoxLayout()
         mid_box.addWidget(self.btn_play)
         mid_box.addStretch()
         mid_box.addWidget(zoom_in_but)
-        mid_box.addWidget(zoom2border_but)
         mid_box.addWidget(zoom2one_but)
+        mid_box.addWidget(zoom2border_but)
         mid_box.addWidget(zoom_out_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
