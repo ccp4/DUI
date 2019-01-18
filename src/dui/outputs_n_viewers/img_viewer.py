@@ -643,7 +643,7 @@ class MyImgWin(QWidget):
         ref_type_group = QButtonGroup()
         ref_type_group.addButton(self.rad_but_fnd_hkl)
         ref_type_group.addButton(self.rad_but_pre_hkl)
-        ref_type_group_box_layout = QHBoxLayout()
+        ref_type_group_box_layout = QVBoxLayout()
         ref_type_group_box_layout.addWidget(self.rad_but_fnd_hkl)
         ref_type_group_box_layout.addWidget(self.rad_but_pre_hkl)
 
@@ -687,7 +687,6 @@ class MyImgWin(QWidget):
         nav_box.addWidget(self.btn_ffw)
         nav_box.addWidget(self.btn_last)
         nav_box.addStretch()
-        nav_box.addWidget(self.btn_play)
 
         self._button_panel.setLayout(nav_box)
 
@@ -753,15 +752,22 @@ class MyImgWin(QWidget):
         top_box.addWidget(palette_menu_but)
         top_box.addWidget(big_menu_but)
         top_box.addStretch()
-        top_box.addWidget(zoom_in_but)
-        top_box.addWidget(zoom2one_but)
-        top_box.addWidget(zoom_out_but)
+
+
+        mid_box = QHBoxLayout()
+        mid_box.addWidget(self.btn_play)
+        mid_box.addStretch()
+        mid_box.addWidget(zoom_in_but)
+        mid_box.addWidget(zoom2one_but)
+        mid_box.addWidget(zoom_out_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
         top_left_v_box = QVBoxLayout()
         top_left_v_box.setMargin(0)
         top_left_v_box.addWidget(self._button_panel)
+
+        top_left_v_box.addLayout(mid_box)
         top_left_v_box.addLayout(top_box)
 
         top_hbox = QHBoxLayout()
