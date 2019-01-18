@@ -46,6 +46,7 @@ setup(
                 "src/dui/resources/symmetry_grayed.png",
                 "src/dui/resources/zoom_plus_ico.png",
                 "src/dui/resources/zoom_ono_one_ico.png",
+                "src/dui/resources/zoom_border.png",
                 "src/dui/resources/zoom_minus_ico.png",
                 "src/dui/resources/error_loading_dialog.ui",
                 "src/dui/resources/export.png",
