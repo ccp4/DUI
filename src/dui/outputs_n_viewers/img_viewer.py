@@ -711,6 +711,11 @@ class MyImgWin(QWidget):
         zoom2one_but = QPushButton()
         zoom2one_but.setIcon(QIcon(icon_path + "zoom_ono_one_ico.png"))
         zoom2one_but.clicked.connect(self.zoom2one)
+
+        zoom2border_but = QPushButton("zoom2border")
+        #zoom2border_but.setIcon(QIcon(icon_path + " ... add a propper icon here ..."))
+        zoom2border_but.clicked.connect(self.scale2border)
+
         zoom_out_but = QPushButton()
         zoom_out_but.setIcon(QIcon(icon_path + "zoom_minus_ico.png"))
         zoom_out_but.clicked.connect(self.zoom_out)
@@ -758,6 +763,7 @@ class MyImgWin(QWidget):
         mid_box.addWidget(self.btn_play)
         mid_box.addStretch()
         mid_box.addWidget(zoom_in_but)
+        mid_box.addWidget(zoom2border_but)
         mid_box.addWidget(zoom2one_but)
         mid_box.addWidget(zoom_out_but)
 
