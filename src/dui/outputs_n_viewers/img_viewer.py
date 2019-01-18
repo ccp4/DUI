@@ -756,7 +756,6 @@ class MyImgWin(QWidget):
         top_box.setMargin(0)
         top_box.addWidget(palette_menu_but)
         top_box.addWidget(big_menu_but)
-        top_box.addStretch()
 
         mid_box = QHBoxLayout()
         mid_box.addWidget(self.btn_play)
