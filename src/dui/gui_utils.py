@@ -422,8 +422,13 @@ class MyActionButton(QToolButton):
         self.setToolTip(action.tooltip)
         self.setText(action.label)
 
-        self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        sys_font = QFont()
+        small_font_size = sys_font.pointSize() - 2
 
+        self.setFont(QFont("Helvetica", small_font_size, QFont.Light))
+        #self.setFont(QFont("Monospace", small_font_size, QFont.Bold))
+
+        self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
