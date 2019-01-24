@@ -432,6 +432,7 @@ def generate_predict(node_obj):
 
     if node_obj.command_lst[0] in node_obj.dials_com_lst[2:-1]:
         try:
+            logger.debug("running predictions START")
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
             pre_fil = run_path + os.sep + str(current_lin) + "_predict.pickle"
@@ -451,6 +452,8 @@ def generate_predict(node_obj):
                 logger.debug("\n path to predictions NOT generated")
                 pre_out = None
 
+            logger.debug("running predictions END")
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -467,6 +470,7 @@ def generate_report(node_obj):
     run_path = sys_arg.directory + os.sep + "dui_files"
 
     if node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]:
+        logger.debug("running report START")
         current_lin = node_obj.lin_num
         refl_inp = node_obj.refl_pickle_file_out
         deps_outp = "output.external_dependencies=local"
@@ -505,6 +509,8 @@ def generate_report(node_obj):
             logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             rep_out = None
             logger.debug("Someting went wrong in report level 2")
+
+        logger.debug("running report END")
 
     else:
         logger.debug("NO report needed for this step")

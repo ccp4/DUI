@@ -42,6 +42,7 @@ from .cli_utils import (
     generate_predict,
 )
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -74,6 +75,7 @@ class CommandNode(object):
         self.predict_pickle_out = None
         self.err_file_out = None
         self.json_sym_out = None
+        self.info_generating = None
 
         self.dials_command = DialsCommand()
         # self.work_dir = os.getcwd()
@@ -92,13 +94,33 @@ class CommandNode(object):
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
 
-                if self.success is True:
-                    self.report_out = generate_report(self)
-                    self.predict_pickle_out = generate_predict(self)
+                if (
+                    self.success is True
+                    and self.cmd_lst_to_run[0] != "dials.refine_bravais_settings"
+                ):
+
+                    print("self.cmd_lst_to_run =", self.cmd_lst_to_run)
+
+                    self.info_generating = True
+                    try:
+                        self.report_out = generate_report(self)
+                        self.predict_pickle_out = generate_predict(self)
+
+                    except BaseException as e:
+                        # We don't want to catch bare exceptions but don't know
+                        # what this was supposed to catch. Log it.
+                        logger.debug(
+                            "Caught unknown exception type %s: %s", type(e).__name__, e
+                        )
+                        logger.debug("can NOT fork <None> node ")
+
+                self.info_generating = False
 
             else:
                 logger.debug("NOT dials command")
                 self.success = False
+
+        self.info_generating = False
 
     def edit_list(self, cmd_lst):
         self.command_lst = cmd_lst

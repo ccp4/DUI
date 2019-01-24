@@ -26,6 +26,7 @@ import logging
 import os
 import pickle
 import traceback
+import time
 
 from six import raise_from
 
@@ -48,6 +49,7 @@ from .gui_utils import (
 )
 from .m_idials import Runner
 from .outputs_n_viewers.web_page_view import WebTab
+from .outputs_n_viewers.img_view_tools import ProgBarBox
 from .outputs_n_viewers.img_viewer import MyImgWin
 from .outputs_gui import InfoWidget
 from .qt import (
@@ -72,10 +74,41 @@ from .qt import (
 logger = logging.getLogger(__name__)
 
 
+class CheckStatusThread(QThread):
+    start_busy_box = Signal()
+    end_busy_box = Signal()
+
+    def __init__(self, parent=None):
+        super(CheckStatusThread, self).__init__()
+
+    def __call__(self, ref_to_controler):
+        self.ref_to_controler = ref_to_controler
+        self.start()
+
+    def run(self):
+        prev_stat = None
+        while True:
+            gen_info_stat = self.ref_to_controler.current_node.info_generating
+            time.sleep(0.25)
+
+            if prev_stat is None and gen_info_stat is True:
+                self.start_busy_box.emit()
+
+            if gen_info_stat is False:
+                self.end_busy_box.emit()
+                break
+
+            prev_stat = gen_info_stat
+
+        time.sleep(0.1)
+
+
 class CommandThread(QThread):
 
     str_print_signal = Signal(str)
     str_fail_signal = Signal()
+    busy_box_on = Signal(str)
+    busy_box_off = Signal()
 
     def __init__(self, parent=None):
         super(CommandThread, self).__init__()
@@ -83,9 +116,16 @@ class CommandThread(QThread):
     def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
         self.ref_to_controler = ref_to_controler
+        self.status_thread = CheckStatusThread()
+
+        self.status_thread(self.ref_to_controler)
+        self.status_thread.start_busy_box.connect(self.pop_busy_box)
+        self.status_thread.end_busy_box.connect(self.close_busy_box)
+
         self.start()
 
     def run(self):
+
         self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
 
     def emit_print_signal(self, str_lin):
@@ -93,6 +133,14 @@ class CommandThread(QThread):
 
     def emit_fail_signal(self):
         self.str_fail_signal.emit()
+
+    def pop_busy_box(self):
+        logger.debug("emiting pop busy box signal")
+        self.busy_box_on.emit("Generating predictions and reports")
+
+    def close_busy_box(self):
+        logger.debug("emiting close busy box signal")
+        self.busy_box_off.emit()
 
 
 class ControlWidget(QWidget):
@@ -410,6 +458,9 @@ class MainWidget(QMainWindow):
         self.custom_thread.str_print_signal.connect(self.cli_out.add_txt)
         self.custom_thread.str_print_signal.connect(self.txt_bar.setText)
 
+        self.custom_thread.busy_box_on.connect(self.pop_busy_box)
+        self.custom_thread.busy_box_off.connect(self.close_busy_box)
+
         self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
 
         self.main_widget = QWidget()
@@ -662,6 +713,22 @@ class MainWidget(QMainWindow):
 
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
+
+    def pop_busy_box(self, text_in_bar):
+        logger.debug("OPENING busy bar with the text")
+        self.my_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
+        self.my_bar(5)
+
+    def close_busy_box(self):
+        logger.debug("trying to close busy pop")
+        try:
+            self.my_bar.ended()
+
+        except BaseException as e:
+            # We don't want to catch bare exceptions but don't know
+            # what this was supposed to catch. Log it.
+            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.debug("Not able to close busy pop ... maybe never existed")
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
