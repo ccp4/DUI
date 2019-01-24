@@ -100,7 +100,6 @@ class CommandNode(object):
                     and self.cmd_lst_to_run[0] != "dials.refine_bravais_settings"
                 ):
 
-
                     self.info_generating = True
                     try:
                         self.report_out = generate_report(self)
@@ -216,6 +215,7 @@ class Runner(object):
     def goto_prev(self):
         try:
             self.goto(self.current_node.prev_step.lin_num)
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -236,6 +236,7 @@ class Runner(object):
 
         try:
             html_rep = self.current_node.report_out
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -271,6 +272,7 @@ class Runner(object):
 
         try:
             path_to_log = self.current_node.log_file_out
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -294,6 +296,7 @@ class Runner(object):
 
             try:
                 path_to_json = tmp_cur.json_file_out
+
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
@@ -359,6 +362,7 @@ if __name__ == "__main__":
 
         try:
             shutil.rmtree(storage_path + "/dui_files")
+
         except OSError:
             logger.debug('failed to do "shutil.rmtree("/dui_files")"')
 

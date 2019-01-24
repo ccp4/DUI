@@ -162,6 +162,7 @@ def try_find_prev_mask_pickle(cur_nod):
                         else:
                             logger.debug("file no longer there")
                             pickle_path = None
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -189,15 +190,18 @@ def find_executable(executable, path=None):
         (base, ext) = os.path.splitext(executable)
         if ext.lower() not in pathext:
             extlist = pathext
+
     for ext in extlist:
         execname = executable + ext
         if os.path.isfile(execname):
             return execname
+
         else:
             for p in paths:
                 f = os.path.join(p, execname)
                 if os.path.isfile(f):
                     return f
+
     else:
         return None
 
@@ -259,9 +263,11 @@ def get_import_run_string(in_str_lst):
     if len(in_str_lst) == 1:
         template, index = template_regex(in_str_lst[0])
         indices = [index]
+
     else:
         try:
             template, indices = template_regex_from_list(in_str_lst)
+
         except (AssertionError, TypeError):
             template = None
             indices = None
@@ -384,15 +390,19 @@ def update_pbar_msg(main_obj):
             logger.debug("templ_text = %s", templ_text)
             if templ_text == " ? ":
                 txt = "click << Select File(s) >> or edit input line "
+
             else:
                 txt = "click dials icon to run import"
+
         else:
             txt = "click dials icon to run " + txt
+
     else:
         nxt_cmd = get_next_step(tmp_curr)
 
         if nxt_cmd is None:
             txt = "Done"
+
         else:
             lab_nxt_cmd = ACTIONS[nxt_cmd].label
             txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
@@ -426,7 +436,7 @@ class MyActionButton(QToolButton):
         small_font_size = sys_font.pointSize() - 2
 
         self.setFont(QFont("Helvetica", small_font_size, QFont.Light))
-        #self.setFont(QFont("Monospace", small_font_size, QFont.Bold))
+        # self.setFont(QFont("Monospace", small_font_size, QFont.Bold))
 
         self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)

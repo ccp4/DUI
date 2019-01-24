@@ -244,11 +244,13 @@ class ControlWidget(QWidget):
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("\n Unable to update params\n")
+
         elif nxt_cmd == "reindex":
             # Reindex is a special step because it doesn't have it's own page
             logger.debug("Reindex mode")
             param_widget = self.param_widgets["refine_bravais_settings"]
             self.step_param_widg.setCurrentWidget(param_widget)
+
         else:
             logger.error("No action widget found in set_widget")
 
@@ -364,11 +366,13 @@ class MainWidget(QMainWindow):
         if os.path.isfile(os.path.join(dui_files_path, "bkp.pickle")):
             try:
                 self.idials_runner = load_previous_state(dui_files_path)
+
             except Exception as e:
                 # Something went wrong - tell the user then close
                 msg = traceback.format_exc()
                 logger.error("ERROR LOADING PREVIOUS DATA:\n%s", msg)
                 raise_from(DUIDataLoadingError(msg), e)
+
             refresh_gui = True
         else:
             # No dui_files path - start with a fresh state
@@ -526,6 +530,7 @@ class MainWidget(QMainWindow):
         if self.idials_runner.current_node.success is None:
             self.stop_run_retry.run_btn.setEnabled(True)
             my_widget.activate_me()
+
         else:
             if self.idials_runner.current_node.command_lst[0] != "export":
                 self.stop_run_retry.repeat_btn.setEnabled(True)
