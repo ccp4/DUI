@@ -751,6 +751,7 @@ class MyImgWin(QWidget):
         self.img_select.valueChanged.connect(self.img_changed_by_user)
         self.img_step.valueChanged.connect(self.step_changed_by_user)
         self.num_of_imgs_to_add.valueChanged.connect(self.stack_changed_by_user)
+        self.img_step.setValue(10)
 
         top_box = QHBoxLayout()
         top_box.setMargin(0)
@@ -1135,21 +1136,21 @@ class MyImgWin(QWidget):
         self.img_select.setValue(self.img_num)
 
     def btn_rev_clicked(self):
-        self.img_num -= 10
-        if self.img_num < 1:
-            self.img_num = 1
-
-        self.img_select.setValue(self.img_num)
-
-    def btn_prev_clicked(self):
         self.img_num -= self.img_step_val
         if self.img_num < 1:
             self.img_num = 1
 
         self.img_select.setValue(self.img_num)
 
+    def btn_prev_clicked(self):
+        self.img_num -= 1
+        if self.img_num < 1:
+            self.img_num = 1
+
+        self.img_select.setValue(self.img_num)
+
     def btn_next_clicked(self):
-        self.img_num += self.img_step_val
+        self.img_num += 1
         if self.img_num > self.img_select.maximum():
             if self.video_timer.isActive():
                 self.img_num = 1
@@ -1159,7 +1160,7 @@ class MyImgWin(QWidget):
         self.img_select.setValue(self.img_num)
 
     def btn_ffw_clicked(self):
-        self.img_num += 10
+        self.img_num += self.img_step_val
         if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
 
