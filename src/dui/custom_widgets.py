@@ -154,6 +154,7 @@ class ExportPage(QWidget):
 
     def activate_me(self):
         self.simple_lin.setEnabled(True)
+        print("\n.......................... activate_me \n")
 
     def reset_par(self):
         logger.debug(" Not supposed to reset export page")

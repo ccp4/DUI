@@ -64,14 +64,14 @@ def prn_lst_lst_cmd(last_idials_node):
         cur_nod = cur_nod.prev_step
 
     for prn_lin in reversed(lst_simpl_cmd):
-        logger.debug(prn_lin)
+        print(prn_lin)
 
-    logger.debug("\n")
+    print("\n")
 
     for prn_lin in reversed(lst_full_cmd):
-        logger.debug(prn_lin)
+        print(prn_lin)
 
-    logger.debug("\n\n")
+    print("\n\n")
 
 
 def get_next_step(node_obj):
