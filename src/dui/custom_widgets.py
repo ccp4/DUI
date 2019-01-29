@@ -26,7 +26,6 @@ from __future__ import absolute_import, division, print_function
 import logging
 import os
 import sys
-
 import libtbx.phil
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
@@ -125,6 +124,7 @@ class ExportPage(QWidget):
 
         main_v_box.addStretch()
         self.setLayout(main_v_box)
+        self.fist_time = False
         # self.show()
 
         self.simple_lin.setText("integrated.mtz")
@@ -151,10 +151,33 @@ class ExportPage(QWidget):
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
+        self.check_scale.setEnabled(False)
 
-    def activate_me(self):
+        self.fist_time = False
+
+    def activate_me(self, cur_nod=None):
         self.simple_lin.setEnabled(True)
-        print("\n.......................... activate_me \n")
+        self.check_scale.setEnabled(True)
+        if self.fist_time is False:
+            self.fist_time = True
+            self.simple_lin.setText("integrated.mtz")
+            self.check_scale.setChecked(False)
+            my_node = cur_nod
+            found_scale = False
+            for iters in range(5):
+                try:
+                    if my_node.command_lst[0] == "scale":
+                        found_scale = True
+                        break
+
+                except AttributeError as at_err:
+                    logger.debug("found ", at_err, " in for loop, not to worry")
+
+                my_node = my_node.prev_step
+
+            if found_scale is True:
+                self.simple_lin.setText("scaled.mtz")
+                self.check_scale.setChecked(True)
 
     def reset_par(self):
         logger.debug(" Not supposed to reset export page")
@@ -332,7 +355,7 @@ class ImportPage(QWidget):
         self.b_cetre_label.setEnabled(False)
         self.chk_invert.setEnabled(False)
 
-    def activate_me(self):
+    def activate_me(self, cur_nod=None):
         self.simple_lin.setEnabled(True)
         self.opn_fil_btn.setEnabled(True)
         self.y_spn_bx.setEnabled(True)
@@ -685,7 +708,7 @@ class ParamMainWidget(QWidget):
                     )
                     pass
 
-    def activate_me(self):
+    def activate_me(self, cur_nod=None):
         self.reset_btn.setEnabled(True)
         for bg_widg in (
             self.advanced_widget.scrollable_widget.lst_var_widg,

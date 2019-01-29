@@ -708,5 +708,4 @@ class TreeShow(object):
                 self.tree_dat[pos][0] += str_here + "   <<< here "
 
         for prn_str in self.tree_dat:
-            # TODO maybe here goes a print print function instead of logger ...
             print(prn_str[0])
