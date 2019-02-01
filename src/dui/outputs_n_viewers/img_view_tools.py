@@ -72,7 +72,8 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
         p_siz0 = np.size(top_pan[:, 0:1])
         p_siz1 = np.size(top_pan[0:1, :])
 
-        im_siz0 = (p_siz0 + 18) * len(pan_num)
+        p_siz_bg = p_siz0 + 18
+        im_siz0 = p_siz_bg * len(pan_num)
         im_siz1 = p_siz1
 
         np_img = np.zeros((im_siz0, im_siz1), dtype=np.double)
@@ -81,7 +82,7 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
 
         for s_num in pan_num[1:]:
             pan_dat = my_sweep.get_raw_data(img_pos)[pan_num[s_num]].as_numpy_array()
-            np_img[s_num * p_siz0 + (18 * s_num):(s_num + 1) * p_siz0 + (18 * s_num),0:p_siz1 ] = pan_dat[:,:]
+            np_img[s_num * p_siz_bg:s_num * p_siz_bg + p_siz0,0:p_siz1] = pan_dat[:,:]
 
         img_flex = flex.double(np_img)
         return img_flex
