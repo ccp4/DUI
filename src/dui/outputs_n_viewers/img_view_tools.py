@@ -66,11 +66,25 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
     if(type(pan_num) is int):
         return my_sweep.get_raw_data(img_pos)[pan_num].as_double()
 
-    elif(type(pan_num) is list):
-        return my_sweep.get_raw_data(img_pos)[pan_num[12]].as_double()
+    elif(type(pan_num) is tuple):
+        top_pan = my_sweep.get_raw_data(img_pos)[pan_num[0]].as_double()
+        pan_dim0 = top_pan.all()[0]
+        pan_dim1 = top_pan.all()[1]
+
+        img_dim0 = pan_dim0
+        img_dim1 = pan_dim1 * len(pan_num)
+
+        np_img_arr = np.zeros((img_dim0, img_dim1), dtype=np.double)
+        np_img_arr[0:pan_dim0,0:pan_dim1] = top_pan.as_numpy_array()[:,:]
+
+        #for single_pan in pan_num[1:]:
+        #    sum_pan += my_sweep.get_raw_data(img_pos)[pan_num[single_pan]].as_double()
+
+        img_flex = flex.double(np_img_arr)
+        return img_flex
 
     else:
-        print("something went wrong here")
+        print("\n something went wrong here \n")
 
 
 def draw_palette_label(i_min, i_max):

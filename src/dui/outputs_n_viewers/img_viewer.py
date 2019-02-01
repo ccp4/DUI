@@ -1020,7 +1020,7 @@ class MyImgWin(QWidget):
                 pan_num = 0
 
             elif n_of_panels == 24:
-                pan_num = 12
+                pan_num = tuple(range(24))
 
             else:
                 print("number of  panels NOT supported, defaulting to only first one")
