@@ -30,6 +30,7 @@ from dxtbx.datablock import DataBlockFactory
 
 from ..gui_utils import get_main_path
 from .img_view_tools import (
+    panel_data_as_double,
     build_qimg,
     draw_palette_label,
     find_hkl_near,
@@ -586,8 +587,6 @@ class PopBigMenu(QMenu):
         self.show()
 
 
-def panel_data_as_double(my_sweep, img_pos, pan_num):
-    return my_sweep.get_raw_data(img_pos)[pan_num].as_double()
 
 
 class MyImgWin(QWidget):
@@ -1028,7 +1027,6 @@ class MyImgWin(QWidget):
                 pan_num = 1
 
             if loc_stk_siz == 1:
-                # self.img_arr = self.my_sweep.get_raw_data(img_pos)[pan_num]
                 self.img_arr = panel_data_as_double(self.my_sweep, img_pos, pan_num)
 
             elif loc_stk_siz > 1:
@@ -1037,12 +1035,10 @@ class MyImgWin(QWidget):
                     loc_stk_siz = len(self.my_sweep.indices()) - img_pos
 
                 loc_scale = 1.0 / float(loc_stk_siz)
-                # self.my_sweep.get_raw_data(img_pos)[pan_num].as_double() * loc_scale
                 self.img_arr = panel_data_as_double(self.my_sweep, img_pos, pan_num)
 
                 for times in range(1, loc_stk_siz):
                     pos_to_add = (img_pos) + times
-                    # + self.my_sweep.get_raw_data(pos_to_add)[pan_num].as_double()
                     self.img_arr = (
                         self.img_arr
                         + panel_data_as_double(self.my_sweep, pos_to_add, pan_num)

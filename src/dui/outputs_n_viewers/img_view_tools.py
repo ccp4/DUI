@@ -62,6 +62,16 @@ class ProgBarBox(QProgressDialog):
         self.setValue(100)
         self.close()
 
+def panel_data_as_double(my_sweep, img_pos, pan_num):
+    if(type(pan_num) is int):
+        return my_sweep.get_raw_data(img_pos)[pan_num].as_double()
+
+    elif(type(pan_num) is list):
+        return my_sweep.get_raw_data(img_pos)[pan_num[12]].as_double()
+
+    else:
+        print("something went wrong here")
+
 
 def draw_palette_label(i_min, i_max):
 
