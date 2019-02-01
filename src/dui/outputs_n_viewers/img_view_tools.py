@@ -67,18 +67,21 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
         return my_sweep.get_raw_data(img_pos)[pan_num].as_double()
 
     elif(type(pan_num) is tuple):
-        top_pan = my_sweep.get_raw_data(img_pos)[pan_num[0]].as_double()
-        pan_dim0 = top_pan.all()[0]
-        pan_dim1 = top_pan.all()[1]
+        top_pan = my_sweep.get_raw_data(img_pos)[pan_num[0]].as_numpy_array()
 
-        img_dim0 = pan_dim0
-        img_dim1 = pan_dim1 * len(pan_num)
+        pan_dim0 = np.size(top_pan[:, 0:1])
+        pan_dim1 = np.size(top_pan[0:1, :])
+
+        img_dim0 = pan_dim0 * len(pan_num)
+        img_dim1 = pan_dim1
 
         np_img_arr = np.zeros((img_dim0, img_dim1), dtype=np.double)
-        np_img_arr[0:pan_dim0,0:pan_dim1] = top_pan.as_numpy_array()[:,:]
+        np_img_arr[0:pan_dim0,0:pan_dim1] = top_pan[:,:]
 
-        #for single_pan in pan_num[1:]:
-        #    sum_pan += my_sweep.get_raw_data(img_pos)[pan_num[single_pan]].as_double()
+        for single_pan in pan_num[1:]:
+            pan_dat = my_sweep.get_raw_data(img_pos)[pan_num[single_pan]].as_numpy_array()
+            np_img_arr[single_pan * pan_dim0:(single_pan + 1)* pan_dim0,0:pan_dim1 ] = pan_dat[:,:]
+
 
         img_flex = flex.double(np_img_arr)
         return img_flex
