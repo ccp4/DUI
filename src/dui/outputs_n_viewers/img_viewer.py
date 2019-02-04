@@ -202,6 +202,7 @@ class ImgPainter(QWidget):
 
                 self.closer_ref = [closer_hkl, closer_slice]
                 self.update()
+
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
@@ -241,6 +242,7 @@ class ImgPainter(QWidget):
         y = float(reflection[1]) + 1.0
         if reflection[4] == "NOT indexed":
             painter.setPen(non_indexed_pen)
+
         else:
             painter.setPen(indexed_pen)
 
@@ -424,6 +426,7 @@ class ImgPainter(QWidget):
                             self._draw_hkl(
                                 reflection, painter, indexed_pen, non_indexed_pen, i, j
                             )
+
             except BaseException as e:
                 logger.error("Failed to show HKLs: %s", e)
 
@@ -587,8 +590,6 @@ class PopBigMenu(QMenu):
         self.show()
 
 
-
-
 class MyImgWin(QWidget):
     def __init__(self, json_file_path=None, pckl_file_path=None):
         super(MyImgWin, self).__init__()
@@ -743,6 +744,7 @@ class MyImgWin(QWidget):
 
         if pckl_file_path:
             self.ini_reflection_table(pckl_file_path)
+
         else:
             logger.debug("No pickle file given")
 
@@ -821,6 +823,7 @@ class MyImgWin(QWidget):
                 self.try_change_max(tst_new_max)
                 self.try_change_min(-3)
                 self.contrast_initiated = True
+
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
@@ -887,6 +890,7 @@ class MyImgWin(QWidget):
 
         if a_ratio_pt > a_ratio_sc:
             self.my_painter.scale2fact(sc_width / pt_width)
+
         else:
             self.my_painter.scale2fact(sc_height / pt_height)
 
@@ -903,6 +907,7 @@ class MyImgWin(QWidget):
                 bbox_col = map(list, table["bbox"])
                 try:
                     hkl_col = map(str, table["miller_index"])
+
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
@@ -996,6 +1001,7 @@ class MyImgWin(QWidget):
                 + " ,  I = "
                 + str(self.img_arr[y_pos, x_pos])
             )
+
         else:
             new_label_txt = "X, Y, I = ?,?,?"
 
@@ -1005,6 +1011,7 @@ class MyImgWin(QWidget):
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
             res_str = str("{:6.1f}".format(res_float))
             new_label_txt += " ,  resolution = " + res_str + " " + u"\u00C5"
+
         else:
             new_label_txt += " ,  resolution = ?"
 

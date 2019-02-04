@@ -62,11 +62,12 @@ class ProgBarBox(QProgressDialog):
         self.setValue(100)
         self.close()
 
+
 def panel_data_as_double(my_sweep, img_pos, pan_num):
-    if(type(pan_num) is int):
+    if type(pan_num) is int:
         return my_sweep.get_raw_data(img_pos)[pan_num].as_double()
 
-    elif(type(pan_num) is tuple):
+    elif type(pan_num) is tuple:
         top_pan = my_sweep.get_raw_data(img_pos)[pan_num[0]].as_numpy_array()
 
         p_siz0 = np.size(top_pan[:, 0:1])
@@ -77,12 +78,14 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
         im_siz1 = p_siz1
 
         np_img = np.zeros((im_siz0, im_siz1), dtype=np.double)
-        np_img[:,:] = -1
-        np_img[0:p_siz0,0:p_siz1] = top_pan[:,:]
+        np_img[:, :] = -1
+        np_img[0:p_siz0, 0:p_siz1] = top_pan[:, :]
 
         for s_num in pan_num[1:]:
             pan_dat = my_sweep.get_raw_data(img_pos)[pan_num[s_num]].as_numpy_array()
-            np_img[s_num * p_siz_bg:s_num * p_siz_bg + p_siz0,0:p_siz1] = pan_dat[:,:]
+            np_img[s_num * p_siz_bg : s_num * p_siz_bg + p_siz0, 0:p_siz1] = pan_dat[
+                :, :
+            ]
 
         img_flex = flex.double(np_img)
         return img_flex
@@ -238,6 +241,7 @@ try:
     find_closer_hkl = lst_ext.find_closer_hkl_func
     list_arr = lst_ext.arrange_list
     logger.debug("running C++ lst_ext")
+
 except ImportError:
     find_closer_hkl = py_find_closer_hkl_func
     list_arr = py_list_arange_func
