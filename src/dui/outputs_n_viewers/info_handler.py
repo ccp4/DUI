@@ -52,6 +52,7 @@ class InfoData(object):
         self.xb = None
         self.yb = None
         self.dd = None
+        self.n_pan_xb_yb = None
 
         self.w_lambda = None
 
@@ -194,12 +195,15 @@ def update_all_data(reflections_path=None, experiments_path=None):
         # Get detector data
         # assume details for the panel the beam intersects are the same
         # for the whole detector
+        # TODO fix it for I23
+
         pnl_beam_intersects, (beam_x, beam_y) = exp.detector.get_ray_intersection(
             exp.beam.get_s0()
         )
         pnl = exp.detector[pnl_beam_intersects]
         logger.debug("beam_x, beam_y = %s %s", beam_x, beam_y)
 
+        dat.n_pan_xb_yb = pnl_beam_intersects
         dat.xb = beam_x
         dat.yb = beam_y
 

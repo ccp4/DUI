@@ -228,9 +228,10 @@ class ImgPainter(QWidget):
         self.img_height = q_img.height()
         self.update()
 
-    def update_my_beam_centre(self, xb, yb):
+    def update_my_beam_centre(self, xb, yb, n_pan_xb_yb):
         self.xb = xb
         self.yb = yb
+        self.n_pan_xb_yb = n_pan_xb_yb
 
     def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
         """
@@ -433,18 +434,19 @@ class ImgPainter(QWidget):
             if self.xb is not None and self.yb is not None:
                 painter.setPen(indexed_pen)
                 cen_siz = 40.0
+                det_mov = self.n_pan_xb_yb * 213
                 painter.drawLine(
                     int(self.xb * self.my_scale),
-                    int((self.yb - cen_siz) * self.my_scale),
+                    int((self.yb - cen_siz + det_mov) * self.my_scale),
                     int(self.xb * self.my_scale),
-                    int((self.yb + cen_siz) * self.my_scale),
+                    int((self.yb + cen_siz + det_mov) * self.my_scale),
                 )
 
                 painter.drawLine(
                     int((self.xb + cen_siz) * self.my_scale),
-                    int(self.yb * self.my_scale),
+                    int((self.yb + det_mov) * self.my_scale),
                     int((self.xb - cen_siz) * self.my_scale),
-                    int(self.yb * self.my_scale),
+                    int((self.yb + det_mov) * self.my_scale),
                 )
 
             else:
@@ -903,8 +905,8 @@ class MyImgWin(QWidget):
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
-                # n_refs = len(table)
                 bbox_col = map(list, table["bbox"])
+                pan_col = map(int, table["panel"])
                 try:
                     hkl_col = map(str, table["miller_index"])
 
@@ -920,7 +922,7 @@ class MyImgWin(QWidget):
                 self.find_spt_flat_data_lst = []
                 if n_imgs > 0:
                     self.find_spt_flat_data_lst = list_arrange(
-                        bbox_col, hkl_col, n_imgs
+                        bbox_col, hkl_col, pan_col, n_imgs
                     )
 
                 else:
@@ -929,9 +931,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
+                print("Caught unknown exception type %s: %s", type(e).__name__, e)
                 self.find_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
@@ -941,6 +941,7 @@ class MyImgWin(QWidget):
                 logger.debug("len(table) =  %s", len(table))
                 # n_refs = len(table)
                 pos_col = map(list, table["xyzcal.px"])
+                pan_col = map(int, table["panel"])
                 try:
                     hkl_col = map(str, table["miller_index"])
                 except BaseException as e:
@@ -955,7 +956,7 @@ class MyImgWin(QWidget):
                 self.pred_spt_flat_data_lst = []
                 if n_imgs > 0:
                     self.pred_spt_flat_data_lst = list_p_arrange(
-                        pos_col, hkl_col, n_imgs
+                        pos_col, hkl_col, pan_col, n_imgs
                     )
 
             except BaseException as e:
@@ -982,10 +983,9 @@ class MyImgWin(QWidget):
     def zoom_out(self):
         self.my_painter.scale2fact(0.8)
 
-    def update_beam_centre(self, xb, yb):
+    def update_beam_centre(self, xb, yb, n_pan_xb_yb):
         logger.debug(" update_beam_centre")
-        logger.debug("new x,y = %s %s", xb, yb)
-        self.my_painter.update_my_beam_centre(xb, yb)
+        self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
 
     def update_exp(self, reference):
         self.ref2exp = reference

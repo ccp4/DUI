@@ -148,7 +148,7 @@ def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
     return hkl_result, slice_result
 
 
-def list_p_arrange(pos_col, hkl_lst, n_imgs):
+def list_p_arrange(pos_col, hkl_lst, pan_col, n_imgs):
     img_lst = []
     for time in range(n_imgs):
         img_lst.append([])
@@ -161,7 +161,7 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
         # print "pos_tri =", pos_tri
         my_bar(i)
         x_ini = pos_tri[0] - 1
-        y_ini = pos_tri[1] - 1
+        y_ini = (pos_tri[1] - 1) + pan_col[i] * 213
 
         if len(hkl_lst) <= 1:
             local_hkl = ""
@@ -192,7 +192,9 @@ def list_p_arrange(pos_col, hkl_lst, n_imgs):
     return img_lst
 
 
-def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
+def py_list_arange_func(bbox_lst, hkl_lst, pan_lst, n_imgs):
+    # pan_col = map(list, table["panel"])
+    # pos_col, hkl_lst, pan_col, n_imgs
 
     img_lst = []
     for time in range(n_imgs):
@@ -206,7 +208,7 @@ def py_list_arange_func(bbox_lst, hkl_lst, n_imgs):
     for i, ref_box in enumerate(bbox_lst):
         my_bar(i)
         x_ini = ref_box[0]
-        y_ini = ref_box[2]
+        y_ini = ref_box[2] + pan_lst[i] * 213
         width = ref_box[1] - ref_box[0]
         height = ref_box[3] - ref_box[2]
 
@@ -259,8 +261,8 @@ def find_hkl_near(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
     return hkl_result, slice_result
 
 
-def list_arrange(bbox_lst, hkl_lst, n_imgs):
-    return list_arr(bbox_lst, hkl_lst, n_imgs)
+def list_arrange(bbox_lst, hkl_lst, pan_lst, n_imgs):
+    return list_arr(bbox_lst, hkl_lst, pan_lst, n_imgs)
 
 
 class img_w_cpp(object):

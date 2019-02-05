@@ -366,10 +366,12 @@ def update_info(main_obj):
     try:
         xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
         yb = main_obj.info_widget.all_data.yb / main_obj.info_widget.all_data.y_px_size
-    except TypeError:
-        xb, yb = None, None
+        n_pan_xb_yb = main_obj.info_widget.all_data.n_pan_xb_yb
 
-    main_obj.img_view.update_beam_centre(xb, yb)
+    except TypeError:
+        xb, yb, n_pan_xb_yb = None, None, None
+
+    main_obj.img_view.update_beam_centre(xb, yb, n_pan_xb_yb)
 
 
 def update_pbar_msg(main_obj):
