@@ -417,7 +417,14 @@ class InfoWidget(QWidget):
         update_data_label(self.max_res_data, self.all_data.max_res)
 
         update_data_label(self.xb_data, self.all_data.xb)
-        update_data_label(self.yb_data, self.all_data.yb)
+
+        try:
+            det_mov = float(self.all_data.n_pan_xb_yb) * 213.0 * self.all_data.y_px_size
+            update_data_label(self.yb_data, self.all_data.yb + det_mov)
+
+        except TypeError:
+            logger.debug("trying to add incompatible types for a label in data panel")
+            update_data_label(self.yb_data, self.all_data.yb)
 
         update_data_label(
             data_label=self.w_lambda_data, data_info=self.all_data.w_lambda, n_dec=6
