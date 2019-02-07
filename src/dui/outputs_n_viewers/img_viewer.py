@@ -546,6 +546,37 @@ class PopPaletteMenu(QMenu):
         )
 
 
+class PopMaskMenu(QMenu):
+
+    sliders_changed = Signal(int, int)
+
+    def __init__(self, parent=None):
+        super(PopMaskMenu, self).__init__(parent)
+        self.my_parent = parent
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_poli_mask)
+
+        info_grp = QGroupBox()
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poli_mask)
+
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(info_grp)
+        my_box.addWidget(self.my_parent.btn_apply_mask)
+        my_box.addWidget(self.my_parent.btn_reset_mask)
+
+        self.setLayout(my_box)
+        self.show()
+
+
 class PopBigMenu(QMenu):
 
     sliders_changed = Signal(int, int)
@@ -553,7 +584,6 @@ class PopBigMenu(QMenu):
     def __init__(self, parent=None):
         super(PopBigMenu, self).__init__(parent)
         self.my_parent = parent
-        # self.isTearOffEnabled()
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
@@ -646,6 +676,30 @@ class MyImgWin(QWidget):
         self.rad_but_pre_hkl = QCheckBox("Predictions")
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
+        #####################################################################
+
+        self.btn_reset_mask = QPushButton("Stop/ReSet")
+        self.btn_reset_mask.clicked.connect(self.reset_mask_tool)
+
+        self.btn_apply_mask = QPushButton("Apply")
+        self.btn_apply_mask.clicked.connect(self.apply_mask)
+
+        self.chk_box_mask = QCheckBox("Activate Mask Tool")
+        self.chk_box_mask.setChecked(False)
+        self.chk_box_mask.stateChanged.connect(self.activate_mask_tool)
+
+        self.rad_but_rect_mask = QRadioButton("rectangle")
+        self.rad_but_rect_mask.clicked.connect(self.change_mask_shape)
+        self.rad_but_rect_mask.setChecked(True)
+
+        self.rad_but_circ_mask = QRadioButton("circle")
+        self.rad_but_circ_mask.clicked.connect(self.change_mask_shape)
+
+        self.rad_but_poli_mask = QRadioButton("poligon")
+        self.rad_but_poli_mask.clicked.connect(self.change_mask_shape)
+
+        #####################################################################
+
         ref_type_group = QButtonGroup()
         ref_type_group.addButton(self.rad_but_fnd_hkl)
         ref_type_group.addButton(self.rad_but_pre_hkl)
@@ -708,6 +762,10 @@ class MyImgWin(QWidget):
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
+        mask_menu_but = QPushButton("Masking Tools  ...  ")
+        pop_mask_menu = PopMaskMenu(self)
+        mask_menu_but.setMenu(pop_mask_menu)
+
         my_code_path = get_main_path()
 
         icon_path = my_code_path + "/resources/"
@@ -764,6 +822,7 @@ class MyImgWin(QWidget):
         top_box.setMargin(0)
         top_box.addWidget(palette_menu_but)
         top_box.addWidget(big_menu_but)
+        top_box.addWidget(mask_menu_but)
 
         mid_box = QHBoxLayout()
         mid_box.addWidget(self.btn_play)
@@ -973,6 +1032,18 @@ class MyImgWin(QWidget):
             self.pred_spt_flat_data_lst = [None]
 
         self.set_img()
+
+    def change_mask_shape(self):
+        print("\n change_mask_shape\n")
+
+    def activate_mask_tool(self):
+        print("\n activate_mask_tool\n")
+
+    def reset_mask_tool(self):
+        print("\n reset_mask_tool\n")
+
+    def apply_mask(self):
+        print("\n apply_mask\n")
 
     def zoom2one(self):
         self.my_painter.scale2fact()
