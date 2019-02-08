@@ -55,6 +55,7 @@ from ..qt import (
     QPen,
     QPixmap,
     QPoint,
+    QPointF,
     QPushButton,
     QRadioButton,
     QRect,
@@ -102,6 +103,7 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
         print("mouseReleaseEvent")
+        self.x_prev, self.y_prev = None, None
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
@@ -269,7 +271,7 @@ class ImgPainter(QWidget):
             )
 
     def ini_mask(self):
-        self.x_prev, self.y_prev = self.x_pos, self.y_pos
+        self.update()
 
     def paintEvent(self, event):
         if self.img is None:
@@ -328,21 +330,27 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.my_parent.chk_box_mask.isChecked():
+            try:
 
-            if self.my_parent.rad_but_rect_mask.isChecked():
-                # self.x_prev, self.y_prev, self.x_pos, self.y_pos
-                # drawRect(x1, y1, w, h)
-                xd = self.x_prev - self.x_pos
-                yd = self.y_prev - self.y_pos
-                painter.drawRect(self.x_pos, self.y_pos, xd, yd)
+                if self.my_parent.rad_but_rect_mask.isChecked():
+                    # self.x_prev, self.y_prev, self.x_pos, self.y_pos
+                    xd = self.x_prev - self.x_pos
+                    yd = self.y_prev - self.y_pos
+                    painter.drawRect(self.x_pos, self.y_pos, xd, yd)
 
-            elif self.my_parent.rad_but_circ_mask.isChecked():
-                painter.drawLine(self.x_prev, self.y_pos, self.x_pos, self.y_prev)
+                elif self.my_parent.rad_but_circ_mask.isChecked():
+                    xd = self.x_prev - self.x_pos
+                    yd = self.y_prev - self.y_pos
+                    q_center = QPointF(self.x_prev, self.y_prev)
+                    painter.drawEllipse(q_center, xd, yd)
 
-            elif self.my_parent.rad_but_poli_mask.isChecked():
-                print("TODO")
+                elif self.my_parent.rad_but_poli_mask.isChecked():
+                    print("TODO")
 
-            # self.x_prev, self.y_prev = self.x_pos, self.y_pos
+            except TypeError:
+                print("Not correct ini data for drawing")
+            except AttributeError:
+                print("Not ini data for drawing at all")
 
         if (
             self.obs_flat_data is not None
