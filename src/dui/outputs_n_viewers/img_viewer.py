@@ -341,8 +341,9 @@ class ImgPainter(QWidget):
                 elif self.my_parent.rad_but_circ_mask.isChecked():
                     xd = self.x_prev - self.x_pos
                     yd = self.y_prev - self.y_pos
+                    r = (xd ** 2.0 + yd ** 2.0) ** 0.5
                     q_center = QPointF(self.x_prev, self.y_prev)
-                    painter.drawEllipse(q_center, xd, yd)
+                    painter.drawEllipse(q_center, r, r)
 
                 elif self.my_parent.rad_but_poli_mask.isChecked():
                     print("TODO")
