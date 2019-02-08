@@ -96,6 +96,13 @@ class ImgPainter(QWidget):
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
         self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
 
+    def mousePressEvent(self, event):
+        print("mousePressEvent")
+        self.x_prev, self.y_prev = self.x_pos, self.y_pos
+
+    def mouseReleaseEvent(self, event):
+        print("mouseReleaseEvent")
+
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.NoButton:
             self.x_pos, self.y_pos = event.x(), event.y()
@@ -323,7 +330,11 @@ class ImgPainter(QWidget):
         if self.my_parent.chk_box_mask.isChecked():
 
             if self.my_parent.rad_but_rect_mask.isChecked():
-                painter.drawLine(self.x_prev, self.y_prev, self.x_pos, self.y_pos)
+                # self.x_prev, self.y_prev, self.x_pos, self.y_pos
+                # drawRect(x1, y1, w, h)
+                xd = self.x_prev - self.x_pos
+                yd = self.y_prev - self.y_pos
+                painter.drawRect(self.x_pos, self.y_pos, xd, yd)
 
             elif self.my_parent.rad_but_circ_mask.isChecked():
                 painter.drawLine(self.x_prev, self.y_pos, self.x_pos, self.y_prev)
@@ -331,7 +342,7 @@ class ImgPainter(QWidget):
             elif self.my_parent.rad_but_poli_mask.isChecked():
                 print("TODO")
 
-            self.x_prev, self.y_prev = self.x_pos, self.y_pos
+            # self.x_prev, self.y_prev = self.x_pos, self.y_pos
 
         if (
             self.obs_flat_data is not None
