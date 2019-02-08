@@ -98,11 +98,11 @@ class ImgPainter(QWidget):
         self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
 
     def mousePressEvent(self, event):
-        print("mousePressEvent")
+        logger.debug("mousePressEvent")
         self.x_prev, self.y_prev = self.x_pos, self.y_pos
 
     def mouseReleaseEvent(self, event):
-        print("mouseReleaseEvent")
+        logger.debug("mouseReleaseEvent")
         self.x_prev, self.y_prev = None, None
 
     def mouseMoveEvent(self, event):
@@ -349,9 +349,9 @@ class ImgPainter(QWidget):
                     print("TODO")
 
             except TypeError:
-                print("Not correct ini data for drawing")
+                logger.debug("Not correct ini data for drawing")
             except AttributeError:
-                print("Not ini data for drawing at all")
+                logger.debug("Not ini data for drawing at all")
 
         if (
             self.obs_flat_data is not None
@@ -359,7 +359,7 @@ class ImgPainter(QWidget):
             and self.pre_flat_data is not None
         ):
 
-            # print "len(self.obs_flat_data) =", len(self.obs_flat_data)
+            #logger.debug("len(self.obs_flat_data) =", len(self.obs_flat_data))
 
             tmp_font = QFont()
             # Work out how big the text will be and don't show if 0px
