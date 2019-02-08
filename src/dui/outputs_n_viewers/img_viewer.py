@@ -111,17 +111,18 @@ class ImgPainter(QWidget):
                 self.closer_ref = None
 
         elif event.buttons() == Qt.LeftButton:
-            dx = event.x() - self.x_pos
-            dy = event.y() - self.y_pos
-            self.move_scrollbar(scrollBar=self.p_h_svar(), dst=dx)
-            self.move_scrollbar(scrollBar=self.p_v_svar(), dst=dy)
+            if self.my_parent.chk_box_mask.isChecked():
+                self.x_pos, self.y_pos = event.x(), event.y()
+                self.update()
+
+            else:
+                dx = event.x() - self.x_pos
+                dy = event.y() - self.y_pos
+                self.move_scrollbar(scrollBar=self.p_h_svar(), dst=dx)
+                self.move_scrollbar(scrollBar=self.p_v_svar(), dst=dy)
 
         elif event.buttons() == Qt.RightButton:
             logger.debug("Right click drag")
-
-        # TODO find out how does this works despite
-        #               NOT updating
-        #      self.x_pos and self.y_pos always
 
     def wheelEvent(self, event):
 
@@ -260,6 +261,9 @@ class ImgPainter(QWidget):
                 QPoint(int(x * self.my_scale), int(y * self.my_scale)), reflection[4]
             )
 
+    def ini_mask(self):
+        self.x_prev, self.y_prev = self.x_pos, self.y_pos
+
     def paintEvent(self, event):
         if self.img is None:
             return
@@ -315,6 +319,19 @@ class ImgPainter(QWidget):
         painter.drawPixmap(rect, pixmap)
         # painter.setFont(QFont("Monospace", 22))
         # painter.setFont(QFont("FreeMono", 22))
+
+        if self.my_parent.chk_box_mask.isChecked():
+
+            if self.my_parent.rad_but_rect_mask.isChecked():
+                painter.drawLine(self.x_prev, self.y_prev, self.x_pos, self.y_pos)
+
+            elif self.my_parent.rad_but_circ_mask.isChecked():
+                painter.drawLine(self.x_prev, self.y_pos, self.x_pos, self.y_prev)
+
+            elif self.my_parent.rad_but_poli_mask.isChecked():
+                print("TODO")
+
+            self.x_prev, self.y_prev = self.x_pos, self.y_pos
 
         if (
             self.obs_flat_data is not None
@@ -686,6 +703,7 @@ class MyImgWin(QWidget):
 
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
         self.chk_box_mask.setChecked(False)
+
         self.chk_box_mask.stateChanged.connect(self.activate_mask_tool)
 
         self.rad_but_rect_mask = QRadioButton("rectangle")
@@ -1038,6 +1056,7 @@ class MyImgWin(QWidget):
 
     def activate_mask_tool(self):
         print("\n activate_mask_tool\n")
+        self.my_painter.ini_mask()
 
     def reset_mask_tool(self):
         print("\n reset_mask_tool\n")
