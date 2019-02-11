@@ -103,6 +103,22 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
         logger.debug("mouseReleaseEvent")
+        x1 = self.x_prev / self.my_scale
+        y1 = self.y_prev / self.my_scale
+        x2 = self.x_pos / self.my_scale
+        y2 = self.y_pos / self.my_scale
+        if self.my_parent.chk_box_mask.isChecked():
+            if self.my_parent.rad_but_rect_mask.isChecked():
+                self.mask_item = ("rect", int(x1), int(x2), int(y1), int(y2))
+
+            elif self.my_parent.rad_but_circ_mask.isChecked():
+                dx = x2 - x1
+                dy = y2 - y1
+                r = float(dx * dx + dy * dy) ** (0.5)
+                self.mask_item = ("circ", int(x1), int(y10), int(r))
+
+            print("mask_item =", self.mask_item)
+
         self.x_prev, self.y_prev = None, None
 
     def mouseMoveEvent(self, event):
@@ -359,7 +375,7 @@ class ImgPainter(QWidget):
             and self.pre_flat_data is not None
         ):
 
-            #logger.debug("len(self.obs_flat_data) =", len(self.obs_flat_data))
+            # logger.debug("len(self.obs_flat_data) =", len(self.obs_flat_data))
 
             tmp_font = QFont()
             # Work out how big the text will be and don't show if 0px
@@ -1083,6 +1099,7 @@ class MyImgWin(QWidget):
 
     def apply_mask(self):
         print("\n apply_mask\n")
+        print("self.my_painter.mask_item", self.my_painter.mask_item, "\n")
 
     def zoom2one(self):
         self.my_painter.scale2fact()
