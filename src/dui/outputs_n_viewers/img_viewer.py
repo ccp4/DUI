@@ -97,6 +97,12 @@ class ImgPainter(QWidget):
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
         self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
 
+        self.reset_mask_tool(None)
+
+    def reset_mask_tool(self, event):
+        self.mask_items = []
+        print("reset_mask_tool")
+
     def mousePressEvent(self, event):
         logger.debug("mousePressEvent")
         self.x_prev, self.y_prev = self.x_pos, self.y_pos
@@ -109,15 +115,15 @@ class ImgPainter(QWidget):
         y2 = self.y_pos / self.my_scale
         if self.my_parent.chk_box_mask.isChecked():
             if self.my_parent.rad_but_rect_mask.isChecked():
-                self.mask_item = ("rect", int(x1), int(x2), int(y1), int(y2))
+                self.mask_items.append(("rect", int(x1), int(x2), int(y1), int(y2)))
 
             elif self.my_parent.rad_but_circ_mask.isChecked():
                 dx = x2 - x1
                 dy = y2 - y1
                 r = float(dx * dx + dy * dy) ** (0.5)
-                self.mask_item = ("circ", int(x1), int(y10), int(r))
+                self.mask_items.append(("circ", int(x1), int(y1), int(r)))
 
-            print("mask_item =", self.mask_item)
+            print("mask_item =", self.mask_items)
 
         self.x_prev, self.y_prev = None, None
 
@@ -732,25 +738,36 @@ class MyImgWin(QWidget):
         #####################################################################
 
         self.btn_reset_mask = QPushButton("Stop/ReSet")
-        self.btn_reset_mask.clicked.connect(self.reset_mask_tool)
-
         self.btn_apply_mask = QPushButton("Apply")
-        self.btn_apply_mask.clicked.connect(self.apply_mask)
-
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
         self.chk_box_mask.setChecked(False)
 
-        self.chk_box_mask.stateChanged.connect(self.activate_mask_tool)
-
         self.rad_but_rect_mask = QRadioButton("rectangle")
-        self.rad_but_rect_mask.clicked.connect(self.change_mask_shape)
+        self.rad_but_circ_mask = QRadioButton("circle")
+        self.rad_but_poli_mask = QRadioButton("poligon")
         self.rad_but_rect_mask.setChecked(True)
 
-        self.rad_but_circ_mask = QRadioButton("circle")
-        self.rad_but_circ_mask.clicked.connect(self.change_mask_shape)
+        self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
+        self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
+        self.btn_apply_mask.clicked.connect(self.apply_mask)
 
-        self.rad_but_poli_mask = QRadioButton("poligon")
+        old_way = """
+        self.rad_but_rect_mask.clicked.connect(self.change_mask_shape)
+        self.rad_but_circ_mask.clicked.connect(self.change_mask_shape)
         self.rad_but_poli_mask.clicked.connect(self.change_mask_shape)
+
+    def change_mask_shape(self):
+        print("\n change_mask_shape\n")
+
+    def activate_mask_tool(self):
+        print("\n activate_mask_tool\n")
+        self.my_painter.ini_mask()
+
+    def reset_mask_tool(self):
+        print("\n reset_mask_tool\n")
+        self.my_painter.reset_mask_tool()
+
+        """
 
         #####################################################################
 
@@ -1087,19 +1104,9 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
-    def change_mask_shape(self):
-        print("\n change_mask_shape\n")
-
-    def activate_mask_tool(self):
-        print("\n activate_mask_tool\n")
-        self.my_painter.ini_mask()
-
-    def reset_mask_tool(self):
-        print("\n reset_mask_tool\n")
-
     def apply_mask(self):
         print("\n apply_mask\n")
-        print("self.my_painter.mask_item", self.my_painter.mask_item, "\n")
+        print("self.my_painter.mask_items", self.my_painter.mask_items, "\n")
 
     def zoom2one(self):
         self.my_painter.scale2fact()
