@@ -123,7 +123,7 @@ class ImgPainter(QWidget):
                 r = float(dx * dx + dy * dy) ** (0.5)
                 self.mask_items.append(("circ", int(x1), int(y1), int(r)))
 
-            print("mask_item =", self.mask_items)
+            print("mask_items =", self.mask_items)
 
         self.x_prev, self.y_prev = None, None
 
@@ -352,17 +352,27 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.my_parent.chk_box_mask.isChecked():
-            try:
+            # Drawing list of preious mask items
+            for item in self.mask_items:
+                # print("item =", item)
+                if item[0] == "rect":
+                    xd = item[2] - item[1]
+                    yd = item[4] - item[3]
+                    painter.drawRect(
+                        item[1] * self.my_scale,
+                        item[3] * self.my_scale,
+                        xd * self.my_scale,
+                        yd * self.my_scale,
+                    )
 
+            # Drawing current mask item
+            try:
+                xd = self.x_prev - self.x_pos
+                yd = self.y_prev - self.y_pos
                 if self.my_parent.rad_but_rect_mask.isChecked():
-                    # self.x_prev, self.y_prev, self.x_pos, self.y_pos
-                    xd = self.x_prev - self.x_pos
-                    yd = self.y_prev - self.y_pos
                     painter.drawRect(self.x_pos, self.y_pos, xd, yd)
 
                 elif self.my_parent.rad_but_circ_mask.isChecked():
-                    xd = self.x_prev - self.x_pos
-                    yd = self.y_prev - self.y_pos
                     r = (xd ** 2.0 + yd ** 2.0) ** 0.5
                     q_center = QPointF(self.x_prev, self.y_prev)
                     painter.drawEllipse(q_center, r, r)
@@ -372,6 +382,7 @@ class ImgPainter(QWidget):
 
             except TypeError:
                 logger.debug("Not correct ini data for drawing")
+
             except AttributeError:
                 logger.debug("Not ini data for drawing at all")
 
