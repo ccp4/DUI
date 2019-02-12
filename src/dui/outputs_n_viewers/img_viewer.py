@@ -731,6 +731,7 @@ class MyImgWin(QWidget):
         self.slider_min = QSlider(Qt.Horizontal)
         self.slider_max = QSlider(Qt.Horizontal)
 
+        # Viewing Tool
         self.chk_box_show = QCheckBox("show reflection info")
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
@@ -750,8 +751,7 @@ class MyImgWin(QWidget):
         self.rad_but_pre_hkl = QCheckBox("Predictions")
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
-        #####################################################################
-
+        # Mask tools
         self.btn_reset_mask = QPushButton("Stop/ReSet")
         self.btn_apply_mask = QPushButton("Apply")
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
@@ -766,26 +766,7 @@ class MyImgWin(QWidget):
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
         self.btn_apply_mask.clicked.connect(self.apply_mask)
 
-        old_way = """
-        self.rad_but_rect_mask.clicked.connect(self.change_mask_shape)
-        self.rad_but_circ_mask.clicked.connect(self.change_mask_shape)
-        self.rad_but_poli_mask.clicked.connect(self.change_mask_shape)
-
-    def change_mask_shape(self):
-        print("\n change_mask_shape\n")
-
-    def activate_mask_tool(self):
-        print("\n activate_mask_tool\n")
-        self.my_painter.ini_mask()
-
-    def reset_mask_tool(self):
-        print("\n reset_mask_tool\n")
-        self.my_painter.reset_mask_tool()
-
-        """
-
-        #####################################################################
-
+        # Grouping
         ref_type_group = QButtonGroup()
         ref_type_group.addButton(self.rad_but_fnd_hkl)
         ref_type_group.addButton(self.rad_but_pre_hkl)
