@@ -354,7 +354,6 @@ class ImgPainter(QWidget):
         if self.my_parent.chk_box_mask.isChecked():
             # Drawing list of preious mask items
             for item in self.mask_items:
-                # print("item =", item)
                 if item[0] == "rect":
                     xd = item[2] - item[1]
                     yd = item[4] - item[3]
@@ -364,6 +363,11 @@ class ImgPainter(QWidget):
                         xd * self.my_scale,
                         yd * self.my_scale,
                     )
+
+                elif item[0] == "circ":
+                    r = item[3] * self.my_scale
+                    q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
+                    painter.drawEllipse(q_center, r, r)
 
             # Drawing current mask item
             try:
