@@ -210,11 +210,11 @@ class ImportPage(QWidget):
 
         self.x_spn_bx = QSpinBox()
         self.x_spn_bx.setMaximum(99999)
-        self.x_spn_bx.setSpecialValueText("Auto")
+        self.x_spn_bx.setSpecialValueText(" ")
         # self.x_spn_bx.setValue(6.0)
         self.y_spn_bx = QSpinBox()
         self.y_spn_bx.setMaximum(99999)
-        self.y_spn_bx.setSpecialValueText("Auto")
+        self.y_spn_bx.setSpecialValueText(" ")
 
         # self.y_spn_bx.setValue(6.0)
         self.x_spn_bx.valueChanged.connect(self.x_beam_changed)

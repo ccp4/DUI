@@ -24,6 +24,7 @@ from __future__ import absolute_import, division, print_function
 
 import logging
 import sys
+import subprocess
 
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
@@ -101,7 +102,7 @@ class ImgPainter(QWidget):
 
     def reset_mask_tool(self, event):
         self.mask_items = []
-        print("reset_mask_tool")
+        self.update()
 
     def mousePressEvent(self, event):
         logger.debug("mousePressEvent")
@@ -123,7 +124,7 @@ class ImgPainter(QWidget):
                 r = float(dx * dx + dy * dy) ** (0.5)
                 self.mask_items.append(("circ", int(x1), int(y1), int(r)))
 
-            print("mask_items =", self.mask_items)
+            logger.debug("mask_items =", self.mask_items)
 
         self.x_prev, self.y_prev = None, None
 
@@ -1101,8 +1102,82 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def apply_mask(self):
-        print("\n apply_mask\n")
-        print("self.my_painter.mask_items", self.my_painter.mask_items, "\n")
+        print(" apply_mask")
+        print("self.my_painter.mask_items", self.my_painter.mask_items)
+        phil_str_list = []
+
+        for item in self.my_painter.mask_items:
+            phil_str_list.append("untrusted {")
+            if item[0] == "rect":
+                phil_str_list.append(
+                    "  rectangle = "
+                    + str(item[1])
+                    + " "
+                    + str(item[2])
+                    + " "
+                    + str(item[3])
+                    + " "
+                    + str(item[4])
+                )
+                phil_str_list.append("}")
+
+            elif item[0] == "circ":
+                phil_str_list.append(
+                    "  circle = "
+                    + str(item[1])
+                    + " "
+                    + str(item[2])
+                    + " "
+                    + str(item[3])
+                )
+                phil_str_list.append("}")
+
+        print("writing phil file START")
+
+        myfile = open("dui_files/mask.phil", "w")
+
+        for str_lin in phil_str_list:
+            myfile.write(str_lin + "\n")
+
+        myfile.close()
+
+        print("writing phil file END")
+        old = """
+        to_run = (
+            "dials.apply_mask "
+            + "input.datablock=dui_files/1_datablock.json "
+            + "input.mask=dui_files/mask.phil "
+            + "output.datablock=dui_files/1_datablock.json"
+        )
+        """
+
+        to_run = (
+            "dials.generate_mask "
+            + "dui_files/mask.phil "
+            + "input.datablock=dui_files/1_datablock.json"
+        )
+
+        print("running proc #1")
+        gen_pred_proc = subprocess.Popen(to_run, shell=True)
+        gen_pred_proc.wait()
+        print("proc #1 ... Done")
+
+        to_run = (
+            "dials.apply_mask "
+            + "input.datablock=dui_files/1_datablock.json "
+            + "input.mask=dui_files/mask.pickle "
+            + "output.datablock=dui_files/1_datablock.json"
+        )
+
+        print("running proc #2")
+        gen_pred_proc = subprocess.Popen(to_run, shell=True)
+        gen_pred_proc.wait()
+        print("proc #2 ... Done")
+
+        example_to_translate = """
+        dials.generate_mask mask.phil 1_datablock.json
+        dials.apply_mask 1_datablock.json mask=mask.pickle
+        """
 
     def zoom2one(self):
         self.my_painter.scale2fact()
