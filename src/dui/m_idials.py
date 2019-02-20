@@ -350,11 +350,6 @@ if __name__ == "__main__":
         with open(storage_path + "/dui_files/bkp.pickle", "rb") as bkp_in:
             idials_runner = pickle.load(bkp_in)
 
-        old_way = """
-        with open(storage_path + "bkp.pickle", "rb") as bkp_in:
-            idials_runner = pickle.load(bkp_in)
-        """
-
         # TODO sometimes the following error appears
         # Attribute not found
         # 'module' object has no attribute 'CommandNode'
@@ -395,7 +390,3 @@ if __name__ == "__main__":
 
         with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(idials_runner, bkp_out)
-        old_way = """
-        with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
-            pickle.dump(idials_runner, bkp_out)
-        """

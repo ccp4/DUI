@@ -363,9 +363,6 @@ class MainWidget(QMainWindow):
 
         # Load the previous state of DUI, if present
         dui_files_path = os.path.join(self.storage_path, "dui_files")
-        old_way = """
-        dui_files_path = str(self.storage_path)
-        """
 
         if os.path.isfile(os.path.join(dui_files_path, "bkp.pickle")):
             try:
@@ -724,11 +721,6 @@ class MainWidget(QMainWindow):
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
-        old_way = """
-        with open(self.storage_path + "/bkp.pickle", "wb") as bkp_out:
-            pickle.dump(self.idials_runner, bkp_out)
-        """
-
     def pop_busy_box(self, text_in_bar):
         logger.debug("OPENING busy bar with the text")
         self.my_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
@@ -828,14 +820,6 @@ class MainWidget(QMainWindow):
             + str(curr_step.lin_num)
             + "_err_out.log"
         )
-
-        old_way = """
-        err_log_file_out = (
-            self.storage_path
-            + str(curr_step.lin_num)
-            + "_err_out.log"
-        )
-        """
 
         logger.debug("err_log_file_out = %s %s", err_log_file_out, "\n")
 

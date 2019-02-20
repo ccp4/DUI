@@ -1035,14 +1035,6 @@ class MyImgWin(QWidget):
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:
 
-                old_stable = """
-                cwd_path = os.path.join(sys_arg.directory, "dui_files")
-
-                pckl_file_path_0 = os.path.join(cwd_path, pckl_file_path[0])
-                print("pckl_file_path_0 =", pckl_file_path_0)
-                table = flex.reflection_table.from_pickle(pckl_file_path_0)
-                """
-
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
 
                 logger.debug("table = %s", table)
@@ -1079,14 +1071,8 @@ class MyImgWin(QWidget):
 
             try:
 
-                cwd_path = os.path.join(sys_arg.directory, "dui_files")
                 print("pckl_file_path[1]=", pckl_file_path[1])
 
-                old_stable = """
-                pckl_file_path_1 = os.path.join(cwd_path, pckl_file_path[1])
-                print("pckl_file_path_1 =", pckl_file_path_1)
-                table = flex.reflection_table.from_pickle(pckl_file_path_1)
-                """
                 table = flex.reflection_table.from_pickle(pckl_file_path[1])
 
                 logger.debug("table = %s", table)
