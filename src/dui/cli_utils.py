@@ -190,23 +190,37 @@ def build_command_lst(node_obj, cmd_lst):
     run_path = sys_arg.directory + os.sep + "dui_files"
 
     if cmd_lst[0] == "import":
+
+        """
         node_obj.json_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_datablock.json"
         )
+        """
+        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         )
+        """
+        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
 
+        #####################################################################
+        """
         node_obj.debug_log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
+        """
+        node_obj.debug_log_file_out = (
+            str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
         # TODO make sure import without arguments does NOT run
 
@@ -214,91 +228,139 @@ def build_command_lst(node_obj, cmd_lst):
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
-
+        #####################################################################
+        """
         node_obj.json_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_datablock.json"
         )
+        """
+        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.refl_pickle_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         )
+        """
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         )
+        """
+        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.debug_log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
+        """
+        node_obj.debug_log_file_out = (
+            str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
     elif cmd_lst[0] == "index":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
         cmd_lst_to_run.append(input_str)
+        #####################################################################
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
-
+        #####################################################################
+        """
         node_obj.json_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_experiments.json"
         )
+        """
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.refl_pickle_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         )
+        """
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         )
+        """
+        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.debug_log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
+        """
+        node_obj.debug_log_file_out = (
+            str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
     elif cmd_lst[0] == "refine_bravais_settings":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
+        #####################################################################
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
+        #####################################################################
 
         prefix_str = "lin_" + str(node_obj.lin_num) + "_"
         node_obj.prefix_out = prefix_str
         output_str = "output.prefix=" + node_obj.prefix_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
+        """
         cmd_lst_to_run.append("output.directory=" + run_path)
         node_obj.json_file_out = run_path + os.sep + prefix_str + "bravais_summary.json"
+        """
 
+        # cmd_lst_to_run.append("output.directory=" + run_path)
+        node_obj.json_file_out = prefix_str + "bravais_summary.json"
+        #####################################################################
+        """
         node_obj.log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         )
+        """
+        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.debug_log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
+        """
+        node_obj.debug_log_file_out = (
+            str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
     elif cmd_lst[0] == "reindex":
         try:
@@ -315,15 +377,17 @@ def build_command_lst(node_obj, cmd_lst):
         pickle_file_in = node_obj.prev_step.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
+        ########################################################################
 
         json_file_tmp = node_obj.prev_step.json_file_out
-        with open(json_file_tmp) as summary_file:
+        with open(run_path + os.sep + json_file_tmp) as summary_file:
             j_obj = json.load(summary_file)
         change_of_basis_op = j_obj[str(sol_num)]["cb_op"]
 
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
         cmd_lst_to_run.append(input_str)
-
+        ########################################################################
+        """
         node_obj.json_file_out = (
             run_path
             + os.sep
@@ -332,12 +396,20 @@ def build_command_lst(node_obj, cmd_lst):
             + str(sol_num)
             + ".json"
         )
-
+        """
+        node_obj.json_file_out = (
+            node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
+        )
+        ########################################################################
+        """
         node_obj.refl_pickle_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         )
+        """
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
     elif (
         cmd_lst[0] == "refine"
@@ -349,23 +421,31 @@ def build_command_lst(node_obj, cmd_lst):
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         cmd_lst_to_run.append(input_str)
+        #####################################################################
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         cmd_lst_to_run.append(input_str)
-
+        #####################################################################
+        """
         node_obj.json_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_experiments.json"
         )
+        """
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.refl_pickle_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_reflections.pickle"
         )
+        """
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         if cmd_lst[0] == "integrate":
             cmd_lst_to_run.append(
                 "output.phil="
@@ -374,15 +454,28 @@ def build_command_lst(node_obj, cmd_lst):
                 + str(node_obj.lin_num)
                 + "_integrate.phil"
             )
-
+        """
+        if cmd_lst[0] == "integrate":
+            cmd_lst_to_run.append(
+                "output.phil=" + str(node_obj.lin_num) + "_integrate.phil"
+            )
+        #####################################################################
+        """
         node_obj.log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         )
+        """
+        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.debug_log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        )
+        """
+        node_obj.debug_log_file_out = (
+            str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
 
         if cmd_lst[0] == "scale":
@@ -392,8 +485,10 @@ def build_command_lst(node_obj, cmd_lst):
             output_str = "output.debug_log=" + node_obj.debug_log_file_out
 
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
         if cmd_lst[0] == "symmetry":
+            """
             node_obj.json_sym_out = (
                 run_path
                 + os.sep
@@ -402,51 +497,66 @@ def build_command_lst(node_obj, cmd_lst):
                 + cmd_lst[0]
                 + ".symmetry.json"
             )
+            """
+            node_obj.json_sym_out = (
+                str(node_obj.lin_num) + "_" + cmd_lst[0] + ".symmetry.json"
+            )
             output_str = "output.json=" + node_obj.json_sym_out
             cmd_lst_to_run.append(output_str)
-
-            # .json_sym_out
+        #####################################################################
 
     elif cmd_lst[0] == "export":
         cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
+        #####################################################################
         cmd_lst_to_run.append(node_obj.prev_step.refl_pickle_file_out)
-
+        #####################################################################
+        """
         node_obj.log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         )
+        """
+        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         cmd_lst_to_run.append(output_str)
-
+        #####################################################################
+        """
         node_obj.debug_log_file_out = (
             run_path + os.sep + str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
+        """
+        node_obj.debug_log_file_out = (
+            str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
+        )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         cmd_lst_to_run.append(output_str)
+        #####################################################################
 
     return cmd_lst_to_run
 
 
 def generate_predict(node_obj):
     pre_out = None
-    run_path = sys_arg.directory + os.sep + "dui_files"
-
+    # run_path = sys_arg.directory + os.sep + "dui_files"
+    cwd_path = os.path.join(sys_arg.directory, "dui_files")
     if node_obj.command_lst[0] in node_obj.dials_com_lst[2:-1]:
         try:
             logger.debug("running predictions START")
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
-            pre_fil = run_path + os.sep + str(current_lin) + "_predict.pickle"
+            # pre_fil = run_path + os.sep + str(current_lin) + "_predict.pickle"
+            pre_fil = str(current_lin) + "_predict.pickle"
             pred_outp = " output=" + pre_fil
             pred_cmd = "dials.predict " + str(exp_inp) + pred_outp
             logger.debug("predict command:  %s %s", pred_cmd, "\n\n")
 
-            gen_pred_proc = subprocess.Popen(pred_cmd, shell=True)
+            # self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
+            gen_pred_proc = subprocess.Popen(pred_cmd, shell=True, cwd=cwd_path)
             gen_pred_proc.wait()
 
-            pre_out = pre_fil
-
-            if os.path.exists(pre_out):
-                logger.debug("\ngenerated predictions at:  %s %s", pre_out, "\n")
+            tst_path = os.path.join(cwd_path, pre_fil)
+            if os.path.exists(tst_path):
+                logger.debug("\ngenerated predictions at:  %s %s", tst_path, "\n")
+                pre_out = pre_fil
 
             else:
                 logger.debug("\n path to predictions NOT generated")
@@ -467,14 +577,15 @@ def generate_predict(node_obj):
 def generate_report(node_obj):
 
     rep_out = None
-    run_path = sys_arg.directory + os.sep + "dui_files"
+    # run_path = sys_arg.directory + os.sep + "dui_files"
 
     if node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]:
         logger.debug("running report START")
         current_lin = node_obj.lin_num
         refl_inp = node_obj.refl_pickle_file_out
         deps_outp = "output.external_dependencies=local"
-        htm_fil = run_path + os.sep + str(current_lin) + "_report.html"
+        # htm_fil = run_path + os.sep + str(current_lin) + "_report.html"
+        htm_fil = str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
         if node_obj.command_lst[0] == "find_spots":
             # rep_cmd = ["dials.report", refl_inp, deps_outp, html_outp]
@@ -497,7 +608,10 @@ def generate_report(node_obj):
         logger.debug("rep_cmd = %s", rep_cmd)
 
         try:
-            gen_rep_proc = subprocess.Popen(rep_cmd, shell=True)
+
+            # self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
+            cwd_path = os.path.join(sys_arg.directory, "dui_files")
+            gen_rep_proc = subprocess.Popen(rep_cmd, shell=True, cwd=cwd_path)
             gen_rep_proc.wait()
 
             rep_out = htm_fil
@@ -550,13 +664,15 @@ class DialsCommand(object):
             logger.debug("\n<<<")
 
             self.tmp_std_all = []
-
+            cwd_path = os.path.join(sys_arg.directory, "dui_files")
+            # self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
             my_process = subprocess.Popen(
                 run_cmd,
                 shell=self.use_shell,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 bufsize=1,
+                cwd=cwd_path,
             )
 
             self.my_pid = my_process.pid

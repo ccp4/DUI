@@ -26,6 +26,8 @@ from __future__ import absolute_import, division, print_function
 import json
 import logging
 import sys
+import os
+from .cli_utils import sys_arg
 
 from .qt import (
     QApplication,
@@ -341,7 +343,11 @@ class MyReindexOpts(QWidget):
     def set_ref(self, in_json_path, lin_num):
         my_box = QVBoxLayout()
         self.my_inner_table = ReindexTable(self)
-        self.my_inner_table.add_opts_lst(json_path=in_json_path)
+
+        cwd_path = os.path.join(sys_arg.directory, "dui_files")
+        full_json_path = os.path.join(cwd_path, in_json_path)
+
+        self.my_inner_table.add_opts_lst(json_path=full_json_path)
 
         if self.my_inner_table.rec_col is not None:
             my_solu = self.my_inner_table.find_best_solu()
@@ -365,7 +371,7 @@ class MyReindexOpts(QWidget):
         ok_but = QPushButton("     OK      ")
         ok_but.clicked.connect(self.my_inner_table.ok_clicked)
         bot_box.addWidget(ok_but)
-        heather_text, v_heather_size = heather_text_from_lin(lin_num, in_json_path)
+        heather_text, v_heather_size = heather_text_from_lin(lin_num, full_json_path)
         my_box.addWidget(QLabel(heather_text))
         my_box.addWidget(self.my_inner_table)
         my_box.addLayout(bot_box)

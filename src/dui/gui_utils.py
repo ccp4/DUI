@@ -323,8 +323,16 @@ def update_info(main_obj):
     main_obj.cli_tree_output(main_obj.idials_runner)
     main_obj.cur_html = main_obj.idials_runner.get_html_report()
 
+    cwd_path = os.path.join(sys_arg.directory, "dui_files")
+
     if main_obj.view_tab_num == 2:
-        main_obj.web_view.update_page(main_obj.cur_html)
+        if main_obj.cur_html is not None:
+            full_path_html = os.path.join(cwd_path, main_obj.cur_html)
+
+        else:
+            full_path_html = None
+
+        main_obj.web_view.update_page(full_path_html)
 
     new_log = main_obj.idials_runner.get_log_path()
 
@@ -332,11 +340,32 @@ def update_info(main_obj):
 
     main_obj.cli_out.clear()
     main_obj.cli_out.make_green()
+
     main_obj.cur_log = new_log
-    main_obj.cli_out.refresh_txt(main_obj.cur_log, tmp_curr)
+    if new_log is not None:
+        full_log_path = os.path.join(cwd_path, main_obj.cur_log)
+
+    else:
+        full_log_path = None
+
+    main_obj.cli_out.refresh_txt(full_log_path, tmp_curr)
 
     new_img_json = main_obj.idials_runner.get_datablock_path()
-    new_ref_pikl = main_obj.idials_runner.get_reflections_path()
+    new_ref_pikl1 = main_obj.idials_runner.get_reflections_path()
+
+    if new_ref_pikl1[0] is not None:
+        memb0 = os.path.join(cwd_path, new_ref_pikl1[0])
+
+    else:
+        memb0 = None
+
+    if new_ref_pikl1[1] is not None:
+        memb1 = os.path.join(cwd_path, new_ref_pikl1[1])
+
+    else:
+        memb1 = None
+
+    new_ref_pikl = [memb0, memb1]
 
     if main_obj.view_tab_num == 0:
 
@@ -353,7 +382,7 @@ def update_info(main_obj):
     if tmp_curr.success is None:
         tmp_curr = tmp_curr.prev_step
 
-    uni_json = tmp_curr.json_file_out
+    uni_json = os.path.join(cwd_path, tmp_curr.json_file_out)
 
     main_obj.info_widget.update_data(
         exp_json_path=uni_json, refl_pikl_path=new_ref_pikl

@@ -25,10 +25,12 @@ from __future__ import absolute_import, division, print_function
 import logging
 import sys
 import subprocess
+import os
 
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
+from ..cli_utils import sys_arg
 from ..gui_utils import get_main_path
 from .img_view_tools import (
     panel_data_as_double,
@@ -964,7 +966,10 @@ class MyImgWin(QWidget):
     def ini_datablock(self, json_file_path):
         if json_file_path is not None:
             try:
-                datablocks = DataBlockFactory.from_json_file(json_file_path)
+                cwd_path = os.path.join(sys_arg.directory, "dui_files")
+                n_json_file_path = os.path.join(cwd_path, json_file_path)
+
+                datablocks = DataBlockFactory.from_json_file(n_json_file_path)
                 # TODO check length of datablock for safety
                 datablock = datablocks[0]
                 self.my_sweep = datablock.extract_sweeps()[0]
@@ -1024,12 +1029,22 @@ class MyImgWin(QWidget):
             self.my_painter.scale2fact(sc_height / pt_height)
 
     def ini_reflection_table(self, pckl_file_path):
-        logger.debug("\npickle file(s) = %s", pckl_file_path)
+        print("\npickle file(s) = %s", pckl_file_path)
 
         if pckl_file_path[0] is not None:
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:
+
+                old_stable = """
+                cwd_path = os.path.join(sys_arg.directory, "dui_files")
+
+                pckl_file_path_0 = os.path.join(cwd_path, pckl_file_path[0])
+                print("pckl_file_path_0 =", pckl_file_path_0)
+                table = flex.reflection_table.from_pickle(pckl_file_path_0)
+                """
+
                 table = flex.reflection_table.from_pickle(pckl_file_path[0])
+
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
                 bbox_col = map(list, table["bbox"])
@@ -1063,7 +1078,17 @@ class MyImgWin(QWidget):
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
             try:
+
+                cwd_path = os.path.join(sys_arg.directory, "dui_files")
+                print("pckl_file_path[1]=", pckl_file_path[1])
+
+                old_stable = """
+                pckl_file_path_1 = os.path.join(cwd_path, pckl_file_path[1])
+                print("pckl_file_path_1 =", pckl_file_path_1)
+                table = flex.reflection_table.from_pickle(pckl_file_path_1)
+                """
                 table = flex.reflection_table.from_pickle(pckl_file_path[1])
+
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
                 # n_refs = len(table)
