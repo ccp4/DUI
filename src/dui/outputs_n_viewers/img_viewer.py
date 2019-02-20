@@ -1153,42 +1153,29 @@ class MyImgWin(QWidget):
         myfile.close()
 
         print("writing phil file END")
-        old = """
-        to_run = (
-            "dials.apply_mask "
-            + "input.datablock=dui_files/1_datablock.json "
-            + "input.mask=dui_files/mask.phil "
-            + "output.datablock=dui_files/1_datablock.json"
-        )
-        """
 
         to_run = (
-            "dials.generate_mask "
-            + "dui_files/mask.phil "
-            + "input.datablock=dui_files/1_datablock.json"
+            "dials.generate_mask " + "mask.phil " + "input.datablock=1_datablock.json"
         )
 
         print("running proc #1")
-        gen_pred_proc = subprocess.Popen(to_run, shell=True)
+        # self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
+        cwd_path = os.path.join(sys_arg.directory, "dui_files")
+        gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
         gen_pred_proc.wait()
         print("proc #1 ... Done")
 
         to_run = (
             "dials.apply_mask "
-            + "input.datablock=dui_files/1_datablock.json "
-            + "input.mask=dui_files/mask.pickle "
-            + "output.datablock=dui_files/1_datablock.json"
+            + "input.datablock=1_datablock.json "
+            + "input.mask=mask.pickle "
+            + "output.datablock=1_datablock.json"
         )
 
         print("running proc #2")
-        gen_pred_proc = subprocess.Popen(to_run, shell=True)
+        gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
         gen_pred_proc.wait()
         print("proc #2 ... Done")
-
-        example_to_translate = """
-        dials.generate_mask mask.phil 1_datablock.json
-        dials.apply_mask 1_datablock.json mask=mask.pickle
-        """
 
     def zoom2one(self):
         self.my_painter.scale2fact()
