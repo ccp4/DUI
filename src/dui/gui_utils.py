@@ -368,16 +368,23 @@ def update_info(main_obj):
     if tmp_curr.success is None:
         tmp_curr = tmp_curr.prev_step
 
+    """
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     uni_json = os.path.join(cwd_path, tmp_curr.json_file_out)
+    """
 
     main_obj.info_widget.update_data(
-        exp_json_path=uni_json, refl_pikl_path=new_ref_pikl
+        exp_json_path=join_path(tmp_curr.json_file_out),
+        refl_pikl_path=[join_path(new_ref_pikl[0]), join_path(new_ref_pikl[1])],
     )
 
     main_obj.img_view.update_exp(main_obj.info_widget.all_data.ref2exp)
 
-    main_obj.ext_view.update_data(new_pick=new_ref_pikl, new_json=uni_json)
+    # main_obj.ext_view.update_data(new_pick=new_ref_pikl, new_json=uni_json)
+    main_obj.ext_view.update_data(
+        new_pick=[join_path(new_ref_pikl[0]), join_path(new_ref_pikl[1])],
+        new_json=join_path(tmp_curr.json_file_out),
+    )
 
     try:
         xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
