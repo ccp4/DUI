@@ -191,7 +191,9 @@ class ControlWidget(QWidget):
             "export",
         ]
 
-        for action in [ACTIONS[x] for x in button_actions]:
+        for x in button_actions:
+            action = ACTIONS[x]
+
             new_btn = MyActionButton(action, parent=self)
             new_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
