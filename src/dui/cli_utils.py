@@ -52,11 +52,14 @@ def prn_lst_lst_cmd(last_idials_node):
     lst_full_cmd = []
 
     while True:
-        if cur_nod.command_lst == ["Root"] or cur_nod.lin_num == 0:
+        if cur_nod.command_lst[0] == ["Root"] or cur_nod.lin_num == 0:
             break
 
+        # TODO make a loop thru the list of posible commands
         l_n = str(cur_nod.lin_num)
-        lst_simpl_cmd.append("command_lst[" + l_n + "] = " + str(cur_nod.command_lst))
+        lst_simpl_cmd.append(
+            "command_lst[" + l_n + "] = " + str(cur_nod.command_lst[0])
+        )
         lst_full_cmd.append(
             "full_cmd_lst[" + l_n + "] = " + str(cur_nod.dials_command.full_cmd_lst)
         )
@@ -80,7 +83,7 @@ def get_next_step(node_obj):
 
     else:
         for pos, stp in enumerate(node_obj.dials_com_lst[0:-1]):
-            if stp == node_obj.command_lst[0]:
+            if stp == node_obj.command_lst[0][0]:
                 nxt_str = node_obj.dials_com_lst[pos + 1]
                 return nxt_str
 
@@ -371,7 +374,7 @@ def build_command_lst(node_obj, cmd_lst):
 def generate_predict(node_obj):
     pre_out = None
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
-    if node_obj.command_lst[0] in node_obj.dials_com_lst[2:-1]:
+    if node_obj.command_lst[0][0] in node_obj.dials_com_lst[2:-1]:
         try:
             logger.debug("running predictions START")
             current_lin = node_obj.lin_num
@@ -409,14 +412,14 @@ def generate_report(node_obj):
 
     rep_out = None
 
-    if node_obj.command_lst[0] in node_obj.dials_com_lst[1:-1]:
+    if node_obj.command_lst[0][0] in node_obj.dials_com_lst[1:-1]:
         logger.debug("running report START")
         current_lin = node_obj.lin_num
         refl_inp = node_obj.refl_pickle_file_out
         deps_outp = "output.external_dependencies=local"
         htm_fil = str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
-        if node_obj.command_lst[0] == "find_spots":
+        if node_obj.command_lst[0][0] == "find_spots":
             rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
 
         else:
@@ -549,11 +552,16 @@ class DialsCommand(object):
 
 
 def print_list(lst, curr):
-    # TODO maybe here goes a print print function instead of logger ...
+    # TODO maybe here goes a print function instead of logger ...
     logger.debug("__________________________listing:")
     for uni in lst:
+        # TODO loopthru all commands, in "both" lists
         stp_str = (
-            str(uni.lin_num) + " " + str(uni.success) + " comm: " + str(uni.command_lst)
+            str(uni.lin_num)
+            + " "
+            + str(uni.success)
+            + " comm: "
+            + str(uni.command_lst[0])
         )
 
         try:
@@ -609,7 +617,7 @@ class TreeShow(object):
         str_lin_num = "{0:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + r"   \___"
-        stp_prn += str(step.command_lst[0])
+        stp_prn += str(step.command_lst[0][0])
 
         self.str_lst.append([stp_prn, indent, int(step.lin_num)])
         new_indent = indent

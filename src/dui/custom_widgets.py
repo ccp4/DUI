@@ -87,6 +87,53 @@ from six.moves import range
 logger = logging.getLogger(__name__)
 
 
+class MaskPage(QWidget):
+
+    update_command_lst_low_level = Signal(list)
+
+    """
+    This stacked widget appears whe the user wants to
+    do (...) apply_mask, there is no auto-generated GUI
+    form Phil parameters in use withing this widget.
+    """
+
+    def __init__(self, parent=None):
+        super(MaskPage, self).__init__(parent=None)
+
+        main_v_box = QVBoxLayout()
+
+        label_font = QFont()
+        sys_font_point_size = label_font.pointSize()
+        label_font.setPointSize(sys_font_point_size + 2)
+        step_label = QLabel(str("Apply Mask"))
+        step_label.setFont(label_font)
+
+        list_label = QLabel(str("empty List ... for now"))
+
+        main_v_box.addWidget(step_label)
+        main_v_box.addStretch()
+        main_v_box.addWidget(list_label)
+        main_v_box.addStretch()
+
+        self.setLayout(main_v_box)
+
+        self.show()
+        # self.command_lst = ["A"]
+        self.command_lst = [["A"]]
+        self.my_widget = self
+
+    def gray_me_out(self):
+        # self.something.setEnabled(False)
+        print("gray_me_out")
+
+    def activate_me(self, cur_nod=None):
+
+        print("activate_me")
+
+    def reset_par(self):
+        print("reset_par")
+
+
 class ExportPage(QWidget):
 
     update_command_lst_low_level = Signal(list)
@@ -130,23 +177,24 @@ class ExportPage(QWidget):
         self.simple_lin.setText("integrated.mtz")
 
     def update_command(self):
+        # self.command_lst = ["export"]
         self.command_lst = ["export"]
 
         param1_com = str(self.simple_lin.text())
         logger.debug("param1_com = %s", param1_com)
 
-        self.command_lst.append("mtz.hklout=" + param1_com)
+        self.command_lst[0].append("mtz.hklout=" + param1_com)
 
         if self.check_scale.checkState():
             param2_com = "intensity=scale"
             logger.debug("param2_com = %s", param2_com)
 
-            self.command_lst.append(param2_com)
+            self.command_lst[0].append(param2_com)
 
-        self.update_command_lst_low_level.emit(self.command_lst)
-        logger.debug("self.command_lst = %s", self.command_lst)
+        self.update_command_lst_low_level.emit(self.command_lst[0])
+        logger.debug("self.command_lst[0] = %s", self.command_lst[0])
 
-        for lin_prn in self.command_lst:
+        for lin_prn in self.command_lst[0]:
             logger.debug("lin_prn = %s", lin_prn)
 
     def gray_me_out(self):
@@ -166,7 +214,7 @@ class ExportPage(QWidget):
             found_scale = False
             for iters in range(5):
                 try:
-                    if my_node.command_lst[0] == "scale":
+                    if my_node.command_lst[0][0] == "scale":
                         found_scale = True
                         break
 
@@ -327,7 +375,8 @@ class ImportPage(QWidget):
 
     def update_command(self):
         logger.debug("action_simple")
-        self.command_lst = ["import"]
+        # self.command_lst = ["import"]
+        self.command_lst = [["import"]]
         param_com = str(self.simple_lin.text())
         logger.debug("param_com = %s", param_com)
 
@@ -335,14 +384,14 @@ class ImportPage(QWidget):
         logger.debug("cmd_lst = %s", cmd_lst)
 
         for single_com in cmd_lst:
-            self.command_lst.append(single_com)
+            self.command_lst[0].append(single_com)
 
-        self.update_command_lst_low_level.emit(self.command_lst)
-        logger.debug("self.command_lst = %s", self.command_lst)
+        self.update_command_lst_low_level.emit(self.command_lst[0])
+        logger.debug("self.command_lst = %s", self.command_lst[0])
 
         logger.debug("\n loop print \n")
 
-        for lin_prn in self.command_lst:
+        for lin_prn in self.command_lst[0]:
             logger.debug("lin_prn = %s", lin_prn)
 
     def gray_me_out(self):
@@ -448,7 +497,8 @@ class ParamMainWidget(QWidget):
     def __init__(self, phl_obj=None, simp_widg=None, parent=None, upper_label=None):
         super(ParamMainWidget, self).__init__()
 
-        self.command_lst = [None]
+        # self.command_lst = [None]
+        self.command_lst = [[None]]
         self.lst_pair = []
 
         try:
@@ -515,12 +565,12 @@ class ParamMainWidget(QWidget):
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
 
-        logger.debug("<< inner >>self.command_lst = %s", self.command_lst)
-        self.command_lst = [self.command_lst[0]]
+        logger.debug("<< inner >>self.command_lst[0] = %s", self.command_lst[0])
+        self.command_lst[0] = [self.command_lst[0][0]]
         self.lst_pair = []
         logger.debug("<< inner >>self.command_lst = %s", self.command_lst)
 
-        self.update_command_lst_low_level.emit(self.command_lst)
+        self.update_command_lst_low_level.emit(self.command_lst[0])
 
         try:
             max_nproc = self.simpler_widget.set_max_nproc()
@@ -539,13 +589,13 @@ class ParamMainWidget(QWidget):
 
     def raise_nproc_to_max(self):
         found_nproc = False
-        for single_par in self.command_lst:
+        for single_par in self.command_lst[0]:
             if "mp.nproc" in single_par:
                 found_nproc = True
 
         if not found_nproc:
-            self.command_lst.append(self.raise_nproc_str)
-            self.update_command_lst_low_level.emit(self.command_lst)
+            self.command_lst[0].append(self.raise_nproc_str)
+            self.update_command_lst_low_level.emit(self.command_lst[0])
 
     def update_advanced_widget(self, str_path, str_value):
 
@@ -646,8 +696,8 @@ class ParamMainWidget(QWidget):
         self.update_simpler_widget(str_path, str_value)
 
         self.lst_pair = update_lst_pair(self.lst_pair, str_path, str_value)
-        self.command_lst = build_lst_str(self.command_lst[0], self.lst_pair)
-        self.update_command_lst_low_level.emit(self.command_lst)
+        self.command_lst[0] = build_lst_str(self.command_lst[0][0], self.lst_pair)
+        self.update_command_lst_low_level.emit(self.command_lst[0])
 
     def update_param_w_lst(self, lst_in, do_reset=True):
 
@@ -660,7 +710,7 @@ class ParamMainWidget(QWidget):
             logger.debug("restoring advanced widgets")
             self.lst_pair = buils_lst_pair(lst_in)
             logger.debug("lst_pair done")
-            self.command_lst = build_lst_str(lst_in[0], self.lst_pair)
+            self.command_lst[0] = build_lst_str(lst_in[0], self.lst_pair)
             logger.debug("looping thru params")
             for pair in self.lst_pair:
                 self.update_advanced_widget(pair[0], pair[1])
@@ -668,7 +718,7 @@ class ParamMainWidget(QWidget):
         else:
             logger.debug("updating with no parameters")
             self.lst_pair = []
-            self.command_lst = lst_in
+            self.command_lst[0] = lst_in
             logger.debug("")
 
         logger.debug("after update widgets")
@@ -676,7 +726,7 @@ class ParamMainWidget(QWidget):
     def remove_one_par(self, path_str):
         logger.debug("\n removing: %s %s", path_str, "parameter \n")
         nxt_lst = []
-        for single_param in self.command_lst:
+        for single_param in self.command_lst[0]:
             if str(path_str) in single_param:
                 logger.debug("found:  %s", single_param)
 
@@ -775,7 +825,8 @@ class ParamWidget(QWidget):
                 upper_label=label_str,
             )
 
-        self.my_widget.command_lst = [label_str]
+        # self.my_widget.command_lst[0] = [label_str]
+        self.my_widget.command_lst = [[label_str]]
 
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)
 
@@ -786,8 +837,8 @@ class ParamWidget(QWidget):
 
     def update_param(self, curr_step):
 
-        logger.debug("update_param( %s %s", curr_step.command_lst, ")")
-        self.my_widget.update_param_w_lst(curr_step.command_lst)
+        logger.debug("update_param( %s %s", curr_step.command_lst[0], ")")
+        self.my_widget.update_param_w_lst(curr_step.command_lst[0])
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_medium_level.emit(command_lst)

@@ -33,7 +33,7 @@ from six import raise_from
 from ._version import __version__
 from .dynamic_reindex_gui import MyReindexOpts
 from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
-from .custom_widgets import ParamWidget
+from .custom_widgets import ParamWidget, MaskPage
 from .gui_utils import (
     CliOutView,
     Text_w_Bar,
@@ -114,7 +114,7 @@ class CommandThread(QThread):
         super(CommandThread, self).__init__()
 
     def __call__(self, cmd_to_run, ref_to_controler):
-        self.cmd_to_run = cmd_to_run
+        self.cmd_to_run = cmd_to_run[0]
         self.ref_to_controler = ref_to_controler
         self.status_thread = CheckStatusThread()
 
@@ -125,6 +125,8 @@ class CommandThread(QThread):
         self.start()
 
     def run(self):
+
+        print("self.cmd_to_run =", self.cmd_to_run)
 
         self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
 
@@ -215,8 +217,11 @@ class ControlWidget(QWidget):
 
             param_widg.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        self.setLayout(top_box)
+        self.mask_page = MaskPage()
 
+        self.step_param_widg.addWidget(self.mask_page)
+
+        self.setLayout(top_box)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def update_parent_lst(self, command_lst):
@@ -441,6 +446,8 @@ class MainWidget(QMainWindow):
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
+        self.img_view.mask_applied.connect(self.pop_mask_list)
+
         self.info_widget = InfoWidget()
 
         InfoScrollArea = QScrollArea()
@@ -486,6 +493,76 @@ class MainWidget(QMainWindow):
 
         if refresh_gui:
             self.refresh_my_gui()
+
+    def pop_mask_list(self, mask_itm_lst):
+        print("\n mask_itm_lst:", mask_itm_lst, "\n")
+        import subprocess
+
+        phil_str_list = []
+
+        for item in mask_itm_lst:
+            phil_str_list.append("untrusted {")
+            if item[0] == "rect":
+                phil_str_list.append(
+                    "  rectangle = "
+                    + str(item[1])
+                    + " "
+                    + str(item[2])
+                    + " "
+                    + str(item[3])
+                    + " "
+                    + str(item[4])
+                )
+                phil_str_list.append("}")
+
+            elif item[0] == "circ":
+                phil_str_list.append(
+                    "  circle = "
+                    + str(item[1])
+                    + " "
+                    + str(item[2])
+                    + " "
+                    + str(item[3])
+                )
+                phil_str_list.append("}")
+
+        print("writing phil file START")
+
+        myfile = open("dui_files/mask.phil", "w")
+
+        for str_lin in phil_str_list:
+            myfile.write(str_lin + "\n")
+
+        myfile.close()
+
+        print("writing phil file END")
+
+        to_run = (
+            "dials.generate_mask " + "mask.phil " + "input.datablock=1_datablock.json"
+        )
+
+        print("running proc #1")
+        # self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
+        cwd_path = os.path.join(sys_arg.directory, "dui_files")
+        gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
+        gen_pred_proc.wait()
+        print("proc #1 ... Done")
+
+        to_run = (
+            "dials.apply_mask "
+            + "input.datablock=1_datablock.json "
+            + "input.mask=mask.pickle "
+            + "output.datablock=1_datablock.json"
+        )
+
+        print("running proc #2")
+        gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
+        gen_pred_proc.wait()
+        print("proc #2 ... Done")
+
+        self.centre_par_widget.step_param_widg.setCurrentWidget(
+            self.centre_par_widget.mask_page
+        )
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)
@@ -536,11 +613,11 @@ class MainWidget(QMainWindow):
             my_widget.activate_me(cur_nod=self.idials_runner.current_node)
 
         else:
-            if self.idials_runner.current_node.command_lst[0] != "export":
+            if self.idials_runner.current_node.command_lst[0][0] != "export":
                 self.stop_run_retry.repeat_btn.setEnabled(True)
             my_widget.gray_me_out()
 
-        if self.idials_runner.current_node.command_lst[0] == "reindex":
+        if self.idials_runner.current_node.command_lst[0][0] == "reindex":
             self.stop_run_retry.run_btn.setEnabled(False)
             self.stop_run_retry.repeat_btn.setEnabled(False)
 
@@ -564,7 +641,7 @@ class MainWidget(QMainWindow):
         current_parameter_widget = (
             self.centre_par_widget.step_param_widg.currentWidget()
         )
-        action_name = current_parameter_widget.my_widget.command_lst[0]
+        action_name = current_parameter_widget.my_widget.command_lst[0][0]
         if (
             action_name in ["find_spots", "integrate"]
             and self.idials_runner.current_node.success is None
@@ -604,14 +681,14 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is True:
 
             self.cmd_exe(["mkchi"])
-            self.idials_runner.current_node.command_lst = [str(my_label)]
-            logger.debug(
+            self.idials_runner.current_node.command_lst[0] = [str(my_label)]
+            print(
                 "_________________________________________________________>>>> mkchi\n"
             )
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None
-            if self.idials_runner.current_node.command_lst[0] == "integrate":
+            if self.idials_runner.current_node.command_lst[0][0] == "integrate":
                 logger.debug("Running: try_find_prev_mask_pickle")
                 path_to_mask_pickle = try_find_prev_mask_pickle(
                     self.idials_runner.current_node
@@ -621,24 +698,22 @@ class MainWidget(QMainWindow):
 
             else:
                 logger.debug(
-                    "self.idials_runner.current_node.command_lst[0] = %s",
-                    self.idials_runner.current_node.command_lst[0],
+                    "self.idials_runner.current_node.command_lst[0][0] = %s",
+                    self.idials_runner.current_node.command_lst[0][0],
                 )
 
             logger.debug("path_to_mask_pickle = %s", path_to_mask_pickle)
-            logger.debug(
-                "\n______________________________________________________mkchi <<<<<"
-            )
+            print("\n______________________________________________________mkchi <<<<<")
 
             self.cmd_exe(["clean"])
 
         elif tmp_curr.success is None:
-            self.idials_runner.current_node.command_lst = [str(my_label)]
+            self.idials_runner.current_node.command_lst[0] = [str(my_label)]
             self.reconnect_when_ready()
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_par_widget.step_param_widg.currentWidget()
-        self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0]
+        self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0][0]
         self.reconnect_when_ready()
 
     def rep_clicked(self):
@@ -683,7 +758,7 @@ class MainWidget(QMainWindow):
         self.txt_bar.start_motion()
         self.txt_bar.setText("Running")
         self.disconnect_while_running()
-
+        print("\nnew_cmd(cmd_launch)=", new_cmd)
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
@@ -695,15 +770,16 @@ class MainWidget(QMainWindow):
         tmp_curr = self.idials_runner.current_node
 
         if (
-            tmp_curr.command_lst[0] == "refine_bravais_settings"
+            tmp_curr.command_lst[0][0] == "refine_bravais_settings"
             and tmp_curr.success is True
         ):
 
             self.idials_runner.run(command=["mkchi"], ref_to_class=None)
 
-            self.idials_runner.current_node.command_lst[0] = "reindex"
+            # self.idials_runner.current_node.command_lst[0][0] = "reindex"
+            self.idials_runner.current_node.command_lst = [["reindex"]]
 
-        elif tmp_curr.command_lst[0] == "reindex" and tmp_curr.success is True:
+        elif tmp_curr.command_lst[0][0] == "reindex" and tmp_curr.success is True:
 
             self.just_reindexed = True
             try:
@@ -759,12 +835,12 @@ class MainWidget(QMainWindow):
             "None": [None],
         }
 
-        lst_nxt = cmd_connects[str(tmp_curr.command_lst[0])]
+        lst_nxt = cmd_connects[str(tmp_curr.command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        if tmp_curr.command_lst[0] == "reindex" and not self.just_reindexed:
+        if tmp_curr.command_lst[0][0] == "reindex" and not self.just_reindexed:
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -836,7 +912,7 @@ class MainWidget(QMainWindow):
     def opt_dobl_clicked(self, row):
         re_idx = row + 1
         logger.debug("Solution clicked = %s", re_idx)
-        cmd_tmp = "reindex solution=" + str(re_idx)
+        cmd_tmp = ["reindex solution=" + str(re_idx)]
         self.cmd_launch(cmd_tmp)
 
     def node_clicked(self, it_index):
@@ -866,7 +942,7 @@ class MainWidget(QMainWindow):
             cmd_ovr = "goto " + str(lin_num)
             self.cmd_exe(cmd_ovr)
             self.centre_par_widget.set_widget(
-                nxt_cmd=item.idials_node.command_lst[0],
+                nxt_cmd=item.idials_node.command_lst[0][0],
                 curr_step=self.idials_runner.current_node,
             )
 
@@ -887,7 +963,7 @@ class MainWidget(QMainWindow):
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
         self.centre_par_widget.set_widget(
-            nxt_cmd=self.idials_runner.current_node.command_lst[0],
+            nxt_cmd=self.idials_runner.current_node.command_lst[0][0],
             curr_step=self.idials_runner.current_node,
         )
 
