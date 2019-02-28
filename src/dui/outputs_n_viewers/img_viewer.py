@@ -758,14 +758,14 @@ class MyImgWin(QWidget):
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
         # Mask tools
-        self.btn_reset_mask = QPushButton("Stop/ReSet")
+        self.btn_reset_mask = QPushButton("Stop/Reset")
         self.btn_apply_mask = QPushButton("Apply")
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
         self.chk_box_mask.setChecked(False)
 
         self.rad_but_rect_mask = QRadioButton("rectangle")
         self.rad_but_circ_mask = QRadioButton("circle")
-        self.rad_but_poli_mask = QRadioButton("poligon")
+        self.rad_but_poli_mask = QRadioButton("polygon")
         self.rad_but_rect_mask.setChecked(True)
 
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
