@@ -666,16 +666,14 @@ class MainWidget(QMainWindow):
             )
 
     def update_low_level_command_lst(self, command_lst):
-        logger.debug(
-            "self.idials_runner.current_node.command_lst = %s",
-            self.idials_runner.current_node.command_lst,
-        )
-        logger.debug("                                command_lst = %s", command_lst)
+
+        print("\n command_lst(m_idials_gui.MainWidget) = %s", command_lst)
 
         self.idials_runner.current_node.command_lst = command_lst
         self.reconnect_when_ready()
 
     def cmd_changed_by_user(self, my_label):
+        print("my_label(MainWidget.) = ", my_label)
         logger.debug("cmd_changed_by_user()")
         tmp_curr = self.idials_runner.current_node
         if tmp_curr.success is True:
@@ -741,7 +739,7 @@ class MainWidget(QMainWindow):
         cmd_tmp = (
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
         )
-        logger.debug("cmd_tmp = %s", cmd_tmp)
+        print("cmd_tmp(run_clicked) = %s", cmd_tmp)
         self.cmd_launch(cmd_tmp)
 
     def cmd_exe(self, new_cmd):

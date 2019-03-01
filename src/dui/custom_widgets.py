@@ -178,7 +178,7 @@ class ExportPage(QWidget):
 
     def update_command(self):
         # self.command_lst = ["export"]
-        self.command_lst = ["export"]
+        self.command_lst = [["export"]]
 
         param1_com = str(self.simple_lin.text())
         logger.debug("param1_com = %s", param1_com)
@@ -197,6 +197,8 @@ class ExportPage(QWidget):
         for lin_prn in self.command_lst[0]:
             logger.debug("lin_prn = %s", lin_prn)
 
+        print("command_lst(ExportPage) =", self.command_lst)
+
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
         self.check_scale.setEnabled(False)
@@ -204,6 +206,7 @@ class ExportPage(QWidget):
         self.fist_time = False
 
     def activate_me(self, cur_nod=None):
+        print("activate_me(ExportPage)")
         self.simple_lin.setEnabled(True)
         self.check_scale.setEnabled(True)
         if self.fist_time is False:
@@ -228,6 +231,7 @@ class ExportPage(QWidget):
                 self.check_scale.setChecked(True)
 
     def reset_par(self):
+        print("command_lst(ExportPage.reset_par) = ", self.command_lst)
         logger.debug(" Not supposed to reset export page")
 
 
@@ -841,6 +845,7 @@ class ParamWidget(QWidget):
         self.my_widget.update_param_w_lst(curr_step.command_lst[0])
 
     def update_parent_lst(self, command_lst):
+        print("command_lst(custom_widgets.ParamWidget) =", command_lst)
         self.update_command_lst_medium_level.emit(command_lst)
 
 
