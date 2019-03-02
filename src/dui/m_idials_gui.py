@@ -679,7 +679,10 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is True:
 
             self.cmd_exe(["mkchi"])
-            self.idials_runner.current_node.command_lst[0] = [str(my_label)]
+            print("\n command_lst(cmd_changed_by_user) =", self.idials_runner.current_node.command_lst)
+            print("my_label =", my_label)
+            self.idials_runner.current_node.command_lst = [[str(my_label)]]
+            print("\n command_lst(cmd_changed_by_user) =", self.idials_runner.current_node.command_lst)
             print(
                 "_________________________________________________________>>>> mkchi\n"
             )
