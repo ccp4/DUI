@@ -118,7 +118,6 @@ class MaskPage(QWidget):
         self.setLayout(main_v_box)
 
         self.show()
-        # self.command_lst = ["A"]
         self.command_lst = [["A"]]
         self.my_widget = self
 
@@ -177,7 +176,6 @@ class ExportPage(QWidget):
         self.simple_lin.setText("integrated.mtz")
 
     def update_command(self):
-        # self.command_lst = ["export"]
         self.command_lst = [["export"]]
 
         param1_com = str(self.simple_lin.text())
@@ -379,7 +377,6 @@ class ImportPage(QWidget):
 
     def update_command(self):
         logger.debug("action_simple")
-        # self.command_lst = ["import"]
         self.command_lst = [["import"]]
         param_com = str(self.simple_lin.text())
         logger.debug("param_com = %s", param_com)
@@ -501,7 +498,6 @@ class ParamMainWidget(QWidget):
     def __init__(self, phl_obj=None, simp_widg=None, parent=None, upper_label=None):
         super(ParamMainWidget, self).__init__()
 
-        # self.command_lst = [None]
         self.command_lst = [[None]]
         self.lst_pair = []
 
@@ -557,7 +553,7 @@ class ParamMainWidget(QWidget):
         self.reset_btn.clicked.connect(self.reset_par)
 
     def reset_par(self):
-        logger.debug("Reseting")
+        print("\nReseting")
 
         for i in reversed(list(range(self._vbox.count()))):
             widgetToRemove = self._vbox.itemAt(i).widget()
@@ -569,10 +565,10 @@ class ParamMainWidget(QWidget):
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
 
-        logger.debug("<< inner >>self.command_lst[0] = %s", self.command_lst[0])
+        print("<< inner >>self.command_lst[0] = %s", self.command_lst[0])
         self.command_lst[0] = [self.command_lst[0][0]]
         self.lst_pair = []
-        logger.debug("<< inner >>self.command_lst = %s", self.command_lst)
+        print("<< inner >>self.command_lst = %s", self.command_lst)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
 
@@ -705,7 +701,7 @@ class ParamMainWidget(QWidget):
 
     def update_param_w_lst(self, lst_in, do_reset=True):
 
-        logger.debug("update_param_w_lst(self,  %s)", lst_in)
+        print("update_param_w_lst(self,  %s)", lst_in)
         if do_reset:
             self.reset_par()
 
@@ -720,10 +716,11 @@ class ParamMainWidget(QWidget):
                 self.update_advanced_widget(pair[0], pair[1])
 
         else:
-            logger.debug("updating with no parameters")
+            print("updating with no parameters")
+            print("self.lst_pair =", self.lst_pair)
             self.lst_pair = []
             self.command_lst[0] = lst_in
-            logger.debug("")
+            print("self.lst_pair =", self.lst_pair, "\n")
 
         logger.debug("after update widgets")
 
@@ -829,7 +826,6 @@ class ParamWidget(QWidget):
                 upper_label=label_str,
             )
 
-        # self.my_widget.command_lst[0] = [label_str]
         self.my_widget.command_lst = [[label_str]]
 
         self.my_widget.update_command_lst_low_level.connect(self.update_parent_lst)

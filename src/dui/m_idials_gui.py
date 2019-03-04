@@ -225,7 +225,7 @@ class ControlWidget(QWidget):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def update_parent_lst(self, command_lst):
-        self.update_command_lst_high_level.emit(command_lst)
+        self.update_command_lst_high_level.emit([command_lst])
 
     def pass_sys_arg_object_to_import(self, sys_arg_in):
         """Explicitly pass the system argument object to the import page"""
@@ -277,7 +277,8 @@ class ControlWidget(QWidget):
             "my_label (action ID?) of parameter widget for clicked action: %s",
             param_page.my_label,
         )
-        command_lst = [str(param_page.my_label)]
+        # TODO make sure is [[..label]] and not [..label]
+        command_lst = [[str(param_page.my_label)]]
         self.update_command_lst_high_level.emit(command_lst)
 
     def gray_outs_all(self):
@@ -679,10 +680,16 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is True:
 
             self.cmd_exe(["mkchi"])
-            print("\n command_lst(cmd_changed_by_user) =", self.idials_runner.current_node.command_lst)
+            print(
+                "\n command_lst(cmd_changed_by_user) =",
+                self.idials_runner.current_node.command_lst,
+            )
             print("my_label =", my_label)
             self.idials_runner.current_node.command_lst = [[str(my_label)]]
-            print("\n command_lst(cmd_changed_by_user) =", self.idials_runner.current_node.command_lst)
+            print(
+                "\n command_lst(cmd_changed_by_user) =",
+                self.idials_runner.current_node.command_lst,
+            )
             print(
                 "_________________________________________________________>>>> mkchi\n"
             )
@@ -942,6 +949,18 @@ class MainWidget(QMainWindow):
             logger.debug("clicked item lin_num (self.tree_out.std_mod) = %s", lin_num)
             cmd_ovr = "goto " + str(lin_num)
             self.cmd_exe(cmd_ovr)
+
+            print("\n from node_clicked")
+            print(
+                "item.idials_node.command_lst[0][0] = ",
+                item.idials_node.command_lst[0][0],
+            )
+            print(
+                "self.idials_runner.current_node = ",
+                self.idials_runner.current_node,
+                "\n",
+            )
+
             self.centre_par_widget.set_widget(
                 nxt_cmd=item.idials_node.command_lst[0][0],
                 curr_step=self.idials_runner.current_node,
