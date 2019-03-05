@@ -127,7 +127,7 @@ class CommandNode(object):
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
-        logger.debug("cmd_lst_to_run = %s", self.cmd_lst_to_run)
+        print("cmd_lst_to_run(CommandNode) = %s", self.cmd_lst_to_run)
 
     def get_next_step(self):
         return get_next_step(self)

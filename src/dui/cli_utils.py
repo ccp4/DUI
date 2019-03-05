@@ -474,6 +474,9 @@ class DialsCommand(object):
             self.use_shell = False
 
     def __call__(self, lst_cmd_to_run=None, ref_to_class=None):
+
+        print("self.use_shell = ", self.use_shell)
+
         try:
             logger.debug("\n [[ running >> \n")
             single_string = ""
@@ -488,6 +491,8 @@ class DialsCommand(object):
                 run_cmd = single_string
             else:
                 run_cmd = lst_cmd_to_run
+
+            print("\n lst_cmd_to_run (DialsCommand) = ", lst_cmd_to_run, "\n")
 
             logger.debug("\n<<<")
 
