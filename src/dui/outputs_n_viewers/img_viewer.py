@@ -118,13 +118,13 @@ class ImgPainter(QWidget):
         y2 = self.y_pos / self.my_scale
         if self.my_parent.chk_box_mask.isChecked():
             if self.my_parent.rad_but_rect_mask.isChecked():
-                self.mask_items.append(("rect", int(x1), int(x2), int(y1), int(y2)))
+                self.mask_items.append(["rect", int(x1), int(x2), int(y1), int(y2)])
 
             elif self.my_parent.rad_but_circ_mask.isChecked():
                 dx = x2 - x1
                 dy = y2 - y1
                 r = float(dx * dx + dy * dy) ** (0.5)
-                self.mask_items.append(("circ", int(x1), int(y1), int(r)))
+                self.mask_items.append(["circ", int(x1), int(y1), int(r)])
 
             logger.debug("mask_items =", self.mask_items)
 
@@ -355,7 +355,8 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.my_parent.chk_box_mask.isChecked():
-            # Drawing list of preious mask items
+            # Drawing list of previous mask items
+
             for item in self.mask_items:
                 if item[0] == "rect":
                     xd = item[2] - item[1]

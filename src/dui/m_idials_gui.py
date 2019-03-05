@@ -501,9 +501,25 @@ class MainWidget(QMainWindow):
 
         phil_str_list = []
 
+        print("\n")
+        for item in mask_itm_lst:
+            print(item)
+
+        for item in mask_itm_lst:
+            if item[0] == "rect":
+                if item[1] > item[2]:
+                    item[1], item[2] = item[2], item[1]
+
+                if item[3] > item[4]:
+                    item[3], item[4] = item[4], item[3]
+
+        for item in mask_itm_lst:
+            print(item)
+
         for item in mask_itm_lst:
             phil_str_list.append("untrusted {")
             if item[0] == "rect":
+
                 phil_str_list.append(
                     "  rectangle = "
                     + str(item[1])
