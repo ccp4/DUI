@@ -374,39 +374,33 @@ def build_command_lst(node_obj, cmd_lst):
 def build_mask_command_lst(mask_itm_lst):
     print("\n mask_itm_lst:", mask_itm_lst, "\n")
 
-    phil_str_list = []
+    to_run1 = ["dials.generate_mask"]
 
     for item in mask_itm_lst:
-        phil_str_list.append("untrusted {")
         if item[0] == "rect":
-
-            phil_str_list.append(
-                "  rectangle = "
+            to_run1.append(
+                "untrusted.rectangle="
                 + str(item[1])
-                + " "
+                + ","
                 + str(item[2])
-                + " "
+                + ","
                 + str(item[3])
-                + " "
+                + ","
                 + str(item[4])
             )
-            phil_str_list.append("}")
 
         elif item[0] == "circ":
-            phil_str_list.append(
-                "  circle = " + str(item[1]) + " " + str(item[2]) + " " + str(item[3])
+            to_run1.append(
+                "untrusted.circle="
+                + str(item[1])
+                + ","
+                + str(item[2])
+                + ","
+                + str(item[3])
             )
-            phil_str_list.append("}")
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
-    print("writing phil file in", cwd_path, "START")
-    myfile = open("dui_files/mask.phil", "w")
-    for str_lin in phil_str_list:
-        myfile.write(str_lin + "\n")
-
-    myfile.close()
-    print("writing phil file END")
-    to_run1 = ["dials.generate_mask", "mask.phil", "input.datablock=1_datablock.json"]
+    to_run1.append("input.datablock=1_datablock.json")
 
     print("running proc #1")
 
