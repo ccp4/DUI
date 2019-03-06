@@ -406,16 +406,15 @@ def build_mask_command_lst(mask_itm_lst):
 
     myfile.close()
     print("writing phil file END")
-    to_run = ["dials.generate_mask", "mask.phil", "input.datablock=1_datablock.json"]
+    to_run1 = ["dials.generate_mask", "mask.phil", "input.datablock=1_datablock.json"]
 
     print("running proc #1")
-    print("to_run =", to_run)
-    print("cwd_path", cwd_path)
-    # gen_pred_proc = subprocess.Popen(args = to_run, shell = False)
-    gen_pred_proc = subprocess.Popen(args=to_run, shell=False, cwd=cwd_path)
+
+    gen_pred_proc = subprocess.Popen(args=to_run1, shell=False, cwd=cwd_path)
     gen_pred_proc.wait()
     print("proc #1 ... Done")
-    to_run = [
+
+    to_run2 = [
         "dials.apply_mask",
         "input.datablock=1_datablock.json",
         "input.mask=mask.pickle",
@@ -423,7 +422,7 @@ def build_mask_command_lst(mask_itm_lst):
     ]
 
     print("running proc #2")
-    gen_pred_proc = subprocess.Popen(args=to_run, shell=False, cwd=cwd_path)
+    gen_pred_proc = subprocess.Popen(args=to_run2, shell=False, cwd=cwd_path)
     gen_pred_proc.wait()
     print("proc #2 ... Done")
 
