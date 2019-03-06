@@ -32,7 +32,7 @@ from six import raise_from
 
 from ._version import __version__
 from .dynamic_reindex_gui import MyReindexOpts
-from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg
+from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
 from .custom_widgets import ParamWidget, MaskPage
 from .gui_utils import (
     CliOutView,
@@ -496,73 +496,8 @@ class MainWidget(QMainWindow):
             self.refresh_my_gui()
 
     def pop_mask_list(self, mask_itm_lst):
-        print("\n mask_itm_lst:", mask_itm_lst, "\n")
-        import subprocess
 
-        phil_str_list = []
-
-        print("\n")
-
-        for item in mask_itm_lst:
-            phil_str_list.append("untrusted {")
-            if item[0] == "rect":
-
-                phil_str_list.append(
-                    "  rectangle = "
-                    + str(item[1])
-                    + " "
-                    + str(item[2])
-                    + " "
-                    + str(item[3])
-                    + " "
-                    + str(item[4])
-                )
-                phil_str_list.append("}")
-
-            elif item[0] == "circ":
-                phil_str_list.append(
-                    "  circle = "
-                    + str(item[1])
-                    + " "
-                    + str(item[2])
-                    + " "
-                    + str(item[3])
-                )
-                phil_str_list.append("}")
-
-        print("writing phil file START")
-
-        myfile = open("dui_files/mask.phil", "w")
-
-        for str_lin in phil_str_list:
-            myfile.write(str_lin + "\n")
-
-        myfile.close()
-
-        print("writing phil file END")
-
-        to_run = (
-            "dials.generate_mask " + "mask.phil " + "input.datablock=1_datablock.json"
-        )
-
-        print("running proc #1")
-        # self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
-        cwd_path = os.path.join(sys_arg.directory, "dui_files")
-        gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
-        gen_pred_proc.wait()
-        print("proc #1 ... Done")
-
-        to_run = (
-            "dials.apply_mask "
-            + "input.datablock=1_datablock.json "
-            + "input.mask=mask.pickle "
-            + "output.datablock=1_datablock.json"
-        )
-
-        print("running proc #2")
-        gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
-        gen_pred_proc.wait()
-        print("proc #2 ... Done")
+        build_mask_command_lst(mask_itm_lst)
 
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.mask_page

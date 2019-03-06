@@ -371,6 +371,71 @@ def build_command_lst(node_obj, cmd_lst):
     return cmd_lst_to_run
 
 
+def build_mask_command_lst(mask_itm_lst):
+    print("\n mask_itm_lst:", mask_itm_lst, "\n")
+
+    phil_str_list = []
+
+    for item in mask_itm_lst:
+        phil_str_list.append("untrusted {")
+        if item[0] == "rect":
+
+            phil_str_list.append(
+                "  rectangle = "
+                + str(item[1])
+                + " "
+                + str(item[2])
+                + " "
+                + str(item[3])
+                + " "
+                + str(item[4])
+            )
+            phil_str_list.append("}")
+
+        elif item[0] == "circ":
+            phil_str_list.append(
+                "  circle = " + str(item[1]) + " " + str(item[2]) + " " + str(item[3])
+            )
+            phil_str_list.append("}")
+
+    print("writing phil file START")
+    myfile = open("dui_files/mask.phil", "w")
+    for str_lin in phil_str_list:
+        myfile.write(str_lin + "\n")
+
+    myfile.close()
+    print("writing phil file END")
+
+    # to_run = [ "dials.generate_mask ", "mask.phil ", "input.datablock=1_datablock.json" ]
+    to_run = [
+        "dials.generate_mask",
+        "/tmp/tstn/dui_files/mask.phil",
+        "input.datablock=/tmp/tstn/dui_files/1_datablock.json",
+    ]
+
+    # to_run = ["dials.find_spots", "/tmp/tstn/dui_files/1_datablock.json", "output.datablock=tst_data.json", "output.reflections=tst_pkl.pickle"]
+
+    print("running proc #1")
+    cwd_path = os.path.join(sys_arg.directory, "dui_files")
+    print("to_run =", to_run)
+    print("cwd_path", cwd_path)
+    # gen_pred_proc = subprocess.Popen(args = to_run, shell = False)
+    gen_pred_proc = subprocess.Popen(args=to_run, shell=False, cwd=cwd_path)
+    gen_pred_proc.wait()
+    print("proc #1 ... Done")
+    to_run = (
+        "dials.apply_mask "
+        + "input.datablock=1_datablock.json "
+        + "input.mask=mask.pickle "
+        + "output.datablock=1_datablock.json"
+    )
+
+    print("running proc #2")
+    gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
+    gen_pred_proc.wait()
+    print("proc #2 ... Done")
+
+
 def generate_predict(node_obj):
     pre_out = None
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
