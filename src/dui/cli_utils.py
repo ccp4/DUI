@@ -398,40 +398,32 @@ def build_mask_command_lst(mask_itm_lst):
             )
             phil_str_list.append("}")
 
-    print("writing phil file START")
+    cwd_path = os.path.join(sys_arg.directory, "dui_files")
+    print("writing phil file in", cwd_path, "START")
     myfile = open("dui_files/mask.phil", "w")
     for str_lin in phil_str_list:
         myfile.write(str_lin + "\n")
 
     myfile.close()
     print("writing phil file END")
-
-    # to_run = [ "dials.generate_mask ", "mask.phil ", "input.datablock=1_datablock.json" ]
-    to_run = [
-        "dials.generate_mask",
-        "/tmp/tstn/dui_files/mask.phil",
-        "input.datablock=/tmp/tstn/dui_files/1_datablock.json",
-    ]
-
-    # to_run = ["dials.find_spots", "/tmp/tstn/dui_files/1_datablock.json", "output.datablock=tst_data.json", "output.reflections=tst_pkl.pickle"]
+    to_run = ["dials.generate_mask", "mask.phil", "input.datablock=1_datablock.json"]
 
     print("running proc #1")
-    cwd_path = os.path.join(sys_arg.directory, "dui_files")
     print("to_run =", to_run)
     print("cwd_path", cwd_path)
     # gen_pred_proc = subprocess.Popen(args = to_run, shell = False)
     gen_pred_proc = subprocess.Popen(args=to_run, shell=False, cwd=cwd_path)
     gen_pred_proc.wait()
     print("proc #1 ... Done")
-    to_run = (
-        "dials.apply_mask "
-        + "input.datablock=1_datablock.json "
-        + "input.mask=mask.pickle "
-        + "output.datablock=1_datablock.json"
-    )
+    to_run = [
+        "dials.apply_mask",
+        "input.datablock=1_datablock.json",
+        "input.mask=mask.pickle",
+        "output.datablock=1_datablock.json",
+    ]
 
     print("running proc #2")
-    gen_pred_proc = subprocess.Popen(to_run, shell=True, cwd=cwd_path)
+    gen_pred_proc = subprocess.Popen(args=to_run, shell=False, cwd=cwd_path)
     gen_pred_proc.wait()
     print("proc #2 ... Done")
 
