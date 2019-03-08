@@ -184,25 +184,28 @@ def build_command_lst(node_obj, cmd_lst):
     # TODO make sure new step is compatible with previous
 
     cmd_lst_to_run = []
-    cmd_lst_to_run.append("dials." + cmd_lst[0])
+
+    lst_in = []
+
+    lst_in.append("dials." + cmd_lst[0])
     if cmd_lst[0] != "reindex":
         for tmp_par in cmd_lst[1:]:
-            cmd_lst_to_run.append(tmp_par)
+            lst_in.append(tmp_par)
 
     run_path = sys_arg.directory + os.sep + "dui_files"
 
     if cmd_lst[0] == "import":
         node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         #####################################################################
         # TODO make sure import without arguments does NOT run
         #####################################################################
@@ -210,70 +213,70 @@ def build_command_lst(node_obj, cmd_lst):
     elif cmd_lst[0] == "find_spots":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
     elif cmd_lst[0] == "index":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
     elif cmd_lst[0] == "refine_bravais_settings":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
 
         prefix_str = "lin_" + str(node_obj.lin_num) + "_"
         node_obj.prefix_out = prefix_str
         output_str = "output.prefix=" + node_obj.prefix_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
         node_obj.json_file_out = prefix_str + "bravais_summary.json"
 
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
     elif cmd_lst[0] == "reindex":
         try:
@@ -289,7 +292,7 @@ def build_command_lst(node_obj, cmd_lst):
 
         pickle_file_in = node_obj.prev_step.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
 
         json_file_tmp = node_obj.prev_step.json_file_out
         with open(run_path + os.sep + json_file_tmp) as summary_file:
@@ -297,7 +300,7 @@ def build_command_lst(node_obj, cmd_lst):
         change_of_basis_op = j_obj[str(sol_num)]["cb_op"]
 
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
 
         node_obj.json_file_out = (
             node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
@@ -305,7 +308,7 @@ def build_command_lst(node_obj, cmd_lst):
 
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
     elif (
         cmd_lst[0] == "refine"
@@ -316,25 +319,23 @@ def build_command_lst(node_obj, cmd_lst):
 
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        cmd_lst_to_run.append(input_str)
+        lst_in.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
         if cmd_lst[0] == "integrate":
-            cmd_lst_to_run.append(
-                "output.phil=" + str(node_obj.lin_num) + "_integrate.phil"
-            )
+            lst_in.append("output.phil=" + str(node_obj.lin_num) + "_integrate.phil")
 
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
@@ -346,7 +347,7 @@ def build_command_lst(node_obj, cmd_lst):
         else:
             output_str = "output.debug_log=" + node_obj.debug_log_file_out
 
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
 
         if cmd_lst[0] == "symmetry":
 
@@ -354,19 +355,21 @@ def build_command_lst(node_obj, cmd_lst):
                 str(node_obj.lin_num) + "_" + cmd_lst[0] + ".symmetry.json"
             )
             output_str = "output.json=" + node_obj.json_sym_out
-            cmd_lst_to_run.append(output_str)
+            lst_in.append(output_str)
 
     elif cmd_lst[0] == "export":
-        cmd_lst_to_run.append(node_obj.prev_step.json_file_out)
-        cmd_lst_to_run.append(node_obj.prev_step.refl_pickle_file_out)
+        lst_in.append(node_obj.prev_step.json_file_out)
+        lst_in.append(node_obj.prev_step.refl_pickle_file_out)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        cmd_lst_to_run.append(output_str)
+        lst_in.append(output_str)
+
+    cmd_lst_to_run.append(lst_in)
 
     return cmd_lst_to_run
 
@@ -524,85 +527,76 @@ class DialsCommand(object):
             self.use_shell = False
 
     def __call__(self, lst_cmd_to_run=None, ref_to_class=None):
+        self.full_cmd_lst = []
+        for lst_single in lst_cmd_to_run:
+            try:
+                single_string = ""
 
-        print("self.use_shell = ", self.use_shell)
+                for lin_to_prn in lst_single:
+                    logger.debug(lin_to_prn)
 
-        try:
-            logger.debug("\n [[ running >> \n")
-            single_string = ""
+                    single_string += lin_to_prn
+                    single_string += " "
 
-            for lin_to_prn in lst_cmd_to_run:
-                logger.debug(lin_to_prn)
+                if self.use_shell:
+                    run_cmd = single_string
 
-                single_string += lin_to_prn
-                single_string += " "
+                else:
+                    run_cmd = lst_single
 
-            if self.use_shell:
-                run_cmd = single_string
-            else:
-                run_cmd = lst_cmd_to_run
+                self.tmp_std_all = []
+                cwd_path = os.path.join(sys_arg.directory, "dui_files")
+                my_process = subprocess.Popen(
+                    run_cmd,
+                    shell=self.use_shell,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    bufsize=1,
+                    cwd=cwd_path,
+                )
+                self.my_pid = my_process.pid
+                for line in iter(my_process.stdout.readline, b""):
+                    single_line = line[0 : len(line) - 1]
+                    try:
+                        ref_to_class.emit_print_signal(single_line)
+                        self.tmp_std_all.append(single_line)
 
-            print("\n lst_cmd_to_run (DialsCommand) = ", lst_cmd_to_run, "\n")
+                    except BaseException as e:
+                        # We don't want to catch bare exceptions but don't know
+                        # what this was supposed to catch. Log it.
+                        logger.debug(
+                            "Caught unknown exception type %s: %s", type(e).__name__, e
+                        )
+                        logger.debug(single_line)
 
-            logger.debug("\n<<<")
+                my_process.wait()
+                my_process.stdout.close()
+                if my_process.poll() == 0:
+                    local_success = True
 
-            self.tmp_std_all = []
-            cwd_path = os.path.join(sys_arg.directory, "dui_files")
-            my_process = subprocess.Popen(
-                run_cmd,
-                shell=self.use_shell,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1,
-                cwd=cwd_path,
-            )
+                else:
+                    local_success = False
+                    # TODO handle error outputs
+                    try:
+                        ref_to_class.emit_fail_signal()
 
-            self.my_pid = my_process.pid
+                    except BaseException as e:
+                        # We don't want to catch bare exceptions but don't know
+                        # what this was supposed to catch. Log it.
+                        logger.debug(
+                            "Caught unknown exception type %s: %s", type(e).__name__, e
+                        )
+                        logger.debug("Failed")
 
-            logger.debug("process PID = %s", self.my_pid)
+                logger.debug("Done all step")
 
-            for line in iter(my_process.stdout.readline, b""):
-                single_line = line[0 : len(line) - 1]
-                try:
-                    ref_to_class.emit_print_signal(single_line)
-                    self.tmp_std_all.append(single_line)
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
-                    )
-                    logger.debug(single_line)
-
-            logger.debug("Done print loop")
-
-            my_process.wait()
-            my_process.stdout.close()
-            if my_process.poll() == 0:
-                local_success = True
-
-            else:
+            except Exception as my_err:
+                logger.debug("error = %s %s", my_err, "\n")
                 local_success = False
+                logger.debug("\n FAIL call")
 
-                # TODO handle error outputs
-                try:
-                    ref_to_class.emit_fail_signal()
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
-                    )
-                    logger.debug("Failed")
+            self.full_cmd_lst.append(lst_single)
 
-            logger.debug("Done all step")
-
-        except Exception as my_err:
-            logger.debug("error = %s %s", my_err, "\n")
-            local_success = False
-            logger.debug("\n FAIL call")
-
-        self.full_cmd_lst = lst_cmd_to_run
         return local_success
 
 

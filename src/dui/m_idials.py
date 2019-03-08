@@ -76,6 +76,7 @@ class CommandNode(object):
         self.err_file_out = None
         self.json_sym_out = None
         self.info_generating = None
+        self.cmd_lst_to_run = [[None]]
 
         self.dials_command = DialsCommand()
         # self.work_dir = os.getcwd()
