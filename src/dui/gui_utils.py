@@ -494,7 +494,6 @@ class TreeNavWidget(QTreeView):
         if len(root_node.next_step_list) > 0:
             for child_node in root_node.next_step_list:
                 if child_node.ll_command_lst[0] != [None]:
-                    # child_node_name = str(child_node.ll_command_lst[0][0])
                     child_node_name = str(child_node.ll_command_lst[0])
 
                 elif child_node.success is None:
@@ -505,6 +504,7 @@ class TreeNavWidget(QTreeView):
 
                 try:
                     child_node_tip = build_command_tip(child_node.ll_command_lst)
+
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
@@ -525,6 +525,7 @@ class TreeNavWidget(QTreeView):
                         new_item.setForeground(Qt.white)
                     elif child_node.success is False:
                         new_item.setForeground(Qt.red)
+
                 else:
                     new_item.setBackground(Qt.white)
                     if child_node.success is None:

@@ -836,8 +836,6 @@ class ParamWidget(QWidget):
         # self.show()
 
     def update_param(self, curr_step):
-
-        logger.debug("update_param( %s %s", curr_step.ll_command_lst[0], ")")
         self.my_widget.update_param_w_lst(curr_step.ll_command_lst[0])
 
     def update_parent_lst(self, command_lst):
