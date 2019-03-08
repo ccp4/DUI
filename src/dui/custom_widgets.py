@@ -215,7 +215,7 @@ class ExportPage(QWidget):
             found_scale = False
             for iters in range(5):
                 try:
-                    if my_node.command_lst[0][0] == "scale":
+                    if my_node.ll_command_lst[0][0] == "scale":
                         found_scale = True
                         break
 
@@ -837,8 +837,8 @@ class ParamWidget(QWidget):
 
     def update_param(self, curr_step):
 
-        logger.debug("update_param( %s %s", curr_step.command_lst[0], ")")
-        self.my_widget.update_param_w_lst(curr_step.command_lst[0])
+        logger.debug("update_param( %s %s", curr_step.ll_command_lst[0], ")")
+        self.my_widget.update_param_w_lst(curr_step.ll_command_lst[0])
 
     def update_parent_lst(self, command_lst):
         print("command_lst(custom_widgets.ParamWidget) =", command_lst)

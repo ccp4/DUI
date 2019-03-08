@@ -64,7 +64,7 @@ class CommandNode(object):
         self.lin_num = 0
         self.next_step_list = []
         self.prev_step = prev_step
-        self.command_lst = [[None]]
+        self.ll_command_lst = [[None]]
         self.success = None
         self.refl_pickle_file_out = None
         self.json_file_out = None
@@ -82,7 +82,7 @@ class CommandNode(object):
 
     def __call__(self, cmd_lst, ref_to_class):
         print("\n cmd_lst in =", cmd_lst)
-        self.command_lst = [cmd_lst]
+        self.ll_command_lst = [cmd_lst]
         if cmd_lst[0] == "fail":
             # testing virtual failed step
             logger.debug("\n intentionally FAILED for testing \n")
@@ -123,7 +123,7 @@ class CommandNode(object):
         self.info_generating = False
 
     def edit_list(self, cmd_lst):
-        self.command_lst = cmd_lst
+        self.ll_command_lst = cmd_lst
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
@@ -137,7 +137,7 @@ class Runner(object):
     def __init__(self):
         root_node = CommandNode(prev_step=None)
         root_node.success = True
-        root_node.command_lst = [["Root"]]
+        root_node.ll_command_lst = [["Root"]]
         self.step_list = [root_node]
         self.bigger_lin = 0
         self.current_line = self.bigger_lin
@@ -168,7 +168,7 @@ class Runner(object):
             self.create_step(self.current_node)
 
         elif cmd_lst[0] == "mksib":
-            old_command_lst = self.current_node.command_lst
+            old_command_lst = self.current_node.ll_command_lst
             self.goto_prev()
             logger.debug("forking")
             self.create_step(self.current_node)
@@ -252,14 +252,14 @@ class Runner(object):
         path_to_json = None
 
         while True:
-            if tmp_cur.command_lst[0] == [None]:
+            if tmp_cur.ll_command_lst[0] == [None]:
                 tmp_cur = tmp_cur.prev_step
 
-            elif tmp_cur.success is True and tmp_cur.command_lst[0][0] == "import":
+            elif tmp_cur.success is True and tmp_cur.ll_command_lst[0][0] == "import":
                 path_to_json = tmp_cur.json_file_out
                 break
 
-            elif tmp_cur.command_lst[0][0] == "Root" or tmp_cur.success is False:
+            elif tmp_cur.ll_command_lst[0][0] == "Root" or tmp_cur.success is False:
                 break
 
             else:
@@ -285,13 +285,13 @@ class Runner(object):
     def get_experiment_path(self):
         path_to_json = None
         tmp_cur = self.current_node
-        if tmp_cur.command_lst[0] == [None]:
+        if tmp_cur.ll_command_lst[0] == [None]:
             tmp_cur = tmp_cur.prev_step
 
         if (
-            tmp_cur.command_lst[0][0] != "Root"
-            and tmp_cur.command_lst[0][0] != "import"
-            and tmp_cur.command_lst[0][0] != "find_spots"
+            tmp_cur.ll_command_lst[0][0] != "Root"
+            and tmp_cur.ll_command_lst[0][0] != "import"
+            and tmp_cur.ll_command_lst[0][0] != "find_spots"
             and tmp_cur.success is True
         ):
 
@@ -310,12 +310,12 @@ class Runner(object):
 
     def get_reflections_path(self):
         tmp_cur = self.current_node
-        if tmp_cur.command_lst[0] == [None]:
+        if tmp_cur.ll_command_lst[0] == [None]:
             tmp_cur = tmp_cur.prev_step
 
         if (
-            tmp_cur.command_lst[0][0] == "Root"
-            or tmp_cur.command_lst[0][0] == "import"
+            tmp_cur.ll_command_lst[0][0] == "Root"
+            or tmp_cur.ll_command_lst[0][0] == "import"
             or tmp_cur.success is not True
         ):
             return None, None

@@ -148,12 +148,12 @@ def try_find_prev_mask_pickle(cur_nod):
     while pickle_path is None:
         my_node = my_node.prev_step
         try:
-            if my_node.command_lst[0][0] == "find_spots":
+            if my_node.ll_command_lst[0][0] == "find_spots":
                 logger.debug("found find_spots")
-                for command in my_node.command_lst[0]:
+                for command in my_node.ll_command_lst[0]:
                     if command.startswith("spotfinder.lookup.mask="):
                         logger.debug("Found mask.pickle")
-                        logger.debug(my_node.command_lst[0])
+                        logger.debug(my_node.ll_command_lst[0])
                         pickle_path = command[23:]
                         logger.debug("\n my_path = %s %s", pickle_path, "\n")
                         if os.path.isfile(pickle_path):
@@ -393,7 +393,7 @@ def update_info(main_obj):
 
 def update_pbar_msg(main_obj):
     tmp_curr = main_obj.idials_runner.current_node
-    txt = str(tmp_curr.command_lst[0][0])
+    txt = str(tmp_curr.ll_command_lst[0][0])
 
     if tmp_curr.success is False:
         txt = "click << Retry >> or navigate backwards in the tree"
@@ -493,9 +493,9 @@ class TreeNavWidget(QTreeView):
     def recursive_node(self, root_node, item_in):
         if len(root_node.next_step_list) > 0:
             for child_node in root_node.next_step_list:
-                if child_node.command_lst[0] != [None]:
-                    # child_node_name = str(child_node.command_lst[0][0])
-                    child_node_name = str(child_node.command_lst[0])
+                if child_node.ll_command_lst[0] != [None]:
+                    # child_node_name = str(child_node.ll_command_lst[0][0])
+                    child_node_name = str(child_node.ll_command_lst[0])
 
                 elif child_node.success is None:
                     child_node_name = "* None *"
@@ -504,7 +504,7 @@ class TreeNavWidget(QTreeView):
                     child_node_name = " ? None ? "
 
                 try:
-                    child_node_tip = build_command_tip(child_node.command_lst)
+                    child_node_tip = build_command_tip(child_node.ll_command_lst)
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.

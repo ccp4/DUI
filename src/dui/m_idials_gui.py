@@ -552,11 +552,11 @@ class MainWidget(QMainWindow):
             my_widget.activate_me(cur_nod=self.idials_runner.current_node)
 
         else:
-            if self.idials_runner.current_node.command_lst[0][0] != "export":
+            if self.idials_runner.current_node.ll_command_lst[0][0] != "export":
                 self.stop_run_retry.repeat_btn.setEnabled(True)
             my_widget.gray_me_out()
 
-        if self.idials_runner.current_node.command_lst[0][0] == "reindex":
+        if self.idials_runner.current_node.ll_command_lst[0][0] == "reindex":
             self.stop_run_retry.run_btn.setEnabled(False)
             self.stop_run_retry.repeat_btn.setEnabled(False)
 
@@ -608,7 +608,7 @@ class MainWidget(QMainWindow):
 
         print("\n command_lst(m_idials_gui.MainWidget) = %s", command_lst)
 
-        self.idials_runner.current_node.command_lst = command_lst
+        self.idials_runner.current_node.ll_command_lst = command_lst
         self.reconnect_when_ready()
 
     def cmd_changed_by_user(self, my_label):
@@ -620,13 +620,13 @@ class MainWidget(QMainWindow):
             self.cmd_exe(["mkchi"])
             print(
                 "\n command_lst(cmd_changed_by_user) =",
-                self.idials_runner.current_node.command_lst,
+                self.idials_runner.current_node.ll_command_lst,
             )
             print("my_label =", my_label)
-            self.idials_runner.current_node.command_lst = [[str(my_label)]]
+            self.idials_runner.current_node.ll_command_lst = [[str(my_label)]]
             print(
                 "\n command_lst(cmd_changed_by_user) =",
-                self.idials_runner.current_node.command_lst,
+                self.idials_runner.current_node.ll_command_lst,
             )
             print(
                 "_________________________________________________________>>>> mkchi\n"
@@ -634,7 +634,7 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None
-            if self.idials_runner.current_node.command_lst[0][0] == "integrate":
+            if self.idials_runner.current_node.ll_command_lst[0][0] == "integrate":
                 logger.debug("Running: try_find_prev_mask_pickle")
                 path_to_mask_pickle = try_find_prev_mask_pickle(
                     self.idials_runner.current_node
@@ -644,8 +644,8 @@ class MainWidget(QMainWindow):
 
             else:
                 logger.debug(
-                    "self.idials_runner.current_node.command_lst[0][0] = %s",
-                    self.idials_runner.current_node.command_lst[0][0],
+                    "self.idials_runner.current_node.ll_command_lst[0][0] = %s",
+                    self.idials_runner.current_node.ll_command_lst[0][0],
                 )
 
             logger.debug("path_to_mask_pickle = %s", path_to_mask_pickle)
@@ -654,7 +654,7 @@ class MainWidget(QMainWindow):
             self.cmd_exe(["clean"])
 
         elif tmp_curr.success is None:
-            self.idials_runner.current_node.command_lst[0] = [str(my_label)]
+            self.idials_runner.current_node.ll_command_lst[0] = [str(my_label)]
             self.reconnect_when_ready()
 
     def cmd_changed_by_any(self):
@@ -716,16 +716,16 @@ class MainWidget(QMainWindow):
         tmp_curr = self.idials_runner.current_node
 
         if (
-            tmp_curr.command_lst[0][0] == "refine_bravais_settings"
+            tmp_curr.ll_command_lst[0][0] == "refine_bravais_settings"
             and tmp_curr.success is True
         ):
 
             self.idials_runner.run(command=["mkchi"], ref_to_class=None)
 
-            # self.idials_runner.current_node.command_lst[0][0] = "reindex"
-            self.idials_runner.current_node.command_lst = [["reindex"]]
+            # self.idials_runner.current_node.ll_command_lst[0][0] = "reindex"
+            self.idials_runner.current_node.ll_command_lst = [["reindex"]]
 
-        elif tmp_curr.command_lst[0][0] == "reindex" and tmp_curr.success is True:
+        elif tmp_curr.ll_command_lst[0][0] == "reindex" and tmp_curr.success is True:
 
             self.just_reindexed = True
             try:
@@ -781,12 +781,12 @@ class MainWidget(QMainWindow):
             "None": [None],
         }
 
-        lst_nxt = cmd_connects[str(tmp_curr.command_lst[0][0])]
+        lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        if tmp_curr.command_lst[0][0] == "reindex" and not self.just_reindexed:
+        if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -890,8 +890,8 @@ class MainWidget(QMainWindow):
 
             print("\n from node_clicked")
             print(
-                "item.idials_node.command_lst[0][0] = ",
-                item.idials_node.command_lst[0][0],
+                "item.idials_node.ll_command_lst[0][0] = ",
+                item.idials_node.ll_command_lst[0][0],
             )
             print(
                 "self.idials_runner.current_node = ",
@@ -900,7 +900,7 @@ class MainWidget(QMainWindow):
             )
 
             self.centre_par_widget.set_widget(
-                nxt_cmd=item.idials_node.command_lst[0][0],
+                nxt_cmd=item.idials_node.ll_command_lst[0][0],
                 curr_step=self.idials_runner.current_node,
             )
 
@@ -921,7 +921,7 @@ class MainWidget(QMainWindow):
         cmd_ovr = "goto " + str(lin_num)
         self.cmd_exe(cmd_ovr)
         self.centre_par_widget.set_widget(
-            nxt_cmd=self.idials_runner.current_node.command_lst[0][0],
+            nxt_cmd=self.idials_runner.current_node.ll_command_lst[0][0],
             curr_step=self.idials_runner.current_node,
         )
 
