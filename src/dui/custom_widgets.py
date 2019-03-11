@@ -118,7 +118,6 @@ class MaskPage(QWidget):
         self.setLayout(main_v_box)
 
         self.show()
-        self.command_lst = [["A"]]
         self.my_widget = self
 
     def gray_me_out(self):
@@ -131,6 +130,13 @@ class MaskPage(QWidget):
 
     def reset_par(self):
         print("reset_par")
+        self.command_lst = [["generate_mask"]]
+
+    def set_par(self, lst_par):
+        print("set_par(MaskPage)")
+
+        print("lst_par", lst_par)
+        self.command_lst = lst_par
 
 
 class ExportPage(QWidget):

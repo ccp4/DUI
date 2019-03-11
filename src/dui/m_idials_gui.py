@@ -258,8 +258,14 @@ class ControlWidget(QWidget):
             param_widget = self.param_widgets["refine_bravais_settings"]
             self.step_param_widg.setCurrentWidget(param_widget)
 
+        elif nxt_cmd == "generate_mask":
+            # Mask is a special step because it doesn't have it's own button
+            logger.debug("Mask")
+            self.step_param_widg.setCurrentWidget(self.mask_page)
+
         else:
-            logger.error("No action widget found in set_widget")
+            print("No action widget found in set_widget")
+            print("nxt_cmd =", nxt_cmd)
 
     def _action_button_clicked(self):
         "Slot: An action button was clicked"
@@ -497,11 +503,23 @@ class MainWidget(QMainWindow):
 
     def pop_mask_list(self, mask_itm_lst):
 
-        build_mask_command_lst(mask_itm_lst)
+        tmp_cmd_lst = build_mask_command_lst(mask_itm_lst)
 
+        self.centre_par_widget.mask_page.set_par(tmp_cmd_lst)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.mask_page
         )
+
+        tmp_curr = self.idials_runner.current_node
+        if tmp_curr.success is True:
+            self.cmd_exe(["mkchi"])
+            self.cmd_exe(["clean"])
+
+        elif tmp_curr.success is None:
+            self.reconnect_when_ready()
+
+        # self.idials_runner.current_node.ll_command_lst = ...
+        # self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst = tmp_cmd_lst
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)
@@ -749,6 +767,8 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is not True:
             tmp_curr = tmp_curr.prev_step
 
+        # TODO fix "generate_mask" : it should be the same as the previous step
+
         cmd_connects = {
             "Root": ["import"],
             "import": ["find_spots"],
@@ -761,6 +781,7 @@ class MainWidget(QMainWindow):
             "symmetry": ["scale", "export"],
             "scale": ["symmetry", "export"],
             "export": [None],
+            "generate_mask": ["find_spots"],
             "None": [None],
         }
 

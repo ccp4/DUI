@@ -185,27 +185,27 @@ def build_command_lst(node_obj, cmd_lst):
 
     cmd_lst_to_run = []
 
-    lst_in = []
+    lst_inner = []
 
-    lst_in.append("dials." + cmd_lst[0])
+    lst_inner.append("dials." + cmd_lst[0])
     if cmd_lst[0] != "reindex":
         for tmp_par in cmd_lst[1:]:
-            lst_in.append(tmp_par)
+            lst_inner.append(tmp_par)
 
     run_path = sys_arg.directory + os.sep + "dui_files"
 
     if cmd_lst[0] == "import":
         node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         #####################################################################
         # TODO make sure import without arguments does NOT run
         #####################################################################
@@ -213,70 +213,70 @@ def build_command_lst(node_obj, cmd_lst):
     elif cmd_lst[0] == "find_spots":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
         output_str = "output.datablock=" + node_obj.json_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
     elif cmd_lst[0] == "index":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
     elif cmd_lst[0] == "refine_bravais_settings":
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
 
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
 
         prefix_str = "lin_" + str(node_obj.lin_num) + "_"
         node_obj.prefix_out = prefix_str
         output_str = "output.prefix=" + node_obj.prefix_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
         node_obj.json_file_out = prefix_str + "bravais_summary.json"
 
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
     elif cmd_lst[0] == "reindex":
         try:
@@ -292,7 +292,7 @@ def build_command_lst(node_obj, cmd_lst):
 
         pickle_file_in = node_obj.prev_step.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
 
         json_file_tmp = node_obj.prev_step.json_file_out
         with open(run_path + os.sep + json_file_tmp) as summary_file:
@@ -300,7 +300,7 @@ def build_command_lst(node_obj, cmd_lst):
         change_of_basis_op = j_obj[str(sol_num)]["cb_op"]
 
         input_str = "change_of_basis_op=" + str(change_of_basis_op)
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
 
         node_obj.json_file_out = (
             node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
@@ -308,7 +308,7 @@ def build_command_lst(node_obj, cmd_lst):
 
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
     elif (
         cmd_lst[0] == "refine"
@@ -319,23 +319,23 @@ def build_command_lst(node_obj, cmd_lst):
 
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
-        lst_in.append(input_str)
+        lst_inner.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
         output_str = "output.experiments=" + node_obj.json_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
         if cmd_lst[0] == "integrate":
-            lst_in.append("output.phil=" + str(node_obj.lin_num) + "_integrate.phil")
+            lst_inner.append("output.phil=" + str(node_obj.lin_num) + "_integrate.phil")
 
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
@@ -347,7 +347,7 @@ def build_command_lst(node_obj, cmd_lst):
         else:
             output_str = "output.debug_log=" + node_obj.debug_log_file_out
 
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
         if cmd_lst[0] == "symmetry":
 
@@ -355,21 +355,39 @@ def build_command_lst(node_obj, cmd_lst):
                 str(node_obj.lin_num) + "_" + cmd_lst[0] + ".symmetry.json"
             )
             output_str = "output.json=" + node_obj.json_sym_out
-            lst_in.append(output_str)
+            lst_inner.append(output_str)
 
     elif cmd_lst[0] == "export":
-        lst_in.append(node_obj.prev_step.json_file_out)
-        lst_in.append(node_obj.prev_step.refl_pickle_file_out)
+        lst_inner.append(node_obj.prev_step.json_file_out)
+        lst_inner.append(node_obj.prev_step.refl_pickle_file_out)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst[0] + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst[0] + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_in.append(output_str)
+        lst_inner.append(output_str)
 
-    cmd_lst_to_run.append(lst_in)
+    elif cmd_lst[0] == "generate_mask":
+        print("\ncmd_lst = \n", cmd_lst, "\n")
+
+        lst_inner1 = list(lst_inner)
+        json_file_in = node_obj.prev_step.json_file_out
+        input_str = "input.datablock=" + json_file_in
+        lst_inner1.append(input_str)
+
+        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
+
+        lst_inner = [
+            "dials.apply_mask",
+            "input.datablock=" + json_file_in,
+            "input.mask=mask.pickle",
+            "output.datablock=" + node_obj.json_file_out,
+        ]
+        cmd_lst_to_run.append(lst_inner1)
+
+    cmd_lst_to_run.append(lst_inner)
 
     return cmd_lst_to_run
 
@@ -377,7 +395,7 @@ def build_command_lst(node_obj, cmd_lst):
 def build_mask_command_lst(mask_itm_lst):
     print("\n mask_itm_lst:", mask_itm_lst, "\n")
 
-    to_run1 = ["dials.generate_mask"]
+    to_run1 = ["generate_mask"]
 
     for item in mask_itm_lst:
         if item[0] == "rect":
@@ -405,23 +423,28 @@ def build_mask_command_lst(mask_itm_lst):
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     to_run1.append("input.datablock=1_datablock.json")
 
+    """
     print("running proc #1")
-
     gen_pred_proc = subprocess.Popen(args=to_run1, shell=False, cwd=cwd_path)
     gen_pred_proc.wait()
     print("proc #1 ... Done")
+    """
 
     to_run2 = [
-        "dials.apply_mask",
+        "apply_mask",
         "input.datablock=1_datablock.json",
         "input.mask=mask.pickle",
         "output.datablock=1_datablock.json",
     ]
 
+    """
     print("running proc #2")
     gen_pred_proc = subprocess.Popen(args=to_run2, shell=False, cwd=cwd_path)
     gen_pred_proc.wait()
     print("proc #2 ... Done")
+    """
+
+    return [to_run1, to_run2]
 
 
 def generate_predict(node_obj):
@@ -528,6 +551,9 @@ class DialsCommand(object):
 
     def __call__(self, lst_cmd_to_run=None, ref_to_class=None):
         self.full_cmd_lst = []
+
+        print("\n lst_cmd_to_run(DialsCommand): \n", lst_cmd_to_run, "\n")
+
         for lst_single in lst_cmd_to_run:
             try:
                 single_string = ""

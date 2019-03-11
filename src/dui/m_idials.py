@@ -58,6 +58,7 @@ class CommandNode(object):
         "symmetry",
         "scale",
         "export",
+        "generate_mask",
     ]
 
     def __init__(self, prev_step=None):
@@ -118,7 +119,7 @@ class CommandNode(object):
                 self.info_generating = False
 
             else:
-                logger.debug("NOT dials command")
+                print("NOT dials command")
                 self.success = False
 
         self.info_generating = False
