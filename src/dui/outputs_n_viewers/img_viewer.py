@@ -80,6 +80,9 @@ MyQWidgetWithQPainter = QWidget
 
 
 class ImgPainter(QWidget):
+
+    ll_mask_applied = Signal(list)
+
     def __init__(self, parent=None):
         super(ImgPainter, self).__init__()
         self.my_parent = parent
@@ -133,7 +136,8 @@ class ImgPainter(QWidget):
                 r = float(dx * dx + dy * dy) ** (0.5)
                 self.mask_items.append(("circ", int(x1), int(y1), int(r)))
 
-            logger.debug("mask_items =", self.mask_items)
+            print("mask_items =", self.mask_items)
+            self.ll_mask_applied.emit(self.mask_items)
 
         self.x_prev, self.y_prev = None, None
 
@@ -392,8 +396,11 @@ class ImgPainter(QWidget):
                     q_center = QPointF(self.x_prev, self.y_prev)
                     painter.drawEllipse(q_center, r, r)
 
+                TODO = """
                 elif self.my_parent.rad_but_poli_mask.isChecked():
                     print("TODO")
+
+                """
 
             except TypeError:
                 logger.debug("Not correct ini data for drawing")
@@ -642,20 +649,20 @@ class PopMaskMenu(QMenu):
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
-        ref_bond_group.addButton(self.my_parent.rad_but_poli_mask)
+        # ref_bond_group.addButton(self.my_parent.rad_but_poli_mask)
 
         info_grp = QGroupBox()
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poli_mask)
+        # ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poli_mask)
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
-        my_box.addWidget(self.my_parent.btn_apply_mask)
+        # my_box.addWidget(self.my_parent.btn_apply_mask)
         my_box.addWidget(self.my_parent.btn_reset_mask)
 
         self.setLayout(my_box)
@@ -767,18 +774,20 @@ class MyImgWin(QWidget):
 
         # Mask tools
         self.btn_reset_mask = QPushButton("Stop/Reset")
-        self.btn_apply_mask = QPushButton("Apply")
+        # self.btn_apply_mask = QPushButton("Apply")
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
         self.chk_box_mask.setChecked(False)
 
         self.rad_but_rect_mask = QRadioButton("rectangle")
         self.rad_but_circ_mask = QRadioButton("circle")
-        self.rad_but_poli_mask = QRadioButton("polygon")
+        # self.rad_but_poli_mask = QRadioButton("polygon")
         self.rad_but_rect_mask.setChecked(True)
 
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
-        self.btn_apply_mask.clicked.connect(self.apply_mask)
+        # self.btn_apply_mask.clicked.connect(self.apply_mask)
+
+        self.my_painter.ll_mask_applied.connect(self.apply_mask)
 
         # Grouping
         ref_type_group = QButtonGroup()
@@ -1123,11 +1132,13 @@ class MyImgWin(QWidget):
 
         self.set_img()
 
-    def apply_mask(self):
+    def apply_mask(self, new_mask_items):
         print(" apply_mask")
-        print("self.my_painter.mask_items", self.my_painter.mask_items)
+        # print("self.my_painter.mask_items", self.my_painter.mask_items)
+        # self.mask_applied.emit(self.my_painter.mask_items)
 
-        self.mask_applied.emit(self.my_painter.mask_items)
+        print("new_mask_items: \n", new_mask_items)
+        self.mask_applied.emit(new_mask_items)
 
     def zoom2one(self):
         self.my_painter.scale2fact()
