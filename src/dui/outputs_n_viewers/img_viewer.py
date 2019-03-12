@@ -117,14 +117,14 @@ class ImgPainter(QWidget):
         x2 = self.x_pos / self.my_scale
         y2 = self.y_pos / self.my_scale
 
-        if x1 > x2:
-            x1, x2 = x2, x1
-
-        if y1 > y2:
-            y1, y2 = y2, y1
-
         if self.my_parent.chk_box_mask.isChecked():
             if self.my_parent.rad_but_rect_mask.isChecked():
+                if x1 > x2:
+                    x1, x2 = x2, x1
+
+                if y1 > y2:
+                    y1, y2 = y2, y1
+
                 self.mask_items.append(("rect", int(x1), int(x2), int(y1), int(y2)))
 
             elif self.my_parent.rad_but_circ_mask.isChecked():
