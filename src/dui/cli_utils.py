@@ -421,14 +421,7 @@ def build_mask_command_lst(mask_itm_lst):
             )
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
-    to_run1.append("input.datablock=1_datablock.json")
-
-    """
-    print("running proc #1")
-    gen_pred_proc = subprocess.Popen(args=to_run1, shell=False, cwd=cwd_path)
-    gen_pred_proc.wait()
-    print("proc #1 ... Done")
-    """
+    # to_run1.append("input.datablock=1_datablock.json")
 
     to_run2 = [
         "apply_mask",
@@ -436,13 +429,6 @@ def build_mask_command_lst(mask_itm_lst):
         "input.mask=mask.pickle",
         "output.datablock=1_datablock.json",
     ]
-
-    """
-    print("running proc #2")
-    gen_pred_proc = subprocess.Popen(args=to_run2, shell=False, cwd=cwd_path)
-    gen_pred_proc.wait()
-    print("proc #2 ... Done")
-    """
 
     return [to_run1, to_run2]
 

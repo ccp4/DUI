@@ -308,6 +308,7 @@ class ImgPainter(QWidget):
 
     def ini_mask(self):
         self.update()
+        self.setFocus()
 
     def paintEvent(self, event):
         if self.img is None:
