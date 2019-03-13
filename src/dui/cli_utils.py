@@ -421,14 +421,16 @@ def build_mask_command_lst(mask_itm_lst):
             )
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
-    # to_run1.append("input.datablock=1_datablock.json")
+    to_run2 = []
 
+    to_remove = '''
     to_run2 = [
         "apply_mask",
         "input.datablock=1_datablock.json",
         "input.mask=mask.pickle",
         "output.datablock=1_datablock.json",
     ]
+    '''
 
     return [to_run1, to_run2]
 

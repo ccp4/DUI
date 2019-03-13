@@ -419,12 +419,16 @@ def update_pbar_msg(main_obj):
     else:
         nxt_cmd = get_next_step(tmp_curr)
 
-        if nxt_cmd is None:
-            txt = "Done"
+        try:
+            if nxt_cmd is None:
+                txt = "Done"
 
-        else:
-            lab_nxt_cmd = ACTIONS[nxt_cmd].label
-            txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
+            else:
+                lab_nxt_cmd = ACTIONS[nxt_cmd].label
+                txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
+
+        except KeyError:
+                txt = "Done"
 
     main_obj.txt_bar.setText(txt)
     logger.debug("update_pbar_msg = %s", txt)
