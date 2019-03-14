@@ -505,6 +505,8 @@ class MainWidget(QMainWindow):
 
         tmp_cmd_lst = build_mask_command_lst(mask_itm_lst)
 
+        print("tmp_cmd_lst(m_idials_gui):\n", tmp_cmd_lst, "\n")
+
         self.centre_par_widget.mask_page.set_par(tmp_cmd_lst)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.mask_page
@@ -517,9 +519,6 @@ class MainWidget(QMainWindow):
 
         elif tmp_curr.success is None:
             self.reconnect_when_ready()
-
-        # self.idials_runner.current_node.ll_command_lst = ...
-        # self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst = tmp_cmd_lst
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)

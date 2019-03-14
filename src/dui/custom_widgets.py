@@ -108,11 +108,11 @@ class MaskPage(QWidget):
         step_label = QLabel(str("Apply Mask"))
         step_label.setFont(label_font)
 
-        list_label = QLabel(str("empty List ... for now"))
+        self.list_label = QLabel(str("empty List ... for now"))
 
         main_v_box.addWidget(step_label)
         main_v_box.addStretch()
-        main_v_box.addWidget(list_label)
+        main_v_box.addWidget(self.list_label)
         main_v_box.addStretch()
 
         self.setLayout(main_v_box)
@@ -133,10 +133,14 @@ class MaskPage(QWidget):
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
-        print("set_par(MaskPage)")
-
-        print("lst_par", lst_par)
+        print("lst_par(MaskPage)", lst_par)
         self.command_lst = lst_par
+        lab_str = ""
+        for sig_lin in lst_par[0]:
+            lab_str += str(sig_lin)
+            lab_str += "\n"
+
+        self.list_label.setText(str(lab_str))
 
 
 class ExportPage(QWidget):
