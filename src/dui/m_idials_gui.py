@@ -114,7 +114,7 @@ class CommandThread(QThread):
         super(CommandThread, self).__init__()
 
     def __call__(self, cmd_to_run, ref_to_controler):
-        self.cmd_to_run = cmd_to_run[0]
+        self.cmd_to_run = cmd_to_run
         self.ref_to_controler = ref_to_controler
         self.status_thread = CheckStatusThread()
 
@@ -859,8 +859,8 @@ class MainWidget(QMainWindow):
     def opt_dobl_clicked(self, row):
         re_idx = row + 1
         logger.debug("Solution clicked = %s", re_idx)
-        cmd_tmp = ["reindex solution=" + str(re_idx)]
-        self.cmd_launch(cmd_tmp)
+        cmd_tmp = ["reindex", "solution=" + str(re_idx)]
+        self.cmd_launch([cmd_tmp])
 
     def node_clicked(self, it_index):
 

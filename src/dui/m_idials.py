@@ -84,15 +84,15 @@ class CommandNode(object):
 
     def __call__(self, cmd_lst, ref_to_class):
         print("\n cmd_lst in =", cmd_lst)
-        self.ll_command_lst = [cmd_lst]
-        if cmd_lst[0] == "fail":
+        self.ll_command_lst = cmd_lst
+        if cmd_lst == ["fail"]:
             # testing virtual failed step
             logger.debug("\n intentionally FAILED for testing \n")
             self.success = False
 
         else:
-            if cmd_lst[0] in self.dials_com_lst:
-                self.build_command(cmd_lst)
+            if cmd_lst[0][0] in self.dials_com_lst:
+                self.build_command(cmd_lst[0])
                 print("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
@@ -160,16 +160,16 @@ class Runner(object):
         if cmd_lst[0] == "goto":
             self.goto(int(cmd_lst[1]))
 
-        elif cmd_lst[0] == "slist":
+        elif cmd_lst == ["slist"]:
             self.slist()
 
-        elif cmd_lst[0] == "clean":
+        elif cmd_lst == ["clean"]:
             self.clean()
 
-        elif cmd_lst[0] == "mkchi":
+        elif cmd_lst == ["mkchi"]:
             self.create_step(self.current_node)
 
-        elif cmd_lst[0] == "mksib":
+        elif cmd_lst == ["mksib"]:
             old_command_lst = self.current_node.ll_command_lst
             self.goto_prev()
             logger.debug("forking")
