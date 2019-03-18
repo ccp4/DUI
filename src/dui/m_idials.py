@@ -92,7 +92,7 @@ class CommandNode(object):
 
         else:
             if cmd_lst[0][0] in self.dials_com_lst:
-                self.build_command(cmd_lst[0])
+                self.build_command(cmd_lst)
                 print("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
@@ -128,7 +128,7 @@ class CommandNode(object):
         self.ll_command_lst = cmd_lst
 
     def build_command(self, cmd_lst):
-        self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
+        self.cmd_lst_to_run = build_command_lst(self, cmd_lst[0])
         print("cmd_lst_to_run(CommandNode) = %s", self.cmd_lst_to_run)
 
     def get_next_step(self):
@@ -170,7 +170,7 @@ class Runner(object):
             self.create_step(self.current_node)
 
         elif cmd_lst == ["mksib"]:
-            old_command_lst = self.current_node.ll_command_lst
+            old_command_lst = list(self.current_node.ll_command_lst)
             self.goto_prev()
             logger.debug("forking")
             self.create_step(self.current_node)
