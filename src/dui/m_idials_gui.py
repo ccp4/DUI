@@ -125,9 +125,7 @@ class CommandThread(QThread):
         self.start()
 
     def run(self):
-
         print("self.cmd_to_run =", self.cmd_to_run)
-
         self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
 
     def emit_print_signal(self, str_lin):
@@ -504,7 +502,7 @@ class MainWidget(QMainWindow):
     def pop_mask_list(self, mask_itm_lst):
 
         tmp_cmd_lst = build_mask_command_lst(mask_itm_lst)
-
+        # tmp_cmd_lst[1] = ["A"]
         print("tmp_cmd_lst(m_idials_gui):\n", tmp_cmd_lst, "\n")
 
         self.centre_par_widget.mask_page.set_par(tmp_cmd_lst)
