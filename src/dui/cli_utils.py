@@ -186,11 +186,11 @@ def build_command_lst(node_obj, cmd_lst):
     cmd_lst_to_run = []
 
     lst_inner = []
-    cmd_lst_ini = cmd_lst[0]
+    cmd_lst_ini = cmd_lst[0][0]
 
     lst_inner.append("dials." + cmd_lst_ini)
     if cmd_lst_ini != "reindex":
-        for tmp_par in cmd_lst[1:]:
+        for tmp_par in cmd_lst[0][1:]:
             lst_inner.append(tmp_par)
 
     run_path = sys_arg.directory + os.sep + "dui_files"
@@ -280,14 +280,21 @@ def build_command_lst(node_obj, cmd_lst):
         lst_inner.append(output_str)
 
     elif cmd_lst_ini == "reindex":
+
         try:
-            if cmd_lst[1][0:9] == "solution=":
-                sol_num = int(cmd_lst[1][9:])
+            sol_str = str(cmd_lst[0][1])
+            if sol_str[0:9] == "solution=":
+                sol_num = int(sol_str[9:])
+
             else:
+                print("\nDEFAULT  to sol_num = 1 \n")
                 sol_num = 1
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
+            print("\n reindex \n exeption:", e, "type:", type(e))
+
+            # getting to exeption: list index out of range type: <type 'exceptions.IndexError'>
             logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
 
@@ -389,6 +396,7 @@ def build_command_lst(node_obj, cmd_lst):
         cmd_lst_to_run.append(lst_inner1)
 
     cmd_lst_to_run.append(lst_inner)
+    print("\n cmd_lst_to_run(cli_utils.build_command_lst):\n", cmd_lst_to_run, "\n")
 
     return cmd_lst_to_run
 
