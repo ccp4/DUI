@@ -294,7 +294,9 @@ def build_command_lst(node_obj, cmd_lst):
             # what this was supposed to catch. Log it.
             print("\n reindex \n exeption:", e, "type:", type(e))
 
-            # getting to exeption: list index out of range type: <type 'exceptions.IndexError'>
+            # getting to exeption: list index out of range
+            # type: <type 'exceptions.IndexError'>
+
             logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
 
@@ -429,10 +431,21 @@ def build_mask_command_lst(mask_itm_lst):
                 + str(item[3])
             )
 
-    cwd_path = os.path.join(sys_arg.directory, "dui_files")
+    # next list is just list is just for testing
+    # it wil be replased soon
     to_run2 = ["B"]
 
-    to_remove = """
+    # TODO in the future consider how to hadle the next example from here
+    example = """
+    lst_inner = [
+        "dials.apply_mask",
+        "input.datablock=" + json_file_in,
+        "input.mask=mask.pickle",
+        "output.datablock=" + node_obj.json_file_out,
+    ]
+    """
+
+    old_example = """
     to_run2 = [
         "apply_mask",
         "input.datablock=1_datablock.json",
