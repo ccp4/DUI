@@ -89,7 +89,7 @@ logger = logging.getLogger(__name__)
 
 class MaskPage(QWidget):
 
-    update_command_lst_low_level = Signal(list)
+    update_command_lst_medium_level = Signal(list)
 
     """
     This stacked widget appears whe the user wants to
@@ -125,8 +125,7 @@ class MaskPage(QWidget):
         print("gray_me_out")
 
     def activate_me(self, cur_nod=None):
-
-        print("activate_me")
+        print("activate_me(MaskPage)")
 
     def reset_par(self):
         print("reset_par")
@@ -141,6 +140,8 @@ class MaskPage(QWidget):
             lab_str += "\n"
 
         self.list_label.setText(str(lab_str))
+
+        self.update_command_lst_medium_level.emit(self.command_lst[0])
 
 
 class ExportPage(QWidget):

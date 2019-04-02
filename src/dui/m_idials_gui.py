@@ -216,11 +216,17 @@ class ControlWidget(QWidget):
             param_widg.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         self.mask_page = MaskPage()
-
+        self.mask_page.update_command_lst_medium_level.connect(
+            self.singular_step_new_command
+        )
         self.step_param_widg.addWidget(self.mask_page)
 
         self.setLayout(top_box)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+    def singular_step_new_command(self, command_lst):
+        self.user_changed.emit(command_lst[0][0])
+        self.update_command_lst_high_level.emit([command_lst])
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit([command_lst])
@@ -510,6 +516,7 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.mask_page
         )
 
+        tst_off = """
         tmp_curr = self.idials_runner.current_node
         if tmp_curr.success is True:
             self.cmd_exe(["mkchi"])
@@ -517,6 +524,7 @@ class MainWidget(QMainWindow):
 
         elif tmp_curr.success is None:
             self.reconnect_when_ready()
+        """
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)

@@ -307,6 +307,9 @@ class ImgPainter(QWidget):
             )
 
     def ini_mask(self):
+
+        self.ll_mask_applied.emit(self.mask_items)  # Testing
+
         self.update()
         self.setFocus()
 
@@ -1135,11 +1138,10 @@ class MyImgWin(QWidget):
 
     def apply_mask(self, new_mask_items):
         print(" apply_mask")
-        # print("self.my_painter.mask_items", self.my_painter.mask_items)
-        # self.mask_applied.emit(self.my_painter.mask_items)
-
         print("new_mask_items: \n", new_mask_items)
-        self.mask_applied.emit(new_mask_items)
+
+        if self.chk_box_mask.isChecked():
+            self.mask_applied.emit(new_mask_items)
 
     def zoom2one(self):
         self.my_painter.scale2fact()
