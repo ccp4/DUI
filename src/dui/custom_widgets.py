@@ -140,7 +140,6 @@ class MaskPage(QWidget):
             lab_str += "\n"
 
         self.list_label.setText(str(lab_str))
-
         self.update_command_lst_medium_level.emit(self.command_lst[0])
 
 
@@ -205,8 +204,6 @@ class ExportPage(QWidget):
 
         for lin_prn in self.command_lst[0]:
             logger.debug("lin_prn = %s", lin_prn)
-
-        print("command_lst(ExportPage) =", self.command_lst)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -400,8 +397,6 @@ class ImportPage(QWidget):
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
         logger.debug("self.command_lst = %s", self.command_lst[0])
-
-        logger.debug("\n loop print \n")
 
         for lin_prn in self.command_lst[0]:
             logger.debug("lin_prn = %s", lin_prn)
