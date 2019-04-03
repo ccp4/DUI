@@ -111,7 +111,6 @@ class MaskPage(QWidget):
         # self.list_widg = QLabel(str("empty List ... for now"))
         self.list_widg = QVBoxLayout()
         self.list_widg.addWidget(QLabel(str("empty List ... for now")))
-        main_v_box.addLayout(self.list_widg)
 
         main_v_box.addWidget(step_label)
         main_v_box.addStretch()
