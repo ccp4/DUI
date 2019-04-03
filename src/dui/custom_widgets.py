@@ -108,11 +108,14 @@ class MaskPage(QWidget):
         step_label = QLabel(str("Apply Mask"))
         step_label.setFont(label_font)
 
-        self.list_label = QLabel(str("empty List ... for now"))
+        # self.list_widg = QLabel(str("empty List ... for now"))
+        self.list_widg = QVBoxLayout()
+        self.list_widg.addWidget(QLabel(str("empty List ... for now")))
+        main_v_box.addLayout(self.list_widg)
 
         main_v_box.addWidget(step_label)
         main_v_box.addStretch()
-        main_v_box.addWidget(self.list_label)
+        main_v_box.addLayout(self.list_widg)
         main_v_box.addStretch()
 
         self.setLayout(main_v_box)
@@ -132,6 +135,15 @@ class MaskPage(QWidget):
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
+        # cppy/pasted ... start
+        for i in reversed(range(self.list_widg.count())):
+            widgetToRemove = self.list_widg.itemAt(i).widget()
+            # remove it from the layout list
+            self.list_widg.removeWidget(widgetToRemove)
+            # remove it from the gui
+            widgetToRemove.setParent(None)
+        # cppy/pasted ... end
+
         print("lst_par(MaskPage)", lst_par)
         self.command_lst = lst_par
         lab_str = ""
@@ -139,7 +151,10 @@ class MaskPage(QWidget):
             lab_str += str(sig_lin)
             lab_str += "\n"
 
-        self.list_label.setText(str(lab_str))
+        # self.list_widg.setText(str(lab_str))
+
+        self.list_widg.addWidget(QLabel(str(lab_str)))
+
         self.update_command_lst_medium_level.emit(self.command_lst[0])
 
 
@@ -318,6 +333,9 @@ class ImportPage(QWidget):
         self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
         # self.show()
+
+    def reset_par(self):
+        logger.debug("reset_par(ImportPage)")
 
     def inv_rota_changed(self):
         logger.debug("self.chk_invert.checkState(): %s", self.chk_invert.checkState())

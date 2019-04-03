@@ -630,6 +630,12 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is True:
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.ll_command_lst = [[str(my_label)]]
+
+            print(
+                "my_widget=",
+                self.centre_par_widget.step_param_widg.currentWidget().my_widget,
+            )
+
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None
