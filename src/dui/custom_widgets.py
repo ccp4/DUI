@@ -135,25 +135,18 @@ class MaskPage(QWidget):
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
+
         # cppy/pasted ... start
         for i in reversed(range(self.list_widg.count())):
             widgetToRemove = self.list_widg.itemAt(i).widget()
-            # remove it from the layout list
             self.list_widg.removeWidget(widgetToRemove)
-            # remove it from the gui
             widgetToRemove.setParent(None)
         # cppy/pasted ... end
 
         print("lst_par(MaskPage)", lst_par)
         self.command_lst = lst_par
-        lab_str = ""
         for sig_lin in lst_par[0]:
-            lab_str += str(sig_lin)
-            lab_str += "\n"
-
-        # self.list_widg.setText(str(lab_str))
-
-        self.list_widg.addWidget(QLabel(str(lab_str)))
+            self.list_widg.addWidget(QLabel(str(sig_lin)))
 
         self.update_command_lst_medium_level.emit(self.command_lst[0])
 
