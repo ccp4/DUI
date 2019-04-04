@@ -387,12 +387,16 @@ def build_command_lst(node_obj, cmd_lst):
         input_str = "input.datablock=" + json_file_in
         lst_inner1.append(input_str)
 
+        # TODO add this info to node_obj
+        mask_file = str(node_obj.lin_num) + "_mask.pickle"
+        lst_inner1.append("output.mask=" + mask_file)
+
         node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
 
         lst_inner = [
             "dials.apply_mask",
             "input.datablock=" + json_file_in,
-            "input.mask=mask.pickle",
+            "input.mask=" + mask_file,
             "output.datablock=" + node_obj.json_file_out,
         ]
         cmd_lst_to_run.append(lst_inner1)
