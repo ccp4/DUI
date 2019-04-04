@@ -248,12 +248,11 @@ class ControlWidget(QWidget):
             self.step_param_widg.setCurrentWidget(widget)
             try:
                 widget.update_param(curr_step)
+
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
+                print("Caught unknown exception type %s: %s", type(e).__name__, e)
                 logger.debug("\n Unable to update params\n")
 
         elif nxt_cmd == "reindex":
@@ -265,6 +264,7 @@ class ControlWidget(QWidget):
         elif nxt_cmd == "generate_mask":
             # Mask is a special step because it doesn't have it's own button
             logger.debug("Mask")
+            self.mask_page.update_param(curr_step)
             self.step_param_widg.setCurrentWidget(self.mask_page)
 
         else:

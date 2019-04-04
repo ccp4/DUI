@@ -108,7 +108,6 @@ class MaskPage(QWidget):
         step_label = QLabel(str("Apply Mask"))
         step_label.setFont(label_font)
 
-        # self.list_widg = QLabel(str("empty List ... for now"))
         self.list_widg = QVBoxLayout()
         self.list_widg.addWidget(QLabel(str("empty List ... for now")))
 
@@ -124,30 +123,39 @@ class MaskPage(QWidget):
 
     def gray_me_out(self):
         # self.something.setEnabled(False)
-        print("gray_me_out")
+        print("gray_me_out(MaskPage)")
+
+    def update_param(self, curr_step):
+        print("update_param(MaskPage)")
+        self.update_widget_dat(curr_step.ll_command_lst)
 
     def activate_me(self, cur_nod=None):
         print("activate_me(MaskPage)")
+        print("cur_nod.ll_command_lst:\n", cur_nod.ll_command_lst)
+        self.update_widget_dat(cur_nod.ll_command_lst)
 
     def reset_par(self):
-        print("reset_par")
+        print("reset_par(MaskPage)")
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
+        print("set_par(MaskPage)")
+        self.update_widget_dat(lst_par)
+        self.update_command_lst_medium_level.emit(self.command_lst[0])
 
-        # cppy/pasted ... start
+    def update_widget_dat(self, lst_par):
+
         for i in reversed(range(self.list_widg.count())):
             widgetToRemove = self.list_widg.itemAt(i).widget()
             self.list_widg.removeWidget(widgetToRemove)
             widgetToRemove.setParent(None)
-        # cppy/pasted ... end
 
         print("lst_par(MaskPage)", lst_par)
         self.command_lst = lst_par
-        for sig_lin in lst_par[0]:
-            self.list_widg.addWidget(QLabel(str(sig_lin)))
-
-        self.update_command_lst_medium_level.emit(self.command_lst[0])
+        for singl_com in lst_par[0]:
+            new_widg = QLineEdit(self)
+            new_widg.setText(str(singl_com))
+            self.list_widg.addWidget(new_widg)
 
 
 class ExportPage(QWidget):
