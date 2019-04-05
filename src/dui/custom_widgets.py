@@ -90,6 +90,7 @@ logger = logging.getLogger(__name__)
 class MaskPage(QWidget):
 
     update_command_lst_medium_level = Signal(list)
+    mask_done = Signal()
 
     """
     This stacked widget appears whe the user wants to
@@ -124,6 +125,7 @@ class MaskPage(QWidget):
     def gray_me_out(self):
         # self.something.setEnabled(False)
         print("gray_me_out(MaskPage)")
+        self.mask_done.emit()
 
     def update_param(self, curr_step):
         print("update_param(MaskPage)")

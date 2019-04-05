@@ -1143,6 +1143,9 @@ class MyImgWin(QWidget):
         if self.chk_box_mask.isChecked():
             self.mask_applied.emit(new_mask_items)
 
+    def unchec_my_mask(self):
+        self.chk_box_mask.setCheckState(False)
+
     def zoom2one(self):
         self.my_painter.scale2fact()
 

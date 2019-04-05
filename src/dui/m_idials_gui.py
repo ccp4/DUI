@@ -164,6 +164,7 @@ class ControlWidget(QWidget):
 
     user_changed = Signal(str)
     update_command_lst_high_level = Signal(list)
+    finished_masking = Signal()
 
     def __init__(self, parent=None):
         super(ControlWidget, self).__init__()
@@ -219,6 +220,8 @@ class ControlWidget(QWidget):
         self.mask_page.update_command_lst_medium_level.connect(
             self.singular_step_new_command
         )
+
+        self.mask_page.mask_done.connect(self.done_masking)
         self.step_param_widg.addWidget(self.mask_page)
 
         self.setLayout(top_box)
@@ -227,6 +230,9 @@ class ControlWidget(QWidget):
     def singular_step_new_command(self, command_lst):
         self.user_changed.emit(command_lst[0][0])
         self.update_command_lst_high_level.emit([command_lst])
+
+    def done_masking(self):
+        self.finished_masking.emit()
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit([command_lst])
@@ -458,6 +464,7 @@ class MainWidget(QMainWindow):
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
         self.img_view.mask_applied.connect(self.pop_mask_list)
+        self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
 
         self.info_widget = InfoWidget()
 
@@ -691,7 +698,6 @@ class MainWidget(QMainWindow):
         cmd_tmp = (
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
         )
-        print("cmd_tmp(run_clicked) = %s", cmd_tmp)
         self.cmd_launch(cmd_tmp)
 
     def cmd_exe(self, new_cmd):
@@ -708,7 +714,7 @@ class MainWidget(QMainWindow):
         self.txt_bar.start_motion()
         self.txt_bar.setText("Running")
         self.disconnect_while_running()
-        print("\nnew_cmd(cmd_launch)=", new_cmd)
+        print("\nnew_cmd=", new_cmd)
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
