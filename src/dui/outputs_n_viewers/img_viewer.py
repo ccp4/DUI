@@ -326,16 +326,16 @@ class ImgPainter(QWidget):
         painter = QPainter(self)
 
         indexed_pen = QPen()  # creates a default indexed_pen
-        if self.my_parent.palette == "white2black":
-            indexed_pen.setBrush(Qt.blue)
 
-        elif self.my_parent.palette == "black2white":
-            indexed_pen.setBrush(Qt.cyan)
+        try:
+            pen_col = {
+                "white2black": Qt.blue,
+                "black2white": Qt.cyan,
+                "hot descend": Qt.magenta,
+            }
+            indexed_pen.setBrush(pen_col[self.my_parent.palette])
 
-        elif self.my_parent.palette == "hot descend":
-            indexed_pen.setBrush(Qt.magenta)
-
-        else:
+        except KeyError:
             indexed_pen.setBrush(Qt.green)
 
         indexed_pen.setStyle(Qt.SolidLine)
@@ -370,8 +370,8 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.my_parent.chk_box_mask.isChecked():
-            # Drawing list of previous mask items
 
+            # Drawing list of previous mask items
             for item in self.mask_items:
                 if item[0] == "rect":
                     xd = item[2] - item[1]
@@ -400,12 +400,6 @@ class ImgPainter(QWidget):
                     q_center = QPointF(self.x_prev, self.y_prev)
                     painter.drawEllipse(q_center, r, r)
 
-                TODO = """
-                elif self.my_parent.rad_but_poli_mask.isChecked():
-                    print("TODO")
-
-                """
-
             except TypeError:
                 logger.debug("Not correct ini data for drawing")
 
@@ -427,8 +421,7 @@ class ImgPainter(QWidget):
             if draw_text:
                 tmp_font.setPixelSize(font_pixel_size)
                 painter.setFont(tmp_font)
-            # TODO consider "tmp_font.setPointSize(..."
-            #   instead of "tmp_font.setPixelSize(..."
+
             lst_tmp_hkl = None
             if self.user_choice[0]:
                 try:
@@ -653,14 +646,12 @@ class PopMaskMenu(QMenu):
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
-        # ref_bond_group.addButton(self.my_parent.rad_but_poli_mask)
 
         info_grp = QGroupBox()
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
-        # ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poli_mask)
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
@@ -784,7 +775,6 @@ class MyImgWin(QWidget):
 
         self.rad_but_rect_mask = QRadioButton("rectangle")
         self.rad_but_circ_mask = QRadioButton("circle")
-        # self.rad_but_poli_mask = QRadioButton("polygon")
         self.rad_but_rect_mask.setChecked(True)
 
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
