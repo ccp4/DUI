@@ -613,8 +613,8 @@ class PopPaletteMenu(QMenu):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("no (...my_sweep) yet, skipping palette label paint")
+            print("Caught unknown exception type %s: %s", type(e).__name__, e)
+            print("no (...my_sweep) yet, skipping palette label paint")
 
     def slider_max_changed(self, value):
         if self.my_parent.slider_min.sliderPosition() > value - 15:
