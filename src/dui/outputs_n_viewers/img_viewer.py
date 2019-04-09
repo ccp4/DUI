@@ -450,10 +450,12 @@ class ImgPainter(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    print(
+                        " \n >>> Caught unknown exception type %s: %s",
+                        type(e).__name__,
+                        e,
                     )
-                    logger.debug("No reflection (Obsevations) to show ... None type")
+                    print("No reflection (Obsevations) to show ... None type")
 
             if self.user_choice[1]:
                 try:
@@ -462,6 +464,7 @@ class ImgPainter(QWidget):
 
                             x = float(reflection[0]) + 1.0
                             y = float(reflection[1]) + 1.0
+
                             if reflection[4] == "NOT indexed":
                                 painter.setPen(non_indexed_pen)
 
@@ -501,13 +504,8 @@ class ImgPainter(QWidget):
 
                             lst_tmp_hkl = self.pre_flat_data
 
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
-                    )
-                    logger.debug("No reflection (Predictions) to show ... None type")
+                except TypeError:
+                    print("No reflection (Predictions) to show ... None type")
 
             try:
                 if draw_text:
@@ -517,8 +515,8 @@ class ImgPainter(QWidget):
                                 reflection, painter, indexed_pen, non_indexed_pen, i, j
                             )
 
-            except BaseException as e:
-                logger.error("Failed to show HKLs: %s", e)
+            except TypeError:
+                print("not printing HKLs ")
 
             if self.xb is not None and self.yb is not None:
                 painter.setPen(indexed_pen)
