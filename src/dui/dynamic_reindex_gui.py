@@ -115,10 +115,12 @@ def ops_list_from_json(json_path=None):
             elif inner_key == "max_angular_difference":
                 angular_diff_val = value["max_angular_difference"]
                 angular_diff_str = " {:7.2} ".format(angular_diff_val)
+
             elif inner_key == "correlation_coefficients":
                 # corr_coeff_val = value["correlation_coefficients"]
                 # corr_coeff_str = str(corr_coeff_val)
                 pass
+
             elif inner_key == "unit_cell":
                 unit_cell_val = value["unit_cell"]
                 uc_d = unit_cell_val[0:3]
@@ -130,14 +132,16 @@ def ops_list_from_json(json_path=None):
                 unit_cell_str_apl = choice_if_decimal(uc_a[0])
                 unit_cell_str_bet = choice_if_decimal(uc_a[1])
                 unit_cell_str_gam = choice_if_decimal(uc_a[2])
+
             elif inner_key == "recommended":
                 recommended_val = value["recommended"]
                 if recommended_val:
                     recommended_str = " Y"
                 else:
                     recommended_str = " N"
+
             else:
-                logger.warning("Fell off end of key list with inner_key=%s", inner_key)
+                logger.debug("Fell off end of key list with inner_key=%s", inner_key)
 
         single_lin_lst = [
             int(key),
@@ -158,7 +162,6 @@ def ops_list_from_json(json_path=None):
         lst_ops.append(single_lin_lst)
 
     sorted_lst_ops = sorted(lst_ops)
-
     return sorted_lst_ops
 
 
