@@ -141,9 +141,9 @@ class MaskPage(QWidget):
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
-        print("set_par(MaskPage)")
+        print("set_par(MaskPage)", lst_par)
         self.update_widget_dat(lst_par)
-        self.update_command_lst_medium_level.emit(self.command_lst[0])
+        self.update_command_lst_medium_level.emit(lst_par[0])
 
     def update_widget_dat(self, lst_par):
 

@@ -228,6 +228,7 @@ class ControlWidget(QWidget):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def singular_step_new_command(self, command_lst):
+        print("update_command_lst_high_level.emit(", [command_lst])
         self.user_changed.emit(command_lst[0][0])
         self.update_command_lst_high_level.emit([command_lst])
 
@@ -235,6 +236,7 @@ class ControlWidget(QWidget):
         self.finished_masking.emit()
 
     def update_parent_lst(self, command_lst):
+        print("update_command_lst_high_level.emit(", [command_lst])
         self.update_command_lst_high_level.emit([command_lst])
 
     def pass_sys_arg_object_to_import(self, sys_arg_in):
@@ -637,12 +639,6 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is True:
             self.cmd_exe(["mkchi"])
             self.idials_runner.current_node.ll_command_lst = [[str(my_label)]]
-
-            print(
-                "my_widget=",
-                self.centre_par_widget.step_param_widg.currentWidget().my_widget,
-            )
-
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
             path_to_mask_pickle = None

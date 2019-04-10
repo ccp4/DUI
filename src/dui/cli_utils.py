@@ -435,28 +435,7 @@ def build_mask_command_lst(mask_itm_lst):
                 + str(item[3])
             )
 
-    # next list is just list is just for testing
-    # it wil be replased soon
-    to_run2 = ["B"]
-
-    # TODO in the future consider how to hadle the next example from here
-    example = """
-    lst_inner = [
-        "dials.apply_mask",
-        "input.datablock=" + json_file_in,
-        "input.mask=mask.pickle",
-        "output.datablock=" + node_obj.json_file_out,
-    ]
-    """
-
-    old_example = """
-    to_run2 = [
-        "apply_mask",
-        "input.datablock=1_datablock.json",
-        "input.mask=mask.pickle",
-        "output.datablock=1_datablock.json",
-    ]
-    """
+    to_run2 = ["apply_mask ..."]
 
     return [to_run1, to_run2]
 
@@ -641,8 +620,7 @@ class DialsCommand(object):
 
 
 def print_list(lst, curr):
-    # TODO maybe here goes a print function instead of logger ...
-    logger.debug("__________________________listing:")
+    print("__________________________listing:")
     for uni in lst:
         # TODO loopthru all commands, in "both" lists
         stp_str = (
@@ -671,8 +649,7 @@ def print_list(lst, curr):
         if curr == uni.lin_num:
             stp_str += "                           <<< here I am <<<"
 
-        # TODO maybe here goes a print print function instead of logger ...
-        logger.debug(stp_str)
+        print(stp_str)
 
 
 class TreeShow(object):
@@ -681,7 +658,11 @@ class TreeShow(object):
         self.ind_lin = "------"
 
     def __call__(self, my_runner):
-        # TODO maybe here goes a print print function instead of logger ...
+
+        print("\n\n TreeShow debug \n my_runner.step_list:\n")
+        print_list(my_runner.step_list, my_runner.current_line)
+        print("\n")
+
         print("")
         print("status ")
         print(" |  lin num ")

@@ -308,7 +308,7 @@ class ImgPainter(QWidget):
 
     def ini_mask(self):
 
-        self.ll_mask_applied.emit(self.mask_items)  # Testing
+        self.ll_mask_applied.emit(self.mask_items)
 
         self.update()
         self.setFocus()
