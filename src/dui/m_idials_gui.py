@@ -229,7 +229,7 @@ class ControlWidget(QWidget):
 
     def singular_step_new_command(self, command_lst):
         print("update_command_lst_high_level.emit(", [command_lst])
-        self.user_changed.emit(command_lst[0][0])
+        self.user_changed.emit(command_lst[0])
         self.update_command_lst_high_level.emit([command_lst])
 
     def done_masking(self):
@@ -650,19 +650,16 @@ class MainWidget(QMainWindow):
                 if path_to_mask_pickle is not None:
                     self.pass_parmams(["lookup.mask=" + path_to_mask_pickle])
 
-            else:
-                logger.debug(
-                    "self.idials_runner.current_node.ll_command_lst[0][0] = %s",
-                    self.idials_runner.current_node.ll_command_lst[0][0],
-                )
-
-            logger.debug("path_to_mask_pickle = %s", path_to_mask_pickle)
-
             self.cmd_exe(["clean"])
 
         elif tmp_curr.success is None:
             self.idials_runner.current_node.ll_command_lst[0] = [str(my_label)]
             self.reconnect_when_ready()
+
+        print(
+            "self.idials_runner.current_node.ll_command_lst[0][0] = %s",
+            self.idials_runner.current_node.ll_command_lst[0][0],
+        )
 
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_par_widget.step_param_widg.currentWidget()
