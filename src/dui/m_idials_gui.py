@@ -257,11 +257,8 @@ class ControlWidget(QWidget):
             try:
                 widget.update_param(curr_step)
 
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                print("Caught unknown exception type %s: %s", type(e).__name__, e)
-                logger.debug("\n Unable to update params\n")
+            except AttributeError:
+                logger.debug("object has no attribute update_param")
 
         elif nxt_cmd == "reindex":
             # Reindex is a special step because it doesn't have it's own page
@@ -656,11 +653,6 @@ class MainWidget(QMainWindow):
             self.idials_runner.current_node.ll_command_lst[0] = [str(my_label)]
             self.reconnect_when_ready()
 
-        print(
-            "self.idials_runner.current_node.ll_command_lst[0][0] = %s",
-            self.idials_runner.current_node.ll_command_lst[0][0],
-        )
-
     def cmd_changed_by_any(self):
         tmp_curr_widg = self.centre_par_widget.step_param_widg.currentWidget()
         self.cur_cmd_name = tmp_curr_widg.my_widget.command_lst[0][0]
@@ -878,10 +870,8 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                logger.debug("<< update_low_level_command_lst >> already disconnected")
+                print(" Caught unknown exception type %s: %s", type(e).__name__, e)
+                print("\n Tst A1 \n")
 
             logger.debug("TreeNavWidget(node_clicked)")
             item = self.tree_out.std_mod.itemFromIndex(it_index)
@@ -922,9 +912,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        logger.debug(
-            "\n\n_________________________________________ ... refreshing GUI \n\n"
-        )
+        print("\n ... recovering from previous run of GUI \n")
 
     def closeEvent(self, event):
         if self.my_pop:
