@@ -182,8 +182,6 @@ class Runner(object):
                 logger.debug("forking")
                 self.create_step(self.current_node)
 
-            print("cmd_lst(m_dials.Runner): \n", cmd_lst)
-
             self.current_node(cmd_lst, ref_to_class)
             if self.current_node.success is not True:
                 logger.debug("failed step")

@@ -1041,8 +1041,6 @@ class MyImgWin(QWidget):
             self.my_painter.scale2fact(sc_height / pt_height)
 
     def ini_reflection_table(self, pckl_file_path):
-        print("\npickle file(s) = %s", pckl_file_path)
-
         if pckl_file_path[0] is not None:
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:

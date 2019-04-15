@@ -219,7 +219,6 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
         # is the next line right? check what dials.show does
         dat.e_time = max(exp.scan.get_exposure_times())
-        # print set(exp.scan.get_exposure_times())
 
         dat.n_pans = len(exp.detector)
         dat.x_px_size, dat.y_px_size = pnl.get_pixel_size()

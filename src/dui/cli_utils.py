@@ -380,8 +380,6 @@ def build_command_lst(node_obj, cmd_lst):
         lst_inner.append(output_str)
 
     elif cmd_lst_ini == "generate_mask":
-        print("\ncmd_lst = \n", cmd_lst, "\n")
-
         lst_inner1 = list(lst_inner)
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.datablock=" + json_file_in
@@ -402,13 +400,11 @@ def build_command_lst(node_obj, cmd_lst):
         cmd_lst_to_run.append(lst_inner1)
 
     cmd_lst_to_run.append(lst_inner)
-    print("\n cmd_lst_to_run(cli_utils.build_command_lst):\n", cmd_lst_to_run, "\n")
 
     return cmd_lst_to_run
 
 
 def build_mask_command_lst(mask_itm_lst):
-    print("\n mask_itm_lst:", mask_itm_lst, "\n")
 
     to_run1 = ["generate_mask"]
 
@@ -544,8 +540,6 @@ class DialsCommand(object):
 
     def __call__(self, lst_cmd_to_run=None, ref_to_class=None):
         self.full_cmd_lst = []
-
-        print("\n lst_cmd_to_run(DialsCommand): \n", lst_cmd_to_run, "\n")
 
         for lst_single in lst_cmd_to_run:
             try:

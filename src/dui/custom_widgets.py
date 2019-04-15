@@ -229,7 +229,6 @@ class ExportPage(QWidget):
         self.fist_time = False
 
     def activate_me(self, cur_nod=None):
-        print("activate_me(ExportPage)")
         self.simple_lin.setEnabled(True)
         self.check_scale.setEnabled(True)
         if self.fist_time is False:
@@ -579,7 +578,6 @@ class ParamMainWidget(QWidget):
         self.reset_btn.clicked.connect(self.reset_par)
 
     def reset_par(self):
-        print("\nReseting")
 
         for i in reversed(list(range(self._vbox.count()))):
             widgetToRemove = self._vbox.itemAt(i).widget()
@@ -591,10 +589,8 @@ class ParamMainWidget(QWidget):
         self._vbox.addWidget(self.step_label)
         self._vbox.addWidget(self.dual_level_tab)
 
-        print("<< inner >>self.command_lst[0] = %s", self.command_lst[0])
         self.command_lst[0] = [self.command_lst[0][0]]
         self.lst_pair = []
-        print("<< inner >>self.command_lst = %s", self.command_lst)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
 
@@ -727,11 +723,9 @@ class ParamMainWidget(QWidget):
 
     def update_param_w_lst(self, lst_in, do_reset=True):
 
-        print("update_param_w_lst(self,  %s)", lst_in)
         if do_reset:
             self.reset_par()
 
-        logger.debug("_________________ after reset_par")
         if len(lst_in) > 1:
             logger.debug("restoring advanced widgets")
             self.lst_pair = buils_lst_pair(lst_in)
@@ -742,13 +736,8 @@ class ParamMainWidget(QWidget):
                 self.update_advanced_widget(pair[0], pair[1])
 
         else:
-            print("updating with no parameters")
-            print("self.lst_pair =", self.lst_pair)
             self.lst_pair = []
             self.command_lst[0] = lst_in
-            print("self.lst_pair =", self.lst_pair, "\n")
-
-        logger.debug("after update widgets")
 
     def remove_one_par(self, path_str):
         logger.debug("\n removing: %s %s", path_str, "parameter \n")
@@ -865,7 +854,6 @@ class ParamWidget(QWidget):
         self.my_widget.update_param_w_lst(curr_step.ll_command_lst[0])
 
     def update_parent_lst(self, command_lst):
-        print("command_lst(custom_widgets.ParamWidget) =", command_lst)
         self.update_command_lst_medium_level.emit(command_lst)
 
 
