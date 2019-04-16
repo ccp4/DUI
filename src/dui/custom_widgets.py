@@ -206,21 +206,13 @@ class ExportPage(QWidget):
         self.command_lst = [["export"]]
 
         param1_com = str(self.simple_lin.text())
-        logger.debug("param1_com = %s", param1_com)
-
         self.command_lst[0].append("mtz.hklout=" + param1_com)
 
         if self.check_scale.checkState():
             param2_com = "intensity=scale"
-            logger.debug("param2_com = %s", param2_com)
-
             self.command_lst[0].append(param2_com)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
-        logger.debug("self.command_lst[0] = %s", self.command_lst[0])
-
-        for lin_prn in self.command_lst[0]:
-            logger.debug("lin_prn = %s", lin_prn)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -244,7 +236,7 @@ class ExportPage(QWidget):
                         break
 
                 except AttributeError as at_err:
-                    logger.debug("found ", at_err, " in for loop, not to worry")
+                    print("found ", at_err, " in for loop, not to worry")
 
                 my_node = my_node.prev_step
 
@@ -254,7 +246,7 @@ class ExportPage(QWidget):
 
     def reset_par(self):
         print("command_lst(ExportPage.reset_par) = ", self.command_lst)
-        logger.debug(" Not supposed to reset export page")
+        print(" Not supposed to reset export page")
 
 
 class ImportPage(QWidget):
@@ -301,7 +293,7 @@ class ImportPage(QWidget):
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
 
         main_path = get_main_path()
-        logger.debug("main_path = %s", main_path)
+
         self.opn_fil_btn.setIcon(QIcon(main_path + "/resources/import.png"))
         self.opn_fil_btn.setIconSize(QSize(80, 48))
 
@@ -336,10 +328,9 @@ class ImportPage(QWidget):
         # self.show()
 
     def reset_par(self):
-        logger.debug("reset_par(ImportPage)")
+        pass
 
     def inv_rota_changed(self):
-        logger.debug("self.chk_invert.checkState(): %s", self.chk_invert.checkState())
         if self.chk_invert.checkState():
             self.third_half = "invert_rotation_axis=True"
 
@@ -350,16 +341,13 @@ class ImportPage(QWidget):
 
     def x_beam_changed(self, value):
         self.x_beam = value
-        logger.debug("New Beam pos(X) = %s", self.x_beam)
         self.build_second_half()
 
     def y_beam_changed(self, value):
         self.y_beam = value
-        logger.debug("New Beam pos(Y) = %s", self.y_beam)
         self.build_second_half()
 
     def build_second_half(self):
-        logger.debug("%s %s", self.x_beam, self.y_beam)
         if self.x_beam != 0.0 and self.y_beam != 0.0:
             self.second_half = (
                 "slow_fast_beam_centre=" + str(self.y_beam) + "," + str(self.x_beam)
@@ -393,32 +381,22 @@ class ImportPage(QWidget):
 
         self.simple_lin.setText(txt_lin)
 
-        logger.debug("self.simple_lin.setText:<<" + txt_lin + ">>")
-
     def set_arg_obj(self, sys_arg_in):
         """Pass the system argument object to handle launch arguments."""
-        logger.debug("sys_arg_in = %s", sys_arg_in)
         if sys_arg_in.template is not None:
             str_arg = str(sys_arg_in.template)
             self.simple_lin.setText(str_arg)
 
     def update_command(self):
-        logger.debug("action_simple")
         self.command_lst = [["import"]]
         param_com = str(self.simple_lin.text())
-        logger.debug("param_com = %s", param_com)
 
         cmd_lst = param_com.split(" ")
-        logger.debug("cmd_lst = %s", cmd_lst)
 
         for single_com in cmd_lst:
             self.command_lst[0].append(single_com)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
-        logger.debug("self.command_lst = %s", self.command_lst[0])
-
-        for lin_prn in self.command_lst[0]:
-            logger.debug("lin_prn = %s", lin_prn)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -508,9 +486,7 @@ def string2pair(str_in):
 def buils_lst_pair(lst_in):
     lst_pair = []
     for par_str in lst_in[1 : len(lst_in)]:
-        logger.debug("par_str = %s", par_str)
         pair = string2pair(par_str)
-        logger.debug("pair = %s", pair)
         lst_pair.append(pair)
 
     return lst_pair
@@ -532,8 +508,8 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("\n\n\n something went wrong here wiht the phil object \n\n\n")
+            print("Caught unknown exception #1 type %s: %s", type(e).__name__, e)
+            print("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
 
@@ -561,16 +537,15 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("found self.simpler_widget without << item_changed >> signal")
+            print("Caught unknown exception #2 type %s: %s", type(e).__name__, e)
+            print("found self.simpler_widget without << item_changed >> signal")
 
         try:
             self.simpler_widget.item_to_remove.connect(self.remove_one_par)
+
         except AttributeError:
             # simpler_widget has no item_to_remove
-            logger.debug(
-                "found self.simpler_widget without << item_to_remove >> signal"
-            )
+            print("found self.simpler_widget without << item_to_remove >> signal")
 
         self.reset_btn = self.simpler_widget.inner_reset_btn
         self.dual_level_tab.addTab(self.simpler_widget, "Simple")
@@ -597,17 +572,12 @@ class ParamMainWidget(QWidget):
         try:
             max_nproc = self.simpler_widget.set_max_nproc()
             if max_nproc > 1:
-                logger.debug("\n time to raise nproc to: %s %s", max_nproc, " \n")
                 self.raise_nproc_str = (
                     str(self.simpler_widget.box_nproc.local_path) + "=" + str(max_nproc)
                 )
                 QTimer.singleShot(1000, self.raise_nproc_to_max)
-                logger.debug("tst 03")
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("\n This step runs as fast as it can with nproc = 1 \n")
+        except AttributeError:
+            pass
 
     def raise_nproc_to_max(self):
         found_nproc = False
@@ -636,54 +606,35 @@ class ParamMainWidget(QWidget):
                                 try:
                                     str_val = str(str_value)
                                     widg.setText(str_val)
-                                    logger.debug(
-                                        "widg.local_path = %s", widg.local_path
-                                    )
+                                    print("widg.local_path = %s", widg.local_path)
 
-                                except BaseException as e:
-                                    # We don't want to catch bare exceptions but don't
-                                    # know what this was supposed to catch. Log it.
-                                    logger.debug(
-                                        "Caught unknown exception type %s: %s",
-                                        type(e).__name__,
-                                        e,
-                                    )
-                                    logger.debug(
-                                        "Type mismatch searching for twin parameter"
-                                    )
+                                except AttributeError:
+                                    pass
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
                                     try:
-                                        logger.debug("found val, v= %s", val)
+                                        print("found val, v= %s", val)
                                         widg.setCurrentIndex(pos)
                                     except BaseException as e:
                                         # We don't want to catch bare exceptions but
                                         # dont know what this was supposed to catch.
-                                        logger.debug("Caught unknown exception: %s", e)
-                                        logger.debug("failed to:")
-                                        logger.debug("widg.setCurrentIndex(pos)")
+                                        print("Caught unknown exception #5 type: %s", e)
+                                        print("failed to:")
+                                        print("widg.setCurrentIndex(pos)")
 
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
-                    )
+                except AttributeError:
+                    pass
 
-        logger.debug("finished update_advanced_widget")
+        print("finished update_advanced_widget")
 
     def update_simpler_widget(self, str_path, str_value):
-
-        logger.debug(
-            "update_simpler_widget( %s %s %s %s", str_path, ", ", str_value, ")"
-        )
 
         for widg in self.simpler_widget.lst_var_widg:
             try:
                 if widg.local_path == str_path:
-                    logger.debug("found << widg.local_path == str_path >> ")
+                    print("found << widg.local_path == str_path >> ")
                     try:
                         num_val = float(str_value)
                         widg.setValue(num_val)
@@ -691,26 +642,13 @@ class ParamMainWidget(QWidget):
                         try:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
-                                    logger.debug("found val, v= %s", val)
+                                    print("found val, v= %s", val)
                                     widg.setCurrentIndex(pos)
-                        except BaseException as e:
-                            # We don't want to catch bare exceptions but don't know
-                            # what this was supposed to catch. Log it.
-                            logger.debug(
-                                "Caught unknown exception type %s: %s",
-                                type(e).__name__,
-                                e,
-                            )
-                            logger.debug(
-                                "\n\n Type Mismatch in simpler_param_widgets \n\n"
-                            )
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                logger.debug("skip label_str")
+                        except AttributeError:
+                            pass
+
+            except AttributeError:
+                pass
 
     def update_lin_txt(self, str_path, str_value):
         # cmd_to_run = str_path + "=" + str_value
@@ -727,11 +665,8 @@ class ParamMainWidget(QWidget):
             self.reset_par()
 
         if len(lst_in) > 1:
-            logger.debug("restoring advanced widgets")
             self.lst_pair = buils_lst_pair(lst_in)
-            logger.debug("lst_pair done")
             self.command_lst[0] = build_lst_str(lst_in[0], self.lst_pair)
-            logger.debug("looping thru params")
             for pair in self.lst_pair:
                 self.update_advanced_widget(pair[0], pair[1])
 
@@ -740,11 +675,10 @@ class ParamMainWidget(QWidget):
             self.command_lst[0] = lst_in
 
     def remove_one_par(self, path_str):
-        logger.debug("\n removing: %s %s", path_str, "parameter \n")
         nxt_lst = []
         for single_param in self.command_lst[0]:
             if str(path_str) in single_param:
-                logger.debug("found:  %s", single_param)
+                pass
 
             else:
                 nxt_lst.append(str(single_param))
@@ -769,8 +703,8 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    print(
+                        "Caught unknown exception #9 type %s: %s", type(e).__name__, e
                     )
                     pass
 
@@ -787,12 +721,8 @@ class ParamMainWidget(QWidget):
                 widg.setStyleSheet("color: rgba(0, 0, 0, 255)")
                 try:
                     widg.setStyleSheet(widg.style_orign)
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
-                    )
+
+                except AttributeError:
                     pass
 
                 try:
@@ -800,10 +730,9 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    logger.debug(
-                        "Caught unknown exception type %s: %s", type(e).__name__, e
+                    print(
+                        "Caught unknown exception #11 type %s: %s", type(e).__name__, e
                     )
-                    pass
 
 
 class ParamWidget(QWidget):
