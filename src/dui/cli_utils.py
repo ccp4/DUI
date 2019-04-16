@@ -592,10 +592,10 @@ class DialsCommand(object):
                 else:
                     local_success = False
                     # TODO handle error outputs
+                    print("\n __________________ Failed ______________________ \n")
                     try:
                         ref_to_class.emit_fail_signal()
-                        print("\n __________________ Failed ______________________ \n")
-                        return local_success
+                        return False
 
                     except BaseException as e:
                         # We don't want to catch bare exceptions but don't know
@@ -603,7 +603,7 @@ class DialsCommand(object):
                         logger.debug(
                             "Caught unknown exception type %s: %s", type(e).__name__, e
                         )
-                        logger.debug("Failed")
+                        return False
 
                 logger.debug("Done all step")
 
