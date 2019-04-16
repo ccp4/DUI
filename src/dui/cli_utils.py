@@ -574,6 +574,8 @@ class DialsCommand(object):
                         ref_to_class.emit_print_signal(single_line)
                         self.tmp_std_all.append(single_line)
 
+                        print(">>: ", single_line)
+
                     except BaseException as e:
                         # We don't want to catch bare exceptions but don't know
                         # what this was supposed to catch. Log it.
@@ -592,6 +594,8 @@ class DialsCommand(object):
                     # TODO handle error outputs
                     try:
                         ref_to_class.emit_fail_signal()
+                        print("\n __________________ Failed ______________________ \n")
+                        return local_success
 
                     except BaseException as e:
                         # We don't want to catch bare exceptions but don't know

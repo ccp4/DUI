@@ -821,7 +821,7 @@ class MainWidget(QMainWindow):
         update_pbar_msg(self)
 
     def after_failed(self):
-        logger.debug("\n FAILED STEP:")
+        print("\n FAILED STEP:")
         self.update_nav_tree()
         self.txt_bar.end_motion()
 
@@ -829,8 +829,6 @@ class MainWidget(QMainWindow):
 
         for err_lin in curr_step.dials_command.tmp_std_all:
             logger.debug(err_lin)
-
-        logger.debug("curr_step.lin_num = %s", curr_step.lin_num)
 
         err_log_file_out = (
             self.storage_path
