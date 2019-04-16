@@ -449,6 +449,7 @@ def update_lst_pair(lst_ini, str_path, str_value):
         if pair[0] == str_path:
             new_pair = [str_path, str_value]
             found = True
+
         else:
             new_pair = pair
 
@@ -505,6 +506,7 @@ class ParamMainWidget(QWidget):
         try:
             self.my_phl_obj = phl_obj
             self.simp_widg_in = simp_widg
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -534,6 +536,7 @@ class ParamMainWidget(QWidget):
 
         try:
             self.simpler_widget.item_changed.connect(self.update_advanced_widget)
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
@@ -576,6 +579,7 @@ class ParamMainWidget(QWidget):
                     str(self.simpler_widget.box_nproc.local_path) + "=" + str(max_nproc)
                 )
                 QTimer.singleShot(1000, self.raise_nproc_to_max)
+
         except AttributeError:
             pass
 
@@ -602,6 +606,7 @@ class ParamMainWidget(QWidget):
                             try:
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
+
                             except ValueError:
                                 try:
                                     str_val = str(str_value)
@@ -637,12 +642,14 @@ class ParamMainWidget(QWidget):
                     try:
                         num_val = float(str_value)
                         widg.setValue(num_val)
+
                     except ValueError:
                         try:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
                                     print("found val, v= %s", val)
                                     widg.setCurrentIndex(pos)
+
                         except AttributeError:
                             pass
 
@@ -726,6 +733,7 @@ class ParamMainWidget(QWidget):
 
                 try:
                     widg.setEnabled(True)
+
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
