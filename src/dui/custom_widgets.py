@@ -547,8 +547,7 @@ class ParamMainWidget(QWidget):
             self.simpler_widget.item_to_remove.connect(self.remove_one_par)
 
         except AttributeError:
-            # simpler_widget has no item_to_remove
-            print("found self.simpler_widget without << item_to_remove >> signal")
+            pass
 
         self.reset_btn = self.simpler_widget.inner_reset_btn
         self.dual_level_tab.addTab(self.simpler_widget, "Simple")
@@ -630,8 +629,6 @@ class ParamMainWidget(QWidget):
 
                 except AttributeError:
                     pass
-
-        print("finished update_advanced_widget")
 
     def update_simpler_widget(self, str_path, str_value):
 

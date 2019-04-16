@@ -541,6 +541,7 @@ class DialsCommand(object):
     def __call__(self, lst_cmd_to_run=None, ref_to_class=None):
         self.full_cmd_lst = []
 
+        self.tmp_std_all = []
         for lst_single in lst_cmd_to_run:
             try:
                 single_string = ""
@@ -557,7 +558,6 @@ class DialsCommand(object):
                 else:
                     run_cmd = lst_single
 
-                self.tmp_std_all = []
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
                 my_process = subprocess.Popen(
                     run_cmd,
