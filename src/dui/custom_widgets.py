@@ -615,7 +615,6 @@ class ParamMainWidget(QWidget):
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
                                     try:
-                                        print("found val, v= %s", val)
                                         widg.setCurrentIndex(pos)
                                     except BaseException as e:
                                         # We don't want to catch bare exceptions but
