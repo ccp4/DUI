@@ -23,6 +23,7 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 import logging
 import os
 import pickle
@@ -31,17 +32,33 @@ import sys
 
 from six.moves import input
 
-from .cli_utils import (
-    print_list,
-    TreeShow,
-    DialsCommand,
-    sys_arg,
-    generate_report,
-    build_command_lst,
-    get_next_step,
-    generate_predict,
-)
+if __name__ == "__main__" and __package__ is None:
+    from os import path
 
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+    from cli_utils import (
+        print_list,
+        TreeShow,
+        DialsCommand,
+        sys_arg,
+        generate_report,
+        build_command_lst,
+        get_next_step,
+        generate_predict,
+    )
+
+else:
+    from .cli_utils import (
+        print_list,
+        TreeShow,
+        DialsCommand,
+        sys_arg,
+        generate_report,
+        build_command_lst,
+        get_next_step,
+        generate_predict,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -344,9 +361,9 @@ class Runner(object):
         print_list(self.step_list, self.current_line)
 
 
-if __name__ == "__main__":
-    tree_output = TreeShow()
+if __name__ == "__main__" and __package__ is None:
 
+    tree_output = TreeShow()
     storage_path = sys_arg.directory
 
     try:
