@@ -395,7 +395,7 @@ if __name__ == "__main__" and __package__ is None:
             print(" ... interrupting")
             sys.exit(0)
 
-        except Exception as e:
+        except:
             print("Caught << some error >>", e)
             print(" ... interrupting")
             sys.exit(1)
