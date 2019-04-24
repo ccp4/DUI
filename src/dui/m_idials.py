@@ -38,7 +38,6 @@ if __name__ == "__main__" and __package__ is None:
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
     from cli_utils import (
-        print_list,
         TreeShow,
         DialsCommand,
         sys_arg,
@@ -50,7 +49,6 @@ if __name__ == "__main__" and __package__ is None:
 
 else:
     from .cli_utils import (
-        print_list,
         TreeShow,
         DialsCommand,
         sys_arg,
@@ -136,7 +134,8 @@ class CommandNode(object):
                 self.info_generating = False
 
             else:
-                print("NOT dials command")
+                print("\n NOT dials command")
+                print("cmd_lst =", cmd_lst, "\n")
                 self.success = False
 
         self.info_generating = False
@@ -162,23 +161,23 @@ class Runner(object):
         self.current_line = self.bigger_lin
         self.create_step(root_node)
 
-        logger.debug("root_node.lin_num = %s", root_node.lin_num)
+        print("root_node.lin_num = %s", root_node.lin_num)
         # self.current_node = root_node
 
     def run(self, command, ref_to_class):
 
-        # TODO verify the step actually runs and give the proper output files
+        print("\n Runner(run) ... command =", command, "\n")
 
         if type(command) is str:
             cmd_lst = command.split()
         else:
             cmd_lst = command
 
-        if cmd_lst[0] == "goto":
-            self.goto(int(cmd_lst[1]))
+        print("\n Runner(run) ... cmd_lst =", cmd_lst, "\n")
 
-        elif cmd_lst == ["slist"]:
-            self.slist()
+        if cmd_lst[0] == "goto":
+            print("doing << goto >>")
+            self.goto(int(cmd_lst[1]))
 
         elif cmd_lst == ["clean"]:
             self.clean()
@@ -189,19 +188,19 @@ class Runner(object):
         elif cmd_lst == ["mksib"]:
             old_command_lst = list(self.current_node.ll_command_lst)
             self.goto_prev()
-            logger.debug("forking")
+            print("forking")
             self.create_step(self.current_node)
             self.current_node.edit_list(old_command_lst)
 
         else:
             if self.current_node.success is True:
                 self.goto_prev()
-                logger.debug("forking")
+                print("forking")
                 self.create_step(self.current_node)
 
             self.current_node(cmd_lst, ref_to_class)
             if self.current_node.success is not True:
-                logger.debug("failed step")
+                print("failed step")
 
     def clean(self):
         logger.debug("\n Cleaning")
@@ -356,10 +355,6 @@ class Runner(object):
     def get_next_from_here(self):
         return self.current_node.get_next_step()
 
-    def slist(self):
-        logger.debug("printing in steps list mode: \n")
-        print_list(self.step_list, self.current_line)
-
 
 if __name__ == "__main__" and __package__ is None:
 
@@ -375,15 +370,15 @@ if __name__ == "__main__" and __package__ is None:
         # 'module' object has no attribute 'CommandNode'
 
     except Exception as e:
-        logger.debug("str(e) = %s", str(e))
-        logger.debug("e.__doc__ = %s", e.__doc__)
-        logger.debug("e.message = %s", e.message)
+        print("str(e) = %s", str(e))
+        print("e.__doc__ = %s", e.__doc__)
+        print("e.message = %s", e.message)
         idials_runner = Runner()
         try:
             shutil.rmtree(storage_path + "/dui_files")
 
         except OSError:
-            logger.debug('failed to do "shutil.rmtree("/dui_files")"')
+            print('failed to do "shutil.rmtree("/dui_files")"')
 
         os.mkdir(storage_path + "/dui_files")
 
@@ -394,19 +389,28 @@ if __name__ == "__main__" and __package__ is None:
         try:
             inp_str = "lin [" + str(idials_runner.current_line) + "] >>> "
             command = str(input(inp_str))
-            if command == "":
-                logger.debug("converting empty line in self.slist()")
-                command = "slist"
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug(" ... interrupting")
+
+        except EOFError:
+            print("Caught << EOFError >>")
+            print(" ... interrupting")
             sys.exit(0)
 
-        idials_runner.run(command, None)
-        tree_output(idials_runner)
-        nxt_str = idials_runner.get_next_from_here()
+        except Exception as e:
+            print("Caught << some error >>", e)
+            print(" ... interrupting")
+            sys.exit(1)
+
+        print("command =", command)
+        if command[0:5] == "goto ":
+            idials_runner.run(command.split(" "), None)
+            tree_output(idials_runner)
+
+        else:
+            idials_runner.run([command.split(" ")], None)
+            tree_output(idials_runner)
+
+            idials_runner.run(["mkchi"], None)
+            tree_output(idials_runner)
 
         with open(storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(idials_runner, bkp_out)

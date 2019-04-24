@@ -570,11 +570,10 @@ class DialsCommand(object):
                 self.my_pid = my_process.pid
                 for line in iter(my_process.stdout.readline, b""):
                     single_line = line[0 : len(line) - 1]
+                    print(">>: ", single_line)
                     try:
                         ref_to_class.emit_print_signal(single_line)
                         self.tmp_std_all.append(single_line)
-
-                        print(">>: ", single_line)
 
                     except BaseException as e:
                         # We don't want to catch bare exceptions but don't know
