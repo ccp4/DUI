@@ -112,6 +112,29 @@ class CommandNode(object):
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
+                if self.log_file_out is None:
+                    print("\n *** time to write ...log_file_out manually *** \n")
+
+                    self.log_file_out = (
+                        str(self.lin_num) + "_" + self.cmd_lst_to_run[0][0] + ".log"
+                    )
+
+                    cwd_path = os.path.join(sys_arg.directory, "dui_files")
+                    file_path = os.path.join(cwd_path, self.log_file_out)
+
+                    print("..log_file_out =", file_path, "\n")
+                    print(
+                        "self.dials_command.tmp_std_all:",
+                        self.dials_command.tmp_std_all,
+                    )
+
+                    fil_obj = open(file_path, "w")
+                    for line_out in self.dials_command.tmp_std_all:
+                        fil_obj.write(line_out)
+                        fil_obj.write("\n")
+
+                    fil_obj.close()
+
                 print("\n Done \n")
                 if (
                     self.success is True
@@ -294,9 +317,9 @@ class Runner(object):
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("failed to retrieve log path")
+            # what this was supposed to catch
+            print("Caught unknown exception type %s: %s", type(e).__name__, e)
+            print("failed to retrieve log path")
 
         return path_to_log
 

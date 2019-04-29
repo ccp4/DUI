@@ -91,7 +91,7 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
         return img_flex
 
     else:
-        print("\n something went wrong here \n")
+        print("\n something went wrong here (panel_data_as_double) \n")
 
 
 def draw_palette_label(i_min, i_max):
@@ -129,7 +129,7 @@ def draw_palette_label(i_min, i_max):
 
 
 def py_find_closer_hkl_func(x_mouse_scaled, y_mouse_scaled, flat_data_lst):
-    # print"\n Using Python search for closer reflection \n"
+    # Using Python search for closer reflection
     dst_squared = 999999.0
     hkl_result = None
     slice_result = None
@@ -158,7 +158,6 @@ def list_p_arrange(pos_col, hkl_lst, pan_col, n_imgs):
     logger.debug(" len(pos_col) = %s", len(pos_col))
 
     for i, pos_tri in enumerate(pos_col):
-        # print "pos_tri =", pos_tri
         my_bar(i)
         x_ini = pos_tri[0] - 1
         y_ini = (pos_tri[1] - 1) + pan_col[i] * 213

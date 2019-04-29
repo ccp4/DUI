@@ -228,7 +228,6 @@ class ControlWidget(QWidget):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def singular_step_new_command(self, command_lst):
-        print("update_command_lst_high_level.emit(", [command_lst])
         self.user_changed.emit(command_lst[0])
         self.update_command_lst_high_level.emit([command_lst])
 
@@ -236,7 +235,6 @@ class ControlWidget(QWidget):
         self.finished_masking.emit()
 
     def update_parent_lst(self, command_lst):
-        print("update_command_lst_high_level.emit(", [command_lst])
         self.update_command_lst_high_level.emit([command_lst])
 
     def pass_sys_arg_object_to_import(self, sys_arg_in):
@@ -514,7 +512,6 @@ class MainWidget(QMainWindow):
     def pop_mask_list(self, mask_itm_lst):
 
         tmp_cmd_lst = build_mask_command_lst(mask_itm_lst)
-        print("tmp_cmd_lst(m_idials_gui):\n", tmp_cmd_lst, "\n")
 
         self.centre_par_widget.mask_page.set_par(tmp_cmd_lst)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
@@ -624,9 +621,6 @@ class MainWidget(QMainWindow):
             )
 
     def update_low_level_command_lst(self, command_lst):
-
-        print("\n command_lst(m_idials_gui.MainWidget) = %s", command_lst)
-
         self.idials_runner.current_node.ll_command_lst = command_lst
         self.reconnect_when_ready()
 
@@ -699,7 +693,6 @@ class MainWidget(QMainWindow):
         self.txt_bar.start_motion()
         self.txt_bar.setText("Running")
         self.disconnect_while_running()
-        print("\nnew_cmd=", new_cmd)
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
@@ -838,7 +831,7 @@ class MainWidget(QMainWindow):
             + "_err_out.log"
         )
 
-        logger.debug("err_log_file_out = %s %s", err_log_file_out, "\n")
+        print("\n ERROR \n err_log_file_out = %s %s", err_log_file_out, "\n")
 
         fil_obj = open(err_log_file_out, "w")
         for err_lin in curr_step.dials_command.tmp_std_all:
