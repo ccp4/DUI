@@ -30,6 +30,7 @@ from dxtbx.model.experiment_list import ExperimentListFactory
 from dxtbx.model import ExperimentList, Experiment
 from dxtbx.datablock import DataBlockFactory
 from dials.array_family import flex
+import pickle
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +78,8 @@ class InfoData(object):
         self.tmpl_str = None
         self.ref2exp = None
 
+        self.np_mask = None
+
 
 def update_all_data(reflections_path=None, experiments_path=None):
     dat = InfoData()
@@ -87,33 +90,33 @@ def update_all_data(reflections_path=None, experiments_path=None):
         try:
             refl_tabl = flex.reflection_table.from_pickle(reflections_path)
             dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
-            logger.debug("dat.n_strng = %s", dat.n_strng)
+            print("dat.n_strng = %s", dat.n_strng)
             dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
-            logger.debug("dat.n_index = %s", dat.n_index)
+            print("dat.n_index = %s", dat.n_index)
             dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(
                 True
             )
-            logger.debug("dat.n_refnd = %s", dat.n_refnd)
+            print("dat.n_refnd = %s", dat.n_refnd)
             dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(
                 True
             )
-            logger.debug("dat.n_integ_sum = %s", dat.n_integ_sum)
+            print("dat.n_integ_sum = %s", dat.n_integ_sum)
             dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(
                 True
             )
-            logger.debug("dat.n_integ_prf = %s", dat.n_integ_prf)
+            print("dat.n_integ_prf = %s", dat.n_integ_prf)
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
+            print("Caught unknown exception type %s: %s", type(e).__name__, e)
 
-            logger.debug("failed to find reflections")
-            logger.debug("reflections_path = %s", reflections_path)
+            print("failed to find reflections")
+            print("reflections_path = %s", reflections_path)
 
     if experiments_path is not None:
 
-        logger.debug("trying experiments")
+        print("trying experiments")
         try:
             experiments = ExperimentListFactory.from_json_file(
                 experiments_path, check_format=False
@@ -121,7 +124,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
+            print("exception #1 %s: %s", type(e).__name__, e)
             try:
                 # FIXME here only take the first datablock. What if there are more?
                 datablock = DataBlockFactory.from_serialized_format(
@@ -137,12 +140,37 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 experiments = ExperimentList()
                 experiments.append(Experiment(beam=beam, detector=detector, scan=scan))
 
+                try:
+                    imageset_tmp = datablock.extract_imagesets()[0]
+                    print("imageset_tmp =", imageset_tmp)
+
+                    ##############################################################################
+                    mask_file = imageset_tmp.external_lookup.mask.filename
+                    print("mask_filename =", mask_file, "\n")
+
+                    pick_file = open(mask_file, "rb")
+                    mask_tup_obj = pickle.load(pick_file)
+                    pick_file.close()
+
+                    mask_flex = mask_tup_obj[0]
+                    mask_np_arr = mask_flex.as_numpy_array()
+                    ##############################################################################
+                    print(
+                        "\n  ****************                    Asign dat.np_mask \n"
+                    )
+                    dat.np_mask = mask_np_arr
+
+                except BaseException as e:
+                    print("exception #2 %s: %s", type(e).__name__, e)
+                    print("Failed to retrieve mask array")
+                    dat.np_mask = None
+
             except ValueError:
-                logger.debug("failed to read json file")
-                logger.debug("experiments_path = %s", experiments_path)
+                print("failed to read json file")
+                print("experiments_path = %s", experiments_path)
                 return dat
 
-        logger.debug("len(experiments) %s", len(experiments))
+        print("len(experiments) %s", len(experiments))
 
         # FIXME take just the first experiment. What if there are more?
         exp = experiments[0]
@@ -153,7 +181,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
 
             exp_crystal = exp.crystal
-            logger.debug("exp_crystal =  %s", exp_crystal)
+            print("exp_crystal =  %s", exp_crystal)
             b_mat = exp.crystal.get_B()
             dat.b11 = b_mat[0]
             dat.b12 = b_mat[1]
@@ -166,7 +194,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.b33 = b_mat[8]
 
             sg = str(exp.crystal.get_space_group().info())
-            logger.debug("spgr =  %s", sg)
+            print("spgr =  %s", sg)
             dat.spg_group = sg
 
             from scitbx import matrix
@@ -184,9 +212,9 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.u33 = b_mat[8]
 
             rot_angs = u_mat.r3_rotation_matrix_as_x_y_z_angles(deg=True)
-            logger.debug("u_mat = %s", u_mat)
+            print("u_mat = %s", u_mat)
 
-            logger.debug("rot_angs = %s", rot_angs)
+            print("rot_angs = %s", rot_angs)
             dat.r1, dat.r2, dat.r3 = rot_angs
 
         # Get beam data
@@ -201,7 +229,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             exp.beam.get_s0()
         )
         pnl = exp.detector[pnl_beam_intersects]
-        logger.debug("beam_x, beam_y = %s %s", beam_x, beam_y)
+        print("beam_x, beam_y = %s %s", beam_x, beam_y)
 
         dat.n_pan_xb_yb = pnl_beam_intersects
         dat.xb = beam_x
@@ -209,8 +237,8 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
         dist = pnl.get_distance()
 
-        logger.debug("pnl_beam_intersects              %s", pnl_beam_intersects)
-        logger.debug("dist                             %s", dist)
+        print("pnl_beam_intersects              %s", pnl_beam_intersects)
+        print("dist                             %s", dist)
 
         dat.dd = dist
 
@@ -232,21 +260,27 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 json_info = json.load(infile)
 
             if type(json_info) is dict:
-                logger.debug("found Dictionary")
+                print("found Dictionary")
                 imageset = json_info["imageset"]
 
             elif type(json_info) is list:
-                logger.debug("found List")
+                print("found List")
                 imageset = json_info[0]["imageset"]
 
             dat.tmpl_str = imageset[0]["template"]
 
-            logger.debug("dat.tmpl_str = %s", dat.tmpl_str)
+            print("dat.tmpl_str = %s", dat.tmpl_str)
 
         except (KeyError, IndexError):
-            logger.debug("failed to find template in JSON file")
+            print("failed to find template in JSON file")
 
         dat.ref2exp = exp
+
+        """
+        mask_file = exp.imageset.external_lookup.mask.filename
+        print("\n____________________________________________________________\n mask =", mask_file)
+        print("exp.imageset.external_lookup.mask.filename =", exp.imageset.external_lookup.mask.filename)
+        """
 
     return dat
 

@@ -389,6 +389,7 @@ def update_info(main_obj):
         xb, yb, n_pan_xb_yb = None, None, None
 
     main_obj.img_view.update_beam_centre(xb, yb, n_pan_xb_yb)
+    main_obj.img_view.update_mask(main_obj.info_widget.all_data.np_mask)
 
 
 def update_pbar_msg(main_obj):
@@ -428,7 +429,7 @@ def update_pbar_msg(main_obj):
                 txt = "click <<" + lab_nxt_cmd + ">> to go ahead, or click << Retry >>"
 
         except KeyError:
-                txt = "Done"
+            txt = "Done"
 
     main_obj.txt_bar.setText(txt)
     logger.debug("update_pbar_msg = %s", txt)

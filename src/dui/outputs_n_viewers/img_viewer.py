@@ -91,6 +91,7 @@ class ImgPainter(QWidget):
         self.setMouseTracking(True)
         self.xb = None
         self.yb = None
+        self.np_mask = None
 
         self.closer_ref = None
         self.my_scale = 0.333
@@ -274,6 +275,10 @@ class ImgPainter(QWidget):
         self.img_height = q_img.height()
         self.update()
 
+    def update_my_mask(self, np_mask):
+        print("\n np_mask =", np_mask, "\n")
+        self.np_mask = np_mask
+
     def update_my_beam_centre(self, xb, yb, n_pan_xb_yb):
         self.xb = xb
         self.yb = yb
@@ -368,6 +373,21 @@ class ImgPainter(QWidget):
         painter.drawPixmap(rect, pixmap)
         # painter.setFont(QFont("Monospace", 22))
         # painter.setFont(QFont("FreeMono", 22))
+
+        if self.np_mask is not None:
+            print("\n Drawing Mask start \n")
+
+            for row_pow, ent_row in enumerate(self.np_mask):
+                for col_pos, elem in enumerate(ent_row):
+                    if not elem:
+                        painter.drawPoint(
+                            int(col_pos * self.my_scale), int(row_pow * self.my_scale)
+                        )
+
+            print("\n Drawing Mask end \n")
+
+        else:
+            print("\n\n No Mask Available \n\n")
 
         if self.my_parent.chk_box_mask.isChecked():
 
@@ -1144,6 +1164,9 @@ class MyImgWin(QWidget):
     def update_beam_centre(self, xb, yb, n_pan_xb_yb):
         logger.debug(" update_beam_centre")
         self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
+
+    def update_mask(self, np_mask):
+        self.my_painter.update_my_mask(np_mask)
 
     def update_exp(self, reference):
         self.ref2exp = reference
