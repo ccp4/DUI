@@ -24,11 +24,12 @@ from __future__ import absolute_import, division, print_function
 
 import logging
 import sys
-
 import os
 
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
+
+import numpy as np
 
 from ..cli_utils import sys_arg
 from ..gui_utils import get_main_path
@@ -57,6 +58,7 @@ from ..qt import (
     QPainter,
     QPen,
     QPixmap,
+    QImage,
     QPoint,
     QPointF,
     QPushButton,
@@ -279,6 +281,25 @@ class ImgPainter(QWidget):
         print("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
 
+        if np_mask is not None:
+            print("self.np_mask.shape =", self.np_mask.shape)
+
+            width = self.np_mask.shape[0]
+            height = self.np_mask.shape[1]
+
+            img_array = np.zeros([width, height, 4], dtype=np.uint8)
+
+            for row_pow, ent_row in enumerate(self.np_mask):
+                for col_pos, elem in enumerate(ent_row):
+                    if not elem:
+                        # img_array[row_pow, col_pos, 0] = 155 # Blue
+                        # img_array[row_pow, col_pos, 1] = 155 # Green
+                        img_array[row_pow, col_pos, 2] = 255  # Red
+                        img_array[row_pow, col_pos, 3] = 175  # Transp
+
+            q_img = QImage(img_array.data, height, width, QImage.Format_ARGB32)
+            self.mask_pixmap = QPixmap(q_img)
+
     def update_my_beam_centre(self, xb, yb, n_pan_xb_yb):
         self.xb = xb
         self.yb = yb
@@ -376,13 +397,7 @@ class ImgPainter(QWidget):
 
         if self.np_mask is not None:
             print("\n Drawing Mask start \n")
-
-            for row_pow, ent_row in enumerate(self.np_mask):
-                for col_pos, elem in enumerate(ent_row):
-                    if not elem:
-                        painter.drawPoint(
-                            int(col_pos * self.my_scale), int(row_pow * self.my_scale)
-                        )
+            painter.drawPixmap(rect, self.mask_pixmap)
 
             print("\n Drawing Mask end \n")
 
