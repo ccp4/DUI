@@ -387,6 +387,9 @@ def update_info(main_obj):
 
     except TypeError:
         xb, yb, n_pan_xb_yb = None, None, None
+        print("\n xb, yb, n_pan_xb_yb = None, None, None \n")
+
+    # print("....................................... (X beam, Y beam) =", xb, yb)
 
     main_obj.img_view.update_beam_centre(xb, yb, n_pan_xb_yb)
     main_obj.img_view.update_mask(main_obj.info_widget.all_data.np_mask)

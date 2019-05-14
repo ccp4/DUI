@@ -396,13 +396,34 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.np_mask is not None:
-            print("\n Drawing Mask start   ...", end="")
+            print("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
             print(" .Drawing Mask end")
 
         else:
             # print("\n\n No Mask Available \n\n")
             print(" No Mask Available ", end="")
+
+        if self.xb is not None and self.yb is not None:
+            painter.setPen(indexed_pen)
+            cen_siz = 40.0
+            det_mov = self.n_pan_xb_yb * 213
+            painter.drawLine(
+                int(self.xb * self.my_scale),
+                int((self.yb - cen_siz + det_mov) * self.my_scale),
+                int(self.xb * self.my_scale),
+                int((self.yb + cen_siz + det_mov) * self.my_scale),
+            )
+
+            painter.drawLine(
+                int((self.xb + cen_siz) * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale),
+                int((self.xb - cen_siz) * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale),
+            )
+
+        else:
+            logger.debug("No xb,yb provided")
 
         if self.my_parent.chk_box_mask.isChecked():
 
@@ -552,27 +573,6 @@ class ImgPainter(QWidget):
 
             except TypeError:
                 print("not printing HKLs ")
-
-            if self.xb is not None and self.yb is not None:
-                painter.setPen(indexed_pen)
-                cen_siz = 40.0
-                det_mov = self.n_pan_xb_yb * 213
-                painter.drawLine(
-                    int(self.xb * self.my_scale),
-                    int((self.yb - cen_siz + det_mov) * self.my_scale),
-                    int(self.xb * self.my_scale),
-                    int((self.yb + cen_siz + det_mov) * self.my_scale),
-                )
-
-                painter.drawLine(
-                    int((self.xb + cen_siz) * self.my_scale),
-                    int((self.yb + det_mov) * self.my_scale),
-                    int((self.xb - cen_siz) * self.my_scale),
-                    int((self.yb + det_mov) * self.my_scale),
-                )
-
-            else:
-                logger.debug("No xb,yb provided")
 
         painter.end()
 
@@ -1177,7 +1177,6 @@ class MyImgWin(QWidget):
         self.my_painter.scale2fact(0.8)
 
     def update_beam_centre(self, xb, yb, n_pan_xb_yb):
-        logger.debug(" update_beam_centre")
         self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
 
     def update_mask(self, np_mask):
