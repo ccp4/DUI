@@ -37,10 +37,10 @@ def update_data_label(data_label, data_info, n_dec=2):
     # data_label.setStyleSheet("background-color: silver")
     data_label.setStyleSheet("background-color: lightGray")
 
-    if "int" in str(type(data_info)):
+    if ("int" in str(type(data_info))) or ("long" in str(type(data_info))):
         data_label.setText(str(data_info))
 
-    elif "float" in str(type(data_info)):
+    elif ("float" in str(type(data_info))) or ("double" in str(type(data_info))):
         rnd_nm = round(data_info, ndigits=n_dec)
         data_label.setText(str(rnd_nm))
 

@@ -396,13 +396,13 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.np_mask is not None:
-            print("\n Drawing Mask start \n")
+            print("\n Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
-
-            print("\n Drawing Mask end \n")
+            print(" .Drawing Mask end")
 
         else:
-            print("\n\n No Mask Available \n\n")
+            # print("\n\n No Mask Available \n\n")
+            print(" No Mask Available ", end="")
 
         if self.my_parent.chk_box_mask.isChecked():
 
