@@ -814,8 +814,7 @@ class MainWidget(QMainWindow):
         update_pbar_msg(self)
 
         print("\n................................... update_nav_tree(m_idials_gui) \n")
-
-        # >>>>>self.img_view.update() # Why mask does notupdate here
+        self.img_view.my_painter.repaint()
 
     def after_failed(self):
         print("\n FAILED STEP:")

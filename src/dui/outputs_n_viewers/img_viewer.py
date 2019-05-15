@@ -340,6 +340,7 @@ class ImgPainter(QWidget):
         self.update()
 
     def paintEvent(self, event):
+        print("paintEvent(img_viewer)")
         if self.img is None:
             return
 
