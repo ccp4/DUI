@@ -278,7 +278,7 @@ class ImgPainter(QWidget):
         self.update()
 
     def update_my_mask(self, np_mask):
-        print("\n np_mask =", np_mask, "\n")
+        # print("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
 
         if np_mask is not None:
@@ -335,9 +335,9 @@ class ImgPainter(QWidget):
     def ini_mask(self):
 
         self.ll_mask_applied.emit(self.mask_items)
-
-        self.update()
+        self.my_parent.pop_mask_menu.hide()
         self.setFocus()
+        self.update()
 
     def paintEvent(self, event):
         if self.img is None:
@@ -690,7 +690,6 @@ class PopMaskMenu(QMenu):
 
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
-        # my_box.addWidget(self.my_parent.btn_apply_mask)
         my_box.addWidget(self.my_parent.btn_reset_mask)
 
         self.setLayout(my_box)
@@ -802,7 +801,6 @@ class MyImgWin(QWidget):
 
         # Mask tools
         self.btn_reset_mask = QPushButton("Stop/Reset")
-        # self.btn_apply_mask = QPushButton("Apply")
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
         self.chk_box_mask.setChecked(False)
 
@@ -812,7 +810,6 @@ class MyImgWin(QWidget):
 
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
-        # self.btn_apply_mask.clicked.connect(self.apply_mask)
 
         self.my_painter.ll_mask_applied.connect(self.apply_mask)
 
@@ -880,8 +877,8 @@ class MyImgWin(QWidget):
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
         mask_menu_but = QPushButton("Masking Tools  ...  ")
-        pop_mask_menu = PopMaskMenu(self)
-        mask_menu_but.setMenu(pop_mask_menu)
+        self.pop_mask_menu = PopMaskMenu(self)
+        mask_menu_but.setMenu(self.pop_mask_menu)
 
         my_code_path = get_main_path()
 
