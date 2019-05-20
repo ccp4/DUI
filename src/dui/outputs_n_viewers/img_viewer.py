@@ -401,10 +401,6 @@ class ImgPainter(QWidget):
             painter.drawPixmap(rect, self.mask_pixmap)
             print(" .Drawing Mask end")
 
-        else:
-            # print("\n\n No Mask Available \n\n")
-            print(" No Mask Available ", end="")
-
         if self.xb is not None and self.yb is not None:
             painter.setPen(indexed_pen)
             cen_siz = 40.0
@@ -422,9 +418,6 @@ class ImgPainter(QWidget):
                 int((self.xb - cen_siz) * self.my_scale),
                 int((self.yb + det_mov) * self.my_scale),
             )
-
-        else:
-            logger.debug("No xb,yb provided")
 
         if self.my_parent.chk_box_mask.isChecked():
 
@@ -801,7 +794,7 @@ class MyImgWin(QWidget):
         self.rad_but_pre_hkl.clicked.connect(self.set_img)
 
         # Mask tools
-        self.btn_reset_mask = QPushButton("Stop/Reset")
+        self.btn_reset_mask = QPushButton("Reset")
         self.chk_box_mask = QCheckBox("Activate Mask Tool")
         self.chk_box_mask.setChecked(False)
 
