@@ -282,7 +282,7 @@ class ImgPainter(QWidget):
         self.np_mask = np_mask
 
         if np_mask is not None:
-            print("self.np_mask.shape =", self.np_mask.shape)
+            # print("self.np_mask.shape =", self.np_mask.shape)
 
             width = self.np_mask.shape[0]
             height = self.np_mask.shape[1]
@@ -340,7 +340,7 @@ class ImgPainter(QWidget):
         self.update()
 
     def paintEvent(self, event):
-        print("paintEvent(img_viewer)")
+        # print("paintEvent(img_viewer)")
         if self.img is None:
             return
 
@@ -397,9 +397,9 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.np_mask is not None:
-            print("Drawing Mask start   ...", end="")
+            # print("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
-            print(" .Drawing Mask end")
+            # print(" .Drawing Mask end")
 
         if self.xb is not None and self.yb is not None:
             painter.setPen(indexed_pen)
@@ -1149,8 +1149,8 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def apply_mask(self, new_mask_items):
-        print(" apply_mask")
-        print("new_mask_items: \n", new_mask_items)
+        # print(" apply_mask")
+        # print("new_mask_items: \n", new_mask_items)
 
         if self.chk_box_mask.isChecked():
             self.mask_applied.emit(new_mask_items)

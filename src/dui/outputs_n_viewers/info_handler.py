@@ -126,7 +126,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             # what this was supposed to catch. Log it.
             print("exception #1 %s: %s", type(e).__name__, e)
 
-            #TODO Maybe the next try block is not needed, consider removing all
+            # TODO Maybe the next try block is not needed, consider removing all
 
             try:
                 # FIXME here only take the first datablock. What if there are more?
@@ -143,7 +143,6 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 experiments = ExperimentList()
                 experiments.append(Experiment(beam=beam, detector=detector, scan=scan))
 
-
             except ValueError:
                 print("failed to read json file")
                 print("experiments_path = %s", experiments_path)
@@ -151,39 +150,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
         try:
             imageset_tmp = experiments.imagesets()[0]
-            #imageset_tmp = datablock.extract_imagesets()[0]
-            print("imageset_tmp =", imageset_tmp)
-
-
-            '''
->>> from dxtbx.model.experiment_list import ExperimentListFactory
->>> experiments = ExperimentListFactory.from_json_file("dui_files/2_datablock.json, check_format=False)
-  File "<stdin>", line 1
-    experiments = ExperimentListFactory.from_json_file("dui_files/2_datablock.json, check_format=False)
-                                                                                                      ^
-SyntaxError: EOL while scanning string literal
->>> experiments = ExperimentListFactory.from_json_file("dui_files/2_datablock.json, check_format=False")
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "/scratch/ccp4/ccp4-7.0/lib/py2/site-packages/cctbx_project/dxtbx/model/experiment_list.py", line 846, in from_json_file
-    with open(filename, "r") as infile:
-IOError: [Errno 2] No such file or directory: '/tmp/tst1/dui_files/2_datablock.json, check_format=False'
->>> experiments = ExperimentListFactory.from_json_file("dui_files/2_datablock.json", check_format=False)
->>> dir(experiments)
-['__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__doc__', '__format__', '__getattribute__', '__getinitargs__', '__getitem__', '__hash__', '__init__', '__instance_size__', '__iter__', '__len__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__safe_for_unpickling__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'all_stills', 'all_sweeps', 'append', 'beams', 'clear', 'crystals', 'detectors', 'empty', 'extend', 'find', 'goniometers', 'identifiers', 'imagesets', 'indices', 'is_consistent', 'nullify_all_single_file_reader_format_instances', 'profiles', 'remove_on_experiment_identifiers', 'replace', 'scaling_models', 'scans', 'select_on_experiment_identifiers', 'to_datablocks', 'to_dict', 'where']
->>> imgs = experiments.imagesets()
->>> imageset_tmp =imgs[0]
->>> mask_file = imageset_tmp.external_lookup.mask.filename
->>>
-
->>> imgs = experiments.imagesets()
->>> imageset_tmp = experiments.imagesets()[0]
-
-            '''
-
-            ##############################################################################
             mask_file = imageset_tmp.external_lookup.mask.filename
-            print("mask_filename =", mask_file, "\n")
 
             pick_file = open(mask_file, "rb")
             mask_tup_obj = pickle.load(pick_file)
@@ -191,10 +158,8 @@ IOError: [Errno 2] No such file or directory: '/tmp/tst1/dui_files/2_datablock.j
 
             mask_flex = mask_tup_obj[0]
             mask_np_arr = mask_flex.as_numpy_array()
-            ##############################################################################
-            print(
-                "\n  ****************                    Asign dat.np_mask \n"
-            )
+
+            print("\n  ****************                    Asign dat.np_mask \n")
             dat.np_mask = mask_np_arr
 
         except BaseException as e:
@@ -202,10 +167,7 @@ IOError: [Errno 2] No such file or directory: '/tmp/tst1/dui_files/2_datablock.j
             print("Failed to retrieve mask array")
             dat.np_mask = None
 
-
-        print("len(experiments) %s", len(experiments))
-
-        # FIXME take just the first experiment. What if there are more?
+        # FIXME it takes just the first experiment. What if there are more?
         exp = experiments[0]
 
         # Get crystal data
@@ -308,12 +270,6 @@ IOError: [Errno 2] No such file or directory: '/tmp/tst1/dui_files/2_datablock.j
             print("failed to find template in JSON file")
 
         dat.ref2exp = exp
-
-        """
-        mask_file = exp.imageset.external_lookup.mask.filename
-        print("\n____________________________________________________________\n mask =", mask_file)
-        print("exp.imageset.external_lookup.mask.filename =", exp.imageset.external_lookup.mask.filename)
-        """
 
     return dat
 
