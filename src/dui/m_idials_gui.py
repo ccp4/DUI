@@ -810,10 +810,7 @@ class MainWidget(QMainWindow):
         self.tree_out.update_me(
             self.idials_runner.step_list[0], self.idials_runner.current_line
         )
-
         update_pbar_msg(self)
-
-        print("\n................................... update_nav_tree(m_idials_gui) \n")
         self.img_view.my_painter.repaint()
 
     def after_failed(self):

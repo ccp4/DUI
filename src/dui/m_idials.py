@@ -188,16 +188,12 @@ class Runner(object):
         # self.current_node = root_node
 
     def run(self, command, ref_to_class):
-
-        print("\n Runner(run) ... command =", command, "\n")
-
         if type(command) is str:
             cmd_lst = command.split()
         else:
             cmd_lst = command
 
-        print("\n Runner(run) ... cmd_lst =", cmd_lst, "\n")
-
+        print("Runner(run) ... cmd_lst =", cmd_lst)
         if cmd_lst[0] == "goto":
             print("doing << goto >>")
             self.goto(int(cmd_lst[1]))

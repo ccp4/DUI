@@ -90,21 +90,16 @@ def update_all_data(reflections_path=None, experiments_path=None):
         try:
             refl_tabl = flex.reflection_table.from_pickle(reflections_path)
             dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
-            print("dat.n_strng = %s", dat.n_strng)
             dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
-            print("dat.n_index = %s", dat.n_index)
             dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(
                 True
             )
-            print("dat.n_refnd = %s", dat.n_refnd)
             dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(
                 True
             )
-            print("dat.n_integ_sum = %s", dat.n_integ_sum)
             dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(
                 True
             )
-            print("dat.n_integ_prf = %s", dat.n_integ_prf)
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
@@ -115,8 +110,6 @@ def update_all_data(reflections_path=None, experiments_path=None):
             print("reflections_path = %s", reflections_path)
 
     if experiments_path is not None:
-
-        print("trying experiments")
         try:
             experiments = ExperimentListFactory.from_json_file(
                 experiments_path, check_format=False
@@ -124,7 +117,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("exception #1 %s: %s", type(e).__name__, e)
+            print("\n exception #1 %s: %s", type(e).__name__, e)
 
             # TODO Maybe the next try block is not needed, consider removing all
 
@@ -158,13 +151,10 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
             mask_flex = mask_tup_obj[0]
             mask_np_arr = mask_flex.as_numpy_array()
-
-            print("\n  ****************                    Asign dat.np_mask \n")
             dat.np_mask = mask_np_arr
 
-        except BaseException as e:
-            print("exception #2 %s: %s", type(e).__name__, e)
-            print("Failed to retrieve mask array")
+        except IOError:
+            print("No mask in this node")
             dat.np_mask = None
 
         # FIXME it takes just the first experiment. What if there are more?
