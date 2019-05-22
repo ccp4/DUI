@@ -81,6 +81,39 @@ logger = logging.getLogger(__name__)
 MyQWidgetWithQPainter = QWidget
 
 
+def build_mask_item(img_paint_obj):
+
+    try:
+        x1 = img_paint_obj.x_prev / img_paint_obj.my_scale
+        y1 = img_paint_obj.y_prev / img_paint_obj.my_scale
+        x2 = img_paint_obj.x_pos / img_paint_obj.my_scale
+        y2 = img_paint_obj.y_pos / img_paint_obj.my_scale
+
+        if img_paint_obj.my_parent.chk_box_mask.isChecked():
+            if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
+                if x1 > x2:
+                    x1, x2 = x2, x1
+
+                if y1 > y2:
+                    y1, y2 = y2, y1
+
+                to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
+
+            elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
+                dx = x2 - x1
+                dy = y2 - y1
+                r = float(dx * dx + dy * dy) ** (0.5)
+                to_append = ("circ", int(x1), int(y1), int(r))
+
+            return True, to_append
+
+        else:
+            return False, None
+
+    except:
+        return False, None
+
+
 class ImgPainter(QWidget):
 
     ll_mask_applied = Signal(list)
@@ -113,33 +146,14 @@ class ImgPainter(QWidget):
         self.update()
 
     def mousePressEvent(self, event):
-        logger.debug("mousePressEvent")
         self.x_prev, self.y_prev = self.x_pos, self.y_pos
 
     def mouseReleaseEvent(self, event):
-        logger.debug("mouseReleaseEvent")
-        x1 = self.x_prev / self.my_scale
-        y1 = self.y_prev / self.my_scale
-        x2 = self.x_pos / self.my_scale
-        y2 = self.y_pos / self.my_scale
 
-        if self.my_parent.chk_box_mask.isChecked():
-            if self.my_parent.rad_but_rect_mask.isChecked():
-                if x1 > x2:
-                    x1, x2 = x2, x1
+        emit_mask, to_append = build_mask_item(self)
 
-                if y1 > y2:
-                    y1, y2 = y2, y1
-
-                self.mask_items.append(("rect", int(x1), int(x2), int(y1), int(y2)))
-
-            elif self.my_parent.rad_but_circ_mask.isChecked():
-                dx = x2 - x1
-                dy = y2 - y1
-                r = float(dx * dx + dy * dy) ** (0.5)
-                self.mask_items.append(("circ", int(x1), int(y1), int(r)))
-
-            print("mask_items =", self.mask_items)
+        if emit_mask:
+            self.mask_items.append(to_append)
             self.ll_mask_applied.emit(self.mask_items)
 
         self.x_prev, self.y_prev = None, None
@@ -422,24 +436,52 @@ class ImgPainter(QWidget):
         if self.my_parent.chk_box_mask.isChecked():
 
             # Drawing list of previous mask items
-            for item in self.mask_items:
-                if item[0] == "rect":
-                    xd = item[2] - item[1]
-                    yd = item[4] - item[3]
-                    painter.drawRect(
-                        item[1] * self.my_scale,
-                        item[3] * self.my_scale,
-                        xd * self.my_scale,
-                        yd * self.my_scale,
-                    )
+            try:
+                for item in self.mask_items:
+                    if item[0] == "rect":
+                        xd = item[2] - item[1]
+                        yd = item[4] - item[3]
+                        painter.drawRect(
+                            item[1] * self.my_scale,
+                            item[3] * self.my_scale,
+                            xd * self.my_scale,
+                            yd * self.my_scale,
+                        )
 
-                elif item[0] == "circ":
-                    r = item[3] * self.my_scale
-                    q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
-                    painter.drawEllipse(q_center, r, r)
+                    elif item[0] == "circ":
+                        r = item[3] * self.my_scale
+                        q_center = QPointF(
+                            item[1] * self.my_scale, item[2] * self.my_scale
+                        )
+                        painter.drawEllipse(q_center, r, r)
+            except:
+                print("ERROR on paint")
 
             # Drawing current mask item
-            try:
+            draw_mask_item, item = build_mask_item(self)
+            if draw_mask_item:
+                try:
+                    if item[0] == "rect":
+                        xd = item[2] - item[1]
+                        yd = item[4] - item[3]
+                        painter.drawRect(
+                            item[1] * self.my_scale,
+                            item[3] * self.my_scale,
+                            xd * self.my_scale,
+                            yd * self.my_scale,
+                        )
+
+                    elif item[0] == "circ":
+                        r = item[3] * self.my_scale
+                        q_center = QPointF(
+                            item[1] * self.my_scale, item[2] * self.my_scale
+                        )
+                        painter.drawEllipse(q_center, r, r)
+
+                except:
+                    print("something went wrong")
+
+                """
                 xd = self.x_prev - self.x_pos
                 yd = self.y_prev - self.y_pos
                 if self.my_parent.rad_but_rect_mask.isChecked():
@@ -455,6 +497,7 @@ class ImgPainter(QWidget):
 
             except AttributeError:
                 logger.debug("Not ini data for drawing at all")
+                """
 
         if (
             self.obs_flat_data is not None
@@ -1149,9 +1192,6 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def apply_mask(self, new_mask_items):
-        # print(" apply_mask")
-        # print("new_mask_items: \n", new_mask_items)
-
         if self.chk_box_mask.isChecked():
             self.mask_applied.emit(new_mask_items)
 
