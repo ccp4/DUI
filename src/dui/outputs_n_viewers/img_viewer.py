@@ -110,7 +110,12 @@ def build_mask_item(img_paint_obj):
         else:
             return False, None
 
-    except:
+    except TypeError:
+        print("except(build_mask_item) ... TypeError")
+        return False, None
+
+    except AttributeError:
+        print(" except(build_mask_item) ... AttributeError")
         return False, None
 
 
@@ -454,8 +459,15 @@ class ImgPainter(QWidget):
                             item[1] * self.my_scale, item[2] * self.my_scale
                         )
                         painter.drawEllipse(q_center, r, r)
-            except:
-                print("ERROR on paint")
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                print(
+                    "\n exception(item in self.mask_items ... for loop ): %s: %s",
+                    type(e).__name__,
+                    e,
+                    "\n",
+                )
 
             # Drawing current mask item
             draw_mask_item, item = build_mask_item(self)
@@ -478,26 +490,15 @@ class ImgPainter(QWidget):
                         )
                         painter.drawEllipse(q_center, r, r)
 
-                except:
-                    print("something went wrong")
-
-                """
-                xd = self.x_prev - self.x_pos
-                yd = self.y_prev - self.y_pos
-                if self.my_parent.rad_but_rect_mask.isChecked():
-                    painter.drawRect(self.x_pos, self.y_pos, xd, yd)
-
-                elif self.my_parent.rad_but_circ_mask.isChecked():
-                    r = (xd ** 2.0 + yd ** 2.0) ** 0.5
-                    q_center = QPointF(self.x_prev, self.y_prev)
-                    painter.drawEllipse(q_center, r, r)
-
-            except TypeError:
-                logger.debug("Not correct ini data for drawing")
-
-            except AttributeError:
-                logger.debug("Not ini data for drawing at all")
-                """
+                except BaseException as e:
+                    # We don't want to catch bare exceptions but don't know
+                    # what this was supposed to catch. Log it.
+                    print(
+                        "\n exception(draw_mask_item) = %s: %s",
+                        type(e).__name__,
+                        e,
+                        "\n",
+                    )
 
         if (
             self.obs_flat_data is not None
