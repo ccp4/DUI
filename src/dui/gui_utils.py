@@ -311,9 +311,10 @@ def build_command_tip(command_lst):
         str_tip = "?"
 
     else:
-        str_tip = "dials." + str(command_lst[0])
-        for new_cmd in command_lst[1:]:
-            str_tip += "\n  " + str(new_cmd)
+        str_tip = "dials." + str(command_lst[0][0])
+        if len(command_lst[0]) > 1:
+            for new_cmd in command_lst[0][1:]:
+                str_tip += "\n  " + str(new_cmd)
 
     return str_tip
 
@@ -502,7 +503,8 @@ class TreeNavWidget(QTreeView):
         if len(root_node.next_step_list) > 0:
             for child_node in root_node.next_step_list:
                 if child_node.ll_command_lst[0] != [None]:
-                    child_node_name = str(child_node.ll_command_lst[0])
+                    # child_node_name = str(child_node.ll_command_lst)
+                    child_node_name = str(child_node.ll_command_lst[0][0])
 
                 elif child_node.success is None:
                     child_node_name = "* None *"
