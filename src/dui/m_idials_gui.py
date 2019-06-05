@@ -33,7 +33,7 @@ from six import raise_from
 from ._version import __version__
 from .dynamic_reindex_gui import MyReindexOpts
 from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-from .custom_widgets import ParamWidget, MaskPage
+from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
 from .gui_utils import (
     CliOutView,
     Text_w_Bar,
@@ -224,6 +224,10 @@ class ControlWidget(QWidget):
         self.mask_page.mask_done.connect(self.done_masking)
         self.step_param_widg.addWidget(self.mask_page)
 
+
+        self.b_centr_page = BeamCentrPage()
+        self.step_param_widg.addWidget(self.b_centr_page)
+
         self.setLayout(top_box)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
@@ -269,6 +273,10 @@ class ControlWidget(QWidget):
             logger.debug("Mask")
             self.mask_page.update_param(curr_step)
             self.step_param_widg.setCurrentWidget(self.mask_page)
+
+        elif nxt_cmd == "bc":
+            print("\n B C \n")
+            self.step_param_widg.setCurrentWidget(self.b_centr_page)
 
         else:
             print("No action widget found in set_widget")
@@ -519,9 +527,11 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.mask_page
         )
 
-
     def pop_b_centr_coord(self, new_b_centr):
         print("New b_centr =", new_b_centr)
+        self.centre_par_widget.step_param_widg.setCurrentWidget(
+            self.centre_par_widget.b_centr_page
+        )
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)

@@ -86,6 +86,37 @@ from six.moves import range
 
 logger = logging.getLogger(__name__)
 
+class BeamCentrPage(QWidget):
+    update_command_lst_medium_level = Signal(list)
+
+    """
+    This stacked widget appears when the user wants
+    to set manually the beam center, there is no
+    auto-generated GUI form Phil parameters in use
+    withing this widget.
+    """
+
+    def __init__(self, parent=None):
+        super(BeamCentrPage, self).__init__(parent=None)
+
+        main_v_box = QVBoxLayout()
+
+        label_font = QFont()
+        sys_font_point_size = label_font.pointSize()
+        label_font.setPointSize(sys_font_point_size + 2)
+        step_label = QLabel(str("Set Beam Center"))
+        step_label.setFont(label_font)
+
+        main_v_box.addWidget(step_label)
+        main_v_box.addStretch()
+        main_v_box.addWidget(QLabel(str("empty Data ... for now")))
+        main_v_box.addStretch()
+
+        self.setLayout(main_v_box)
+
+        self.show()
+        self.my_widget = self
+
 
 class MaskPage(QWidget):
 
