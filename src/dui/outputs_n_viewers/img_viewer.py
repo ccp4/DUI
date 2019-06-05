@@ -358,6 +358,9 @@ class ImgPainter(QWidget):
         self.setFocus()
         self.update()
 
+    def ini_centr(self):
+        print("Click beam C ...")
+
     def paintEvent(self, event):
         # print("paintEvent(img_viewer)")
         if self.img is None:
@@ -726,8 +729,12 @@ class PopMaskMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
+
+
+
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
+        my_box.addWidget(self.my_parent.chk_box_B_centr)
         my_box.addWidget(self.my_parent.btn_reset_mask)
 
         self.setLayout(my_box)
@@ -850,6 +857,11 @@ class MyImgWin(QWidget):
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
 
         self.my_painter.ll_mask_applied.connect(self.apply_mask)
+
+        # Manual beam center tools
+        self.chk_box_B_centr = QCheckBox("Point Beam Centre")
+        self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
+
 
         # Grouping
         ref_type_group = QButtonGroup()
