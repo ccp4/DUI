@@ -122,6 +122,7 @@ def build_mask_item(img_paint_obj):
 class ImgPainter(QWidget):
 
     ll_mask_applied = Signal(list)
+    ll_b_centr_applied = Signal(list)
 
     def __init__(self, parent=None):
         super(ImgPainter, self).__init__()
@@ -145,9 +146,14 @@ class ImgPainter(QWidget):
         self.p_v_svar = self.my_parent.my_scrollable.verticalScrollBar
 
         self.reset_mask_tool(None)
+        self.reset_bc_tool(None)
 
     def reset_mask_tool(self, event):
         self.mask_items = []
+        self.update()
+
+    def reset_bc_tool(self, event):
+        self.new_bc = [None, None]
         self.update()
 
     def mousePressEvent(self, event):
@@ -359,6 +365,10 @@ class ImgPainter(QWidget):
         self.update()
 
     def ini_centr(self):
+        self.ll_b_centr_applied.emit(self.new_bc)
+        self.my_parent.pop_mask_menu.hide()
+        self.setFocus()
+        self.update()
         print("Click beam C ...")
 
     def paintEvent(self, event):
@@ -789,6 +799,7 @@ class PopBigMenu(QMenu):
 class MyImgWin(QWidget):
 
     mask_applied = Signal(list)
+    bc_applied = Signal(list)
 
     def __init__(self, json_file_path=None, pckl_file_path=None):
         super(MyImgWin, self).__init__()
@@ -857,6 +868,7 @@ class MyImgWin(QWidget):
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
 
         self.my_painter.ll_mask_applied.connect(self.apply_mask)
+        self.my_painter.ll_b_centr_applied.connect(self.apply_bc)
 
         # Manual beam center tools
         self.chk_box_B_centr = QCheckBox("Point Beam Centre")
@@ -1208,8 +1220,15 @@ class MyImgWin(QWidget):
         if self.chk_box_mask.isChecked():
             self.mask_applied.emit(new_mask_items)
 
+    def apply_bc(self, new_bc):
+        if self.chk_box_B_centr.isChecked():
+            self.bc_applied.emit(new_bc)
+
     def unchec_my_mask(self):
         self.chk_box_mask.setCheckState(False)
+
+    def unchec_bc(self):
+        self.chk_box_B_centr.setCheckState(False)
 
     def zoom2one(self):
         self.my_painter.scale2fact()

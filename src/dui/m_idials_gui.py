@@ -461,6 +461,7 @@ class MainWidget(QMainWindow):
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
         self.img_view.mask_applied.connect(self.pop_mask_list)
+        self.img_view.bc_applied.connect(self.pop_b_centr_coord)
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
 
         self.info_widget = InfoWidget()
@@ -517,6 +518,10 @@ class MainWidget(QMainWindow):
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.mask_page
         )
+
+
+    def pop_b_centr_coord(self, new_b_centr):
+        print("New b_centr =", new_b_centr)
 
     def connect_all(self):
         self.setCursor(Qt.ArrowCursor)
