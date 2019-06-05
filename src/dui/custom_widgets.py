@@ -104,7 +104,7 @@ class BeamCentrPage(QWidget):
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Set Beam Center"))
+        step_label = QLabel(str("Modify Geometry"))
         step_label.setFont(label_font)
 
         main_v_box.addWidget(step_label)
@@ -114,8 +114,34 @@ class BeamCentrPage(QWidget):
 
         self.setLayout(main_v_box)
 
+
+        self.command_lst = [["modify_geometry"]]
+        '''
+        convert to something like:
+
+        dials.modify_geometry dui_files/1_datablock.json \
+        geometry.detector.slow_fast_beam_centre=350,350
+        '''
+
         self.show()
         self.my_widget = self
+
+    def gray_me_out(self):
+        # self.something.setEnabled(False)
+        print("gray_me_out(BeamCentrPage)")
+
+    def update_param(self, curr_step):
+        print("update_param(BeamCentrPage)")
+
+    def activate_me(self, cur_nod=None):
+        print("activate_me(BeamCentrPage)")
+        print("cur_nod.ll_command_lst:\n", cur_nod.ll_command_lst)
+
+    def reset_par(self):
+        print("reset_par(BeamCentrPage)")
+
+    def set_par(self, lst_par):
+        print("set_par(BeamCentrPage)", lst_par)
 
 
 class MaskPage(QWidget):

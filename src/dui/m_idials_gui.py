@@ -274,8 +274,8 @@ class ControlWidget(QWidget):
             self.mask_page.update_param(curr_step)
             self.step_param_widg.setCurrentWidget(self.mask_page)
 
-        elif nxt_cmd == "bc":
-            print("\n B C \n")
+        elif nxt_cmd == "modify_geometry":
+            print("\n modify_geometry \n")
             self.step_param_widg.setCurrentWidget(self.b_centr_page)
 
         else:
@@ -766,7 +766,7 @@ class MainWidget(QMainWindow):
         if tmp_curr.success is not True:
             tmp_curr = tmp_curr.prev_step
 
-        # TODO fix "generate_mask" : it should be the same as the previous step
+        # TODO fix "generate_mask" and "modify_geometry" : it should be the same as the previous step
 
         cmd_connects = {
             "Root": ["import"],
@@ -781,6 +781,7 @@ class MainWidget(QMainWindow):
             "scale": ["symmetry", "export"],
             "export": [None],
             "generate_mask": ["find_spots"],
+            "modify_geometry":["find_spots"],
             "None": [None],
         }
 

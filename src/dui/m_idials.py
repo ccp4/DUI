@@ -74,6 +74,7 @@ class CommandNode(object):
         "scale",
         "export",
         "generate_mask",
+        "modify_geometry",
     ]
 
     def __init__(self, prev_step=None):
