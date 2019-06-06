@@ -536,6 +536,7 @@ class DialsCommand(object):
         logger.debug("\n Running process on  %s %s", os_name, "\n\n")
         if os_name == "nt":
             self.use_shell = True
+
         else:
             self.use_shell = False
 
@@ -560,6 +561,9 @@ class DialsCommand(object):
                     run_cmd = lst_single
 
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
+
+                print("\nRunning:", run_cmd, "\n")
+
                 my_process = subprocess.Popen(
                     run_cmd,
                     shell=self.use_shell,

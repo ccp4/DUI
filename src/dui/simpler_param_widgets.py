@@ -664,7 +664,7 @@ class ScaleSimplerParamTab(QWidget):
         hbox_lay_mod.addWidget(box_mod)
 
         hbox_lay_wgh_opt_err = QHBoxLayout()
-        label_wgh_opt_err = QLabel("Optimise errors")
+        label_wgh_opt_err = QLabel("Optimise Errors")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
 

@@ -109,7 +109,7 @@ class CommandNode(object):
         else:
             if cmd_lst[0][0] in self.dials_com_lst:
                 self.build_command(cmd_lst)
-                print("Running:", self.cmd_lst_to_run)
+                #print("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
