@@ -400,7 +400,31 @@ def build_command_lst(node_obj, cmd_lst):
         ]
         cmd_lst_to_run.append(lst_inner1)
 
+    elif cmd_lst_ini == "modify_geometry":
+        lst_inner1 = list(lst_inner)
+        json_file_in = node_obj.prev_step.json_file_out
+        input_str = "input.datablock=" + json_file_in
+        lst_inner.append(input_str)
+
+        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
+        output_str = "output.datablock=" + node_obj.json_file_out
+        lst_inner.append(output_str)
+
+
+        print("\n modify_geometry \n")
+        '''
+        dials.modify_geometry input.datablock=1_datablock.json \
+        geometry.detector.slow_fast_beam_centre=350,350 \
+        output.datablock=2_datablock.json
+
+        #################################################################
+        '''
+
+
     cmd_lst_to_run.append(lst_inner)
+
+
+    print("\n\n test:", cmd_lst_to_run, "\n")
 
     return cmd_lst_to_run
 
