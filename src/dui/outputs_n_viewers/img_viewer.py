@@ -168,7 +168,9 @@ class ImgPainter(QWidget):
             self.ll_mask_applied.emit(self.mask_items)
 
         elif self.my_parent.chk_box_B_centr.isChecked():
-            self.ll_b_centr_applied.emit([self.x_pos, self.y_pos])
+            pix_col = int(self.x_pos / self.my_scale)
+            pix_row = int(self.y_pos / self.my_scale)
+            self.ll_b_centr_applied.emit([pix_col, pix_row])
 
         self.x_prev, self.y_prev = None, None
 

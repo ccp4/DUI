@@ -142,8 +142,11 @@ class BeamCentrPage(QWidget):
 
     def set_par(self, lst_par):
         print("set_par(BeamCentrPage)", lst_par)
-        ml_lst_par = ["modify_geometry geometry.detector.slow_fast_beam_centre=",
-                      str(lst_par[0]) + "," + str(lst_par[0])]
+        ml_lst_par = ["modify_geometry",
+                      "geometry.detector.slow_fast_beam_centre=" +
+                      str(lst_par[1]) + "," + str(lst_par[0])]
+
+        self.command_lst = [ml_lst_par]
 
         self.update_command_lst_medium_level.emit(ml_lst_par)
 
