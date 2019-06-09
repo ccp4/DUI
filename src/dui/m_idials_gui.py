@@ -226,6 +226,10 @@ class ControlWidget(QWidget):
 
 
         self.b_centr_page = BeamCentrPage()
+        self.b_centr_page.update_command_lst_medium_level.connect(
+            self.singular_step_new_command
+        )
+
         self.step_param_widg.addWidget(self.b_centr_page)
 
         self.setLayout(top_box)
@@ -529,6 +533,7 @@ class MainWidget(QMainWindow):
 
     def pop_b_centr_coord(self, new_b_centr):
         print("New b_centr =", new_b_centr)
+        self.centre_par_widget.b_centr_page.set_par(new_b_centr)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.b_centr_page
         )

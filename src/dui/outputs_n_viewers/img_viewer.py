@@ -167,6 +167,9 @@ class ImgPainter(QWidget):
             self.mask_items.append(to_append)
             self.ll_mask_applied.emit(self.mask_items)
 
+        elif self.my_parent.chk_box_B_centr.isChecked():
+            self.ll_b_centr_applied.emit([self.x_pos, self.y_pos])
+
         self.x_prev, self.y_prev = None, None
 
     def mouseMoveEvent(self, event):
@@ -187,6 +190,9 @@ class ImgPainter(QWidget):
             if self.my_parent.chk_box_mask.isChecked():
                 self.x_pos, self.y_pos = event.x(), event.y()
                 self.update()
+
+            elif self.my_parent.chk_box_B_centr.isChecked():
+                self.x_pos, self.y_pos = event.x(), event.y()
 
             else:
                 dx = event.x() - self.x_pos
