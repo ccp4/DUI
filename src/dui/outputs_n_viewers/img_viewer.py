@@ -1226,10 +1226,12 @@ class MyImgWin(QWidget):
 
     def apply_mask(self, new_mask_items):
         if self.chk_box_mask.isChecked():
+            self.unchec_bc()
             self.mask_applied.emit(new_mask_items)
 
     def apply_bc(self, new_bc):
         if self.chk_box_B_centr.isChecked():
+            self.unchec_my_mask()
             self.bc_applied.emit(new_bc)
 
     def unchec_my_mask(self):
