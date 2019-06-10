@@ -946,7 +946,7 @@ class MyImgWin(QWidget):
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
-        mask_menu_but = QPushButton("Masking Tools  ...  ")
+        mask_menu_but = QPushButton("In Image Processing ...")
         self.pop_mask_menu = PopMaskMenu(self)
         mask_menu_but.setMenu(self.pop_mask_menu)
 
