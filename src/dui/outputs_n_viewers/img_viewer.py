@@ -744,6 +744,7 @@ class PopMaskMenu(QMenu):
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.btn_reset_mask)
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
@@ -753,7 +754,7 @@ class PopMaskMenu(QMenu):
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
         my_box.addWidget(self.my_parent.chk_box_B_centr)
-        my_box.addWidget(self.my_parent.btn_reset_mask)
+        #my_box.addWidget(self.my_parent.btn_reset_mask)
 
         self.setLayout(my_box)
         self.show()
