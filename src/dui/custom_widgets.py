@@ -115,15 +115,7 @@ class BeamCentrPage(QWidget):
         main_v_box.addStretch()
 
         self.setLayout(main_v_box)
-
-
         self.command_lst = [["modify_geometry"]]
-        '''
-        convert to something like:
-
-        dials.modify_geometry dui_files/1_datablock.json \
-        geometry.detector.slow_fast_beam_centre=350,350
-        '''
 
         self.show()
         self.my_widget = self
@@ -145,14 +137,12 @@ class BeamCentrPage(QWidget):
     def set_par(self, lst_par):
         print("set_par(BeamCentrPage)", lst_par)
 
-        self.data_bc_label.setText("lst_par =" + str(lst_par))
-
+        self.data_bc_label.setText("Nwe Beam Centre:\n" + str(lst_par) + " pixels")
         ml_lst_par = ["modify_geometry",
                       "geometry.detector.slow_fast_beam_centre=" +
                       str(lst_par[1]) + "," + str(lst_par[0])]
 
         self.command_lst = [ml_lst_par]
-
         self.update_command_lst_medium_level.emit(ml_lst_par)
 
 
