@@ -107,9 +107,11 @@ class BeamCentrPage(QWidget):
         step_label = QLabel(str("Modify Geometry"))
         step_label.setFont(label_font)
 
+        self.data_bc_label = QLabel(str("empty Data ... for now"))
+
         main_v_box.addWidget(step_label)
         main_v_box.addStretch()
-        main_v_box.addWidget(QLabel(str("empty Data ... for now")))
+        main_v_box.addWidget(self.data_bc_label)
         main_v_box.addStretch()
 
         self.setLayout(main_v_box)
@@ -142,6 +144,9 @@ class BeamCentrPage(QWidget):
 
     def set_par(self, lst_par):
         print("set_par(BeamCentrPage)", lst_par)
+
+        self.data_bc_label.setText("lst_par =" + str(lst_par))
+
         ml_lst_par = ["modify_geometry",
                       "geometry.detector.slow_fast_beam_centre=" +
                       str(lst_par[1]) + "," + str(lst_par[0])]
