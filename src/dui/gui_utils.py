@@ -142,9 +142,38 @@ ACTIONS = OrderedDict(
 )
 
 def try_move_last_info(export_node):
-    print("\n .......................................... JUST exportED \n MOVING start \n")
-    shutil.copy("dui_files/integrated.mtz", "integrated.mtz")
-    print(" MOVING end \n")
+    logger.debug("\n JUST exported MOVING start ... \n ______________________________________________________")
+
+    cwd_path = os.path.join(sys_arg.directory, "dui_files")
+
+    try:
+        prev_step_rept_from = os.path.join(cwd_path, export_node.prev_step.report_out)
+        #prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
+        prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
+
+        mtz_name_from = "integrated.mtz"
+        for parm in export_node.ll_command_lst[0]:
+            print(parm)
+            if "mtz.hklout=" in parm:
+                mtz_name_from = parm[11:]
+
+        mtz_name_from = os.path.join(cwd_path, mtz_name_from)
+        mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
+
+        logger.debug("prev_step_rept_from:", prev_step_rept_from)
+        logger.debug("mtz_name_from:", mtz_name_from)
+
+        logger.debug("prev_step_rept_to:", prev_step_rept_to)
+        logger.debug("mtz_name_to:", mtz_name_to)
+
+        shutil.copy(mtz_name_from, mtz_name_to)
+        shutil.copy(prev_step_rept_from, prev_step_rept_to)
+
+    except IOError:
+        print("ERROR: mtz file not there")
+        logger.debug("IOError on try_move_last_info(gui_utils)")
+
+
 
 def try_find_prev_mask_pickle(cur_nod):
     pickle_path = None

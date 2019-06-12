@@ -745,7 +745,7 @@ class MainWidget(QMainWindow):
                 )
                 logger.debug("no need to close reindex table")
 
-        elif tmp_curr.ll_command_lst[0][0] == "export":
+        elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
             try_move_last_info(self.idials_runner.current_node)
 
 
