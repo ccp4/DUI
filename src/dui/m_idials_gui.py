@@ -27,6 +27,8 @@ import os
 import pickle
 import traceback
 import time
+import shutil
+
 
 from six import raise_from
 
@@ -707,7 +709,7 @@ class MainWidget(QMainWindow):
         self.reconnect_when_ready()
 
     def cmd_launch(self, new_cmd):
-        # Running WITH theading
+        # Running WITH threading
         self.cli_out.clear()
         self.cli_out.make_green()
         self.txt_bar.start_motion()
@@ -742,6 +744,12 @@ class MainWidget(QMainWindow):
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
                 logger.debug("no need to close reindex table")
+
+        elif tmp_curr.ll_command_lst[0][0] == "export":
+            print("\n\n .......................................... JUST exportED \n\n")
+
+            shutil.copy("dui_files/integrated.mtz", "integrated.mtz")
+
 
         self.check_reindex_pop()
         self.check_gray_outs()
