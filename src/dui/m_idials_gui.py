@@ -27,7 +27,6 @@ import os
 import pickle
 import traceback
 import time
-import shutil
 
 
 from six import raise_from
@@ -47,6 +46,7 @@ from .gui_utils import (
     ACTIONS,
     MyActionButton,
     try_find_prev_mask_pickle,
+    try_move_last_info,
     get_main_path,
 )
 from .m_idials import Runner
@@ -746,9 +746,7 @@ class MainWidget(QMainWindow):
                 logger.debug("no need to close reindex table")
 
         elif tmp_curr.ll_command_lst[0][0] == "export":
-            print("\n\n .......................................... JUST exportED \n\n")
-
-            shutil.copy("dui_files/integrated.mtz", "integrated.mtz")
+            try_move_last_info(self.idials_runner.current_node)
 
 
         self.check_reindex_pop()

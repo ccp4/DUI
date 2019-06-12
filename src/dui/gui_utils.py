@@ -28,8 +28,8 @@ import logging
 import os
 import re
 import sys
+import shutil
 import subprocess
-
 import psutil
 
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
@@ -141,6 +141,10 @@ ACTIONS = OrderedDict(
     ]
 )
 
+def try_move_last_info(export_node):
+    print("\n .......................................... JUST exportED \n MOVING start \n")
+    shutil.copy("dui_files/integrated.mtz", "integrated.mtz")
+    print(" MOVING end \n")
 
 def try_find_prev_mask_pickle(cur_nod):
     pickle_path = None
