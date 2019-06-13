@@ -68,9 +68,16 @@ def prn_lst_lst_cmd(last_idials_node):
     for prn_lin in reversed(lst_simpl_cmd):
         logger.debug(prn_lin)
 
-    print("All commands to get here:\n___________________________")
-
+    sh_cmd_lst = []
     for prn_lin in reversed(lst_full_cmd):
+        str_cmd = ""
+        for cmd_par in prn_lin:
+            str_cmd += " " + cmd_par
+
+        sh_cmd_lst.append(str_cmd)
+
+    print("All commands to get here:\n___________________________")
+    for prn_lin in sh_cmd_lst:
         print(prn_lin)
 
     print("___________________________\n")
