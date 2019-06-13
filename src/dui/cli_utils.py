@@ -60,21 +60,20 @@ def prn_lst_lst_cmd(last_idials_node):
         lst_simpl_cmd.append(
             "command_lst[" + l_n + "] = " + str(cur_nod.ll_command_lst[0])
         )
-        lst_full_cmd.append(
-            "full_cmd_lst[" + l_n + "] = " + str(cur_nod.dials_command.full_cmd_lst)
-        )
+        for one_cmd in cur_nod.dials_command.full_cmd_lst:
+            lst_full_cmd.append(cur_nod.dials_command.full_cmd_lst)
 
         cur_nod = cur_nod.prev_step
 
     for prn_lin in reversed(lst_simpl_cmd):
-        print(prn_lin)
+        logger.debug(prn_lin)
 
-    print("\n")
+    print("All commands to get here:\n___________________________")
 
     for prn_lin in reversed(lst_full_cmd):
         print(prn_lin)
 
-    print("\n\n")
+    print("___________________________\n")
 
 
 def get_next_step(node_obj):
@@ -424,7 +423,7 @@ def build_command_lst(node_obj, cmd_lst):
     cmd_lst_to_run.append(lst_inner)
 
 
-    print("\n\n test:", cmd_lst_to_run, "\n")
+    #print("\n\n test:", cmd_lst_to_run, "\n")
 
     return cmd_lst_to_run
 
@@ -680,8 +679,8 @@ class TreeShow(object):
 
     def __call__(self, my_runner):
 
-        print("\n\n TreeShow debug \n my_runner.step_list:\n")
-        print_list(my_runner.step_list, my_runner.current_line)
+        #print("\n\n TreeShow debug \n my_runner.step_list:\n")
+        #print_list(my_runner.step_list, my_runner.current_line)
         print("\n")
 
         print("")

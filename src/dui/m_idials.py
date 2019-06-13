@@ -99,7 +99,7 @@ class CommandNode(object):
         # self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
-        print("\n cmd_lst in =", cmd_lst)
+        #print("\n cmd_lst in =", cmd_lst)
         self.ll_command_lst = list(cmd_lst)
         if cmd_lst == ["fail"]:
             # testing virtual failed step
