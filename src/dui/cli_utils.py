@@ -60,8 +60,8 @@ def prn_lst_lst_cmd(last_idials_node):
         lst_simpl_cmd.append(
             "command_lst[" + l_n + "] = " + str(cur_nod.ll_command_lst[0])
         )
-        for one_cmd in cur_nod.dials_command.full_cmd_lst:
-            lst_full_cmd.append(cur_nod.dials_command.full_cmd_lst)
+        for one_cmd in reversed(cur_nod.dials_command.full_cmd_lst):
+            lst_full_cmd.append(one_cmd)
 
         cur_nod = cur_nod.prev_step
 
