@@ -97,6 +97,7 @@ class BeamCentrPage(QWidget):
     """
 
     b_centr_done = Signal()
+    b_centr_set = Signal()
 
     def __init__(self, parent=None):
         super(BeamCentrPage, self).__init__(parent=None)
@@ -133,6 +134,7 @@ class BeamCentrPage(QWidget):
     def activate_me(self, cur_nod=None):
         print("activate_me(BeamCentrPage)")
         print("cur_nod.ll_command_lst:\n", cur_nod.ll_command_lst)
+        self.b_centr_set.emit()
 
     def reset_par(self):
         print("reset_par(BeamCentrPage)")

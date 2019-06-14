@@ -1235,6 +1235,9 @@ class MyImgWin(QWidget):
     def unchec_b_centr(self):
         self.chk_box_B_centr.setCheckState(False)
 
+    def chec_b_centr(self):
+        self.chk_box_B_centr.setCheckState(True)
+
     def zoom2one(self):
         self.my_painter.scale2fact()
 
