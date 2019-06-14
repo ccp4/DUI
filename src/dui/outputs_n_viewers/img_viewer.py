@@ -880,7 +880,7 @@ class MyImgWin(QWidget):
         self.my_painter.ll_b_centr_applied.connect(self.apply_bc)
 
         # Manual beam center tools
-        self.chk_box_B_centr = QCheckBox("Point Beam Centre")
+        self.chk_box_B_centr = QCheckBox("Set Beam Centre")
         self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
 
 
@@ -938,7 +938,7 @@ class MyImgWin(QWidget):
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
 
-        big_menu_but = QPushButton("Viewing Tools  ...  ")
+        big_menu_but = QPushButton("Viewing Tools")
         pop_big_menu = PopBigMenu(self)
         big_menu_but.setMenu(pop_big_menu)
 
@@ -947,7 +947,7 @@ class MyImgWin(QWidget):
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
-        mask_menu_but = QPushButton("In Image Processing ...")
+        mask_menu_but = QPushButton("Image Actions")
         self.pop_mask_menu = PopMaskMenu(self)
         mask_menu_but.setMenu(self.pop_mask_menu)
 
