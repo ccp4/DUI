@@ -167,6 +167,7 @@ class ControlWidget(QWidget):
     user_changed = Signal(str)
     update_command_lst_high_level = Signal(list)
     finished_masking = Signal()
+    finished_b_centr = Signal()
 
     def __init__(self, parent=None):
         super(ControlWidget, self).__init__()
@@ -231,6 +232,7 @@ class ControlWidget(QWidget):
         self.b_centr_page.update_command_lst_medium_level.connect(
             self.singular_step_new_command
         )
+        self.b_centr_page.bc_done.connect(self.done_b_centr)
 
         self.step_param_widg.addWidget(self.b_centr_page)
 
@@ -243,6 +245,9 @@ class ControlWidget(QWidget):
 
     def done_masking(self):
         self.finished_masking.emit()
+
+    def done_b_centr(self):
+        self.finished_b_centr.emit()
 
     def update_parent_lst(self, command_lst):
         self.update_command_lst_high_level.emit([command_lst])
@@ -477,6 +482,7 @@ class MainWidget(QMainWindow):
         self.img_view.mask_applied.connect(self.pop_mask_list)
         self.img_view.bc_applied.connect(self.pop_b_centr_coord)
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
+        self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
 
         self.info_widget = InfoWidget()
 

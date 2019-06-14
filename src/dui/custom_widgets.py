@@ -96,6 +96,8 @@ class BeamCentrPage(QWidget):
     withing this widget.
     """
 
+    bc_done = Signal()
+
     def __init__(self, parent=None):
         super(BeamCentrPage, self).__init__(parent=None)
 
@@ -122,6 +124,7 @@ class BeamCentrPage(QWidget):
 
     def gray_me_out(self):
         # self.something.setEnabled(False)
+        self.bc_done.emit()
         print("gray_me_out(BeamCentrPage)")
 
     def update_param(self, curr_step):
@@ -137,7 +140,10 @@ class BeamCentrPage(QWidget):
     def set_par(self, lst_par):
         print("set_par(BeamCentrPage)", lst_par)
 
-        self.data_bc_label.setText("New Beam Centre:\n" + str(lst_par) + " pixels")
+        self.data_bc_label.setText("New Beam Centre:\n (" +
+                                   str(lst_par[0]) + ", " +
+                                   str(lst_par[1]) + ") pixels")
+
         ml_lst_par = ["modify_geometry",
                       "geometry.detector.slow_fast_beam_centre=" +
                       str(lst_par[1]) + "," + str(lst_par[0])]

@@ -729,8 +729,6 @@ class PopPaletteMenu(QMenu):
 
 class PopMaskMenu(QMenu):
 
-    sliders_changed = Signal(int, int)
-
     def __init__(self, parent=None):
         super(PopMaskMenu, self).__init__(parent)
         self.my_parent = parent
@@ -748,13 +746,9 @@ class PopMaskMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-
-
-
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
         my_box.addWidget(self.my_parent.chk_box_B_centr)
-        #my_box.addWidget(self.my_parent.btn_reset_mask)
 
         self.setLayout(my_box)
         self.show()
@@ -882,7 +876,7 @@ class MyImgWin(QWidget):
         # Manual beam center tools
         self.chk_box_B_centr = QCheckBox("Set Beam Centre")
         self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
-
+        self.chk_box_B_centr.setChecked(False)
 
         # Grouping
         ref_type_group = QButtonGroup()
@@ -1227,7 +1221,7 @@ class MyImgWin(QWidget):
 
     def apply_mask(self, new_mask_items):
         if self.chk_box_mask.isChecked():
-            self.unchec_bc()
+            self.unchec_b_centr()
             self.mask_applied.emit(new_mask_items)
 
     def apply_bc(self, new_bc):
@@ -1238,7 +1232,7 @@ class MyImgWin(QWidget):
     def unchec_my_mask(self):
         self.chk_box_mask.setCheckState(False)
 
-    def unchec_bc(self):
+    def unchec_b_centr(self):
         self.chk_box_B_centr.setCheckState(False)
 
     def zoom2one(self):
