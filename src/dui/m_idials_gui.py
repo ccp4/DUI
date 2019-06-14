@@ -232,7 +232,7 @@ class ControlWidget(QWidget):
         self.b_centr_page.update_command_lst_medium_level.connect(
             self.singular_step_new_command
         )
-        self.b_centr_page.bc_done.connect(self.done_b_centr)
+        self.b_centr_page.b_centr_done.connect(self.done_b_centr)
 
         self.step_param_widg.addWidget(self.b_centr_page)
 

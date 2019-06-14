@@ -96,7 +96,7 @@ class BeamCentrPage(QWidget):
     withing this widget.
     """
 
-    bc_done = Signal()
+    b_centr_done = Signal()
 
     def __init__(self, parent=None):
         super(BeamCentrPage, self).__init__(parent=None)
@@ -124,7 +124,7 @@ class BeamCentrPage(QWidget):
 
     def gray_me_out(self):
         # self.something.setEnabled(False)
-        self.bc_done.emit()
+        self.b_centr_done.emit()
         print("gray_me_out(BeamCentrPage)")
 
     def update_param(self, curr_step):
