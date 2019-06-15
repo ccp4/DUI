@@ -1232,6 +1232,9 @@ class MyImgWin(QWidget):
     def unchec_my_mask(self):
         self.chk_box_mask.setCheckState(False)
 
+    def chec_my_mask(self):
+        self.chk_box_mask.setCheckState(True)
+
     def unchec_b_centr(self):
         self.chk_box_B_centr.setCheckState(False)
 

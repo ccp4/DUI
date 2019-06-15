@@ -158,6 +158,7 @@ class MaskPage(QWidget):
 
     update_command_lst_medium_level = Signal(list)
     mask_done = Signal()
+    mask_set = Signal()
 
     """
     This stacked widget appears whe the user wants to
@@ -202,6 +203,7 @@ class MaskPage(QWidget):
         print("activate_me(MaskPage)")
         print("cur_nod.ll_command_lst:\n", cur_nod.ll_command_lst)
         self.update_widget_dat(cur_nod.ll_command_lst)
+        self.mask_set.emit()
 
     def reset_par(self):
         print("reset_par(MaskPage)")

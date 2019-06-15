@@ -168,6 +168,7 @@ class ControlWidget(QWidget):
     update_command_lst_high_level = Signal(list)
     finished_masking = Signal()
     finished_b_centr = Signal()
+    click_mask = Signal()
     click_b_centr = Signal()
 
     def __init__(self, parent=None):
@@ -226,6 +227,7 @@ class ControlWidget(QWidget):
         )
 
         self.mask_page.mask_done.connect(self.done_masking)
+        self.mask_page.mask_set.connect(self.set_mask)
         self.step_param_widg.addWidget(self.mask_page)
 
 
@@ -247,6 +249,9 @@ class ControlWidget(QWidget):
 
     def done_masking(self):
         self.finished_masking.emit()
+
+    def set_mask(self):
+        self.click_mask.emit()
 
     def done_b_centr(self):
         self.finished_b_centr.emit()
@@ -487,6 +492,7 @@ class MainWidget(QMainWindow):
         self.img_view.mask_applied.connect(self.pop_mask_list)
         self.img_view.bc_applied.connect(self.pop_b_centr_coord)
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
+        self.centre_par_widget.click_mask.connect(self.img_view.chec_my_mask)
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
 
