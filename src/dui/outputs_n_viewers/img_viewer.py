@@ -171,6 +171,9 @@ class ImgPainter(QWidget):
             pix_col = int(self.x_pos / self.my_scale)
             pix_row = int(self.y_pos / self.my_scale)
             self.ll_b_centr_applied.emit([pix_col, pix_row])
+            self.tmp_bc_x = pix_col
+            self.tmp_bc_y = pix_row
+            self.update()
 
         self.x_prev, self.y_prev = None, None
 
@@ -458,8 +461,23 @@ class ImgPainter(QWidget):
                 int((self.xb - cen_siz) * self.my_scale),
                 int((self.yb + det_mov) * self.my_scale),
             )
+        if self.my_parent.chk_box_B_centr.isChecked():
+            print("chk_box_B_centr.isChecked")
+            try:
+                painter.setPen(non_indexed_pen)
+                painter.drawLine(
+                    int(self.tmp_bc_x * self.my_scale), int(self.tmp_bc_y * self.my_scale - 10.0),
+                    int(self.tmp_bc_x * self.my_scale), int(self.tmp_bc_y * self.my_scale + 10.0)
+                )
+                painter.drawLine(
+                    int(self.tmp_bc_x * self.my_scale) - 10, int(self.tmp_bc_y * self.my_scale),
+                    int(self.tmp_bc_x * self.my_scale) + 10, int(self.tmp_bc_y * self.my_scale)
+                )
+            except AttributeError:
+                print("coords of BC not set yet")
 
         if self.my_parent.chk_box_mask.isChecked():
+            painter.setPen(indexed_pen)
 
             # Drawing list of previous mask items
             try:
