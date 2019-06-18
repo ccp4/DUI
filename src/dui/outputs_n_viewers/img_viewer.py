@@ -110,16 +110,25 @@ def build_mask_item(img_paint_obj):
                 if y1 < 1:
                     y1 = 1.0
 
-                print("\nbuild_mask_item:", x1, y1 ,x2 ,y2 )
-                print("img_width", )
-                print("img_height", img_paint_obj.img_height)
-
                 to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
             elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
                 dx = x2 - x1
                 dy = y2 - y1
                 r = float(dx * dx + dy * dy) ** (0.5)
+
+                if x1 + r > img_paint_obj.img_width:
+                    r = img_paint_obj.img_width - x1
+
+                if y1 + r > img_paint_obj.img_height:
+                    r = img_paint_obj.img_height - y1
+
+                if r > x1:
+                    r = x1
+
+                if r > y1:
+                    r = y1
+
                 to_append = ("circ", int(x1), int(y1), int(r))
 
             return True, to_append
