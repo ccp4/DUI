@@ -428,7 +428,13 @@ class ImgPainter(QWidget):
             non_indexed_pen.setBrush(QColor(75, 150, 200))
 
         to_do_pen = QPen()  # creates a default pen for user actions
-        to_do_pen.setBrush(Qt.green)
+        if (
+            self.my_parent.palette == "white2black"
+            or self.my_parent.palette == "hot descend"
+        ):
+            to_do_pen.setBrush(QColor(0,155,0))
+        else:
+            to_do_pen.setBrush(Qt.green)
 
         if self.my_scale >= 5.0:
             non_indexed_pen.setStyle(Qt.DotLine)
