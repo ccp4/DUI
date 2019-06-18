@@ -470,6 +470,7 @@ class ImgPainter(QWidget):
                 int((self.xb - cen_siz) * self.my_scale),
                 int((self.yb + det_mov) * self.my_scale),
             )
+
         if self.my_parent.chk_box_B_centr.isChecked():
             print("chk_box_B_centr.isChecked")
             try:
@@ -486,6 +487,7 @@ class ImgPainter(QWidget):
                     int(self.tmp_bc_x * self.my_scale) + 10,
                     int(self.tmp_bc_y * self.my_scale)
                 )
+
             except AttributeError:
                 print("coords of BC not set yet")
 
