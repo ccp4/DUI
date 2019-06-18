@@ -410,11 +410,6 @@ class ImgPainter(QWidget):
 
         indexed_pen.setStyle(Qt.SolidLine)
 
-        if self.my_scale >= 5.0:
-            indexed_pen.setWidth(self.my_scale / 3.5)
-
-        else:
-            indexed_pen.setWidth(0.0)
 
         non_indexed_pen = QPen()  # creates a default non_indexed_pen
         if (
@@ -436,13 +431,19 @@ class ImgPainter(QWidget):
         else:
             to_do_pen.setBrush(Qt.green)
 
+
         if self.my_scale >= 5.0:
-            non_indexed_pen.setStyle(Qt.DotLine)
+            indexed_pen.setWidth(self.my_scale / 3.5)
             non_indexed_pen.setWidth(self.my_scale / 3.5)
+            to_do_pen.setWidth(self.my_scale / 3.5)
+            non_indexed_pen.setStyle(Qt.DotLine)
 
         else:
-            non_indexed_pen.setStyle(Qt.SolidLine)
+            indexed_pen.setWidth(0.0)
             non_indexed_pen.setWidth(0.0)
+            to_do_pen.setWidth(0.0)
+            non_indexed_pen.setStyle(Qt.SolidLine)
+
 
         painter.drawPixmap(rect, pixmap)
         # painter.setFont(QFont("Monospace", 22))
@@ -453,9 +454,9 @@ class ImgPainter(QWidget):
             painter.drawPixmap(rect, self.mask_pixmap)
             # print(" .Drawing Mask end")
 
+        cen_siz = 20.0
         if self.xb is not None and self.yb is not None:
             painter.setPen(indexed_pen)
-            cen_siz = 20.0
             det_mov = self.n_pan_xb_yb * 213
             painter.drawLine(
                 int(self.xb * self.my_scale),
@@ -477,14 +478,14 @@ class ImgPainter(QWidget):
                 painter.setPen(to_do_pen)
                 painter.drawLine(
                     int(self.tmp_bc_x * self.my_scale),
-                    int(self.tmp_bc_y * self.my_scale - 10.0),
+                    int(self.tmp_bc_y * self.my_scale - cen_siz),
                     int(self.tmp_bc_x * self.my_scale),
-                    int(self.tmp_bc_y * self.my_scale + 10.0)
+                    int(self.tmp_bc_y * self.my_scale + cen_siz)
                 )
                 painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale) - 10,
+                    int(self.tmp_bc_x * self.my_scale) - cen_siz,
                     int(self.tmp_bc_y * self.my_scale),
-                    int(self.tmp_bc_x * self.my_scale) + 10,
+                    int(self.tmp_bc_x * self.my_scale) + cen_siz,
                     int(self.tmp_bc_y * self.my_scale)
                 )
 
