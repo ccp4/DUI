@@ -427,6 +427,9 @@ class ImgPainter(QWidget):
         else:
             non_indexed_pen.setBrush(QColor(75, 150, 200))
 
+        to_do_pen = QPen()  # creates a default pen for user actions
+        to_do_pen.setBrush(Qt.green)
+
         if self.my_scale >= 5.0:
             non_indexed_pen.setStyle(Qt.DotLine)
             non_indexed_pen.setWidth(self.my_scale / 3.5)
@@ -464,7 +467,7 @@ class ImgPainter(QWidget):
         if self.my_parent.chk_box_B_centr.isChecked():
             print("chk_box_B_centr.isChecked")
             try:
-                painter.setPen(non_indexed_pen)
+                painter.setPen(to_do_pen)
                 painter.drawLine(
                     int(self.tmp_bc_x * self.my_scale), int(self.tmp_bc_y * self.my_scale - 10.0),
                     int(self.tmp_bc_x * self.my_scale), int(self.tmp_bc_y * self.my_scale + 10.0)
@@ -477,7 +480,7 @@ class ImgPainter(QWidget):
                 print("coords of BC not set yet")
 
         if self.my_parent.chk_box_mask.isChecked():
-            painter.setPen(indexed_pen)
+            painter.setPen(to_do_pen)
 
             # Drawing list of previous mask items
             try:
