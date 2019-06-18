@@ -475,12 +475,16 @@ class ImgPainter(QWidget):
             try:
                 painter.setPen(to_do_pen)
                 painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale), int(self.tmp_bc_y * self.my_scale - 10.0),
-                    int(self.tmp_bc_x * self.my_scale), int(self.tmp_bc_y * self.my_scale + 10.0)
+                    int(self.tmp_bc_x * self.my_scale),
+                    int(self.tmp_bc_y * self.my_scale - 10.0),
+                    int(self.tmp_bc_x * self.my_scale),
+                    int(self.tmp_bc_y * self.my_scale + 10.0)
                 )
                 painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale) - 10, int(self.tmp_bc_y * self.my_scale),
-                    int(self.tmp_bc_x * self.my_scale) + 10, int(self.tmp_bc_y * self.my_scale)
+                    int(self.tmp_bc_x * self.my_scale) - 10,
+                    int(self.tmp_bc_y * self.my_scale),
+                    int(self.tmp_bc_x * self.my_scale) + 10,
+                    int(self.tmp_bc_y * self.my_scale)
                 )
             except AttributeError:
                 print("coords of BC not set yet")
