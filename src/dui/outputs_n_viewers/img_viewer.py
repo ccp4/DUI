@@ -455,19 +455,19 @@ class ImgPainter(QWidget):
 
         if self.xb is not None and self.yb is not None:
             painter.setPen(indexed_pen)
-            cen_siz = 40.0
+            cen_siz = 20.0
             det_mov = self.n_pan_xb_yb * 213
             painter.drawLine(
                 int(self.xb * self.my_scale),
-                int((self.yb - cen_siz + det_mov) * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale - cen_siz),
                 int(self.xb * self.my_scale),
-                int((self.yb + cen_siz + det_mov) * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale + cen_siz),
             )
 
             painter.drawLine(
-                int((self.xb + cen_siz) * self.my_scale),
+                int(self.xb * self.my_scale + cen_siz),
                 int((self.yb + det_mov) * self.my_scale),
-                int((self.xb - cen_siz) * self.my_scale),
+                int(self.xb * self.my_scale - cen_siz),
                 int((self.yb + det_mov) * self.my_scale),
             )
 
