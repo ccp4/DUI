@@ -89,6 +89,7 @@ def build_mask_item(img_paint_obj):
         x2 = img_paint_obj.x_pos / img_paint_obj.my_scale
         y2 = img_paint_obj.y_pos / img_paint_obj.my_scale
 
+
         if img_paint_obj.my_parent.chk_box_mask.isChecked():
             if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
                 if x1 > x2:
@@ -96,6 +97,22 @@ def build_mask_item(img_paint_obj):
 
                 if y1 > y2:
                     y1, y2 = y2, y1
+
+                if x2 > img_paint_obj.img_width:
+                    x2 = float(img_paint_obj.img_width)
+
+                if y2 > img_paint_obj.img_height:
+                    y2 = float(img_paint_obj.img_height)
+
+                if x1 < 1:
+                    x1 = 1.0
+
+                if y1 < 1:
+                    y1 = 1.0
+
+                print("\nbuild_mask_item:", x1, y1 ,x2 ,y2 )
+                print("img_width", )
+                print("img_height", img_paint_obj.img_height)
 
                 to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
