@@ -104,11 +104,11 @@ def build_mask_item(img_paint_obj):
                 if y2 > img_paint_obj.img_height:
                     y2 = float(img_paint_obj.img_height)
 
-                if x1 < 1:
-                    x1 = 1.0
+                if x1 < 0:
+                    x1 = 0.0
 
-                if y1 < 1:
-                    y1 = 1.0
+                if y1 < 0:
+                    y1 = 0.0
 
                 to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
