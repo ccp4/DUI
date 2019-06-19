@@ -133,7 +133,7 @@ class BeamCentrPage(QWidget):
 
     def activate_me(self, cur_nod=None):
         print("activate_me(BeamCentrPage)")
-        print("cur_nod.ll_command_lst:\n", cur_nod.ll_command_lst)
+        print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
         self.b_centr_set.emit()
 
     def reset_par(self):
@@ -201,7 +201,7 @@ class MaskPage(QWidget):
 
     def activate_me(self, cur_nod=None):
         print("activate_me(MaskPage)")
-        print("cur_nod.ll_command_lst:\n", cur_nod.ll_command_lst)
+        print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
         self.update_widget_dat(cur_nod.ll_command_lst)
         self.mask_set.emit()
 
@@ -290,6 +290,7 @@ class ExportPage(QWidget):
         self.fist_time = False
 
     def activate_me(self, cur_nod=None):
+        print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
         self.simple_lin.setEnabled(True)
         self.check_scale.setEnabled(True)
         if self.fist_time is False:
@@ -478,6 +479,10 @@ class ImportPage(QWidget):
         self.chk_invert.setEnabled(False)
 
     def activate_me(self, cur_nod=None):
+        try:
+            print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
+        except:
+            print("cur_nod=None")
         self.simple_lin.setEnabled(True)
         self.opn_fil_btn.setEnabled(True)
         self.y_spn_bx.setEnabled(True)
@@ -781,6 +786,7 @@ class ParamMainWidget(QWidget):
                     pass
 
     def activate_me(self, cur_nod=None):
+        print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
         self.reset_btn.setEnabled(True)
         for bg_widg in (
             self.advanced_widget.scrollable_widget.lst_var_widg,
