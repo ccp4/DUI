@@ -926,6 +926,10 @@ class MyImgWin(QWidget):
         self.rad_but_circ_mask = QRadioButton("circle")
         self.rad_but_rect_mask.setChecked(True)
 
+        self.rad_but_rect_mask.toggled.connect(self.my_painter.unpop_menu)
+        self.rad_but_circ_mask.toggled.connect(self.my_painter.unpop_menu)
+
+
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
 
