@@ -176,7 +176,7 @@ class ImgPainter(QWidget):
 
     def reset_mask_tool(self, event):
         self.mask_items = []
-        self.update()
+        self.unpop_menu()
 
     def reset_bc_tool(self, event):
         self.new_bc = [None, None]
@@ -395,9 +395,13 @@ class ImgPainter(QWidget):
             )
 
     def unpop_menu(self):
-        self.my_parent.pop_mask_menu.hide()
-        self.setFocus()
-        self.update()
+        try:
+            self.my_parent.pop_mask_menu.hide()
+            self.setFocus()
+            self.update()
+
+        except AttributeError:
+            logger.debug("No need to unpop_menu now")
 
     def ini_mask(self):
         self.ll_mask_applied.emit(self.mask_items)
