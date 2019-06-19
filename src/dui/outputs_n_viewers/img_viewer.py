@@ -394,19 +394,18 @@ class ImgPainter(QWidget):
                 QPoint(int(x * self.my_scale), int(y * self.my_scale)), reflection[4]
             )
 
-    def ini_mask(self):
-
-        self.ll_mask_applied.emit(self.mask_items)
+    def unpop_menu(self):
         self.my_parent.pop_mask_menu.hide()
         self.setFocus()
         self.update()
+
+    def ini_mask(self):
+        self.ll_mask_applied.emit(self.mask_items)
+        self.unpop_menu()
 
     def ini_centr(self):
         self.ll_b_centr_applied.emit(self.new_bc)
-        self.my_parent.pop_mask_menu.hide()
-        self.setFocus()
-        self.update()
-        print("Click beam C ...")
+        self.unpop_menu()
 
     def paintEvent(self, event):
         # print("paintEvent(img_viewer)")
