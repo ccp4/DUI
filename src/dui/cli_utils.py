@@ -47,40 +47,44 @@ sys_arg = SysArgvData()
 
 
 def prn_lst_lst_cmd(last_idials_node):
-    cur_nod = last_idials_node
-    lst_simpl_cmd = []
-    lst_full_cmd = []
+    try:
+        cur_nod = last_idials_node
+        lst_simpl_cmd = []
+        lst_full_cmd = []
 
-    while True:
-        if cur_nod.ll_command_lst[0] == ["Root"] or cur_nod.lin_num == 0:
-            break
+        while True:
+            if cur_nod.ll_command_lst[0] == ["Root"] or cur_nod.lin_num == 0:
+                break
 
-        # TODO make a loop thru the list of posible commands
-        l_n = str(cur_nod.lin_num)
-        lst_simpl_cmd.append(
-            "command_lst[" + l_n + "] = " + str(cur_nod.ll_command_lst[0])
-        )
-        for one_cmd in reversed(cur_nod.dials_command.full_cmd_lst):
-            lst_full_cmd.append(one_cmd)
+            # TODO make a loop thru the list of posible commands
+            l_n = str(cur_nod.lin_num)
+            lst_simpl_cmd.append(
+                "command_lst[" + l_n + "] = " + str(cur_nod.ll_command_lst[0])
+            )
+            for one_cmd in reversed(cur_nod.dials_command.full_cmd_lst):
+                lst_full_cmd.append(one_cmd)
 
-        cur_nod = cur_nod.prev_step
+            cur_nod = cur_nod.prev_step
 
-    for prn_lin in reversed(lst_simpl_cmd):
-        logger.debug(prn_lin)
+        for prn_lin in reversed(lst_simpl_cmd):
+            logger.debug(prn_lin)
 
-    sh_cmd_lst = []
-    for prn_lin in reversed(lst_full_cmd):
-        str_cmd = ""
-        for cmd_par in prn_lin:
-            str_cmd += " " + cmd_par
+        sh_cmd_lst = []
+        for prn_lin in reversed(lst_full_cmd):
+            str_cmd = ""
+            for cmd_par in prn_lin:
+                str_cmd += " " + cmd_par
 
-        sh_cmd_lst.append(str_cmd)
+            sh_cmd_lst.append(str_cmd)
 
-    print("All commands to get here:\n___________________________")
-    for prn_lin in sh_cmd_lst:
-        print(prn_lin)
+        print("All commands to get here:\n___________________________")
+        for prn_lin in sh_cmd_lst:
+            print(prn_lin)
 
-    print("___________________________\n")
+        print("___________________________\n")
+
+    except TypeError:
+        print("unable to print all commands to get here")
 
 
 def get_next_step(node_obj):
@@ -560,7 +564,7 @@ def generate_report(node_obj):
 class DialsCommand(object):
     def __init__(self):
         logger.debug("creating new DialsCommand (obj)")
-        self.full_cmd_lst = None
+        self.full_cmd_lst = [None]
 
         os_name = os.name
         logger.debug("\n Running process on  %s %s", os_name, "\n\n")
