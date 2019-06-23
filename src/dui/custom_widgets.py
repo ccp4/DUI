@@ -130,6 +130,7 @@ class BeamCentrPage(QWidget):
 
     def update_param(self, curr_step):
         print("update_param(BeamCentrPage)")
+        print("curr_step.ll_command_lst:", curr_step.ll_command_lst)
 
     def activate_me(self, cur_nod=None):
         print("activate_me(BeamCentrPage)")
@@ -399,6 +400,14 @@ class ImportPage(QWidget):
 
     def reset_par(self):
         pass
+
+    def update_param(self, curr_step):
+        print("update_param(ImportPage)")
+
+    def update_param_w_lst(self, lst_in):
+        print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
+
+
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():

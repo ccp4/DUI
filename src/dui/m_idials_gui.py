@@ -281,7 +281,7 @@ class ControlWidget(QWidget):
                 widget.update_param(curr_step)
 
             except AttributeError:
-                logger.debug("object has no attribute update_param")
+                print("\n object has no attribute update_param \n")
 
         elif nxt_cmd == "reindex":
             # Reindex is a special step because it doesn't have it's own page
@@ -909,11 +909,9 @@ class MainWidget(QMainWindow):
                 print(" Caught unknown exception type %s: %s", type(e).__name__, e)
                 print("\n Tst A1 \n")
 
-            logger.debug("TreeNavWidget(node_clicked)")
             item = self.tree_out.std_mod.itemFromIndex(it_index)
             prn_lst_lst_cmd(item.idials_node)
             lin_num = item.idials_node.lin_num
-            logger.debug("clicked item lin_num (self.tree_out.std_mod) = %s", lin_num)
             cmd_ovr = "goto " + str(lin_num)
             self.cmd_exe(cmd_ovr)
 
