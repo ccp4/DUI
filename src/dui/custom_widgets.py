@@ -384,11 +384,6 @@ class ImportPage(QWidget):
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
-        self.cmd_list = []
-        self.x_beam, self.y_beam = 0.0, 0.0
-        self.path_file_str = ""
-        self.second_half = ""
-        self.third_half = ""
 
         self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
@@ -397,18 +392,16 @@ class ImportPage(QWidget):
 
     def reset_par(self):
         print("reset_par(ImportPage)")
+        self.cmd_list = []
         self.simple_lin.setText(" ? ")
         self.x_spn_bx.setValue(0.0)
         self.y_spn_bx.setValue(0.0)
         self.chk_invert.setChecked(False)
 
-    def reset_par(self):
-        print("reset_par(ImportPage)")
-        self.simple_lin.setText(" ? ")
-        self.x_spn_bx.setValue(0.0)
-        self.y_spn_bx.setValue(0.0)
-        self.chk_invert.setChecked(False)
-
+        self.x_beam, self.y_beam = 0.0, 0.0
+        self.path_file_str = ""
+        self.second_half = ""
+        self.third_half = ""
 
     def update_param_w_lst(self, lst_in):
         self.reset_par()
@@ -464,6 +457,8 @@ class ImportPage(QWidget):
 
         if len(lst_file_path) > 0:
             new_dir, new_command = get_import_run_string(lst_file_path)
+            print("\n new_dir=", new_dir, ">>")
+            print("\n new_command =", new_command, ">>")
             self.path_file_str = new_command
             self.defa_dir = new_dir
             self.put_str_lin()
