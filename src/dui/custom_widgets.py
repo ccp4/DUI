@@ -342,23 +342,19 @@ class ImportPage(QWidget):
         step_label.setFont(label_font)
 
         self.simple_lin = QLineEdit(self)
-        self.simple_lin.setText(" ? ")
         self.simple_lin.textChanged.connect(self.update_command)
 
         self.x_spn_bx = QSpinBox()
         self.x_spn_bx.setMaximum(99999)
         self.x_spn_bx.setSpecialValueText(" ")
-        # self.x_spn_bx.setValue(6.0)
         self.y_spn_bx = QSpinBox()
         self.y_spn_bx.setMaximum(99999)
         self.y_spn_bx.setSpecialValueText(" ")
 
-        # self.y_spn_bx.setValue(6.0)
         self.x_spn_bx.valueChanged.connect(self.x_beam_changed)
         self.y_spn_bx.valueChanged.connect(self.y_beam_changed)
 
         self.chk_invert = QCheckBox("Invert Rotation Axis")
-        self.chk_invert.setChecked(False)
         self.chk_invert.stateChanged.connect(self.inv_rota_changed)
 
         self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
@@ -397,17 +393,18 @@ class ImportPage(QWidget):
         self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
         # self.show()
+        self.reset_par()
 
     def reset_par(self):
-        pass
-
-    def update_param(self, curr_step):
-        print("update_param(ImportPage)")
+        print("reset_par(ImportPage)")
+        self.simple_lin.setText(" ? ")
+        self.x_spn_bx.setValue(0.0)
+        self.y_spn_bx.setValue(0.0)
+        self.chk_invert.setChecked(False)
 
     def update_param_w_lst(self, lst_in):
         print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
-
-
+        self.reset_par()
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():
