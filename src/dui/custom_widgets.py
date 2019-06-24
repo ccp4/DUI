@@ -414,6 +414,7 @@ class ImportPage(QWidget):
             if singl_com[0:12] == "image_range=":
                 self.path_file_str += " "
                 self.path_file_str += str(singl_com)
+                self.put_str_lin()
 
             if singl_com == "invert_rotation_axis=True":
                 self.chk_invert.setChecked(True)
