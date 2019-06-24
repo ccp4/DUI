@@ -410,7 +410,6 @@ class ImportPage(QWidget):
         self.chk_invert.setChecked(False)
 
 
-
     def update_param_w_lst(self, lst_in):
         self.reset_par()
         print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
@@ -420,10 +419,15 @@ class ImportPage(QWidget):
 
             if singl_com[0:22] == "slow_fast_beam_centre=":
                 print("\n slow_fast_beam_centre= FOUND \n")
-                xb_yb_str = singl_com[22:]
-                xb, yb = xb_yb_str.split(",")
-                print("xb = ", xb, "\n")
+                yb_xb_str = singl_com[22:]
+                yb_str, xb_str = yb_xb_str.split(",")
+                yb = float(yb_str)
+                xb = float(xb_str)
                 print("yb = ", yb, "\n")
+                print("xb = ", xb, "\n")
+                self.y_spn_bx.setValue(yb)
+                self.x_spn_bx.setValue(xb)
+
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():
