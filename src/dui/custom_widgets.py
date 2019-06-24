@@ -402,9 +402,28 @@ class ImportPage(QWidget):
         self.y_spn_bx.setValue(0.0)
         self.chk_invert.setChecked(False)
 
+    def reset_par(self):
+        print("reset_par(ImportPage)")
+        self.simple_lin.setText(" ? ")
+        self.x_spn_bx.setValue(0.0)
+        self.y_spn_bx.setValue(0.0)
+        self.chk_invert.setChecked(False)
+
+
+
     def update_param_w_lst(self, lst_in):
-        print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
         self.reset_par()
+        print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
+        for singl_com in lst_in:
+            if singl_com == "invert_rotation_axis=True":
+                self.chk_invert.setChecked(True)
+
+            if singl_com[0:22] == "slow_fast_beam_centre=":
+                print("\n slow_fast_beam_centre= FOUND \n")
+                xb_yb_str = singl_com[22:]
+                xb, yb = xb_yb_str.split(",")
+                print("xb = ", xb, "\n")
+                print("yb = ", yb, "\n")
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():
