@@ -407,17 +407,22 @@ class ImportPage(QWidget):
         self.reset_par()
         print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
         for singl_com in lst_in:
+            if singl_com[0:1] == "/":
+                self.path_file_str = str(singl_com)
+                self.put_str_lin()
+
+            if singl_com[0:12] == "image_range=":
+                self.path_file_str += " "
+                self.path_file_str += str(singl_com)
+
             if singl_com == "invert_rotation_axis=True":
                 self.chk_invert.setChecked(True)
 
             if singl_com[0:22] == "slow_fast_beam_centre=":
-                print("\n slow_fast_beam_centre= FOUND \n")
                 yb_xb_str = singl_com[22:]
                 yb_str, xb_str = yb_xb_str.split(",")
                 yb = float(yb_str)
                 xb = float(xb_str)
-                print("yb = ", yb, "\n")
-                print("xb = ", xb, "\n")
                 self.y_spn_bx.setValue(yb)
                 self.x_spn_bx.setValue(xb)
 
@@ -464,6 +469,7 @@ class ImportPage(QWidget):
             self.put_str_lin()
 
     def put_str_lin(self):
+        print("self.path_file_str =", self.path_file_str, ">>")
         self.cmd_list = [
             self.path_file_str,
             self.second_half.lstrip(),
