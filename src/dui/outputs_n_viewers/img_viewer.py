@@ -428,11 +428,6 @@ class ImgPainter(QWidget):
         scaled_width = int(self.img_width * self.my_scale)
         scaled_height = int(self.img_height * self.my_scale)
 
-        print("self.img_width, self.my_scale", self.img_width, self.my_scale)
-        print("self.img_height, self.my_scale", self.img_height, self.my_scale)
-
-        print("\n scaled_width, scaled_height =", scaled_width, scaled_height, "\n")
-
         self.resize(scaled_width, scaled_height)
 
         rect = QRect(0, 0, scaled_width, scaled_height)
@@ -494,9 +489,7 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.np_mask is not None:
-            # print("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
-            # print(" .Drawing Mask end")
 
         cen_siz = 20.0
         if self.xb is not None and self.yb is not None:
@@ -517,7 +510,6 @@ class ImgPainter(QWidget):
             )
 
         if self.my_parent.chk_box_B_centr.isChecked():
-            print("chk_box_B_centr.isChecked")
             try:
                 painter.setPen(to_do_pen)
                 painter.drawLine(
@@ -1210,11 +1202,6 @@ class MyImgWin(QWidget):
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
 
-        print("\n pt_width  :",pt_width )
-        print("pt_height :",pt_height)
-        print("sc_width  :",sc_width )
-        print("sc_height :",sc_height, "\n")
-
         if pt_width == 0 or pt_height == 0:
             self.my_painter.scale2fact()
 
@@ -1227,12 +1214,6 @@ class MyImgWin(QWidget):
 
             else:
                 self.my_painter.scale2fact(sc_height / pt_height)
-
-        tmp_off = '''
-        except ZeroDivisionError:
-            print
-        '''
-
 
 
     def ini_reflection_table(self, pckl_file_path):
