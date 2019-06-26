@@ -276,14 +276,20 @@ class ImgPainter(QWidget):
         else:
             self.my_scale *= new_scale
 
-        scale_factor = self.my_scale / old_scale
-        self.update()
+        try:
+            scale_factor = self.my_scale / old_scale
+            self.update()
 
-        h_scr_bar = float(self.p_h_svar().value())
-        v_scr_bar = float(self.p_v_svar().value())
-        self.move_scrollbar(scrollBar=self.p_h_svar(), new_pos=h_scr_bar * scale_factor)
-        self.move_scrollbar(scrollBar=self.p_v_svar(), new_pos=v_scr_bar * scale_factor)
-        logger.debug("rescaling to: %s", self.my_scale)
+            h_scr_bar = float(self.p_h_svar().value())
+            v_scr_bar = float(self.p_v_svar().value())
+            self.move_scrollbar(scrollBar=self.p_h_svar(), new_pos=h_scr_bar * scale_factor)
+            self.move_scrollbar(scrollBar=self.p_v_svar(), new_pos=v_scr_bar * scale_factor)
+            logger.debug("rescaling to: %s", self.my_scale)
+
+        except ZeroDivisionError:
+            print("NOT scaling my_painter")
+            scale_factor = 1.0
+
 
     def move_scrollbar(self, scrollBar=None, dst=None, new_pos=None):
         if dst is not None:
@@ -416,8 +422,17 @@ class ImgPainter(QWidget):
         if self.img is None:
             return
 
+        if self.my_scale == 0:
+            self.my_scale = 1
+
         scaled_width = int(self.img_width * self.my_scale)
         scaled_height = int(self.img_height * self.my_scale)
+
+        print("self.img_width, self.my_scale", self.img_width, self.my_scale)
+        print("self.img_height, self.my_scale", self.img_height, self.my_scale)
+
+        print("\n scaled_width, scaled_height =", scaled_width, scaled_height, "\n")
+
         self.resize(scaled_width, scaled_height)
 
         rect = QRect(0, 0, scaled_width, scaled_height)
@@ -694,7 +709,7 @@ class ImgPainter(QWidget):
                             )
 
             except TypeError:
-                print("not printing HKLs ")
+                logger.debug("not printing HKLs ")
 
         painter.end()
 
@@ -1195,14 +1210,30 @@ class MyImgWin(QWidget):
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
 
-        a_ratio_pt = pt_width / pt_height
-        a_ratio_sc = sc_width / sc_height
+        print("\n pt_width  :",pt_width )
+        print("pt_height :",pt_height)
+        print("sc_width  :",sc_width )
+        print("sc_height :",sc_height, "\n")
 
-        if a_ratio_pt > a_ratio_sc:
-            self.my_painter.scale2fact(sc_width / pt_width)
+        if pt_width == 0 or pt_height == 0:
+            self.my_painter.scale2fact()
 
         else:
-            self.my_painter.scale2fact(sc_height / pt_height)
+            a_ratio_pt = pt_width / pt_height
+            a_ratio_sc = sc_width / sc_height
+
+            if a_ratio_pt > a_ratio_sc:
+                self.my_painter.scale2fact(sc_width / pt_width)
+
+            else:
+                self.my_painter.scale2fact(sc_height / pt_height)
+
+        tmp_off = '''
+        except ZeroDivisionError:
+            print
+        '''
+
+
 
     def ini_reflection_table(self, pckl_file_path):
         if pckl_file_path[0] is not None:
