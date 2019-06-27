@@ -178,13 +178,10 @@ class ImgPainter(QWidget):
     def reset_mask_tool(self, event):
         self.mask_items = []
         self.unpop_menu()
-        self.ll_mask_applied.emit(self.mask_items)
 
 
     def set_new_mask_list(self, nxt_new_lst):
-        self.mask_items = nxt_new_lst
-        #next line makes an infinite loop
-        #self.ll_mask_applied.emit(nxt_new_lst)
+        self.mask_items = list(nxt_new_lst)
 
     def reset_bc_tool(self, event):
         self.new_bc = [None, None]
@@ -1323,14 +1320,12 @@ class MyImgWin(QWidget):
         self.chk_box_mask.setCheckState(False)
 
     def chec_my_mask(self, new_list = []):
-        nxt_new_lst = list(new_list)
-        print("nxt_new_lst(img_viewer) =", nxt_new_lst)
-        print(self.my_painter.mask_items, "\n...")
+
         self.chk_box_mask.setCheckState(True)
         print(self.my_painter.mask_items, "\n...")
-        time.sleep(0.5)
-
-        self.my_painter.set_new_mask_list(nxt_new_lst)
+        time.sleep(0.3)
+        self.my_painter.set_new_mask_list(new_list)
+        time.sleep(0.3)
         print(self.my_painter.mask_items, "\n...")
 
     def unchec_b_centr(self):
