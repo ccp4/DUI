@@ -415,9 +415,6 @@ class ImgPainter(QWidget):
             logger.debug("No need to unpop_menu now")
 
     def ini_mask(self):
-
-        print("\n\n ini_mask() _________________________ ...................... _________________________ \n\n")
-
         self.ll_mask_applied.emit(self.mask_items)
         self.unpop_menu()
 
@@ -1320,13 +1317,9 @@ class MyImgWin(QWidget):
         self.chk_box_mask.setCheckState(False)
 
     def chec_my_mask(self, new_list = []):
-
+        print("\n chec_my_mask(img_viewer)\n")
         self.chk_box_mask.setCheckState(True)
-        print(self.my_painter.mask_items, "\n...")
-        time.sleep(0.3)
         self.my_painter.set_new_mask_list(new_list)
-        time.sleep(0.3)
-        print(self.my_painter.mask_items, "\n...")
 
     def unchec_b_centr(self):
         self.chk_box_B_centr.setCheckState(False)
