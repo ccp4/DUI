@@ -168,7 +168,7 @@ class ControlWidget(QWidget):
     update_command_lst_high_level = Signal(list)
     finished_masking = Signal()
     finished_b_centr = Signal()
-    click_mask = Signal()
+    click_mask = Signal(list)
     click_b_centr = Signal()
 
     def __init__(self, parent=None):
@@ -250,8 +250,9 @@ class ControlWidget(QWidget):
     def done_masking(self):
         self.finished_masking.emit()
 
-    def set_mask(self):
-        self.click_mask.emit()
+    def set_mask(self, new_list = []):
+        print("new_list(set_mask) =", new_list)
+        self.click_mask.emit(new_list)
 
     def done_b_centr(self):
         self.finished_b_centr.emit()
