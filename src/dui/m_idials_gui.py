@@ -771,6 +771,10 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
+        #Testing if from here I care reset_mask_tool only when needed
+        self.img_view.my_painter.reset_mask_tool(None)
+
+
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 

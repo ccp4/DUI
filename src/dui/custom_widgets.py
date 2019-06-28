@@ -200,7 +200,7 @@ class MaskPage(QWidget):
         print("update_param(MaskPage)")
         self.update_widget_dat(curr_step.ll_command_lst)
 
-    def activate_me(self, cur_nod=None):
+    def activate_me(self, cur_nod):
         print("activate_me(MaskPage)")
         print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
         self.update_widget_dat(cur_nod.ll_command_lst)
