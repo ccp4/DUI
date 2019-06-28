@@ -771,9 +771,17 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        #Testing if from here I care reset_mask_tool only when needed
-        self.img_view.my_painter.reset_mask_tool(None)
+        if (
+            tmp_curr.ll_command_lst[0][0] == "generate_mask"
+            and tmp_curr.success is True
+        ):
+            self.img_view.my_painter.reset_mask_tool(None)
 
+        elif (
+            tmp_curr.ll_command_lst[0][0] == "modify_geometry"
+            and tmp_curr.success is True
+        ):
+            self.img_view.my_painter.reset_bc_tool(None)
 
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
