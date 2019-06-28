@@ -159,7 +159,7 @@ class MaskPage(QWidget):
 
     update_command_lst_medium_level = Signal(list)
     mask_done = Signal()
-    mask_set = Signal(list)
+    mask_set = Signal()
 
     """
     This stacked widget appears whe the user wants to
@@ -204,7 +204,7 @@ class MaskPage(QWidget):
         print("activate_me(MaskPage)")
         print("\n\ncur_nod.ll_command_lst = ", cur_nod.ll_command_lst, "\n\n")
         self.update_widget_dat(cur_nod.ll_command_lst)
-        self.mask_set.emit(cur_nod.ll_command_lst)
+        self.mask_set.emit()
 
     def reset_par(self):
         print("reset_par(MaskPage)")
@@ -222,7 +222,7 @@ class MaskPage(QWidget):
             self.list_widg.removeWidget(widgetToRemove)
             widgetToRemove.setParent(None)
 
-        print("\n updating lst_par(MaskPage):", lst_par, "\n")
+        print("lst_par(MaskPage)", lst_par)
         self.command_lst = lst_par
         for singl_com in lst_par[0]:
             new_widg = QLineEdit(self)

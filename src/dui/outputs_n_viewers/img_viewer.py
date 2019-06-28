@@ -23,7 +23,6 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
-import time
 import sys
 import os
 
@@ -178,10 +177,6 @@ class ImgPainter(QWidget):
     def reset_mask_tool(self, event):
         self.mask_items = []
         self.unpop_menu()
-
-
-    def set_new_mask_list(self, nxt_new_lst):
-        self.mask_items = list(nxt_new_lst)
 
     def reset_bc_tool(self, event):
         self.new_bc = [None, None]
@@ -433,6 +428,11 @@ class ImgPainter(QWidget):
         scaled_width = int(self.img_width * self.my_scale)
         scaled_height = int(self.img_height * self.my_scale)
 
+        print("self.img_width, self.my_scale", self.img_width, self.my_scale)
+        print("self.img_height, self.my_scale", self.img_height, self.my_scale)
+
+        print("\n scaled_width, scaled_height =", scaled_width, scaled_height, "\n")
+
         self.resize(scaled_width, scaled_height)
 
         rect = QRect(0, 0, scaled_width, scaled_height)
@@ -494,7 +494,9 @@ class ImgPainter(QWidget):
         # painter.setFont(QFont("FreeMono", 22))
 
         if self.np_mask is not None:
+            # print("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
+            # print(" .Drawing Mask end")
 
         cen_siz = 20.0
         if self.xb is not None and self.yb is not None:
@@ -515,6 +517,7 @@ class ImgPainter(QWidget):
             )
 
         if self.my_parent.chk_box_B_centr.isChecked():
+            print("chk_box_B_centr.isChecked")
             try:
                 painter.setPen(to_do_pen)
                 painter.drawLine(
@@ -1207,6 +1210,11 @@ class MyImgWin(QWidget):
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
 
+        print("\n pt_width  :",pt_width )
+        print("pt_height :",pt_height)
+        print("sc_width  :",sc_width )
+        print("sc_height :",sc_height, "\n")
+
         if pt_width == 0 or pt_height == 0:
             self.my_painter.scale2fact()
 
@@ -1219,6 +1227,12 @@ class MyImgWin(QWidget):
 
             else:
                 self.my_painter.scale2fact(sc_height / pt_height)
+
+        tmp_off = '''
+        except ZeroDivisionError:
+            print
+        '''
+
 
 
     def ini_reflection_table(self, pckl_file_path):
@@ -1316,10 +1330,8 @@ class MyImgWin(QWidget):
     def unchec_my_mask(self):
         self.chk_box_mask.setCheckState(False)
 
-    def chec_my_mask(self, new_list = []):
-        print("\n chec_my_mask(img_viewer)\n")
+    def chec_my_mask(self):
         self.chk_box_mask.setCheckState(True)
-        self.my_painter.set_new_mask_list(new_list)
 
     def unchec_b_centr(self):
         self.chk_box_B_centr.setCheckState(False)
