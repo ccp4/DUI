@@ -428,10 +428,11 @@ class ImgPainter(QWidget):
         scaled_width = int(self.img_width * self.my_scale)
         scaled_height = int(self.img_height * self.my_scale)
 
+        to_go = '''
         print("self.img_width, self.my_scale", self.img_width, self.my_scale)
         print("self.img_height, self.my_scale", self.img_height, self.my_scale)
-
         print("\n scaled_width, scaled_height =", scaled_width, scaled_height, "\n")
+        '''
 
         self.resize(scaled_width, scaled_height)
 
@@ -517,7 +518,6 @@ class ImgPainter(QWidget):
             )
 
         if self.my_parent.chk_box_B_centr.isChecked():
-            print("chk_box_B_centr.isChecked")
             try:
                 painter.setPen(to_do_pen)
                 painter.drawLine(
@@ -534,7 +534,7 @@ class ImgPainter(QWidget):
                 )
 
             except AttributeError:
-                print("coords of BC not set yet")
+                pass
 
         if self.my_parent.chk_box_mask.isChecked():
             painter.setPen(to_do_pen)
