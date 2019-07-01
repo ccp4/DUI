@@ -428,12 +428,6 @@ class ImgPainter(QWidget):
         scaled_width = int(self.img_width * self.my_scale)
         scaled_height = int(self.img_height * self.my_scale)
 
-        to_go = '''
-        print("self.img_width, self.my_scale", self.img_width, self.my_scale)
-        print("self.img_height, self.my_scale", self.img_height, self.my_scale)
-        print("\n scaled_width, scaled_height =", scaled_width, scaled_height, "\n")
-        '''
-
         self.resize(scaled_width, scaled_height)
 
         rect = QRect(0, 0, scaled_width, scaled_height)
