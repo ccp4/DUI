@@ -743,6 +743,8 @@ class MainWidget(QMainWindow):
 
         tmp_curr = self.idials_runner.current_node
 
+        prn_lst_lst_cmd(tmp_curr)
+
         if (
             tmp_curr.ll_command_lst[0][0] == "refine_bravais_settings"
             and tmp_curr.success is True
@@ -782,6 +784,9 @@ class MainWidget(QMainWindow):
             and tmp_curr.success is True
         ):
             self.img_view.my_painter.reset_bc_tool(None)
+
+
+
 
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
@@ -943,7 +948,6 @@ class MainWidget(QMainWindow):
 
     def refresh_my_gui(self):
 
-        prn_lst_lst_cmd(self.idials_runner.current_node)
         lin_num = self.idials_runner.current_node.lin_num
         logger.debug("doing goto:  %s", lin_num)
         cmd_ovr = "goto " + str(lin_num)
