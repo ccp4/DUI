@@ -233,24 +233,28 @@ class RefineBravaiSimplerParamTab(QWidget):
     def __init__(self, parent=None):
         super(RefineBravaiSimplerParamTab, self).__init__()
 
-        hbox_lay_scan_varying = QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_scan_varying = QLabel("Scan Varying Refinement")
+        hbox_lay_outlier_algorithm = QHBoxLayout()
+        label_outlier_algorithm = QLabel("Outlier Rejection Algorithm")
 
-        hbox_lay_scan_varying.addWidget(label_scan_varying)
+        hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
+        box_outlier_algorithm = QComboBox()
+        box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
+        box_outlier_algorithm.tmp_lst = []
+        box_outlier_algorithm.tmp_lst.append("null")
+        box_outlier_algorithm.tmp_lst.append("auto")
+        box_outlier_algorithm.tmp_lst.append("mcd")
+        box_outlier_algorithm.tmp_lst.append("tukey")
+        box_outlier_algorithm.tmp_lst.append("sauter_poon")
 
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst = []
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-        box_scan_varying.setCurrentIndex(1)
+        for lst_itm in box_outlier_algorithm.tmp_lst:
+            box_outlier_algorithm.addItem(lst_itm)
 
-        box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_scan_varying.addWidget(box_scan_varying)
-        localLayout.addLayout(hbox_lay_scan_varying)
+        box_outlier_algorithm.setCurrentIndex(1)
+
+        box_outlier_algorithm.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
+        localLayout.addLayout(hbox_lay_outlier_algorithm)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
@@ -259,8 +263,8 @@ class RefineBravaiSimplerParamTab(QWidget):
         self.setLayout(localLayout)
 
         self.lst_var_widg = []
-        self.lst_var_widg.append(box_scan_varying)
-        self.lst_var_widg.append(label_scan_varying)
+        self.lst_var_widg.append(box_outlier_algorithm)
+        self.lst_var_widg.append(label_outlier_algorithm)
 
     def combobox_changed(self, value):
         sender = self.sender()
@@ -306,118 +310,9 @@ class RefineSimplerParamTab(QWidget):
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
-        # beam {
-        #   fix = all *in_spindle_plane out_spindle_plane *wavelength
-        # }
 
-        # Block out refiner behaviour for now until we work out a better way-
-        # hbox_lay_beam_fix =  QHBoxLayout()
-        # label_beam_fix = QLabel("Beam Fix Parameters")
+        ###########################################################################
 
-        # hbox_lay_beam_fix.addWidget(label_beam_fix)
-        # box_beam_fix = QComboBox()
-        # box_beam_fix.local_path = "refinement.parameterisation.beam.fix"
-        # box_beam_fix.tmp_lst=[]
-        # box_beam_fix.tmp_lst.append("all")
-        # box_beam_fix.tmp_lst.append("in_spindle_plane")
-        # box_beam_fix.tmp_lst.append("out_spindle_plane")
-        # box_beam_fix.tmp_lst.append("wavelength")
-        # box_beam_fix.tmp_lst.append("none")
-
-        # for lst_itm in box_beam_fix.tmp_lst:
-        #     box_beam_fix.addItem(lst_itm)
-
-        # #box_beam_fix.setCurrentIndex(3)
-        # box_beam_fix.setCurrentIndex(4)
-
-        # box_beam_fix.currentIndexChanged.connect(self.combobox_changed)
-        # hbox_lay_beam_fix.addWidget(box_beam_fix)
-        # localLayout.addLayout(hbox_lay_beam_fix)
-
-        # crystal {
-        # fix = all cell orientation
-        # }
-
-        # hbox_lay_crystal_fix =  QHBoxLayout()
-        # label_crystal_fix = QLabel("Crystal Fix Parameters")
-
-        # hbox_lay_crystal_fix.addWidget(label_crystal_fix)
-        # box_crystal_fix = QComboBox()
-        # box_crystal_fix.local_path = "refinement.parameterisation.crystal.fix"
-        # box_crystal_fix.tmp_lst=[]
-        # box_crystal_fix.tmp_lst.append("all")
-        # box_crystal_fix.tmp_lst.append("cell")
-        # box_crystal_fix.tmp_lst.append("orientation")
-        # box_crystal_fix.tmp_lst.append("none")
-
-        # for lst_itm in box_crystal_fix.tmp_lst:
-        #     box_crystal_fix.addItem(lst_itm)
-
-        # #box_crystal_fix.setCurrentIndex(0)
-        # box_crystal_fix.setCurrentIndex(3)
-
-        # box_crystal_fix.currentIndexChanged.connect(self.combobox_changed)
-        # hbox_lay_crystal_fix.addWidget(box_crystal_fix)
-        # localLayout.addLayout(hbox_lay_crystal_fix)
-
-        # detector {
-        # fix = all position orientation
-        # }
-
-        # hbox_lay_detector_fix =  QHBoxLayout()
-        # label_detector_fix = QLabel("Detector Fix Parameters")
-
-        # hbox_lay_detector_fix.addWidget(label_detector_fix)
-        # box_detector_fix = QComboBox()
-        # box_detector_fix.local_path = "refinement.parameterisation.detector.fix"
-        # box_detector_fix.tmp_lst=[]
-        # box_detector_fix.tmp_lst.append("all")
-        # box_detector_fix.tmp_lst.append("position")
-        # box_detector_fix.tmp_lst.append("orientation")
-        # box_detector_fix.tmp_lst.append("none")
-
-        # for lst_itm in box_detector_fix.tmp_lst:
-        #     box_detector_fix.addItem(lst_itm)
-
-        # #box_detector_fix.setCurrentIndex(0)
-        # box_detector_fix.setCurrentIndex(3)
-
-        # box_detector_fix.currentIndexChanged.connect(self.combobox_changed)
-        # hbox_lay_detector_fix.addWidget(box_detector_fix)
-        # localLayout.addLayout(hbox_lay_detector_fix)
-
-        # goniometer {
-        # fix = *all in_beam_plane out_beam_plane
-        #
-        # }
-
-        # hbox_lay_goniometer_fix =  QHBoxLayout()
-        # label_goniometer_fix = QLabel("Goniometer Fix Parameters")
-
-        # hbox_lay_goniometer_fix.addWidget(label_goniometer_fix)
-        # box_goniometer_fix = QComboBox()
-        # box_goniometer_fix.local_path = "refinement.parameterisation.goniometer.fix"
-        # box_goniometer_fix.tmp_lst=[]
-        # box_goniometer_fix.tmp_lst.append("all")
-        # box_goniometer_fix.tmp_lst.append("in_beam_plane")
-        # box_goniometer_fix.tmp_lst.append("out_beam_plane")
-        # box_goniometer_fix.tmp_lst.append("none")
-
-        # for lst_itm in box_goniometer_fix.tmp_lst:
-        #     box_goniometer_fix.addItem(lst_itm)
-
-        # #box_goniometer_fix.setCurrentIndex(0)
-        # box_goniometer_fix.setCurrentIndex(3)
-
-        # box_goniometer_fix.currentIndexChanged.connect(self.combobox_changed)
-        # hbox_lay_goniometer_fix.addWidget(box_goniometer_fix)
-        # localLayout.addLayout(hbox_lay_goniometer_fix)
-
-        # reflections {
-        #    outlier {
-        #      algorithm = null *auto mcd tukey sauter_poon
-        #    }
-        #  }
         hbox_lay_outlier_algorithm = QHBoxLayout()
         label_outlier_algorithm = QLabel("Outlier Rejection Algorithm")
 
