@@ -821,7 +821,7 @@ class MainWidget(QMainWindow):
             "index": ["refine_bravais_settings", "refine", "integrate"],
             "refine_bravais_settings": [None],
             "reindex": ["refine", "integrate"],
-            "refine": ["refine", "integrate"],
+            "refine": ["refine_bravais_settings", "refine", "integrate"],
             "integrate": ["symmetry", "scale", "export"],
             "symmetry": ["scale", "export"],
             "scale": ["symmetry", "export"],
