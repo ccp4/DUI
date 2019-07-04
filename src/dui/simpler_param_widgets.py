@@ -88,10 +88,12 @@ class FindspotsSimplerParameterTab(QWidget):
     def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
         # self.param_widget_parent = parent.param_widget_parent
-
+        #TODO thinks about making "None equivalent to 1"
         xds_gain_label = QLabel("Gain")
         xds_gain_spn_bx = QDoubleSpinBox()
         xds_gain_spn_bx.local_path = "spotfinder.threshold.dispersion.gain"
+        xds_gain_spn_bx.setSpecialValueText("None")
+        xds_gain_spn_bx.setValue(1.0)
         xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
 
         xds_sigma_background_label = QLabel("Sigma Background")
