@@ -208,6 +208,7 @@ class ControlWidget(QWidget):
             # create the parameter pages here
             if action.id == "import":
                 new_btn.hide()
+
             else:
                 new_btn.clicked.connect(self._action_button_clicked)
                 top_box.addWidget(new_btn)
@@ -283,6 +284,7 @@ class ControlWidget(QWidget):
             except AttributeError:
                 print("\n object has no attribute update_param \n")
 
+
         elif nxt_cmd == "reindex":
             # Reindex is a special step because it doesn't have it's own page
             logger.debug("Reindex mode")
@@ -322,6 +324,10 @@ class ControlWidget(QWidget):
         # TODO make sure is [[..label]] and not [..label]
         command_lst = [[str(param_page.my_label)]]
         self.update_command_lst_high_level.emit(command_lst)
+
+        self.finished_masking.emit()
+        self.finished_b_centr.emit()
+
 
     def gray_outs_all(self):
         """Disable all action buttons."""
