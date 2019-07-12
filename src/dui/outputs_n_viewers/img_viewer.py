@@ -808,12 +808,15 @@ class PopMaskMenu(QMenu):
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
 
         info_grp = QGroupBox()
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poly_mask)
+
         ref_bond_group_box_layout.addWidget(self.my_parent.btn_reset_mask)
 
         info_grp.setLayout(ref_bond_group_box_layout)
@@ -937,10 +940,12 @@ class MyImgWin(QWidget):
 
         self.rad_but_rect_mask = QRadioButton("rectangle")
         self.rad_but_circ_mask = QRadioButton("circle")
+        self.rad_but_poly_mask = QRadioButton("polygon")
         self.rad_but_rect_mask.setChecked(True)
 
         self.rad_but_rect_mask.toggled.connect(self.my_painter.unpop_menu)
         self.rad_but_circ_mask.toggled.connect(self.my_painter.unpop_menu)
+        self.rad_but_poly_mask.toggled.connect(self.my_painter.unpop_menu)
 
 
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)

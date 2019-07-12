@@ -160,7 +160,7 @@ class MaskPage(QWidget):
     mask_set = Signal()
 
     """
-    This stacked widget appears whe the user wants to
+    This stacked widget appears when the user wants to
     do (...) apply_mask, there is no auto-generated GUI
     form Phil parameters in use withing this widget.
     """

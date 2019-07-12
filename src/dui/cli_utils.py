@@ -466,6 +466,11 @@ def build_mask_command_lst(mask_itm_lst):
                 + str(item[3])
             )
 
+
+    TODO = '''
+    dials.generate_mask untrusted.polygon=1383,1361,2009,1361,2009,1767,1383,1767,1383,1361 input.datablock=1_datablock.json output.mask=2_mask.pickle
+    '''
+
     to_run2 = ["apply_mask ..."]
 
     return [to_run1, to_run2]
