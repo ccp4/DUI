@@ -131,6 +131,21 @@ def build_mask_item(img_paint_obj):
 
                 to_append = ("circ", int(x1), int(y1), int(r))
 
+            if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
+
+                to_append_append = ("poly", int(x2), int(y2))
+
+                try:
+                    if img_paint_obj.mask_items[-1][0] == "poly":
+                        print("\n adding dot: ", x2, y2, "to polygon mask \n" )
+
+                    else:
+                        print("\n starting polygon mask with dot: ", x2, y2, "\n" )
+
+                except IndexError:
+                    to_append = to_append_append
+
+
             return True, to_append
 
         else:
