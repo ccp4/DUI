@@ -89,6 +89,8 @@ def build_mask_item(img_paint_obj):
         x2 = img_paint_obj.x_pos / img_paint_obj.my_scale
         y2 = img_paint_obj.y_pos / img_paint_obj.my_scale
 
+        same_item = False
+
 
         if img_paint_obj.my_parent.chk_box_mask.isChecked():
             if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
@@ -133,31 +135,33 @@ def build_mask_item(img_paint_obj):
 
             if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
 
-                to_append_append = ("poly", int(x2), int(y2))
+                to_append_append = (int(x2), int(y2))
 
                 try:
                     if img_paint_obj.mask_items[-1][0] == "poly":
-                        print("\n adding dot: ", x2, y2, "to polygon mask \n" )
+                        same_item = True
+                        item_list = list(img_paint_obj.mask_items[-1])
+                        item_list.append(to_append_append)
+                        to_append = tuple(item_list)
 
                     else:
-                        print("\n starting polygon mask with dot: ", x2, y2, "\n" )
+                        to_append = ("poly",to_append_append)
 
                 except IndexError:
-                    to_append = to_append_append
+                    to_append = ("poly",to_append_append)
 
-
-            return True, to_append
+            return True, to_append, same_item
 
         else:
-            return False, None
+            return False, None, False
 
     except TypeError:
         logger.debug("except(build_mask_item) ... TypeError")
-        return False, None
+        return False, None, False
 
     except AttributeError:
         logger.debug(" except(build_mask_item) ... AttributeError")
-        return False, None
+        return False, None, False
 
 
 class ImgPainter(QWidget):
@@ -202,11 +206,20 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
 
-        emit_mask, to_append = build_mask_item(self)
+        emit_mask, to_append, same_item = build_mask_item(self)
+
+        print("\n to_append =", to_append)
 
         if emit_mask:
-            self.mask_items.append(to_append)
+            if same_item:
+                self.mask_items[-1] = to_append
+
+            else:
+                self.mask_items.append(to_append)
+
             self.ll_mask_applied.emit(self.mask_items)
+
+            print("\n NEW mask_items =", self.mask_items)
 
         elif self.my_parent.chk_box_B_centr.isChecked():
             pix_col = int(self.x_pos / self.my_scale)
@@ -578,7 +591,7 @@ class ImgPainter(QWidget):
                 )
 
             # Drawing current mask item
-            draw_mask_item, item = build_mask_item(self)
+            draw_mask_item, item, same_item = build_mask_item(self)
             if draw_mask_item:
                 try:
                     if item[0] == "rect":
