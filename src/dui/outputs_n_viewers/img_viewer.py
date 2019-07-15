@@ -580,6 +580,25 @@ class ImgPainter(QWidget):
                             item[1] * self.my_scale, item[2] * self.my_scale
                         )
                         painter.drawEllipse(q_center, r, r)
+
+                    elif item[0] == "poly":
+                        if len(item[1:]) >= 2:
+                            prev_tup = item[1]
+                            for posi in item[2:]:
+                                x1 = prev_tup[0]
+                                y1 = prev_tup[1]
+                                x2 = posi[0]
+                                y2 = posi[1]
+
+                                painter.drawLine(
+                                    x1 * self.my_scale,
+                                    y1 * self.my_scale,
+                                    x2 * self.my_scale,
+                                    y2 * self.my_scale
+                                )
+
+                                prev_tup = posi
+
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
