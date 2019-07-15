@@ -466,6 +466,15 @@ def build_mask_command_lst(mask_itm_lst):
                 + str(item[3])
             )
 
+        elif item[0] == "poly":
+            com_str = "untrusted.polygon="
+            for posi in item[1:]:
+                com_str += str(posi[0]) + "," + str(posi[1]) + ","
+
+            com_str = com_str[0:-1]
+
+            to_run1.append(com_str)
+            print("to_run1 =", to_run1)
 
     TODO = '''
     dials.generate_mask untrusted.polygon=1383,1361,2009,1361,2009,1767,1383,1767,1383,1361 input.datablock=1_datablock.json output.mask=2_mask.pickle
