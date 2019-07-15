@@ -208,8 +208,6 @@ class ImgPainter(QWidget):
 
         emit_mask, to_append, same_item = build_mask_item(self)
 
-        print("\n to_append =", to_append)
-
         if emit_mask:
             if same_item:
                 self.mask_items[-1] = to_append
@@ -219,7 +217,6 @@ class ImgPainter(QWidget):
 
             self.ll_mask_applied.emit(self.mask_items)
 
-            print("\n NEW mask_items =", self.mask_items)
 
         elif self.my_parent.chk_box_B_centr.isChecked():
             pix_col = int(self.x_pos / self.my_scale)

@@ -153,6 +153,27 @@ class BeamCentrPage(QWidget):
         self.update_command_lst_medium_level.emit(ml_lst_par)
 
 
+class InnerMask(QWidget):
+    def __init__(self, parent=None):
+        super(InnerMask, self).__init__(parent=None)
+
+        self.list_widg = QVBoxLayout()
+        self.list_widg.addWidget(QLabel(str("empty List ... for now")))
+        self.setLayout(self.list_widg)
+        self.show()
+
+    def update_cmd_lst(self, lst_par):
+
+        for i in reversed(range(self.list_widg.count())):
+            widgetToRemove = self.list_widg.itemAt(i).widget()
+            self.list_widg.removeWidget(widgetToRemove)
+            widgetToRemove.setParent(None)
+
+        for singl_com in lst_par[0]:
+            new_widg = QLabel(str(singl_com))
+            self.list_widg.addWidget(new_widg)
+
+
 class MaskPage(QWidget):
 
     update_command_lst_medium_level = Signal(list)
@@ -176,13 +197,14 @@ class MaskPage(QWidget):
         step_label = QLabel(str("Apply Mask"))
         step_label.setFont(label_font)
 
-        self.list_widg = QVBoxLayout()
-        self.list_widg.addWidget(QLabel(str("empty List ... for now")))
+
+        self.my_scroll_area = QScrollArea()
+        self.my_inner_widget = InnerMask()
+        self.my_scroll_area.setWidget(self.my_inner_widget)
 
         main_v_box.addWidget(step_label)
-        main_v_box.addStretch()
-        main_v_box.addLayout(self.list_widg)
-        main_v_box.addStretch()
+
+        main_v_box.addWidget(self.my_scroll_area)
 
         self.setLayout(main_v_box)
 
@@ -212,18 +234,8 @@ class MaskPage(QWidget):
         self.update_command_lst_medium_level.emit(lst_par[0])
 
     def update_widget_dat(self, lst_par):
-
-        for i in reversed(range(self.list_widg.count())):
-            widgetToRemove = self.list_widg.itemAt(i).widget()
-            self.list_widg.removeWidget(widgetToRemove)
-            widgetToRemove.setParent(None)
-
-        print("lst_par(MaskPage)", lst_par)
+        self.my_inner_widget.update_cmd_lst(lst_par)
         self.command_lst = lst_par
-        for singl_com in lst_par[0]:
-            new_widg = QLineEdit(self)
-            new_widg.setText(str(singl_com))
-            self.list_widg.addWidget(new_widg)
 
 
 class ExportPage(QWidget):
