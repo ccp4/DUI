@@ -157,9 +157,11 @@ class InnerMask(QWidget):
     def __init__(self, parent=None):
         super(InnerMask, self).__init__(parent=None)
 
+        self.outher_box = QVBoxLayout()
         self.list_widg = QVBoxLayout()
         self.list_widg.addWidget(QLabel(str("empty List ... for now")))
-        self.setLayout(self.list_widg)
+        self.outher_box.addLayout(self.list_widg)
+        self.setLayout(self.outher_box)
         self.show()
 
     def update_cmd_lst(self, lst_par):
@@ -199,17 +201,15 @@ class MaskPage(QWidget):
 
 
         self.my_scroll_area = QScrollArea()
-        self.my_inner_widget = InnerMask()
+        self.my_inner_widget = InnerMask(self)
         self.my_scroll_area.setWidget(self.my_inner_widget)
 
         main_v_box.addWidget(step_label)
-
         main_v_box.addWidget(self.my_scroll_area)
-
         self.setLayout(main_v_box)
 
-        self.show()
         self.my_widget = self
+        self.show()
 
     def gray_me_out(self):
         # self.something.setEnabled(False)
