@@ -201,19 +201,13 @@ class MaskPage(QWidget):
         step_label = QLabel(str("Apply Mask"))
         step_label.setFont(label_font)
 
-
         self.my_scroll_area = QScrollArea()
         self.my_scroll_area.setWidgetResizable(True)
         self.my_inner_widget = InnerMask(self)
         self.my_scroll_area.setWidget(self.my_inner_widget)
 
         main_v_box.addWidget(step_label)
-
-
-        ####################################################
         main_v_box.addWidget(self.my_scroll_area)
-        #main_v_box.addWidget(self.my_inner_widget)
-        ####################################################
 
         self.setLayout(main_v_box)
 
