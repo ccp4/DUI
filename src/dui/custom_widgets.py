@@ -160,7 +160,9 @@ class InnerMask(QWidget):
         self.outher_box = QVBoxLayout()
         self.list_widg = QVBoxLayout()
         self.list_widg.addWidget(QLabel(str("empty List ... for now")))
+        self.outher_box.addStretch()
         self.outher_box.addLayout(self.list_widg)
+        self.outher_box.addStretch()
         self.setLayout(self.outher_box)
         self.show()
 
@@ -200,13 +202,19 @@ class MaskPage(QWidget):
         step_label.setFont(label_font)
 
 
-        #self.my_scroll_area = QScrollArea()
+        self.my_scroll_area = QScrollArea()
+        self.my_scroll_area.setWidgetResizable(True)
         self.my_inner_widget = InnerMask(self)
-        #self.my_scroll_area.setWidget(self.my_inner_widget)
+        self.my_scroll_area.setWidget(self.my_inner_widget)
 
         main_v_box.addWidget(step_label)
-        #main_v_box.addWidget(self.my_scroll_area)
-        main_v_box.addWidget(self.my_inner_widget)
+
+
+        ####################################################
+        main_v_box.addWidget(self.my_scroll_area)
+        #main_v_box.addWidget(self.my_inner_widget)
+        ####################################################
+
         self.setLayout(main_v_box)
 
         self.my_widget = self
