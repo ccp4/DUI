@@ -614,8 +614,9 @@ class ExternalProcDialog(QDialog):
             A named output file was found. Signal is called with a list
             of full paths to the output files.
     """
-
+    to_remove = '''
     outputFileFound = Signal(list)
+    '''
 
     def __init__(self, parent=None):
         super(ExternalProcDialog, self).__init__(parent)
@@ -641,7 +642,10 @@ class ExternalProcDialog(QDialog):
         self.setWindowTitle("External Tool")
 
         self.my_process = None
+
+        to_remove = '''
         self.check_for = []
+        '''
 
     def run_my_proc(self, command, json_path, pickle_path, check_for=None):
         """Run a process.
@@ -680,6 +684,7 @@ class ExternalProcDialog(QDialog):
         # Save the working directory
         self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
+        to_remove = '''
         self.check_for = check_for or []
         # Store metadata about the files if they exist, to check if they changed
         self.check_file_status = {}
@@ -688,6 +693,7 @@ class ExternalProcDialog(QDialog):
             if os.path.exists(full_path):
                 logger.debug("File %s exists - collecting metadata", full_path)
                 self.check_file_status[check_file] = os.stat(full_path)
+        '''
 
         logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
@@ -706,23 +712,30 @@ class ExternalProcDialog(QDialog):
         logger.debug("self.kill_my_proc")
         kill_w_child(self.my_process.pid)
         self.my_process = None
+        to_remove = '''
         self._check_for_output_files()
+        '''
         self.done(0)
 
     def child_closed(self):
         """The child process has closed by itself"""
         logger.debug("after ...close()")
         self.my_process = None
+        to_remove = '''
         self._check_for_output_files()
+        '''
         # Just close ourself
         self.done(0)
 
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
         logger.debug("from << closeEvent  (QDialog) >>")
+        to_remove = '''
         self._check_for_output_files()
+        '''
         self.kill_my_proc()
 
+        to_remove = '''
     def _check_for_output_files(self):
         """Send out any signals about created or changed output files"""
         found_checks = []
@@ -753,11 +766,14 @@ class ExternalProcDialog(QDialog):
 
         if found_checks:
             self.outputFileFound.emit(found_checks)
+        '''
 
 
 class OuterCaller(QWidget):
 
+    to_remove = '''
     pass_parmam_lst = Signal(list)
+    '''
 
     def __init__(self):
         super(OuterCaller, self).__init__()
@@ -773,7 +789,11 @@ class OuterCaller(QWidget):
         v_box.addWidget(img_but)
 
         self.diag = ExternalProcDialog(parent=self.window())
+
+        to_remove = '''
         self.diag.outputFileFound.connect(self.check_for_phil)
+        '''
+
         self.setLayout(v_box)
         # self.show()
 
@@ -796,6 +816,8 @@ class OuterCaller(QWidget):
             check_for=["find_spots.phil", "mask.pickle"],
         )
 
+
+        to_remove = '''
     def check_for_phil(self, output_files):
         """Slot function triggered by new files created by external process"""
         logger.debug("Output files: %s", output_files)
@@ -813,6 +835,7 @@ class OuterCaller(QWidget):
                 self.pass_parmam_lst.emit(phil_parms)
             else:
                 logger.debug("Not sure how to handle %s", filename)
+        '''
 
 
 class CliOutView(QTextEdit):

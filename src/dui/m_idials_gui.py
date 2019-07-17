@@ -530,7 +530,9 @@ class MainWidget(QMainWindow):
         self.custom_thread.busy_box_on.connect(self.pop_busy_box)
         self.custom_thread.busy_box_off.connect(self.close_busy_box)
 
+        to_remove = '''
         self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
+        '''
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -630,6 +632,8 @@ class MainWidget(QMainWindow):
         self.view_tab_num = num
         update_info(self)
 
+
+        to_remove = '''
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
 
@@ -665,6 +669,7 @@ class MainWidget(QMainWindow):
                 "my_widget_now.my_widget.command_lst = %s",
                 current_parameter_widget.my_widget.command_lst,
             )
+        '''
 
     def update_low_level_command_lst(self, command_lst):
         self.idials_runner.current_node.ll_command_lst = command_lst
@@ -678,6 +683,7 @@ class MainWidget(QMainWindow):
             self.idials_runner.current_node.ll_command_lst = [[str(my_label)]]
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.reset_par()
 
+            to_remove = '''
             path_to_mask_pickle = None
             if self.idials_runner.current_node.ll_command_lst[0][0] == "integrate":
                 logger.debug("Running: try_find_prev_mask_pickle")
@@ -686,6 +692,7 @@ class MainWidget(QMainWindow):
                 )
                 if path_to_mask_pickle is not None:
                     self.pass_parmams(["lookup.mask=" + path_to_mask_pickle])
+            '''
 
             self.cmd_exe(["clean"])
 
