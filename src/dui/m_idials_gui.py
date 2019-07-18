@@ -799,8 +799,9 @@ class MainWidget(QMainWindow):
 
     def pop_busy_box(self, text_in_bar):
         logger.debug("OPENING busy bar with the text")
-        self.my_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
-        self.my_bar(5)
+        if self.idials_runner.current_node.ll_command_lst[0][0] != "refine_bravais_settings":
+            self.my_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
+            self.my_bar(5)
 
     def close_busy_box(self):
         logger.debug("trying to close busy pop")
