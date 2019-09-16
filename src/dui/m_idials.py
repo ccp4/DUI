@@ -137,7 +137,7 @@ class CommandNode(object):
                     fil_obj.close()
 
                 print("\n Done \n")
-                self.gen_repr_n_pred()
+                #self.gen_repr_n_pred()
 
             else:
                 print("\n NOT dials command")
@@ -166,6 +166,7 @@ class CommandNode(object):
                 logger.debug("can NOT fork <None> node ")
 
         self.info_generating = False
+        print("\n _________________________________________gen_repr_n_pred\n")
 
     def edit_list(self, cmd_lst):
         self.ll_command_lst = cmd_lst

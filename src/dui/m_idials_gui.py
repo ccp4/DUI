@@ -496,6 +496,7 @@ class MainWidget(QMainWindow):
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
         self.img_view.mask_applied.connect(self.pop_mask_list)
+        self.img_view.predic_changed.connect(self.tab_changed)
         self.img_view.bc_applied.connect(self.pop_b_centr_coord)
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
         self.centre_par_widget.click_mask.connect(self.img_view.chec_my_mask)
@@ -626,7 +627,9 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
         self.update_nav_tree()
 
-    def tab_changed(self, num):
+    def tab_changed(self, num = 0):
+        self.idials_runner.current_node.gen_repr_n_pred()
+
         self.view_tab_num = num
         update_info(self)
 

@@ -922,6 +922,7 @@ class MyImgWin(QWidget):
 
     mask_applied = Signal(list)
     bc_applied = Signal(list)
+    predic_changed = Signal()
 
     def __init__(self, json_file_path=None, pckl_file_path=None):
         super(MyImgWin, self).__init__()
@@ -975,7 +976,7 @@ class MyImgWin(QWidget):
         self.rad_but_fnd_hkl.setChecked(True)
         self.rad_but_fnd_hkl.clicked.connect(self.set_img)
         self.rad_but_pre_hkl = QCheckBox("Predictions")
-        self.rad_but_pre_hkl.clicked.connect(self.set_img)
+        self.rad_but_pre_hkl.clicked.connect(self.emit_predic_changed)
 
         # Mask tools
         self.btn_reset_mask = QPushButton("Reset")
@@ -1426,6 +1427,11 @@ class MyImgWin(QWidget):
             new_label_txt += " ,  resolution = ?"
 
         self.info_label.setText(new_label_txt)
+
+    def emit_predic_changed(self):
+        print("\n ______________________________emit_predic_changed \n")
+        self.predic_changed.emit()
+        self.set_img()
 
     def set_img(self):
         if self.my_sweep is not None:
