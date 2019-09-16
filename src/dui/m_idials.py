@@ -145,7 +145,7 @@ class CommandNode(object):
                     self.info_generating = True
                     try:
                         self.report_out = generate_report(self)
-                        self.predict_pickle_out = generate_predict(self)
+                        #self.predict_pickle_out = generate_predict(self)
 
                     except BaseException as e:
                         # We don't want to catch bare exceptions but don't know
