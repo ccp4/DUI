@@ -137,30 +137,33 @@ class CommandNode(object):
                     fil_obj.close()
 
                 print("\n Done \n")
-                if (
-                    self.success is True
-                    and self.cmd_lst_to_run[0] != "dials.refine_bravais_settings"
-                ):
-
-                    self.info_generating = True
-                    try:
-                        self.report_out = generate_report(self)
-                        self.predict_pickle_out = generate_predict(self)
-
-                    except BaseException as e:
-                        # We don't want to catch bare exceptions but don't know
-                        # what this was supposed to catch. Log it.
-                        logger.debug(
-                            "Caught unknown exception type %s: %s", type(e).__name__, e
-                        )
-                        logger.debug("can NOT fork <None> node ")
-
-                self.info_generating = False
+                self.gen_repr_n_pred()
 
             else:
                 print("\n NOT dials command")
                 print("cmd_lst =", cmd_lst, "\n")
                 self.success = False
+
+        self.info_generating = False
+
+    def gen_repr_n_pred(self):
+        if (
+            self.success is True
+            and self.cmd_lst_to_run[0] != "dials.refine_bravais_settings"
+        ):
+
+            self.info_generating = True
+            try:
+                self.report_out = generate_report(self)
+                self.predict_pickle_out = generate_predict(self)
+
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.debug(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
+                logger.debug("can NOT fork <None> node ")
 
         self.info_generating = False
 
