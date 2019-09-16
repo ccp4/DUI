@@ -1107,7 +1107,7 @@ class MyImgWin(QWidget):
             self.ini_datablock(json_file_path)
 
         if pckl_file_path:
-            self.ini_reflection_table(pckl_file_path)
+            self.set_reflection_table(pckl_file_path)
 
         else:
             logger.debug("No pickle file given")
@@ -1278,7 +1278,7 @@ class MyImgWin(QWidget):
 
 
 
-    def ini_reflection_table(self, pckl_file_path):
+    def set_reflection_table(self, pckl_file_path):
         if pckl_file_path[0] is not None:
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:

@@ -377,7 +377,6 @@ def update_info(main_obj):
 
     main_obj.cli_out.clear()
     main_obj.cli_out.make_green()
-
     main_obj.cur_log = new_log
     main_obj.cli_out.refresh_txt(join_path(main_obj.cur_log), tmp_curr)
 
@@ -394,8 +393,7 @@ def update_info(main_obj):
 
         if main_obj.cur_pick != new_ref_pikl:
             main_obj.cur_pick = new_ref_pikl
-            # main_obj.img_view.ini_reflection_table(main_obj.cur_pick)
-            main_obj.img_view.ini_reflection_table(
+            main_obj.img_view.set_reflection_table(
                 [join_path(main_obj.cur_pick[0]), join_path(main_obj.cur_pick[1])]
             )
 
@@ -422,8 +420,6 @@ def update_info(main_obj):
     except TypeError:
         xb, yb, n_pan_xb_yb = None, None, None
         print("\n xb, yb, n_pan_xb_yb = None, None, None \n")
-
-    # print("....................................... (X beam, Y beam) =", xb, yb)
 
     main_obj.img_view.update_beam_centre(xb, yb, n_pan_xb_yb)
     main_obj.img_view.update_mask(main_obj.info_widget.all_data.np_mask)
