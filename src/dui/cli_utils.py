@@ -485,7 +485,7 @@ def generate_predict(node_obj):
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     if node_obj.ll_command_lst[0][0] in node_obj.dials_com_lst[2:-1]:
         try:
-            logger.debug("running predictions START")
+            print("running predictions START")
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
             pre_fil = str(current_lin) + "_predict.pickle"
@@ -493,19 +493,24 @@ def generate_predict(node_obj):
             pred_cmd = "dials.predict " + str(exp_inp) + pred_outp
             logger.debug("predict command:  %s %s", pred_cmd, "\n\n")
 
-            gen_pred_proc = subprocess.Popen(pred_cmd, shell=True, cwd=cwd_path)
-            gen_pred_proc.wait()
-
             tst_path = os.path.join(cwd_path, pre_fil)
-            if os.path.exists(tst_path):
-                logger.debug("\ngenerated predictions at:  %s %s", tst_path, "\n")
-                pre_out = pre_fil
+            if not(os.path.exists(tst_path)):
+                gen_pred_proc = subprocess.Popen(pred_cmd, shell=True, cwd=cwd_path)
+                gen_pred_proc.wait()
+
+                if os.path.exists(tst_path):
+                    print("\ngenerated predictions at:  %s %s", tst_path, "\n")
+                    pre_out = pre_fil
+
+                else:
+                    print("\n path to predictions NOT generated")
+                    pre_out = None
 
             else:
-                logger.debug("\n path to predictions NOT generated")
-                pre_out = None
+                print("\n path to predictions ALREADY generated")
+                pre_out = pre_fil
 
-            logger.debug("running predictions END")
+            print("running predictions END")
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know

@@ -745,6 +745,7 @@ class MainWidget(QMainWindow):
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
+        self.idials_runner.current_node.gen_repr_n_pred()
         update_info(self)
 
         self.txt_bar.end_motion()
@@ -966,7 +967,10 @@ class MainWidget(QMainWindow):
             )
 
             self.check_reindex_pop()
+
+            self.idials_runner.current_node.gen_repr_n_pred()
             update_info(self)
+
             self.check_gray_outs()
             self.reconnect_when_ready()
 
@@ -986,6 +990,7 @@ class MainWidget(QMainWindow):
         )
 
         self.check_reindex_pop()
+        self.idials_runner.current_node.gen_repr_n_pred()
         update_info(self)
         self.check_gray_outs()
         self.reconnect_when_ready()
