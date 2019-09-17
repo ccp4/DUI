@@ -146,7 +146,7 @@ class CommandNode(object):
 
         self.info_generating = False
 
-    def gen_repr_n_pred(self):
+    def gen_repr_n_pred(self, to_run = None):
         if (
             self.success is True
             and self.cmd_lst_to_run[0] != "dials.refine_bravais_settings"
@@ -154,8 +154,11 @@ class CommandNode(object):
 
             self.info_generating = True
             try:
-                self.report_out = generate_report(self)
-                self.predict_pickle_out = generate_predict(self)
+                if to_run == "predict":
+                    self.predict_pickle_out = generate_predict(self)
+
+                elif to_run == "report":
+                    self.report_out = generate_report(self)
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know

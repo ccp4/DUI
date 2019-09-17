@@ -627,10 +627,21 @@ class MainWidget(QMainWindow):
         self.user_stoped = False
         self.update_nav_tree()
 
-    def tab_changed(self, num = 0):
-        self.idials_runner.current_node.gen_repr_n_pred()
+    def chouse_if_predict_or_report(self):
+        if (
+            self.view_tab_num == 0 and
+            self.img_view.rad_but_pre_hkl.checkState()
+        ):
+            self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
 
+        elif self.view_tab_num == 2:
+            self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
+
+
+    def tab_changed(self, num = 0):
         self.view_tab_num = num
+        self.chouse_if_predict_or_report()
+
         update_info(self)
 
     def pass_parmams(self, cmd_lst):
@@ -745,7 +756,7 @@ class MainWidget(QMainWindow):
         self.custom_thread(new_cmd, self.idials_runner)
 
     def update_after_finished(self):
-        self.idials_runner.current_node.gen_repr_n_pred()
+        self.chouse_if_predict_or_report()
         update_info(self)
 
         self.txt_bar.end_motion()
@@ -968,7 +979,7 @@ class MainWidget(QMainWindow):
 
             self.check_reindex_pop()
 
-            self.idials_runner.current_node.gen_repr_n_pred()
+            self.chouse_if_predict_or_report()
             update_info(self)
 
             self.check_gray_outs()
@@ -990,7 +1001,7 @@ class MainWidget(QMainWindow):
         )
 
         self.check_reindex_pop()
-        self.idials_runner.current_node.gen_repr_n_pred()
+        self.chouse_if_predict_or_report()
         update_info(self)
         self.check_gray_outs()
         self.reconnect_when_ready()

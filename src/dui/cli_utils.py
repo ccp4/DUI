@@ -527,7 +527,7 @@ def generate_report(node_obj):
     rep_out = None
 
     if node_obj.ll_command_lst[0][0] in node_obj.dials_com_lst[1:-1]:
-        logger.debug("running report START")
+        print("running report START")
         current_lin = node_obj.lin_num
         refl_inp = node_obj.refl_pickle_file_out
         deps_outp = "output.external_dependencies=local"
@@ -557,7 +557,7 @@ def generate_report(node_obj):
             gen_rep_proc.wait()
 
             rep_out = htm_fil
-            logger.debug("generated report at:  %s", rep_out)
+            print("generated report at:  %s", rep_out)
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
