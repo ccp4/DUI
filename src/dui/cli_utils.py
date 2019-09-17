@@ -503,11 +503,11 @@ def generate_predict(node_obj):
                     pre_out = pre_fil
 
                 else:
-                    print("\n path to predictions NOT generated")
+                    print("\n  predictions NOT generated")
                     pre_out = None
 
             else:
-                print("\n path to predictions ALREADY generated")
+                print("\n predictions ALREADY generated")
                 pre_out = pre_fil
 
             print("running predictions END")
@@ -525,6 +525,7 @@ def generate_predict(node_obj):
 def generate_report(node_obj):
 
     rep_out = None
+    cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
     if node_obj.ll_command_lst[0][0] in node_obj.dials_com_lst[1:-1]:
         print("running report START")
@@ -533,43 +534,50 @@ def generate_report(node_obj):
         deps_outp = "output.external_dependencies=local"
         htm_fil = str(current_lin) + "_report.html"
         html_outp = "output.html=" + htm_fil
-        if node_obj.ll_command_lst[0][0] == "find_spots":
-            rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
+
+        tst_path = os.path.join(cwd_path, htm_fil)
+        if  not(os.path.exists(tst_path)):
+            print("\n ___________________________ tst_path =", tst_path, "\n")
+            if node_obj.ll_command_lst[0][0] == "find_spots":
+                rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
+
+            else:
+                exp_inp = node_obj.json_file_out
+                rep_cmd = (
+                    "dials.report "
+                    + str(exp_inp)
+                    + " "
+                    + str(refl_inp)
+                    + " "
+                    + deps_outp
+                    + " "
+                    + html_outp
+                )
+
+            logger.debug("rep_cmd = %s", rep_cmd)
+
+            try:
+                cwd_path = os.path.join(sys_arg.directory, "dui_files")
+                gen_rep_proc = subprocess.Popen(rep_cmd, shell=True, cwd=cwd_path)
+                gen_rep_proc.wait()
+
+                rep_out = htm_fil
+                print("generated report at:  %s", rep_out)
+
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
+                rep_out = None
+                logger.debug("Someting went wrong in report level 2")
+
+            logger.debug("running report END")
 
         else:
-            exp_inp = node_obj.json_file_out
-            rep_cmd = (
-                "dials.report "
-                + str(exp_inp)
-                + " "
-                + str(refl_inp)
-                + " "
-                + deps_outp
-                + " "
-                + html_outp
-            )
-
-        logger.debug("rep_cmd = %s", rep_cmd)
-
-        try:
-            cwd_path = os.path.join(sys_arg.directory, "dui_files")
-            gen_rep_proc = subprocess.Popen(rep_cmd, shell=True, cwd=cwd_path)
-            gen_rep_proc.wait()
-
-            rep_out = htm_fil
-            print("generated report at:  %s", rep_out)
-
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            rep_out = None
-            logger.debug("Someting went wrong in report level 2")
-
-        logger.debug("running report END")
+            print("report ALREADY generated")
 
     else:
-        logger.debug("NO report needed for this step")
+        print("NO report needed for this step")
         rep_out = None
 
     return rep_out
