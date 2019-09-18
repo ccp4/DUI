@@ -575,6 +575,7 @@ def generate_report(node_obj):
 
         else:
             print("report ALREADY generated")
+            rep_out = htm_fil
 
     else:
         print("NO report needed for this step")
