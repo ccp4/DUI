@@ -632,15 +632,24 @@ class MainWidget(QMainWindow):
             self.view_tab_num == 0 and
             self.img_view.rad_but_pre_hkl.checkState()
         ):
-            #self.pop_busy_box(text_in_bar = "Generating Predictions")
+            self.pop_busy_box(text_in_bar = "Generating Predictions")
             self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
-            #self.close_busy_box()
+            self.close_busy_box()
 
         elif self.view_tab_num == 2:
-            #self.pop_busy_box(text_in_bar = "Generating Report")
-            self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
-            #self.close_busy_box()
+            '''
+            ##########################################################################
+            tmp_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
+            tmp_bar(5)
+            tmp_bar.ended()
+            ################################################################################
+            '''
 
+
+            tmp_bar = ProgBarBox(min_val=0, max_val=10, text="Generating Report")
+            tmp_bar(5)
+            self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
+            tmp_bar.ended()
 
     def tab_changed(self, num = 0):
         self.view_tab_num = num
@@ -817,21 +826,21 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
-        logger.debug("OPENING busy bar with the text")
+        print("OPENING busy pop bar with the text: ", text_in_bar)
         if self.idials_runner.current_node.ll_command_lst[0][0] != "refine_bravais_settings":
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
             self.my_bar(5)
 
     def close_busy_box(self):
-        logger.debug("trying to close busy pop")
+        print("trying to close busy pop bar")
         try:
             self.my_bar.ended()
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("Not able to close busy pop ... maybe never existed")
+            print("Caught unknown exception type %s: %s", type(e).__name__, e)
+            print("Not able to close busy pop ... maybe never existed")
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node

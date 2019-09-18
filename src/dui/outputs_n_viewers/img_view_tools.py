@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val=100, min_val=0, text="Working"):
         super(ProgBarBox, self).__init__(parent=None)
-        self.setMinimumDuration(500)
+        self.setMinimumDuration(50)
 
         if max_val > min_val:
             self.my_max = max_val
