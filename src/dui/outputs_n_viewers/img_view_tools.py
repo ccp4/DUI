@@ -48,10 +48,11 @@ class ProgBarBox(QProgressDialog):
         self.my_txt = text
 
         self.setLabelText(text)
-        self.setWindowTitle("updating")
+        self.setWindowTitle("updating GUI data")
         self.setCancelButtonText("")
         self.setWindowModality(Qt.WindowModal)
-        # self.show()
+        self.setValue(200)
+        self.show()
 
     def __call__(self, updated_val):
         prog_psent = float(updated_val - self.my_min) / self.my_delta
