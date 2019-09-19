@@ -138,7 +138,7 @@ class CommandThread(QThread):
 
     def pop_busy_box(self):
         logger.debug("emiting pop busy box signal")
-        self.busy_box_on.emit("Generating predictions and reports")
+        self.busy_box_on.emit("Getting Predictions or Report")
 
     def close_busy_box(self):
         logger.debug("emiting close busy box signal")
