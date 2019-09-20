@@ -646,19 +646,17 @@ class TmpTstWidget(QWidget):
         # self.param_widget_parent = self
 
         # my_widget = RefineSimplerParamTab(self)
-        my_widget = FindspotsSimplerParameterTab(self)
+        # my_widget = FindspotsSimplerParameterTab(self)
         # my_widget = SymmetrySimplerParamTab(self)
-        # my_widget = ScaleSimplerParamTab(self)
+        my_widget = ScaleSimplerParamTab(self)
 
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)
         self.setLayout(my_box)
 
-        # comment next line to avoid ugly pops at launch
-        #self.show()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = TmpTstWidget()
+    ex.show()
     sys.exit(app.exec_())

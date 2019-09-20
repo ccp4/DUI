@@ -360,8 +360,6 @@ class InfoWidget(QWidget):
 
         self.setLayout(my_main_box)
 
-        # comment next line to avoid ugly pops at launch
-        self.show()
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
         # TODO: Change interface of function to not recieve list including
@@ -375,6 +373,8 @@ class InfoWidget(QWidget):
                 pickle_to_read = refl_pikl_path[0]
             except ValueError:
                 pickle_to_read = None
+
+            print("experiments_path=", exp_json_path, "reflections_path=", pickle_to_read)
 
             self.all_data = update_all_data(
                 experiments_path=exp_json_path, reflections_path=pickle_to_read
@@ -456,6 +456,7 @@ if __name__ == "__main__":
     logger.debug("\n sys.argv(s) = %s %s %s", sys.argv[1], sys.argv[2], "\n")
     app = QApplication(sys.argv)
     ex = InfoWidget()
+    ex.show()
 
-    ex.update_data(sys.argv[1], sys.argv[2])
+    ex.update_data(sys.argv[1], [sys.argv[2]])
     sys.exit(app.exec_())

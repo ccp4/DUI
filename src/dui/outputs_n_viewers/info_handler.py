@@ -104,7 +104,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("Caught unknown exception type %s: %s", type(e).__name__, e)
+            print("Caught unknown exception type:", type(e).__name__, e, "N###")
 
             print("failed to find reflections")
             print("reflections_path = %s", reflections_path)

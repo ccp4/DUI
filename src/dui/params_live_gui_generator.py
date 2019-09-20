@@ -402,9 +402,6 @@ class TstTmpWidget(QWidget):
         my_box.addWidget(inner_widget)
         self.setLayout(my_box)
 
-        # comment next line to avoid ugly pops at launch
-        #self.show()
-
     def update_lin_txt(self, new_path, new_value):
         logger.debug("new_path = %s", new_path)
         logger.debug("new_value = %s", new_value)
@@ -414,4 +411,5 @@ class TstTmpWidget(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = TstTmpWidget(phil_scope)
+    ex.show()
     sys.exit(app.exec_())
