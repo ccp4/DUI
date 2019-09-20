@@ -40,6 +40,7 @@ from .qt import (
     QWidget,
     Signal,
 )
+
 from six.moves import range
 
 logger = logging.getLogger(__name__)
@@ -627,17 +628,17 @@ class TmpTstWidget(QWidget):
         super(TmpTstWidget, self).__init__()
         # self.param_widget_parent = self
 
-        my_widget = RefineSimplerParamTab(self)
-
-        # my_widget = FindspotsSimplerParameterTab(self)
+        # my_widget = RefineSimplerParamTab(self)
+        my_widget = FindspotsSimplerParameterTab(self)
         # my_widget = SymmetrySimplerParamTab(self)
         # my_widget = ScaleSimplerParamTab(self)
-        # my_widget = ExportSimplerParamTab(self)
 
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)
         self.setLayout(my_box)
-        # self.show()
+
+        # commemt next line to avoid ogly pops at launch
+        self.show()
 
 
 if __name__ == "__main__":
