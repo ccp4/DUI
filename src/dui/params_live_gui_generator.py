@@ -37,20 +37,35 @@ except ImportError:
     pass
 
 from dials.command_line.find_spots import phil_scope
+try:
+    from qt import (
+        QApplication,
+        QComboBox,
+        QDoubleSpinBox,
+        QFont,
+        QHBoxLayout,
+        QLabel,
+        QLineEdit,
+        QSpinBox,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
 
-from .qt import (
-    QApplication,
-    QComboBox,
-    QDoubleSpinBox,
-    QFont,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QSpinBox,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+except ImportError:
+    from .qt import (
+        QApplication,
+        QComboBox,
+        QDoubleSpinBox,
+        QFont,
+        QHBoxLayout,
+        QLabel,
+        QLineEdit,
+        QSpinBox,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -386,7 +401,9 @@ class TstTmpWidget(QWidget):
         my_box = QVBoxLayout()
         my_box.addWidget(inner_widget)
         self.setLayout(my_box)
-        # self.show()
+
+        # comment next line to avoid ugly pops at launch
+        self.show()
 
     def update_lin_txt(self, new_path, new_value):
         logger.debug("new_path = %s", new_path)

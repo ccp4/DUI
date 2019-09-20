@@ -836,11 +836,8 @@ class MainWidget(QMainWindow):
         try:
             self.my_bar.ended()
 
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            print("Caught unknown exception type %s: %s", type(e).__name__, e)
-            print("Not able to close busy pop ... maybe never existed")
+        except AttributeError:
+            print("no need to close busy pop bar")
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node

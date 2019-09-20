@@ -27,19 +27,36 @@ import sys
 
 import libtbx.introspection
 
-from .qt import (
-    QApplication,
-    QComboBox,
-    QDoubleSpinBox,
-    QHBoxLayout,
-    QLabel,
-    QLayout,
-    QPushButton,
-    QSpinBox,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+try:
+    from qt import (
+        QApplication,
+        QComboBox,
+        QDoubleSpinBox,
+        QHBoxLayout,
+        QLabel,
+        QLayout,
+        QPushButton,
+        QSpinBox,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
+except ImportError:
+    from .qt import (
+        QApplication,
+        QComboBox,
+        QDoubleSpinBox,
+        QHBoxLayout,
+        QLabel,
+        QLayout,
+        QPushButton,
+        QSpinBox,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
 
 from six.moves import range
 
@@ -637,7 +654,7 @@ class TmpTstWidget(QWidget):
         my_box.addWidget(my_widget)
         self.setLayout(my_box)
 
-        # commemt next line to avoid ogly pops at launch
+        # comment next line to avoid ugly pops at launch
         self.show()
 
 
