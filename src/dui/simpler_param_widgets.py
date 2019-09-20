@@ -655,7 +655,7 @@ class TmpTstWidget(QWidget):
         self.setLayout(my_box)
 
         # comment next line to avoid ugly pops at launch
-        self.show()
+        #self.show()
 
 
 if __name__ == "__main__":

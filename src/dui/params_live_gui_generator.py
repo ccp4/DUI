@@ -403,7 +403,7 @@ class TstTmpWidget(QWidget):
         self.setLayout(my_box)
 
         # comment next line to avoid ugly pops at launch
-        self.show()
+        #self.show()
 
     def update_lin_txt(self, new_path, new_value):
         logger.debug("new_path = %s", new_path)
