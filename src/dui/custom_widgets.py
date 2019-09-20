@@ -49,39 +49,74 @@ except ImportError:
     phil_scope_scale = libtbx.phil.parse("")
 
 # from dials.command_line.export import phil_scope as phil_scope_export
+try:
+    from gui_utils import get_import_run_string, get_main_path
+    from params_live_gui_generator import PhilWidget
+    from simpler_param_widgets import (
+        FindspotsSimplerParameterTab,
+        IndexSimplerParamTab,
+        RefineBravaiSimplerParamTab,
+        RefineSimplerParamTab,
+        IntegrateSimplerParamTab,
+        SymmetrySimplerParamTab,
+        ScaleSimplerParamTab,
+    )
+    from qt import (
+        QApplication,
+        QCheckBox,
+        QColor,
+        QFileDialog,
+        QFont,
+        QHBoxLayout,
+        QIcon,
+        QLabel,
+        QLineEdit,
+        QPalette,
+        QPushButton,
+        QScrollArea,
+        QSize,
+        QSpinBox,
+        QTabWidget,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
 
-from .gui_utils import get_import_run_string, get_main_path
-from .params_live_gui_generator import PhilWidget
-from .simpler_param_widgets import (
-    FindspotsSimplerParameterTab,
-    IndexSimplerParamTab,
-    RefineBravaiSimplerParamTab,
-    RefineSimplerParamTab,
-    IntegrateSimplerParamTab,
-    SymmetrySimplerParamTab,
-    ScaleSimplerParamTab,
-)
-from .qt import (
-    QApplication,
-    QCheckBox,
-    QColor,
-    QFileDialog,
-    QFont,
-    QHBoxLayout,
-    QIcon,
-    QLabel,
-    QLineEdit,
-    QPalette,
-    QPushButton,
-    QScrollArea,
-    QSize,
-    QSpinBox,
-    QTabWidget,
-    QTimer,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+except ImportError:
+    from .gui_utils import get_import_run_string, get_main_path
+    from .params_live_gui_generator import PhilWidget
+    from .simpler_param_widgets import (
+        FindspotsSimplerParameterTab,
+        IndexSimplerParamTab,
+        RefineBravaiSimplerParamTab,
+        RefineSimplerParamTab,
+        IntegrateSimplerParamTab,
+        SymmetrySimplerParamTab,
+        ScaleSimplerParamTab,
+    )
+    from .qt import (
+        QApplication,
+        QCheckBox,
+        QColor,
+        QFileDialog,
+        QFont,
+        QHBoxLayout,
+        QIcon,
+        QLabel,
+        QLineEdit,
+        QPalette,
+        QPushButton,
+        QScrollArea,
+        QSize,
+        QSpinBox,
+        QTabWidget,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
 from six.moves import range
 
 logger = logging.getLogger(__name__)
@@ -892,6 +927,8 @@ class ParamWidget(QWidget):
         v_left_box = QVBoxLayout()
         v_left_box.addWidget(self.my_widget)
         self.setLayout(v_left_box)
+
+        # comment next line to avoid ugly pops at launch
         # self.show()
 
     def update_param(self, curr_step):
@@ -903,14 +940,16 @@ class ParamWidget(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    ex = ParamWidget("import")
     # ex = ParamWidget("find_spots")
-    # ex = ParamWidget("integrate")
-    # ex = ParamWidget("import")
     # ex = ParamWidget("index")
     # ex = ParamWidget("refine")
     # ex = ParamWidget("integrate")
     # ex = ParamWidget("symmetry")
     # ex = ParamWidget("scale")
     # ex = ParamWidget("export")
-    ex = ParamWidget("export")
+
+    ex.show()
+
     sys.exit(app.exec_())

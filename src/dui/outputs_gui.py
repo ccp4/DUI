@@ -27,8 +27,14 @@ import sys
 
 from dxtbx.model.experiment_list import InvalidExperimentListError
 
-from .outputs_n_viewers.info_handler import update_all_data
-from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+try:
+    from outputs_n_viewers.info_handler import update_all_data
+    from qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+
+except ImportError:
+    from .outputs_n_viewers.info_handler import update_all_data
+    from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+
 
 logger = logging.getLogger(__name__)
 
@@ -353,7 +359,9 @@ class InfoWidget(QWidget):
         )
 
         self.setLayout(my_main_box)
-        # self.show()
+
+        # comment next line to avoid ugly pops at launch
+        self.show()
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
         # TODO: Change interface of function to not recieve list including
