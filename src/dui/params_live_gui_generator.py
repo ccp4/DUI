@@ -37,6 +37,7 @@ except ImportError:
     pass
 
 from dials.command_line.find_spots import phil_scope
+
 try:
     from qt import (
         QApplication,
@@ -67,8 +68,8 @@ except ImportError:
         Signal,
     )
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class ScopeData(object):
     """
@@ -143,7 +144,6 @@ class PhilWidget(QWidget):
         self.phil_list2gui(lst_phil_obj)
 
         self.setLayout(self.bg_box)
-        # self.show()
 
     def user_searching(self, value):
 
@@ -269,7 +269,6 @@ class PhilWidget(QWidget):
                     elif obj.type.phil_type == "bool":
 
                         tmp_widg = QComboBox()
-
                         tmp_widg.tmp_lst = []
                         tmp_widg.tmp_lst.append("True")
                         tmp_widg.tmp_lst.append("False")
