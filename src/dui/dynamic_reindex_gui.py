@@ -326,25 +326,32 @@ class ReindexTable(QTableWidget):
                 item.setFlags(Qt.ItemIsEnabled)
                 if col_cont == " Y":
                     item.setBackground(Qt.green)
-                    item.setTextColor(Qt.black)
+
+                    #item.setTextColor(Qt.black) # PyQt4
+                    item.setForeground(Qt.black)
+
                     self.rec_col = col + 1
 
                 elif col_cont == " N":
                     item.setBackground(Qt.red)
-                    item.setTextColor(Qt.black)
+                    #item.setTextColor(Qt.black) # PyQt4
+                    item.setForeground(Qt.black)
 
                 else:
                     if row == selected_pos:
                         item.setBackground(Qt.blue)
-                        item.setTextColor(Qt.yellow)
+                        #item.setTextColor(Qt.yellow) # PyQt4
+                        item.setForeground(Qt.yellow)
 
                     else:
                         if float(row) / 2.0 == int(float(row) / 2.0):
                             item.setBackground(QColor(50, 50, 50, 50))
+
                         else:
                             item.setBackground(Qt.white)
 
-                        item.setTextColor(Qt.black)
+                        #item.setTextColor(Qt.black) # PyQt4
+                        item.setForeground(Qt.black)
 
                 item.setFont(
                     QFont("Monospace", self.sys_font_point_size)
@@ -441,11 +448,17 @@ class MainWindow(QMainWindow):
     def doit(self):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
+        '''
         self.my_pop.set_ref(
             in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
              , lin_num = 4
         )
-        #self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
+        '''
+        self.my_pop.set_ref(
+            in_json_path="/tmp/dui_run/dui_files/bravais_summary.json"
+             , lin_num = 4
+        )
+
 
     def opt_picked(self, opt_num):
         logger.debug("\n from dynamic_reindex_gui.py MainWindow")
