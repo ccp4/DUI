@@ -31,49 +31,94 @@ from dxtbx.datablock import DataBlockFactory
 
 import numpy as np
 
-from ..cli_utils import sys_arg
-from ..gui_utils import get_main_path
-from .img_view_tools import (
-    panel_data_as_double,
-    build_qimg,
-    draw_palette_label,
-    find_hkl_near,
-    list_arrange,
-    list_p_arrange,
-)
-from ..qt import (
-    QApplication,
-    QButtonGroup,
-    QCheckBox,
-    QColor,
-    QComboBox,
-    QFont,
-    QGroupBox,
-    QHBoxLayout,
-    QIcon,
-    QIntValidator,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QPainter,
-    QPen,
-    QPixmap,
-    QImage,
-    QPoint,
-    QPointF,
-    QPushButton,
-    QRadioButton,
-    QRect,
-    QRectF,
-    QScrollArea,
-    QSlider,
-    QSpinBox,
-    Qt,
-    QTimer,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+try:
+    from dui.cli_utils import sys_arg
+    from dui.gui_utils import get_main_path
+    from dui.outputs_n_viewers.img_view_tools import (
+        panel_data_as_double,
+        build_qimg,
+        draw_palette_label,
+        find_hkl_near,
+        list_arrange,
+        list_p_arrange,
+    )
+    from dui.qt import (
+        QApplication,
+        QButtonGroup,
+        QCheckBox,
+        QColor,
+        QComboBox,
+        QFont,
+        QGroupBox,
+        QHBoxLayout,
+        QIcon,
+        QIntValidator,
+        QLabel,
+        QLineEdit,
+        QMenu,
+        QPainter,
+        QPen,
+        QPixmap,
+        QImage,
+        QPoint,
+        QPointF,
+        QPushButton,
+        QRadioButton,
+        QRect,
+        QRectF,
+        QScrollArea,
+        QSlider,
+        QSpinBox,
+        Qt,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+except ImportError:
+    from ..cli_utils import sys_arg
+    from ..gui_utils import get_main_path
+    from .img_view_tools import (
+        panel_data_as_double,
+        build_qimg,
+        draw_palette_label,
+        find_hkl_near,
+        list_arrange,
+        list_p_arrange,
+    )
+    from ..qt import (
+        QApplication,
+        QButtonGroup,
+        QCheckBox,
+        QColor,
+        QComboBox,
+        QFont,
+        QGroupBox,
+        QHBoxLayout,
+        QIcon,
+        QIntValidator,
+        QLabel,
+        QLineEdit,
+        QMenu,
+        QPainter,
+        QPen,
+        QPixmap,
+        QImage,
+        QPoint,
+        QPointF,
+        QPushButton,
+        QRadioButton,
+        QRect,
+        QRectF,
+        QScrollArea,
+        QSlider,
+        QSpinBox,
+        Qt,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
 from six.moves import range
 
 logger = logging.getLogger(__name__)
@@ -184,7 +229,6 @@ class ImgPainter(QWidget):
         self.img_width = 247
         self.img_height = 253
 
-        # self.show()
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
@@ -1158,7 +1202,6 @@ class MyImgWin(QWidget):
         my_box.addWidget(self.info_label)
 
         self.setLayout(my_box)
-        # self.show()
 
         # changing default palette:
 
@@ -1641,5 +1684,6 @@ if __name__ == "__main__":
     logger.debug("pckl_file_path = %s", pckl_file_path)
 
     diag = MyImgWin(img_path, [pckl_file_path, None])
+    diag.show()
     sys.exit(app.exec_())
     app.exec_()

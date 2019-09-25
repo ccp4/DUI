@@ -29,11 +29,15 @@ import numpy as np
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
-from ..qt import QImage, QProgressDialog, Qt
+try:
+    from dui.qt import QImage, QProgressDialog, Qt
+
+except ImportError:
+    from ..qt import QImage, QProgressDialog, Qt
+
 from six.moves import range
 
 logger = logging.getLogger(__name__)
-
 
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val=100, min_val=0, text="Working"):

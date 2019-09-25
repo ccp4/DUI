@@ -31,47 +31,93 @@ import time
 
 from six import raise_from
 
-from ._version import __version__
-from .dynamic_reindex_gui import MyReindexOpts
-from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
-from .gui_utils import (
-    CliOutView,
-    Text_w_Bar,
-    OuterCaller,
-    update_info,
-    update_pbar_msg,
-    kill_w_child,
-    TreeNavWidget,
-    ACTIONS,
-    MyActionButton,
-    try_find_prev_mask_pickle,
-    try_move_last_info,
-    get_main_path,
-)
-from .m_idials import Runner
-from .outputs_n_viewers.web_page_view import WebTab
-from .outputs_n_viewers.img_view_tools import ProgBarBox
-from .outputs_n_viewers.img_viewer import MyImgWin
-from .outputs_gui import InfoWidget
-from .qt import (
-    QHBoxLayout,
-    QIcon,
-    QMainWindow,
-    QModelIndex,
-    QPushButton,
-    QScrollArea,
-    QSize,
-    QSizePolicy,
-    QSplitter,
-    QStackedWidget,
-    Qt,
-    QTabWidget,
-    QThread,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+try:
+    from _version import __version__
+    from dynamic_reindex_gui import MyReindexOpts
+    from cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
+    from custom_widgets import ParamWidget, MaskPage, BeamCentrPage
+    from gui_utils import (
+        CliOutView,
+        Text_w_Bar,
+        OuterCaller,
+        update_info,
+        update_pbar_msg,
+        kill_w_child,
+        TreeNavWidget,
+        ACTIONS,
+        MyActionButton,
+        try_find_prev_mask_pickle,
+        try_move_last_info,
+        get_main_path,
+    )
+    from m_idials import Runner
+    from outputs_n_viewers.web_page_view import WebTab
+    from outputs_n_viewers.img_view_tools import ProgBarBox
+    from outputs_n_viewers.img_viewer import MyImgWin
+    from outputs_gui import InfoWidget
+    from qt import (
+        QHBoxLayout,
+        QIcon,
+        QMainWindow,
+        QModelIndex,
+        QPushButton,
+        QScrollArea,
+        QSize,
+        QSizePolicy,
+        QSplitter,
+        QStackedWidget,
+        Qt,
+        QTabWidget,
+        QThread,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
+
+except ImportError:
+    from ._version import __version__
+    from .dynamic_reindex_gui import MyReindexOpts
+    from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
+    from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
+    from .gui_utils import (
+        CliOutView,
+        Text_w_Bar,
+        OuterCaller,
+        update_info,
+        update_pbar_msg,
+        kill_w_child,
+        TreeNavWidget,
+        ACTIONS,
+        MyActionButton,
+        try_find_prev_mask_pickle,
+        try_move_last_info,
+        get_main_path,
+    )
+    from .m_idials import Runner
+    from .outputs_n_viewers.web_page_view import WebTab
+    from .outputs_n_viewers.img_view_tools import ProgBarBox
+    from .outputs_n_viewers.img_viewer import MyImgWin
+    from .outputs_gui import InfoWidget
+    from .qt import (
+        QHBoxLayout,
+        QIcon,
+        QMainWindow,
+        QModelIndex,
+        QPushButton,
+        QScrollArea,
+        QSize,
+        QSizePolicy,
+        QSplitter,
+        QStackedWidget,
+        Qt,
+        QTabWidget,
+        QThread,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
 
 logger = logging.getLogger(__name__)
 

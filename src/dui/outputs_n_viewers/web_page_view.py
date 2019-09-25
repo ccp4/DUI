@@ -4,20 +4,34 @@ import logging
 import os
 import sys
 
-from .img_view_tools import ProgBarBox
-from ..qt import (
-    QApplication,
-    QHBoxLayout,
-    QPushButton,
-    QUrl,
-    QVBoxLayout,
-    QWebSettings,
-    QWebView,
-    QWidget,
-)
+
+try:
+    from dui.outputs_n_viewers.img_view_tools import ProgBarBox
+    from dui.qt import (
+        QApplication,
+        QHBoxLayout,
+        QPushButton,
+        QUrl,
+        QVBoxLayout,
+        QWebSettings,
+        QWebView,
+        QWidget,
+    )
+
+except ImportError:
+    from .img_view_tools import ProgBarBox
+    from ..qt import (
+        QApplication,
+        QHBoxLayout,
+        QPushButton,
+        QUrl,
+        QVBoxLayout,
+        QWebSettings,
+        QWebView,
+        QWidget,
+    )
 
 logger = logging.getLogger(__name__)
-
 
 class WebTab(QWidget):
     def __init__(self):
@@ -45,7 +59,6 @@ class WebTab(QWidget):
         hbox = QHBoxLayout()
         hbox.addWidget(self.web)
         self.setLayout(hbox)
-        # self.show()
 
     def update_page(self, new_path=None):
         try:
@@ -90,7 +103,6 @@ class TmpTstWidget(QWidget):
         my_box.addWidget(self.my_widget)
         my_box.addWidget(self.btn1)
         self.setLayout(my_box)
-        # self.show()
 
     def load_page(self):
         self.my_widget.update_page(sys.argv[1])
@@ -99,4 +111,5 @@ class TmpTstWidget(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = TmpTstWidget()
+    ex.show()
     sys.exit(app.exec_())

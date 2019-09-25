@@ -443,12 +443,6 @@ class MainWindow(QMainWindow):
     def doit(self):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
-        '''
-        self.my_pop.set_ref(
-            in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
-             , lin_num = 4
-        )
-        '''
         self.my_pop.set_ref(
             in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
              , lin_num = 4

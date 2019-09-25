@@ -40,11 +40,13 @@ from dials.command_line.integrate import phil_scope as phil_scope_integrate
 # still runs. This isn't generally robust but solves this specifically
 try:
     from dials.command_line.symmetry import phil_scope as phil_scope_symetry
+
 except ImportError:
     phil_scope_symetry = libtbx.phil.parse("")
 
 try:
     from dials.command_line.scale import phil_scope as phil_scope_scale
+
 except ImportError:
     phil_scope_scale = libtbx.phil.parse("")
 
