@@ -326,21 +326,17 @@ class ReindexTable(QTableWidget):
                 item.setFlags(Qt.ItemIsEnabled)
                 if col_cont == " Y":
                     item.setBackground(Qt.green)
-
-                    #item.setTextColor(Qt.black) # PyQt4
                     item.setForeground(Qt.black)
 
                     self.rec_col = col + 1
 
                 elif col_cont == " N":
                     item.setBackground(Qt.red)
-                    #item.setTextColor(Qt.black) # PyQt4
                     item.setForeground(Qt.black)
 
                 else:
                     if row == selected_pos:
                         item.setBackground(Qt.blue)
-                        #item.setTextColor(Qt.yellow) # PyQt4
                         item.setForeground(Qt.yellow)
 
                     else:
@@ -350,7 +346,6 @@ class ReindexTable(QTableWidget):
                         else:
                             item.setBackground(Qt.white)
 
-                        #item.setTextColor(Qt.black) # PyQt4
                         item.setForeground(Qt.black)
 
                 item.setFont(
