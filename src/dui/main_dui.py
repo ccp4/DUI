@@ -88,16 +88,9 @@ def main():
 
     # Inline import so that we can load this after logging setup
 
-    #try:
-    from qt import QApplication, QStyleFactory
-    from m_idials_gui import MainWidget, DUIDataLoadingError
-    from gui_utils import loading_error_dialog
-    '''
-    except ImportError:
-        from .qt import QApplication, QStyleFactory
-        from .m_idials_gui import MainWidget, DUIDataLoadingError
-        from .gui_utils import loading_error_dialog
-    '''
+    from .qt import QApplication, QStyleFactory
+    from .m_idials_gui import MainWidget, DUIDataLoadingError
+    from .gui_utils import loading_error_dialog
 
     app = QApplication(sys.argv)
     logger.debug(

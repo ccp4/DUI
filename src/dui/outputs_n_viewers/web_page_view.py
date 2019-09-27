@@ -5,19 +5,20 @@ import os
 import sys
 
 
-try:
-    from dui.outputs_n_viewers.img_view_tools import ProgBarBox
-    from dui.qt import (
-        QApplication,
-        QHBoxLayout,
-        QPushButton,
-        QUrl,
-        QVBoxLayout,
-        QWebSettings,
-        QWebView,
-        QWidget,
-    )
+#try:
+from dui.outputs_n_viewers.img_view_tools import ProgBarBox
+from dui.qt import (
+    QApplication,
+    QHBoxLayout,
+    QPushButton,
+    QUrl,
+    QVBoxLayout,
+    QWebSettings,
+    QWebView,
+    QWidget,
+)
 
+'''
 except ImportError:
     from .img_view_tools import ProgBarBox
     from ..qt import (
@@ -30,7 +31,7 @@ except ImportError:
         QWebView,
         QWidget,
     )
-
+'''
 logger = logging.getLogger(__name__)
 
 class WebTab(QWidget):
