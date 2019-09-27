@@ -35,6 +35,7 @@ import psutil
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
 try:
     from cli_utils import get_next_step, sys_arg, get_phil_par
+    print("here 1")
     from qt import (
         QDialog,
         QFont,
@@ -56,8 +57,10 @@ try:
         QTreeView,
         QVBoxLayout,
         QWidget,
+    )
+    print("here 2")
+    from qt import (
         Signal,
-        uic,
     )
 
 except ImportError:
@@ -84,7 +87,6 @@ except ImportError:
         QVBoxLayout,
         QWidget,
         Signal,
-        uic,
     )
 
 
@@ -938,6 +940,7 @@ class Text_w_Bar(QProgressBar):
 
 def loading_error_dialog(message):
     """Create an error message about loading in a dialog box."""
+    from .qt import uic
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
     dialog = uic.loadUi(dialog_filename)
     dialog.errorMessage.setPlainText(message)

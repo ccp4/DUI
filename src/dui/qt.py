@@ -30,7 +30,7 @@ try:
     # In case we're using pytest-qt, force the same API
     os.environ["PYTEST_QT_API"] = "pyqt5"
 
-    logger.info("Using PyQt5 for QT")
+    print("Using PyQt5 for QT")
 
 except ImportError:
     # Fallback to QT4
@@ -62,17 +62,32 @@ except ImportError:
         # In case we're using pytest-qt, force the same API
         os.environ["PYTEST_QT_API"] = "pyqt4v2"
 
-        logger.info("Using PyQt4 for QT")
+        print("Using PyQt4 for QT")
 
     except ImportError:
-        # Backup: try PySide
-        from PySide.QtGui import *
-        from PySide.QtCore import *
-        from PySide.QtWebKit import *
-        from PySide import uic
+        # Tying both versions of PySide
+        try:
+            # Backup: try PySide
+            from PySide.QtGui import *
+            from PySide.QtCore import *
+            from PySide.QtWebKit import *
+            #from PySide import uic
 
-        QT5 = False
-        # In case we're using pytest-qt, force the same API
-        os.environ["PYTEST_QT_API"] = "pyside"
+            QT5 = False
+            # In case we're using pytest-qt, force the same API
+            os.environ["PYTEST_QT_API"] = "pyside"
 
-        logger.info("Using PySide for QT")
+            print("Using PySide for QT")
+        except ImportError:
+            # Backup: try PySide
+            print("Try pyside2")
+            from PySide2.QtGui import *
+            from PySide2.QtCore import *
+            from PySide2.QtWidgets import *
+            #from PySide2.QtWebKit import *
+
+            QT5 = True
+            # In case we're using pytest-qt, force the same API
+            os.environ["PYTEST_QT_API"] = "pyside2"
+
+            print("Using PySide2 for QT")
