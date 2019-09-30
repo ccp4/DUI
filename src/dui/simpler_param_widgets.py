@@ -645,10 +645,10 @@ class TmpTstWidget(QWidget):
         super(TmpTstWidget, self).__init__()
         # self.param_widget_parent = self
 
-        # my_widget = RefineSimplerParamTab(self)
+        my_widget = RefineSimplerParamTab(self)
         # my_widget = FindspotsSimplerParameterTab(self)
         # my_widget = SymmetrySimplerParamTab(self)
-        my_widget = ScaleSimplerParamTab(self)
+        # my_widget = ScaleSimplerParamTab(self)
 
         my_box = QVBoxLayout()
         my_box.addWidget(my_widget)

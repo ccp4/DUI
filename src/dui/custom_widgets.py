@@ -943,14 +943,14 @@ class ParamWidget(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    ex = ParamWidget("import")
+    # ex = ParamWidget("import")
     # ex = ParamWidget("find_spots")
     # ex = ParamWidget("index")
     # ex = ParamWidget("refine")
     # ex = ParamWidget("integrate")
     # ex = ParamWidget("symmetry")
-    # ex = ParamWidget("scale")
-    # ex = ParamWidget("export")
+    # ex = ParamWidget("scale")  # someting hapen with the Advanced parameters
+    ex = ParamWidget("export")
 
     ex.show()
 
