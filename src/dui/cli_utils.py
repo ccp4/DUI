@@ -206,39 +206,53 @@ def build_command_lst(node_obj, cmd_lst):
     run_path = sys_arg.directory + os.sep + "dui_files"
 
     if cmd_lst_ini == "import":
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + node_obj.json_file_out
+        # dials.import /scratch/dui_test/only_9_img/X4_wide_M1S4_2_*.cbf
+        # output.experiments=1_experiment.expt output.log=1_import.log
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiment.expt"
+        output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
+
+        obsolette = '''
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         lst_inner.append(output_str)
+        '''
         #####################################################################
         # TODO make sure import without arguments does NOT run
         #####################################################################
 
+
     elif cmd_lst_ini == "find_spots":
+
+        # dials.find_spots spotfinder.mp.nproc=8 input.experiments=1_experiment.expt
+        # output.experiments=2_experiment.expt output.reflections=2_reflections.refl
+        # output.log=2_find_spots.log
+
         json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
+        input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + node_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiment.expt"
+        output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
-        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.refl"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
+
+        obsolette = '''
         node_obj.debug_log_file_out = (
             str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
         )
         output_str = "output.debug_log=" + node_obj.debug_log_file_out
         lst_inner.append(output_str)
+        '''
 
     elif cmd_lst_ini == "index":
         json_file_in = node_obj.prev_step.json_file_out
