@@ -339,6 +339,10 @@ def get_import_run_string(in_str_lst):
     if template is None:
         # Unable to collapse?? Just pass through all filenames as <name>
         # and trust dials to process
+        print("in_str_lst", in_str_lst)
+        print("os.path.dirname(in_str_lst[0]) : ", os.path.dirname(str(in_str_lst[0])))
+        print("in_str_lst : ", in_str_lst)
+
         return os.path.dirname(in_str_lst[0]), " ".join(in_str_lst)
 
     dirname = os.path.dirname(template)

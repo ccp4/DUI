@@ -504,9 +504,14 @@ class ImportPage(QWidget):
         self.put_str_lin()
 
     def open_files(self):
-        lst_file_path = QFileDialog.getOpenFileNames(
+        tmp_lst_file_path = QFileDialog.getOpenFileNames(
             self, "Open File(s)", self.defa_dir, "All Files (*.*)"
         )
+        print("tmp_lst_file_path", tmp_lst_file_path)
+        lst_file_path = []
+        for tmp_str in tmp_lst_file_path[0]:
+            print("tmp_str:", tmp_str)
+            lst_file_path.append(str(tmp_str))
 
         if len(lst_file_path) > 0:
             new_dir, new_command = get_import_run_string(lst_file_path)
