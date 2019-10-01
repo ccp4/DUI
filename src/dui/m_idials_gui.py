@@ -221,7 +221,7 @@ class ControlWidget(QWidget):
         super(ControlWidget, self).__init__()
 
         top_box = QVBoxLayout()
-        top_box.setMargin(0)
+        #top_box.setMargin(0)
         top_box.setContentsMargins(0, 0, 0, 0)
 
         self.step_param_widg = QStackedWidget()

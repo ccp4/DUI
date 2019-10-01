@@ -37,11 +37,12 @@ logger = logging.getLogger(__name__)
 class WebTab(QWidget):
     def __init__(self):
         super(WebTab, self).__init__()
-
+        tmp_off = '''
         logger.debug(
             " QWebSettings.JavascriptEnabled = %s", QWebSettings.JavascriptEnabled
         )
         QWebSettings.JavascriptEnabled = True
+        '''
 
         self.dummy_html = """<html>
             <head>
