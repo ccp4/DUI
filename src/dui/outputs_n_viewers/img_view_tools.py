@@ -23,6 +23,7 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
+import sys
 
 import numpy as np
 
@@ -30,7 +31,8 @@ from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
 try:
-    from dui.qt import QImage, QProgressDialog, Qt
+    sys.path.append('../')
+    from qt import QImage, QProgressDialog, Qt
 
 except ImportError:
     from ..qt import QImage, QProgressDialog, Qt
