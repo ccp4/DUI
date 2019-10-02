@@ -1236,37 +1236,45 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("Unable to calculate mean and adjust contrast")
+                print("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
+        from dxtbx.model.experiment_list import ExperimentListFactory
         if json_file_path is not None:
             try:
+                print("Here 01")
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
                 n_json_file_path = os.path.join(cwd_path, json_file_path)
-
+                print("Here 02")
+                '''
                 datablocks = DataBlockFactory.from_json_file(n_json_file_path)
                 # TODO check length of datablock for safety
                 datablock = datablocks[0]
-                self.my_sweep = datablock.extract_sweeps()[0]
+                print("Here 03")
+                '''
+                experiments = ExperimentListFactory.from_json_file(n_json_file_path)
+                self.my_sweep = experiments.imagesets()[0]
+                ###########################################################
+                #self.my_sweep = datablock.extract_sweeps()[0]
                 self.img_select.clear()
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("Failed to load images from  datablock.json")
+                print("Failed to load images from  datablock.json")
 
             try:
-                logger.debug(
+                print(
                     "self.my_sweep.get_array_range() = %s",
                     self.my_sweep.get_array_range(),
                 )
                 n_of_imgs = len(self.my_sweep.indices())
-                logger.debug("n_of_imgs = %s", n_of_imgs)
+                print("n_of_imgs = %s", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1280,10 +1288,10 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("Failed to set up IMG control dialog")
+                print("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
         self.ini_contrast()
