@@ -84,8 +84,11 @@ except ImportError:
             from PySide2.QtGui import *
             from PySide2.QtCore import *
             from PySide2.QtWidgets import *
-            from PySide2 import QtWebEngineWidgets as QWebSettings
-            from PySide2.QtWebEngineWidgets import *
+            from PySide2.QtWebKit import *
+
+            #from PySide2 import QtWebEngineWidgets as QWebSettings
+            #from PySide2.QtWebEngineWidgets import *
+
             #QWebSettings = PySide2.QtWebEngineWidgets
             #from PySide2.QtWebKit import *
 

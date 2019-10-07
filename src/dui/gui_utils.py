@@ -33,36 +33,36 @@ import subprocess
 import psutil
 
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
-try:
-    from cli_utils import get_next_step, sys_arg, get_phil_par
-    print("here 1")
-    from qt import (
-        QDialog,
-        QFont,
-        QHeaderView,
-        QIcon,
-        QLabel,
-        QProgressBar,
-        QPushButton,
-        QSize,
-        QSizePolicy,
-        QStandardItem,
-        QStandardItemModel,
-        QStyleFactory,
-        Qt,
-        QT5,
-        QTextEdit,
-        QThread,
-        QToolButton,
-        QTreeView,
-        QVBoxLayout,
-        QWidget,
-    )
-    print("here 2")
-    from qt import (
-        Signal,
-    )
-
+#try:
+from cli_utils import get_next_step, sys_arg, get_phil_par
+print("here 1")
+from qt import (
+    QDialog,
+    QFont,
+    QHeaderView,
+    QIcon,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QSize,
+    QSizePolicy,
+    QStandardItem,
+    QStandardItemModel,
+    QStyleFactory,
+    Qt,
+    QT5,
+    QTextEdit,
+    QThread,
+    QToolButton,
+    QTreeView,
+    QVBoxLayout,
+    QWidget,
+)
+print("here 2")
+from qt import (
+    Signal,
+)
+'''
 except ImportError:
     from .cli_utils import get_next_step, sys_arg, get_phil_par
     from .qt import (
@@ -88,7 +88,7 @@ except ImportError:
         QWidget,
         Signal,
     )
-
+'''
 
 from six.moves import range
 

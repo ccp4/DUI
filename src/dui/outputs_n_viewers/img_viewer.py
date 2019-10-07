@@ -30,56 +30,56 @@ from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
 import numpy as np
-try:
-    sys.path.append('../')
-    print("Hi ... TEST 01")
-    from cli_utils import sys_arg
-    print("Hi ... TEST 02")
-    from gui_utils import get_main_path
-    print("Hi ... TEST 03")
-    from outputs_n_viewers.img_view_tools import (
-        panel_data_as_double,
-        build_qimg,
-        draw_palette_label,
-        find_hkl_near,
-        list_arrange,
-        list_p_arrange,
-    )
-    print("Hi ... TEST 04")
-    from qt import (
-        QApplication,
-        QButtonGroup,
-        QCheckBox,
-        QColor,
-        QComboBox,
-        QFont,
-        QGroupBox,
-        QHBoxLayout,
-        QIcon,
-        QIntValidator,
-        QLabel,
-        QLineEdit,
-        QMenu,
-        QPainter,
-        QPen,
-        QPixmap,
-        QImage,
-        QPoint,
-        QPointF,
-        QPushButton,
-        QRadioButton,
-        QRect,
-        QRectF,
-        QScrollArea,
-        QSlider,
-        QSpinBox,
-        Qt,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
+#try:
+sys.path.append('../')
+print("Hi ... TEST 01")
+from cli_utils import sys_arg
+print("Hi ... TEST 02")
+from gui_utils import get_main_path
+print("Hi ... TEST 03")
+from outputs_n_viewers.img_view_tools import (
+    panel_data_as_double,
+    build_qimg,
+    draw_palette_label,
+    find_hkl_near,
+    list_arrange,
+    list_p_arrange,
+)
+print("Hi ... TEST 04")
+from qt import (
+    QApplication,
+    QButtonGroup,
+    QCheckBox,
+    QColor,
+    QComboBox,
+    QFont,
+    QGroupBox,
+    QHBoxLayout,
+    QIcon,
+    QIntValidator,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QPainter,
+    QPen,
+    QPixmap,
+    QImage,
+    QPoint,
+    QPointF,
+    QPushButton,
+    QRadioButton,
+    QRect,
+    QRectF,
+    QScrollArea,
+    QSlider,
+    QSpinBox,
+    Qt,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
+'''
 except ImportError:
     from ..cli_utils import sys_arg
     from ..gui_utils import get_main_path
@@ -124,7 +124,7 @@ except ImportError:
         QWidget,
         Signal,
     )
-
+'''
 
 from six.moves import range
 
