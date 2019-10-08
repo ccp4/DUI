@@ -373,6 +373,7 @@ class Runner(object):
         try:
             ref_pkl = tmp_cur.refl_pickle_file_out
             pre_pkl = tmp_cur.predict_pickle_out
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.

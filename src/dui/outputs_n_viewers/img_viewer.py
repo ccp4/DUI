@@ -1342,7 +1342,7 @@ class MyImgWin(QWidget):
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:
 
-                table = flex.reflection_table.from_pickle(pckl_file_path[0])
+                table = flex.reflection_table.from_file(pckl_file_path[0])
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
@@ -1367,7 +1367,7 @@ class MyImgWin(QWidget):
                     )
 
                 else:
-                    logger.debug("empty IMG lst")
+                    print("empty IMG lst")
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
@@ -1380,7 +1380,7 @@ class MyImgWin(QWidget):
 
                 print("pckl_file_path[1]=", pckl_file_path[1])
 
-                table = flex.reflection_table.from_pickle(pckl_file_path[1])
+                table = flex.reflection_table.from_file(pckl_file_path[1])
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))

@@ -88,23 +88,30 @@ def update_all_data(reflections_path=None, experiments_path=None):
     if reflections_path is not None:
 
         try:
-            refl_tabl = flex.reflection_table.from_pickle(reflections_path)
+            print("\nreflections_path: ", reflections_path, "\n")
+            refl_tabl = flex.reflection_table.from_file(reflections_path)
+            print("Here 1")
             dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
+            print("Here 2")
             dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
+            print("Here 3")
             dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(
                 True
             )
+            print("Here 4")
             dat.n_integ_sum = refl_tabl.get_flags(refl_tabl.flags.integrated_sum).count(
                 True
             )
+            print("Here 5")
             dat.n_integ_prf = refl_tabl.get_flags(refl_tabl.flags.integrated_prf).count(
                 True
             )
+            print("Here 6")
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("Caught unknown exception type:", type(e).__name__, e, "N###")
+            print(" >> Caught unknown exception type:", type(e).__name__, e, "N###")
 
             print("failed to find reflections")
             print("reflections_path = %s", reflections_path)

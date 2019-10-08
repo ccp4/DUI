@@ -215,17 +215,9 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
 
-        obsolette = '''
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
-        '''
         #####################################################################
         # TODO make sure import without arguments does NOT run
         #####################################################################
-
 
     elif cmd_lst_ini == "find_spots":
 
@@ -236,35 +228,6 @@ def build_command_lst(node_obj, cmd_lst):
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
-        node_obj.json_file_out = str(node_obj.lin_num) + "_experiment.expt"
-        output_str = "output.experiments=" + node_obj.json_file_out
-        lst_inner.append(output_str)
-        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.refl"
-        output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        lst_inner.append(output_str)
-        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
-        output_str = "output.log=" + node_obj.log_file_out
-        lst_inner.append(output_str)
-
-        obsolette = '''
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
-        '''
-
-    elif cmd_lst_ini == "index":
-        # dials.index input.experiments=2_experiment.expt input.reflections=2_reflections.refl
-        # output.experiments=3_experiments.expt output.reflections=3_reflections.refl output.log=3_index.log
-
-        json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.experiments=" + json_file_in
-        lst_inner.append(input_str)
-
-        pickle_file_in = node_obj.prev_step.refl_pickle_file_out
-        input_str = "input.reflections=" + pickle_file_in
-        lst_inner.append(input_str)
         node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
         output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
@@ -274,14 +237,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
-
-        obsolette = '''
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
-        '''
 
     elif cmd_lst_ini == "refine_bravais_settings":
         # dials.refine_bravais_settings input.experiments=3_experiments.expt
@@ -306,14 +261,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
-
-        obsolette = '''
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
-        '''
 
     elif cmd_lst_ini == "reindex":
 
@@ -358,7 +305,8 @@ def build_command_lst(node_obj, cmd_lst):
         lst_inner.append(output_str)
 
     elif (
-        cmd_lst_ini == "refine"
+        cmd_lst_ini == "index"
+        or cmd_lst_ini == "refine"
         or cmd_lst_ini == "integrate"
         or cmd_lst_ini == "scale"
         or cmd_lst_ini == "symmetry"
@@ -383,20 +331,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
-
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-
-        obsolette = '''
-        if cmd_lst_ini == "scale":
-            output_str = "output.debug.log=" + node_obj.debug_log_file_out
-
-        else:
-            output_str = "output.debug_log=" + node_obj.debug_log_file_out
-
-        lst_inner.append(output_str)
-        '''
 
         if cmd_lst_ini == "symmetry":
 
