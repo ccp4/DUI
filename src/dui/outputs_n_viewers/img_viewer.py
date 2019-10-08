@@ -1336,7 +1336,6 @@ class MyImgWin(QWidget):
         '''
 
 
-
     def set_reflection_table(self, pckl_file_path):
         if pckl_file_path[0] is not None:
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])

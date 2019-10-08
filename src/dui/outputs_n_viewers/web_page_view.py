@@ -64,15 +64,15 @@ class WebTab(QWidget):
 
     def update_page(self, new_path=None):
         try:
-            logger.debug("\n >> update_page( %s )", new_path)
+            print("\n >> update_page( %s )", new_path)
             new_path = os.path.abspath(new_path)
 
             # new_path = "file://" + new_path # unix way
             new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
-            logger.debug(" >> new_path: %s", new_path)
+            print(" >> new_path: %s", new_path)
             self.web.load(QUrl(new_path))
 
-            logger.debug(" Loading  %s", new_path)
+            print(" Loading  %s", new_path)
 
             txt_lab = "updating Report view:"
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
@@ -81,15 +81,19 @@ class WebTab(QWidget):
         except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            logger.debug("\n failed to show << %s >>  on web view (%s)", new_path, e)
+            print("\n failed to show <<", new_path,  ">>  on web view (",e,")")
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
-        logger.debug("HTML Load(ok) = %s", ok_bool)
+        print("HTML Load(ok) = %s", ok_bool)
+        tmp_off = '''
         if not ok_bool:
             self.web.setHtml(self.dummy_html)
+        '''
 
-        logger.debug(" finished Loading HTML ")
+        self.web.show()
+        print(" finished Loading HTML ")
+
         if self.my_bar is not None:
             self.my_bar.ended()
 
@@ -104,10 +108,12 @@ class TmpTstWidget(QWidget):
         my_box = QVBoxLayout()
         my_box.addWidget(self.my_widget)
         my_box.addWidget(self.btn1)
+        self.npos = 1
         self.setLayout(my_box)
 
     def load_page(self):
-        self.my_widget.update_page(sys.argv[1])
+        self.my_widget.update_page(sys.argv[self.npos])
+        self.npos += 1
 
 
 if __name__ == "__main__":
