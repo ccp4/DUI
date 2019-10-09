@@ -29,6 +29,11 @@ import os
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
+from dials.algorithms.image.threshold import DispersionThresholdDebug
+from dxtbx.model.experiment_list import ExperimentListFactory
+import pickle
+
+
 import numpy as np
 
 from ..cli_utils import sys_arg
@@ -918,6 +923,60 @@ class PopBigMenu(QMenu):
         self.show()
 
 
+class Test:
+
+    def __init__(self):
+        self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
+        datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
+        # TODO check length of datablock for safety
+        datablock = datablocks[0]
+        my_sweep = datablock.extract_sweeps()[0]
+        self.image = my_sweep.get_raw_data(0)[0].as_double()
+
+
+    def set_mask(self):
+        experiments = ExperimentListFactory.from_json_file(
+                        self.n_json_file_path, check_format=False
+                    )
+
+        self.imageset = experiments.imagesets()[0]
+        mask_file = self.imageset.external_lookup.mask.filename
+
+        pick_file = open(mask_file, "rb")
+        mask_tup_obj = pickle.load(pick_file)
+        pick_file.close()
+
+        self.mask = mask_tup_obj[0]
+
+    def set_pars(self):
+        self.gain = 0.5
+        self.size = (3, 3)
+        self.nsig_b = 3
+        self.nsig_s = 3
+        self.global_threshold = 0
+        self.min_count = 2
+
+    def test_dispersion_debug(self):
+        from dials.algorithms.image.threshold import DispersionThresholdDebug
+
+        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
+
+        debug = DispersionThresholdDebug(
+            self.image,
+            self.mask,
+            self.gain_map,
+            self.size,
+            self.nsig_b,
+            self.nsig_s,
+            self.global_threshold,
+            self.min_count,
+        )
+
+        return debug
+
+
+
+
 class MyImgWin(QWidget):
 
     mask_applied = Signal(list)
@@ -1151,18 +1210,73 @@ class MyImgWin(QWidget):
         top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
+        self.btn_set_image = QPushButton("Image")
+        self.btn_set_varia = QPushButton("Variance")
+
+        self.btn_set_varia.clicked.connect(self.set_variance_img)
+
         my_box = QVBoxLayout()
         my_box.setMargin(0)
         my_box.addLayout(top_hbox)
+
+        '''
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
+        bot_hbox = QHBoxLayout()
+        bot_hbox.addWidget(self.btn_set_image)
+        bot_hbox.addWidget(self.btn_set_varia)
+        my_box.addLayout(bot_hbox)
+
+        #'''
+        bot_hbox = QVBoxLayout()
+        bot_hbox.addWidget(self.btn_set_image)
+        bot_hbox.addWidget(self.btn_set_varia)
+        vbig_box = QHBoxLayout()
+        vbig_box.addWidget(self.my_scrollable)
+        vbig_box.addLayout(bot_hbox)
+        my_box.addLayout(vbig_box)
+        my_box.addWidget(self.info_label)
+        #'''
 
         self.setLayout(my_box)
-        # self.show()
+
 
         # changing default palette:
 
         self.palette_select.setCurrentIndex(3)
+
+    def set_variance_img(self):
+
+        print("\n set_variance_img  01 \n")
+
+        test1 = Test()
+        test1.set_mask()
+        test1.set_pars()
+
+        self.debug_data = test1.test_dispersion_debug()
+
+        self.img_arr = self.debug_data.variance()
+
+        print("\n set_variance_img  02 \n")
+
+        self.my_painter.set_img_pix(
+            q_img=self.current_qimg(
+                self.img_arr, self.palette, self.i_min, self.i_max
+            ),
+            obs_flat_data_in=self.find_spt_flat_data_lst[
+                self.img_num - 1 : self.img_num
+            ],
+            pre_flat_data_in=self.pred_spt_flat_data_lst[
+                self.img_num - 1 : self.img_num
+            ],
+            user_choice_in=(
+                self.rad_but_fnd_hkl.checkState(),
+                self.rad_but_pre_hkl.checkState(),
+            ),
+        )
+
+        print("\n set_variance_img  02 \n")
+
 
     def ini_contrast(self):
         if not self.contrast_initiated:
