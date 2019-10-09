@@ -27,23 +27,46 @@ import json
 import logging
 import sys
 import os
-from .cli_utils import sys_arg
 
-from .qt import (
-    QApplication,
-    QColor,
-    QFont,
-    QHBoxLayout,
-    QLabel,
-    QMainWindow,
-    QPushButton,
-    Qt,
-    QTableWidget,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+try:
+    from cli_utils import sys_arg
+
+    from qt import (
+        QApplication,
+        QColor,
+        QFont,
+        QHBoxLayout,
+        QLabel,
+        QMainWindow,
+        QPushButton,
+        Qt,
+        QTableWidget,
+        QTableWidgetItem,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
+except ImportError:
+    from .cli_utils import sys_arg
+
+    from .qt import (
+        QApplication,
+        QColor,
+        QFont,
+        QHBoxLayout,
+        QLabel,
+        QMainWindow,
+        QPushButton,
+        Qt,
+        QTableWidget,
+        QTableWidgetItem,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
+
 from six.moves import range
 
 logger = logging.getLogger(__name__)
@@ -419,9 +442,10 @@ class MainWindow(QMainWindow):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
         self.my_pop.set_ref(
-            in_json_path="../tests_n_old_versions/json_data_for_testing/X4_wide_bravais_summary.json"  # noqa
+            in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
+             , lin_num = 4
         )
-        # self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
+        #self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
 
     def opt_picked(self, opt_num):
         logger.debug("\n from dynamic_reindex_gui.py MainWindow")
