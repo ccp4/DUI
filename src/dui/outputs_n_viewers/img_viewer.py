@@ -1210,33 +1210,26 @@ class MyImgWin(QWidget):
         top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
+        '''
         self.btn_set_image = QPushButton("Image")
         self.btn_set_varia = QPushButton("Variance")
 
         self.btn_set_varia.clicked.connect(self.set_variance_img)
+        self.btn_set_image.clicked.connect(self.set_img_img)
+
+        bot_hbox = QHBoxLayout()
+        bot_hbox.addWidget(self.btn_set_image)
+        bot_hbox.addWidget(self.btn_set_varia)
+        '''
+
 
         my_box = QVBoxLayout()
         my_box.setMargin(0)
         my_box.addLayout(top_hbox)
 
-        '''
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
-        bot_hbox = QHBoxLayout()
-        bot_hbox.addWidget(self.btn_set_image)
-        bot_hbox.addWidget(self.btn_set_varia)
-        my_box.addLayout(bot_hbox)
 
-        #'''
-        bot_hbox = QVBoxLayout()
-        bot_hbox.addWidget(self.btn_set_image)
-        bot_hbox.addWidget(self.btn_set_varia)
-        vbig_box = QHBoxLayout()
-        vbig_box.addWidget(self.my_scrollable)
-        vbig_box.addLayout(bot_hbox)
-        my_box.addLayout(vbig_box)
-        my_box.addWidget(self.info_label)
-        #'''
 
         self.setLayout(my_box)
 
@@ -1244,6 +1237,10 @@ class MyImgWin(QWidget):
         # changing default palette:
 
         self.palette_select.setCurrentIndex(3)
+
+    def set_img_img(self):
+
+        print("\n set_img_img  01 \n")
 
     def set_variance_img(self):
 
