@@ -486,13 +486,15 @@ class MainWidget(QMainWindow):
         self.web_view = WebTab()
         self.img_view = MyImgWin()
         self.ext_view = OuterCaller()
+        self.info_widget = InfoWidget()
 
         self.output_info_tabs = QTabWidget()
         self.output_info_tabs.addTab(self.img_view, "Image")
         self.output_info_tabs.addTab(self.cli_out, "Log")
         self.output_info_tabs.addTab(self.web_view, "Report")
         self.output_info_tabs.addTab(self.ext_view, "Tools")
-        #self.output_info_tabs.addTab(QWidget(), "Experiment")
+        self.output_info_tabs.addTab(self.info_widget, "Experiment")
+
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
@@ -504,15 +506,9 @@ class MainWidget(QMainWindow):
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
 
-        self.info_widget = InfoWidget()
-
-        InfoScrollArea = QScrollArea()
-        InfoScrollArea.setWidget(self.info_widget)
-
         v_info_splitter = QSplitter()
         v_info_splitter.setOrientation(Qt.Vertical)
         v_info_splitter.addWidget(self.output_info_tabs)
-        v_info_splitter.addWidget(InfoScrollArea)
 
         h_main_splitter.addWidget(v_info_splitter)
 
