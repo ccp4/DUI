@@ -757,6 +757,88 @@ class ImgPainter(QWidget):
         painter.end()
 
 
+
+class PopMaskMenu(QMenu):
+
+    def __init__(self, parent=None):
+        super(PopMaskMenu, self).__init__(parent)
+        self.my_parent = parent
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
+
+        info_grp = QGroupBox()
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poly_mask)
+
+        ref_bond_group_box_layout.addWidget(self.my_parent.btn_reset_mask)
+
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(info_grp)
+        my_box.addWidget(self.my_parent.chk_box_B_centr)
+
+        self.setLayout(my_box)
+        self.show()
+
+
+class Test:
+
+    def __init__(self):
+        self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
+        datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
+        # TODO check length of datablock for safety
+        datablock = datablocks[0]
+        my_sweep = datablock.extract_sweeps()[0]
+        self.image = my_sweep.get_raw_data(0)[0].as_double()
+
+    def set_mask(self):
+        experiments = ExperimentListFactory.from_json_file(
+                        self.n_json_file_path, check_format=False
+                    )
+
+        self.imageset = experiments.imagesets()[0]
+        mask_file = self.imageset.external_lookup.mask.filename
+
+        pick_file = open(mask_file, "rb")
+        mask_tup_obj = pickle.load(pick_file)
+        pick_file.close()
+
+        self.mask = mask_tup_obj[0]
+
+    def set_pars(self):
+        self.gain = 0.5
+        self.size = (3, 3)
+        self.nsig_b = 3
+        self.nsig_s = 3
+        self.global_threshold = 0
+        self.min_count = 2
+
+    def test_dispersion_debug(self):
+        from dials.algorithms.image.threshold import DispersionThresholdDebug
+
+        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
+
+        debug = DispersionThresholdDebug(
+            self.image,
+            self.mask,
+            self.gain_map,
+            self.size,
+            self.nsig_b,
+            self.nsig_s,
+            self.global_threshold,
+            self.min_count,
+        )
+
+        return debug
+
+
 class PopPaletteMenu(QMenu):
 
     sliders_changed = Signal(int, int)
@@ -809,9 +891,6 @@ class PopPaletteMenu(QMenu):
         )
 
 
-        ##############################################################################################
-
-
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
@@ -841,14 +920,8 @@ class PopPaletteMenu(QMenu):
         img_select_group_box = QGroupBox("IMG Navigation")
         img_select_group_box.setLayout(img_select_box)
 
-        #my_box = QVBoxLayout()
         main_layout.addWidget(info_grp)
         main_layout.addWidget(img_select_group_box)
-
-        #self.setLayout(my_box)
-
-
-        ##############################################################################################
 
         self.setLayout(main_layout)
         self.show()
@@ -889,134 +962,6 @@ class PopPaletteMenu(QMenu):
         self.sliders_changed.emit(
             int(self.my_parent.slider_max.sliderPosition()), int(value)
         )
-
-
-class PopMaskMenu(QMenu):
-
-    def __init__(self, parent=None):
-        super(PopMaskMenu, self).__init__(parent)
-        self.my_parent = parent
-
-        ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
-        ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
-        ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
-
-        info_grp = QGroupBox()
-        ref_bond_group_box_layout = QVBoxLayout()
-        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poly_mask)
-
-        ref_bond_group_box_layout.addWidget(self.my_parent.btn_reset_mask)
-
-        info_grp.setLayout(ref_bond_group_box_layout)
-
-        my_box = QVBoxLayout()
-        my_box.addWidget(info_grp)
-        my_box.addWidget(self.my_parent.chk_box_B_centr)
-
-        self.setLayout(my_box)
-        self.show()
-
-'''
-class PopBigMenu(QMenu):
-
-    sliders_changed = Signal(int, int)
-
-    def __init__(self, parent=None):
-        super(PopBigMenu, self).__init__(parent)
-        self.my_parent = parent
-
-        ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
-        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
-        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
-
-        info_grp = QGroupBox("Reflection Info ")
-        ref_bond_group_box_layout = QVBoxLayout()
-        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
-
-        info_grp.setLayout(ref_bond_group_box_layout)
-
-        mid_top_box = QHBoxLayout()
-        mid_top_box.addWidget(QLabel("Image Jump Step"))
-        mid_top_box.addWidget(self.my_parent.img_step)
-
-        mid_bot_box = QHBoxLayout()
-        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
-        mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
-
-        img_select_box = QVBoxLayout()
-        img_select_box.addLayout(mid_top_box)
-        img_select_box.addLayout(mid_bot_box)
-
-        img_select_group_box = QGroupBox("IMG Navigation")
-        img_select_group_box.setLayout(img_select_box)
-
-        my_box = QVBoxLayout()
-        my_box.addWidget(info_grp)
-        my_box.addWidget(img_select_group_box)
-
-        self.setLayout(my_box)
-        self.show()
-'''
-
-class Test:
-
-    def __init__(self):
-        self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
-        datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
-        # TODO check length of datablock for safety
-        datablock = datablocks[0]
-        my_sweep = datablock.extract_sweeps()[0]
-        self.image = my_sweep.get_raw_data(0)[0].as_double()
-
-
-    def set_mask(self):
-        experiments = ExperimentListFactory.from_json_file(
-                        self.n_json_file_path, check_format=False
-                    )
-
-        self.imageset = experiments.imagesets()[0]
-        mask_file = self.imageset.external_lookup.mask.filename
-
-        pick_file = open(mask_file, "rb")
-        mask_tup_obj = pickle.load(pick_file)
-        pick_file.close()
-
-        self.mask = mask_tup_obj[0]
-
-    def set_pars(self):
-        self.gain = 0.5
-        self.size = (3, 3)
-        self.nsig_b = 3
-        self.nsig_s = 3
-        self.global_threshold = 0
-        self.min_count = 2
-
-    def test_dispersion_debug(self):
-        from dials.algorithms.image.threshold import DispersionThresholdDebug
-
-        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
-
-        debug = DispersionThresholdDebug(
-            self.image,
-            self.mask,
-            self.gain_map,
-            self.size,
-            self.nsig_b,
-            self.nsig_s,
-            self.global_threshold,
-            self.min_count,
-        )
-
-        return debug
-
 
 
 
@@ -1159,10 +1104,6 @@ class MyImgWin(QWidget):
 
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
-
-        #big_menu_but = QPushButton("Viewing Tools")
-        #pop_big_menu = PopBigMenu(self)
-        #big_menu_but.setMenu(pop_big_menu)
 
         palette_menu_but = QPushButton("Palette Tuning")
         pop_palette_menu = PopPaletteMenu(self)
