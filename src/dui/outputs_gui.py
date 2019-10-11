@@ -341,15 +341,19 @@ class InfoWidget(QWidget):
         detec_v_layout.addStretch()
         detec_group.setLayout(detec_v_layout)
 
-        inner_main_box = QHBoxLayout()
-        inner_main_box.addWidget(beam_group)
-        inner_main_box.addWidget(cell_group)
-        inner_main_box.addWidget(scan_group)
-        inner_main_box.addWidget(detec_group)
-        inner_main_box.addStretch()
+        top_main_box = QHBoxLayout()
+        top_main_box.addWidget(beam_group)
+        top_main_box.addWidget(cell_group)
+        #inner_main_box.addStretch()
+
+        bot_main_box = QHBoxLayout()
+        bot_main_box.addWidget(scan_group)
+        bot_main_box.addWidget(detec_group)
+        #inner_main_box.addStretch()
+
         my_main_box = QVBoxLayout()
-        my_main_box.addLayout(inner_main_box)
-        # my_main_box.addStretch()
+        my_main_box.addLayout(top_main_box)
+        my_main_box.addLayout(bot_main_box)
 
         self.my_json_path = None
         self.my_pikl_path = None
