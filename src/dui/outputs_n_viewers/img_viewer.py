@@ -846,7 +846,7 @@ class PopPaletteMenu(QMenu):
     def __init__(self, parent=None):
         super(PopPaletteMenu, self).__init__(parent)
         self.my_parent = parent
-
+        palette_grp = QGroupBox("Palette Tuning")
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
         colour_box.addWidget(self.my_parent.min_i_edit)
@@ -863,33 +863,31 @@ class PopPaletteMenu(QMenu):
         self.my_parent.slider_max.setMaximum(499)
         self.my_parent.slider_max.valueChanged[int].connect(self.slider_max_changed)
 
-        main_layout = QVBoxLayout()
+        palette_layout = QVBoxLayout()
 
         slider_max_Hlayout = QHBoxLayout()
         slider_max_Hlayout.addWidget(QLabel(" "))  # Left side margin
         slider_max_Hlayout.addWidget(self.my_parent.slider_max)
         slider_max_Hlayout.addWidget(QLabel(" "))  # Right side margin
-        main_layout.addLayout(slider_max_Hlayout)
+        palette_layout.addLayout(slider_max_Hlayout)
 
         palette_Hlayout = QHBoxLayout()
         palette_Hlayout.addWidget(QLabel("   "))  # Left side margin
         palette_Hlayout.addWidget(self.my_parent.palette_label)
         palette_Hlayout.addWidget(QLabel("   "))  # Right side margin
-        main_layout.addLayout(palette_Hlayout)
+        palette_layout.addLayout(palette_Hlayout)
 
         slider_min_Hlayout = QHBoxLayout()
         slider_min_Hlayout.addWidget(QLabel(" "))  # Left side margin
         slider_min_Hlayout.addWidget(self.my_parent.slider_min)
         slider_min_Hlayout.addWidget(QLabel(" "))  # Right side margin
-        main_layout.addLayout(slider_min_Hlayout)
+        palette_layout.addLayout(slider_min_Hlayout)
 
-        main_layout.addWidget(self.my_parent.slider_min)
-        main_layout.addLayout(colour_box)
+        palette_layout.addWidget(self.my_parent.slider_min)
+        palette_layout.addLayout(colour_box)
+        palette_grp.setLayout(palette_layout)
 
-        logger.debug(
-            "...geometry().width() = %s", self.my_parent.slider_min.geometry().width()
-        )
-
+        ###############################################################
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
@@ -904,6 +902,8 @@ class PopPaletteMenu(QMenu):
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
 
         info_grp.setLayout(ref_bond_group_box_layout)
+
+        ################################################################
 
         mid_top_box = QHBoxLayout()
         mid_top_box.addWidget(QLabel("Image Jump Step"))
@@ -920,6 +920,8 @@ class PopPaletteMenu(QMenu):
         img_select_group_box = QGroupBox("IMG Navigation")
         img_select_group_box.setLayout(img_select_box)
 
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(palette_grp)
         main_layout.addWidget(info_grp)
         main_layout.addWidget(img_select_group_box)
 
@@ -1105,7 +1107,7 @@ class MyImgWin(QWidget):
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
 
-        palette_menu_but = QPushButton("Palette Tuning")
+        palette_menu_but = QPushButton("Image Viewing")
         pop_palette_menu = PopPaletteMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
