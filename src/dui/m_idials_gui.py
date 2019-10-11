@@ -488,10 +488,11 @@ class MainWidget(QMainWindow):
         self.ext_view = OuterCaller()
 
         self.output_info_tabs = QTabWidget()
-        self.output_info_tabs.addTab(self.img_view, "Image View")
-        self.output_info_tabs.addTab(self.cli_out, "Log Text")
-        self.output_info_tabs.addTab(self.web_view, "Report View")
-        self.output_info_tabs.addTab(self.ext_view, "External Tools")
+        self.output_info_tabs.addTab(self.img_view, "Image")
+        self.output_info_tabs.addTab(self.cli_out, "Log")
+        self.output_info_tabs.addTab(self.web_view, "Report")
+        self.output_info_tabs.addTab(self.ext_view, "Tools")
+        #self.output_info_tabs.addTab(QWidget(), "Experiment")
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
