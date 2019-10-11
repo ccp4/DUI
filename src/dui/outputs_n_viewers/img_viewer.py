@@ -807,6 +807,49 @@ class PopPaletteMenu(QMenu):
         logger.debug(
             "...geometry().width() = %s", self.my_parent.slider_min.geometry().width()
         )
+
+
+        ##############################################################################################
+
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
+
+        info_grp = QGroupBox("Reflection Info ")
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
+
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        mid_top_box = QHBoxLayout()
+        mid_top_box.addWidget(QLabel("Image Jump Step"))
+        mid_top_box.addWidget(self.my_parent.img_step)
+
+        mid_bot_box = QHBoxLayout()
+        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
+        mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
+
+        img_select_box = QVBoxLayout()
+        img_select_box.addLayout(mid_top_box)
+        img_select_box.addLayout(mid_bot_box)
+
+        img_select_group_box = QGroupBox("IMG Navigation")
+        img_select_group_box.setLayout(img_select_box)
+
+        #my_box = QVBoxLayout()
+        main_layout.addWidget(info_grp)
+        main_layout.addWidget(img_select_group_box)
+
+        #self.setLayout(my_box)
+
+
+        ##############################################################################################
+
         self.setLayout(main_layout)
         self.show()
 
@@ -877,7 +920,7 @@ class PopMaskMenu(QMenu):
         self.setLayout(my_box)
         self.show()
 
-
+'''
 class PopBigMenu(QMenu):
 
     sliders_changed = Signal(int, int)
@@ -921,7 +964,7 @@ class PopBigMenu(QMenu):
 
         self.setLayout(my_box)
         self.show()
-
+'''
 
 class Test:
 
@@ -1117,9 +1160,9 @@ class MyImgWin(QWidget):
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
 
-        big_menu_but = QPushButton("Viewing Tools")
-        pop_big_menu = PopBigMenu(self)
-        big_menu_but.setMenu(pop_big_menu)
+        #big_menu_but = QPushButton("Viewing Tools")
+        #pop_big_menu = PopBigMenu(self)
+        #big_menu_but.setMenu(pop_big_menu)
 
         palette_menu_but = QPushButton("Palette Tuning")
         pop_palette_menu = PopPaletteMenu(self)
@@ -1185,7 +1228,7 @@ class MyImgWin(QWidget):
         top_box = QHBoxLayout()
         top_box.setMargin(0)
         top_box.addWidget(palette_menu_but)
-        top_box.addWidget(big_menu_but)
+        #top_box.addWidget(big_menu_but)
         top_box.addWidget(mask_menu_but)
 
         mid_box = QHBoxLayout()
