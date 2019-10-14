@@ -29,11 +29,27 @@ from dxtbx.model.experiment_list import InvalidExperimentListError
 
 try:
     from outputs_n_viewers.info_handler import update_all_data
-    from qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+    from qt import (
+        QApplication,
+        QGroupBox,
+        QHBoxLayout,
+        QLabel,
+        QVBoxLayout,
+        QWidget,
+        QScrollArea
+        )
 
 except ImportError:
     from .outputs_n_viewers.info_handler import update_all_data
-    from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+    from .qt import (
+        QApplication,
+        QGroupBox,
+        QHBoxLayout,
+        QLabel,
+        QVBoxLayout,
+        QWidget,
+        QScrollArea
+        )
 
 
 logger = logging.getLogger(__name__)
@@ -347,16 +363,16 @@ class InfoWidget(QWidget):
         left_big_box = QVBoxLayout()
         left_big_box.addWidget(beam_group)
         left_big_box.addWidget(scan_group)
-        #left_big_box.addStretch()
+        left_big_box.addStretch()
 
         right_big_box = QVBoxLayout()
         right_big_box.addWidget(detec_group)
         right_big_box.addWidget(cell_group)
-        #right_big_box.addStretch()
+        right_big_box.addStretch()
 
-        main_box = QHBoxLayout()
-        main_box.addLayout(left_big_box)
-        main_box.addLayout(right_big_box)
+        inner_main_h_box = QHBoxLayout()
+        inner_main_h_box.addLayout(left_big_box)
+        inner_main_h_box.addLayout(right_big_box)
 
         self.my_json_path = None
         self.my_pikl_path = None
@@ -365,7 +381,15 @@ class InfoWidget(QWidget):
             exp_json_path=self.my_json_path, refl_pikl_path=self.my_pikl_path
         )
 
-        self.setLayout(main_box)
+        self.my_scrollable = QScrollArea()
+        tmp_widget = QWidget()
+        tmp_widget.setLayout(inner_main_h_box)
+        self.my_scrollable.setWidget(tmp_widget)
+
+        main_v_box = QVBoxLayout()
+        main_v_box.addWidget(self.my_scrollable)
+
+        self.setLayout(main_v_box)
 
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
