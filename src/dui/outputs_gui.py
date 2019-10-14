@@ -100,7 +100,7 @@ class InfoWidget(QWidget):
         bm_v_layout.addWidget(w_lambda_label)
         self.w_lambda_data = QLabel(empty_str)
         bm_v_layout.addWidget(self.w_lambda_data)
-        bm_v_layout.addWidget(QLabel("  "))
+        #bm_v_layout.addWidget(QLabel("  "))
 
         #bm_v_layout.addStretch()
         beam_group.setLayout(bm_v_layout)
@@ -286,9 +286,11 @@ class InfoWidget(QWidget):
 
         # detec_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel(" Distance (mm)")
-        detec_v_layout.addWidget(d_dist_label)
         self.d_dist_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.d_dist_data)
+        d_dist_hbox = QHBoxLayout()
+        d_dist_hbox.addWidget(d_dist_label)
+        d_dist_hbox.addWidget(self.d_dist_data)
+        detec_v_layout.addLayout(d_dist_hbox)
 
         # detec_v_layout.addWidget(QLabel("  "))
         n_pans_label = QLabel(" Number of Panels ")
@@ -337,23 +339,24 @@ class InfoWidget(QWidget):
 
         detec_v_layout.addLayout(px_h_layout)
 
-        detec_v_layout.addWidget(QLabel("  "))
+        #detec_v_layout.addWidget(QLabel("  "))
         #detec_v_layout.addStretch()
+
         detec_group.setLayout(detec_v_layout)
 
-        top_main_box = QVBoxLayout()
-        top_main_box.addWidget(beam_group)
-        top_main_box.addWidget(cell_group)
-        #inner_main_box.addStretch()
+        left_big_box = QVBoxLayout()
+        left_big_box.addWidget(beam_group)
+        left_big_box.addWidget(scan_group)
+        #left_big_box.addStretch()
 
-        bot_main_box = QVBoxLayout()
-        bot_main_box.addWidget(scan_group)
-        bot_main_box.addWidget(detec_group)
-        #inner_main_box.addStretch()
+        right_big_box = QVBoxLayout()
+        right_big_box.addWidget(detec_group)
+        right_big_box.addWidget(cell_group)
+        #right_big_box.addStretch()
 
-        my_main_box = QHBoxLayout()
-        my_main_box.addLayout(top_main_box)
-        my_main_box.addLayout(bot_main_box)
+        main_box = QHBoxLayout()
+        main_box.addLayout(left_big_box)
+        main_box.addLayout(right_big_box)
 
         self.my_json_path = None
         self.my_pikl_path = None
@@ -362,7 +365,7 @@ class InfoWidget(QWidget):
             exp_json_path=self.my_json_path, refl_pikl_path=self.my_pikl_path
         )
 
-        self.setLayout(my_main_box)
+        self.setLayout(main_box)
 
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
