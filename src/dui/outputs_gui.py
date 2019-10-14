@@ -102,7 +102,7 @@ class InfoWidget(QWidget):
         bm_v_layout.addWidget(self.w_lambda_data)
         bm_v_layout.addWidget(QLabel("  "))
 
-        bm_v_layout.addStretch()
+        #bm_v_layout.addStretch()
         beam_group.setLayout(bm_v_layout)
 
         cell_group = QGroupBox(" Crystal ")
@@ -187,7 +187,7 @@ class InfoWidget(QWidget):
         crys_v_layout = QVBoxLayout()
         crys_v_layout.addLayout(cell_v_layout)
         crys_v_layout.addLayout(r_layout)
-        crys_v_layout.addStretch()
+        #crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
         scan_group = QGroupBox(" Scan ")
@@ -277,7 +277,7 @@ class InfoWidget(QWidget):
         itgr_sum_hbox.addWidget(self.itgr_sum_data)
         scan_v_layout.addLayout(itgr_sum_hbox)
 
-        scan_v_layout.addStretch()
+        #scan_v_layout.addStretch()
         scan_group.setLayout(scan_v_layout)
 
         detec_group = QGroupBox(" Detector ")
@@ -338,20 +338,20 @@ class InfoWidget(QWidget):
         detec_v_layout.addLayout(px_h_layout)
 
         detec_v_layout.addWidget(QLabel("  "))
-        detec_v_layout.addStretch()
+        #detec_v_layout.addStretch()
         detec_group.setLayout(detec_v_layout)
 
-        top_main_box = QHBoxLayout()
+        top_main_box = QVBoxLayout()
         top_main_box.addWidget(beam_group)
         top_main_box.addWidget(cell_group)
         #inner_main_box.addStretch()
 
-        bot_main_box = QHBoxLayout()
+        bot_main_box = QVBoxLayout()
         bot_main_box.addWidget(scan_group)
         bot_main_box.addWidget(detec_group)
         #inner_main_box.addStretch()
 
-        my_main_box = QVBoxLayout()
+        my_main_box = QHBoxLayout()
         my_main_box.addLayout(top_main_box)
         my_main_box.addLayout(bot_main_box)
 
