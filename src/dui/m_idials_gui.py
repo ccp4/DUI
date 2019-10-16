@@ -797,8 +797,10 @@ class MainWidget(QMainWindow):
                 logger.debug("no need to close reindex table")
 
         elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
-            try_move_last_info(self.idials_runner.current_node)
-
+            #try_move_last_info(self.idials_runner.current_node)
+            print("prev_step.report_out:", tmp_curr.prev_step.report_out)
+            print("prev_step.report_out:", tmp_curr.prev_step.report_out)
+            try_move_last_info(tmp_curr)
 
         self.check_reindex_pop()
         self.check_gray_outs()

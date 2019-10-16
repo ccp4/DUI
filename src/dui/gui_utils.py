@@ -35,6 +35,7 @@ import psutil
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
 try:
     from cli_utils import get_next_step, sys_arg, get_phil_par
+    from m_idials import generate_report
     from qt import (
         QDialog,
         QFont,
@@ -62,6 +63,7 @@ try:
 
 except ImportError:
     from .cli_utils import get_next_step, sys_arg, get_phil_par
+    from .m_idials import generate_report
     from .qt import (
         QDialog,
         QFont,
@@ -174,9 +176,10 @@ def try_move_last_info(export_node):
     logger.debug("\n JUST exported MOVING start ... \n ______________________________________________________")
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
+    report_out = generate_report(export_node.prev_step)
 
     try:
-        prev_step_rept_from = os.path.join(cwd_path, export_node.prev_step.report_out)
+        prev_step_rept_from = os.path.join(cwd_path, report_out)
         #prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
         prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
 
