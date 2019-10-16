@@ -360,17 +360,17 @@ class InfoWidget(QWidget):
 
         detec_group.setLayout(detec_v_layout)
 
-        left_big_box = QVBoxLayout()
+        left_big_box = QHBoxLayout()
         left_big_box.addWidget(beam_group)
-        left_big_box.addWidget(scan_group)
+        left_big_box.addWidget(cell_group)
         left_big_box.addStretch()
 
-        right_big_box = QVBoxLayout()
+        right_big_box = QHBoxLayout()
         right_big_box.addWidget(detec_group)
-        right_big_box.addWidget(cell_group)
+        right_big_box.addWidget(scan_group)
         right_big_box.addStretch()
 
-        inner_main_h_box = QHBoxLayout()
+        inner_main_h_box = QVBoxLayout()
         inner_main_h_box.addLayout(left_big_box)
         inner_main_h_box.addLayout(right_big_box)
 
