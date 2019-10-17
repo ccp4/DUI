@@ -625,28 +625,31 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
 
     def chouse_if_predict_or_report(self):
-        if (
-            self.view_tab_num == 0 and
-            self.img_view.rad_but_pre_hkl.checkState()
+        if(
+            self.idials_runner.current_node.ll_command_lst[0][0] != "refine_bravais_settings"
         ):
-            self.pop_busy_box(text_in_bar = "Generating Predictions")
-            self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
-            self.close_busy_box()
+            if (
+                self.view_tab_num == 0 and
+                self.img_view.rad_but_pre_hkl.checkState()
+            ):
+                self.pop_busy_box(text_in_bar = "Generating Predictions")
+                self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
+                self.close_busy_box()
 
-        elif self.view_tab_num == 2:
-            '''
-            ##########################################################################
-            tmp_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
-            tmp_bar(5)
-            tmp_bar.ended()
-            ################################################################################
-            '''
+            elif self.view_tab_num == 2:
+                '''
+                ##########################################################################
+                tmp_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
+                tmp_bar(5)
+                tmp_bar.ended()
+                ################################################################################
+                '''
 
 
-            tmp_bar = ProgBarBox(min_val=0, max_val=10, text="Generating Report")
-            tmp_bar(5)
-            self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
-            tmp_bar.ended()
+                tmp_bar = ProgBarBox(min_val=0, max_val=10, text="Generating Report")
+                tmp_bar(5)
+                self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
+                tmp_bar.ended()
 
     def tab_changed(self, num = 0):
         self.view_tab_num = num
