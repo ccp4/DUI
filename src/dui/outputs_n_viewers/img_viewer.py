@@ -1077,16 +1077,18 @@ class MyImgWin(QWidget):
         def _create_and_connect(text, slot):
             """Create a pushbutton for the Play/stop bar"""
             btn = QPushButton(text, parent=self._button_panel)
-            btn.setMinimumWidth(50)
+            btn.setMinimumWidth(30)
             btn.clicked.connect(slot)
             return btn
 
-        self.btn_first = _create_and_connect("I<", self.btn_first_clicked)
-        self.btn_rev = _create_and_connect("<<", self.btn_rev_clicked)
-        self.btn_prev = _create_and_connect("<", self.btn_prev_clicked)
-        self.btn_next = _create_and_connect(">", self.btn_next_clicked)
-        self.btn_ffw = _create_and_connect(">>", self.btn_ffw_clicked)
-        self.btn_last = _create_and_connect(">I", self.btn_last_clicked)
+        self.btn_first = _create_and_connect(u"\u23EE", self.btn_first_clicked)
+
+        self.btn_rev = _create_and_connect(u"\u23EA" , self.btn_rev_clicked)
+
+        self.btn_prev = _create_and_connect(u"\u25C0", self.btn_prev_clicked)
+        self.btn_next = _create_and_connect(u"\u25B6", self.btn_next_clicked)
+        self.btn_ffw = _create_and_connect(u"\u23E9", self.btn_ffw_clicked)
+        self.btn_last = _create_and_connect(u"\u23ED", self.btn_last_clicked)
 
         self.btn_play = QPushButton("Play/Stop Video")
         self.btn_play.clicked.connect(self.btn_play_clicked)
