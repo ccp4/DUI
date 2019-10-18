@@ -1082,9 +1082,7 @@ class MyImgWin(QWidget):
             return btn
 
         self.btn_first = _create_and_connect(u"\u23EE", self.btn_first_clicked)
-
         self.btn_rev = _create_and_connect(u"\u23EA" , self.btn_rev_clicked)
-
         self.btn_prev = _create_and_connect(u"\u25C0", self.btn_prev_clicked)
         self.btn_next = _create_and_connect(u"\u25B6", self.btn_next_clicked)
         self.btn_ffw = _create_and_connect(u"\u23E9", self.btn_ffw_clicked)
