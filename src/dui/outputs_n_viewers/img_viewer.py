@@ -78,6 +78,7 @@ from ..qt import (
     QVBoxLayout,
     QWidget,
     Signal,
+    QFontMetrics
 )
 from six.moves import range
 
@@ -988,6 +989,23 @@ class MyImgWin(QWidget):
         max_min_validator = QIntValidator(-5, 999999, self)
 
         sys_font = QFont()
+
+        print("sys_font.defaultFamily()", sys_font.defaultFamily())
+        print("type(sys_font.defaultFamily())", type(sys_font.defaultFamily()), "\n")
+        print("dir(sys_font)", dir(sys_font), "\n")
+        print("sys_font.PreferDefaultHinting", sys_font.PreferDefaultHinting)
+        print("sys_font.PreferDefault", sys_font.PreferDefault)
+        print("sys_font.System", sys_font.System)
+
+        print("sys_font.pointSize", sys_font.pointSize)
+
+
+        met = QFontMetrics(self.font())
+
+        print("QFontMetrics", met, "\n", dir(met))
+
+
+
         sys_font_point_size = sys_font.pointSize()
         self.video_timer = QTimer(self)
 
@@ -1083,7 +1101,7 @@ class MyImgWin(QWidget):
 
         self.btn_first = _create_and_connect(u"\u23EE", self.btn_first_clicked)
         self.btn_rev = _create_and_connect(u"\u23EA" , self.btn_rev_clicked)
-        self.btn_prev = _create_and_connect(u"\u25C0 \n", self.btn_prev_clicked)
+        self.btn_prev = _create_and_connect(u"\u25C0", self.btn_prev_clicked)
 
         tmp_font_small = QFont()
         tmp_font_small.setPixelSize(sys_font_point_size + 2)
@@ -1091,8 +1109,7 @@ class MyImgWin(QWidget):
         tmp_font_big = QFont()
         tmp_font_big.setPixelSize(tmp_font_small.pointSize() * 2)
 
-
-        self.btn_next = _create_and_connect(u"\u25B6 \n", self.btn_next_clicked)
+        self.btn_next = _create_and_connect(u"\u25B6", self.btn_next_clicked)
         self.btn_ffw = _create_and_connect(u"\u23E9", self.btn_ffw_clicked)
         self.btn_last = _create_and_connect(u"\u23ED", self.btn_last_clicked)
 
