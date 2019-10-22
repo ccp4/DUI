@@ -438,6 +438,8 @@ class MainWidget(QMainWindow):
 
             self.idials_runner = Runner()
 
+        self.gui2_log = {}
+
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
 
@@ -800,7 +802,7 @@ class MainWidget(QMainWindow):
                 logger.debug("no need to close reindex table")
 
         elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
-            try_move_last_info(tmp_curr)
+            self.gui2_log = try_move_last_info(tmp_curr, self.gui2_log)
 
         self.check_reindex_pop()
         self.check_gray_outs()

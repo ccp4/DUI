@@ -92,6 +92,8 @@ except ImportError:
 
 from six.moves import range
 
+
+
 logger = logging.getLogger(__name__)
 
 # Basic tuple to store information about actions
@@ -172,16 +174,20 @@ ACTIONS = OrderedDict(
     ]
 )
 
-def try_move_last_info(export_node):
+def try_move_last_info(export_node, gui2_log):
     logger.debug("\n JUST exported MOVING start ... \n ______________________________________________________")
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     report_out = generate_report(export_node.prev_step)
 
+
     try:
         prev_step_rept_from = os.path.join(cwd_path, report_out)
         #prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
         prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
+
+        gui2_log['last_HTML_report'] = prev_step_rept_from
+
 
         mtz_name_from = "integrated.mtz"
         for parm in export_node.ll_command_lst[0]:
@@ -192,11 +198,7 @@ def try_move_last_info(export_node):
         mtz_name_from = os.path.join(cwd_path, mtz_name_from)
         mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
 
-        logger.debug("prev_step_rept_from:", prev_step_rept_from)
-        logger.debug("mtz_name_from:", mtz_name_from)
-
-        logger.debug("prev_step_rept_to:", prev_step_rept_to)
-        logger.debug("mtz_name_to:", mtz_name_to)
+        gui2_log['last_MTX'] = mtz_name_from
 
         shutil.copy(mtz_name_from, mtz_name_to)
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
@@ -205,7 +207,8 @@ def try_move_last_info(export_node):
         print("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
-
+    print("\n ___________________ gui2_log:", gui2_log, "\n")
+    return gui2_log
 
 def try_find_prev_mask_pickle(cur_nod):
     pickle_path = None

@@ -33,7 +33,6 @@ from dials.algorithms.image.threshold import DispersionThresholdDebug
 from dxtbx.model.experiment_list import ExperimentListFactory
 import pickle
 
-
 import numpy as np
 
 from ..cli_utils import sys_arg
@@ -78,7 +77,7 @@ from ..qt import (
     QVBoxLayout,
     QWidget,
     Signal,
-    QFontMetrics
+    #QFontMetrics
 )
 from six.moves import range
 
