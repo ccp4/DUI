@@ -186,9 +186,6 @@ def try_move_last_info(export_node, gui2_log):
         #prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
         prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
 
-        gui2_log['last_HTML_report'] = prev_step_rept_from
-
-
         mtz_name_from = "integrated.mtz"
         for parm in export_node.ll_command_lst[0]:
             print(parm)
@@ -198,7 +195,9 @@ def try_move_last_info(export_node, gui2_log):
         mtz_name_from = os.path.join(cwd_path, mtz_name_from)
         mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
 
+        gui2_log['last_HTML_report'] = prev_step_rept_from
         gui2_log['last_MTX'] = mtz_name_from
+        gui2_log['pairs_list'].append((prev_step_rept_from, mtz_name_from))
 
         shutil.copy(mtz_name_from, mtz_name_to)
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
@@ -206,6 +205,12 @@ def try_move_last_info(export_node, gui2_log):
     except IOError:
         print("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
+
+    import json
+    with open('i2open.json', 'w') as fp:
+        json.dump(gui2_log, fp, indent=4)
+
+
 
     print("\n ___________________ gui2_log:", gui2_log, "\n")
     return gui2_log

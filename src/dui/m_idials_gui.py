@@ -438,7 +438,7 @@ class MainWidget(QMainWindow):
 
             self.idials_runner = Runner()
 
-        self.gui2_log = {}
+        self.gui2_log = {'pairs_list':[]}
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
