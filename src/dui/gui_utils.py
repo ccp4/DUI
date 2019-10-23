@@ -205,7 +205,7 @@ def try_move_last_info(export_node, gui2_log):
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
 
 
-        gui2_log_path = os.path.join(cwd_path, 'i2open.json')
+        gui2_log_path = os.path.join(cwd_path, 'output.json')
 
         print("Writing:", gui2_log_path)
 
