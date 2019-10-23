@@ -199,11 +199,16 @@ def try_move_last_info(export_node, gui2_log):
 
         gui2_log['last_HTML_report'] = prev_step_rept_from
         gui2_log['last_MTZ'] = mtz_name_from
+
+        for pair in gui2_log['pairs_list']:
+            if pair[1] == mtz_name_from:
+                print("\nfound same name \n")
+                gui2_log['pairs_list'].remove(pair)
+
         gui2_log['pairs_list'].append((prev_step_rept_from, mtz_name_from))
 
         shutil.copy(mtz_name_from, mtz_name_to)
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
-
 
         gui2_log_path = os.path.join(cwd_path, 'output.json')
 

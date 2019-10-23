@@ -52,6 +52,7 @@ except ImportError:
 try:
     from gui_utils import get_import_run_string, get_main_path
     from params_live_gui_generator import PhilWidget
+    from cli_utils import sys_arg
     from simpler_param_widgets import (
         FindspotsSimplerParameterTab,
         IndexSimplerParamTab,
@@ -86,6 +87,7 @@ try:
 except ImportError:
     from .gui_utils import get_import_run_string, get_main_path
     from .params_live_gui_generator import PhilWidget
+    from .cli_utils import sys_arg
     from .simpler_param_widgets import (
         FindspotsSimplerParameterTab,
         IndexSimplerParamTab,
@@ -306,11 +308,14 @@ class ExportPage(QWidget):
         self.check_scale.setChecked(False)
         self.check_scale.stateChanged.connect(self.update_command)
 
+        self.warning_label = QLabel(str(" "))
+
         main_v_box.addWidget(step_label)
         main_v_box.addWidget(out_file_label)
         main_v_box.addWidget(self.simple_lin)
         main_v_box.addWidget(self.check_scale)
-
+        main_v_box.addStretch()
+        main_v_box.addWidget(self.warning_label)
         main_v_box.addStretch()
         self.setLayout(main_v_box)
         self.fist_time = False
@@ -329,6 +334,19 @@ class ExportPage(QWidget):
             self.command_lst[0].append(param2_com)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
+        self.check_repeated_file()
+
+    def check_repeated_file(self):
+        param1_com = str(self.simple_lin.text())
+        cwd_path = os.path.join(sys_arg.directory, "dui_files")
+        mtz_file_path = os.path.join(cwd_path, param1_com)
+        print("path:", mtz_file_path)
+        if os.path.isfile(mtz_file_path):
+            txt_warning = " Warning, file: \n\n " + param1_com + "\n\n already exists"
+            self.warning_label.setText(txt_warning)
+
+        else:
+            self.warning_label.setText(" ")
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -359,6 +377,7 @@ class ExportPage(QWidget):
             if found_scale is True:
                 self.simple_lin.setText("scaled.mtz")
                 self.check_scale.setChecked(True)
+        self.check_repeated_file()
 
     def reset_par(self):
         print("command_lst(ExportPage.reset_par) = ", self.command_lst)
