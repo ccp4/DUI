@@ -31,6 +31,8 @@ import sys
 import shutil
 import subprocess
 import psutil
+import json
+
 
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
 try:
@@ -196,23 +198,27 @@ def try_move_last_info(export_node, gui2_log):
         mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
 
         gui2_log['last_HTML_report'] = prev_step_rept_from
-        gui2_log['last_MTX'] = mtz_name_from
+        gui2_log['last_MTZ'] = mtz_name_from
         gui2_log['pairs_list'].append((prev_step_rept_from, mtz_name_from))
 
         shutil.copy(mtz_name_from, mtz_name_to)
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
 
+
+        gui2_log_path = os.path.join(cwd_path, 'i2open.json')
+
+        print("Writing:", gui2_log_path)
+
+        with open(gui2_log_path, 'w') as fp:
+            json.dump(gui2_log, fp, indent=4)
+
+        print("\n ___________________ gui2_log:", gui2_log, "\n")
+
+
     except IOError:
         print("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
-    import json
-    with open('i2open.json', 'w') as fp:
-        json.dump(gui2_log, fp, indent=4)
-
-
-
-    print("\n ___________________ gui2_log:", gui2_log, "\n")
     return gui2_log
 
 def try_find_prev_mask_pickle(cur_nod):
