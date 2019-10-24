@@ -341,7 +341,6 @@ class ExportPage(QWidget):
         param1_com = str(self.simple_lin.text())
         cwd_path = os.path.join(sys_arg.directory, "dui_files")
         mtz_file_path = os.path.join(cwd_path, param1_com)
-        print("path:", mtz_file_path)
         if os.path.isfile(mtz_file_path):
             txt_warning = "Warning, file: " + param1_com + " already exists"
             self.warning_label.setText(txt_warning)
