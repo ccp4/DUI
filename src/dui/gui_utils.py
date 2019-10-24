@@ -32,11 +32,11 @@ import shutil
 import subprocess
 import psutil
 
-from dxtbx.sweep_filenames import template_regex, template_regex_from_list
+from dxtbx.sequence_filenames import template_regex, template_regex_from_list
 #try:
-from cli_utils import get_next_step, sys_arg, get_phil_par
+from dui.cli_utils import get_next_step, sys_arg, get_phil_par
 print("here 1")
-from qt import (
+from dui.qt import (
     QDialog,
     QFont,
     QHeaderView,
@@ -59,7 +59,7 @@ from qt import (
     QWidget,
 )
 print("here 2")
-from qt import (
+from dui.qt import (
     Signal,
 )
 '''

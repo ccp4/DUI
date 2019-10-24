@@ -33,11 +33,11 @@ import numpy as np
 #try:
 sys.path.append('../')
 print("Hi ... TEST 01")
-from cli_utils import sys_arg
+from dui.cli_utils import sys_arg
 print("Hi ... TEST 02")
-from gui_utils import get_main_path
+from dui.gui_utils import get_main_path
 print("Hi ... TEST 03")
-from outputs_n_viewers.img_view_tools import (
+from dui.outputs_n_viewers.img_view_tools import (
     panel_data_as_double,
     build_qimg,
     draw_palette_label,
@@ -46,7 +46,7 @@ from outputs_n_viewers.img_view_tools import (
     list_p_arrange,
 )
 print("Hi ... TEST 04")
-from qt import (
+from dui.qt import (
     QApplication,
     QButtonGroup,
     QCheckBox,
