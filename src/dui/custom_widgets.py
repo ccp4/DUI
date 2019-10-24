@@ -309,6 +309,7 @@ class ExportPage(QWidget):
         self.check_scale.stateChanged.connect(self.update_command)
 
         self.warning_label = QLabel(str(" "))
+        self.warning_label.setWordWrap(True)
 
         main_v_box.addWidget(step_label)
         main_v_box.addWidget(out_file_label)
@@ -342,11 +343,21 @@ class ExportPage(QWidget):
         mtz_file_path = os.path.join(cwd_path, param1_com)
         print("path:", mtz_file_path)
         if os.path.isfile(mtz_file_path):
-            txt_warning = " Warning, file: \n\n " + param1_com + "\n\n already exists"
+            txt_warning = "Warning, file: " + param1_com + " already exists"
             self.warning_label.setText(txt_warning)
-
+            self.warning_label.setStyleSheet(
+                        "color: rgba(255, 55, 55, 255)"
+                    )
+            '''
+            self.warning_label.setStyleSheet(
+                        "color: rgba(255, 55, 55, 255);" "background-color: yellow;"
+                    )
+            '''
         else:
             self.warning_label.setText(" ")
+            self.warning_label.setStyleSheet(
+                        "color: rgba(0, 155, 255, 255)"
+                    )
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
