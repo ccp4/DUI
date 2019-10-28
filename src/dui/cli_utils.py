@@ -208,7 +208,7 @@ def build_command_lst(node_obj, cmd_lst):
     if cmd_lst_ini == "import":
         # dials.import /scratch/dui_test/only_9_img/X4_wide_M1S4_2_*.cbf
         # output.experiments=1_experiment.expt output.log=1_import.log
-        node_obj.json_file_out = str(node_obj.lin_num) + "_experiment.expt"
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
         output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
@@ -355,31 +355,31 @@ def build_command_lst(node_obj, cmd_lst):
     elif cmd_lst_ini == "generate_mask":
         lst_inner1 = list(lst_inner)
         json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
+        input_str = "input.experiments=" + json_file_in
         lst_inner1.append(input_str)
 
         # TODO add this info to node_obj
         mask_file = str(node_obj.lin_num) + "_mask.pickle"
         lst_inner1.append("output.mask=" + mask_file)
 
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
 
         lst_inner = [
             "dials.apply_mask",
-            "input.datablock=" + json_file_in,
+            "input.experiments=" + json_file_in,
             "input.mask=" + mask_file,
-            "output.datablock=" + node_obj.json_file_out,
+            "output.experiments=" + node_obj.json_file_out,
         ]
         cmd_lst_to_run.append(lst_inner1)
 
     elif cmd_lst_ini == "modify_geometry":
         lst_inner1 = list(lst_inner)
         json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
+        input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
 
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + node_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
+        output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
 
 
