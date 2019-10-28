@@ -29,57 +29,58 @@ import os
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
+from dials.algorithms.image.threshold import DispersionThresholdDebug
+from dxtbx.model.experiment_list import ExperimentListFactory
+import pickle
+
+
 import numpy as np
-#try:
-sys.path.append('../')
-print("Hi ... TEST 01")
-from dui.cli_utils import sys_arg
-print("Hi ... TEST 02")
-from dui.gui_utils import get_main_path
-print("Hi ... TEST 03")
-from dui.outputs_n_viewers.img_view_tools import (
-    panel_data_as_double,
-    build_qimg,
-    draw_palette_label,
-    find_hkl_near,
-    list_arrange,
-    list_p_arrange,
-)
-print("Hi ... TEST 04")
-from dui.qt import (
-    QApplication,
-    QButtonGroup,
-    QCheckBox,
-    QColor,
-    QComboBox,
-    QFont,
-    QGroupBox,
-    QHBoxLayout,
-    QIcon,
-    QIntValidator,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QPainter,
-    QPen,
-    QPixmap,
-    QImage,
-    QPoint,
-    QPointF,
-    QPushButton,
-    QRadioButton,
-    QRect,
-    QRectF,
-    QScrollArea,
-    QSlider,
-    QSpinBox,
-    Qt,
-    QTimer,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
-'''
+try:
+    sys.path.append('../')
+    from dui.cli_utils import sys_arg
+    from dui.gui_utils import get_main_path
+    from dui.outputs_n_viewers.img_view_tools import (
+        panel_data_as_double,
+        build_qimg,
+        draw_palette_label,
+        find_hkl_near,
+        list_arrange,
+        list_p_arrange,
+    )
+    print("Hi ... TEST 04")
+    from dui.qt import (
+        QApplication,
+        QButtonGroup,
+        QCheckBox,
+        QColor,
+        QComboBox,
+        QFont,
+        QGroupBox,
+        QHBoxLayout,
+        QIcon,
+        QIntValidator,
+        QLabel,
+        QLineEdit,
+        QMenu,
+        QPainter,
+        QPen,
+        QPixmap,
+        QImage,
+        QPoint,
+        QPointF,
+        QPushButton,
+        QRadioButton,
+        QRect,
+        QRectF,
+        QScrollArea,
+        QSlider,
+        QSpinBox,
+        Qt,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
 except ImportError:
     from ..cli_utils import sys_arg
     from ..gui_utils import get_main_path
@@ -124,7 +125,7 @@ except ImportError:
         QWidget,
         Signal,
     )
-'''
+
 
 from six.moves import range
 
@@ -803,6 +804,88 @@ class ImgPainter(QWidget):
         painter.end()
 
 
+
+class PopMaskMenu(QMenu):
+
+    def __init__(self, parent=None):
+        super(PopMaskMenu, self).__init__(parent)
+        self.my_parent = parent
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
+        ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
+
+        info_grp = QGroupBox()
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poly_mask)
+
+        ref_bond_group_box_layout.addWidget(self.my_parent.btn_reset_mask)
+
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        my_box = QVBoxLayout()
+        my_box.addWidget(info_grp)
+        my_box.addWidget(self.my_parent.chk_box_B_centr)
+
+        self.setLayout(my_box)
+        self.show()
+
+
+class Test:
+
+    def __init__(self):
+        self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
+        datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
+        # TODO check length of datablock for safety
+        datablock = datablocks[0]
+        my_sweep = datablock.extract_sweeps()[0]
+        self.image = my_sweep.get_raw_data(0)[0].as_double()
+
+    def set_mask(self):
+        experiments = ExperimentListFactory.from_json_file(
+                        self.n_json_file_path, check_format=False
+                    )
+
+        self.imageset = experiments.imagesets()[0]
+        mask_file = self.imageset.external_lookup.mask.filename
+
+        pick_file = open(mask_file, "rb")
+        mask_tup_obj = pickle.load(pick_file)
+        pick_file.close()
+
+        self.mask = mask_tup_obj[0]
+
+    def set_pars(self):
+        self.gain = 0.5
+        self.size = (3, 3)
+        self.nsig_b = 3
+        self.nsig_s = 3
+        self.global_threshold = 0
+        self.min_count = 2
+
+    def test_dispersion_debug(self):
+        from dials.algorithms.image.threshold import DispersionThresholdDebug
+
+        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
+
+        debug = DispersionThresholdDebug(
+            self.image,
+            self.mask,
+            self.gain_map,
+            self.size,
+            self.nsig_b,
+            self.nsig_s,
+            self.global_threshold,
+            self.min_count,
+        )
+
+        return debug
+
+
 class PopPaletteMenu(QMenu):
 
     sliders_changed = Signal(int, int)
@@ -810,7 +893,7 @@ class PopPaletteMenu(QMenu):
     def __init__(self, parent=None):
         super(PopPaletteMenu, self).__init__(parent)
         self.my_parent = parent
-
+        palette_grp = QGroupBox("Palette Tuning")
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
         colour_box.addWidget(self.my_parent.min_i_edit)
@@ -827,32 +910,68 @@ class PopPaletteMenu(QMenu):
         self.my_parent.slider_max.setMaximum(499)
         self.my_parent.slider_max.valueChanged[int].connect(self.slider_max_changed)
 
-        main_layout = QVBoxLayout()
+        palette_layout = QVBoxLayout()
 
         slider_max_Hlayout = QHBoxLayout()
         slider_max_Hlayout.addWidget(QLabel(" "))  # Left side margin
         slider_max_Hlayout.addWidget(self.my_parent.slider_max)
         slider_max_Hlayout.addWidget(QLabel(" "))  # Right side margin
-        main_layout.addLayout(slider_max_Hlayout)
+        palette_layout.addLayout(slider_max_Hlayout)
 
         palette_Hlayout = QHBoxLayout()
         palette_Hlayout.addWidget(QLabel("   "))  # Left side margin
         palette_Hlayout.addWidget(self.my_parent.palette_label)
         palette_Hlayout.addWidget(QLabel("   "))  # Right side margin
-        main_layout.addLayout(palette_Hlayout)
+        palette_layout.addLayout(palette_Hlayout)
 
         slider_min_Hlayout = QHBoxLayout()
         slider_min_Hlayout.addWidget(QLabel(" "))  # Left side margin
         slider_min_Hlayout.addWidget(self.my_parent.slider_min)
         slider_min_Hlayout.addWidget(QLabel(" "))  # Right side margin
-        main_layout.addLayout(slider_min_Hlayout)
+        palette_layout.addLayout(slider_min_Hlayout)
 
-        main_layout.addWidget(self.my_parent.slider_min)
-        main_layout.addLayout(colour_box)
+        palette_layout.addWidget(self.my_parent.slider_min)
+        palette_layout.addLayout(colour_box)
+        palette_grp.setLayout(palette_layout)
 
-        logger.debug(
-            "...geometry().width() = %s", self.my_parent.slider_min.geometry().width()
-        )
+        ###############################################################
+
+        ref_bond_group = QButtonGroup()
+        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
+
+        info_grp = QGroupBox("Reflection Info ")
+        ref_bond_group_box_layout = QVBoxLayout()
+        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
+        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
+
+        info_grp.setLayout(ref_bond_group_box_layout)
+
+        ################################################################
+
+        mid_top_box = QHBoxLayout()
+        mid_top_box.addWidget(QLabel("Image Jump Step"))
+        mid_top_box.addWidget(self.my_parent.img_step)
+
+        mid_bot_box = QHBoxLayout()
+        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
+        mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
+
+        img_select_box = QVBoxLayout()
+        img_select_box.addLayout(mid_top_box)
+        img_select_box.addLayout(mid_bot_box)
+
+        img_select_group_box = QGroupBox("IMG Navigation")
+        img_select_group_box.setLayout(img_select_box)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(palette_grp)
+        main_layout.addWidget(info_grp)
+        main_layout.addWidget(img_select_group_box)
+
         self.setLayout(main_layout)
         self.show()
 
@@ -894,80 +1013,6 @@ class PopPaletteMenu(QMenu):
         )
 
 
-class PopMaskMenu(QMenu):
-
-    def __init__(self, parent=None):
-        super(PopMaskMenu, self).__init__(parent)
-        self.my_parent = parent
-
-        ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_rect_mask)
-        ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
-        ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
-
-        info_grp = QGroupBox()
-        ref_bond_group_box_layout = QVBoxLayout()
-        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_circ_mask)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_poly_mask)
-
-        ref_bond_group_box_layout.addWidget(self.my_parent.btn_reset_mask)
-
-        info_grp.setLayout(ref_bond_group_box_layout)
-
-        my_box = QVBoxLayout()
-        my_box.addWidget(info_grp)
-        my_box.addWidget(self.my_parent.chk_box_B_centr)
-
-        self.setLayout(my_box)
-        self.show()
-
-
-class PopBigMenu(QMenu):
-
-    sliders_changed = Signal(int, int)
-
-    def __init__(self, parent=None):
-        super(PopBigMenu, self).__init__(parent)
-        self.my_parent = parent
-
-        ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
-        ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
-        ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
-
-        info_grp = QGroupBox("Reflection Info ")
-        ref_bond_group_box_layout = QVBoxLayout()
-        ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_near_hkl)
-        ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_none_hkl)
-
-        info_grp.setLayout(ref_bond_group_box_layout)
-
-        mid_top_box = QHBoxLayout()
-        mid_top_box.addWidget(QLabel("Image Jump Step"))
-        mid_top_box.addWidget(self.my_parent.img_step)
-
-        mid_bot_box = QHBoxLayout()
-        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
-        mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
-
-        img_select_box = QVBoxLayout()
-        img_select_box.addLayout(mid_top_box)
-        img_select_box.addLayout(mid_bot_box)
-
-        img_select_group_box = QGroupBox("IMG Navigation")
-        img_select_group_box.setLayout(img_select_box)
-
-        my_box = QVBoxLayout()
-        my_box.addWidget(info_grp)
-        my_box.addWidget(img_select_group_box)
-
-        self.setLayout(my_box)
-        self.show()
-
 
 class MyImgWin(QWidget):
 
@@ -990,6 +1035,8 @@ class MyImgWin(QWidget):
         max_min_validator = QIntValidator(-5, 999999, self)
 
         sys_font = QFont()
+
+
         sys_font_point_size = sys_font.pointSize()
         self.video_timer = QTimer(self)
 
@@ -1079,22 +1126,52 @@ class MyImgWin(QWidget):
         def _create_and_connect(text, slot):
             """Create a pushbutton for the Play/stop bar"""
             btn = QPushButton(text, parent=self._button_panel)
-            btn.setMinimumWidth(50)
+            btn.setMinimumWidth(30)
             btn.clicked.connect(slot)
             return btn
 
-        self.btn_first = _create_and_connect("I<", self.btn_first_clicked)
-        self.btn_rev = _create_and_connect("<<", self.btn_rev_clicked)
-        self.btn_prev = _create_and_connect("<", self.btn_prev_clicked)
-        self.btn_next = _create_and_connect(">", self.btn_next_clicked)
-        self.btn_ffw = _create_and_connect(">>", self.btn_ffw_clicked)
-        self.btn_last = _create_and_connect(">I", self.btn_last_clicked)
+        self.btn_first = _create_and_connect(u" I< ", self.btn_first_clicked)
+        self.btn_rev = _create_and_connect(u" << " , self.btn_rev_clicked)
+        self.btn_prev = _create_and_connect(u" <  ", self.btn_prev_clicked)
+
+        TODO = '''
+        self.btn_first = _create_and_connect(u"\u23EE", self.btn_first_clicked)
+        self.btn_rev = _create_and_connect(u"\u23EA" , self.btn_rev_clicked)
+        self.btn_prev = _create_and_connect(u"\u25C0", self.btn_prev_clicked)
+        '''
+
+        tmp_font_small = QFont()
+        tmp_font_small.setPixelSize(sys_font_point_size + 2)
+
+        tmp_font_big = QFont()
+        tmp_font_big.setPixelSize(tmp_font_small.pointSize() * 2)
+
+        self.btn_next = _create_and_connect(u"  > ", self.btn_next_clicked)
+        self.btn_ffw = _create_and_connect(u" >> ", self.btn_ffw_clicked)
+        self.btn_last = _create_and_connect(u" >I ", self.btn_last_clicked)
+
+        TODO = '''
+        self.btn_next = _create_and_connect(u"\u25B6", self.btn_next_clicked)
+        self.btn_ffw = _create_and_connect(u"\u23E9", self.btn_ffw_clicked)
+        self.btn_last = _create_and_connect(u"\u23ED", self.btn_last_clicked)
+        '''
+
+        self.btn_prev.setFont(tmp_font_small)
+        self.btn_next.setFont(tmp_font_small)
+
+        self.btn_first.setFont(tmp_font_big)
+        self.btn_rev.setFont(tmp_font_big)
+        self.btn_ffw.setFont(tmp_font_big)
+        self.btn_last.setFont(tmp_font_big)
+
+
+
 
         self.btn_play = QPushButton("Play/Stop Video")
         self.btn_play.clicked.connect(self.btn_play_clicked)
 
         nav_box = QHBoxLayout()
-        #nav_box.setMargin(0)
+        nav_box.setMargin(0)
         nav_box.addWidget(self.btn_first)
         nav_box.addWidget(self.btn_rev)
         nav_box.addWidget(self.btn_prev)
@@ -1109,16 +1186,12 @@ class MyImgWin(QWidget):
         self.palette_label = QLabel()
         self.palette_qimg = build_qimg()
 
-        big_menu_but = QPushButton("Viewing Tools")
-        pop_big_menu = PopBigMenu(self)
-        big_menu_but.setMenu(pop_big_menu)
-
-        palette_menu_but = QPushButton("Palette Tuning")
+        palette_menu_but = QPushButton("Display")
         pop_palette_menu = PopPaletteMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
-        mask_menu_but = QPushButton("Image Actions")
+        mask_menu_but = QPushButton("Actions")
         self.pop_mask_menu = PopMaskMenu(self)
         mask_menu_but.setMenu(self.pop_mask_menu)
 
@@ -1175,9 +1248,9 @@ class MyImgWin(QWidget):
         self.img_step.setValue(10)
 
         top_box = QHBoxLayout()
-        #top_box.setMargin(0)
+        top_box.setMargin(0)
         top_box.addWidget(palette_menu_but)
-        top_box.addWidget(big_menu_but)
+        #top_box.addWidget(big_menu_but)
         top_box.addWidget(mask_menu_but)
 
         mid_box = QHBoxLayout()
@@ -1191,28 +1264,81 @@ class MyImgWin(QWidget):
         self.info_label = QLabel("X, Y, I = ?,?,?")
 
         top_left_v_box = QVBoxLayout()
-        #top_left_v_box.setMargin(0)
+        top_left_v_box.setMargin(0)
         top_left_v_box.addWidget(self._button_panel)
 
         top_left_v_box.addLayout(mid_box)
         top_left_v_box.addLayout(top_box)
 
         top_hbox = QHBoxLayout()
-        #top_hbox.setMargin(0)
+        top_hbox.setMargin(0)
         top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
+        '''
+        self.btn_set_image = QPushButton("Image")
+        self.btn_set_varia = QPushButton("Variance")
+
+        self.btn_set_varia.clicked.connect(self.set_variance_img)
+        self.btn_set_image.clicked.connect(self.set_img_img)
+
+        bot_hbox = QHBoxLayout()
+        bot_hbox.addWidget(self.btn_set_image)
+        bot_hbox.addWidget(self.btn_set_varia)
+        '''
+
+
         my_box = QVBoxLayout()
-        #my_box.setMargin(0)
+        my_box.setMargin(0)
         my_box.addLayout(top_hbox)
+
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
 
+
         self.setLayout(my_box)
+
 
         # changing default palette:
 
         self.palette_select.setCurrentIndex(3)
+
+    def set_img_img(self):
+
+        print("\n set_img_img  01 \n")
+
+    def set_variance_img(self):
+
+        print("\n set_variance_img  01 \n")
+
+        test1 = Test()
+        test1.set_mask()
+        test1.set_pars()
+
+        self.debug_data = test1.test_dispersion_debug()
+
+        self.img_arr = self.debug_data.variance()
+
+        print("\n set_variance_img  02 \n")
+
+        self.my_painter.set_img_pix(
+            q_img=self.current_qimg(
+                self.img_arr, self.palette, self.i_min, self.i_max
+            ),
+            obs_flat_data_in=self.find_spt_flat_data_lst[
+                self.img_num - 1 : self.img_num
+            ],
+            pre_flat_data_in=self.pred_spt_flat_data_lst[
+                self.img_num - 1 : self.img_num
+            ],
+            user_choice_in=(
+                self.rad_but_fnd_hkl.checkState(),
+                self.rad_but_pre_hkl.checkState(),
+            ),
+        )
+
+        print("\n set_variance_img  02 \n")
+
 
     def ini_contrast(self):
         if not self.contrast_initiated:
