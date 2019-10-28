@@ -31,40 +31,45 @@ import sys
 import shutil
 import subprocess
 import psutil
+import json
 
-from dxtbx.sequence_filenames import template_regex, template_regex_from_list
-#try:
-from dui.cli_utils import get_next_step, sys_arg, get_phil_par
-print("here 1")
-from dui.qt import (
-    QDialog,
-    QFont,
-    QHeaderView,
-    QIcon,
-    QLabel,
-    QProgressBar,
-    QPushButton,
-    QSize,
-    QSizePolicy,
-    QStandardItem,
-    QStandardItemModel,
-    QStyleFactory,
-    Qt,
-    QT5,
-    QTextEdit,
-    QThread,
-    QToolButton,
-    QTreeView,
-    QVBoxLayout,
-    QWidget,
-)
-print("here 2")
-from dui.qt import (
-    Signal,
-)
+from dxtbx.sequence_filenames import template_regex
+
 '''
+from dxtbx.sweep_filenames import template_regex, template_regex_from_list
+'''
+
+try:
+    from cli_utils import get_next_step, sys_arg, get_phil_par
+    from m_idials import generate_report
+    from qt import (
+        QDialog,
+        QFont,
+        QHeaderView,
+        QIcon,
+        QLabel,
+        QProgressBar,
+        QPushButton,
+        QSize,
+        QSizePolicy,
+        QStandardItem,
+        QStandardItemModel,
+        QStyleFactory,
+        Qt,
+        QT5,
+        QTextEdit,
+        QThread,
+        QToolButton,
+        QTreeView,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+        uic,
+    )
+
 except ImportError:
     from .cli_utils import get_next_step, sys_arg, get_phil_par
+    from .m_idials import generate_report
     from .qt import (
         QDialog,
         QFont,
@@ -87,10 +92,13 @@ except ImportError:
         QVBoxLayout,
         QWidget,
         Signal,
+        uic,
     )
-'''
+
 
 from six.moves import range
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -172,13 +180,15 @@ ACTIONS = OrderedDict(
     ]
 )
 
-def try_move_last_info(export_node):
+def try_move_last_info(export_node, gui2_log):
     logger.debug("\n JUST exported MOVING start ... \n ______________________________________________________")
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
+    report_out = generate_report(export_node.prev_step)
+
 
     try:
-        prev_step_rept_from = os.path.join(cwd_path, export_node.prev_step.report_out)
+        prev_step_rept_from = os.path.join(cwd_path, report_out)
         #prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
         prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
 
@@ -191,20 +201,34 @@ def try_move_last_info(export_node):
         mtz_name_from = os.path.join(cwd_path, mtz_name_from)
         mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
 
-        logger.debug("prev_step_rept_from:", prev_step_rept_from)
-        logger.debug("mtz_name_from:", mtz_name_from)
+        gui2_log['last_HTML_report'] = prev_step_rept_from
+        gui2_log['last_MTZ'] = mtz_name_from
 
-        logger.debug("prev_step_rept_to:", prev_step_rept_to)
-        logger.debug("mtz_name_to:", mtz_name_to)
+        for pair in gui2_log['pairs_list']:
+            if pair[1] == mtz_name_from:
+                print("\nfound same name \n")
+                gui2_log['pairs_list'].remove(pair)
+
+        gui2_log['pairs_list'].append((prev_step_rept_from, mtz_name_from))
 
         shutil.copy(mtz_name_from, mtz_name_to)
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
+
+        gui2_log_path = os.path.join(cwd_path, 'output.json')
+
+        print("Writing:", gui2_log_path)
+
+        with open(gui2_log_path, 'w') as fp:
+            json.dump(gui2_log, fp, indent=4)
+
+        print("\n ___________________ gui2_log:", gui2_log, "\n")
+
 
     except IOError:
         print("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
-
+    return gui2_log
 
 def try_find_prev_mask_pickle(cur_nod):
     pickle_path = None
@@ -339,10 +363,6 @@ def get_import_run_string(in_str_lst):
     if template is None:
         # Unable to collapse?? Just pass through all filenames as <name>
         # and trust dials to process
-        print("in_str_lst", in_str_lst)
-        print("os.path.dirname(in_str_lst[0]) : ", os.path.dirname(str(in_str_lst[0])))
-        print("in_str_lst : ", in_str_lst)
-
         return os.path.dirname(in_str_lst[0]), " ".join(in_str_lst)
 
     dirname = os.path.dirname(template)
@@ -944,7 +964,6 @@ class Text_w_Bar(QProgressBar):
 
 def loading_error_dialog(message):
     """Create an error message about loading in a dialog box."""
-    from .qt import uic
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
     dialog = uic.loadUi(dialog_filename)
     dialog.errorMessage.setPlainText(message)

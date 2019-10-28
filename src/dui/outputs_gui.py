@@ -29,11 +29,27 @@ from dxtbx.model.experiment_list import InvalidExperimentListError
 
 try:
     from outputs_n_viewers.info_handler import update_all_data
-    from qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+    from qt import (
+        QApplication,
+        QGroupBox,
+        QHBoxLayout,
+        QLabel,
+        QVBoxLayout,
+        QWidget,
+        QScrollArea
+        )
 
 except ImportError:
     from .outputs_n_viewers.info_handler import update_all_data
-    from .qt import QApplication, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+    from .qt import (
+        QApplication,
+        QGroupBox,
+        QHBoxLayout,
+        QLabel,
+        QVBoxLayout,
+        QWidget,
+        QScrollArea
+        )
 
 
 logger = logging.getLogger(__name__)
@@ -100,9 +116,9 @@ class InfoWidget(QWidget):
         bm_v_layout.addWidget(w_lambda_label)
         self.w_lambda_data = QLabel(empty_str)
         bm_v_layout.addWidget(self.w_lambda_data)
-        bm_v_layout.addWidget(QLabel("  "))
+        #bm_v_layout.addWidget(QLabel("  "))
 
-        bm_v_layout.addStretch()
+        #bm_v_layout.addStretch()
         beam_group.setLayout(bm_v_layout)
 
         cell_group = QGroupBox(" Crystal ")
@@ -187,7 +203,7 @@ class InfoWidget(QWidget):
         crys_v_layout = QVBoxLayout()
         crys_v_layout.addLayout(cell_v_layout)
         crys_v_layout.addLayout(r_layout)
-        crys_v_layout.addStretch()
+        #crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
         scan_group = QGroupBox(" Scan ")
@@ -286,9 +302,12 @@ class InfoWidget(QWidget):
 
         # detec_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel(" Distance (mm)")
-        detec_v_layout.addWidget(d_dist_label)
+
         self.d_dist_data = QLabel(empty_str)
-        detec_v_layout.addWidget(self.d_dist_data)
+        d_dist_hbox = QHBoxLayout()
+        d_dist_hbox.addWidget(d_dist_label)
+        d_dist_hbox.addWidget(self.d_dist_data)
+        detec_v_layout.addLayout(d_dist_hbox)
 
         # detec_v_layout.addWidget(QLabel("  "))
         n_pans_label = QLabel(" Number of Panels ")
@@ -337,19 +356,23 @@ class InfoWidget(QWidget):
 
         detec_v_layout.addLayout(px_h_layout)
 
-        detec_v_layout.addWidget(QLabel("  "))
-        detec_v_layout.addStretch()
+        #detec_v_layout.addWidget(QLabel("  "))
+        #detec_v_layout.addStretch()
         detec_group.setLayout(detec_v_layout)
 
-        inner_main_box = QHBoxLayout()
-        inner_main_box.addWidget(beam_group)
-        inner_main_box.addWidget(cell_group)
-        inner_main_box.addWidget(scan_group)
-        inner_main_box.addWidget(detec_group)
-        inner_main_box.addStretch()
-        my_main_box = QVBoxLayout()
-        my_main_box.addLayout(inner_main_box)
-        # my_main_box.addStretch()
+        left_big_box = QHBoxLayout()
+        left_big_box.addWidget(beam_group)
+        left_big_box.addWidget(cell_group)
+        left_big_box.addStretch()
+
+        right_big_box = QHBoxLayout()
+        right_big_box.addWidget(detec_group)
+        right_big_box.addWidget(scan_group)
+        right_big_box.addStretch()
+
+        inner_main_h_box = QVBoxLayout()
+        inner_main_h_box.addLayout(left_big_box)
+        inner_main_h_box.addLayout(right_big_box)
 
         self.my_json_path = None
         self.my_pikl_path = None
@@ -358,7 +381,15 @@ class InfoWidget(QWidget):
             exp_json_path=self.my_json_path, refl_pikl_path=self.my_pikl_path
         )
 
-        self.setLayout(my_main_box)
+        self.my_scrollable = QScrollArea()
+        tmp_widget = QWidget()
+        tmp_widget.setLayout(inner_main_h_box)
+        self.my_scrollable.setWidget(tmp_widget)
+
+        main_v_box = QVBoxLayout()
+        main_v_box.addWidget(self.my_scrollable)
+
+        self.setLayout(main_v_box)
 
 
     def update_data(self, exp_json_path=None, refl_pikl_path=None):

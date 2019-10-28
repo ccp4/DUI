@@ -447,7 +447,7 @@ def generate_predict(node_obj):
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     if node_obj.ll_command_lst[0][0] in node_obj.dials_com_lst[2:-1]:
         try:
-            print("running predictions START")
+            logger.debug("running predictions START")
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
             pre_fil = str(current_lin) + "_predict.pickle"
@@ -461,18 +461,18 @@ def generate_predict(node_obj):
                 gen_pred_proc.wait()
 
                 if os.path.exists(tst_path):
-                    print("\ngenerated predictions at:  %s %s", tst_path, "\n")
+                    logger.debug("\ngenerated predictions at:  %s %s", tst_path, "\n")
                     pre_out = pre_fil
 
                 else:
-                    print("\n  predictions NOT generated")
+                    logger.debug("\n  predictions NOT generated")
                     pre_out = None
 
             else:
-                print("\n predictions ALREADY generated")
+                logger.debug("\n predictions ALREADY generated")
                 pre_out = pre_fil
 
-            print("running predictions END")
+            logger.debug("running predictions END")
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
@@ -490,7 +490,7 @@ def generate_report(node_obj):
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
     if node_obj.ll_command_lst[0][0] in node_obj.dials_com_lst[1:-1]:
-        print("running report START")
+        logger.debug("running report START")
         current_lin = node_obj.lin_num
         refl_inp = node_obj.refl_pickle_file_out
         deps_outp = "output.external_dependencies=local"
@@ -499,7 +499,7 @@ def generate_report(node_obj):
 
         tst_path = os.path.join(cwd_path, htm_fil)
         if  not(os.path.exists(tst_path)):
-            print("\n ___________________________ tst_path =", tst_path, "\n")
+            logger.debug("\n ___________________________ tst_path =", tst_path, "\n")
             if node_obj.ll_command_lst[0][0] == "find_spots":
                 rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
 
@@ -524,7 +524,7 @@ def generate_report(node_obj):
                 gen_rep_proc.wait()
 
                 rep_out = htm_fil
-                print("generated report at:  %s", rep_out)
+                logger.debug("generated report at:  %s", rep_out)
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
@@ -536,11 +536,11 @@ def generate_report(node_obj):
             logger.debug("running report END")
 
         else:
-            print("report ALREADY generated")
+            logger.debug("report ALREADY generated")
             rep_out = htm_fil
 
     else:
-        print("NO report needed for this step")
+        logger.debug("NO report needed for this step")
         rep_out = None
 
     return rep_out

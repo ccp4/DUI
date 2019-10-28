@@ -484,6 +484,8 @@ class MainWidget(QMainWindow):
 
             self.idials_runner = Runner()
 
+        self.gui2_log = {'pairs_list':[]}
+
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
 
@@ -532,12 +534,15 @@ class MainWidget(QMainWindow):
         self.web_view = WebTab()
         self.img_view = MyImgWin()
         self.ext_view = OuterCaller()
+        self.info_widget = InfoWidget()
 
         self.output_info_tabs = QTabWidget()
-        self.output_info_tabs.addTab(self.img_view, "Image View")
-        self.output_info_tabs.addTab(self.cli_out, "Log Text")
-        self.output_info_tabs.addTab(self.web_view, "Report View")
-        self.output_info_tabs.addTab(self.ext_view, "External Tools")
+        self.output_info_tabs.addTab(self.img_view, "Image")
+        self.output_info_tabs.addTab(self.cli_out, "Log")
+        self.output_info_tabs.addTab(self.web_view, "Report")
+        self.output_info_tabs.addTab(self.ext_view, "Tools")
+        self.output_info_tabs.addTab(self.info_widget, "Experiment")
+
         self.view_tab_num = 0
         self.output_info_tabs.currentChanged.connect(self.tab_changed)
 
@@ -549,15 +554,10 @@ class MainWidget(QMainWindow):
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
 
-        self.info_widget = InfoWidget()
-
-        InfoScrollArea = QScrollArea()
-        InfoScrollArea.setWidget(self.info_widget)
 
         v_info_splitter = QSplitter()
         v_info_splitter.setOrientation(Qt.Vertical)
         v_info_splitter.addWidget(self.output_info_tabs)
-        v_info_splitter.addWidget(InfoScrollArea)
 
         h_main_splitter.addWidget(v_info_splitter)
 
@@ -674,28 +674,31 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
 
     def chouse_if_predict_or_report(self):
-        if (
-            self.view_tab_num == 0 and
-            self.img_view.rad_but_pre_hkl.checkState()
+        if(
+            self.idials_runner.current_node.ll_command_lst[0][0] != "refine_bravais_settings"
         ):
-            self.pop_busy_box(text_in_bar = "Generating Predictions")
-            self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
-            self.close_busy_box()
+            if (
+                self.view_tab_num == 0 and
+                self.img_view.rad_but_pre_hkl.checkState()
+            ):
+                self.pop_busy_box(text_in_bar = "Generating Predictions")
+                self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
+                self.close_busy_box()
 
-        elif self.view_tab_num == 2:
-            '''
-            ##########################################################################
-            tmp_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
-            tmp_bar(5)
-            tmp_bar.ended()
-            ################################################################################
-            '''
+            elif self.view_tab_num == 2:
+                '''
+                ##########################################################################
+                tmp_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
+                tmp_bar(5)
+                tmp_bar.ended()
+                ################################################################################
+                '''
 
 
-            tmp_bar = ProgBarBox(min_val=0, max_val=10, text="Generating Report")
-            tmp_bar(5)
-            self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
-            tmp_bar.ended()
+                tmp_bar = ProgBarBox(min_val=0, max_val=10, text="Generating Report")
+                tmp_bar(5)
+                self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
+                tmp_bar.ended()
 
     def tab_changed(self, num = 0):
         self.view_tab_num = num
@@ -846,8 +849,7 @@ class MainWidget(QMainWindow):
                 logger.debug("no need to close reindex table")
 
         elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
-            try_move_last_info(self.idials_runner.current_node)
-
+            self.gui2_log = try_move_last_info(tmp_curr, self.gui2_log)
 
         self.check_reindex_pop()
         self.check_gray_outs()
