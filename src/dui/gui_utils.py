@@ -33,7 +33,7 @@ import subprocess
 import psutil
 import json
 
-from dxtbx.sequence_filenames import template_regex
+from dxtbx.sequence_filenames import template_regex, template_regex_from_list
 
 '''
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
