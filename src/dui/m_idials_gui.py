@@ -898,6 +898,24 @@ class MainWidget(QMainWindow):
             "Root": ["import"],
             "import": ["find_spots"],
             "find_spots": ["index"],
+            "index": ["refine_bravais_settings", "refine", "integrate", "export"],
+            "refine_bravais_settings": [None],
+            "reindex": ["refine", "integrate", "export", "index"],
+            "refine": ["refine_bravais_settings", "refine", "integrate", "index", "export"],
+            "integrate": ["symmetry", "scale", "export", "index", "export"],
+            "symmetry": ["refine_bravais_settings", "scale", "export"],
+            "scale": ["refine_bravais_settings", "symmetry", "export"],
+            "export": [None],
+            "generate_mask": ["find_spots"],
+            "modify_geometry":["find_spots"],
+            "None": [None],
+        }
+
+        more_conservative = '''
+        cmd_connects = {
+            "Root": ["import"],
+            "import": ["find_spots"],
+            "find_spots": ["index"],
             "index": ["refine_bravais_settings", "refine", "integrate"],
             "refine_bravais_settings": [None],
             "reindex": ["refine", "integrate"],
@@ -910,24 +928,7 @@ class MainWidget(QMainWindow):
             "modify_geometry":["find_spots"],
             "None": [None],
         }
-
-        to_consider = '''
-            "Root": ["import"],
-            "import": ["find_spots"],
-            "find_spots": ["index"],
-            "index": ["refine_bravais_settings", "refine", "integrate"],
-            "refine_bravais_settings": [None],
-            "reindex": ["refine", "integrate", "export"],
-            "refine": ["refine_bravais_settings", "refine", "integrate"],
-            "integrate": ["symmetry", "scale", "export"],
-            "symmetry": ["refine_bravais_settings", "scale", "export"],
-            "scale": ["refine_bravais_settings", "symmetry"],
-            "export": [None],
-            "generate_mask": ["find_spots"],
-            "modify_geometry":["find_spots"],
-            "None": [None],
         '''
-
 
         lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
