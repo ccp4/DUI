@@ -89,7 +89,6 @@ class CommandNode(object):
         self.json_file_out = None
         self.phil_file_out = None
         self.log_file_out = None
-        self.debug_log_file_out = None
         self.report_out = None
         self.predict_pickle_out = None
         self.err_file_out = None

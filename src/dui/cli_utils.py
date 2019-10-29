@@ -346,11 +346,6 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
 
     elif cmd_lst_ini == "generate_mask":
         lst_inner1 = list(lst_inner)
