@@ -837,64 +837,6 @@ class PopMaskMenu(QMenu):
         self.show()
 
 
-class Test:
-
-    def __init__(self):
-        #self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
-
-        self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
-
-        #datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
-        #datablocks = DataBlockFactory.from_expt_file(self.n_json_file_path)
-
-        ## TODO check length of datablock for safety
-        #datablock = datablocks[0]
-        #my_sweep = datablock.extract_sweeps()[0]
-
-        experiments = ExperimentListFactory.from_json_file(self.n_json_file_path)
-        my_sweep = experiments.imagesets()[0]
-        self.image = my_sweep.get_raw_data(0)[0].as_double()
-
-    def set_mask(self):
-        experiments = ExperimentListFactory.from_json_file(
-                        self.n_json_file_path, check_format=False
-                    )
-
-        self.imageset = experiments.imagesets()[0]
-        mask_file = self.imageset.external_lookup.mask.filename
-
-        pick_file = open(mask_file, "rb")
-        mask_tup_obj = pickle.load(pick_file)
-        pick_file.close()
-
-        self.mask = mask_tup_obj[0]
-
-    def set_pars(self):
-        self.gain = 0.5
-        self.size = (3, 3)
-        self.nsig_b = 3
-        self.nsig_s = 3
-        self.global_threshold = 0
-        self.min_count = 2
-
-    def test_dispersion_debug(self):
-        from dials.algorithms.image.threshold import DispersionThresholdDebug
-
-        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
-
-        debug = DispersionThresholdDebug(
-            self.image,
-            self.mask,
-            self.gain_map,
-            self.size,
-            self.nsig_b,
-            self.nsig_s,
-            self.global_threshold,
-            self.min_count,
-        )
-
-        return debug
-
 
 class PopPaletteMenu(QMenu):
 
@@ -1023,6 +965,63 @@ class PopPaletteMenu(QMenu):
         )
 
 
+class Test:
+
+    def __init__(self):
+        #self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
+
+        self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
+
+        #datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
+        #datablocks = DataBlockFactory.from_expt_file(self.n_json_file_path)
+
+        ## TODO check length of datablock for safety
+        #datablock = datablocks[0]
+        #my_sweep = datablock.extract_sweeps()[0]
+
+        experiments = ExperimentListFactory.from_json_file(self.n_json_file_path)
+        my_sweep = experiments.imagesets()[0]
+        self.image = my_sweep.get_raw_data(0)[0].as_double()
+
+    def set_mask(self):
+        experiments = ExperimentListFactory.from_json_file(
+                        self.n_json_file_path, check_format=False
+                    )
+
+        self.imageset = experiments.imagesets()[0]
+        mask_file = self.imageset.external_lookup.mask.filename
+
+        pick_file = open(mask_file, "rb")
+        mask_tup_obj = pickle.load(pick_file)
+        pick_file.close()
+
+        self.mask = mask_tup_obj[0]
+
+    def set_pars(self):
+        self.gain = 0.5
+        self.size = (3, 3)
+        self.nsig_b = 3
+        self.nsig_s = 3
+        self.global_threshold = 0
+        self.min_count = 2
+
+    def test_dispersion_debug(self):
+        from dials.algorithms.image.threshold import DispersionThresholdDebug
+
+        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
+
+        debug = DispersionThresholdDebug(
+            self.image,
+            self.mask,
+            self.gain_map,
+            self.size,
+            self.nsig_b,
+            self.nsig_s,
+            self.global_threshold,
+            self.min_count,
+        )
+
+        return debug
 
 class MyImgWin(QWidget):
 
