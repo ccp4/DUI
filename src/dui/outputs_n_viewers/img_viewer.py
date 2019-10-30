@@ -831,6 +831,8 @@ class PopMaskMenu(QMenu):
         my_box.addWidget(info_grp)
         my_box.addWidget(self.my_parent.chk_box_B_centr)
 
+        my_box.addLayout(self.my_parent.img_spot_find_hbox)
+
         self.setLayout(my_box)
         self.show()
 
@@ -1110,6 +1112,17 @@ class MyImgWin(QWidget):
         self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
         self.chk_box_B_centr.setChecked(False)
 
+        # previews for spot finding
+        self.btn_set_image = QPushButton("Image")
+        self.btn_set_varia = QPushButton("Variance")
+
+        self.btn_set_varia.clicked.connect(self.set_variance_img)
+        self.btn_set_image.clicked.connect(self.set_img_img)
+
+        self.img_spot_find_hbox = QHBoxLayout()
+        self.img_spot_find_hbox.addWidget(self.btn_set_image)
+        self.img_spot_find_hbox.addWidget(self.btn_set_varia)
+
         # Grouping
         ref_type_group = QButtonGroup()
         ref_type_group.addButton(self.rad_but_fnd_hkl)
@@ -1284,26 +1297,9 @@ class MyImgWin(QWidget):
         top_hbox.addWidget(type_grp)
 
 
-        ######################################################################
-
-        self.btn_set_image = QPushButton("Image")
-        self.btn_set_varia = QPushButton("Variance")
-
-        self.btn_set_varia.clicked.connect(self.set_variance_img)
-        self.btn_set_image.clicked.connect(self.set_img_img)
-
-        bot_hbox = QHBoxLayout()
-        bot_hbox.addWidget(self.btn_set_image)
-        bot_hbox.addWidget(self.btn_set_varia)
-
-        ######################################################################
-
-
         my_box = QVBoxLayout()
         my_box.setMargin(0)
         my_box.addLayout(top_hbox)
-
-        my_box.addLayout(bot_hbox)
 
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
