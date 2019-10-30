@@ -838,11 +838,19 @@ class PopMaskMenu(QMenu):
 class Test:
 
     def __init__(self):
-        self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
-        datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
-        # TODO check length of datablock for safety
-        datablock = datablocks[0]
-        my_sweep = datablock.extract_sweeps()[0]
+        #self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
+
+        self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
+
+        #datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
+        #datablocks = DataBlockFactory.from_expt_file(self.n_json_file_path)
+
+        ## TODO check length of datablock for safety
+        #datablock = datablocks[0]
+        #my_sweep = datablock.extract_sweeps()[0]
+
+        experiments = ExperimentListFactory.from_json_file(self.n_json_file_path)
+        my_sweep = experiments.imagesets()[0]
         self.image = my_sweep.get_raw_data(0)[0].as_double()
 
     def set_mask(self):
@@ -1275,7 +1283,9 @@ class MyImgWin(QWidget):
         top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
-        '''
+
+        ######################################################################
+
         self.btn_set_image = QPushButton("Image")
         self.btn_set_varia = QPushButton("Variance")
 
@@ -1285,12 +1295,15 @@ class MyImgWin(QWidget):
         bot_hbox = QHBoxLayout()
         bot_hbox.addWidget(self.btn_set_image)
         bot_hbox.addWidget(self.btn_set_varia)
-        '''
+
+        ######################################################################
 
 
         my_box = QVBoxLayout()
         my_box.setMargin(0)
         my_box.addLayout(top_hbox)
+
+        my_box.addLayout(bot_hbox)
 
         my_box.addWidget(self.my_scrollable)
         my_box.addWidget(self.info_label)
