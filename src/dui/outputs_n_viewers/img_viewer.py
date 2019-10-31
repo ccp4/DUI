@@ -967,21 +967,11 @@ class PopPaletteMenu(QMenu):
 
 class Test:
 
-    def __init__(self):
+    def __init__(self, image_in):
         #self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
 
         self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
-
-        #datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
-        #datablocks = DataBlockFactory.from_expt_file(self.n_json_file_path)
-
-        ## TODO check length of datablock for safety
-        #datablock = datablocks[0]
-        #my_sweep = datablock.extract_sweeps()[0]
-
-        experiments = ExperimentListFactory.from_json_file(self.n_json_file_path)
-        my_sweep = experiments.imagesets()[0]
-        self.image = my_sweep.get_raw_data(0)[0].as_double()
+        self.image = image_in
 
     def set_mask(self):
         experiments = ExperimentListFactory.from_json_file(
@@ -1319,7 +1309,7 @@ class MyImgWin(QWidget):
 
         print("\n set_variance_img  01 \n")
 
-        test1 = Test()
+        test1 = Test(image_in = self.img_arr)
         test1.set_mask()
         test1.set_pars()
 
