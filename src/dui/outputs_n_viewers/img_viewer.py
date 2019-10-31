@@ -1307,7 +1307,6 @@ class MyImgWin(QWidget):
 
     def set_variance_img(self):
 
-        print("\n set_variance_img  01 \n")
 
         test1 = Test(image_in = self.img_arr)
         test1.set_mask()
@@ -1316,26 +1315,7 @@ class MyImgWin(QWidget):
         self.debug_data = test1.test_dispersion_debug()
 
         self.img_arr = self.debug_data.variance()
-
-        print("\n set_variance_img  02 \n")
-
-        self.my_painter.set_img_pix(
-            q_img=self.current_qimg(
-                self.img_arr, self.palette, self.i_min, self.i_max
-            ),
-            obs_flat_data_in=self.find_spt_flat_data_lst[
-                self.img_num - 1 : self.img_num
-            ],
-            pre_flat_data_in=self.pred_spt_flat_data_lst[
-                self.img_num - 1 : self.img_num
-            ],
-            user_choice_in=(
-                self.rad_but_fnd_hkl.checkState(),
-                self.rad_but_pre_hkl.checkState(),
-            ),
-        )
-
-        print("\n set_variance_img  02 \n")
+        self.painter_set_img_pix(self.img_num, 1)
 
 
     def ini_contrast(self):
