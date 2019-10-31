@@ -1649,32 +1649,7 @@ class MyImgWin(QWidget):
                         * loc_scale
                     )
 
-            if self.find_spt_flat_data_lst == [
-                None
-            ] and self.pred_spt_flat_data_lst == [None]:
-
-                self.my_painter.set_img_pix(
-                    self.current_qimg(
-                        self.img_arr, self.palette, self.i_min, self.i_max
-                    )
-                )
-
-            else:
-                self.my_painter.set_img_pix(
-                    q_img=self.current_qimg(
-                        self.img_arr, self.palette, self.i_min, self.i_max
-                    ),
-                    obs_flat_data_in=self.find_spt_flat_data_lst[
-                        img_pos : img_pos + loc_stk_siz
-                    ],
-                    pre_flat_data_in=self.pred_spt_flat_data_lst[
-                        img_pos : img_pos + loc_stk_siz
-                    ],
-                    user_choice_in=(
-                        self.rad_but_fnd_hkl.checkState(),
-                        self.rad_but_pre_hkl.checkState(),
-                    ),
-                )
+            self.painter_set_img_pix(img_pos, loc_stk_siz)
 
         self.palette_label.setPixmap(
             QPixmap(
@@ -1686,6 +1661,35 @@ class MyImgWin(QWidget):
                 )
             )
         )
+
+    def painter_set_img_pix(self, img_pos, loc_stk_siz):
+
+        if self.find_spt_flat_data_lst == [
+            None
+        ] and self.pred_spt_flat_data_lst == [None]:
+
+            self.my_painter.set_img_pix(
+                self.current_qimg(
+                    self.img_arr, self.palette, self.i_min, self.i_max
+                )
+            )
+
+        else:
+            self.my_painter.set_img_pix(
+                q_img=self.current_qimg(
+                    self.img_arr, self.palette, self.i_min, self.i_max
+                ),
+                obs_flat_data_in=self.find_spt_flat_data_lst[
+                    img_pos : img_pos + loc_stk_siz
+                ],
+                pre_flat_data_in=self.pred_spt_flat_data_lst[
+                    img_pos : img_pos + loc_stk_siz
+                ],
+                user_choice_in=(
+                    self.rad_but_fnd_hkl.checkState(),
+                    self.rad_but_pre_hkl.checkState(),
+                ),
+            )
 
         logger.debug("\n self.i_min = %s", self.i_min)
         logger.debug(" self.i_max = %s %s", self.i_max, "\n")
