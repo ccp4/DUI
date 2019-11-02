@@ -975,6 +975,10 @@ class Test:
     def set_mask(self, mask_flex_in):
         self.mask = mask_flex_in
 
+        if self.mask == None:
+            self.mask = flex.bool(flex.grid(self.image.all()), True)
+
+
     def set_pars(self):
         self.gain = 0.5
         self.size = (3, 3)
