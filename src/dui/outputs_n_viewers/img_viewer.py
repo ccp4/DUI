@@ -970,27 +970,9 @@ class PopPaletteMenu(QMenu):
 class Test:
 
     def __init__(self, image_in):
-        #self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
-        #self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
-
         self.image = image_in
 
     def set_mask(self, mask_flex_in):
-        '''
-        experiments = ExperimentListFactory.from_json_file(
-                        self.n_json_file_path, check_format=False
-                    )
-
-        self.imageset = experiments.imagesets()[0]
-        mask_file = self.imageset.external_lookup.mask.filename
-
-        pick_file = open(mask_file, "rb")
-        mask_tup_obj = pickle.load(pick_file)
-        pick_file.close()
-
-        self.mask = mask_tup_obj[0]
-        '''
-
         self.mask = mask_flex_in
 
     def set_pars(self):
