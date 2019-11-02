@@ -971,11 +971,12 @@ class Test:
 
     def __init__(self, image_in):
         #self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
+        #self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
 
-        self.n_json_file_path = "/tmp/dui_run/dui_files/2_experiments.expt"
         self.image = image_in
 
-    def set_mask(self):
+    def set_mask(self, mask_flex_in):
+        '''
         experiments = ExperimentListFactory.from_json_file(
                         self.n_json_file_path, check_format=False
                     )
@@ -988,6 +989,9 @@ class Test:
         pick_file.close()
 
         self.mask = mask_tup_obj[0]
+        '''
+
+        self.mask = mask_flex_in
 
     def set_pars(self):
         self.gain = 0.5
@@ -1311,7 +1315,7 @@ class MyImgWin(QWidget):
 
 
         test1 = Test(image_in = self.img_arr)
-        test1.set_mask()
+        test1.set_mask(self.my_painter.mask_flex)
         test1.set_pars()
 
         self.debug_data = test1.test_dispersion_debug()
