@@ -467,17 +467,7 @@ def update_info(main_obj):
         new_json=join_path(tmp_curr.json_file_out),
     )
 
-    try:
-        xb = main_obj.info_widget.all_data.xb / main_obj.info_widget.all_data.x_px_size
-        yb = main_obj.info_widget.all_data.yb / main_obj.info_widget.all_data.y_px_size
-        n_pan_xb_yb = main_obj.info_widget.all_data.n_pan_xb_yb
-
-    except TypeError:
-        xb, yb, n_pan_xb_yb = None, None, None
-        print("\n xb, yb, n_pan_xb_yb = None, None, None \n")
-
-    main_obj.img_view.update_beam_centre(xb, yb, n_pan_xb_yb)
-    main_obj.img_view.update_mask(main_obj.info_widget.all_data.np_mask)
+    main_obj.img_view.update_painter_info(main_obj.info_widget.all_data)
 
 
 def update_pbar_msg(main_obj):

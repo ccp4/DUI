@@ -231,6 +231,7 @@ class ImgPainter(QWidget):
         self.xb = None
         self.yb = None
         self.np_mask = None
+        self.mask_flex = None
 
         self.closer_ref = None
         self.my_scale = 0.333
@@ -422,9 +423,10 @@ class ImgPainter(QWidget):
         self.img_height = q_img.height()
         self.update()
 
-    def update_my_mask(self, np_mask):
+    def update_my_mask(self, np_mask, mask_flex):
         # print("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
+        self.mask_flex = mask_flex
 
         if np_mask is not None:
             # print("self.np_mask.shape =", self.np_mask.shape)
@@ -1553,11 +1555,20 @@ class MyImgWin(QWidget):
     def zoom_out(self):
         self.my_painter.scale2fact(0.8)
 
-    def update_beam_centre(self, xb, yb, n_pan_xb_yb):
-        self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
+    def update_painter_info(self, all_data):
 
-    def update_mask(self, np_mask):
-        self.my_painter.update_my_mask(np_mask)
+        try:
+            xb = all_data.xb / all_data.x_px_size
+            yb = all_data.yb / all_data.y_px_size
+            n_pan_xb_yb = all_data.n_pan_xb_yb
+
+        except TypeError:
+            xb, yb, n_pan_xb_yb = None, None, None
+            print("\n xb, yb, n_pan_xb_yb = None, None, None \n")
+
+        self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
+        self.my_painter.update_my_mask(all_data.np_mask, all_data.mask_flex)
+
 
     def update_exp(self, reference):
         self.ref2exp = reference

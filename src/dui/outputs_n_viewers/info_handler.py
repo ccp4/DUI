@@ -79,6 +79,7 @@ class InfoData(object):
         self.ref2exp = None
 
         self.np_mask = None
+        self.mask_flex = None
 
 
 def update_all_data(reflections_path=None, experiments_path=None):
@@ -149,13 +150,14 @@ def update_all_data(reflections_path=None, experiments_path=None):
             mask_tup_obj = pickle.load(pick_file)
             pick_file.close()
 
-            mask_flex = mask_tup_obj[0]
-            mask_np_arr = mask_flex.as_numpy_array()
+            dat.mask_flex = mask_tup_obj[0]
+            mask_np_arr = dat.mask_flex.as_numpy_array()
             dat.np_mask = mask_np_arr
 
         except IOError:
             print("No mask in this node")
             dat.np_mask = None
+            dat.mask_flex = None
 
         # FIXME it takes just the first experiment. What if there are more?
         exp = experiments[0]
