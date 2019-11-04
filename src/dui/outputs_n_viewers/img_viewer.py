@@ -54,6 +54,7 @@ try:
         QCheckBox,
         QColor,
         QComboBox,
+        QDoubleSpinBox,
         QFont,
         QGroupBox,
         QHBoxLayout,
@@ -98,6 +99,7 @@ except ImportError:
         QCheckBox,
         QColor,
         QComboBox,
+        QDoubleSpinBox,
         QFont,
         QGroupBox,
         QHBoxLayout,
@@ -983,13 +985,28 @@ class Test:
             self.mask = flex.bool(flex.grid(self.image.all()), True)
 
 
-    def set_pars(self):
-        self.gain = 0.5
-        self.size = (3, 3)
-        self.nsig_b = 3
-        self.nsig_s = 3
-        self.global_threshold = 0
-        self.min_count = 2
+    def set_pars(self,
+            gain,
+            size,
+            nsig_b,
+            nsig_s,
+            global_threshold,
+            min_count
+        ):
+        self.gain = gain
+        self.size = size
+        self.nsig_b = nsig_b
+        self.nsig_s = nsig_s
+        self.global_threshold = global_threshold
+        self.min_count = min_count
+
+        print("self.gain             ", self.gain             )
+        print("self.size             ", self.size             )
+        print("self.nsig_b           ", self.nsig_b           )
+        print("self.nsig_s           ", self.nsig_s           )
+        print("self.global_threshold ", self.global_threshold )
+        print("self.min_count        ", self.min_count        )
+
 
     def test_dispersion_debug(self):
         from dials.algorithms.image.threshold import DispersionThresholdDebug
@@ -1085,7 +1102,6 @@ class MyImgWin(QWidget):
         self.rad_but_circ_mask.toggled.connect(self.my_painter.unpop_menu)
         self.rad_but_poly_mask.toggled.connect(self.my_painter.unpop_menu)
 
-
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
 
@@ -1104,9 +1120,60 @@ class MyImgWin(QWidget):
         self.btn_set_varia.clicked.connect(self.set_variance_img)
         self.btn_set_image.clicked.connect(self.set_img_img)
 
-        self.img_spot_find_hbox = QHBoxLayout()
+        self.gain_spin = QDoubleSpinBox()
+        self.gain_spin.setValue(0.5)
+        gain_layout = QHBoxLayout()
+        gain_layout.addWidget(QLabel("Gain"))
+        gain_layout.addWidget(self.gain_spin)
+
+        self.size_1_spin = QSpinBox()
+        self.size_1_spin.setValue(3)
+        self.size_2_spin = QSpinBox()
+        self.size_2_spin.setValue(3)
+        size_layout = QHBoxLayout()
+        size_layout.addWidget(QLabel("Kernel Size"))
+        size_layout.addWidget(self.size_1_spin)
+        size_layout.addWidget(self.size_2_spin)
+
+        self.nsig_b_spin = QSpinBox()
+        self.nsig_b_spin.setValue(3)
+        nsig_b_layout = QHBoxLayout()
+        nsig_b_layout.addWidget(QLabel("Sigma Big"))
+        nsig_b_layout.addWidget(self.nsig_b_spin)
+
+        self.nsig_s_spin = QSpinBox()
+        self.nsig_s_spin.setValue(3)
+        nsig_s_layout = QHBoxLayout()
+        nsig_s_layout.addWidget(QLabel("Sigma Small"))
+        nsig_s_layout.addWidget(self.nsig_s_spin)
+
+        self.global_threshold_spin = QSpinBox()
+        self.global_threshold_spin.setValue(0)
+        global_threshold_spin_layout = QHBoxLayout()
+        global_threshold_spin_layout.addWidget(QLabel("Global threshold"))
+        global_threshold_spin_layout.addWidget(self.global_threshold_spin)
+
+
+        self.min_count_spin = QSpinBox()
+        self.min_count_spin.setValue(2)
+        min_count_layout = QHBoxLayout()
+        min_count_layout.addWidget(QLabel("Minimum count "))
+        min_count_layout.addWidget(self.min_count_spin)
+
+        self.img_spot_find_hbox = QVBoxLayout()
         self.img_spot_find_hbox.addWidget(self.btn_set_image)
+
+
+        self.img_spot_find_hbox.addLayout(gain_layout)
+        self.img_spot_find_hbox.addLayout(size_layout)
+
+        self.img_spot_find_hbox.addLayout(nsig_b_layout)
+        self.img_spot_find_hbox.addLayout(nsig_s_layout)
+        self.img_spot_find_hbox.addLayout(global_threshold_spin_layout)
+        self.img_spot_find_hbox.addLayout(min_count_layout)
+
         self.img_spot_find_hbox.addWidget(self.btn_set_varia)
+
 
         # Grouping
         ref_type_group = QButtonGroup()
@@ -1306,7 +1373,14 @@ class MyImgWin(QWidget):
     def set_variance_img(self):
         test1 = Test(image_in = self.img_arr)
         test1.set_mask(self.my_painter.mask_flex)
-        test1.set_pars()
+        test1.set_pars(
+            gain = self.gain_spin.value(),
+            size = (self.size_1_spin.value(), self.size_2_spin.value()),
+            nsig_b = self.nsig_b_spin.value(),
+            nsig_s = self.nsig_s_spin.value(),
+            global_threshold = self.global_threshold_spin.value(),
+            min_count = self.min_count_spin.value()
+        )
 
         self.debug_data = test1.test_dispersion_debug()
 
