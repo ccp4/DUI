@@ -1218,6 +1218,8 @@ class MyImgWin(QWidget):
         self.img_num = 1
         self.img_step_val = 1
         self.stack_size = 1
+        self.img2show = "org"
+
         self.ref2exp = None
         self.my_sweep = None
         self.find_spt_flat_data_lst = [None]
@@ -1294,21 +1296,19 @@ class MyImgWin(QWidget):
         self.palette_select.setCurrentIndex(3)
 
     def set_img_img(self):
-
-        print("\n set_img_img  01 \n")
+        self.img2show = "org"
+        self.painter_set_img_pix(self.img_num, 1)
 
     def set_variance_img(self):
-
-
         test1 = Test(image_in = self.img_arr)
         test1.set_mask(self.my_painter.mask_flex)
         test1.set_pars()
 
         self.debug_data = test1.test_dispersion_debug()
 
-        self.img_arr = self.debug_data.variance()
+        self.img_varian_arr = self.debug_data.variance()
+        self.img2show = "var"
         self.painter_set_img_pix(self.img_num, 1)
-
 
     def ini_contrast(self):
         if not self.contrast_initiated:
@@ -1649,28 +1649,55 @@ class MyImgWin(QWidget):
             None
         ] and self.pred_spt_flat_data_lst == [None]:
 
-            self.my_painter.set_img_pix(
-                self.current_qimg(
-                    self.img_arr, self.palette, self.i_min, self.i_max
+
+            if self.img2show == "var":
+                self.my_painter.set_img_pix(
+                    self.current_qimg(
+                        self.img_varian_arr, self.palette, self.i_min, self.i_max
+                    )
                 )
-            )
+
+            else:
+                self.my_painter.set_img_pix(
+                    self.current_qimg(
+                        self.img_arr, self.palette, self.i_min, self.i_max
+                    )
+                )
 
         else:
-            self.my_painter.set_img_pix(
-                q_img=self.current_qimg(
-                    self.img_arr, self.palette, self.i_min, self.i_max
-                ),
-                obs_flat_data_in=self.find_spt_flat_data_lst[
-                    img_pos : img_pos + loc_stk_siz
-                ],
-                pre_flat_data_in=self.pred_spt_flat_data_lst[
-                    img_pos : img_pos + loc_stk_siz
-                ],
-                user_choice_in=(
-                    self.rad_but_fnd_hkl.checkState(),
-                    self.rad_but_pre_hkl.checkState(),
-                ),
-            )
+            if self.img2show == "var":
+                self.my_painter.set_img_pix(
+                    q_img=self.current_qimg(
+                        self.img_varian_arr, self.palette, self.i_min, self.i_max
+                    ),
+                    obs_flat_data_in=self.find_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    pre_flat_data_in=self.pred_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    user_choice_in=(
+                        self.rad_but_fnd_hkl.checkState(),
+                        self.rad_but_pre_hkl.checkState(),
+                    ),
+                )
+
+            else:
+                self.my_painter.set_img_pix(
+                    q_img=self.current_qimg(
+                        self.img_arr, self.palette, self.i_min, self.i_max
+                    ),
+                    obs_flat_data_in=self.find_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    pre_flat_data_in=self.pred_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    user_choice_in=(
+                        self.rad_but_fnd_hkl.checkState(),
+                        self.rad_but_pre_hkl.checkState(),
+                    ),
+                )
 
         logger.debug("\n self.i_min = %s", self.i_min)
         logger.debug(" self.i_max = %s %s", self.i_max, "\n")
@@ -1778,6 +1805,7 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def img_changed_by_user(self, value):
+        self.img2show = "org"
         self.img_num = value
         if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
