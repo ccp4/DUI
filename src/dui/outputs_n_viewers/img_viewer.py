@@ -840,12 +840,12 @@ class PopMaskMenu(QMenu):
 
 
 
-class PopPaletteMenu(QMenu):
+class PopDisplayMenu(QMenu):
 
     sliders_changed = Signal(int, int)
 
     def __init__(self, parent=None):
-        super(PopPaletteMenu, self).__init__(parent)
+        super(PopDisplayMenu, self).__init__(parent)
         self.my_parent = parent
         palette_grp = QGroupBox("Palette Tuning")
         colour_box = QHBoxLayout()
@@ -1193,7 +1193,7 @@ class MyImgWin(QWidget):
         self.palette_qimg = build_qimg()
 
         palette_menu_but = QPushButton("Display")
-        pop_palette_menu = PopPaletteMenu(self)
+        pop_palette_menu = PopDisplayMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
