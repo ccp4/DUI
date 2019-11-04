@@ -921,12 +921,16 @@ class PopPaletteMenu(QMenu):
         img_select_group_box = QGroupBox("IMG Navigation")
         img_select_group_box.setLayout(img_select_box)
 
-        main_layout = QVBoxLayout()
-        main_layout.addWidget(palette_grp)
-        main_layout.addWidget(info_grp)
-        main_layout.addWidget(img_select_group_box)
+        main_top_layout = QVBoxLayout()
+        main_top_layout.addWidget(palette_grp)
 
-        self.setLayout(main_layout)
+        bott_layout = QHBoxLayout()
+        bott_layout.addWidget(info_grp)
+        bott_layout.addWidget(img_select_group_box)
+
+        main_top_layout.addLayout(bott_layout)
+
+        self.setLayout(main_top_layout)
         self.show()
 
     def showEvent(self, event):
