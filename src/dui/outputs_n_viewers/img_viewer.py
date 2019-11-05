@@ -1121,7 +1121,7 @@ class MyImgWin(QWidget):
         self.btn_set_image.clicked.connect(self.set_img_img)
 
         self.gain_spin = QDoubleSpinBox()
-        self.gain_spin.setValue(0.5)
+        self.gain_spin.setValue(1)
         gain_layout = QHBoxLayout()
         gain_layout.addWidget(QLabel("Gain"))
         gain_layout.addWidget(self.gain_spin)
@@ -1136,7 +1136,7 @@ class MyImgWin(QWidget):
         size_layout.addWidget(self.size_2_spin)
 
         self.nsig_b_spin = QDoubleSpinBox()
-        self.nsig_b_spin.setValue(3)
+        self.nsig_b_spin.setValue(6)
         nsig_b_layout = QHBoxLayout()
         nsig_b_layout.addWidget(QLabel("Sigma Background"))
         nsig_b_layout.addWidget(self.nsig_b_spin)
