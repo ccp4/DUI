@@ -809,10 +809,10 @@ class ImgPainter(QWidget):
 
 
 
-class PopMaskMenu(QMenu):
+class PopActionsMenu(QMenu):
 
     def __init__(self, parent=None):
-        super(PopMaskMenu, self).__init__(parent)
+        super(PopActionsMenu, self).__init__(parent)
         self.my_parent = parent
 
         ref_bond_group = QButtonGroup()
@@ -1265,7 +1265,7 @@ class MyImgWin(QWidget):
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
         mask_menu_but = QPushButton("Actions")
-        self.pop_mask_menu = PopMaskMenu(self)
+        self.pop_mask_menu = PopActionsMenu(self)
         mask_menu_but.setMenu(self.pop_mask_menu)
 
         my_code_path = get_main_path()
@@ -1367,26 +1367,34 @@ class MyImgWin(QWidget):
         self.palette_select.setCurrentIndex(3)
 
     def set_img_img(self):
-        self.img2show = "org"
-        self.painter_set_img_pix(self.img_num, 1)
+        try:
+            self.img2show = "org"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_variance_img(self):
-        test1 = Test(image_in = self.img_arr)
-        test1.set_mask(self.my_painter.mask_flex)
-        test1.set_pars(
-            gain = self.gain_spin.value(),
-            size = (self.size_1_spin.value(), self.size_2_spin.value()),
-            nsig_b = self.nsig_b_spin.value(),
-            nsig_s = self.nsig_s_spin.value(),
-            global_threshold = self.global_threshold_spin.value(),
-            min_count = self.min_count_spin.value()
-        )
+        try:
+            test1 = Test(image_in = self.img_arr)
+            test1.set_mask(self.my_painter.mask_flex)
+            test1.set_pars(
+                gain = self.gain_spin.value(),
+                size = (self.size_1_spin.value(), self.size_2_spin.value()),
+                nsig_b = self.nsig_b_spin.value(),
+                nsig_s = self.nsig_s_spin.value(),
+                global_threshold = self.global_threshold_spin.value(),
+                min_count = self.min_count_spin.value()
+            )
 
-        self.debug_data = test1.test_dispersion_debug()
+            self.debug_data = test1.test_dispersion_debug()
 
-        self.img_varian_arr = self.debug_data.variance()
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+            self.img_varian_arr = self.debug_data.variance()
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def ini_contrast(self):
         if not self.contrast_initiated:
