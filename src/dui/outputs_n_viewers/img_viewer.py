@@ -1135,34 +1135,32 @@ class MyImgWin(QWidget):
         size_layout.addWidget(self.size_1_spin)
         size_layout.addWidget(self.size_2_spin)
 
-        self.nsig_b_spin = QSpinBox()
+        self.nsig_b_spin = QDoubleSpinBox()
         self.nsig_b_spin.setValue(3)
         nsig_b_layout = QHBoxLayout()
-        nsig_b_layout.addWidget(QLabel("Sigma Big"))
+        nsig_b_layout.addWidget(QLabel("Sigma Background"))
         nsig_b_layout.addWidget(self.nsig_b_spin)
 
-        self.nsig_s_spin = QSpinBox()
+        self.nsig_s_spin = QDoubleSpinBox()
         self.nsig_s_spin.setValue(3)
         nsig_s_layout = QHBoxLayout()
-        nsig_s_layout.addWidget(QLabel("Sigma Small"))
+        nsig_s_layout.addWidget(QLabel("Sigma Strong"))
         nsig_s_layout.addWidget(self.nsig_s_spin)
 
-        self.global_threshold_spin = QSpinBox()
+        self.global_threshold_spin = QDoubleSpinBox()
         self.global_threshold_spin.setValue(0)
         global_threshold_spin_layout = QHBoxLayout()
-        global_threshold_spin_layout.addWidget(QLabel("Global threshold"))
+        global_threshold_spin_layout.addWidget(QLabel("Global Threshold"))
         global_threshold_spin_layout.addWidget(self.global_threshold_spin)
-
 
         self.min_count_spin = QSpinBox()
         self.min_count_spin.setValue(2)
-        min_count_layout = QHBoxLayout()
-        min_count_layout.addWidget(QLabel("Minimum count "))
-        min_count_layout.addWidget(self.min_count_spin)
+        min_local_layout = QHBoxLayout()
+        min_local_layout.addWidget(QLabel("Minimum Local "))
+        min_local_layout.addWidget(self.min_count_spin)
 
         self.img_spot_find_hbox = QVBoxLayout()
         self.img_spot_find_hbox.addWidget(self.btn_set_image)
-
 
         self.img_spot_find_hbox.addLayout(gain_layout)
         self.img_spot_find_hbox.addLayout(size_layout)
@@ -1170,7 +1168,7 @@ class MyImgWin(QWidget):
         self.img_spot_find_hbox.addLayout(nsig_b_layout)
         self.img_spot_find_hbox.addLayout(nsig_s_layout)
         self.img_spot_find_hbox.addLayout(global_threshold_spin_layout)
-        self.img_spot_find_hbox.addLayout(min_count_layout)
+        self.img_spot_find_hbox.addLayout(min_local_layout)
 
         self.img_spot_find_hbox.addWidget(self.btn_set_varia)
 
