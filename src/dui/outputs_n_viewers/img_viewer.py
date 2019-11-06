@@ -830,11 +830,17 @@ class PopActionsMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
+
+        spot_find_grp = QGroupBox()
+        #spot_find_group_box_layout = QVBoxLayout()
+        spot_find_grp.setLayout(self.my_parent.img_spot_find_hbox)
+
+        #my_box.addLayout(self.my_parent.img_spot_find_hbox)
+
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
         my_box.addWidget(self.my_parent.chk_box_B_centr)
-
-        my_box.addLayout(self.my_parent.img_spot_find_hbox)
+        my_box.addWidget(spot_find_grp)
 
         self.setLayout(my_box)
         self.show()
@@ -1112,6 +1118,8 @@ class MyImgWin(QWidget):
         self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
         self.chk_box_B_centr.setChecked(False)
 
+        ##############################################################################
+
         # previews for spot finding
         self.btn_set_image = QPushButton("Image")
         self.btn_set_varia = QPushButton("Variance")
@@ -1170,6 +1178,15 @@ class MyImgWin(QWidget):
         self.img_spot_find_hbox.addLayout(min_local_layout)
 
         self.img_spot_find_hbox.addWidget(self.btn_set_varia)
+
+
+        #.variance()
+        #.mean()
+        #.index_of_dispersion()
+        #.final_mask()
+        #.global_mask()
+        #.cv_mask()
+        #.value_mask()
 
 
         # Grouping
@@ -1402,15 +1419,13 @@ class MyImgWin(QWidget):
 
         print("dir(self.debug_data):", dir(self.debug_data))
 
-        #self.img_mean_arr = self.debug_data.mean()
-        #self.img_disper_arr = self.debug_data.index_of_dispersion()
-
-        #self.img_final_mask_arr = self.debug_data.final_mask()
-        #print(dir(self.img_final_mask_arr))
-
-        #self.img_global_mask_arr = self.debug_data.global_mask()
-        #self.img_cv_mask_arr = self.debug_data.cv_mask()
-        #self.img_value_mask_arr = self.debug_data.value_mask()
+        #.variance()
+        #.mean()
+        #.index_of_dispersion()
+        #.final_mask()
+        #.global_mask()
+        #.cv_mask()
+        #.value_mask()
 
         info = '''
         type(self.img_mean_arr       ) <class 'scitbx_array_family_flex_ext.double'>
