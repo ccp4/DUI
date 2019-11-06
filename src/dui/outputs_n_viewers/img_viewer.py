@@ -1401,75 +1401,102 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_mean_img(self):
-        print("img_mean_arr")
-        self.get_debug_gen()
-        self.img_varian_arr = self.debug_data.mean()
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+        try:
+            print("img_mean_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = self.debug_data.mean()
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_disp_img(self):
-        print("img_disper_arr")
-        self.get_debug_gen()
-        self.img_varian_arr = self.debug_data.index_of_dispersion()
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+        try:
+            print("img_disper_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = self.debug_data.index_of_dispersion()
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_fin_mask_img(self):
-        print("img_final_mask_arr")
-        self.get_debug_gen()
+        try:
+            print("img_final_mask_arr")
+            self.get_debug_gen()
 
-        tmp_bool = self.debug_data.final_mask()
-        tmp_double = tmp_bool.as_1d().as_double()
-        tmp_double.reshape(flex.grid(tmp_bool.all()))
-        self.img_varian_arr = tmp_double
+            tmp_bool = self.debug_data.final_mask()
+            tmp_double = tmp_bool.as_1d().as_double()
+            tmp_double.reshape(flex.grid(tmp_bool.all()))
+            self.img_varian_arr = tmp_double
 
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_glo_mask_img(self):
-        print("img_global_mask_arr")
-        self.get_debug_gen()
+        try:
+            print("img_global_mask_arr")
+            self.get_debug_gen()
 
-        tmp_bool = self.debug_data.global_mask()
-        tmp_double = tmp_bool.as_1d().as_double()
-        tmp_double.reshape(flex.grid(tmp_bool.all()))
-        self.img_varian_arr = tmp_double
+            tmp_bool = self.debug_data.global_mask()
+            tmp_double = tmp_bool.as_1d().as_double()
+            tmp_double.reshape(flex.grid(tmp_bool.all()))
+            self.img_varian_arr = tmp_double
 
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_cv_mask_img(self):
-        print("img_cv_mask_arr")
-        self.get_debug_gen()
+        try:
+            print("img_cv_mask_arr")
+            self.get_debug_gen()
 
-        tmp_bool = self.debug_data.cv_mask()
-        tmp_double = tmp_bool.as_1d().as_double()
-        tmp_double.reshape(flex.grid(tmp_bool.all()))
-        self.img_varian_arr = tmp_double
+            tmp_bool = self.debug_data.cv_mask()
+            tmp_double = tmp_bool.as_1d().as_double()
+            tmp_double.reshape(flex.grid(tmp_bool.all()))
+            self.img_varian_arr = tmp_double
 
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_val_mask_img(self):
-        print("img_value_mask_arr")
-        self.get_debug_gen()
+        try:
+            print("img_value_mask_arr")
+            self.get_debug_gen()
 
-        tmp_bool = self.debug_data.value_mask()
-        tmp_double = tmp_bool.as_1d().as_double()
-        tmp_double.reshape(flex.grid(tmp_bool.all()))
-        self.img_varian_arr = tmp_double
+            tmp_bool = self.debug_data.value_mask()
+            tmp_double = tmp_bool.as_1d().as_double()
+            tmp_double.reshape(flex.grid(tmp_bool.all()))
+            self.img_varian_arr = tmp_double
 
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_variance_img(self):
-        self.get_debug_gen()
+        try:
+            self.get_debug_gen()
 
-        self.img_varian_arr = self.debug_data.variance()
+            self.img_varian_arr = self.debug_data.variance()
 
-        self.img2show = "var"
-        self.painter_set_img_pix(self.img_num, 1)
+            self.img2show = "var"
+            self.painter_set_img_pix(self.img_num, 1)
 
+        except AttributeError:
+            print("No image loaded yet")
 
     def get_debug_gen(self):
         test1 = ThresholdDebugGenetator(image_in = self.img_arr)
