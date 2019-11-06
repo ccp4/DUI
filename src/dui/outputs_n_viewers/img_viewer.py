@@ -47,7 +47,6 @@ try:
         list_arrange,
         list_p_arrange,
     )
-    print("Hi ... TEST 04")
     from dui.qt import (
         QApplication,
         QButtonGroup,
@@ -973,7 +972,8 @@ class PopDisplayMenu(QMenu):
         )
 
 
-class Test:
+class ThresholdDebugGenetator:
+    from dials.algorithms.image.threshold import DispersionThresholdDebug
 
     def __init__(self, image_in):
         self.image = image_in
@@ -1009,9 +1009,8 @@ class Test:
 
 
     def test_dispersion_debug(self):
-        from dials.algorithms.image.threshold import DispersionThresholdDebug
 
-        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
+        self.gain_map = flex.double(flex.grid(self.image.all()), self.gain)
 
         debug = DispersionThresholdDebug(
             self.image,
@@ -1373,26 +1372,61 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_variance_img(self):
-        try:
-            test1 = Test(image_in = self.img_arr)
-            test1.set_mask(self.my_painter.mask_flex)
-            test1.set_pars(
-                gain = self.gain_spin.value(),
-                size = (self.size_1_spin.value(), self.size_2_spin.value()),
-                nsig_b = self.nsig_b_spin.value(),
-                nsig_s = self.nsig_s_spin.value(),
-                global_threshold = self.global_threshold_spin.value(),
-                min_count = self.min_count_spin.value()
-            )
+        #try:
+        test1 = ThresholdDebugGenetator(image_in = self.img_arr)
+        test1.set_mask(self.my_painter.mask_flex)
+        test1.set_pars(
+            gain = self.gain_spin.value(),
+            size = (self.size_1_spin.value(), self.size_2_spin.value()),
+            nsig_b = self.nsig_b_spin.value(),
+            nsig_s = self.nsig_s_spin.value(),
+            global_threshold = self.global_threshold_spin.value(),
+            min_count = self.min_count_spin.value()
+        )
 
-            self.debug_data = test1.test_dispersion_debug()
+        self.debug_data = test1.test_dispersion_debug()
 
-            self.img_varian_arr = self.debug_data.variance()
-            self.img2show = "var"
-            self.painter_set_img_pix(self.img_num, 1)
+        #tmp_bool = self.debug_data.final_mask()
 
-        except AttributeError:
-            print("No image loaded yet")
+        tmp_bool = self.debug_data.global_mask()
+
+        tmp_double = tmp_bool.as_1d().as_double()
+        tmp_double.reshape(flex.grid(tmp_bool.all()))
+        self.img_varian_arr = tmp_double
+
+        print("type(self.img_varian_arr)", type(self.img_varian_arr))
+
+        #self.img_varian_arr = self.debug_data.variance()
+
+        self.img2show = "var"
+
+        print("dir(self.debug_data):", dir(self.debug_data))
+
+        #self.img_mean_arr = self.debug_data.mean()
+        #self.img_disper_arr = self.debug_data.index_of_dispersion()
+
+        #self.img_final_mask_arr = self.debug_data.final_mask()
+        #print(dir(self.img_final_mask_arr))
+
+        #self.img_global_mask_arr = self.debug_data.global_mask()
+        #self.img_cv_mask_arr = self.debug_data.cv_mask()
+        #self.img_value_mask_arr = self.debug_data.value_mask()
+
+        info = '''
+        type(self.img_mean_arr       ) <class 'scitbx_array_family_flex_ext.double'>
+        type(self.img_disper_arr     ) <class 'scitbx_array_family_flex_ext.double'>
+        type(self.img_final_mask_arr ) <class 'scitbx_array_family_flex_ext.bool'>
+        type(self.img_global_mask_arr) <class 'scitbx_array_family_flex_ext.bool'>
+        type(self.img_cv_mask_arr    ) <class 'scitbx_array_family_flex_ext.bool'>
+        type(self.img_value_mask_arr ) <class 'scitbx_array_family_flex_ext.bool'>
+        '''
+
+
+
+        self.painter_set_img_pix(self.img_num, 1)
+
+        #except AttributeError:
+        #    print("No image loaded yet")
 
     def ini_contrast(self):
         if not self.contrast_initiated:
