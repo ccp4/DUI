@@ -1401,20 +1401,22 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_mean_img(self):
-        print("hi1")
+        print("img_mean_arr")
+
     def set_disp_img(self):
-        print("hi2")
+        print("img_disper_arr")
+
     def set_fin_mask_img(self):
-        print("hi3")
+        print("img_final_mask_arr")
+
     def set_glo_mask_img(self):
-        print("hi4")
+        print("img_global_mask_arr")
+
     def set_cv_mask_img(self):
-        print("hi5")
+        print("img_cv_mask_arr")
+
     def set_val_mask_img(self):
-        print("hi6")
-
-
-
+        print("img_value_mask_arr")
 
     def set_variance_img(self):
         #try:
@@ -1446,25 +1448,6 @@ class MyImgWin(QWidget):
         self.img2show = "var"
 
         print("dir(self.debug_data):", dir(self.debug_data))
-
-        #.variance()
-        #.mean()
-        #.index_of_dispersion()
-        #.final_mask()
-        #.global_mask()
-        #.cv_mask()
-        #.value_mask()
-
-        info = '''
-        type(self.img_mean_arr       ) <class 'scitbx_array_family_flex_ext.double'>
-        type(self.img_disper_arr     ) <class 'scitbx_array_family_flex_ext.double'>
-        type(self.img_final_mask_arr ) <class 'scitbx_array_family_flex_ext.bool'>
-        type(self.img_global_mask_arr) <class 'scitbx_array_family_flex_ext.bool'>
-        type(self.img_cv_mask_arr    ) <class 'scitbx_array_family_flex_ext.bool'>
-        type(self.img_value_mask_arr ) <class 'scitbx_array_family_flex_ext.bool'>
-        '''
-
-
 
         self.painter_set_img_pix(self.img_num, 1)
 
