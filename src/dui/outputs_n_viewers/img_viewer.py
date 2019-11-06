@@ -830,12 +830,9 @@ class PopActionsMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-
         spot_find_grp = QGroupBox()
-        #spot_find_group_box_layout = QVBoxLayout()
-        spot_find_grp.setLayout(self.my_parent.img_spot_find_hbox)
+        spot_find_grp.setLayout(self.my_parent.img_spot_find_box)
 
-        #my_box.addLayout(self.my_parent.img_spot_find_hbox)
 
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
@@ -1124,7 +1121,24 @@ class MyImgWin(QWidget):
         self.btn_set_image = QPushButton("Image")
         self.btn_set_varia = QPushButton("Variance")
 
+        self.btn_set_mean     = QPushButton("mean")
+        self.btn_set_disp     = QPushButton("index_of_dispersion")
+        self.btn_set_fin_mask = QPushButton("final_mask")
+        self.btn_set_glo_mask = QPushButton("global_mask")
+        self.btn_set_cv_mask  = QPushButton("cv_mask")
+        self.btn_set_val_mask = QPushButton("value_mask")
+
+
         self.btn_set_varia.clicked.connect(self.set_variance_img)
+
+        self.btn_set_mean.clicked.connect(self.set_mean_img)
+        self.btn_set_disp.clicked.connect(self.set_disp_img)
+        self.btn_set_fin_mask .clicked.connect(self.set_fin_mask_img)
+        self.btn_set_glo_mask .clicked.connect(self.set_glo_mask_img)
+        self.btn_set_cv_mask.clicked.connect(self.set_cv_mask_img)
+        self.btn_set_val_mask .clicked.connect(self.set_val_mask_img)
+
+
         self.btn_set_image.clicked.connect(self.set_img_img)
 
         self.gain_spin = QDoubleSpinBox()
@@ -1166,27 +1180,25 @@ class MyImgWin(QWidget):
         min_local_layout.addWidget(QLabel("Minimum Local "))
         min_local_layout.addWidget(self.min_count_spin)
 
-        self.img_spot_find_hbox = QVBoxLayout()
-        self.img_spot_find_hbox.addWidget(self.btn_set_image)
+        self.img_spot_find_box = QVBoxLayout()
+        self.img_spot_find_box.addWidget(self.btn_set_image)
 
-        self.img_spot_find_hbox.addLayout(gain_layout)
-        self.img_spot_find_hbox.addLayout(size_layout)
+        self.img_spot_find_box.addLayout(gain_layout)
+        self.img_spot_find_box.addLayout(size_layout)
 
-        self.img_spot_find_hbox.addLayout(nsig_b_layout)
-        self.img_spot_find_hbox.addLayout(nsig_s_layout)
-        self.img_spot_find_hbox.addLayout(global_threshold_spin_layout)
-        self.img_spot_find_hbox.addLayout(min_local_layout)
+        self.img_spot_find_box.addLayout(nsig_b_layout)
+        self.img_spot_find_box.addLayout(nsig_s_layout)
+        self.img_spot_find_box.addLayout(global_threshold_spin_layout)
+        self.img_spot_find_box.addLayout(min_local_layout)
 
-        self.img_spot_find_hbox.addWidget(self.btn_set_varia)
+        self.img_spot_find_box.addWidget(self.btn_set_varia)
 
-
-        #.variance()
-        #.mean()
-        #.index_of_dispersion()
-        #.final_mask()
-        #.global_mask()
-        #.cv_mask()
-        #.value_mask()
+        self.img_spot_find_box.addWidget(self.btn_set_mean)
+        self.img_spot_find_box.addWidget(self.btn_set_disp)
+        self.img_spot_find_box.addWidget(self.btn_set_fin_mask)
+        self.img_spot_find_box.addWidget(self.btn_set_glo_mask)
+        self.img_spot_find_box.addWidget(self.btn_set_cv_mask)
+        self.img_spot_find_box.addWidget(self.btn_set_val_mask)
 
 
         # Grouping
@@ -1387,6 +1399,22 @@ class MyImgWin(QWidget):
 
         except AttributeError:
             print("No image loaded yet")
+
+    def set_mean_img(self):
+        print("hi1")
+    def set_disp_img(self):
+        print("hi2")
+    def set_fin_mask_img(self):
+        print("hi3")
+    def set_glo_mask_img(self):
+        print("hi4")
+    def set_cv_mask_img(self):
+        print("hi5")
+    def set_val_mask_img(self):
+        print("hi6")
+
+
+
 
     def set_variance_img(self):
         #try:
