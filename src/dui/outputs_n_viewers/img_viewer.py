@@ -1324,7 +1324,9 @@ class MyImgWin(QWidget):
         self.img_num = 1
         self.img_step_val = 1
         self.stack_size = 1
-        self.img2show = "org"
+        # possible values of img2show are:
+        # "origin", "modif" or "mask"
+        self.img2show = "origin"
 
         self.ref2exp = None
         self.my_sweep = None
@@ -1403,7 +1405,19 @@ class MyImgWin(QWidget):
 
     def set_img_img(self):
         try:
-            self.img2show = "org"
+            self.img2show = "origin"
+            self.painter_set_img_pix(self.img_num, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
+
+    def set_variance_img(self):
+        try:
+            self.get_debug_gen()
+
+            self.img_varian_arr = self.debug_data.variance()
+
+            self.img2show = "modif"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1414,7 +1428,7 @@ class MyImgWin(QWidget):
             print("img_mean_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.mean()
-            self.img2show = "var"
+            self.img2show = "modif"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1425,7 +1439,7 @@ class MyImgWin(QWidget):
             print("img_disper_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.index_of_dispersion()
-            self.img2show = "var"
+            self.img2show = "modif"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1441,7 +1455,7 @@ class MyImgWin(QWidget):
             tmp_double.reshape(flex.grid(tmp_bool.all()))
             self.img_varian_arr = tmp_double
 
-            self.img2show = "var"
+            self.img2show = "mask"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1457,7 +1471,7 @@ class MyImgWin(QWidget):
             tmp_double.reshape(flex.grid(tmp_bool.all()))
             self.img_varian_arr = tmp_double
 
-            self.img2show = "var"
+            self.img2show = "mask"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1473,7 +1487,7 @@ class MyImgWin(QWidget):
             tmp_double.reshape(flex.grid(tmp_bool.all()))
             self.img_varian_arr = tmp_double
 
-            self.img2show = "var"
+            self.img2show = "mask"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1489,19 +1503,7 @@ class MyImgWin(QWidget):
             tmp_double.reshape(flex.grid(tmp_bool.all()))
             self.img_varian_arr = tmp_double
 
-            self.img2show = "var"
-            self.painter_set_img_pix(self.img_num, 1)
-
-        except AttributeError:
-            print("No image loaded yet")
-
-    def set_variance_img(self):
-        try:
-            self.get_debug_gen()
-
-            self.img_varian_arr = self.debug_data.variance()
-
-            self.img2show = "var"
+            self.img2show = "mask"
             self.painter_set_img_pix(self.img_num, 1)
 
         except AttributeError:
@@ -1861,7 +1863,13 @@ class MyImgWin(QWidget):
         ] and self.pred_spt_flat_data_lst == [None]:
 
 
-            if self.img2show == "var":
+            if self.img2show == "mask":
+                self.my_painter.set_img_pix(
+                    self.current_qimg(
+                        self.img_varian_arr, self.palette, -0.5, 1.5
+                    )
+                )
+            elif self.img2show == "modif":
                 self.my_painter.set_img_pix(
                     self.current_qimg(
                         self.img_varian_arr, self.palette, self.i_min, self.i_max
@@ -1876,7 +1884,24 @@ class MyImgWin(QWidget):
                 )
 
         else:
-            if self.img2show == "var":
+            if self.img2show == "mask":
+                self.my_painter.set_img_pix(
+                    q_img=self.current_qimg(
+                        self.img_varian_arr, self.palette, -0.5, 1.5
+                    ),
+                    obs_flat_data_in=self.find_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    pre_flat_data_in=self.pred_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    user_choice_in=(
+                        self.rad_but_fnd_hkl.checkState(),
+                        self.rad_but_pre_hkl.checkState(),
+                    ),
+                )
+
+            if self.img2show == "modif":
                 self.my_painter.set_img_pix(
                     q_img=self.current_qimg(
                         self.img_varian_arr, self.palette, self.i_min, self.i_max
@@ -2016,7 +2041,7 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def img_changed_by_user(self, value):
-        self.img2show = "org"
+        self.img2show = "origin"
         self.img_num = value
         if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
