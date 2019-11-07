@@ -831,8 +831,53 @@ class PopActionsMenu(QMenu):
         info_grp.setLayout(ref_bond_group_box_layout)
 
         spot_find_grp = QGroupBox()
-        spot_find_grp.setLayout(self.my_parent.img_spot_find_box)
 
+        img_spot_find_box = QVBoxLayout()
+        img_spot_find_box.addWidget(self.my_parent.btn_set_image)
+
+        gain_layout = QHBoxLayout()
+        gain_layout.addWidget(QLabel("Gain"))
+        gain_layout.addWidget(self.my_parent.gain_spin)
+
+        size_layout = QHBoxLayout()
+        size_layout.addWidget(QLabel("Kernel Size"))
+        size_layout.addWidget(self.my_parent.size_1_spin)
+        size_layout.addWidget(self.my_parent.size_2_spin)
+
+        img_spot_find_box.addLayout(gain_layout)
+        img_spot_find_box.addLayout(size_layout)
+
+        nsig_b_layout = QHBoxLayout()
+        nsig_b_layout.addWidget(QLabel("Sigma Background"))
+        nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
+
+        nsig_s_layout = QHBoxLayout()
+        nsig_s_layout.addWidget(QLabel("Sigma Strong"))
+        nsig_s_layout.addWidget(self.my_parent.nsig_s_spin)
+
+        global_threshold_spin_layout = QHBoxLayout()
+        global_threshold_spin_layout.addWidget(QLabel("Global Threshold"))
+        global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
+
+        min_local_layout = QHBoxLayout()
+        min_local_layout.addWidget(QLabel("Minimum Local "))
+        min_local_layout.addWidget(self.my_parent.min_count_spin)
+
+        img_spot_find_box.addLayout(nsig_b_layout)
+        img_spot_find_box.addLayout(nsig_s_layout)
+        img_spot_find_box.addLayout(global_threshold_spin_layout)
+        img_spot_find_box.addLayout(min_local_layout)
+
+        img_spot_find_box.addWidget(self.my_parent.btn_set_varia)
+
+        img_spot_find_box.addWidget(self.my_parent.btn_set_mean)
+        img_spot_find_box.addWidget(self.my_parent.btn_set_disp)
+        img_spot_find_box.addWidget(self.my_parent.btn_set_fin_mask)
+        img_spot_find_box.addWidget(self.my_parent.btn_set_glo_mask)
+        img_spot_find_box.addWidget(self.my_parent.btn_set_cv_mask)
+        img_spot_find_box.addWidget(self.my_parent.btn_set_val_mask)
+
+        spot_find_grp.setLayout(img_spot_find_box)
 
         my_box = QVBoxLayout()
         my_box.addWidget(info_grp)
@@ -841,7 +886,6 @@ class PopActionsMenu(QMenu):
 
         self.setLayout(my_box)
         self.show()
-
 
 
 class PopDisplayMenu(QMenu):
@@ -1143,62 +1187,27 @@ class MyImgWin(QWidget):
 
         self.gain_spin = QDoubleSpinBox()
         self.gain_spin.setValue(1)
-        gain_layout = QHBoxLayout()
-        gain_layout.addWidget(QLabel("Gain"))
-        gain_layout.addWidget(self.gain_spin)
 
         self.size_1_spin = QSpinBox()
         self.size_1_spin.setValue(3)
         self.size_2_spin = QSpinBox()
         self.size_2_spin.setValue(3)
-        size_layout = QHBoxLayout()
-        size_layout.addWidget(QLabel("Kernel Size"))
-        size_layout.addWidget(self.size_1_spin)
-        size_layout.addWidget(self.size_2_spin)
+
 
         self.nsig_b_spin = QDoubleSpinBox()
         self.nsig_b_spin.setValue(6)
-        nsig_b_layout = QHBoxLayout()
-        nsig_b_layout.addWidget(QLabel("Sigma Background"))
-        nsig_b_layout.addWidget(self.nsig_b_spin)
 
         self.nsig_s_spin = QDoubleSpinBox()
         self.nsig_s_spin.setValue(3)
-        nsig_s_layout = QHBoxLayout()
-        nsig_s_layout.addWidget(QLabel("Sigma Strong"))
-        nsig_s_layout.addWidget(self.nsig_s_spin)
 
         self.global_threshold_spin = QDoubleSpinBox()
         self.global_threshold_spin.setValue(0)
-        global_threshold_spin_layout = QHBoxLayout()
-        global_threshold_spin_layout.addWidget(QLabel("Global Threshold"))
-        global_threshold_spin_layout.addWidget(self.global_threshold_spin)
 
         self.min_count_spin = QSpinBox()
         self.min_count_spin.setValue(2)
-        min_local_layout = QHBoxLayout()
-        min_local_layout.addWidget(QLabel("Minimum Local "))
-        min_local_layout.addWidget(self.min_count_spin)
 
-        self.img_spot_find_box = QVBoxLayout()
-        self.img_spot_find_box.addWidget(self.btn_set_image)
 
-        self.img_spot_find_box.addLayout(gain_layout)
-        self.img_spot_find_box.addLayout(size_layout)
-
-        self.img_spot_find_box.addLayout(nsig_b_layout)
-        self.img_spot_find_box.addLayout(nsig_s_layout)
-        self.img_spot_find_box.addLayout(global_threshold_spin_layout)
-        self.img_spot_find_box.addLayout(min_local_layout)
-
-        self.img_spot_find_box.addWidget(self.btn_set_varia)
-
-        self.img_spot_find_box.addWidget(self.btn_set_mean)
-        self.img_spot_find_box.addWidget(self.btn_set_disp)
-        self.img_spot_find_box.addWidget(self.btn_set_fin_mask)
-        self.img_spot_find_box.addWidget(self.btn_set_glo_mask)
-        self.img_spot_find_box.addWidget(self.btn_set_cv_mask)
-        self.img_spot_find_box.addWidget(self.btn_set_val_mask)
+        ##########################################################################
 
 
         # Grouping
