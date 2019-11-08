@@ -1406,7 +1406,7 @@ class MyImgWin(QWidget):
     def set_img_img(self):
         try:
             self.img2show = "origin"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1418,7 +1418,7 @@ class MyImgWin(QWidget):
             self.img_varian_arr = self.debug_data.variance()
 
             self.img2show = "modif"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1429,7 +1429,7 @@ class MyImgWin(QWidget):
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.mean()
             self.img2show = "modif"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1440,7 +1440,7 @@ class MyImgWin(QWidget):
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.index_of_dispersion()
             self.img2show = "modif"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1456,7 +1456,7 @@ class MyImgWin(QWidget):
             self.img_varian_arr = tmp_double
 
             self.img2show = "mask"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1472,7 +1472,7 @@ class MyImgWin(QWidget):
             self.img_varian_arr = tmp_double
 
             self.img2show = "mask"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1488,7 +1488,7 @@ class MyImgWin(QWidget):
             self.img_varian_arr = tmp_double
 
             self.img2show = "mask"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1504,7 +1504,7 @@ class MyImgWin(QWidget):
             self.img_varian_arr = tmp_double
 
             self.img2show = "mask"
-            self.painter_set_img_pix(self.img_num, 1)
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
@@ -1884,7 +1884,7 @@ class MyImgWin(QWidget):
                 )
 
         else:
-            to_remove = '''
+
             if self.img2show == "mask":
                 self.my_painter.set_img_pix(
                     q_img=self.current_qimg(
@@ -1920,22 +1920,21 @@ class MyImgWin(QWidget):
                 )
 
             else:
-            '''
-            self.my_painter.set_img_pix(
-                q_img=self.current_qimg(
-                    self.img_arr, self.palette, self.i_min, self.i_max
-                ),
-                obs_flat_data_in=self.find_spt_flat_data_lst[
-                    img_pos : img_pos + loc_stk_siz
-                ],
-                pre_flat_data_in=self.pred_spt_flat_data_lst[
-                    img_pos : img_pos + loc_stk_siz
-                ],
-                user_choice_in=(
-                    self.rad_but_fnd_hkl.checkState(),
-                    self.rad_but_pre_hkl.checkState(),
-                ),
-            )
+                self.my_painter.set_img_pix(
+                    q_img=self.current_qimg(
+                        self.img_arr, self.palette, self.i_min, self.i_max
+                    ),
+                    obs_flat_data_in=self.find_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    pre_flat_data_in=self.pred_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    user_choice_in=(
+                        self.rad_but_fnd_hkl.checkState(),
+                        self.rad_but_pre_hkl.checkState(),
+                    ),
+                )
 
         logger.debug("\n self.i_min = %s", self.i_min)
         logger.debug(" self.i_max = %s %s", self.i_max, "\n")
