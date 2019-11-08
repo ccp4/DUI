@@ -863,19 +863,28 @@ class PopActionsMenu(QMenu):
         min_local_layout.addWidget(QLabel("Minimum Local "))
         min_local_layout.addWidget(self.my_parent.min_count_spin)
 
+
         img_spot_find_box.addLayout(nsig_b_layout)
         img_spot_find_box.addLayout(nsig_s_layout)
         img_spot_find_box.addLayout(global_threshold_spin_layout)
         img_spot_find_box.addLayout(min_local_layout)
 
-        img_spot_find_box.addWidget(self.my_parent.btn_set_varia)
+        left_img_but_box = QVBoxLayout()
+        left_img_but_box.addWidget(self.my_parent.btn_set_varia)
+        left_img_but_box.addWidget(self.my_parent.btn_set_mean)
+        left_img_but_box.addWidget(self.my_parent.btn_set_disp)
 
-        img_spot_find_box.addWidget(self.my_parent.btn_set_mean)
-        img_spot_find_box.addWidget(self.my_parent.btn_set_disp)
-        img_spot_find_box.addWidget(self.my_parent.btn_set_fin_mask)
-        img_spot_find_box.addWidget(self.my_parent.btn_set_glo_mask)
-        img_spot_find_box.addWidget(self.my_parent.btn_set_cv_mask)
-        img_spot_find_box.addWidget(self.my_parent.btn_set_val_mask)
+        right_img_but_box = QVBoxLayout()
+        right_img_but_box.addWidget(self.my_parent.btn_set_fin_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_glo_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_cv_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_val_mask)
+
+        img_but_main_box = QHBoxLayout()
+        img_but_main_box.addLayout(left_img_but_box)
+        img_but_main_box.addLayout(right_img_but_box)
+
+        img_spot_find_box.addLayout(img_but_main_box)
 
         spot_find_grp.setLayout(img_spot_find_box)
 
@@ -1162,11 +1171,14 @@ class MyImgWin(QWidget):
         ##############################################################################
 
         # previews for spot finding
-        self.btn_set_image = QPushButton("Image")
-        self.btn_set_varia = QPushButton("Variance")
+        self.btn_set_image    = QPushButton("Image")
 
+        self.btn_set_varia    = QPushButton("Variance")
         self.btn_set_mean     = QPushButton("mean")
-        self.btn_set_disp     = QPushButton("index_of_dispersion")
+
+        #index_of_dispersion
+        self.btn_set_disp     = QPushButton("dispersion")
+
         self.btn_set_fin_mask = QPushButton("final_mask")
         self.btn_set_glo_mask = QPushButton("global_mask")
         self.btn_set_cv_mask  = QPushButton("cv_mask")
