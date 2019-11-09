@@ -833,7 +833,6 @@ class PopActionsMenu(QMenu):
         spot_find_grp = QGroupBox("Spot Finding Steps")
 
         img_spot_find_box = QVBoxLayout()
-        img_spot_find_box.addWidget(self.my_parent.btn_set_image)
 
         gain_layout = QHBoxLayout()
         gain_layout.addWidget(QLabel("Gain"))
@@ -863,13 +862,13 @@ class PopActionsMenu(QMenu):
         min_local_layout.addWidget(QLabel("Minimum Local "))
         min_local_layout.addWidget(self.my_parent.min_count_spin)
 
-
         img_spot_find_box.addLayout(nsig_b_layout)
         img_spot_find_box.addLayout(nsig_s_layout)
         img_spot_find_box.addLayout(global_threshold_spin_layout)
         img_spot_find_box.addLayout(min_local_layout)
 
         left_img_but_box = QVBoxLayout()
+        left_img_but_box.addWidget(self.my_parent.btn_set_image)
         left_img_but_box.addWidget(self.my_parent.btn_set_varia)
         left_img_but_box.addWidget(self.my_parent.btn_set_mean)
         left_img_but_box.addWidget(self.my_parent.btn_set_disp)
@@ -888,12 +887,14 @@ class PopActionsMenu(QMenu):
 
         spot_find_grp.setLayout(img_spot_find_box)
 
-        my_box = QVBoxLayout()
-        my_box.addWidget(info_grp)
-        my_box.addWidget(self.my_parent.chk_box_B_centr)
-        my_box.addWidget(spot_find_grp)
+        my_main_box = QHBoxLayout()
+        left_main_box = QVBoxLayout()
+        left_main_box.addWidget(info_grp)
+        left_main_box.addWidget(self.my_parent.chk_box_B_centr)
+        my_main_box.addLayout(left_main_box)
+        my_main_box.addWidget(spot_find_grp)
 
-        self.setLayout(my_box)
+        self.setLayout(my_main_box)
         self.show()
 
 
@@ -1433,9 +1434,7 @@ class MyImgWin(QWidget):
     def set_variance_img(self):
         try:
             self.get_debug_gen()
-
             self.img_varian_arr = self.debug_data.variance()
-
             self.img2show = "modif"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
