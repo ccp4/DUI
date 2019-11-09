@@ -819,7 +819,7 @@ class PopActionsMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
 
-        info_grp = QGroupBox()
+        info_grp = QGroupBox("Mask Tool")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
@@ -830,7 +830,7 @@ class PopActionsMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        spot_find_grp = QGroupBox()
+        spot_find_grp = QGroupBox("Spot Finding Steps")
 
         img_spot_find_box = QVBoxLayout()
         img_spot_find_box.addWidget(self.my_parent.btn_set_image)
@@ -904,6 +904,10 @@ class PopDisplayMenu(QMenu):
     def __init__(self, parent=None):
         super(PopDisplayMenu, self).__init__(parent)
         self.my_parent = parent
+
+
+        #group to tune up palette
+
         palette_grp = QGroupBox("Palette Tuning")
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
@@ -945,7 +949,8 @@ class PopDisplayMenu(QMenu):
         palette_layout.addLayout(colour_box)
         palette_grp.setLayout(palette_layout)
 
-        ###############################################################
+
+        # group to control what to see from algorithms
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
@@ -961,7 +966,8 @@ class PopDisplayMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        ################################################################
+
+        # group to control how to navigate thru images
 
         mid_top_box = QHBoxLayout()
         mid_top_box.addWidget(QLabel("Image Jump Step"))
@@ -1040,7 +1046,6 @@ class ThresholdDebugGenetator:
         if self.mask == None:
             self.mask = flex.bool(flex.grid(self.image.all()), True)
 
-
     def set_pars(self,
             gain,
             size,
@@ -1056,13 +1061,14 @@ class ThresholdDebugGenetator:
         self.global_threshold = global_threshold
         self.min_count = min_count
 
+        debug_info = '''
         print("self.gain             ", self.gain             )
         print("self.size             ", self.size             )
         print("self.nsig_b           ", self.nsig_b           )
         print("self.nsig_s           ", self.nsig_s           )
         print("self.global_threshold ", self.global_threshold )
         print("self.min_count        ", self.min_count        )
-
+        '''
 
     def test_dispersion_debug(self):
 
@@ -1080,6 +1086,7 @@ class ThresholdDebugGenetator:
         )
 
         return debug
+
 
 class MyImgWin(QWidget):
 
