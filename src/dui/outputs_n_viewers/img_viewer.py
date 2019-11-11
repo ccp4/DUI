@@ -1089,6 +1089,12 @@ class ThresholdDebugGenetator:
         return debug
 
 
+def GetDoubleFromBool(bool_in):
+    double_out = bool_in.as_1d().as_double()
+    double_out.reshape(flex.grid(bool_in.all()))
+    return double_out
+
+
 class MyImgWin(QWidget):
 
     mask_applied = Signal(list)
@@ -1467,12 +1473,7 @@ class MyImgWin(QWidget):
         try:
             print("img_final_mask_arr")
             self.get_debug_gen()
-
-            tmp_bool = self.debug_data.final_mask()
-            tmp_double = tmp_bool.as_1d().as_double()
-            tmp_double.reshape(flex.grid(tmp_bool.all()))
-            self.img_varian_arr = tmp_double
-
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.final_mask())
             self.img2show = "mask"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
@@ -1483,12 +1484,7 @@ class MyImgWin(QWidget):
         try:
             print("img_global_mask_arr")
             self.get_debug_gen()
-
-            tmp_bool = self.debug_data.global_mask()
-            tmp_double = tmp_bool.as_1d().as_double()
-            tmp_double.reshape(flex.grid(tmp_bool.all()))
-            self.img_varian_arr = tmp_double
-
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.global_mask())
             self.img2show = "mask"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
@@ -1499,12 +1495,7 @@ class MyImgWin(QWidget):
         try:
             print("img_cv_mask_arr")
             self.get_debug_gen()
-
-            tmp_bool = self.debug_data.cv_mask()
-            tmp_double = tmp_bool.as_1d().as_double()
-            tmp_double.reshape(flex.grid(tmp_bool.all()))
-            self.img_varian_arr = tmp_double
-
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.cv_mask())
             self.img2show = "mask"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
@@ -1515,12 +1506,7 @@ class MyImgWin(QWidget):
         try:
             print("img_value_mask_arr")
             self.get_debug_gen()
-
-            tmp_bool = self.debug_data.value_mask()
-            tmp_double = tmp_bool.as_1d().as_double()
-            tmp_double.reshape(flex.grid(tmp_bool.all()))
-            self.img_varian_arr = tmp_double
-
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.value_mask())
             self.img2show = "mask"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
