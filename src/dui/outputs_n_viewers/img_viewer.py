@@ -1208,7 +1208,6 @@ class MyImgWin(QWidget):
         self.btn_set_cv_mask.clicked.connect(self.set_cv_mask_img)
         self.btn_set_val_mask .clicked.connect(self.set_val_mask_img)
 
-
         self.btn_set_image.clicked.connect(self.set_img_img)
 
         self.gain_spin = QDoubleSpinBox()
@@ -1232,9 +1231,9 @@ class MyImgWin(QWidget):
         self.min_count_spin = QSpinBox()
         self.min_count_spin.setValue(2)
 
+        self.debug_gen_timer = QTimer(self)
 
         ##########################################################################
-
 
         # Grouping
         ref_type_group = QButtonGroup()
@@ -1430,6 +1429,9 @@ class MyImgWin(QWidget):
         self.palette_select.setCurrentIndex(3)
 
     def set_img_img(self):
+        self.draw_img_img()
+
+    def draw_img_img(self):
         try:
             self.img2show = "origin"
             self.painter_set_img_pix(self.img_num - 1, 1)
@@ -1438,6 +1440,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_variance_img(self):
+        self.draw_variance_img()
+
+    def draw_variance_img(self):
         try:
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.variance()
@@ -1448,6 +1453,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_mean_img(self):
+        self.draw_mean_img()
+
+    def draw_mean_img(self):
         try:
             print("img_mean_arr")
             self.get_debug_gen()
@@ -1459,6 +1467,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_disp_img(self):
+        self.draw_disp_img()
+
+    def draw_disp_img(self):
         try:
             print("img_disper_arr")
             self.get_debug_gen()
@@ -1470,6 +1481,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_fin_mask_img(self):
+        self.draw_fin_mask_img()
+
+    def draw_fin_mask_img(self):
         try:
             print("img_final_mask_arr")
             self.get_debug_gen()
@@ -1481,6 +1495,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_glo_mask_img(self):
+        self.draw_glo_mask_img()
+
+    def draw_glo_mask_img(self):
         try:
             print("img_global_mask_arr")
             self.get_debug_gen()
@@ -1492,6 +1509,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_cv_mask_img(self):
+        self.draw_cv_mask_img()
+
+    def draw_cv_mask_img(self):
         try:
             print("img_cv_mask_arr")
             self.get_debug_gen()
@@ -1503,6 +1523,9 @@ class MyImgWin(QWidget):
             print("No image loaded yet")
 
     def set_val_mask_img(self):
+        self.draw_val_mask_img()
+
+    def draw_val_mask_img(self):
         try:
             print("img_value_mask_arr")
             self.get_debug_gen()
@@ -1526,6 +1549,29 @@ class MyImgWin(QWidget):
         )
 
         self.debug_data = test1.test_dispersion_debug()
+
+        copy_pasted = '''
+    def btn_play_clicked(self):
+        if self.video_timer.isActive():
+            logger.debug("Stoping video")
+            self.video_timer.stop()
+            try:
+                self.video_timer.timeout.disconnect()
+            except BaseException as e:
+                # We don't want to catch bare exceptions but don't know
+                # what this was supposed to catch. Log it.
+                logger.debug(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
+                logger.debug("unable to disconnect timer again")
+
+        else:
+            logger.debug("Playing Video")
+            self.video_timer.timeout.connect(self.btn_next_clicked)
+            self.video_timer.start(1)
+        '''
+
+
 
     def ini_contrast(self):
         if not self.contrast_initiated:
