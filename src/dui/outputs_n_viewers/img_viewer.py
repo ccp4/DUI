@@ -1232,6 +1232,8 @@ class MyImgWin(QWidget):
         self.min_count_spin.setValue(2)
 
         self.debug_gen_timer = QTimer(self)
+        self.debug_gen_timer.timeout.connect(self.check_debug_pars)
+        self.debug_gen_data = None
 
         ##########################################################################
 
@@ -1433,8 +1435,10 @@ class MyImgWin(QWidget):
 
     def draw_img_img(self):
         try:
+            print("img_origin_arr")
             self.img2show = "origin"
             self.painter_set_img_pix(self.img_num - 1, 1)
+            self.debug_gen_timer.stop()
 
         except AttributeError:
             print("No image loaded yet")
@@ -1444,9 +1448,10 @@ class MyImgWin(QWidget):
 
     def draw_variance_img(self):
         try:
+            print("img_varian_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.variance()
-            self.img2show = "modif"
+            self.img2show = "modif_varian"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
@@ -1460,7 +1465,7 @@ class MyImgWin(QWidget):
             print("img_mean_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.mean()
-            self.img2show = "modif"
+            self.img2show = "modif_mean"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
@@ -1474,7 +1479,7 @@ class MyImgWin(QWidget):
             print("img_disper_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.index_of_dispersion()
-            self.img2show = "modif"
+            self.img2show = "modif_disper"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
@@ -1488,7 +1493,7 @@ class MyImgWin(QWidget):
             print("img_final_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.final_mask())
-            self.img2show = "mask"
+            self.img2show = "mask_fin"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
@@ -1502,7 +1507,7 @@ class MyImgWin(QWidget):
             print("img_global_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.global_mask())
-            self.img2show = "mask"
+            self.img2show = "mask_glob"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
@@ -1516,7 +1521,7 @@ class MyImgWin(QWidget):
             print("img_cv_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.cv_mask())
-            self.img2show = "mask"
+            self.img2show = "mask_cv"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
@@ -1530,16 +1535,16 @@ class MyImgWin(QWidget):
             print("img_value_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.value_mask())
-            self.img2show = "mask"
+            self.img2show = "mask_val"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
             print("No image loaded yet")
 
     def get_debug_gen(self):
-        test1 = ThresholdDebugGenetator(image_in = self.img_arr)
-        test1.set_mask(self.my_painter.mask_flex)
-        test1.set_pars(
+        self.debug_gen_data = ThresholdDebugGenetator(image_in = self.img_arr)
+        self.debug_gen_data.set_mask(self.my_painter.mask_flex)
+        self.debug_gen_data.set_pars(
             gain = self.gain_spin.value(),
             size = (self.size_1_spin.value(), self.size_2_spin.value()),
             nsig_b = self.nsig_b_spin.value(),
@@ -1548,29 +1553,65 @@ class MyImgWin(QWidget):
             min_count = self.min_count_spin.value()
         )
 
-        self.debug_data = test1.test_dispersion_debug()
+        self.debug_data = self.debug_gen_data.test_dispersion_debug()
 
-        copy_pasted = '''
-    def btn_play_clicked(self):
-        if self.video_timer.isActive():
-            logger.debug("Stoping video")
-            self.video_timer.stop()
+
+        example = '''
+        if self.debug_gen_timer.isActive():
+            self.debug_gen_timer.stop()
             try:
-                self.video_timer.timeout.disconnect()
+                self.debug_gen_timer.timeout.disconnect()
+
             except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.debug(
+
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("unable to disconnect timer again")
-
-        else:
-            logger.debug("Playing Video")
-            self.video_timer.timeout.connect(self.btn_next_clicked)
-            self.video_timer.start(1)
+                print("unable to disconnect debug timer")
         '''
 
+
+        print("startin timer")
+        if not self.debug_gen_timer.isActive():
+            self.debug_gen_timer.start(500)
+
+    def check_debug_pars(self):
+        print("timeout")
+
+        if(
+            self.debug_gen_data.gain == self.gain_spin.value() and
+            self.debug_gen_data.size == (self.size_1_spin.value(), self.size_2_spin.value()) and
+            self.debug_gen_data.nsig_b == self.nsig_b_spin.value() and
+            self.debug_gen_data.nsig_s == self.nsig_s_spin.value() and
+            self.debug_gen_data.global_threshold == self.global_threshold_spin.value() and
+            self.debug_gen_data.min_count == self.min_count_spin.value()
+        ):
+            print("same pars")
+
+        else:
+            if self.img2show == "origin":
+                self.debug_gen_timer.stop()
+
+            if self.img2show == "modif_varian":
+                self.draw_variance_img()
+
+            if self.img2show == "modif_mean":
+                self.draw_mean_img()
+
+            if self.img2show == "modif_disper":
+                self.draw_disp_img()
+
+            if self.img2show == "mask_fin":
+                self.draw_fin_mask_img()
+
+            if self.img2show == "mask_glob":
+                self.draw_glo_mask_img()
+
+            if self.img2show == "mask_cv":
+                self.draw_cv_mask_img()
+
+            if self.img2show == "mask_val":
+                self.draw_val_mask_img()
 
 
     def ini_contrast(self):
@@ -1908,7 +1949,7 @@ class MyImgWin(QWidget):
 
     def painter_set_img_pix(self, img_pos, loc_stk_siz):
 
-        if self.img2show == "mask":
+        if self.img2show[0:4] == "mask":
             tmp_min = -0.5
             tmp_max = 1.5
 
@@ -1936,7 +1977,6 @@ class MyImgWin(QWidget):
                 )
 
         else:
-
 
             if self.img2show == "origin":
                 self.my_painter.set_img_pix(
