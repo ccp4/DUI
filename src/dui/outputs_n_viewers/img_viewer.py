@@ -1564,19 +1564,15 @@ class MyImgWin(QWidget):
             self.debug_gen_timer.start(500)
 
     def check_debug_pars(self):
-        print("timeout")
-
         if(
-            self.debug_gen_data.gain == self.gain_spin.value() and
-            self.debug_gen_data.size == (self.size_1_spin.value(), self.size_2_spin.value()) and
-            self.debug_gen_data.nsig_b == self.nsig_b_spin.value() and
-            self.debug_gen_data.nsig_s == self.nsig_s_spin.value() and
-            self.debug_gen_data.global_threshold == self.global_threshold_spin.value() and
-            self.debug_gen_data.min_count == self.min_count_spin.value()
+            self.debug_gen_data.gain != self.gain_spin.value() or
+            self.debug_gen_data.size != (self.size_1_spin.value(), self.size_2_spin.value()) or
+            self.debug_gen_data.nsig_b != self.nsig_b_spin.value() or
+            self.debug_gen_data.nsig_s != self.nsig_s_spin.value() or
+            self.debug_gen_data.global_threshold != self.global_threshold_spin.value() or
+            self.debug_gen_data.min_count != self.min_count_spin.value()
         ):
-            print("same pars")
 
-        else:
             if self.img2show == "origin":
                 self.debug_gen_timer.stop()
 
@@ -1600,7 +1596,6 @@ class MyImgWin(QWidget):
 
             if self.img2show == "mask_val":
                 self.draw_val_mask_img()
-
 
     def ini_contrast(self):
         if not self.contrast_initiated:

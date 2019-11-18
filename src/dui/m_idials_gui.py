@@ -749,15 +749,6 @@ class MainWidget(QMainWindow):
 
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
 
-            '''
-            spotfinder.threshold.dispersion.gain=2.0
-            spotfinder.threshold.dispersion.kernel_size=1,1
-            spotfinder.threshold.dispersion.sigma_background=7.0
-            spotfinder.threshold.dispersion.sigma_strong=5.0
-            spotfinder.threshold.dispersion.min_local=3
-            spotfinder.threshold.dispersion.global_threshold=4.0
-            '''
-
         else:
             print("No need to feed back params")
             print(
