@@ -1100,6 +1100,7 @@ class MyImgWin(QWidget):
     mask_applied = Signal(list)
     bc_applied = Signal(list)
     predic_changed = Signal()
+    new_pars_applied = Signal(list)
 
     def __init__(self, json_file_path=None, pckl_file_path=None):
         super(MyImgWin, self).__init__()
@@ -1231,6 +1232,8 @@ class MyImgWin(QWidget):
 
         self.min_count_spin = QSpinBox()
         self.min_count_spin.setValue(2)
+        self.min_count_spin.setMinimum(2)
+        #min_count_ <= (2 * size[0] + 1) * (2 * size[1] + 1) && min_count_ > 1
 
         self.debug_gen_timer = QTimer(self)
         self.debug_gen_timer.timeout.connect(self.check_debug_pars)
@@ -1880,7 +1883,6 @@ class MyImgWin(QWidget):
         self.info_label.setText(new_label_txt)
 
     def emit_predic_changed(self):
-        print("\n ______________________________emit_predic_changed \n")
         self.predic_changed.emit()
         self.set_img()
 
@@ -1941,6 +1943,19 @@ class MyImgWin(QWidget):
         else:
             tmp_min = self.i_min
             tmp_max = self.i_max
+
+        if self.img2show != "origin":
+            print("\n ______________________________emit Try to update pars \n")
+
+            self.new_pars_applied.emit([
+                self.debug_gen_data.gain             ,
+                self.debug_gen_data.size             ,
+                self.debug_gen_data.nsig_b           ,
+                self.debug_gen_data.nsig_s           ,
+                self.debug_gen_data.global_threshold ,
+                self.debug_gen_data.min_count
+            ])
+
 
         if(
             self.find_spt_flat_data_lst == [None]

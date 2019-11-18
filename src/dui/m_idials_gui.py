@@ -549,6 +549,11 @@ class MainWidget(QMainWindow):
         self.img_view.mask_applied.connect(self.pop_mask_list)
         self.img_view.predic_changed.connect(self.tab_changed)
         self.img_view.bc_applied.connect(self.pop_b_centr_coord)
+
+        self.img_view.new_pars_applied.connect(self.pass_parmams)
+
+        #self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
+
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
         self.centre_par_widget.click_mask.connect(self.img_view.chec_my_mask)
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
@@ -577,7 +582,6 @@ class MainWidget(QMainWindow):
         self.custom_thread.busy_box_on.connect(self.pop_busy_box)
         self.custom_thread.busy_box_off.connect(self.close_busy_box)
 
-        self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -709,7 +713,7 @@ class MainWidget(QMainWindow):
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
 
-        logger.debug(
+        print(
             "\n_________________________________________cmd_lst(pass_parmams) = %s %s",
             cmd_lst,
             "\n",
@@ -723,21 +727,40 @@ class MainWidget(QMainWindow):
             action_name in ["find_spots", "integrate"]
             and self.idials_runner.current_node.success is None
         ):
-            # As a quick hack to get things working, look for 'lookup.mask'
-            # and if preset add a prefix phil-scope to it
-            lookup_scope_name = {
-                "find_spots": "spotfinder",
-                "integrate": "integration",
-            }[action_name]
-            full_command = [action_name] + [
-                lookup_scope_name + "." + x if x.startswith("lookup.mask=") else x
-                for x in cmd_lst
+
+            print("\n command = find_spots or  integrate\n")
+
+            gain = cmd_lst[0]
+            size = cmd_lst[1]
+            nsig_b = cmd_lst[2]
+            nsig_s = cmd_lst[3]
+            global_threshold = cmd_lst[4]
+            min_count = cmd_lst[5]
+
+            full_command = [
+            'find_spots',
+            "spotfinder.threshold.dispersion.gain=" + str(gain),
+            "spotfinder.threshold.dispersion.kernel_size=" + str(size[0]) + "," + str(size[1]),
+            "spotfinder.threshold.dispersion.sigma_background=" + str(nsig_b),
+            "spotfinder.threshold.dispersion.sigma_strong=" + str(nsig_s),
+            "spotfinder.threshold.dispersion.min_local=" + str(min_count),
+            "spotfinder.threshold.dispersion.global_threshold=" + str(global_threshold)
             ]
-            logger.debug("\n full_cmd_lst = %s", full_command)
+
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
+
+            '''
+            spotfinder.threshold.dispersion.gain=2.0
+            spotfinder.threshold.dispersion.kernel_size=1,1
+            spotfinder.threshold.dispersion.sigma_background=7.0
+            spotfinder.threshold.dispersion.sigma_strong=5.0
+            spotfinder.threshold.dispersion.min_local=3
+            spotfinder.threshold.dispersion.global_threshold=4.0
+            '''
+
         else:
-            logger.debug("No need to feed back params")
-            logger.debug(
+            print("No need to feed back params")
+            print(
                 "my_widget_now.my_widget.command_lst = %s",
                 current_parameter_widget.my_widget.command_lst,
             )
