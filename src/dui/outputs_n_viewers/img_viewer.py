@@ -1215,9 +1215,10 @@ class MyImgWin(QWidget):
 
         self.size_1_spin = QSpinBox()
         self.size_1_spin.setValue(3)
+        self.size_1_spin.setMinimum(1)
         self.size_2_spin = QSpinBox()
         self.size_2_spin.setValue(3)
-
+        self.size_2_spin.setMinimum(1)
 
         self.nsig_b_spin = QDoubleSpinBox()
         self.nsig_b_spin.setValue(6)
@@ -1555,23 +1556,7 @@ class MyImgWin(QWidget):
 
         self.debug_data = self.debug_gen_data.test_dispersion_debug()
 
-
-        example = '''
-        if self.debug_gen_timer.isActive():
-            self.debug_gen_timer.stop()
-            try:
-                self.debug_gen_timer.timeout.disconnect()
-
-            except BaseException as e:
-
-                print(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                print("unable to disconnect debug timer")
-        '''
-
-
-        print("startin timer")
+        print("starting timer")
         if not self.debug_gen_timer.isActive():
             self.debug_gen_timer.start(500)
 
