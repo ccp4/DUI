@@ -713,12 +713,6 @@ class MainWidget(QMainWindow):
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
 
-        print(
-            "\n_________________________________________cmd_lst(pass_parmams) = %s %s",
-            cmd_lst,
-            "\n",
-        )
-
         current_parameter_widget = (
             self.centre_par_widget.step_param_widg.currentWidget()
         )

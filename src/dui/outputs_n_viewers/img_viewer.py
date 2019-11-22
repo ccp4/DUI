@@ -1086,22 +1086,8 @@ class ThresholdDebugGenetator:
 
 
 def GetDoubleFromBool(bool_in):
-
-    '''
-    cv_mask = [mask.as_1d().as_double() for mask in cv_mask]
-    for i, mask in enumerate(cv_mask):
-        mask.reshape(cv[i].accessor())
-    raw_data = cv_mask
-    '''
-
     double_out = bool_in.as_1d().as_double()
     double_out.reshape(bool_in.accessor())
-
-    old_way = '''
-    double_out = bool_in.as_1d().as_double()
-    double_out.reshape(flex.grid(bool_in.all()))
-    '''
-
     return double_out
 
 
@@ -1196,9 +1182,9 @@ class MyImgWin(QWidget):
         ##############################################################################
 
         # previews for spot finding
-        self.btn_set_image    = QPushButton("Image")
+        self.btn_set_image    = QPushButton("image")
 
-        self.btn_set_varia    = QPushButton("Variance")
+        self.btn_set_varia    = QPushButton("variance")
         self.btn_set_mean     = QPushButton("mean")
         self.btn_set_disp     = QPushButton("dispersion")
 
@@ -1954,8 +1940,6 @@ class MyImgWin(QWidget):
             tmp_max = self.i_max
 
         if self.img2show != "origin":
-            print("\n ______________________________emit Try to update pars \n")
-
             self.new_pars_applied.emit([
                 self.debug_gen_data.gain             ,
                 self.debug_gen_data.size             ,
