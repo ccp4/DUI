@@ -1556,14 +1556,15 @@ class MyImgWin(QWidget):
         if not self.debug_gen_timer.isActive():
             self.debug_gen_timer.start(500)
 
-    def check_debug_pars(self):
+    def check_debug_pars(self, do_anyway = False):
         if(
             self.debug_gen_data.gain != self.gain_spin.value() or
             self.debug_gen_data.size != (self.size_1_spin.value(), self.size_2_spin.value()) or
             self.debug_gen_data.nsig_b != self.nsig_b_spin.value() or
             self.debug_gen_data.nsig_s != self.nsig_s_spin.value() or
             self.debug_gen_data.global_threshold != self.global_threshold_spin.value() or
-            self.debug_gen_data.min_count != self.min_count_spin.value()
+            self.debug_gen_data.min_count != self.min_count_spin.value() or
+            do_anyway
         ):
 
             if self.img2show == "origin":
@@ -1931,6 +1932,8 @@ class MyImgWin(QWidget):
 
     def painter_set_img_pix(self, img_pos, loc_stk_siz):
 
+        print("\n painter_set_img_pix() \n")
+
         if self.img2show[0:4] == "mask":
             tmp_min = -0.5
             tmp_max = 1.5
@@ -2112,11 +2115,14 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def img_changed_by_user(self, value):
-        self.img2show = "origin"
+        #self.img2show = "origin"
         self.img_num = value
         if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
             self.img_select.setValue(self.img_num)
+
+        if self.img2show != "origin":
+            self.check_debug_pars(do_anyway = True)
 
         self.set_img()
 
