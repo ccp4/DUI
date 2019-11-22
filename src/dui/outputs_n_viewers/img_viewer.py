@@ -29,7 +29,11 @@ import os
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
-from dials.algorithms.image.threshold import DispersionThresholdDebug
+from dials.algorithms.image.threshold import (
+    DispersionThresholdDebug,
+    DispersionExtendedThresholdDebug
+    )
+
 from dxtbx.model.experiment_list import ExperimentListFactory
 import pickle
 
@@ -1035,7 +1039,7 @@ class PopDisplayMenu(QMenu):
 
 
 class ThresholdDebugGenetator:
-    from dials.algorithms.image.threshold import DispersionThresholdDebug
+    #from dials.algorithms.image.threshold import DispersionThresholdDebug
 
     def __init__(self, image_in):
         self.image = image_in
@@ -1061,20 +1065,13 @@ class ThresholdDebugGenetator:
         self.global_threshold = global_threshold
         self.min_count = min_count
 
-        debug_info = '''
-        print("self.gain             ", self.gain             )
-        print("self.size             ", self.size             )
-        print("self.nsig_b           ", self.nsig_b           )
-        print("self.nsig_s           ", self.nsig_s           )
-        print("self.global_threshold ", self.global_threshold )
-        print("self.min_count        ", self.min_count        )
-        '''
-
     def test_dispersion_debug(self):
 
         self.gain_map = flex.double(flex.grid(self.image.all()), self.gain)
 
-        debug = DispersionThresholdDebug(
+        #debug = DispersionThresholdDebug(
+
+        debug = DispersionExtendedThresholdDebug(
             self.image,
             self.mask,
             self.gain_map,
@@ -1089,8 +1086,22 @@ class ThresholdDebugGenetator:
 
 
 def GetDoubleFromBool(bool_in):
+
+    '''
+    cv_mask = [mask.as_1d().as_double() for mask in cv_mask]
+    for i, mask in enumerate(cv_mask):
+        mask.reshape(cv[i].accessor())
+    raw_data = cv_mask
+    '''
+
+    double_out = bool_in.as_1d().as_double()
+    double_out.reshape(bool_in.accessor())
+
+    old_way = '''
     double_out = bool_in.as_1d().as_double()
     double_out.reshape(flex.grid(bool_in.all()))
+    '''
+
     return double_out
 
 
