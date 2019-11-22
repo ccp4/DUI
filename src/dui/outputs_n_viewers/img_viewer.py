@@ -843,9 +843,6 @@ class PopActionsMenu(QMenu):
         size_layout.addWidget(self.my_parent.size_1_spin)
         size_layout.addWidget(self.my_parent.size_2_spin)
 
-        img_spot_find_box.addLayout(gain_layout)
-        img_spot_find_box.addLayout(size_layout)
-
         nsig_b_layout = QHBoxLayout()
         nsig_b_layout.addWidget(QLabel("Sigma Background"))
         nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
@@ -866,18 +863,20 @@ class PopActionsMenu(QMenu):
         img_spot_find_box.addLayout(nsig_s_layout)
         img_spot_find_box.addLayout(global_threshold_spin_layout)
         img_spot_find_box.addLayout(min_local_layout)
+        img_spot_find_box.addLayout(gain_layout)
+        img_spot_find_box.addLayout(size_layout)
 
         left_img_but_box = QVBoxLayout()
         left_img_but_box.addWidget(self.my_parent.btn_set_image)
-        left_img_but_box.addWidget(self.my_parent.btn_set_varia)
         left_img_but_box.addWidget(self.my_parent.btn_set_mean)
+        left_img_but_box.addWidget(self.my_parent.btn_set_varia)
         left_img_but_box.addWidget(self.my_parent.btn_set_disp)
 
         right_img_but_box = QVBoxLayout()
-        right_img_but_box.addWidget(self.my_parent.btn_set_fin_mask)
-        right_img_but_box.addWidget(self.my_parent.btn_set_glo_mask)
         right_img_but_box.addWidget(self.my_parent.btn_set_cv_mask)
         right_img_but_box.addWidget(self.my_parent.btn_set_val_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_glo_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_fin_mask)
 
         img_but_main_box = QHBoxLayout()
         img_but_main_box.addLayout(left_img_but_box)
@@ -1190,15 +1189,12 @@ class MyImgWin(QWidget):
 
         self.btn_set_varia    = QPushButton("Variance")
         self.btn_set_mean     = QPushButton("mean")
-
-        #index_of_dispersion
         self.btn_set_disp     = QPushButton("dispersion")
 
-        self.btn_set_fin_mask = QPushButton("final_mask")
-        self.btn_set_glo_mask = QPushButton("global_mask")
-        self.btn_set_cv_mask  = QPushButton("cv_mask")
-        self.btn_set_val_mask = QPushButton("value_mask")
-
+        self.btn_set_cv_mask  = QPushButton("sigma_b ")
+        self.btn_set_val_mask = QPushButton("sigma_s")
+        self.btn_set_glo_mask = QPushButton("global")
+        self.btn_set_fin_mask = QPushButton("threshold")
 
         self.btn_set_varia.clicked.connect(self.set_variance_img)
 
@@ -1659,21 +1655,28 @@ class MyImgWin(QWidget):
                 print("Failed to load images from  datablock.json")
 
             try:
+                '''
                 print(
                     "self.my_sweep.get_array_range() = %s",
                     self.my_sweep.get_array_range(),
                 )
-                n_of_imgs = len(self.my_sweep.indices())
-                print("n_of_imgs = %s", n_of_imgs)
+                '''
 
+                n_of_imgs = len(self.my_sweep.indices())
+                print("n_of_imgs =", n_of_imgs)
+
+                print("Here 2.99")
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
+                print("Here 03")
 
                 self.img_step.setMaximum(n_of_imgs / 2)
                 self.img_step.setMinimum(1)
+                print("Here 04")
 
                 self.num_of_imgs_to_add.setMaximum(n_of_imgs)
                 self.num_of_imgs_to_add.setMinimum(1)
+                print("Here 05")
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know

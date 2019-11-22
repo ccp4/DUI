@@ -444,7 +444,9 @@ def update_info(main_obj):
             main_obj.cur_json = new_img_json
             # TODO check if next line should run ALLWAYS
             main_obj.img_view.contrast_initiated = False
+            print("before ini_datablock")
             main_obj.img_view.ini_datablock(main_obj.cur_json)
+            print("after ini_datablock")
 
         if main_obj.cur_pick != new_ref_pikl:
             main_obj.cur_pick = new_ref_pikl
