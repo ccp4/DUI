@@ -1,2 +1,2 @@
 # This file must be separately readable and depend on nothing else in DUI
-__version__ = "2019.10.2"
+__version__ = "2019.11.1"

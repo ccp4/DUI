@@ -1917,6 +1917,9 @@ class MyImgWin(QWidget):
                         * loc_scale
                     )
 
+            if self.img2show != "origin":
+                self.check_debug_pars(do_anyway = True)
+
             self.painter_set_img_pix(img_pos, loc_stk_siz)
 
         self.palette_label.setPixmap(
@@ -1931,9 +1934,6 @@ class MyImgWin(QWidget):
         )
 
     def painter_set_img_pix(self, img_pos, loc_stk_siz):
-
-        print("\n painter_set_img_pix() \n")
-
         if self.img2show[0:4] == "mask":
             tmp_min = -0.5
             tmp_max = 1.5
@@ -2120,9 +2120,6 @@ class MyImgWin(QWidget):
         if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
             self.img_select.setValue(self.img_num)
-
-        if self.img2show != "origin":
-            self.check_debug_pars(do_anyway = True)
 
         self.set_img()
 
