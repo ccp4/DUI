@@ -745,10 +745,12 @@ class MainWidget(QMainWindow):
 
         else:
             print("No need to feed back params")
+            '''
             print(
                 "my_widget_now.my_widget.command_lst = %s",
                 current_parameter_widget.my_widget.command_lst,
             )
+            '''
 
     def update_low_level_command_lst(self, command_lst):
         self.idials_runner.current_node.ll_command_lst = command_lst

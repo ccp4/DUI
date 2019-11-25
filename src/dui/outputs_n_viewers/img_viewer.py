@@ -1432,7 +1432,7 @@ class MyImgWin(QWidget):
 
     def draw_img_img(self):
         try:
-            print("img_origin_arr")
+            #print("img_origin_arr")
             self.img2show = "origin"
             self.painter_set_img_pix(self.img_num - 1, 1)
             self.debug_gen_timer.stop()
@@ -1445,7 +1445,7 @@ class MyImgWin(QWidget):
 
     def draw_variance_img(self):
         try:
-            print("img_varian_arr")
+            #print("img_varian_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.variance()
             self.img2show = "modif_varian"
@@ -1459,7 +1459,7 @@ class MyImgWin(QWidget):
 
     def draw_mean_img(self):
         try:
-            print("img_mean_arr")
+            #print("img_mean_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.mean()
             self.img2show = "modif_mean"
@@ -1473,7 +1473,7 @@ class MyImgWin(QWidget):
 
     def draw_disp_img(self):
         try:
-            print("img_disper_arr")
+            #print("img_disper_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.index_of_dispersion()
             self.img2show = "modif_disper"
@@ -1487,7 +1487,7 @@ class MyImgWin(QWidget):
 
     def draw_fin_mask_img(self):
         try:
-            print("img_final_mask_arr")
+            #print("img_final_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.final_mask())
             self.img2show = "mask_fin"
@@ -1501,7 +1501,7 @@ class MyImgWin(QWidget):
 
     def draw_glo_mask_img(self):
         try:
-            print("img_global_mask_arr")
+            #print("img_global_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.global_mask())
             self.img2show = "mask_glob"
@@ -1515,7 +1515,7 @@ class MyImgWin(QWidget):
 
     def draw_cv_mask_img(self):
         try:
-            print("img_cv_mask_arr")
+            #print("img_cv_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.cv_mask())
             self.img2show = "mask_cv"
@@ -1529,7 +1529,7 @@ class MyImgWin(QWidget):
 
     def draw_val_mask_img(self):
         try:
-            print("img_value_mask_arr")
+            #print("img_value_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.value_mask())
             self.img2show = "mask_val"
@@ -1552,7 +1552,6 @@ class MyImgWin(QWidget):
 
         self.debug_data = self.debug_gen_data.test_dispersion_debug()
 
-        print("starting timer")
         if not self.debug_gen_timer.isActive():
             self.debug_gen_timer.start(500)
 
@@ -1629,16 +1628,9 @@ class MyImgWin(QWidget):
         from dxtbx.model.experiment_list import ExperimentListFactory
         if json_file_path is not None:
             try:
-                print("Here 01")
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
                 n_json_file_path = os.path.join(cwd_path, json_file_path)
-                print("Here 02")
-                '''
-                datablocks = DataBlockFactory.from_json_file(n_json_file_path)
-                # TODO check length of datablock for safety
-                datablock = datablocks[0]
-                print("Here 03")
-                '''
+
                 experiments = ExperimentListFactory.from_json_file(n_json_file_path)
                 self.my_sweep = experiments.imagesets()[0]
                 ###########################################################
@@ -1663,18 +1655,14 @@ class MyImgWin(QWidget):
                 n_of_imgs = len(self.my_sweep.indices())
                 print("n_of_imgs =", n_of_imgs)
 
-                print("Here 2.99")
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
-                print("Here 03")
 
                 self.img_step.setMaximum(n_of_imgs / 2)
                 self.img_step.setMinimum(1)
-                print("Here 04")
 
                 self.num_of_imgs_to_add.setMaximum(n_of_imgs)
                 self.num_of_imgs_to_add.setMinimum(1)
-                print("Here 05")
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
@@ -1696,10 +1684,12 @@ class MyImgWin(QWidget):
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
 
+        to_remove = '''
         print("\n pt_width  :",pt_width )
         print("pt_height :",pt_height)
         print("sc_width  :",sc_width )
         print("sc_height :",sc_height, "\n")
+        '''
 
         if pt_width == 0 or pt_height == 0:
             self.my_painter.scale2fact()

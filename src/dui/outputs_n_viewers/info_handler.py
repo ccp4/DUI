@@ -247,11 +247,9 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 json_info = json.load(infile)
 
             if type(json_info) is dict:
-                print("found Dictionary")
                 imageset = json_info["imageset"]
 
             elif type(json_info) is list:
-                print("found List")
                 imageset = json_info[0]["imageset"]
 
             dat.tmpl_str = imageset[0]["template"]
