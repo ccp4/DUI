@@ -228,11 +228,11 @@ def build_mask_item(img_paint_obj):
             return False, None, False
 
     except TypeError:
-        logger.debug("except(build_mask_item) ... TypeError")
+        #print("except(build_mask_item) ... TypeError")
         return False, None, False
 
     except AttributeError:
-        logger.debug(" except(build_mask_item) ... AttributeError")
+        #print(" except(build_mask_item) ... AttributeError")
         return False, None, False
 
 
