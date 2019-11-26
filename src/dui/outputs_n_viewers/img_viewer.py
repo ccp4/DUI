@@ -193,6 +193,20 @@ def build_mask_item(img_paint_obj):
 
             if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
 
+
+                if x2 > img_paint_obj.img_width:
+                    x2 = float(img_paint_obj.img_width)
+
+                if y2 > img_paint_obj.img_height:
+                    y2 = float(img_paint_obj.img_height)
+
+                if x2 < 0:
+                    x2 = 0.0
+
+                if y2 < 0:
+                    y2 = 0.0
+
+
                 to_append_append = (int(x2), int(y2))
 
                 try:
