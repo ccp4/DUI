@@ -272,19 +272,28 @@ class PhilWidget(QWidget):
                         tmp_widg.tmp_lst = []
                         tmp_widg.tmp_lst.append("True")
                         tmp_widg.tmp_lst.append("False")
+                        tmp_widg.tmp_lst.append("Auto")
 
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
 
-                        if str(obj.extract()) == "False":
+                        if str(obj.extract()) == "True":
+                            tmp_widg.setCurrentIndex(0)
+                            tmp_str += "                          True"
+
+                        elif str(obj.extract()) == "False":
                             tmp_widg.setCurrentIndex(1)
                             tmp_str += "                          False"
 
-                        elif str(obj.extract()) == "True":
-                            tmp_str += "                          True"
+                        elif str(obj.extract()) == "Auto":
+                            tmp_widg.setCurrentIndex(2)
+                            tmp_str += "                          Auto"
 
                         else:
                             tmp_str = None
+
+                        #print("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
+                        #print("tmp_str =", tmp_str)
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -408,7 +417,10 @@ class TstTmpWidget(QWidget):
 
 
 if __name__ == "__main__":
+    from dials.command_line.refine import working_phil as phil_scope_refine
+    #from dials.command_line.find_spots import phil_scope
     app = QApplication(sys.argv)
-    ex = TstTmpWidget(phil_scope)
+    ex = TstTmpWidget(phil_scope_refine)
     ex.show()
     sys.exit(app.exec_())
+    print("running ...")
