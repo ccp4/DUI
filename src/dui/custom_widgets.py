@@ -29,7 +29,7 @@ import sys
 import libtbx.phil
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
-from dials.command_line.index import phil_scope as phil_scope_index
+from dials.command_line.index import working_phil as phil_scope_index
 from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )

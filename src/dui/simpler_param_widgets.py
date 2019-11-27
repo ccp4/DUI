@@ -219,6 +219,8 @@ class IndexSimplerParamTab(QWidget):
         box_method_62.tmp_lst.append("fft3d")
         box_method_62.tmp_lst.append("fft1d")
         box_method_62.tmp_lst.append("real_space_grid_search")
+        box_method_62.tmp_lst.append("low_res_spot_match")
+
         for lst_itm in box_method_62.tmp_lst:
             box_method_62.addItem(lst_itm)
         box_method_62.currentIndexChanged.connect(self.combobox_changed)
@@ -419,6 +421,7 @@ class IntegrateSimplerParamTab(QWidget):
         PrFit_comb_bx.tmp_lst = []
         PrFit_comb_bx.tmp_lst.append("True")
         PrFit_comb_bx.tmp_lst.append("False")
+        PrFit_comb_bx.tmp_lst.append("Auto")
 
         for lst_itm in PrFit_comb_bx.tmp_lst:
             PrFit_comb_bx.addItem(lst_itm)
@@ -580,15 +583,19 @@ class ScaleSimplerParamTab(QWidget):
         hbox_lay_mod.addWidget(box_mod)
 
         hbox_lay_wgh_opt_err = QHBoxLayout()
-        label_wgh_opt_err = QLabel("Optimise Errors")
+        label_wgh_opt_err = QLabel("Optimise Errors Model")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
-
+        '''
+        weighting {
+          error_model {
+            error_model = *basic None
+        '''
         box_wgh_opt_err = QComboBox()
-        box_wgh_opt_err.local_path = "weighting.optimise_errors"
+        box_wgh_opt_err.local_path = "weighting.error_model.error_model"
         box_wgh_opt_err.tmp_lst = []
-        box_wgh_opt_err.tmp_lst.append("True")
-        box_wgh_opt_err.tmp_lst.append("False")
+        box_wgh_opt_err.tmp_lst.append("basic")
+        box_wgh_opt_err.tmp_lst.append("None")
         for lst_itm in box_wgh_opt_err.tmp_lst:
             box_wgh_opt_err.addItem(lst_itm)
 
