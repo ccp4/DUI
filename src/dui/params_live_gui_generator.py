@@ -214,13 +214,21 @@ class PhilWidget(QWidget):
 
                 self.lst_label_widg.append(tmp_label)
 
+
+                to_remove = '''
                 if (
                     obj.type.phil_type == "float"
                     or obj.type.phil_type == "int"
                     or obj.type.phil_type == "bool"
                     or obj.type.phil_type == "choice"
                 ):
+                '''
 
+                if (
+                    obj.type.phil_type == "bool"
+                    or obj.type.phil_type == "choice"
+                ):
+                    to_remove = '''
                     if obj.type.phil_type == "float" or obj.type.phil_type == "int":
 
                         if obj.type.phil_type == "float":
@@ -265,8 +273,9 @@ class PhilWidget(QWidget):
 
                         else:
                             tmp_widg.textChanged.connect(self.spnbox_changed)
+                    '''
 
-                    elif obj.type.phil_type == "bool":
+                    if obj.type.phil_type == "bool":
 
                         tmp_widg = QComboBox()
                         tmp_widg.tmp_lst = []

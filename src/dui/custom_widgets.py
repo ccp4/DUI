@@ -798,6 +798,7 @@ class ParamMainWidget(QWidget):
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
 
+                                to_remove = '''
                             except ValueError:
                                 try:
                                     str_val = str(str_value)
@@ -806,6 +807,16 @@ class ParamMainWidget(QWidget):
 
                                 except AttributeError:
                                     pass
+                            '''
+
+                            except:
+                                try:
+                                    str_val = str(str_value)
+                                    widg.setText(str_val)
+                                    print("widg.local_path = %s", widg.local_path)
+
+                                except BaseException as ee:
+                                    print("ee = ", e)
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
