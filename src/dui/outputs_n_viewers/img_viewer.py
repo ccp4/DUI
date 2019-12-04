@@ -1698,12 +1698,6 @@ class MyImgWin(QWidget):
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
 
-        to_remove = '''
-        print("\n pt_width  :",pt_width )
-        print("pt_height :",pt_height)
-        print("sc_width  :",sc_width )
-        print("sc_height :",sc_height, "\n")
-        '''
 
         if pt_width == 0 or pt_height == 0:
             self.my_painter.scale2fact()

@@ -215,65 +215,10 @@ class PhilWidget(QWidget):
                 self.lst_label_widg.append(tmp_label)
 
 
-                to_remove = '''
-                if (
-                    obj.type.phil_type == "float"
-                    or obj.type.phil_type == "int"
-                    or obj.type.phil_type == "bool"
-                    or obj.type.phil_type == "choice"
-                ):
-                '''
-
                 if (
                     obj.type.phil_type == "bool"
                     or obj.type.phil_type == "choice"
                 ):
-                    to_remove = '''
-                    if obj.type.phil_type == "float" or obj.type.phil_type == "int":
-
-                        if obj.type.phil_type == "float":
-                            par_min = 0.0
-                            par_max = 5000.0
-                            tmp_widg = QDoubleSpinBox()
-                            tmp_widg.setDecimals(3)
-
-                        elif obj.type.phil_type == "int":
-                            par_min = 0
-                            par_max = 5000
-                            tmp_widg = QSpinBox()
-
-                        if obj.type.phil_type == "int" or obj.type.phil_type == "float":
-                            tmp_widg.str_defl = None
-                            tmp_widg.setRange(par_min, par_max)
-                            if (
-                                str(obj.extract()) == "Auto"
-                                or str(obj.extract()) == "None"
-                            ):
-                                par_def = str(obj.extract())
-                                tmp_widg.setSpecialValueText(par_def)
-                                tmp_widg.str_defl = par_def
-
-                            else:
-                                par_def = obj.extract()
-                                if (
-                                    float(par_def) != 0.0
-                                    and obj.type.phil_type == "float"
-                                ):
-                                    par_max = abs(par_def * 100.0)
-                                    tmp_widg.setSingleStep(abs(par_def / 10))
-
-                                tmp_widg.setValue(par_def)
-
-                            tmp_str += "                          " + str(obj.extract())
-
-                        tmp_widg.tmp_lst = None
-
-                        if obj.type.phil_type == "int" or obj.type.phil_type == "float":
-                            tmp_widg.valueChanged.connect(self.spnbox_changed)
-
-                        else:
-                            tmp_widg.textChanged.connect(self.spnbox_changed)
-                    '''
 
                     if obj.type.phil_type == "bool":
 
