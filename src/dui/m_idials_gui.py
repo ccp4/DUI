@@ -717,12 +717,20 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.step_param_widg.currentWidget()
         )
         action_name = current_parameter_widget.my_widget.command_lst[0][0]
+
+        to_remove = '''
         if (
             action_name in ["find_spots", "integrate"]
             and self.idials_runner.current_node.success is None
         ):
+        '''
 
-            print("\n command = find_spots or  integrate\n")
+        if (
+            action_name == "find_spots"
+            and self.idials_runner.current_node.success is None
+        ):
+
+            print("\n command = find_spots \n")
 
             gain = cmd_lst[0]
             size = cmd_lst[1]
