@@ -814,6 +814,9 @@ class MainWidget(QMainWindow):
             "...currentWidget(ref) = %s",
             self.centre_par_widget.step_param_widg.currentWidget(),
         )
+
+        self.img_view.draw_img_img()
+
         cmd_tmp = (
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
         )
