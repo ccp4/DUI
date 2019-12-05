@@ -38,7 +38,7 @@ except ImportError:
         # Explicitly choose the v2 APIs for QT4
         try:
             import sip
-        except:
+        except ImportError:
             from PyQt4 import sip
 
         try:
