@@ -36,7 +36,10 @@ except ImportError:
     # Fallback to QT4
     try:
         # Explicitly choose the v2 APIs for QT4
-        from PyQt4 import sip
+        try:
+            import sip
+        except:
+            from PyQt4 import sip
 
         try:
             sip.setapi("QDate", 2)
