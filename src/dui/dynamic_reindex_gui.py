@@ -195,27 +195,32 @@ def heather_text_from_lin(lin_num, j_path):
     lin_num_str = str(lin_num)
     my_file_path = dir_path + lin_num_str + "_refine_bravais_settings.log"
 
+    print("my_file_path: ", my_file_path)
+
     myfile = open(my_file_path, "r")
     all_lines = myfile.readlines()
     myfile.close()
 
+    print("len(all_lines):", len(all_lines))
+
     multi_lin_txt = ""
     n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
+        print("pos1, single_lin1:", pos1, single_lin1)
         if str(single_lin1[0:19]) == "Chiral space groups":
             start_block = pos1
-            logger.debug("start_block = %s", start_block)
+            print("start_block = %s", start_block)
 
             for pos2, single_lin2 in enumerate(all_lines[start_block:]):
                 n_of_lines += 1
-                if str(single_lin2[0:19]) == "-------------------":
+                if str(single_lin2[1:5]) == "----":
                     end_block = pos2 + start_block
                     logger.debug("end_block = %s", end_block)
                     break
 
             break
 
-    logger.debug("start_block, end_block = %s %s", start_block, end_block)
+    print("start_block, end_block = %s %s", start_block, end_block)
 
     for single_lin in all_lines[start_block:end_block]:
         multi_lin_txt += single_lin
@@ -444,9 +449,10 @@ class MainWindow(QMainWindow):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
         self.my_pop.set_ref(
-            in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
+            in_json_path="/tmp/dui2run/dui_files/lin_4_bravais_summary.json"
              , lin_num = 4
         )
+        #in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
 
 
     def opt_picked(self, opt_num):

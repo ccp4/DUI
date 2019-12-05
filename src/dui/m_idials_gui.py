@@ -956,7 +956,9 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
+        print("\n_________________________ check_reindex_pop 01 \n")
         if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
+            print("\n_________________________ check_reindex_pop 02 \n")
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -967,11 +969,11 @@ class MainWidget(QMainWindow):
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
-                logger.debug("str(my_err) = %s", str(my_err))
-                logger.debug("my_err.__doc__ = %s", my_err.__doc__)
-                logger.debug("my_err.message = %s", my_err.message)
+                print("str(my_err) = %s", str(my_err))
+                print("my_err.__doc__ = %s", my_err.__doc__)
+                print("my_err.message = %s", my_err.message)
                 if str(my_err)[0:36] == "[Errno 2] No such file or directory:":
-                    logger.debug("\n interrupted refine_bravais_settings \n")
+                    print("\n interrupted refine_bravais_settings \n")
 
             # TODO find an elegant way to interrupt and remove nodes
 
