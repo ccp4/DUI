@@ -195,21 +195,21 @@ def heather_text_from_lin(lin_num, j_path):
     lin_num_str = str(lin_num)
     my_file_path = dir_path + lin_num_str + "_refine_bravais_settings.log"
 
-    print("my_file_path: ", my_file_path)
+    logger.debug("my_file_path: ", my_file_path)
 
     myfile = open(my_file_path, "r")
     all_lines = myfile.readlines()
     myfile.close()
 
-    print("len(all_lines):", len(all_lines))
+    logger.debug("len(all_lines):", len(all_lines))
 
     multi_lin_txt = ""
     n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
-        print("pos1, single_lin1:", pos1, single_lin1)
+        logger.debug("pos1, single_lin1:", pos1, single_lin1)
         if str(single_lin1[0:19]) == "Chiral space groups":
             start_block = pos1
-            print("start_block = %s", start_block)
+            logger.debug("start_block = %s", start_block)
 
             for pos2, single_lin2 in enumerate(all_lines[start_block:]):
                 n_of_lines += 1
@@ -220,12 +220,10 @@ def heather_text_from_lin(lin_num, j_path):
 
             break
 
-    print("start_block, end_block = %s %s", start_block, end_block)
+    logger.debug("start_block, end_block = %s %s", start_block, end_block)
 
     for single_lin in all_lines[start_block:end_block]:
         multi_lin_txt += single_lin
-
-    logger.debug("\n\n\n here 2 \n")
 
     return multi_lin_txt, n_of_lines
 
