@@ -717,16 +717,6 @@ class ExternalProcDialog(QDialog):
 
         # Save the working directory
         self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
-        to_remove = '''
-        self.check_for = check_for or []
-        # Store metadata about the files if they exist, to check if they changed
-        self.check_file_status = {}
-        for check_file in self.check_for:
-            full_path = os.path.join(self.cwd_path, check_file)
-            if os.path.exists(full_path):
-                logger.debug("File %s exists - collecting metadata", full_path)
-                self.check_file_status[check_file] = os.stat(full_path)
-        '''
 
         logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
@@ -739,138 +729,28 @@ class ExternalProcDialog(QDialog):
 
         # Show this dialog
         self.exec_()
-
-
-
-        to_remove = '''
-        self.check_for = []
-
-    def run_my_proc(self, command, json_path, pickle_path, check_for=None):
-        """Run a process.
-
-        Args:
-            command (str):      The command to run
-            json_path (str):
-                Path to the JSON file to pass in as first argument
-            pickle_path (Sequence[Optional[str]]):
-                An additional path to a pickle to pass in as an argument.
-                Currently, all except the first argument is ignored.
-            check_for (Sequence[str]):
-                Files to look for. Anything named here will be removed
-                before running, and a outputFileFound signal sent after
-                running with a list of full paths to each file found.
-        """
-
-        # assert isinstance(json_path, basestring)
-        # # This function previously had strings as default parameters
-        # # but appears to only accept Indexable lists of strings. Make
-        # # sure we never try to use strings
-        # assert not isinstance(pickle_path, basestring)
-        # # Since we ignore everything after [0] assert they are None
-        # assert all(x is None for x in pickle_path[1:])
-        # # Only one process running from each class
-        # assert self.my_process is None
-
-        # Build the command
-        cmd_to_run = [find_executable(command), str(json_path)]
-        logger.debug("Resolving %s as %s", command, cmd_to_run[0])
-
-        first_pikl_path = pickle_path[0]
-        if first_pikl_path is not None:
-            cmd_to_run.append(str(first_pikl_path))
-
-        # Save the working directory
-        self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
-
-        self.check_for = check_for or []
-        # Store metadata about the files if they exist, to check if they changed
-        self.check_file_status = {}
-        for check_file in self.check_for:
-            full_path = os.path.join(self.cwd_path, check_file)
-            if os.path.exists(full_path):
-                logger.debug("File %s exists - collecting metadata", full_path)
-                self.check_file_status[check_file] = os.stat(full_path)
-
-        logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
-        self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
-        logger.debug("Running PID {}".format(self.my_process.pid))
-
-        # Track the process status in a separate thread
-        self.thrd = ViewerThread(self.my_process)
-        self.thrd.finished.connect(self.child_closed)
-        self.thrd.start()
-
-        # Show this dialog
-        self.exec_()
-        '''
 
     def kill_my_proc(self):
         """Kill the subprocess early"""
         logger.debug("self.kill_my_proc")
         kill_w_child(self.my_process.pid)
         self.my_process = None
-        to_remove = '''
-        self._check_for_output_files()
-        '''
         self.done(0)
 
     def child_closed(self):
         """The child process has closed by itself"""
         logger.debug("after ...close()")
         self.my_process = None
-        to_remove = '''
-        self._check_for_output_files()
-        '''
         # Just close ourself
         self.done(0)
 
     def closeEvent(self, event):
         """User has clicked 'close' window decorator on dialog box"""
         logger.debug("from << closeEvent  (QDialog) >>")
-        to_remove = '''
-        self._check_for_output_files()
-        '''
         self.kill_my_proc()
-
-        to_remove = '''
-    def _check_for_output_files(self):
-        """Send out any signals about created or changed output files"""
-        found_checks = []
-        for filename in self.check_for:
-            full_path = os.path.join(self.cwd_path, filename)
-            if filename in self.check_file_status:
-                # If this file existed, see if it has changed
-                try:
-                    new_stat = os.stat(full_path)
-                    old_stat = self.check_file_status[filename]
-                    if (new_stat.st_mtime, new_stat.st_size) != (
-                        old_stat.st_mtime,
-                        old_stat.st_size,
-                    ):
-                        logger.info(
-                            "Size/mtime of %s has changed - reading as new file",
-                            filename,
-                        )
-                        found_checks.append(full_path)
-                except OSError as e:
-                    logger.warning(
-                        "OSError (%s) trying to stat file that previously existed", e
-                    )
-            elif os.path.isfile(full_path):
-                # The file didn't exist before - definitely new!
-                logger.debug("Found output file {}".format(filename))
-                found_checks.append(full_path)
-
-        if found_checks:
-            self.outputFileFound.emit(found_checks)
-        '''
 
 
 class OuterCaller(QWidget):
-
-    to_remove = '''
-    pass_parmam_lst = Signal(list)
-    '''
 
     def __init__(self):
         super(OuterCaller, self).__init__()
@@ -886,9 +766,6 @@ class OuterCaller(QWidget):
         v_box.addWidget(img_but)
 
         self.diag = ExternalProcDialog(parent=self.window())
-        to_remove = '''
-        self.diag.outputFileFound.connect(self.check_for_phil)
-        '''
         self.setLayout(v_box)
         # self.show()
 
@@ -908,28 +785,6 @@ class OuterCaller(QWidget):
             "dials.image_viewer",
             json_path=self.my_json,
             pickle_path=self.my_pick)
-    to_remove = ''' ,
-            check_for=["find_spots.phil", "mask.pickle"],
-        )
-
-    def check_for_phil(self, output_files):
-        """Slot function triggered by new files created by external process"""
-        logger.debug("Output files: %s", output_files)
-
-        for filename in output_files:
-            if filename.endswith("find_spots.phil"):
-                logger.debug("Reading spotfinding settings: %s %s", filename, "\n")
-                lst_params = get_phil_par(filename)
-                logger.debug("Emitting %s", repr(lst_params))
-                self.pass_parmam_lst.emit(lst_params)
-            elif filename.endswith("mask.pickle"):
-                logger.debug("Found mask; emitting")
-                # As a quick hack, broadcast lookup.mask and rewrite in catch
-                phil_parms = ["lookup.mask={}".format(filename)]
-                self.pass_parmam_lst.emit(phil_parms)
-            else:
-                logger.debug("Not sure how to handle %s", filename)
-    '''
 
 
 class CliOutView(QTextEdit):
