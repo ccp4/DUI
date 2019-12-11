@@ -293,7 +293,7 @@ class InfoWidget(QWidget):
         itgr_sum_hbox.addWidget(self.itgr_sum_data)
         scan_v_layout.addLayout(itgr_sum_hbox)
 
-        #scan_v_layout.addStretch()
+        scan_v_layout.addStretch()
         scan_group.setLayout(scan_v_layout)
 
         detec_group = QGroupBox(" Detector ")
@@ -302,6 +302,7 @@ class InfoWidget(QWidget):
 
         # detec_v_layout.addWidget(QLabel("  "))
         d_dist_label = QLabel(" Distance (mm)")
+
         self.d_dist_data = QLabel(empty_str)
         d_dist_hbox = QHBoxLayout()
         d_dist_hbox.addWidget(d_dist_label)
@@ -357,7 +358,6 @@ class InfoWidget(QWidget):
 
         #detec_v_layout.addWidget(QLabel("  "))
         #detec_v_layout.addStretch()
-
         detec_group.setLayout(detec_v_layout)
 
         left_big_box = QHBoxLayout()
@@ -402,10 +402,11 @@ class InfoWidget(QWidget):
         try:
             try:
                 pickle_to_read = refl_pikl_path[0]
+
             except ValueError:
                 pickle_to_read = None
 
-            print("experiments_path=", exp_json_path, "reflections_path=", pickle_to_read)
+            logger.debug("experiments_path=", exp_json_path, "reflections_path=", pickle_to_read)
 
             self.all_data = update_all_data(
                 experiments_path=exp_json_path, reflections_path=pickle_to_read

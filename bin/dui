@@ -1,4 +1,9 @@
 #!/bin/sh -e
 export BOOST_ADAPTBX_SIGNALS_DEFAULT=1
 export BOOST_ADAPTBX_FPE_DEFAULT=1
-ccp4-python -m dui.main_dui "${1}" "${2}"
+# Prefer ccp4-python if present
+if command -v ccp4-python > /dev/null 2>&1; then
+    ccp4-python -m dui.main_dui "${1}" "${2}"
+else
+    dials.python -m dui.main_dui "${1}" "${2}"
+fi

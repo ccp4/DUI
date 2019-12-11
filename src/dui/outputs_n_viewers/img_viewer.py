@@ -29,56 +29,109 @@ import os
 from dials.array_family import flex
 from dxtbx.datablock import DataBlockFactory
 
-from dials.algorithms.image.threshold import DispersionThresholdDebug
+from dials.algorithms.image.threshold import (
+    DispersionThresholdDebug,
+    DispersionExtendedThresholdDebug
+    )
+
 from dxtbx.model.experiment_list import ExperimentListFactory
 import pickle
 
-import numpy as np
 
-from ..cli_utils import sys_arg
-from ..gui_utils import get_main_path
-from .img_view_tools import (
-    panel_data_as_double,
-    build_qimg,
-    draw_palette_label,
-    find_hkl_near,
-    list_arrange,
-    list_p_arrange,
-)
-from ..qt import (
-    QApplication,
-    QButtonGroup,
-    QCheckBox,
-    QColor,
-    QComboBox,
-    QFont,
-    QGroupBox,
-    QHBoxLayout,
-    QIcon,
-    QIntValidator,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QPainter,
-    QPen,
-    QPixmap,
-    QImage,
-    QPoint,
-    QPointF,
-    QPushButton,
-    QRadioButton,
-    QRect,
-    QRectF,
-    QScrollArea,
-    QSlider,
-    QSpinBox,
-    Qt,
-    QTimer,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-    #QFontMetrics
-)
+import numpy as np
+try:
+    sys.path.append('../')
+    from dui.cli_utils import sys_arg
+    from dui.gui_utils import get_main_path
+    from dui.outputs_n_viewers.img_view_tools import (
+        panel_data_as_double,
+        build_qimg,
+        draw_palette_label,
+        find_hkl_near,
+        list_arrange,
+        list_p_arrange,
+    )
+    from dui.qt import (
+        QApplication,
+        QButtonGroup,
+        QCheckBox,
+        QColor,
+        QComboBox,
+        QDoubleSpinBox,
+        QFont,
+        QGroupBox,
+        QHBoxLayout,
+        QIcon,
+        QIntValidator,
+        QLabel,
+        QLineEdit,
+        QMenu,
+        QPainter,
+        QPen,
+        QPixmap,
+        QImage,
+        QPoint,
+        QPointF,
+        QPushButton,
+        QRadioButton,
+        QRect,
+        QRectF,
+        QScrollArea,
+        QSlider,
+        QSpinBox,
+        Qt,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+except ImportError:
+    from ..cli_utils import sys_arg
+    from ..gui_utils import get_main_path
+    from .img_view_tools import (
+        panel_data_as_double,
+        build_qimg,
+        draw_palette_label,
+        find_hkl_near,
+        list_arrange,
+        list_p_arrange,
+    )
+    from ..qt import (
+        QApplication,
+        QButtonGroup,
+        QCheckBox,
+        QColor,
+        QComboBox,
+        QDoubleSpinBox,
+        QFont,
+        QGroupBox,
+        QHBoxLayout,
+        QIcon,
+        QIntValidator,
+        QLabel,
+        QLineEdit,
+        QMenu,
+        QPainter,
+        QPen,
+        QPixmap,
+        QImage,
+        QPoint,
+        QPointF,
+        QPushButton,
+        QRadioButton,
+        QRect,
+        QRectF,
+        QScrollArea,
+        QSlider,
+        QSpinBox,
+        Qt,
+        QTimer,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
+
 from six.moves import range
 
 logger = logging.getLogger(__name__)
@@ -140,6 +193,20 @@ def build_mask_item(img_paint_obj):
 
             if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
 
+
+                if x2 > img_paint_obj.img_width:
+                    x2 = float(img_paint_obj.img_width)
+
+                if y2 > img_paint_obj.img_height:
+                    y2 = float(img_paint_obj.img_height)
+
+                if x2 < 0:
+                    x2 = 0.0
+
+                if y2 < 0:
+                    y2 = 0.0
+
+
                 to_append_append = (int(x2), int(y2))
 
                 try:
@@ -161,11 +228,11 @@ def build_mask_item(img_paint_obj):
             return False, None, False
 
     except TypeError:
-        logger.debug("except(build_mask_item) ... TypeError")
+        #print("except(build_mask_item) ... TypeError")
         return False, None, False
 
     except AttributeError:
-        logger.debug(" except(build_mask_item) ... AttributeError")
+        #print(" except(build_mask_item) ... AttributeError")
         return False, None, False
 
 
@@ -183,13 +250,13 @@ class ImgPainter(QWidget):
         self.xb = None
         self.yb = None
         self.np_mask = None
+        self.mask_flex = None
 
         self.closer_ref = None
         self.my_scale = 0.333
         self.img_width = 247
         self.img_height = 253
 
-        # self.show()
         self.resize(self.img_width * self.my_scale, self.img_height * self.my_scale)
 
         self.p_h_svar = self.my_parent.my_scrollable.horizontalScrollBar
@@ -375,9 +442,10 @@ class ImgPainter(QWidget):
         self.img_height = q_img.height()
         self.update()
 
-    def update_my_mask(self, np_mask):
+    def update_my_mask(self, np_mask, mask_flex):
         # print("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
+        self.mask_flex = mask_flex
 
         if np_mask is not None:
             # print("self.np_mask.shape =", self.np_mask.shape)
@@ -758,10 +826,10 @@ class ImgPainter(QWidget):
 
 
 
-class PopMaskMenu(QMenu):
+class PopActionsMenu(QMenu):
 
     def __init__(self, parent=None):
-        super(PopMaskMenu, self).__init__(parent)
+        super(PopActionsMenu, self).__init__(parent)
         self.my_parent = parent
 
         ref_bond_group = QButtonGroup()
@@ -769,7 +837,7 @@ class PopMaskMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
 
-        info_grp = QGroupBox()
+        info_grp = QGroupBox("Mask Tool")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
@@ -780,72 +848,84 @@ class PopMaskMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        my_box = QVBoxLayout()
-        my_box.addWidget(info_grp)
-        my_box.addWidget(self.my_parent.chk_box_B_centr)
+        spot_find_grp = QGroupBox("Spot Finding Steps")
 
-        self.setLayout(my_box)
+        img_spot_find_box = QVBoxLayout()
+
+        gain_layout = QHBoxLayout()
+        gain_layout.addWidget(QLabel("Gain"))
+        gain_layout.addWidget(self.my_parent.gain_spin)
+
+        size_layout = QHBoxLayout()
+        size_layout.addWidget(QLabel("Kernel Size"))
+        size_layout.addWidget(self.my_parent.size_1_spin)
+        size_layout.addWidget(self.my_parent.size_2_spin)
+
+        nsig_b_layout = QHBoxLayout()
+        nsig_b_layout.addWidget(QLabel("Sigma Background"))
+        nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
+
+        nsig_s_layout = QHBoxLayout()
+        nsig_s_layout.addWidget(QLabel("Sigma Strong"))
+        nsig_s_layout.addWidget(self.my_parent.nsig_s_spin)
+
+        global_threshold_spin_layout = QHBoxLayout()
+        global_threshold_spin_layout.addWidget(QLabel("Global Threshold"))
+        global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
+
+        min_local_layout = QHBoxLayout()
+        min_local_layout.addWidget(QLabel("Minimum Local "))
+        min_local_layout.addWidget(self.my_parent.min_count_spin)
+
+        img_spot_find_box.addLayout(nsig_b_layout)
+        img_spot_find_box.addLayout(nsig_s_layout)
+        img_spot_find_box.addLayout(global_threshold_spin_layout)
+        img_spot_find_box.addLayout(min_local_layout)
+        img_spot_find_box.addLayout(gain_layout)
+        img_spot_find_box.addLayout(size_layout)
+
+        left_img_but_box = QVBoxLayout()
+        left_img_but_box.addWidget(self.my_parent.btn_set_image)
+        left_img_but_box.addWidget(self.my_parent.btn_set_mean)
+        left_img_but_box.addWidget(self.my_parent.btn_set_varia)
+        left_img_but_box.addWidget(self.my_parent.btn_set_disp)
+
+        right_img_but_box = QVBoxLayout()
+        right_img_but_box.addWidget(self.my_parent.btn_set_cv_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_val_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_glo_mask)
+        right_img_but_box.addWidget(self.my_parent.btn_set_fin_mask)
+
+        img_but_main_box = QHBoxLayout()
+        img_but_main_box.addLayout(left_img_but_box)
+        img_but_main_box.addLayout(right_img_but_box)
+
+        img_spot_find_box.addLayout(img_but_main_box)
+
+        spot_find_grp.setLayout(img_spot_find_box)
+
+        my_main_box = QHBoxLayout()
+        left_main_box = QVBoxLayout()
+        left_main_box.addWidget(info_grp)
+        left_main_box.addWidget(self.my_parent.chk_box_B_centr)
+        my_main_box.addLayout(left_main_box)
+        my_main_box.addWidget(spot_find_grp)
+
+        self.setLayout(my_main_box)
         self.show()
 
 
-class Test:
-
-    def __init__(self):
-        self.n_json_file_path = "/tmp/dui_run/dui_files/2_datablock.json"
-        datablocks = DataBlockFactory.from_json_file(self.n_json_file_path)
-        # TODO check length of datablock for safety
-        datablock = datablocks[0]
-        my_sweep = datablock.extract_sweeps()[0]
-        self.image = my_sweep.get_raw_data(0)[0].as_double()
-
-    def set_mask(self):
-        experiments = ExperimentListFactory.from_json_file(
-                        self.n_json_file_path, check_format=False
-                    )
-
-        self.imageset = experiments.imagesets()[0]
-        mask_file = self.imageset.external_lookup.mask.filename
-
-        pick_file = open(mask_file, "rb")
-        mask_tup_obj = pickle.load(pick_file)
-        pick_file.close()
-
-        self.mask = mask_tup_obj[0]
-
-    def set_pars(self):
-        self.gain = 0.5
-        self.size = (3, 3)
-        self.nsig_b = 3
-        self.nsig_s = 3
-        self.global_threshold = 0
-        self.min_count = 2
-
-    def test_dispersion_debug(self):
-        from dials.algorithms.image.threshold import DispersionThresholdDebug
-
-        self.gain_map = flex.double(flex.grid(2527, 2463), self.gain)
-
-        debug = DispersionThresholdDebug(
-            self.image,
-            self.mask,
-            self.gain_map,
-            self.size,
-            self.nsig_b,
-            self.nsig_s,
-            self.global_threshold,
-            self.min_count,
-        )
-
-        return debug
-
-
-class PopPaletteMenu(QMenu):
+class PopDisplayMenu(QMenu):
 
     sliders_changed = Signal(int, int)
 
     def __init__(self, parent=None):
-        super(PopPaletteMenu, self).__init__(parent)
+        super(PopDisplayMenu, self).__init__(parent)
         self.my_parent = parent
+
+
+        #group to tune up palette
+
         palette_grp = QGroupBox("Palette Tuning")
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
@@ -887,7 +967,8 @@ class PopPaletteMenu(QMenu):
         palette_layout.addLayout(colour_box)
         palette_grp.setLayout(palette_layout)
 
-        ###############################################################
+
+        # group to control what to see from algorithms
 
         ref_bond_group = QButtonGroup()
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
@@ -903,7 +984,8 @@ class PopPaletteMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        ################################################################
+
+        # group to control how to navigate thru images
 
         mid_top_box = QHBoxLayout()
         mid_top_box.addWidget(QLabel("Image Jump Step"))
@@ -920,12 +1002,16 @@ class PopPaletteMenu(QMenu):
         img_select_group_box = QGroupBox("IMG Navigation")
         img_select_group_box.setLayout(img_select_box)
 
-        main_layout = QVBoxLayout()
-        main_layout.addWidget(palette_grp)
-        main_layout.addWidget(info_grp)
-        main_layout.addWidget(img_select_group_box)
+        main_top_layout = QVBoxLayout()
+        main_top_layout.addWidget(palette_grp)
 
-        self.setLayout(main_layout)
+        bott_layout = QHBoxLayout()
+        bott_layout.addWidget(info_grp)
+        bott_layout.addWidget(img_select_group_box)
+
+        main_top_layout.addLayout(bott_layout)
+
+        self.setLayout(main_top_layout)
         self.show()
 
     def showEvent(self, event):
@@ -966,12 +1052,65 @@ class PopPaletteMenu(QMenu):
         )
 
 
+class ThresholdDebugGenetator:
+    #from dials.algorithms.image.threshold import DispersionThresholdDebug
+
+    def __init__(self, image_in):
+        self.image = image_in
+
+    def set_mask(self, mask_flex_in):
+        self.mask = mask_flex_in
+
+        if self.mask == None:
+            self.mask = flex.bool(flex.grid(self.image.all()), True)
+
+    def set_pars(self,
+            gain,
+            size,
+            nsig_b,
+            nsig_s,
+            global_threshold,
+            min_count
+        ):
+        self.gain = gain
+        self.size = size
+        self.nsig_b = nsig_b
+        self.nsig_s = nsig_s
+        self.global_threshold = global_threshold
+        self.min_count = min_count
+
+    def test_dispersion_debug(self):
+
+        self.gain_map = flex.double(flex.grid(self.image.all()), self.gain)
+
+        #debug = DispersionThresholdDebug(
+
+        debug = DispersionExtendedThresholdDebug(
+            self.image,
+            self.mask,
+            self.gain_map,
+            self.size,
+            self.nsig_b,
+            self.nsig_s,
+            self.global_threshold,
+            self.min_count,
+        )
+
+        return debug
+
+
+def GetDoubleFromBool(bool_in):
+    double_out = bool_in.as_1d().as_double()
+    double_out.reshape(bool_in.accessor())
+    return double_out
+
 
 class MyImgWin(QWidget):
 
     mask_applied = Signal(list)
     bc_applied = Signal(list)
     predic_changed = Signal()
+    new_pars_applied = Signal(list)
 
     def __init__(self, json_file_path=None, pckl_file_path=None):
         super(MyImgWin, self).__init__()
@@ -1043,7 +1182,6 @@ class MyImgWin(QWidget):
         self.rad_but_circ_mask.toggled.connect(self.my_painter.unpop_menu)
         self.rad_but_poly_mask.toggled.connect(self.my_painter.unpop_menu)
 
-
         self.chk_box_mask.stateChanged.connect(self.my_painter.ini_mask)
         self.btn_reset_mask.clicked.connect(self.my_painter.reset_mask_tool)
 
@@ -1054,6 +1192,61 @@ class MyImgWin(QWidget):
         self.chk_box_B_centr = QCheckBox("Set Beam Centre")
         self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
         self.chk_box_B_centr.setChecked(False)
+
+        ##############################################################################
+
+        # previews for spot finding
+        self.btn_set_image    = QPushButton("image")
+
+        self.btn_set_varia    = QPushButton("variance")
+        self.btn_set_mean     = QPushButton("mean")
+        self.btn_set_disp     = QPushButton("dispersion")
+
+        self.btn_set_cv_mask  = QPushButton("sigma_b ")
+        self.btn_set_val_mask = QPushButton("sigma_s")
+        self.btn_set_glo_mask = QPushButton("global")
+        self.btn_set_fin_mask = QPushButton("threshold")
+
+        self.btn_set_varia.clicked.connect(self.set_variance_img)
+
+        self.btn_set_mean.clicked.connect(self.set_mean_img)
+        self.btn_set_disp.clicked.connect(self.set_disp_img)
+        self.btn_set_fin_mask .clicked.connect(self.set_fin_mask_img)
+        self.btn_set_glo_mask .clicked.connect(self.set_glo_mask_img)
+        self.btn_set_cv_mask.clicked.connect(self.set_cv_mask_img)
+        self.btn_set_val_mask .clicked.connect(self.set_val_mask_img)
+
+        self.btn_set_image.clicked.connect(self.set_img_img)
+
+        self.gain_spin = QDoubleSpinBox()
+        self.gain_spin.setValue(1)
+
+        self.size_1_spin = QSpinBox()
+        self.size_1_spin.setValue(3)
+        self.size_1_spin.setMinimum(1)
+        self.size_2_spin = QSpinBox()
+        self.size_2_spin.setValue(3)
+        self.size_2_spin.setMinimum(1)
+
+        self.nsig_b_spin = QDoubleSpinBox()
+        self.nsig_b_spin.setValue(6)
+
+        self.nsig_s_spin = QDoubleSpinBox()
+        self.nsig_s_spin.setValue(3)
+
+        self.global_threshold_spin = QDoubleSpinBox()
+        self.global_threshold_spin.setValue(0)
+
+        self.min_count_spin = QSpinBox()
+        self.min_count_spin.setValue(2)
+        self.min_count_spin.setMinimum(2)
+        #min_count_ <= (2 * size[0] + 1) * (2 * size[1] + 1) && min_count_ > 1
+
+        self.debug_gen_timer = QTimer(self)
+        self.debug_gen_timer.timeout.connect(self.check_debug_pars)
+        self.debug_gen_data = None
+
+        ##########################################################################
 
         # Grouping
         ref_type_group = QButtonGroup()
@@ -1140,12 +1333,12 @@ class MyImgWin(QWidget):
         self.palette_qimg = build_qimg()
 
         palette_menu_but = QPushButton("Display")
-        pop_palette_menu = PopPaletteMenu(self)
+        pop_palette_menu = PopDisplayMenu(self)
         palette_menu_but.setMenu(pop_palette_menu)
         pop_palette_menu.sliders_changed.connect(self.new_sliders_pos)
 
         mask_menu_but = QPushButton("Actions")
-        self.pop_mask_menu = PopMaskMenu(self)
+        self.pop_mask_menu = PopActionsMenu(self)
         mask_menu_but.setMenu(self.pop_mask_menu)
 
         my_code_path = get_main_path()
@@ -1169,6 +1362,10 @@ class MyImgWin(QWidget):
         self.img_num = 1
         self.img_step_val = 1
         self.stack_size = 1
+        # possible values of img2show are:
+        # "origin", "modif" or "mask"
+        self.img2show = "origin"
+
         self.ref2exp = None
         self.my_sweep = None
         self.find_spt_flat_data_lst = [None]
@@ -1228,18 +1425,6 @@ class MyImgWin(QWidget):
         top_hbox.addLayout(top_left_v_box)
         top_hbox.addWidget(type_grp)
 
-        '''
-        self.btn_set_image = QPushButton("Image")
-        self.btn_set_varia = QPushButton("Variance")
-
-        self.btn_set_varia.clicked.connect(self.set_variance_img)
-        self.btn_set_image.clicked.connect(self.set_img_img)
-
-        bot_hbox = QHBoxLayout()
-        bot_hbox.addWidget(self.btn_set_image)
-        bot_hbox.addWidget(self.btn_set_varia)
-        '''
-
 
         my_box = QVBoxLayout()
         my_box.setMargin(0)
@@ -1257,41 +1442,167 @@ class MyImgWin(QWidget):
         self.palette_select.setCurrentIndex(3)
 
     def set_img_img(self):
+        self.draw_img_img()
 
-        print("\n set_img_img  01 \n")
+    def draw_img_img(self):
+        try:
+            #print("img_origin_arr")
+            self.img2show = "origin"
+            self.painter_set_img_pix(self.img_num - 1, 1)
+            self.debug_gen_timer.stop()
+
+        except AttributeError:
+            print("No image loaded yet")
 
     def set_variance_img(self):
+        self.draw_variance_img()
 
-        print("\n set_variance_img  01 \n")
+    def draw_variance_img(self):
+        try:
+            #print("img_varian_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = self.debug_data.variance()
+            self.img2show = "modif_varian"
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
-        test1 = Test()
-        test1.set_mask()
-        test1.set_pars()
+        except AttributeError:
+            print("No image loaded yet")
 
-        self.debug_data = test1.test_dispersion_debug()
+    def set_mean_img(self):
+        self.draw_mean_img()
 
-        self.img_arr = self.debug_data.variance()
+    def draw_mean_img(self):
+        try:
+            #print("img_mean_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = self.debug_data.mean()
+            self.img2show = "modif_mean"
+            self.painter_set_img_pix(self.img_num - 1, 1)
 
-        print("\n set_variance_img  02 \n")
+        except AttributeError:
+            print("No image loaded yet")
 
-        self.my_painter.set_img_pix(
-            q_img=self.current_qimg(
-                self.img_arr, self.palette, self.i_min, self.i_max
-            ),
-            obs_flat_data_in=self.find_spt_flat_data_lst[
-                self.img_num - 1 : self.img_num
-            ],
-            pre_flat_data_in=self.pred_spt_flat_data_lst[
-                self.img_num - 1 : self.img_num
-            ],
-            user_choice_in=(
-                self.rad_but_fnd_hkl.checkState(),
-                self.rad_but_pre_hkl.checkState(),
-            ),
+    def set_disp_img(self):
+        self.draw_disp_img()
+
+    def draw_disp_img(self):
+        try:
+            #print("img_disper_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = self.debug_data.index_of_dispersion()
+            self.img2show = "modif_disper"
+            self.painter_set_img_pix(self.img_num - 1, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
+
+    def set_fin_mask_img(self):
+        self.draw_fin_mask_img()
+
+    def draw_fin_mask_img(self):
+        try:
+            #print("img_final_mask_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.final_mask())
+            self.img2show = "mask_fin"
+            self.painter_set_img_pix(self.img_num - 1, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
+
+    def set_glo_mask_img(self):
+        self.draw_glo_mask_img()
+
+    def draw_glo_mask_img(self):
+        try:
+            #print("img_global_mask_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.global_mask())
+            self.img2show = "mask_glob"
+            self.painter_set_img_pix(self.img_num - 1, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
+
+    def set_cv_mask_img(self):
+        self.draw_cv_mask_img()
+
+    def draw_cv_mask_img(self):
+        try:
+            #print("img_cv_mask_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.cv_mask())
+            self.img2show = "mask_cv"
+            self.painter_set_img_pix(self.img_num - 1, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
+
+    def set_val_mask_img(self):
+        self.draw_val_mask_img()
+
+    def draw_val_mask_img(self):
+        try:
+            #print("img_value_mask_arr")
+            self.get_debug_gen()
+            self.img_varian_arr = GetDoubleFromBool(self.debug_data.value_mask())
+            self.img2show = "mask_val"
+            self.painter_set_img_pix(self.img_num - 1, 1)
+
+        except AttributeError:
+            print("No image loaded yet")
+
+    def get_debug_gen(self):
+        self.debug_gen_data = ThresholdDebugGenetator(image_in = self.img_arr)
+        self.debug_gen_data.set_mask(self.my_painter.mask_flex)
+        self.debug_gen_data.set_pars(
+            gain = self.gain_spin.value(),
+            size = (self.size_1_spin.value(), self.size_2_spin.value()),
+            nsig_b = self.nsig_b_spin.value(),
+            nsig_s = self.nsig_s_spin.value(),
+            global_threshold = self.global_threshold_spin.value(),
+            min_count = self.min_count_spin.value()
         )
 
-        print("\n set_variance_img  02 \n")
+        self.debug_data = self.debug_gen_data.test_dispersion_debug()
 
+        if not self.debug_gen_timer.isActive():
+            self.debug_gen_timer.start(500)
+
+    def check_debug_pars(self, do_anyway = False):
+        if(
+            self.debug_gen_data.gain != self.gain_spin.value() or
+            self.debug_gen_data.size != (self.size_1_spin.value(), self.size_2_spin.value()) or
+            self.debug_gen_data.nsig_b != self.nsig_b_spin.value() or
+            self.debug_gen_data.nsig_s != self.nsig_s_spin.value() or
+            self.debug_gen_data.global_threshold != self.global_threshold_spin.value() or
+            self.debug_gen_data.min_count != self.min_count_spin.value() or
+            do_anyway
+        ):
+
+            if self.img2show == "origin":
+                self.debug_gen_timer.stop()
+
+            if self.img2show == "modif_varian":
+                self.draw_variance_img()
+
+            if self.img2show == "modif_mean":
+                self.draw_mean_img()
+
+            if self.img2show == "modif_disper":
+                self.draw_disp_img()
+
+            if self.img2show == "mask_fin":
+                self.draw_fin_mask_img()
+
+            if self.img2show == "mask_glob":
+                self.draw_glo_mask_img()
+
+            if self.img2show == "mask_cv":
+                self.draw_cv_mask_img()
+
+            if self.img2show == "mask_val":
+                self.draw_val_mask_img()
 
     def ini_contrast(self):
         if not self.contrast_initiated:
@@ -1322,37 +1633,41 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("Unable to calculate mean and adjust contrast")
+                print("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
+        from dxtbx.model.experiment_list import ExperimentListFactory
         if json_file_path is not None:
             try:
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
                 n_json_file_path = os.path.join(cwd_path, json_file_path)
 
-                datablocks = DataBlockFactory.from_json_file(n_json_file_path)
-                # TODO check length of datablock for safety
-                datablock = datablocks[0]
-                self.my_sweep = datablock.extract_sweeps()[0]
+                experiments = ExperimentListFactory.from_json_file(n_json_file_path)
+                self.my_sweep = experiments.imagesets()[0]
+                ###########################################################
+                #self.my_sweep = datablock.extract_sweeps()[0]
                 self.img_select.clear()
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("Failed to load images from  datablock.json")
+                print("Failed to load images from  datablock.json")
 
             try:
-                logger.debug(
+                '''
+                print(
                     "self.my_sweep.get_array_range() = %s",
                     self.my_sweep.get_array_range(),
                 )
+                '''
+
                 n_of_imgs = len(self.my_sweep.indices())
-                logger.debug("n_of_imgs = %s", n_of_imgs)
+                print("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1366,10 +1681,10 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug(
+                print(
                     "Caught unknown exception type %s: %s", type(e).__name__, e
                 )
-                logger.debug("Failed to set up IMG control dialog")
+                print("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
         self.ini_contrast()
@@ -1383,10 +1698,6 @@ class MyImgWin(QWidget):
         sc_width = float(self.my_scrollable.size().width())
         sc_height = float(self.my_scrollable.size().height())
 
-        print("\n pt_width  :",pt_width )
-        print("pt_height :",pt_height)
-        print("sc_width  :",sc_width )
-        print("sc_height :",sc_height, "\n")
 
         if pt_width == 0 or pt_height == 0:
             self.my_painter.scale2fact()
@@ -1407,13 +1718,12 @@ class MyImgWin(QWidget):
         '''
 
 
-
     def set_reflection_table(self, pckl_file_path):
         if pckl_file_path[0] is not None:
             logger.debug("\npickle file (found) = %s", pckl_file_path[0])
             try:
 
-                table = flex.reflection_table.from_pickle(pckl_file_path[0])
+                table = flex.reflection_table.from_file(pckl_file_path[0])
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
@@ -1438,7 +1748,7 @@ class MyImgWin(QWidget):
                     )
 
                 else:
-                    logger.debug("empty IMG lst")
+                    print("empty IMG lst")
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
@@ -1451,7 +1761,7 @@ class MyImgWin(QWidget):
 
                 print("pckl_file_path[1]=", pckl_file_path[1])
 
-                table = flex.reflection_table.from_pickle(pckl_file_path[1])
+                table = flex.reflection_table.from_file(pckl_file_path[1])
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
@@ -1521,11 +1831,20 @@ class MyImgWin(QWidget):
     def zoom_out(self):
         self.my_painter.scale2fact(0.8)
 
-    def update_beam_centre(self, xb, yb, n_pan_xb_yb):
-        self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
+    def update_painter_info(self, all_data):
 
-    def update_mask(self, np_mask):
-        self.my_painter.update_my_mask(np_mask)
+        try:
+            xb = all_data.xb / all_data.x_px_size
+            yb = all_data.yb / all_data.y_px_size
+            n_pan_xb_yb = all_data.n_pan_xb_yb
+
+        except TypeError:
+            xb, yb, n_pan_xb_yb = None, None, None
+            print("\n xb, yb, n_pan_xb_yb = None, None, None \n")
+
+        self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
+        self.my_painter.update_my_mask(all_data.np_mask, all_data.mask_flex)
+
 
     def update_exp(self, reference):
         self.ref2exp = reference
@@ -1558,7 +1877,6 @@ class MyImgWin(QWidget):
         self.info_label.setText(new_label_txt)
 
     def emit_predic_changed(self):
-        print("\n ______________________________emit_predic_changed \n")
         self.predic_changed.emit()
         self.set_img()
 
@@ -1597,20 +1915,67 @@ class MyImgWin(QWidget):
                         * loc_scale
                     )
 
-            if self.find_spt_flat_data_lst == [
-                None
-            ] and self.pred_spt_flat_data_lst == [None]:
+            if self.img2show != "origin":
+                self.check_debug_pars(do_anyway = True)
 
+            self.painter_set_img_pix(img_pos, loc_stk_siz)
+
+        self.palette_label.setPixmap(
+            QPixmap(
+                self.palette_qimg(
+                    draw_palette_label(self.i_min, self.i_max),
+                    self.palette,
+                    self.i_min,
+                    self.i_max,
+                )
+            )
+        )
+
+    def painter_set_img_pix(self, img_pos, loc_stk_siz):
+        if self.img2show[0:4] == "mask":
+            tmp_min = -0.5
+            tmp_max = 1.5
+
+        else:
+            tmp_min = self.i_min
+            tmp_max = self.i_max
+
+        if self.img2show != "origin":
+            self.new_pars_applied.emit([
+                self.debug_gen_data.gain             ,
+                self.debug_gen_data.size             ,
+                self.debug_gen_data.nsig_b           ,
+                self.debug_gen_data.nsig_s           ,
+                self.debug_gen_data.global_threshold ,
+                self.debug_gen_data.min_count
+            ])
+
+
+        if(
+            self.find_spt_flat_data_lst == [None]
+            and self.pred_spt_flat_data_lst == [None]
+        ):
+
+            if self.img2show == "origin":
                 self.my_painter.set_img_pix(
                     self.current_qimg(
-                        self.img_arr, self.palette, self.i_min, self.i_max
+                        self.img_arr, self.palette, tmp_min, tmp_max
                     )
                 )
 
             else:
                 self.my_painter.set_img_pix(
+                    self.current_qimg(
+                        self.img_varian_arr, self.palette, tmp_min, tmp_max
+                    )
+                )
+
+        else:
+
+            if self.img2show == "origin":
+                self.my_painter.set_img_pix(
                     q_img=self.current_qimg(
-                        self.img_arr, self.palette, self.i_min, self.i_max
+                        self.img_arr, self.palette, tmp_min, tmp_max
                     ),
                     obs_flat_data_in=self.find_spt_flat_data_lst[
                         img_pos : img_pos + loc_stk_siz
@@ -1624,16 +1989,23 @@ class MyImgWin(QWidget):
                     ),
                 )
 
-        self.palette_label.setPixmap(
-            QPixmap(
-                self.palette_qimg(
-                    draw_palette_label(self.i_min, self.i_max),
-                    self.palette,
-                    self.i_min,
-                    self.i_max,
+            else:
+                self.my_painter.set_img_pix(
+                    q_img=self.current_qimg(
+                        self.img_varian_arr, self.palette, tmp_min, tmp_max
+                    ),
+                    obs_flat_data_in=self.find_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    pre_flat_data_in=self.pred_spt_flat_data_lst[
+                        img_pos : img_pos + loc_stk_siz
+                    ],
+                    user_choice_in=(
+                        self.rad_but_fnd_hkl.checkState(),
+                        self.rad_but_pre_hkl.checkState(),
+                    ),
                 )
-            )
-        )
+
 
         logger.debug("\n self.i_min = %s", self.i_min)
         logger.debug(" self.i_max = %s %s", self.i_max, "\n")
@@ -1741,6 +2113,7 @@ class MyImgWin(QWidget):
         self.set_img()
 
     def img_changed_by_user(self, value):
+        #self.img2show = "origin"
         self.img_num = value
         if self.img_num > self.img_select.maximum():
             self.img_num = self.img_select.maximum()
@@ -1770,5 +2143,6 @@ if __name__ == "__main__":
     logger.debug("pckl_file_path = %s", pckl_file_path)
 
     diag = MyImgWin(img_path, [pckl_file_path, None])
+    diag.show()
     sys.exit(app.exec_())
     app.exec_()

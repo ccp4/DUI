@@ -195,20 +195,25 @@ def heather_text_from_lin(lin_num, j_path):
     lin_num_str = str(lin_num)
     my_file_path = dir_path + lin_num_str + "_refine_bravais_settings.log"
 
+    logger.debug("my_file_path: ", my_file_path)
+
     myfile = open(my_file_path, "r")
     all_lines = myfile.readlines()
     myfile.close()
 
+    logger.debug("len(all_lines):", len(all_lines))
+
     multi_lin_txt = ""
     n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
+        logger.debug("pos1, single_lin1:", pos1, single_lin1)
         if str(single_lin1[0:19]) == "Chiral space groups":
             start_block = pos1
             logger.debug("start_block = %s", start_block)
 
             for pos2, single_lin2 in enumerate(all_lines[start_block:]):
                 n_of_lines += 1
-                if str(single_lin2[0:19]) == "-------------------":
+                if str(single_lin2[1:5]) == "----":
                     end_block = pos2 + start_block
                     logger.debug("end_block = %s", end_block)
                     break
@@ -219,8 +224,6 @@ def heather_text_from_lin(lin_num, j_path):
 
     for single_lin in all_lines[start_block:end_block]:
         multi_lin_txt += single_lin
-
-    logger.debug("\n\n\n here 2 \n")
 
     return multi_lin_txt, n_of_lines
 
@@ -326,25 +329,27 @@ class ReindexTable(QTableWidget):
                 item.setFlags(Qt.ItemIsEnabled)
                 if col_cont == " Y":
                     item.setBackground(Qt.green)
-                    item.setTextColor(Qt.black)
+                    item.setForeground(Qt.black)
+
                     self.rec_col = col + 1
 
                 elif col_cont == " N":
                     item.setBackground(Qt.red)
-                    item.setTextColor(Qt.black)
+                    item.setForeground(Qt.black)
 
                 else:
                     if row == selected_pos:
                         item.setBackground(Qt.blue)
-                        item.setTextColor(Qt.yellow)
+                        item.setForeground(Qt.yellow)
 
                     else:
                         if float(row) / 2.0 == int(float(row) / 2.0):
                             item.setBackground(QColor(50, 50, 50, 50))
+
                         else:
                             item.setBackground(Qt.white)
 
-                        item.setTextColor(Qt.black)
+                        item.setForeground(Qt.black)
 
                 item.setFont(
                     QFont("Monospace", self.sys_font_point_size)
@@ -442,10 +447,11 @@ class MainWindow(QMainWindow):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
         self.my_pop.set_ref(
-            in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
+            in_json_path="/tmp/dui2run/dui_files/lin_4_bravais_summary.json"
              , lin_num = 4
         )
-        #self.my_pop.set_ref(in_json_path = str(sys.argv[1]) )
+        #in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
+
 
     def opt_picked(self, opt_num):
         logger.debug("\n from dynamic_reindex_gui.py MainWindow")

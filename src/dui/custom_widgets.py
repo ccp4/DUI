@@ -29,22 +29,27 @@ import sys
 import libtbx.phil
 
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
-from dials.command_line.index import phil_scope as phil_scope_index
+from dials.command_line.index import working_phil as phil_scope_index
 from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )
-from dials.command_line.refine import phil_scope as phil_scope_refine
+
+#from dials.command_line.refine import phil_scope as phil_scope_refine
+from dials.command_line.refine import working_phil as phil_scope_refine
+
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
 # still runs. This isn't generally robust but solves this specifically
 try:
     from dials.command_line.symmetry import phil_scope as phil_scope_symetry
+
 except ImportError:
     phil_scope_symetry = libtbx.phil.parse("")
 
 try:
     from dials.command_line.scale import phil_scope as phil_scope_scale
+
 except ImportError:
     phil_scope_scale = libtbx.phil.parse("")
 
@@ -387,6 +392,7 @@ class ExportPage(QWidget):
             if found_scale is True:
                 self.simple_lin.setText("scaled.mtz")
                 self.check_scale.setChecked(True)
+
         self.check_repeated_file()
 
     def reset_par(self):
@@ -531,6 +537,7 @@ class ImportPage(QWidget):
         self.put_str_lin()
 
     def open_files(self):
+
         lst_file_path = QFileDialog.getOpenFileNames(
             self, "Open File(s)", self.defa_dir, "All Files (*.*)"
         )
@@ -781,14 +788,14 @@ class ParamMainWidget(QWidget):
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
 
-                            except ValueError:
+                            except:
                                 try:
                                     str_val = str(str_value)
                                     widg.setText(str_val)
                                     print("widg.local_path = %s", widg.local_path)
 
-                                except AttributeError:
-                                    pass
+                                except BaseException as ee:
+                                    print("ee = ", e)
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
@@ -970,14 +977,14 @@ class ParamWidget(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    ex = ParamWidget("import")
+    # ex = ParamWidget("import")
     # ex = ParamWidget("find_spots")
     # ex = ParamWidget("index")
     # ex = ParamWidget("refine")
     # ex = ParamWidget("integrate")
     # ex = ParamWidget("symmetry")
-    # ex = ParamWidget("scale")
-    # ex = ParamWidget("export")
+    # ex = ParamWidget("scale")  # someting hapen with the Advanced parameters
+    ex = ParamWidget("export")
 
     ex.show()
 

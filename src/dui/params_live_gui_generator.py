@@ -37,6 +37,7 @@ except ImportError:
     pass
 
 from dials.command_line.find_spots import phil_scope
+
 try:
     from qt import (
         QApplication,
@@ -67,8 +68,8 @@ except ImportError:
         Signal,
     )
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class ScopeData(object):
     """
@@ -143,7 +144,6 @@ class PhilWidget(QWidget):
         self.phil_list2gui(lst_phil_obj)
 
         self.setLayout(self.bg_box)
-        # self.show()
 
     def user_searching(self, value):
 
@@ -214,78 +214,40 @@ class PhilWidget(QWidget):
 
                 self.lst_label_widg.append(tmp_label)
 
+
                 if (
-                    obj.type.phil_type == "float"
-                    or obj.type.phil_type == "int"
-                    or obj.type.phil_type == "bool"
+                    obj.type.phil_type == "bool"
                     or obj.type.phil_type == "choice"
                 ):
 
-                    if obj.type.phil_type == "float" or obj.type.phil_type == "int":
-
-                        if obj.type.phil_type == "float":
-                            par_min = 0.0
-                            par_max = 5000.0
-                            tmp_widg = QDoubleSpinBox()
-                            tmp_widg.setDecimals(3)
-
-                        elif obj.type.phil_type == "int":
-                            par_min = 0
-                            par_max = 5000
-                            tmp_widg = QSpinBox()
-
-                        if obj.type.phil_type == "int" or obj.type.phil_type == "float":
-                            tmp_widg.str_defl = None
-                            tmp_widg.setRange(par_min, par_max)
-                            if (
-                                str(obj.extract()) == "Auto"
-                                or str(obj.extract()) == "None"
-                            ):
-                                par_def = str(obj.extract())
-                                tmp_widg.setSpecialValueText(par_def)
-                                tmp_widg.str_defl = par_def
-
-                            else:
-                                par_def = obj.extract()
-                                if (
-                                    float(par_def) != 0.0
-                                    and obj.type.phil_type == "float"
-                                ):
-                                    par_max = abs(par_def * 100.0)
-                                    tmp_widg.setSingleStep(abs(par_def / 10))
-
-                                tmp_widg.setValue(par_def)
-
-                            tmp_str += "                          " + str(obj.extract())
-
-                        tmp_widg.tmp_lst = None
-
-                        if obj.type.phil_type == "int" or obj.type.phil_type == "float":
-                            tmp_widg.valueChanged.connect(self.spnbox_changed)
-
-                        else:
-                            tmp_widg.textChanged.connect(self.spnbox_changed)
-
-                    elif obj.type.phil_type == "bool":
+                    if obj.type.phil_type == "bool":
 
                         tmp_widg = QComboBox()
-
                         tmp_widg.tmp_lst = []
                         tmp_widg.tmp_lst.append("True")
                         tmp_widg.tmp_lst.append("False")
+                        tmp_widg.tmp_lst.append("Auto")
 
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
 
-                        if str(obj.extract()) == "False":
+                        if str(obj.extract()) == "True":
+                            tmp_widg.setCurrentIndex(0)
+                            tmp_str += "                          True"
+
+                        elif str(obj.extract()) == "False":
                             tmp_widg.setCurrentIndex(1)
                             tmp_str += "                          False"
 
-                        elif str(obj.extract()) == "True":
-                            tmp_str += "                          True"
+                        elif str(obj.extract()) == "Auto":
+                            tmp_widg.setCurrentIndex(2)
+                            tmp_str += "                          Auto"
 
                         else:
                             tmp_str = None
+
+                        #print("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
+                        #print("tmp_str =", tmp_str)
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -409,7 +371,10 @@ class TstTmpWidget(QWidget):
 
 
 if __name__ == "__main__":
+    from dials.command_line.refine import working_phil as phil_scope_refine
+    #from dials.command_line.find_spots import phil_scope
     app = QApplication(sys.argv)
-    ex = TstTmpWidget(phil_scope)
+    ex = TstTmpWidget(phil_scope_refine)
     ex.show()
     sys.exit(app.exec_())
+    print("running ...")

@@ -31,47 +31,93 @@ import time
 
 from six import raise_from
 
-from ._version import __version__
-from .dynamic_reindex_gui import MyReindexOpts
-from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
-from .gui_utils import (
-    CliOutView,
-    Text_w_Bar,
-    OuterCaller,
-    update_info,
-    update_pbar_msg,
-    kill_w_child,
-    TreeNavWidget,
-    ACTIONS,
-    MyActionButton,
-    try_find_prev_mask_pickle,
-    try_move_last_info,
-    get_main_path,
-)
-from .m_idials import Runner
-from .outputs_n_viewers.web_page_view import WebTab
-from .outputs_n_viewers.img_view_tools import ProgBarBox
-from .outputs_n_viewers.img_viewer import MyImgWin
-from .outputs_gui import InfoWidget
-from .qt import (
-    QHBoxLayout,
-    QIcon,
-    QMainWindow,
-    QModelIndex,
-    QPushButton,
-    QScrollArea,
-    QSize,
-    QSizePolicy,
-    QSplitter,
-    QStackedWidget,
-    Qt,
-    QTabWidget,
-    QThread,
-    QVBoxLayout,
-    QWidget,
-    Signal,
-)
+try:
+    from _version import __version__
+    from dynamic_reindex_gui import MyReindexOpts
+    from cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
+    from custom_widgets import ParamWidget, MaskPage, BeamCentrPage
+    from gui_utils import (
+        CliOutView,
+        Text_w_Bar,
+        OuterCaller,
+        update_info,
+        update_pbar_msg,
+        kill_w_child,
+        TreeNavWidget,
+        ACTIONS,
+        MyActionButton,
+        try_find_prev_mask_pickle,
+        try_move_last_info,
+        get_main_path,
+    )
+    from m_idials import Runner
+    from outputs_n_viewers.web_page_view import WebTab
+    from outputs_n_viewers.img_view_tools import ProgBarBox
+    from outputs_n_viewers.img_viewer import MyImgWin
+    from outputs_gui import InfoWidget
+    from qt import (
+        QHBoxLayout,
+        QIcon,
+        QMainWindow,
+        QModelIndex,
+        QPushButton,
+        QScrollArea,
+        QSize,
+        QSizePolicy,
+        QSplitter,
+        QStackedWidget,
+        Qt,
+        QTabWidget,
+        QThread,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
+
+except ImportError:
+    from ._version import __version__
+    from .dynamic_reindex_gui import MyReindexOpts
+    from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
+    from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
+    from .gui_utils import (
+        CliOutView,
+        Text_w_Bar,
+        OuterCaller,
+        update_info,
+        update_pbar_msg,
+        kill_w_child,
+        TreeNavWidget,
+        ACTIONS,
+        MyActionButton,
+        try_find_prev_mask_pickle,
+        try_move_last_info,
+        get_main_path,
+    )
+    from .m_idials import Runner
+    from .outputs_n_viewers.web_page_view import WebTab
+    from .outputs_n_viewers.img_view_tools import ProgBarBox
+    from .outputs_n_viewers.img_viewer import MyImgWin
+    from .outputs_gui import InfoWidget
+    from .qt import (
+        QHBoxLayout,
+        QIcon,
+        QMainWindow,
+        QModelIndex,
+        QPushButton,
+        QScrollArea,
+        QSize,
+        QSizePolicy,
+        QSplitter,
+        QStackedWidget,
+        Qt,
+        QTabWidget,
+        QThread,
+        QVBoxLayout,
+        QWidget,
+        Signal,
+    )
+
 
 logger = logging.getLogger(__name__)
 
@@ -175,7 +221,7 @@ class ControlWidget(QWidget):
         super(ControlWidget, self).__init__()
 
         top_box = QVBoxLayout()
-        top_box.setMargin(0)
+        #top_box.setMargin(0)
         top_box.setContentsMargins(0, 0, 0, 0)
 
         self.step_param_widg = QStackedWidget()
@@ -503,10 +549,16 @@ class MainWidget(QMainWindow):
         self.img_view.mask_applied.connect(self.pop_mask_list)
         self.img_view.predic_changed.connect(self.tab_changed)
         self.img_view.bc_applied.connect(self.pop_b_centr_coord)
+
+        self.img_view.new_pars_applied.connect(self.pass_parmams)
+
+        #self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
+
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
         self.centre_par_widget.click_mask.connect(self.img_view.chec_my_mask)
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
+
 
         v_info_splitter = QSplitter()
         v_info_splitter.setOrientation(Qt.Vertical)
@@ -530,7 +582,6 @@ class MainWidget(QMainWindow):
         self.custom_thread.busy_box_on.connect(self.pop_busy_box)
         self.custom_thread.busy_box_off.connect(self.close_busy_box)
 
-        self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -662,38 +713,52 @@ class MainWidget(QMainWindow):
     def pass_parmams(self, cmd_lst):
         """(We've been passed a parameter by the external tool signal)"""
 
-        logger.debug(
-            "\n_________________________________________cmd_lst(pass_parmams) = %s %s",
-            cmd_lst,
-            "\n",
-        )
-
         current_parameter_widget = (
             self.centre_par_widget.step_param_widg.currentWidget()
         )
         action_name = current_parameter_widget.my_widget.command_lst[0][0]
+
+        to_remove = '''
         if (
             action_name in ["find_spots", "integrate"]
             and self.idials_runner.current_node.success is None
         ):
-            # As a quick hack to get things working, look for 'lookup.mask'
-            # and if preset add a prefix phil-scope to it
-            lookup_scope_name = {
-                "find_spots": "spotfinder",
-                "integrate": "integration",
-            }[action_name]
-            full_command = [action_name] + [
-                lookup_scope_name + "." + x if x.startswith("lookup.mask=") else x
-                for x in cmd_lst
+        '''
+
+        if (
+            action_name == "find_spots"
+            and self.idials_runner.current_node.success is None
+        ):
+
+            print("\n command = find_spots \n")
+
+            gain = cmd_lst[0]
+            size = cmd_lst[1]
+            nsig_b = cmd_lst[2]
+            nsig_s = cmd_lst[3]
+            global_threshold = cmd_lst[4]
+            min_count = cmd_lst[5]
+
+            full_command = [
+            'find_spots',
+            "spotfinder.threshold.dispersion.gain=" + str(gain),
+            "spotfinder.threshold.dispersion.kernel_size=" + str(size[0]) + "," + str(size[1]),
+            "spotfinder.threshold.dispersion.sigma_background=" + str(nsig_b),
+            "spotfinder.threshold.dispersion.sigma_strong=" + str(nsig_s),
+            "spotfinder.threshold.dispersion.min_local=" + str(min_count),
+            "spotfinder.threshold.dispersion.global_threshold=" + str(global_threshold)
             ]
-            logger.debug("\n full_cmd_lst = %s", full_command)
+
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
+
         else:
-            logger.debug("No need to feed back params")
-            logger.debug(
+            print("No need to feed back params")
+            '''
+            print(
                 "my_widget_now.my_widget.command_lst = %s",
                 current_parameter_widget.my_widget.command_lst,
             )
+            '''
 
     def update_low_level_command_lst(self, command_lst):
         self.idials_runner.current_node.ll_command_lst = command_lst
@@ -749,6 +814,9 @@ class MainWidget(QMainWindow):
             "...currentWidget(ref) = %s",
             self.centre_par_widget.step_param_widg.currentWidget(),
         )
+
+        self.img_view.draw_img_img()
+
         cmd_tmp = (
             self.centre_par_widget.step_param_widg.currentWidget().my_widget.command_lst
         )
@@ -851,6 +919,24 @@ class MainWidget(QMainWindow):
             "Root": ["import"],
             "import": ["find_spots"],
             "find_spots": ["index"],
+            "index": ["refine_bravais_settings", "refine", "integrate", "export"],
+            "refine_bravais_settings": [None],
+            "reindex": ["refine", "integrate", "export", "index"],
+            "refine": ["refine_bravais_settings", "refine", "integrate", "index", "export"],
+            "integrate": ["symmetry", "scale", "export", "index", "export"],
+            "symmetry": ["refine_bravais_settings", "scale", "export"],
+            "scale": ["refine_bravais_settings", "symmetry", "export"],
+            "export": [None],
+            "generate_mask": ["find_spots"],
+            "modify_geometry":["find_spots"],
+            "None": [None],
+        }
+
+        more_conservative = '''
+        cmd_connects = {
+            "Root": ["import"],
+            "import": ["find_spots"],
+            "find_spots": ["index"],
             "index": ["refine_bravais_settings", "refine", "integrate"],
             "refine_bravais_settings": [None],
             "reindex": ["refine", "integrate"],
@@ -863,31 +949,16 @@ class MainWidget(QMainWindow):
             "modify_geometry":["find_spots"],
             "None": [None],
         }
-
-        to_consider = '''
-            "Root": ["import"],
-            "import": ["find_spots"],
-            "find_spots": ["index"],
-            "index": ["refine_bravais_settings", "refine", "integrate"],
-            "refine_bravais_settings": [None],
-            "reindex": ["refine", "integrate", "export"],
-            "refine": ["refine_bravais_settings", "refine", "integrate"],
-            "integrate": ["symmetry", "scale", "export"],
-            "symmetry": ["refine_bravais_settings", "scale", "export"],
-            "scale": ["refine_bravais_settings", "symmetry"],
-            "export": [None],
-            "generate_mask": ["find_spots"],
-            "modify_geometry":["find_spots"],
-            "None": [None],
         '''
-
 
         lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
+        print("\n_________________________ check_reindex_pop 01 \n")
         if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
+            print("\n_________________________ check_reindex_pop 02 \n")
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -898,11 +969,11 @@ class MainWidget(QMainWindow):
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
-                logger.debug("str(my_err) = %s", str(my_err))
-                logger.debug("my_err.__doc__ = %s", my_err.__doc__)
-                logger.debug("my_err.message = %s", my_err.message)
+                print("str(my_err) = %s", str(my_err))
+                print("my_err.__doc__ = %s", my_err.__doc__)
+                print("my_err.message = %s", my_err.message)
                 if str(my_err)[0:36] == "[Errno 2] No such file or directory:":
-                    logger.debug("\n interrupted refine_bravais_settings \n")
+                    print("\n interrupted refine_bravais_settings \n")
 
             # TODO find an elegant way to interrupt and remove nodes
 

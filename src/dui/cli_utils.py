@@ -206,64 +206,43 @@ def build_command_lst(node_obj, cmd_lst):
     run_path = sys_arg.directory + os.sep + "dui_files"
 
     if cmd_lst_ini == "import":
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + node_obj.json_file_out
+        # dials.import /scratch/dui_test/only_9_img/X4_wide_M1S4_2_*.cbf
+        # output.experiments=1_experiment.expt output.log=1_import.log
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
+        output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
+
         #####################################################################
         # TODO make sure import without arguments does NOT run
         #####################################################################
 
     elif cmd_lst_ini == "find_spots":
-        json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
-        lst_inner.append(input_str)
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + node_obj.json_file_out
-        lst_inner.append(output_str)
-        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
-        output_str = "output.reflections=" + node_obj.refl_pickle_file_out
-        lst_inner.append(output_str)
-        node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
-        output_str = "output.log=" + node_obj.log_file_out
-        lst_inner.append(output_str)
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
 
-    elif cmd_lst_ini == "index":
-        json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
-        lst_inner.append(input_str)
+        # dials.find_spots spotfinder.mp.nproc=8 input.experiments=1_experiment.expt
+        # output.experiments=2_experiment.expt output.reflections=2_reflections.refl
+        # output.log=2_find_spots.log
 
-        pickle_file_in = node_obj.prev_step.refl_pickle_file_out
-        input_str = "input.reflections=" + pickle_file_in
+        json_file_in = node_obj.prev_step.json_file_out
+        input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
-        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
         output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
-        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.refl"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         lst_inner.append(output_str)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_inner.append(output_str)
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
         lst_inner.append(output_str)
 
     elif cmd_lst_ini == "refine_bravais_settings":
+        # dials.refine_bravais_settings input.experiments=3_experiments.expt
+        # input.reflections=3_reflections.refl output.prefix=lin_4_ output.log=4_refine_bravais_settings.log
+
+
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
@@ -281,12 +260,6 @@ def build_command_lst(node_obj, cmd_lst):
 
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_inner.append(output_str)
-
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
         lst_inner.append(output_str)
 
     elif cmd_lst_ini == "reindex":
@@ -324,15 +297,16 @@ def build_command_lst(node_obj, cmd_lst):
         lst_inner.append(input_str)
 
         node_obj.json_file_out = (
-            node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".json"
+            node_obj.prev_step.prefix_out + "bravais_setting_" + str(sol_num) + ".expt"
         )
 
-        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.refl"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         lst_inner.append(output_str)
 
     elif (
-        cmd_lst_ini == "refine"
+        cmd_lst_ini == "index"
+        or cmd_lst_ini == "refine"
         or cmd_lst_ini == "integrate"
         or cmd_lst_ini == "scale"
         or cmd_lst_ini == "symmetry"
@@ -344,10 +318,10 @@ def build_command_lst(node_obj, cmd_lst):
         pickle_file_in = node_obj.prev_step.refl_pickle_file_out
         input_str = "input.reflections=" + pickle_file_in
         lst_inner.append(input_str)
-        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.json"
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
         output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
-        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.pickle"
+        node_obj.refl_pickle_file_out = str(node_obj.lin_num) + "_reflections.refl"
         output_str = "output.reflections=" + node_obj.refl_pickle_file_out
         lst_inner.append(output_str)
 
@@ -356,18 +330,6 @@ def build_command_lst(node_obj, cmd_lst):
 
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
-        lst_inner.append(output_str)
-
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-
-        if cmd_lst_ini == "scale":
-            output_str = "output.debug.log=" + node_obj.debug_log_file_out
-
-        else:
-            output_str = "output.debug_log=" + node_obj.debug_log_file_out
-
         lst_inner.append(output_str)
 
         if cmd_lst_ini == "symmetry":
@@ -384,40 +346,35 @@ def build_command_lst(node_obj, cmd_lst):
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
         output_str = "output.log=" + node_obj.log_file_out
         lst_inner.append(output_str)
-        node_obj.debug_log_file_out = (
-            str(node_obj.lin_num) + "_" + cmd_lst_ini + ".debug.log"
-        )
-        output_str = "output.debug_log=" + node_obj.debug_log_file_out
-        lst_inner.append(output_str)
 
     elif cmd_lst_ini == "generate_mask":
         lst_inner1 = list(lst_inner)
         json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
+        input_str = "input.experiments=" + json_file_in
         lst_inner1.append(input_str)
 
         # TODO add this info to node_obj
         mask_file = str(node_obj.lin_num) + "_mask.pickle"
         lst_inner1.append("output.mask=" + mask_file)
 
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
 
         lst_inner = [
             "dials.apply_mask",
-            "input.datablock=" + json_file_in,
+            "input.experiments=" + json_file_in,
             "input.mask=" + mask_file,
-            "output.datablock=" + node_obj.json_file_out,
+            "output.experiments=" + node_obj.json_file_out,
         ]
         cmd_lst_to_run.append(lst_inner1)
 
     elif cmd_lst_ini == "modify_geometry":
         lst_inner1 = list(lst_inner)
         json_file_in = node_obj.prev_step.json_file_out
-        input_str = "input.datablock=" + json_file_in
+        input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
 
-        node_obj.json_file_out = str(node_obj.lin_num) + "_datablock.json"
-        output_str = "output.datablock=" + node_obj.json_file_out
+        node_obj.json_file_out = str(node_obj.lin_num) + "_experiments.expt"
+        output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
 
 
@@ -485,7 +442,7 @@ def generate_predict(node_obj):
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     if node_obj.ll_command_lst[0][0] in node_obj.dials_com_lst[2:-1]:
         try:
-            print("running predictions START")
+            logger.debug("running predictions START")
             current_lin = node_obj.lin_num
             exp_inp = node_obj.json_file_out
             pre_fil = str(current_lin) + "_predict.pickle"
@@ -499,18 +456,18 @@ def generate_predict(node_obj):
                 gen_pred_proc.wait()
 
                 if os.path.exists(tst_path):
-                    #print("\ngenerated predictions at:  %s %s", tst_path, "\n")
+                    logger.debug("\ngenerated predictions at:  %s %s", tst_path, "\n")
                     pre_out = pre_fil
 
                 else:
-                    #print("\n  predictions NOT generated")
+                    logger.debug("\n  predictions NOT generated")
                     pre_out = None
 
             else:
-                #print("\n predictions ALREADY generated")
+                logger.debug("\n predictions ALREADY generated")
                 pre_out = pre_fil
 
-            print("running predictions END")
+            logger.debug("running predictions END")
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
@@ -537,7 +494,7 @@ def generate_report(node_obj):
 
         tst_path = os.path.join(cwd_path, htm_fil)
         if  not(os.path.exists(tst_path)):
-            #print("\n ___________________________ tst_path =", tst_path, "\n")
+            logger.debug("\n ___________________________ tst_path =", tst_path, "\n")
             if node_obj.ll_command_lst[0][0] == "find_spots":
                 rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
 
@@ -562,7 +519,7 @@ def generate_report(node_obj):
                 gen_rep_proc.wait()
 
                 rep_out = htm_fil
-                #print("generated report at:  %s", rep_out)
+                logger.debug("generated report at:  %s", rep_out)
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
@@ -574,11 +531,11 @@ def generate_report(node_obj):
             logger.debug("running report END")
 
         else:
-            #print("report ALREADY generated")
+            logger.debug("report ALREADY generated")
             rep_out = htm_fil
 
     else:
-        print("NO report needed for this step")
+        logger.debug("NO report needed for this step")
         rep_out = None
 
     return rep_out
@@ -648,7 +605,7 @@ class DialsCommand(object):
                 else:
                     local_success = False
                     # TODO handle error outputs
-                    print("\n _____________ Step _________ Failed _______________ \n")
+                    print("\n __________________ Failed ______________________ \n")
                     try:
                         ref_to_class.emit_fail_signal()
                         return False

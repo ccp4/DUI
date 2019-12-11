@@ -32,7 +32,8 @@ import sys
 
 from six.moves import input
 
-if __name__ == "__main__" and __package__ is None:
+#if __name__ == "__main__" and __package__ is None:
+try:
     from os import path
 
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
@@ -47,7 +48,8 @@ if __name__ == "__main__" and __package__ is None:
         generate_predict,
     )
 
-else:
+except ImportError:
+    #else:
     from .cli_utils import (
         TreeShow,
         DialsCommand,
@@ -87,7 +89,6 @@ class CommandNode(object):
         self.json_file_out = None
         self.phil_file_out = None
         self.log_file_out = None
-        self.debug_log_file_out = None
         self.report_out = None
         self.predict_pickle_out = None
         self.err_file_out = None
@@ -371,6 +372,7 @@ class Runner(object):
         try:
             ref_pkl = tmp_cur.refl_pickle_file_out
             pre_pkl = tmp_cur.predict_pickle_out
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.

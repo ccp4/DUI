@@ -28,7 +28,11 @@ import logging
 import os
 import sys
 
-from .cli_utils import sys_arg
+try:
+    from cli_utils import sys_arg
+
+except ImportError:
+    from .cli_utils import sys_arg
 
 logger = logging.getLogger(__name__)
 
@@ -83,9 +87,10 @@ def main():
     logger.info("sys_arg.directory=%s", sys_arg.directory)
 
     # Inline import so that we can load this after logging setup
-    from .qt import QApplication, QStyleFactory
-    from .m_idials_gui import MainWidget, DUIDataLoadingError
-    from .gui_utils import loading_error_dialog
+
+    from dui.qt import QApplication, QStyleFactory
+    from dui.m_idials_gui import MainWidget, DUIDataLoadingError
+    from dui.gui_utils import loading_error_dialog
 
     app = QApplication(sys.argv)
     logger.debug(

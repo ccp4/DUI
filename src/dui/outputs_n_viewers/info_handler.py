@@ -79,6 +79,7 @@ class InfoData(object):
         self.ref2exp = None
 
         self.np_mask = None
+        self.mask_flex = None
 
 
 def update_all_data(reflections_path=None, experiments_path=None):
@@ -88,7 +89,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
     if reflections_path is not None:
 
         try:
-            refl_tabl = flex.reflection_table.from_pickle(reflections_path)
+            refl_tabl = flex.reflection_table.from_file(reflections_path)
             dat.n_strng = refl_tabl.get_flags(refl_tabl.flags.strong).count(True)
             dat.n_index = refl_tabl.get_flags(refl_tabl.flags.indexed).count(True)
             dat.n_refnd = refl_tabl.get_flags(refl_tabl.flags.used_in_refinement).count(
@@ -104,7 +105,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("Caught unknown exception type:", type(e).__name__, e, "N###")
+            print(" >> Caught unknown exception type:", type(e).__name__, e, "N###")
 
             print("failed to find reflections")
             print("reflections_path = %s", reflections_path)
@@ -149,13 +150,14 @@ def update_all_data(reflections_path=None, experiments_path=None):
             mask_tup_obj = pickle.load(pick_file)
             pick_file.close()
 
-            mask_flex = mask_tup_obj[0]
-            mask_np_arr = mask_flex.as_numpy_array()
+            dat.mask_flex = mask_tup_obj[0]
+            mask_np_arr = dat.mask_flex.as_numpy_array()
             dat.np_mask = mask_np_arr
 
         except IOError:
             print("No mask in this node")
             dat.np_mask = None
+            dat.mask_flex = None
 
         # FIXME it takes just the first experiment. What if there are more?
         exp = experiments[0]
@@ -245,11 +247,9 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 json_info = json.load(infile)
 
             if type(json_info) is dict:
-                print("found Dictionary")
                 imageset = json_info["imageset"]
 
             elif type(json_info) is list:
-                print("found List")
                 imageset = json_info[0]["imageset"]
 
             dat.tmpl_str = imageset[0]["template"]

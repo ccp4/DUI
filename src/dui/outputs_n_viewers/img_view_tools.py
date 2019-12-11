@@ -23,17 +23,23 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
+import sys
 
 import numpy as np
 
 from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
-from ..qt import QImage, QProgressDialog, Qt
+try:
+    sys.path.append('../')
+    from qt import QImage, QProgressDialog, Qt
+
+except ImportError:
+    from ..qt import QImage, QProgressDialog, Qt
+
 from six.moves import range
 
 logger = logging.getLogger(__name__)
-
 
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val=100, min_val=0, text="Working"):
