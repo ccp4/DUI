@@ -34,7 +34,7 @@ from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )
 
-#from dials.command_line.refine import phil_scope as phil_scope_refine
+# from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.refine import working_phil as phil_scope_refine
 
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
@@ -128,6 +128,7 @@ from six.moves import range
 
 logger = logging.getLogger(__name__)
 
+
 class BeamCentrPage(QWidget):
     update_command_lst_medium_level = Signal(list)
 
@@ -183,13 +184,21 @@ class BeamCentrPage(QWidget):
     def set_par(self, lst_par):
         print("set_par(BeamCentrPage)", lst_par)
 
-        self.data_bc_label.setText("New Beam Centre:\n (" +
-                                   str(lst_par[0]) + ", " +
-                                   str(lst_par[1]) + ") pixels")
+        self.data_bc_label.setText(
+            "New Beam Centre:\n ("
+            + str(lst_par[0])
+            + ", "
+            + str(lst_par[1])
+            + ") pixels"
+        )
 
-        ml_lst_par = ["modify_geometry",
-                      "geometry.detector.slow_fast_beam_centre=" +
-                      str(lst_par[1]) + "," + str(lst_par[0])]
+        ml_lst_par = [
+            "modify_geometry",
+            "geometry.detector.slow_fast_beam_centre="
+            + str(lst_par[1])
+            + ","
+            + str(lst_par[0]),
+        ]
 
         self.command_lst = [ml_lst_par]
         self.update_command_lst_medium_level.emit(ml_lst_par)
@@ -349,19 +358,15 @@ class ExportPage(QWidget):
         if os.path.isfile(mtz_file_path):
             txt_warning = "Warning, file: " + param1_com + " already exists"
             self.warning_label.setText(txt_warning)
-            self.warning_label.setStyleSheet(
-                        "color: rgba(255, 55, 55, 255)"
-                    )
-            '''
+            self.warning_label.setStyleSheet("color: rgba(255, 55, 55, 255)")
+            """
             self.warning_label.setStyleSheet(
                         "color: rgba(255, 55, 55, 255);" "background-color: yellow;"
                     )
-            '''
+            """
         else:
             self.warning_label.setText(" ")
-            self.warning_label.setStyleSheet(
-                        "color: rgba(0, 155, 255, 255)"
-                    )
+            self.warning_label.setStyleSheet("color: rgba(0, 155, 255, 255)")
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -464,7 +469,6 @@ class ImportPage(QWidget):
 
         self.opn_fil_btn.clicked.connect(self.open_files)
 
-
         self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
         # self.show()
@@ -506,7 +510,6 @@ class ImportPage(QWidget):
                 xb = float(xb_str)
                 self.y_spn_bx.setValue(yb)
                 self.x_spn_bx.setValue(xb)
-
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():

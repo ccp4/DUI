@@ -31,7 +31,7 @@ from dials_viewer_ext import rgb_img
 from dials.array_family import flex
 
 try:
-    sys.path.append('../')
+    sys.path.append("../")
     from qt import QImage, QProgressDialog, Qt
 
 except ImportError:
@@ -40,6 +40,7 @@ except ImportError:
 from six.moves import range
 
 logger = logging.getLogger(__name__)
+
 
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val=100, min_val=0, text="Working"):

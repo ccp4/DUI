@@ -447,11 +447,9 @@ class MainWindow(QMainWindow):
         logger.debug("Opening a new popup window")
         self.my_pop = MyReindexOpts()
         self.my_pop.set_ref(
-            in_json_path="/tmp/dui2run/dui_files/lin_4_bravais_summary.json"
-             , lin_num = 4
+            in_json_path="/tmp/dui2run/dui_files/lin_4_bravais_summary.json", lin_num=4
         )
-        #in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
-
+        # in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
 
     def opt_picked(self, opt_num):
         logger.debug("\n from dynamic_reindex_gui.py MainWindow")

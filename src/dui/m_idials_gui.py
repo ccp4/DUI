@@ -221,7 +221,7 @@ class ControlWidget(QWidget):
         super(ControlWidget, self).__init__()
 
         top_box = QVBoxLayout()
-        #top_box.setMargin(0)
+        # top_box.setMargin(0)
         top_box.setContentsMargins(0, 0, 0, 0)
 
         self.step_param_widg = QStackedWidget()
@@ -277,7 +277,6 @@ class ControlWidget(QWidget):
         self.mask_page.mask_set.connect(self.set_mask)
         self.step_param_widg.addWidget(self.mask_page)
 
-
         self.b_centr_page = BeamCentrPage()
         self.b_centr_page.update_command_lst_medium_level.connect(
             self.singular_step_new_command
@@ -330,7 +329,6 @@ class ControlWidget(QWidget):
             except AttributeError:
                 print("\n object has no attribute update_param \n")
 
-
         elif nxt_cmd == "reindex":
             # Reindex is a special step because it doesn't have it's own page
             logger.debug("Reindex mode")
@@ -373,7 +371,6 @@ class ControlWidget(QWidget):
 
         self.finished_masking.emit()
         self.finished_b_centr.emit()
-
 
     def gray_outs_all(self):
         """Disable all action buttons."""
@@ -484,7 +481,7 @@ class MainWidget(QMainWindow):
 
             self.idials_runner = Runner()
 
-        self.gui2_log = {'pairs_list':[]}
+        self.gui2_log = {"pairs_list": []}
 
         self.cli_tree_output = TreeShow()
         self.cli_tree_output(self.idials_runner)
@@ -552,13 +549,12 @@ class MainWidget(QMainWindow):
 
         self.img_view.new_pars_applied.connect(self.pass_parmams)
 
-        #self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
+        # self.ext_view.pass_parmam_lst.connect(self.pass_parmams)
 
         self.centre_par_widget.finished_masking.connect(self.img_view.unchec_my_mask)
         self.centre_par_widget.click_mask.connect(self.img_view.chec_my_mask)
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
-
 
         v_info_splitter = QSplitter()
         v_info_splitter.setOrientation(Qt.Vertical)
@@ -581,7 +577,6 @@ class MainWidget(QMainWindow):
 
         self.custom_thread.busy_box_on.connect(self.pop_busy_box)
         self.custom_thread.busy_box_off.connect(self.close_busy_box)
-
 
         self.main_widget = QWidget()
         self.main_widget.setLayout(main_box)
@@ -678,33 +673,30 @@ class MainWidget(QMainWindow):
         self.update_nav_tree()
 
     def chouse_if_predict_or_report(self):
-        if(
-            self.idials_runner.current_node.ll_command_lst[0][0] != "refine_bravais_settings"
+        if (
+            self.idials_runner.current_node.ll_command_lst[0][0]
+            != "refine_bravais_settings"
         ):
-            if (
-                self.view_tab_num == 0 and
-                self.img_view.rad_but_pre_hkl.checkState()
-            ):
-                self.pop_busy_box(text_in_bar = "Generating Predictions")
-                self.idials_runner.current_node.gen_repr_n_pred(to_run = "predict")
+            if self.view_tab_num == 0 and self.img_view.rad_but_pre_hkl.checkState():
+                self.pop_busy_box(text_in_bar="Generating Predictions")
+                self.idials_runner.current_node.gen_repr_n_pred(to_run="predict")
                 self.close_busy_box()
 
             elif self.view_tab_num == 2:
-                '''
+                """
                 ##########################################################################
                 tmp_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
                 tmp_bar(5)
                 tmp_bar.ended()
                 ################################################################################
-                '''
-
+                """
 
                 tmp_bar = ProgBarBox(min_val=0, max_val=10, text="Generating Report")
                 tmp_bar(5)
-                self.idials_runner.current_node.gen_repr_n_pred(to_run = "report")
+                self.idials_runner.current_node.gen_repr_n_pred(to_run="report")
                 tmp_bar.ended()
 
-    def tab_changed(self, num = 0):
+    def tab_changed(self, num=0):
         self.view_tab_num = num
         self.chouse_if_predict_or_report()
 
@@ -718,12 +710,12 @@ class MainWidget(QMainWindow):
         )
         action_name = current_parameter_widget.my_widget.command_lst[0][0]
 
-        to_remove = '''
+        to_remove = """
         if (
             action_name in ["find_spots", "integrate"]
             and self.idials_runner.current_node.success is None
         ):
-        '''
+        """
 
         if (
             action_name == "find_spots"
@@ -740,25 +732,29 @@ class MainWidget(QMainWindow):
             min_count = cmd_lst[5]
 
             full_command = [
-            'find_spots',
-            "spotfinder.threshold.dispersion.gain=" + str(gain),
-            "spotfinder.threshold.dispersion.kernel_size=" + str(size[0]) + "," + str(size[1]),
-            "spotfinder.threshold.dispersion.sigma_background=" + str(nsig_b),
-            "spotfinder.threshold.dispersion.sigma_strong=" + str(nsig_s),
-            "spotfinder.threshold.dispersion.min_local=" + str(min_count),
-            "spotfinder.threshold.dispersion.global_threshold=" + str(global_threshold)
+                "find_spots",
+                "spotfinder.threshold.dispersion.gain=" + str(gain),
+                "spotfinder.threshold.dispersion.kernel_size="
+                + str(size[0])
+                + ","
+                + str(size[1]),
+                "spotfinder.threshold.dispersion.sigma_background=" + str(nsig_b),
+                "spotfinder.threshold.dispersion.sigma_strong=" + str(nsig_s),
+                "spotfinder.threshold.dispersion.min_local=" + str(min_count),
+                "spotfinder.threshold.dispersion.global_threshold="
+                + str(global_threshold),
             ]
 
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
 
         else:
             print("No need to feed back params")
-            '''
+            """
             print(
                 "my_widget_now.my_widget.command_lst = %s",
                 current_parameter_widget.my_widget.command_lst,
             )
-            '''
+            """
 
     def update_low_level_command_lst(self, command_lst):
         self.idials_runner.current_node.ll_command_lst = command_lst
@@ -888,15 +884,15 @@ class MainWidget(QMainWindow):
         ):
             self.img_view.my_painter.reset_bc_tool(None)
 
-
-
-
         with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
         print("OPENING busy pop bar with the text: ", text_in_bar)
-        if self.idials_runner.current_node.ll_command_lst[0][0] != "refine_bravais_settings":
+        if (
+            self.idials_runner.current_node.ll_command_lst[0][0]
+            != "refine_bravais_settings"
+        ):
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=text_in_bar)
             self.my_bar(5)
 
@@ -922,17 +918,23 @@ class MainWidget(QMainWindow):
             "index": ["refine_bravais_settings", "refine", "integrate", "export"],
             "refine_bravais_settings": [None],
             "reindex": ["refine", "integrate", "export", "index"],
-            "refine": ["refine_bravais_settings", "refine", "integrate", "index", "export"],
+            "refine": [
+                "refine_bravais_settings",
+                "refine",
+                "integrate",
+                "index",
+                "export",
+            ],
             "integrate": ["symmetry", "scale", "export", "index", "export"],
             "symmetry": ["refine_bravais_settings", "scale", "export"],
             "scale": ["refine_bravais_settings", "symmetry", "export"],
             "export": [None],
             "generate_mask": ["find_spots"],
-            "modify_geometry":["find_spots"],
+            "modify_geometry": ["find_spots"],
             "None": [None],
         }
 
-        more_conservative = '''
+        more_conservative = """
         cmd_connects = {
             "Root": ["import"],
             "import": ["find_spots"],
@@ -949,7 +951,7 @@ class MainWidget(QMainWindow):
             "modify_geometry":["find_spots"],
             "None": [None],
         }
-        '''
+        """
 
         lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)

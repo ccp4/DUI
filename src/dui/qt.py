@@ -74,7 +74,8 @@ except ImportError:
             from PySide.QtGui import *
             from PySide.QtCore import *
             from PySide.QtWebKit import *
-            #from PySide import uic
+
+            # from PySide import uic
 
             QT5 = False
             # In case we're using pytest-qt, force the same API
@@ -89,11 +90,11 @@ except ImportError:
             from PySide2.QtWidgets import *
             from PySide2.QtWebKit import *
 
-            #from PySide2 import QtWebEngineWidgets as QWebSettings
-            #from PySide2.QtWebEngineWidgets import *
+            # from PySide2 import QtWebEngineWidgets as QWebSettings
+            # from PySide2.QtWebEngineWidgets import *
 
-            #QWebSettings = PySide2.QtWebEngineWidgets
-            #from PySide2.QtWebKit import *
+            # QWebSettings = PySide2.QtWebEngineWidgets
+            # from PySide2.QtWebKit import *
 
             QT5 = True
             # In case we're using pytest-qt, force the same API

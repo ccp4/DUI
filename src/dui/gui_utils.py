@@ -35,9 +35,9 @@ import json
 
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
 
-'''
+"""
 from dxtbx.sweep_filenames import template_regex, template_regex_from_list
-'''
+"""
 
 try:
     from cli_utils import get_next_step, sys_arg, get_phil_par
@@ -97,7 +97,6 @@ except ImportError:
 
 
 from six.moves import range
-
 
 
 logger = logging.getLogger(__name__)
@@ -180,16 +179,18 @@ ACTIONS = OrderedDict(
     ]
 )
 
+
 def try_move_last_info(export_node, gui2_log):
-    logger.debug("\n JUST exported MOVING start ... \n ______________________________________________________")
+    logger.debug(
+        "\n JUST exported MOVING start ... \n ______________________________________________________"
+    )
 
     cwd_path = os.path.join(sys_arg.directory, "dui_files")
     report_out = generate_report(export_node.prev_step)
 
-
     try:
         prev_step_rept_from = os.path.join(cwd_path, report_out)
-        #prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
+        # prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
         prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
 
         mtz_name_from = "integrated.mtz"
@@ -201,34 +202,34 @@ def try_move_last_info(export_node, gui2_log):
         mtz_name_from = os.path.join(cwd_path, mtz_name_from)
         mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
 
-        gui2_log['last_HTML_report'] = prev_step_rept_from
-        gui2_log['last_MTZ'] = mtz_name_from
+        gui2_log["last_HTML_report"] = prev_step_rept_from
+        gui2_log["last_MTZ"] = mtz_name_from
 
-        for pair in gui2_log['pairs_list']:
+        for pair in gui2_log["pairs_list"]:
             if pair[1] == mtz_name_from:
                 print("\nfound same name \n")
-                gui2_log['pairs_list'].remove(pair)
+                gui2_log["pairs_list"].remove(pair)
 
-        gui2_log['pairs_list'].append((prev_step_rept_from, mtz_name_from))
+        gui2_log["pairs_list"].append((prev_step_rept_from, mtz_name_from))
 
         shutil.copy(mtz_name_from, mtz_name_to)
         shutil.copy(prev_step_rept_from, prev_step_rept_to)
 
-        gui2_log_path = os.path.join(cwd_path, 'output.json')
+        gui2_log_path = os.path.join(cwd_path, "output.json")
 
         print("Writing:", gui2_log_path)
 
-        with open(gui2_log_path, 'w') as fp:
+        with open(gui2_log_path, "w") as fp:
             json.dump(gui2_log, fp, indent=4)
 
         print("\n ___________________ gui2_log:", gui2_log, "\n")
-
 
     except IOError:
         print("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
     return gui2_log
+
 
 def try_find_prev_mask_pickle(cur_nod):
     pickle_path = None
@@ -751,7 +752,6 @@ class ExternalProcDialog(QDialog):
 
 
 class OuterCaller(QWidget):
-
     def __init__(self):
         super(OuterCaller, self).__init__()
 
@@ -782,9 +782,8 @@ class OuterCaller(QWidget):
 
     def run_img_dialg(self):
         self.diag.run_my_proc(
-            "dials.image_viewer",
-            json_path=self.my_json,
-            pickle_path=self.my_pick)
+            "dials.image_viewer", json_path=self.my_json, pickle_path=self.my_pick
+        )
 
 
 class CliOutView(QTextEdit):

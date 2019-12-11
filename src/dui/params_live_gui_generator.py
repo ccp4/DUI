@@ -71,6 +71,7 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+
 class ScopeData(object):
     """
     class conceived to store only data related to the scope Phil object
@@ -214,11 +215,7 @@ class PhilWidget(QWidget):
 
                 self.lst_label_widg.append(tmp_label)
 
-
-                if (
-                    obj.type.phil_type == "bool"
-                    or obj.type.phil_type == "choice"
-                ):
+                if obj.type.phil_type == "bool" or obj.type.phil_type == "choice":
 
                     if obj.type.phil_type == "bool":
 
@@ -246,8 +243,8 @@ class PhilWidget(QWidget):
                         else:
                             tmp_str = None
 
-                        #print("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
-                        #print("tmp_str =", tmp_str)
+                        # print("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
+                        # print("tmp_str =", tmp_str)
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -372,7 +369,8 @@ class TstTmpWidget(QWidget):
 
 if __name__ == "__main__":
     from dials.command_line.refine import working_phil as phil_scope_refine
-    #from dials.command_line.find_spots import phil_scope
+
+    # from dials.command_line.find_spots import phil_scope
     app = QApplication(sys.argv)
     ex = TstTmpWidget(phil_scope_refine)
     ex.show()

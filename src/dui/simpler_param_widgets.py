@@ -106,7 +106,7 @@ class FindspotsSimplerParameterTab(QWidget):
     def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
         # self.param_widget_parent = parent.param_widget_parent
-        #TODO thinks about making "None equivalent to 1"
+        # TODO thinks about making "None equivalent to 1"
         xds_gain_label = QLabel("Gain")
         xds_gain_spn_bx = QDoubleSpinBox()
         xds_gain_spn_bx.local_path = "spotfinder.threshold.dispersion.gain"
@@ -586,11 +586,11 @@ class ScaleSimplerParamTab(QWidget):
         label_wgh_opt_err = QLabel("Optimise Errors Model")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
-        '''
+        """
         weighting {
           error_model {
             error_model = *basic None
-        '''
+        """
         box_wgh_opt_err = QComboBox()
         box_wgh_opt_err.local_path = "weighting.error_model.error_model"
         box_wgh_opt_err.tmp_lst = []

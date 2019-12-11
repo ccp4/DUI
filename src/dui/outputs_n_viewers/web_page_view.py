@@ -33,15 +33,16 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+
 class WebTab(QWidget):
     def __init__(self):
         super(WebTab, self).__init__()
-        tmp_off = '''
+        tmp_off = """
         logger.debug(
             " QWebSettings.JavascriptEnabled = %s", QWebSettings.JavascriptEnabled
         )
         QWebSettings.JavascriptEnabled = True
-        '''
+        """
 
         self.dummy_html = """<html>
             <head>
@@ -80,15 +81,15 @@ class WebTab(QWidget):
         except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            print("\n failed to show <<", new_path,  ">>  on web view (",e,")")
+            print("\n failed to show <<", new_path, ">>  on web view (", e, ")")
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
         print("HTML Load(ok) = %s", ok_bool)
-        tmp_off = '''
+        tmp_off = """
         if not ok_bool:
             self.web.setHtml(self.dummy_html)
-        '''
+        """
 
         self.web.show()
         print(" finished Loading HTML ")

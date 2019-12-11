@@ -36,8 +36,8 @@ try:
         QLabel,
         QVBoxLayout,
         QWidget,
-        QScrollArea
-        )
+        QScrollArea,
+    )
 
 except ImportError:
     from .outputs_n_viewers.info_handler import update_all_data
@@ -48,8 +48,8 @@ except ImportError:
         QLabel,
         QVBoxLayout,
         QWidget,
-        QScrollArea
-        )
+        QScrollArea,
+    )
 
 
 logger = logging.getLogger(__name__)
@@ -116,9 +116,9 @@ class InfoWidget(QWidget):
         bm_v_layout.addWidget(w_lambda_label)
         self.w_lambda_data = QLabel(empty_str)
         bm_v_layout.addWidget(self.w_lambda_data)
-        #bm_v_layout.addWidget(QLabel("  "))
+        # bm_v_layout.addWidget(QLabel("  "))
 
-        #bm_v_layout.addStretch()
+        # bm_v_layout.addStretch()
         beam_group.setLayout(bm_v_layout)
 
         cell_group = QGroupBox(" Crystal ")
@@ -203,7 +203,7 @@ class InfoWidget(QWidget):
         crys_v_layout = QVBoxLayout()
         crys_v_layout.addLayout(cell_v_layout)
         crys_v_layout.addLayout(r_layout)
-        #crys_v_layout.addStretch()
+        # crys_v_layout.addStretch()
         cell_group.setLayout(crys_v_layout)
 
         scan_group = QGroupBox(" Scan ")
@@ -356,8 +356,8 @@ class InfoWidget(QWidget):
 
         detec_v_layout.addLayout(px_h_layout)
 
-        #detec_v_layout.addWidget(QLabel("  "))
-        #detec_v_layout.addStretch()
+        # detec_v_layout.addWidget(QLabel("  "))
+        # detec_v_layout.addStretch()
         detec_group.setLayout(detec_v_layout)
 
         left_big_box = QHBoxLayout()
@@ -391,7 +391,6 @@ class InfoWidget(QWidget):
 
         self.setLayout(main_v_box)
 
-
     def update_data(self, exp_json_path=None, refl_pikl_path=None):
         # TODO: Change interface of function to not recieve list including
         #       predicted reflections, as long as it doesn't need it
@@ -406,7 +405,9 @@ class InfoWidget(QWidget):
             except ValueError:
                 pickle_to_read = None
 
-            logger.debug("experiments_path=", exp_json_path, "reflections_path=", pickle_to_read)
+            logger.debug(
+                "experiments_path=", exp_json_path, "reflections_path=", pickle_to_read
+            )
 
             self.all_data = update_all_data(
                 experiments_path=exp_json_path, reflections_path=pickle_to_read

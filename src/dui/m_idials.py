@@ -32,7 +32,7 @@ import sys
 
 from six.moves import input
 
-#if __name__ == "__main__" and __package__ is None:
+# if __name__ == "__main__" and __package__ is None:
 try:
     from os import path
 
@@ -49,7 +49,7 @@ try:
     )
 
 except ImportError:
-    #else:
+    # else:
     from .cli_utils import (
         TreeShow,
         DialsCommand,
@@ -100,7 +100,7 @@ class CommandNode(object):
         # self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
-        #print("\n cmd_lst in =", cmd_lst)
+        # print("\n cmd_lst in =", cmd_lst)
         self.ll_command_lst = list(cmd_lst)
         if cmd_lst == ["fail"]:
             # testing virtual failed step
@@ -110,7 +110,7 @@ class CommandNode(object):
         else:
             if cmd_lst[0][0] in self.dials_com_lst:
                 self.build_command(cmd_lst)
-                #print("Running:", self.cmd_lst_to_run)
+                # print("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
@@ -138,7 +138,7 @@ class CommandNode(object):
                     fil_obj.close()
 
                 print("\n Done \n")
-                #self.gen_repr_n_pred()
+                # self.gen_repr_n_pred()
 
             else:
                 print("\n NOT dials command")
@@ -147,7 +147,7 @@ class CommandNode(object):
 
         self.info_generating = False
 
-    def gen_repr_n_pred(self, to_run = None):
+    def gen_repr_n_pred(self, to_run=None):
         if (
             self.success is True
             and self.cmd_lst_to_run[0] != "dials.refine_bravais_settings"

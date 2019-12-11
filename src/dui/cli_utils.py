@@ -242,7 +242,6 @@ def build_command_lst(node_obj, cmd_lst):
         # dials.refine_bravais_settings input.experiments=3_experiments.expt
         # input.reflections=3_reflections.refl output.prefix=lin_4_ output.log=4_refine_bravais_settings.log
 
-
         json_file_in = node_obj.prev_step.json_file_out
         input_str = "input.experiments=" + json_file_in
         lst_inner.append(input_str)
@@ -377,21 +376,18 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
 
-
         print("\n modify_geometry \n")
-        '''
+        """
         dials.modify_geometry input.datablock=1_datablock.json \
         geometry.detector.slow_fast_beam_centre=350,350 \
         output.datablock=2_datablock.json
 
         #################################################################
-        '''
-
+        """
 
     cmd_lst_to_run.append(lst_inner)
 
-
-    #print("\n\n test:", cmd_lst_to_run, "\n")
+    # print("\n\n test:", cmd_lst_to_run, "\n")
 
     return cmd_lst_to_run
 
@@ -451,7 +447,7 @@ def generate_predict(node_obj):
             logger.debug("predict command:  %s %s", pred_cmd, "\n\n")
 
             tst_path = os.path.join(cwd_path, pre_fil)
-            if not(os.path.exists(tst_path)):
+            if not (os.path.exists(tst_path)):
                 gen_pred_proc = subprocess.Popen(pred_cmd, shell=True, cwd=cwd_path)
                 gen_pred_proc.wait()
 
@@ -493,7 +489,7 @@ def generate_report(node_obj):
         html_outp = "output.html=" + htm_fil
 
         tst_path = os.path.join(cwd_path, htm_fil)
-        if  not(os.path.exists(tst_path)):
+        if not (os.path.exists(tst_path)):
             logger.debug("\n ___________________________ tst_path =", tst_path, "\n")
             if node_obj.ll_command_lst[0][0] == "find_spots":
                 rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
@@ -524,7 +520,9 @@ def generate_report(node_obj):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.debug(
+                    "Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 rep_out = None
                 logger.debug("Someting went wrong in report level 2")
 
@@ -670,8 +668,8 @@ class TreeShow(object):
 
     def __call__(self, my_runner):
 
-        #print("\n\n TreeShow debug \n my_runner.step_list:\n")
-        #print_list(my_runner.step_list, my_runner.current_line)
+        # print("\n\n TreeShow debug \n my_runner.step_list:\n")
+        # print_list(my_runner.step_list, my_runner.current_line)
         print("\n")
 
         print("")
