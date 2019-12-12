@@ -722,8 +722,6 @@ class MainWidget(QMainWindow):
             and self.idials_runner.current_node.success is None
         ):
 
-            print("\n command = find_spots \n")
-
             gain = cmd_lst[0]
             size = cmd_lst[1]
             nsig_b = cmd_lst[2]
@@ -748,7 +746,7 @@ class MainWidget(QMainWindow):
             current_parameter_widget.my_widget.update_param_w_lst(full_command)
 
         else:
-            print("No need to feed back params")
+            logger.debug("No need to feed back params")
             """
             print(
                 "my_widget_now.my_widget.command_lst = %s",
@@ -958,9 +956,9 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        print("\n_________________________ check_reindex_pop 01 \n")
+        #print("\n_________________________ check_reindex_pop 01 \n")
         if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
-            print("\n_________________________ check_reindex_pop 02 \n")
+            #print("\n_________________________ check_reindex_pop 02 \n")
 
             try:
                 self.my_pop = MyReindexOpts()
