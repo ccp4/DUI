@@ -795,7 +795,7 @@ class ParamMainWidget(QWidget):
                                 try:
                                     str_val = str(str_value)
                                     widg.setText(str_val)
-                                    print("widg.local_path = %s", widg.local_path)
+                                    logger.debug("widg.local_path = %s", widg.local_path)
 
                                 except BaseException as ee:
                                     print("ee = ", e)
@@ -820,7 +820,7 @@ class ParamMainWidget(QWidget):
         for widg in self.simpler_widget.lst_var_widg:
             try:
                 if widg.local_path == str_path:
-                    print("found << widg.local_path == str_path >> ")
+                    logger.debug("found << widg.local_path == str_path >> ")
                     try:
                         num_val = float(str_value)
                         widg.setValue(num_val)
