@@ -207,13 +207,15 @@ def heather_text_from_lin(lin_num, j_path):
     n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
         logger.debug("pos1, single_lin1:", pos1, single_lin1)
-        if str(single_lin1[0:19]) == "Chiral space groups":
+        #if str(single_lin1[0:19]) == "Chiral space groups":
+        if "Chiral space groups" in single_lin1:
+
             start_block = pos1
             logger.debug("start_block = %s", start_block)
 
             for pos2, single_lin2 in enumerate(all_lines[start_block:]):
                 n_of_lines += 1
-                if str(single_lin2[1:5]) == "----":
+                if "----" in single_lin2:
                     end_block = pos2 + start_block
                     logger.debug("end_block = %s", end_block)
                     break

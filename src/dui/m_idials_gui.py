@@ -969,11 +969,10 @@ class MainWidget(QMainWindow):
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
-                print("str(my_err) = %s", str(my_err))
-                print("my_err.__doc__ = %s", my_err.__doc__)
-                print("my_err.message = %s", my_err.message)
-                if str(my_err)[0:36] == "[Errno 2] No such file or directory:":
-                    print("\n interrupted refine_bravais_settings \n")
+                print("ERROR in check_reindex_pop(m_idials_gui) \n")
+                print("str(my_err) = ", str(my_err))
+                print("my_err.__doc__ = ", my_err.__doc__)
+                print("my_err.message = ", my_err.message)
 
             # TODO find an elegant way to interrupt and remove nodes
 
