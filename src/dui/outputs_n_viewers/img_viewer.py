@@ -1259,32 +1259,34 @@ class MyImgWin(QWidget):
             btn.setMinimumWidth(30)
             btn.clicked.connect(slot)
             return btn
-
+        '''
         self.btn_first = _create_and_connect(u" I< ", self.btn_first_clicked)
         self.btn_rev = _create_and_connect(u" << ", self.btn_rev_clicked)
         self.btn_prev = _create_and_connect(u" <  ", self.btn_prev_clicked)
+        '''
 
-        TODO = """
+        #TODO = """
         self.btn_first = _create_and_connect(u"\u23EE", self.btn_first_clicked)
         self.btn_rev = _create_and_connect(u"\u23EA" , self.btn_rev_clicked)
         self.btn_prev = _create_and_connect(u"\u25C0", self.btn_prev_clicked)
-        """
+        #"""
 
         tmp_font_small = QFont()
         tmp_font_small.setPixelSize(sys_font_point_size + 2)
 
         tmp_font_big = QFont()
         tmp_font_big.setPixelSize(tmp_font_small.pointSize() * 2)
-
+        '''
         self.btn_next = _create_and_connect(u"  > ", self.btn_next_clicked)
         self.btn_ffw = _create_and_connect(u" >> ", self.btn_ffw_clicked)
         self.btn_last = _create_and_connect(u" >I ", self.btn_last_clicked)
+        '''
 
-        TODO = """
+        #TODO = """
         self.btn_next = _create_and_connect(u"\u25B6", self.btn_next_clicked)
         self.btn_ffw = _create_and_connect(u"\u23E9", self.btn_ffw_clicked)
         self.btn_last = _create_and_connect(u"\u23ED", self.btn_last_clicked)
-        """
+        #"""
 
         self.btn_prev.setFont(tmp_font_small)
         self.btn_next.setFont(tmp_font_small)
