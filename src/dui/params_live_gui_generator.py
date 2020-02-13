@@ -48,6 +48,7 @@ try:
         QLabel,
         QLineEdit,
         QSpinBox,
+        Qt,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -63,6 +64,7 @@ except ImportError:
         QLabel,
         QLineEdit,
         QSpinBox,
+        Qt,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -81,7 +83,6 @@ class ScopeData(object):
 
 
 class tree_2_lineal(object):
-
     """
     Recursively navigates the Phil objects in a way that the final
     self.lst_obj is a lineal list without ramifications, this final list
@@ -129,6 +130,23 @@ class tree_2_lineal(object):
                 )
                 # pass
 
+
+
+class MyQComboBox(QComboBox):
+    def __init__(self, parent = None):
+        super(MyQComboBox, self).__init__(parent)
+        self.setFocusPolicy(Qt.ClickFocus)
+
+    def wheelEvent(self, event):
+        '''
+        if self.hasFocus():
+            print("self.hasFocus")
+            #return QComboBox.wheelEvent(event)
+        else:
+            print("NO hasFocus")
+        '''
+        print("event: ", event)
+        return
 
 class PhilWidget(QWidget):
     item_changed = Signal(str, str)
@@ -219,12 +237,12 @@ class PhilWidget(QWidget):
 
                     if obj.type.phil_type == "bool":
 
-                        tmp_widg = QComboBox()
+                        tmp_widg = MyQComboBox()
                         tmp_widg.tmp_lst = []
                         tmp_widg.tmp_lst.append("True")
                         tmp_widg.tmp_lst.append("False")
                         tmp_widg.tmp_lst.append("Auto")
-
+                        #tmp_widg.setFocusPolicy(Qt.StrongFocus)
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
 
@@ -275,7 +293,7 @@ class PhilWidget(QWidget):
                         #     tmp_str = None
                         #     non_added_lst.append(str(obj.full_path()))
                         # begins pathed version
-                        tmp_widg = QComboBox()
+                        tmp_widg = MyQComboBox()
 
                         tmp_widg.tmp_lst = []
                         pos = 0
