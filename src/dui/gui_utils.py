@@ -512,8 +512,9 @@ def update_pbar_msg(main_obj):
         except KeyError:
             txt = "Done"
 
-    main_obj.txt_bar.setText(txt)
-    logger.debug("update_pbar_msg = %s", txt)
+    #main_obj.txt_bar.setText(txt)
+    main_obj.txt_bar.setText(" \n ")
+    print("\n", txt, "\n")
 
 
 class MyActionButton(QToolButton):
