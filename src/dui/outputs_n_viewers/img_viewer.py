@@ -472,13 +472,13 @@ class ImgPainter(QWidget):
         self.n_pan_xb_yb = n_pan_xb_yb
 
     def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
-        """
-        Draw a single HKL entry
+        #x = float(reflection[0]) + 1.0
+        #y = float(reflection[1]) + 1.0
 
-        This takes lots of logic from outside, currently
-        """
-        x = float(reflection[0]) + 1.0
-        y = float(reflection[1]) + 1.0
+        x = float(reflection[0] + reflection[2]) + 0.3
+        y = float(reflection[1] + float(reflection[3]) * 0.5) + 6.0 / self.my_scale
+        #y = float(reflection[1])
+
         if reflection[4] == "NOT indexed":
             painter.setPen(non_indexed_pen)
 
@@ -580,8 +580,6 @@ class ImgPainter(QWidget):
             non_indexed_pen.setStyle(Qt.SolidLine)
 
         painter.drawPixmap(rect, pixmap)
-        # painter.setFont(QFont("Monospace", 22))
-        # painter.setFont(QFont("FreeMono", 22))
 
         if self.np_mask is not None:
             # print("Drawing Mask start   ...", end="")
@@ -713,15 +711,9 @@ class ImgPainter(QWidget):
             and self.pre_flat_data is not None
         ):
 
-            # logger.debug("len(self.obs_flat_data) =", len(self.obs_flat_data))
-
-            tmp_font = QFont()
-            # Work out how big the text will be and don't show if 0px
-            font_pixel_size = int(5.5 * self.my_scale)
-            draw_text = font_pixel_size > 0
-            if draw_text:
-                tmp_font.setPixelSize(font_pixel_size)
-                painter.setFont(tmp_font)
+            hkl_font = QFont()
+            hkl_font.setPixelSize(16)
+            painter.setFont(hkl_font)
 
             lst_tmp_hkl = None
             if self.user_choice[0]:
@@ -809,12 +801,11 @@ class ImgPainter(QWidget):
                     print("No reflection (Predictions) to show ... None type")
 
             try:
-                if draw_text:
-                    for j, img_flat_data in enumerate(lst_tmp_hkl):
-                        for i, reflection in enumerate(img_flat_data):
-                            self._draw_hkl(
-                                reflection, painter, indexed_pen, non_indexed_pen, i, j
-                            )
+                for j, img_flat_data in enumerate(lst_tmp_hkl):
+                    for i, reflection in enumerate(img_flat_data):
+                        self._draw_hkl(
+                            reflection, painter, indexed_pen, non_indexed_pen, i, j
+                        )
 
             except TypeError:
                 logger.debug("not printing HKLs ")
@@ -1726,6 +1717,7 @@ class MyImgWin(QWidget):
                 pan_col = map(int, table["panel"])
                 try:
                     hkl_col = map(str, table["miller_index"])
+
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
