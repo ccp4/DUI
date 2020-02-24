@@ -1244,20 +1244,37 @@ class MyImgWin(QWidget):
 
         self._button_panel = QWidget(self)
 
-        def _create_and_connect(text, slot):
+        def _create_and_connect(my_ico_path, slot):
             """Create a pushbutton for the Play/stop bar"""
-            btn = QPushButton(text, parent=self._button_panel)
+            btn = QPushButton(parent=self._button_panel)
+            btn.setIcon(QIcon(my_ico_path))
             btn.setMinimumWidth(30)
             btn.clicked.connect(slot)
             return btn
 
-        self.btn_first = _create_and_connect(u"\u23EE", self.btn_first_clicked)
-        self.btn_rev = _create_and_connect(u"\u23EA" , self.btn_rev_clicked)
-        self.btn_prev = _create_and_connect(u"\u25C0", self.btn_prev_clicked)
 
-        self.btn_next = _create_and_connect(u"\u25B6", self.btn_next_clicked)
-        self.btn_ffw = _create_and_connect(u"\u23E9", self.btn_ffw_clicked)
-        self.btn_last = _create_and_connect(u"\u23ED", self.btn_last_clicked)
+        my_code_path = get_main_path()
+        icon_path = my_code_path + "/resources/"
+
+        self.btn_first = _create_and_connect(icon_path + "first_img.png",
+                                             self.btn_first_clicked)
+
+        self.btn_rev = _create_and_connect(icon_path + "rew_img.png",
+                                           self.btn_rev_clicked)
+
+        self.btn_prev = _create_and_connect(icon_path + "prev_img.png",
+                                            self.btn_prev_clicked)
+
+
+        self.btn_next = _create_and_connect(icon_path + "next_img.png",
+                                            self.btn_next_clicked)
+
+        self.btn_ffw = _create_and_connect(icon_path + "ffw_img.png",
+                                           self.btn_ffw_clicked)
+
+        self.btn_last = _create_and_connect(icon_path + "last_img.png",
+                                            self.btn_last_clicked)
+
 
         btn_f_size = sys_font_point_size - 1
 
@@ -1296,9 +1313,6 @@ class MyImgWin(QWidget):
         self.pop_mask_menu = PopActionsMenu(self)
         mask_menu_but.setMenu(self.pop_mask_menu)
 
-        my_code_path = get_main_path()
-
-        icon_path = my_code_path + "/resources/"
         zoom_in_but = QPushButton()
         zoom_in_but.setIcon(QIcon(icon_path + "zoom_plus_ico.png"))
         zoom_in_but.clicked.connect(self.zoom_in)
