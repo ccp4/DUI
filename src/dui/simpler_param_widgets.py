@@ -35,6 +35,7 @@ try:
         QHBoxLayout,
         QLabel,
         QLayout,
+        QFormLayout,
         QPushButton,
         QSpinBox,
         QLineEdit,
@@ -51,6 +52,7 @@ except ImportError:
         QHBoxLayout,
         QLabel,
         QLayout,
+        QFormLayout,
         QPushButton,
         QSpinBox,
         QLineEdit,
@@ -250,20 +252,11 @@ class IndexSimplerParamTab(QWidget):
 
         localLayout.addLayout(hbox_method)
 
-        max_cell_hb = QHBoxLayout()
-        max_cell_hb.addWidget(max_cell_label)
-        max_cell_hb.addWidget(max_cell_spn_bx)
-        localLayout.addLayout(max_cell_hb)
-
-        space_group_hb = QHBoxLayout()
-        space_group_hb.addWidget(space_group_label)
-        space_group_hb.addWidget(space_group_line)
-        localLayout.addLayout(space_group_hb)
-
-        unit_cell_hb = QHBoxLayout()
-        unit_cell_hb.addWidget(unit_cell_label)
-        unit_cell_hb.addWidget(unit_cell_line)
-        localLayout.addLayout(unit_cell_hb)
+        qf = QFormLayout()
+        qf.addRow(max_cell_label, max_cell_spn_bx)
+        qf.addRow(space_group_label, space_group_line)
+        qf.addRow(unit_cell_label, unit_cell_line)
+        localLayout.addLayout(qf)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
