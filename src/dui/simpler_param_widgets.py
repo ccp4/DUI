@@ -229,6 +229,7 @@ class IndexSimplerParamTab(QWidget):
 
         max_cell_label = QLabel("Max cell")
         max_cell_spn_bx = QDoubleSpinBox()
+        max_cell_spn_bx.setSingleStep(5.0)
         max_cell_spn_bx.local_path = "indexing.max_cell"
         max_cell_spn_bx.setSpecialValueText("Auto")
         max_cell_spn_bx.valueChanged.connect(self.spnbox_changed)
