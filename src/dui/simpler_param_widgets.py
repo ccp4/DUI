@@ -227,8 +227,20 @@ class IndexSimplerParamTab(QWidget):
 
         hbox_method.addWidget(box_method_62)
 
+        max_cell_label = QLabel("Max cell")
+        max_cell_spn_bx = QDoubleSpinBox()
+        max_cell_spn_bx.local_path = "indexing.max_cell"
+        max_cell_spn_bx.setSpecialValueText("Auto")
+        max_cell_spn_bx.valueChanged.connect(self.spnbox_changed)
+
         localLayout = QVBoxLayout()
+
         localLayout.addLayout(hbox_method)
+
+        max_cell_hb = QHBoxLayout()
+        max_cell_hb.addWidget(max_cell_label)
+        max_cell_hb.addWidget(max_cell_spn_bx)
+        localLayout.addLayout(max_cell_hb)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
@@ -246,6 +258,13 @@ class IndexSimplerParamTab(QWidget):
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
+    def spnbox_changed(self, value):
+        sender = self.sender()
+        str_value = str(value)
+        str_path = str(sender.local_path)
+
+        # self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
 
 class RefineBravaiSimplerParamTab(QWidget):
     # TODO some doc string here
