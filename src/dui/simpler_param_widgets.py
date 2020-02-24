@@ -37,6 +37,7 @@ try:
         QLayout,
         QPushButton,
         QSpinBox,
+        QLineEdit,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -52,6 +53,7 @@ except ImportError:
         QLayout,
         QPushButton,
         QSpinBox,
+        QLineEdit,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -234,6 +236,11 @@ class IndexSimplerParamTab(QWidget):
         max_cell_spn_bx.setSpecialValueText("Auto")
         max_cell_spn_bx.valueChanged.connect(self.spnbox_changed)
 
+        space_group_label = QLabel("Space group")
+        space_group_line = QLineEdit()
+        space_group_line.local_path = "indexing.known_symmetry.space_group"
+        space_group_line.editingFinished.connect(self.line_changed)
+
         localLayout = QVBoxLayout()
 
         localLayout.addLayout(hbox_method)
@@ -242,6 +249,11 @@ class IndexSimplerParamTab(QWidget):
         max_cell_hb.addWidget(max_cell_label)
         max_cell_hb.addWidget(max_cell_spn_bx)
         localLayout.addLayout(max_cell_hb)
+
+        space_group_hb = QHBoxLayout()
+        space_group_hb.addWidget(space_group_label)
+        space_group_hb.addWidget(space_group_line)
+        localLayout.addLayout(space_group_hb)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
@@ -265,6 +277,13 @@ class IndexSimplerParamTab(QWidget):
         str_path = str(sender.local_path)
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
+        self.item_changed.emit(str_path, str_value)
+
+    def line_changed(self):
+        sender = self.sender()
+        str_value = sender.text()
+        str_path = str(sender.local_path)
+
         self.item_changed.emit(str_path, str_value)
 
 class RefineBravaiSimplerParamTab(QWidget):
