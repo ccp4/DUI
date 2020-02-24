@@ -241,6 +241,11 @@ class IndexSimplerParamTab(QWidget):
         space_group_line.local_path = "indexing.known_symmetry.space_group"
         space_group_line.editingFinished.connect(self.line_changed)
 
+        unit_cell_label = QLabel("Unit cell")
+        unit_cell_line = QLineEdit()
+        unit_cell_line.local_path = "indexing.known_symmetry.unit_cell"
+        unit_cell_line.editingFinished.connect(self.line_changed)
+
         localLayout = QVBoxLayout()
 
         localLayout.addLayout(hbox_method)
@@ -254,6 +259,11 @@ class IndexSimplerParamTab(QWidget):
         space_group_hb.addWidget(space_group_label)
         space_group_hb.addWidget(space_group_line)
         localLayout.addLayout(space_group_hb)
+
+        unit_cell_hb = QHBoxLayout()
+        unit_cell_hb.addWidget(unit_cell_label)
+        unit_cell_hb.addWidget(unit_cell_line)
+        localLayout.addLayout(unit_cell_hb)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
