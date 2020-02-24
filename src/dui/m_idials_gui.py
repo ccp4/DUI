@@ -424,7 +424,7 @@ class StopRunRetry(QWidget):
         tmp_ico.addFile(dials_grayed_path, mode=QIcon.Disabled)
 
         self.run_btn.setIcon(tmp_ico)
-        self.run_btn.setIconSize(QSize(50, 38))
+        self.run_btn.setIconSize(QSize(50, 50))
         ctrl_box.addWidget(self.run_btn)
 
         self.stop_btn = QPushButton("\n  Stop  \n", self)
