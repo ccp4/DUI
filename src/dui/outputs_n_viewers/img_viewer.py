@@ -1820,24 +1820,31 @@ class MyImgWin(QWidget):
         logger.debug("\n update_exp(self, reference) \n")
 
     def update_info_label(self, x_pos, y_pos):
+
+        new_label_txt = ""
+        if self.ref2exp:
+            image_file = os.path.basename(
+                self.ref2exp.imageset.get_image_identifier(self.img_num - 1))
+            new_label_txt += "{0}: ".format(image_file)
+
         if self.img_arr:
-            new_label_txt = (
-                "  X = "
+            new_label_txt += (
+                "X = "
                 + str(x_pos)
-                + " ,  Y = "
+                + ", Y = "
                 + str(y_pos)
-                + " ,  I = "
+                + ", I = "
                 + str(self.img_arr[y_pos, x_pos])
             )
 
         else:
-            new_label_txt = "X, Y, I = ?,?,?"
+            new_label_txt += "X, Y, I = ?,?,?"
 
         if self.ref2exp and self.ref2exp.beam:
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
-            res_str = str("{:3.1f}".format(res_float))
+            res_str = str("{:4.2f}".format(res_float))
             new_label_txt += ", resolution = " + res_str + " " + u"\u00C5"
 
         else:
