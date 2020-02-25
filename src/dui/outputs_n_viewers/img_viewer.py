@@ -226,11 +226,11 @@ def build_mask_item(img_paint_obj):
             return False, None, False
 
     except TypeError:
-        # print("except(build_mask_item) ... TypeError")
+        # logger.info("except(build_mask_item) ... TypeError")
         return False, None, False
 
     except AttributeError:
-        # print(" except(build_mask_item) ... AttributeError")
+        # logger.info(" except(build_mask_item) ... AttributeError")
         return False, None, False
 
 
@@ -385,7 +385,7 @@ class ImgPainter(QWidget):
             logger.debug("rescaling to: %s", self.my_scale)
 
         except ZeroDivisionError:
-            print("NOT scaling my_painter")
+            logger.info("NOT scaling my_painter")
             scale_factor = 1.0
 
     def move_scrollbar(self, scrollBar=None, dst=None, new_pos=None):
@@ -443,12 +443,12 @@ class ImgPainter(QWidget):
         self.update()
 
     def update_my_mask(self, np_mask, mask_flex):
-        # print("\n np_mask =", np_mask, "\n")
+        # logger.info("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
         self.mask_flex = mask_flex
 
         if np_mask is not None:
-            # print("self.np_mask.shape =", self.np_mask.shape)
+            # logger.info("self.np_mask.shape =", self.np_mask.shape)
 
             width = self.np_mask.shape[0]
             height = self.np_mask.shape[1]
@@ -516,7 +516,7 @@ class ImgPainter(QWidget):
         self.unpop_menu()
 
     def paintEvent(self, event):
-        # print("paintEvent(img_viewer)")
+        # logger.info("paintEvent(img_viewer)")
         if self.img is None:
             return
 
@@ -582,9 +582,9 @@ class ImgPainter(QWidget):
         painter.drawPixmap(rect, pixmap)
 
         if self.np_mask is not None:
-            # print("Drawing Mask start   ...", end="")
+            # logger.info("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
-            # print(" .Drawing Mask end")
+            # logger.info(" .Drawing Mask end")
 
         cen_siz = 20.0
         if self.xb is not None and self.yb is not None:
@@ -667,7 +667,7 @@ class ImgPainter(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                print(
+                logger.info(
                     "\n exception(item in self.mask_items ... for loop ): %s: %s",
                     type(e).__name__,
                     e,
@@ -698,7 +698,7 @@ class ImgPainter(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    print(
+                    logger.info(
                         "\n exception(draw_mask_item) = %s: %s",
                         type(e).__name__,
                         e,
@@ -743,12 +743,12 @@ class ImgPainter(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    print(
+                    logger.info(
                         " \n >>> Caught unknown exception type %s: %s",
                         type(e).__name__,
                         e,
                     )
-                    print("No reflection (Obsevations) to show ... None type")
+                    logger.info("No reflection (Obsevations) to show ... None type")
 
             if self.user_choice[1]:
                 try:
@@ -798,7 +798,7 @@ class ImgPainter(QWidget):
                             lst_tmp_hkl = self.pre_flat_data
 
                 except TypeError:
-                    print("No reflection (Predictions) to show ... None type")
+                    logger.info("No reflection (Predictions) to show ... None type")
 
             try:
                 for j, img_flat_data in enumerate(lst_tmp_hkl):
@@ -1015,8 +1015,8 @@ class PopDisplayMenu(QMenu):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("Caught unknown exception type %s: %s", type(e).__name__, e)
-            print("no (...my_sweep) yet, skipping palette label paint")
+            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.info("no (...my_sweep) yet, skipping palette label paint")
 
     def slider_max_changed(self, value):
         if self.my_parent.slider_min.sliderPosition() > value - 15:
@@ -1412,111 +1412,111 @@ class MyImgWin(QWidget):
 
     def draw_img_img(self):
         try:
-            # print("img_origin_arr")
+            # logger.info("img_origin_arr")
             self.img2show = "origin"
             self.painter_set_img_pix(self.img_num - 1, 1)
             self.debug_gen_timer.stop()
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_variance_img(self):
         self.draw_variance_img()
 
     def draw_variance_img(self):
         try:
-            # print("img_varian_arr")
+            # logger.info("img_varian_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.variance()
             self.img2show = "modif_varian"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_mean_img(self):
         self.draw_mean_img()
 
     def draw_mean_img(self):
         try:
-            # print("img_mean_arr")
+            # logger.info("img_mean_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.mean()
             self.img2show = "modif_mean"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_disp_img(self):
         self.draw_disp_img()
 
     def draw_disp_img(self):
         try:
-            # print("img_disper_arr")
+            # logger.info("img_disper_arr")
             self.get_debug_gen()
             self.img_varian_arr = self.debug_data.index_of_dispersion()
             self.img2show = "modif_disper"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_fin_mask_img(self):
         self.draw_fin_mask_img()
 
     def draw_fin_mask_img(self):
         try:
-            # print("img_final_mask_arr")
+            # logger.info("img_final_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.final_mask())
             self.img2show = "mask_fin"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_glo_mask_img(self):
         self.draw_glo_mask_img()
 
     def draw_glo_mask_img(self):
         try:
-            # print("img_global_mask_arr")
+            # logger.info("img_global_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.global_mask())
             self.img2show = "mask_glob"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_cv_mask_img(self):
         self.draw_cv_mask_img()
 
     def draw_cv_mask_img(self):
         try:
-            # print("img_cv_mask_arr")
+            # logger.info("img_cv_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.cv_mask())
             self.img2show = "mask_cv"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def set_val_mask_img(self):
         self.draw_val_mask_img()
 
     def draw_val_mask_img(self):
         try:
-            # print("img_value_mask_arr")
+            # logger.info("img_value_mask_arr")
             self.get_debug_gen()
             self.img_varian_arr = GetDoubleFromBool(self.debug_data.value_mask())
             self.img2show = "mask_val"
             self.painter_set_img_pix(self.img_num - 1, 1)
 
         except AttributeError:
-            print("No image loaded yet")
+            logger.info("No image loaded yet")
 
     def get_debug_gen(self):
         self.debug_gen_data = ThresholdDebugGenetator(image_in=self.img_arr)
@@ -1601,8 +1601,8 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                print("Caught unknown exception type %s: %s", type(e).__name__, e)
-                print("Unable to calculate mean and adjust contrast")
+                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
         from dxtbx.model.experiment_list import ExperimentListFactory
@@ -1620,19 +1620,19 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                print("Caught unknown exception type %s: %s", type(e).__name__, e)
-                print("Failed to load images from  datablock.json")
+                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Failed to load images from  datablock.json")
 
             try:
                 """
-                print(
+                logger.info(
                     "self.my_sweep.get_array_range() = %s",
                     self.my_sweep.get_array_range(),
                 )
                 """
 
                 n_of_imgs = len(self.my_sweep.indices())
-                print("n_of_imgs =", n_of_imgs)
+                logger.info("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1646,8 +1646,8 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                print("Caught unknown exception type %s: %s", type(e).__name__, e)
-                print("Failed to set up IMG control dialog")
+                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
         self.ini_contrast()
@@ -1709,18 +1709,18 @@ class MyImgWin(QWidget):
                     )
 
                 else:
-                    print("empty IMG lst")
+                    logger.info("empty IMG lst")
 
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                print("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
                 self.find_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
             try:
 
-                print("pckl_file_path[1]=", pckl_file_path[1])
+                logger.info("pckl_file_path[1]=", pckl_file_path[1])
 
                 table = flex.reflection_table.from_file(pckl_file_path[1])
 
@@ -1802,7 +1802,7 @@ class MyImgWin(QWidget):
 
         except TypeError:
             xb, yb, n_pan_xb_yb = None, None, None
-            print("\n xb, yb, n_pan_xb_yb = None, None, None \n")
+            logger.info("\n xb, yb, n_pan_xb_yb = None, None, None \n")
 
         self.my_painter.update_my_beam_centre(xb, yb, n_pan_xb_yb)
         self.my_painter.update_my_mask(all_data.np_mask, all_data.mask_flex)
@@ -1854,7 +1854,7 @@ class MyImgWin(QWidget):
                 pan_num = tuple(range(24))
 
             else:
-                print("number of  panels NOT supported, defaulting to only first one")
+                logger.info("number of  panels NOT supported, defaulting to only first one")
                 pan_num = 1
 
             if loc_stk_siz == 1:

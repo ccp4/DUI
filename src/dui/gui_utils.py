@@ -195,7 +195,7 @@ def try_move_last_info(export_node, gui2_log):
 
         mtz_name_from = "integrated.mtz"
         for parm in export_node.ll_command_lst[0]:
-            print(parm)
+            logger.info(parm)
             if "mtz.hklout=" in parm:
                 mtz_name_from = parm[11:]
 
@@ -207,7 +207,7 @@ def try_move_last_info(export_node, gui2_log):
 
         for pair in gui2_log["pairs_list"]:
             if pair[1] == mtz_name_from:
-                print("\nfound same name \n")
+                logger.info("\nfound same name \n")
                 gui2_log["pairs_list"].remove(pair)
 
         gui2_log["pairs_list"].append((prev_step_rept_from, mtz_name_from))
@@ -217,15 +217,15 @@ def try_move_last_info(export_node, gui2_log):
 
         gui2_log_path = os.path.join(cwd_path, "output.json")
 
-        print("Writing:", gui2_log_path)
+        logger.info("Writing:", gui2_log_path)
 
         with open(gui2_log_path, "w") as fp:
             json.dump(gui2_log, fp, indent=4)
 
-        print("\n ___________________ gui2_log:", gui2_log, "\n")
+        logger.info("\n ___________________ gui2_log:", gui2_log, "\n")
 
     except IOError:
-        print("ERROR: mtz file not there")
+        logger.info("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
     return gui2_log
@@ -382,8 +382,8 @@ def get_import_run_string(in_str_lst):
         # Warn if things were missing - this may be perfectly normal
         if not set(indices) == set(range(min_image_range, max_image_range + 1)):
             logger.warning("Non-continuous image range selected - output may be wrong")
-            print(indices)
-            print(list(sorted(set(range(min_image_range, max_image_range + 1)))))
+            logger.info(indices)
+            logger.info(list(sorted(set(range(min_image_range, max_image_range + 1)))))
 
     if image_range is not None:
         out_str += " image_range={},{}".format(*image_range)
@@ -445,9 +445,9 @@ def update_info(main_obj):
             main_obj.cur_json = new_img_json
             # TODO check if next line should run ALLWAYS
             main_obj.img_view.contrast_initiated = False
-            print("before ini_datablock")
+            logger.info("before ini_datablock")
             main_obj.img_view.ini_datablock(main_obj.cur_json)
-            print("after ini_datablock")
+            logger.info("after ini_datablock")
 
         if main_obj.cur_pick != new_ref_pikl:
             main_obj.cur_pick = new_ref_pikl
@@ -514,7 +514,7 @@ def update_pbar_msg(main_obj):
 
     #main_obj.txt_bar.setText(txt)
     main_obj.txt_bar.setText(" \n ")
-    print("\n", txt, "\n")
+    logger.info("\n", txt, "\n")
 
 
 class MyActionButton(QToolButton):

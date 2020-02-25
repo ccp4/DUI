@@ -105,10 +105,10 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print(" >> Caught unknown exception type:", type(e).__name__, e, "N###")
+            logger.info(" >> Caught unknown exception type:", type(e).__name__, e, "N###")
 
-            print("failed to find reflections")
-            print("reflections_path = %s", reflections_path)
+            logger.info("failed to find reflections")
+            logger.info("reflections_path = %s", reflections_path)
 
     if experiments_path is not None:
         try:
@@ -118,7 +118,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("\n exception #1 %s: %s", type(e).__name__, e)
+            logger.info("\n exception #1 %s: %s", type(e).__name__, e)
 
             # TODO Maybe the next try block is not needed, consider removing all
 
@@ -138,8 +138,8 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 experiments.append(Experiment(beam=beam, detector=detector, scan=scan))
 
             except ValueError:
-                print("failed to read json file")
-                print("experiments_path = %s", experiments_path)
+                logger.info("failed to read json file")
+                logger.info("experiments_path = %s", experiments_path)
                 return dat
 
         try:
@@ -155,7 +155,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.np_mask = mask_np_arr
 
         except IOError:
-            print("No mask in this node")
+            logger.info("No mask in this node")
             dat.np_mask = None
             dat.mask_flex = None
 
@@ -168,7 +168,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.a, dat.b, dat.c, dat.alpha, dat.beta, dat.gamma = unit_cell.parameters()
 
             exp_crystal = exp.crystal
-            print("exp_crystal =  %s", exp_crystal)
+            logger.info("exp_crystal =  %s", exp_crystal)
             b_mat = exp.crystal.get_B()
             dat.b11 = b_mat[0]
             dat.b12 = b_mat[1]
@@ -181,7 +181,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.b33 = b_mat[8]
 
             sg = str(exp.crystal.get_space_group().info())
-            print("spgr =  %s", sg)
+            logger.info("spgr =  %s", sg)
             dat.spg_group = sg
 
             from scitbx import matrix
@@ -199,9 +199,9 @@ def update_all_data(reflections_path=None, experiments_path=None):
             dat.u33 = b_mat[8]
 
             rot_angs = u_mat.r3_rotation_matrix_as_x_y_z_angles(deg=True)
-            print("u_mat = %s", u_mat)
+            logger.info("u_mat = %s", u_mat)
 
-            print("rot_angs = %s", rot_angs)
+            logger.info("rot_angs = %s", rot_angs)
             dat.r1, dat.r2, dat.r3 = rot_angs
 
         # Get beam data
@@ -216,7 +216,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             exp.beam.get_s0()
         )
         pnl = exp.detector[pnl_beam_intersects]
-        print("beam_x, beam_y = %s %s", beam_x, beam_y)
+        logger.info("beam_x, beam_y = %s %s", beam_x, beam_y)
 
         dat.n_pan_xb_yb = pnl_beam_intersects
         dat.xb = beam_x
@@ -224,8 +224,8 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
         dist = pnl.get_distance()
 
-        print("pnl_beam_intersects              %s", pnl_beam_intersects)
-        print("dist                             %s", dist)
+        logger.info("pnl_beam_intersects              %s", pnl_beam_intersects)
+        logger.info("dist                             %s", dist)
 
         dat.dd = dist
 
@@ -254,10 +254,10 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
             dat.tmpl_str = imageset[0]["template"]
 
-            print("dat.tmpl_str = %s", dat.tmpl_str)
+            logger.info("dat.tmpl_str = %s", dat.tmpl_str)
 
         except (KeyError, IndexError):
-            print("failed to find template in JSON file")
+            logger.info("failed to find template in JSON file")
 
         dat.ref2exp = exp
 

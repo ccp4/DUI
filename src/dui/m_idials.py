@@ -100,7 +100,7 @@ class CommandNode(object):
         # self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
-        # print("\n cmd_lst in =", cmd_lst)
+        # logger.info("\n cmd_lst in =", cmd_lst)
         self.ll_command_lst = list(cmd_lst)
         if cmd_lst == ["fail"]:
             # testing virtual failed step
@@ -110,12 +110,12 @@ class CommandNode(object):
         else:
             if cmd_lst[0][0] in self.dials_com_lst:
                 self.build_command(cmd_lst)
-                # print("Running:", self.cmd_lst_to_run)
+                # logger.info("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
                 if self.log_file_out is None:
-                    print("\n *** time to write ...log_file_out manually *** \n")
+                    logger.info("\n *** time to write ...log_file_out manually *** \n")
 
                     self.log_file_out = (
                         str(self.lin_num) + "_" + self.cmd_lst_to_run[0][0] + ".log"
@@ -124,8 +124,8 @@ class CommandNode(object):
                     cwd_path = os.path.join(sys_arg.directory, "dui_files")
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
-                    print("..log_file_out =", file_path, "\n")
-                    print(
+                    logger.info("..log_file_out =", file_path, "\n")
+                    logger.info(
                         "self.dials_command.tmp_std_all:",
                         self.dials_command.tmp_std_all,
                     )
@@ -137,12 +137,12 @@ class CommandNode(object):
 
                     fil_obj.close()
 
-                print("\n Done \n")
+                logger.info("\n Done \n")
                 # self.gen_repr_n_pred()
 
             else:
-                print("\n NOT dials command")
-                print("cmd_lst =", cmd_lst, "\n")
+                logger.info("\n NOT dials command")
+                logger.info("cmd_lst =", cmd_lst, "\n")
                 self.success = False
 
         self.info_generating = False
@@ -170,14 +170,14 @@ class CommandNode(object):
                 logger.debug("can NOT fork <None> node ")
 
         self.info_generating = False
-        print("\n _________________________________________gen_repr_n_pred\n")
+        logger.info("\n _________________________________________gen_repr_n_pred\n")
 
     def edit_list(self, cmd_lst):
         self.ll_command_lst = cmd_lst
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
-        print("cmd_lst_to_run(CommandNode) = %s", self.cmd_lst_to_run)
+        logger.info("cmd_lst_to_run(CommandNode) = %s", self.cmd_lst_to_run)
 
     def get_next_step(self):
         return get_next_step(self)
@@ -193,7 +193,7 @@ class Runner(object):
         self.current_line = self.bigger_lin
         self.create_step(root_node)
 
-        print("root_node.lin_num = %s", root_node.lin_num)
+        logger.info("root_node.lin_num = %s", root_node.lin_num)
         # self.current_node = root_node
 
     def run(self, command, ref_to_class):
@@ -202,9 +202,9 @@ class Runner(object):
         else:
             cmd_lst = command
 
-        print("Runner(run) ... cmd_lst =", cmd_lst)
+        logger.info("Runner(run) ... cmd_lst =", cmd_lst)
         if cmd_lst[0] == "goto":
-            print("doing << goto >>")
+            logger.info("doing << goto >>")
             self.goto(int(cmd_lst[1]))
 
         elif cmd_lst == ["clean"]:
@@ -216,19 +216,19 @@ class Runner(object):
         elif cmd_lst == ["mksib"]:
             old_command_lst = list(self.current_node.ll_command_lst)
             self.goto_prev()
-            print("forking")
+            logger.info("forking")
             self.create_step(self.current_node)
             self.current_node.edit_list(old_command_lst)
 
         else:
             if self.current_node.success is True:
                 self.goto_prev()
-                print("forking")
+                logger.info("forking")
                 self.create_step(self.current_node)
 
             self.current_node(cmd_lst, ref_to_class)
             if self.current_node.success is not True:
-                print("failed step")
+                logger.info("failed step")
 
     def clean(self):
         logger.debug("\n Cleaning")
@@ -323,8 +323,8 @@ class Runner(object):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch
-            print("Caught unknown exception type %s: %s", type(e).__name__, e)
-            print("failed to retrieve log path")
+            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.info("failed to retrieve log path")
 
         return path_to_log
 
@@ -399,15 +399,15 @@ if __name__ == "__main__" and __package__ is None:
         # 'module' object has no attribute 'CommandNode'
 
     except Exception as e:
-        print("str(e) = %s", str(e))
-        print("e.__doc__ = %s", e.__doc__)
-        print("e.message = %s", e.message)
+        logger.info("str(e) = %s", str(e))
+        logger.info("e.__doc__ = %s", e.__doc__)
+        logger.info("e.message = %s", e.message)
         idials_runner = Runner()
         try:
             shutil.rmtree(storage_path + "/dui_files")
 
         except OSError:
-            print('failed to do "shutil.rmtree("/dui_files")"')
+            logger.info('failed to do "shutil.rmtree("/dui_files")"')
 
         os.mkdir(storage_path + "/dui_files")
 
@@ -420,16 +420,16 @@ if __name__ == "__main__" and __package__ is None:
             command = str(input(inp_str))
 
         except EOFError:
-            print("Caught << EOFError >>")
-            print(" ... interrupting")
+            logger.info("Caught << EOFError >>")
+            logger.info(" ... interrupting")
             sys.exit(0)
 
         except:
-            print("Caught << some error >>", e)
-            print(" ... interrupting")
+            logger.info("Caught << some error >>", e)
+            logger.info(" ... interrupting")
             sys.exit(1)
 
-        print("command =", command)
+        logger.info("command =", command)
         if command[0:5] == "goto ":
             idials_runner.run(command.split(" "), None)
             tree_output(idials_runner)

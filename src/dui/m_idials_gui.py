@@ -173,7 +173,7 @@ class CommandThread(QThread):
         self.start()
 
     def run(self):
-        print("self.cmd_to_run =", self.cmd_to_run)
+        logger.info("self.cmd_to_run =", self.cmd_to_run)
         self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
 
     def emit_print_signal(self, str_lin):
@@ -327,7 +327,7 @@ class ControlWidget(QWidget):
                 widget.update_param(curr_step)
 
             except AttributeError:
-                print("\n object has no attribute update_param \n")
+                logger.info("\n object has no attribute update_param \n")
 
         elif nxt_cmd == "reindex":
             # Reindex is a special step because it doesn't have it's own page
@@ -342,12 +342,12 @@ class ControlWidget(QWidget):
             self.step_param_widg.setCurrentWidget(self.mask_page)
 
         elif nxt_cmd == "modify_geometry":
-            print("\n modify_geometry \n")
+            logger.info("\n modify_geometry \n")
             self.step_param_widg.setCurrentWidget(self.b_centr_page)
 
         else:
-            print("No action widget found in set_widget")
-            print("nxt_cmd =", nxt_cmd)
+            logger.info("No action widget found in set_widget")
+            logger.info("nxt_cmd =", nxt_cmd)
 
     def _action_button_clicked(self):
         "Slot: An action button was clicked"
@@ -604,7 +604,7 @@ class MainWidget(QMainWindow):
         )
 
     def pop_b_centr_coord(self, new_b_centr):
-        print("New b_centr =", new_b_centr)
+        logger.info("New b_centr =", new_b_centr)
         self.centre_par_widget.b_centr_page.set_par(new_b_centr)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.b_centr_page
@@ -748,7 +748,7 @@ class MainWidget(QMainWindow):
         else:
             logger.debug("No need to feed back params")
             """
-            print(
+            logger.info(
                 "my_widget_now.my_widget.command_lst = %s",
                 current_parameter_widget.my_widget.command_lst,
             )
@@ -886,7 +886,7 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
-        print("OPENING busy pop bar with the text: ", text_in_bar)
+        logger.info("OPENING busy pop bar with the text: ", text_in_bar)
         if (
             self.idials_runner.current_node.ll_command_lst[0][0]
             != "refine_bravais_settings"
@@ -895,12 +895,12 @@ class MainWidget(QMainWindow):
             self.my_bar(5)
 
     def close_busy_box(self):
-        print("trying to close busy pop bar")
+        logger.info("trying to close busy pop bar")
         try:
             self.my_bar.ended()
 
         except AttributeError:
-            print("no need to close busy pop bar")
+            logger.info("no need to close busy pop bar")
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
@@ -957,9 +957,9 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        #print("\n_________________________ check_reindex_pop 01 \n")
+        #logger.info("\n_________________________ check_reindex_pop 01 \n")
         if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
-            #print("\n_________________________ check_reindex_pop 02 \n")
+            #logger.info("\n_________________________ check_reindex_pop 02 \n")
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -970,10 +970,10 @@ class MainWidget(QMainWindow):
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
-                print("ERROR in check_reindex_pop(m_idials_gui) \n")
-                print("str(my_err) = ", str(my_err))
-                print("my_err.__doc__ = ", my_err.__doc__)
-                print("my_err.message = ", my_err.message)
+                logger.info("ERROR in check_reindex_pop(m_idials_gui) \n")
+                logger.info("str(my_err) = ", str(my_err))
+                logger.info("my_err.__doc__ = ", my_err.__doc__)
+                logger.info("my_err.message = ", my_err.message)
 
             # TODO find an elegant way to interrupt and remove nodes
 
@@ -998,7 +998,7 @@ class MainWidget(QMainWindow):
         self.img_view.my_painter.repaint()
 
     def after_failed(self):
-        print("\n FAILED STEP:")
+        logger.info("\n FAILED STEP:")
         self.update_nav_tree()
         self.txt_bar.end_motion()
 
@@ -1015,7 +1015,7 @@ class MainWidget(QMainWindow):
             + "_err_out.log"
         )
 
-        print("\n ERROR \n err_log_file_out = %s %s", err_log_file_out, "\n")
+        logger.info("\n ERROR \n err_log_file_out = %s %s", err_log_file_out, "\n")
 
         fil_obj = open(err_log_file_out, "w")
         for err_lin in curr_step.dials_command.tmp_std_all:
@@ -1045,8 +1045,8 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                print(" Caught unknown exception type %s: %s", type(e).__name__, e)
-                print("\n Tst A1 \n")
+                logger.info(" Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("\n Tst A1 \n")
 
             item = self.tree_out.std_mod.itemFromIndex(it_index)
             prn_lst_lst_cmd(item.idials_node)
@@ -1088,7 +1088,7 @@ class MainWidget(QMainWindow):
         self.check_gray_outs()
         self.reconnect_when_ready()
 
-        print("\n ... recovering from previous run of GUI \n")
+        logger.info("\n ... recovering from previous run of GUI \n")
 
     def closeEvent(self, event):
         if self.my_pop:

@@ -169,20 +169,20 @@ class BeamCentrPage(QWidget):
     def gray_me_out(self):
         # self.something.setEnabled(False)
         self.b_centr_done.emit()
-        print("gray_me_out(BeamCentrPage)")
+        logger.info("gray_me_out(BeamCentrPage)")
 
     def update_param(self, curr_step):
-        print("update_param(BeamCentrPage)")
-        print("curr_step.ll_command_lst:", curr_step.ll_command_lst)
+        logger.info("update_param(BeamCentrPage)")
+        logger.info("curr_step.ll_command_lst:", curr_step.ll_command_lst)
 
     def activate_me(self, cur_nod=None):
         self.b_centr_set.emit()
 
     def reset_par(self):
-        print("reset_par(BeamCentrPage)")
+        logger.info("reset_par(BeamCentrPage)")
 
     def set_par(self, lst_par):
-        print("set_par(BeamCentrPage)", lst_par)
+        logger.info("set_par(BeamCentrPage)", lst_par)
 
         self.data_bc_label.setText(
             "New Beam Centre:\n ("
@@ -267,11 +267,11 @@ class MaskPage(QWidget):
 
     def gray_me_out(self):
         # self.something.setEnabled(False)
-        print("gray_me_out(MaskPage)")
+        logger.info("gray_me_out(MaskPage)")
         self.mask_done.emit()
 
     def update_param(self, curr_step):
-        print("update_param(MaskPage)")
+        logger.info("update_param(MaskPage)")
         self.update_widget_dat(curr_step.ll_command_lst)
 
     def activate_me(self, cur_nod):
@@ -279,11 +279,11 @@ class MaskPage(QWidget):
         self.mask_set.emit()
 
     def reset_par(self):
-        print("reset_par(MaskPage)")
+        logger.info("reset_par(MaskPage)")
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
-        print("set_par(MaskPage)", lst_par)
+        logger.info("set_par(MaskPage)", lst_par)
         self.update_widget_dat(lst_par)
         self.update_command_lst_medium_level.emit(lst_par[0])
 
@@ -390,7 +390,7 @@ class ExportPage(QWidget):
                         break
 
                 except AttributeError as at_err:
-                    print("found ", at_err, " in for loop, not to worry")
+                    logger.info("found ", at_err, " in for loop, not to worry")
 
                 my_node = my_node.prev_step
 
@@ -401,8 +401,8 @@ class ExportPage(QWidget):
         self.check_repeated_file()
 
     def reset_par(self):
-        print("command_lst(ExportPage.reset_par) = ", self.command_lst)
-        print(" Not supposed to reset export page")
+        logger.info("command_lst(ExportPage.reset_par) = ", self.command_lst)
+        logger.info(" Not supposed to reset export page")
 
 
 class ImportPage(QWidget):
@@ -475,7 +475,7 @@ class ImportPage(QWidget):
         self.reset_par()
 
     def reset_par(self):
-        print("reset_par(ImportPage)")
+        logger.info("reset_par(ImportPage)")
         self.cmd_list = []
         self.simple_lin.setText(" ? ")
         self.x_spn_bx.setValue(0.0)
@@ -489,7 +489,7 @@ class ImportPage(QWidget):
 
     def update_param_w_lst(self, lst_in):
         self.reset_par()
-        print("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
+        logger.info("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
         for singl_com in lst_in:
             if singl_com[0:1] == "/":
                 self.path_file_str = str(singl_com)
@@ -547,14 +547,14 @@ class ImportPage(QWidget):
 
         if len(lst_file_path) > 0:
             new_dir, new_command = get_import_run_string(lst_file_path)
-            print("\n new_dir=", new_dir, ">>")
-            print("\n new_command =", new_command, ">>")
+            logger.info("\n new_dir=", new_dir, ">>")
+            logger.info("\n new_command =", new_command, ">>")
             self.path_file_str = new_command
             self.defa_dir = new_dir
             self.put_str_lin()
 
     def put_str_lin(self):
-        print("self.path_file_str =", self.path_file_str, ">>")
+        logger.info("self.path_file_str =", self.path_file_str, ">>")
         self.cmd_list = [
             self.path_file_str,
             self.second_half.lstrip(),
@@ -695,8 +695,8 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("Caught unknown exception #1 type %s: %s", type(e).__name__, e)
-            print("\n\n\n something went wrong here wiht the phil object \n\n\n")
+            logger.info("Caught unknown exception #1 type %s: %s", type(e).__name__, e)
+            logger.info("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
 
@@ -725,8 +725,8 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("Caught unknown exception #2 type %s: %s", type(e).__name__, e)
-            print("found self.simpler_widget without << item_changed >> signal")
+            logger.info("Caught unknown exception #2 type %s: %s", type(e).__name__, e)
+            logger.info("found self.simpler_widget without << item_changed >> signal")
 
         try:
             self.simpler_widget.item_to_remove.connect(self.remove_one_par)
@@ -798,7 +798,7 @@ class ParamMainWidget(QWidget):
                                     logger.debug("widg.local_path = %s", widg.local_path)
 
                                 except BaseException as ee:
-                                    print("ee = ", ee)
+                                    logger.info("ee = ", ee)
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
@@ -808,9 +808,9 @@ class ParamMainWidget(QWidget):
                                     except BaseException as e:
                                         # We don't want to catch bare exceptions but
                                         # dont know what this was supposed to catch.
-                                        print("Caught unknown exception #5 type: %s", e)
-                                        print("failed to:")
-                                        print("widg.setCurrentIndex(pos)")
+                                        logger.info("Caught unknown exception #5 type: %s", e)
+                                        logger.info("failed to:")
+                                        logger.info("widg.setCurrentIndex(pos)")
 
                 except AttributeError:
                     pass
@@ -829,7 +829,7 @@ class ParamMainWidget(QWidget):
                         try:
                             for pos, val in enumerate(widg.tmp_lst):
                                 if val == str_value:
-                                    print("found val, v= %s", val)
+                                    logger.info("found val, v= %s", val)
                                     widg.setCurrentIndex(pos)
 
                         except AttributeError:
@@ -891,7 +891,7 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    print(
+                    logger.info(
                         "Caught unknown exception #9 type %s: %s", type(e).__name__, e
                     )
                     pass
@@ -919,7 +919,7 @@ class ParamMainWidget(QWidget):
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
                     # what this was supposed to catch. Log it.
-                    print(
+                    logger.info(
                         "Caught unknown exception #11 type %s: %s", type(e).__name__, e
                     )
 
