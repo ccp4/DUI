@@ -35,8 +35,12 @@ try:
         QHBoxLayout,
         QLabel,
         QLayout,
+        QFormLayout,
         QPushButton,
         QSpinBox,
+        QLineEdit,
+        QRegExp,
+        QRegExpValidator,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -50,8 +54,12 @@ except ImportError:
         QHBoxLayout,
         QLabel,
         QLayout,
+        QFormLayout,
         QPushButton,
         QSpinBox,
+        QLineEdit,
+        QRegExp,
+        QRegExpValidator,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -206,6 +214,7 @@ class IndexSimplerParamTab(QWidget):
     """
 
     item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
 
     def __init__(self, phl_obj=None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
@@ -230,8 +239,39 @@ class IndexSimplerParamTab(QWidget):
 
         hbox_method.addWidget(box_method_62)
 
+        max_cell_label = QLabel("Max cell")
+        max_cell_spn_bx = QDoubleSpinBox()
+        max_cell_spn_bx.setSingleStep(5.0)
+        max_cell_spn_bx.local_path = "indexing.max_cell"
+        max_cell_spn_bx.setSpecialValueText("Auto")
+        max_cell_spn_bx.editingFinished.connect(self.spnbox_finished)
+
+        space_group_label = QLabel("Space group")
+        space_group_line = QLineEdit()
+        # Simple validator to allow only characters in H-M symbols
+        regex = QRegExp("[ABCPIFR][0-9a-d\-/:nmHR]+")
+        validatorHM = QRegExpValidator(regex)
+        space_group_line.setValidator(validatorHM)
+        space_group_line.local_path = "indexing.known_symmetry.space_group"
+        space_group_line.editingFinished.connect(self.line_changed)
+
+        unit_cell_label = QLabel("Unit cell")
+        unit_cell_line = QLineEdit()
+        regex = QRegExp("[0-9\., ]+")
+        validatorUC = QRegExpValidator(regex)
+        unit_cell_line.setValidator(validatorUC)
+        unit_cell_line.local_path = "indexing.known_symmetry.unit_cell"
+        unit_cell_line.editingFinished.connect(self.line_changed)
+
         localLayout = QVBoxLayout()
+
         localLayout.addLayout(hbox_method)
+
+        qf = QFormLayout()
+        qf.addRow(max_cell_label, max_cell_spn_bx)
+        qf.addRow(space_group_label, space_group_line)
+        qf.addRow(unit_cell_label, unit_cell_line)
+        localLayout.addLayout(qf)
 
         self.inner_reset_btn = ResetButton()
         localLayout.addWidget(self.inner_reset_btn)
@@ -249,6 +289,22 @@ class IndexSimplerParamTab(QWidget):
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
+    def spnbox_finished(self):
+        sender = self.sender()
+        value = sender.value()
+        str_path = str(sender.local_path)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
+
+    def line_changed(self):
+        sender = self.sender()
+        str_value = sender.text()
+        str_path = str(sender.local_path)
+
+        self.item_changed.emit(str_path, str_value)
 
 class RefineBravaiSimplerParamTab(QWidget):
     # TODO some doc string here
