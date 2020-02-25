@@ -170,6 +170,10 @@ def build_mask_item(img_paint_obj):
                 if y1 < 0:
                     y1 = 0.0
 
+                # https://github.com/ccp4/DUI/issues/136
+                if x1 == x2 and y1 == y2:
+                    return False, None, False
+
                 to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
             elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
@@ -188,6 +192,10 @@ def build_mask_item(img_paint_obj):
 
                 if r > y1:
                     r = y1
+
+                # https://github.com/ccp4/DUI/issues/136
+                if r < 1:
+                    return False, None, False
 
                 to_append = ("circ", int(x1), int(y1), int(r))
 
