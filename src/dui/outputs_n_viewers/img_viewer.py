@@ -720,7 +720,7 @@ class ImgPainter(QWidget):
         ):
 
             hkl_font = QFont()
-            hkl_font.setPixelSize(16)
+            hkl_font.setPointSize(10)
             painter.setFont(hkl_font)
 
             lst_tmp_hkl = None
