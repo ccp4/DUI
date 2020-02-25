@@ -140,12 +140,12 @@ class MyQComboBox(QComboBox):
     def wheelEvent(self, event):
         '''
         if self.hasFocus():
-            print("self.hasFocus")
+            logger.info("self.hasFocus")
             #return QComboBox.wheelEvent(event)
         else:
-            print("NO hasFocus")
+            logger.info("NO hasFocus")
         '''
-        print("event: ", event)
+        logger.info("event: ", event)
         return
 
 class PhilWidget(QWidget):
@@ -261,8 +261,8 @@ class PhilWidget(QWidget):
                         else:
                             tmp_str = None
 
-                        # print("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
-                        # print("tmp_str =", tmp_str)
+                        # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
+                        # logger.info("tmp_str =", tmp_str)
 
                         tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
@@ -393,4 +393,4 @@ if __name__ == "__main__":
     ex = TstTmpWidget(phil_scope_refine)
     ex.show()
     sys.exit(app.exec_())
-    print("running ...")
+    logger.info("running ...")

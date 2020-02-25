@@ -77,14 +77,14 @@ def prn_lst_lst_cmd(last_idials_node):
 
             sh_cmd_lst.append(str_cmd)
 
-        print("\nAll commands to get here:\n___________________________")
+        logger.info("\nAll commands to get here:\n___________________________")
         for prn_lin in sh_cmd_lst:
-            print(prn_lin)
+            logger.info(prn_lin)
 
-        print("___________________________\n")
+        logger.info("___________________________\n")
 
     except TypeError:
-        print("unable to print all commands to get here")
+        logger.info("unable to print all commands to get here")
 
 
 def get_next_step(node_obj):
@@ -269,13 +269,13 @@ def build_command_lst(node_obj, cmd_lst):
                 sol_num = int(sol_str[9:])
 
             else:
-                print("\nDEFAULT  to sol_num = 1 \n")
+                logger.info("\nDEFAULT  to sol_num = 1 \n")
                 sol_num = 1
 
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            print("\n reindex \n exeption:", e, "type:", type(e))
+            logger.info("\n reindex \n exeption:", e, "type:", type(e))
 
             # getting to exeption: list index out of range
             # type: <type 'exceptions.IndexError'>
@@ -376,7 +376,7 @@ def build_command_lst(node_obj, cmd_lst):
         output_str = "output.experiments=" + node_obj.json_file_out
         lst_inner.append(output_str)
 
-        print("\n modify_geometry \n")
+        logger.info("\n modify_geometry \n")
         """
         dials.modify_geometry input.datablock=1_datablock.json \
         geometry.detector.slow_fast_beam_centre=350,350 \
@@ -387,7 +387,7 @@ def build_command_lst(node_obj, cmd_lst):
 
     cmd_lst_to_run.append(lst_inner)
 
-    # print("\n\n test:", cmd_lst_to_run, "\n")
+    # logger.info("\n\n test:", cmd_lst_to_run, "\n")
 
     return cmd_lst_to_run
 
@@ -574,7 +574,7 @@ class DialsCommand(object):
 
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-                print("\nRunning:", run_cmd, "\n")
+                logger.info("\nRunning:", run_cmd, "\n")
 
                 my_process = subprocess.Popen(
                     run_cmd,
@@ -587,13 +587,13 @@ class DialsCommand(object):
                 self.my_pid = my_process.pid
                 for line in iter(my_process.stdout.readline, b""):
                     single_line = line[0 : len(line) - 1]
-                    # print(">>: ", single_line)
+                    # logger.info(">>: ", single_line)
                     self.tmp_std_all.append(single_line)
                     try:
                         ref_to_class.emit_print_signal(single_line)
 
                     except AttributeError:
-                        print(">>: ", single_line)
+                        logger.info(">>: ", single_line)
 
                 my_process.wait()
                 my_process.stdout.close()
@@ -603,7 +603,7 @@ class DialsCommand(object):
                 else:
                     local_success = False
                     # TODO handle error outputs
-                    print("\n __________________ Failed ______________________ \n")
+                    logger.info("\n __________________ Failed ______________________ \n")
                     try:
                         ref_to_class.emit_fail_signal()
                         return False
@@ -629,7 +629,7 @@ class DialsCommand(object):
 
 
 def print_list(lst, curr):
-    print("__________________________listing:")
+    logger.info("__________________________listing:")
     for uni in lst:
         # TODO loopthru all commands, in "both" lists
         stp_str = (
@@ -658,7 +658,7 @@ def print_list(lst, curr):
         if curr == uni.lin_num:
             stp_str += "                           <<< here I am <<<"
 
-        print(stp_str)
+        logger.info(stp_str)
 
 
 class TreeShow(object):
@@ -668,22 +668,22 @@ class TreeShow(object):
 
     def __call__(self, my_runner):
 
-        # print("\n\n TreeShow debug \n my_runner.step_list:\n")
+        # logger.info("\n\n TreeShow debug \n my_runner.step_list:\n")
         # print_list(my_runner.step_list, my_runner.current_line)
-        print("\n")
+        logger.info("\n")
 
-        print("")
-        print("status ")
-        print(" |  lin num ")
-        print(" |   |  command ")
-        print(" |   |   | ")
-        print("------------------")
+        logger.info("")
+        logger.info("status ")
+        logger.info(" |  lin num ")
+        logger.info(" |   |  command ")
+        logger.info(" |   |   | ")
+        logger.info("------------------")
         self.max_indent = 0
         self.str_lst = []
         self.add_tree(step=my_runner.step_list[0], indent=0)
         self.tree_print(my_runner.current_line)
         # TODO maybe here goes a print print function instead of logger ...
-        print("---------------------" + self.max_indent * self.ind_lin)
+        logger.info("---------------------" + self.max_indent * self.ind_lin)
 
     def add_tree(self, step=None, indent=None):
         if step.success is True:
@@ -735,4 +735,4 @@ class TreeShow(object):
                 self.tree_dat[pos][0] += str_here + "   <<< here "
 
         for prn_str in self.tree_dat:
-            print(prn_str[0])
+            logger.info(prn_str[0])

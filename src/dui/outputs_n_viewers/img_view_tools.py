@@ -99,7 +99,7 @@ def panel_data_as_double(my_sweep, img_pos, pan_num):
         return img_flex
 
     else:
-        print("\n something went wrong here (panel_data_as_double) \n")
+        logger.info("\n something went wrong here (panel_data_as_double) \n")
 
 
 def draw_palette_label(i_min, i_max):

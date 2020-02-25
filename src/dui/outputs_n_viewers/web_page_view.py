@@ -64,15 +64,15 @@ class WebTab(QWidget):
 
     def update_page(self, new_path=None):
         try:
-            print("\n >> update_page( %s )", new_path)
+            logger.info("\n >> update_page( %s )", new_path)
             new_path = os.path.abspath(new_path)
 
             # new_path = "file://" + new_path # unix way
             new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
-            print(" >> new_path: %s", new_path)
+            logger.info(" >> new_path: %s", new_path)
             self.web.load(QUrl(new_path))
 
-            print(" Loading  %s", new_path)
+            logger.info(" Loading  %s", new_path)
 
             txt_lab = "updating Report view:"
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
@@ -81,18 +81,18 @@ class WebTab(QWidget):
         except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            print("\n failed to show <<", new_path, ">>  on web view (", e, ")")
+            logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
-        print("HTML Load(ok) = %s", ok_bool)
+        logger.info("HTML Load(ok) = %s", ok_bool)
         tmp_off = """
         if not ok_bool:
             self.web.setHtml(self.dummy_html)
         """
 
         self.web.show()
-        print(" finished Loading HTML ")
+        logger.info(" finished Loading HTML ")
 
         if self.my_bar is not None:
             self.my_bar.ended()

@@ -248,7 +248,7 @@ class ReindexTable(QTableWidget):
         # self.show()
 
     def opt_clicked(self, row, col):
-        print("Solution clicked = %s", row + 1)
+        logger.info("Solution clicked = %s", row + 1)
         # p_h_svar = self.horizontalScrollBar().value()
         # p_v_svar = self.verticalScrollBar().value()
 
