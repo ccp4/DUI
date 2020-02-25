@@ -102,6 +102,7 @@ class FindspotsSimplerParameterTab(QWidget):
     """
 
     item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
@@ -112,7 +113,7 @@ class FindspotsSimplerParameterTab(QWidget):
         xds_gain_spn_bx.local_path = "spotfinder.threshold.dispersion.gain"
         xds_gain_spn_bx.setSpecialValueText("None")
         xds_gain_spn_bx.setValue(1.0)
-        xds_gain_spn_bx.valueChanged.connect(self.spnbox_changed)
+        xds_gain_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         xds_sigma_background_label = QLabel("Sigma Background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
@@ -120,7 +121,7 @@ class FindspotsSimplerParameterTab(QWidget):
         xds_sigma_background_spn_bx.local_path = (
             "spotfinder.threshold.dispersion.sigma_background"
         )
-        xds_sigma_background_spn_bx.valueChanged.connect(self.spnbox_changed)
+        xds_sigma_background_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         xds_sigma_strong_label = QLabel("Sigma Strong")
         xds_sigma_strong_spn_bx = QDoubleSpinBox()
@@ -128,14 +129,15 @@ class FindspotsSimplerParameterTab(QWidget):
         xds_sigma_strong_spn_bx.local_path = (
             "spotfinder.threshold.dispersion.sigma_strong"
         )
-        xds_sigma_strong_spn_bx.valueChanged.connect(self.spnbox_changed)
+        xds_sigma_strong_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         xds_global_threshold_label = QLabel("Global Threshold")
         xds_global_threshold_spn_bx = QDoubleSpinBox()
+        xds_global_threshold_spn_bx.setMaximum(9999.99)
         xds_global_threshold_spn_bx.local_path = (
             "spotfinder.threshold.dispersion.global_threshold"
         )
-        xds_global_threshold_spn_bx.valueChanged.connect(self.spnbox_changed)
+        xds_global_threshold_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         localLayout = QVBoxLayout()
 
@@ -168,7 +170,7 @@ class FindspotsSimplerParameterTab(QWidget):
         self.box_nproc = QSpinBox()
         self.box_nproc.local_path = "spotfinder.mp.nproc"
 
-        self.box_nproc.valueChanged.connect(self.spnbox_changed)
+        self.box_nproc.editingFinished.connect(self.spnbox_finished)
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
@@ -180,14 +182,15 @@ class FindspotsSimplerParameterTab(QWidget):
 
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
-    def spnbox_changed(self, value):
+    def spnbox_finished(self):
         sender = self.sender()
-        str_value = str(value)
-        logger.debug(value)
+        value = sender.value()
         str_path = str(sender.local_path)
-
-        # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
