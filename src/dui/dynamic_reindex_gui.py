@@ -330,13 +330,13 @@ class ReindexTable(QTableWidget):
                 item = QTableWidgetItem(col_cont)
                 item.setFlags(Qt.ItemIsEnabled)
                 if col_cont == " Y":
-                    item.setBackground(Qt.green)
+                    item.setBackground(QColor(Qt.green).lighter())
                     item.setForeground(Qt.black)
 
                     self.rec_col = col + 1
 
                 elif col_cont == " N":
-                    item.setBackground(Qt.red)
+                    item.setBackground(QColor(Qt.red).lighter())
                     item.setForeground(Qt.black)
 
                 else:
