@@ -458,7 +458,7 @@ class IntegrateSimplerParamTab(QWidget):
         d_min_spn_bx.setSpecialValueText("None")
         d_min_spn_bx.setValue(0.0)
         hbox_d_min.addWidget(d_min_spn_bx)
-        d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
+        d_min_spn_bx.editingFinished.connect(self.spnbox_finished)
         localLayout.addLayout(hbox_d_min)
 
         hbox_lay_nproc = QHBoxLayout()
@@ -492,6 +492,16 @@ class IntegrateSimplerParamTab(QWidget):
 
     def spnbox_changed(self, value):
         sender = self.sender()
+        str_path = str(sender.local_path)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
+
+    def spnbox_finished(self):
+        sender = self.sender()
+        value = sender.value()
         str_path = str(sender.local_path)
         if sender.specialValueText() and value == sender.minimum():
             self.item_to_remove.emit(str_path)
@@ -613,7 +623,7 @@ class ScaleSimplerParamTab(QWidget):
         hbox_d_min.addWidget(d_min_label)
         hbox_d_min.addWidget(d_min_spn_bx)
 
-        d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
+        d_min_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         localLayout.addLayout(hbox_lay_mod)
         localLayout.addLayout(hbox_lay_wgh_opt_err)
@@ -649,6 +659,15 @@ class ScaleSimplerParamTab(QWidget):
 
         self.item_changed.emit(str_path, str_value)
 
+    def spnbox_finished(self):
+        sender = self.sender()
+        value = sender.value()
+        str_path = str(sender.local_path)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
