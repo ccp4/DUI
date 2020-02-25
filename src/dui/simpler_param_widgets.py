@@ -406,6 +406,7 @@ class IntegrateSimplerParamTab(QWidget):
     """
 
     item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
@@ -491,11 +492,12 @@ class IntegrateSimplerParamTab(QWidget):
 
     def spnbox_changed(self, value):
         sender = self.sender()
-        str_value = str(value)
-        logger.debug(value)
         str_path = str(sender.local_path)
-
-        self.item_changed.emit(str_path, str_value)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())

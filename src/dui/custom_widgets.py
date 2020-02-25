@@ -798,7 +798,7 @@ class ParamMainWidget(QWidget):
                                     logger.debug("widg.local_path = %s", widg.local_path)
 
                                 except BaseException as ee:
-                                    print("ee = ", e)
+                                    print("ee = ", ee)
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
