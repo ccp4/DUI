@@ -185,7 +185,7 @@ class BeamCentrPage(QWidget):
         print("set_par(BeamCentrPage)", lst_par)
 
         self.data_bc_label.setText(
-            "New Beam Centre:\n ("
+            "New beam centre:\n ("
             + str(lst_par[0])
             + ", "
             + str(lst_par[1])
@@ -439,10 +439,10 @@ class ImportPage(QWidget):
         self.x_spn_bx.valueChanged.connect(self.x_beam_changed)
         self.y_spn_bx.valueChanged.connect(self.y_beam_changed)
 
-        self.chk_invert = QCheckBox("Invert Rotation Axis")
+        self.chk_invert = QCheckBox("Invert rotation axis")
         self.chk_invert.stateChanged.connect(self.inv_rota_changed)
 
-        self.opn_fil_btn = QPushButton(" \n Select File(s) \n ")
+        self.opn_fil_btn = QPushButton(" \n Select file(s) \n ")
 
         main_path = get_main_path()
 
@@ -452,7 +452,7 @@ class ImportPage(QWidget):
         main_v_box.addWidget(step_label)
         main_v_box.addWidget(self.opn_fil_btn)
         main_v_box.addWidget(self.simple_lin)
-        self.b_cetre_label = QLabel("\n\n Beam Centre")
+        self.b_cetre_label = QLabel("\n\n Beam centre")
         main_v_box.addWidget(self.b_cetre_label)
         cent_hbox = QHBoxLayout()
         self.x_label = QLabel("    X: ")
@@ -613,8 +613,8 @@ class ParamAdvancedWidget(QWidget):
         scrollArea.setWidget(self.scrollable_widget)
         vbox = QVBoxLayout()
 
-        search_label = QLabel("search:")
-        search_edit = QLineEdit("type search here")
+        search_label = QLabel("Search:")
+        search_edit = QLineEdit("Type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
 
         hbox = QHBoxLayout()

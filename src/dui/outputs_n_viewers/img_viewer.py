@@ -1132,7 +1132,7 @@ class MyImgWin(QWidget):
         self.slider_max = QSlider(Qt.Horizontal)
 
         # Viewing Tool
-        self.chk_box_show = QCheckBox("show reflection info")
+        self.chk_box_show = QCheckBox("Show reflection info")
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
 
@@ -1153,12 +1153,12 @@ class MyImgWin(QWidget):
 
         # Mask tools
         self.btn_reset_mask = QPushButton("Reset")
-        self.chk_box_mask = QCheckBox("Activate Mask Tool")
+        self.chk_box_mask = QCheckBox("Activate mask tool")
         self.chk_box_mask.setChecked(False)
 
-        self.rad_but_rect_mask = QRadioButton("rectangle")
-        self.rad_but_circ_mask = QRadioButton("circle")
-        self.rad_but_poly_mask = QRadioButton("polygon")
+        self.rad_but_rect_mask = QRadioButton("Rectangle")
+        self.rad_but_circ_mask = QRadioButton("Circle")
+        self.rad_but_poly_mask = QRadioButton("Polygon")
         self.rad_but_rect_mask.setChecked(True)
 
         self.rad_but_rect_mask.toggled.connect(self.my_painter.unpop_menu)
@@ -1172,23 +1172,23 @@ class MyImgWin(QWidget):
         self.my_painter.ll_b_centr_applied.connect(self.apply_bc)
 
         # Manual beam center tools
-        self.chk_box_B_centr = QCheckBox("Set Beam Centre")
+        self.chk_box_B_centr = QCheckBox("Set beam centre")
         self.chk_box_B_centr.stateChanged.connect(self.my_painter.ini_centr)
         self.chk_box_B_centr.setChecked(False)
 
         ##############################################################################
 
         # previews for spot finding
-        self.btn_set_image = QPushButton("image")
+        self.btn_set_image = QPushButton("Image")
 
-        self.btn_set_varia = QPushButton("variance")
-        self.btn_set_mean = QPushButton("mean")
-        self.btn_set_disp = QPushButton("dispersion")
+        self.btn_set_varia = QPushButton("Variance")
+        self.btn_set_mean = QPushButton("Mean")
+        self.btn_set_disp = QPushButton("Dispersion")
 
         self.btn_set_cv_mask = QPushButton("sigma_b ")
         self.btn_set_val_mask = QPushButton("sigma_s")
-        self.btn_set_glo_mask = QPushButton("global")
-        self.btn_set_fin_mask = QPushButton("threshold")
+        self.btn_set_glo_mask = QPushButton("Global")
+        self.btn_set_fin_mask = QPushButton("Threshold")
 
         self.btn_set_varia.clicked.connect(self.set_variance_img)
 
@@ -1239,7 +1239,7 @@ class MyImgWin(QWidget):
         ref_type_group_box_layout.addWidget(self.rad_but_fnd_hkl)
         ref_type_group_box_layout.addWidget(self.rad_but_pre_hkl)
 
-        type_grp = QGroupBox("Reflection Type ")
+        type_grp = QGroupBox("Reflection type ")
         type_grp.setLayout(ref_type_group_box_layout)
 
         self.palette_select = QComboBox()
@@ -1293,7 +1293,7 @@ class MyImgWin(QWidget):
         self.btn_ffw.setFont(QFont("Monospace", btn_f_size))
         self.btn_last.setFont(QFont("Monospace", btn_f_size))
 
-        self.btn_play = QPushButton("Play/Stop Video")
+        self.btn_play = QPushButton("Play/stop video")
         self.btn_play.clicked.connect(self.btn_play_clicked)
 
         nav_box = QHBoxLayout()
@@ -1837,11 +1837,11 @@ class MyImgWin(QWidget):
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
-            res_str = str("{:6.1f}".format(res_float))
-            new_label_txt += " ,  resolution = " + res_str + " " + u"\u00C5"
+            res_str = str("{:3.1f}".format(res_float))
+            new_label_txt += ", resolution = " + res_str + " " + u"\u00C5"
 
         else:
-            new_label_txt += " ,  resolution = ?"
+            new_label_txt += ", resolution = ?"
 
         self.info_label.setText(new_label_txt)
 
@@ -1991,7 +1991,7 @@ class MyImgWin(QWidget):
                 logger.debug("unable to disconnect timer again")
 
         else:
-            logger.debug("Playing Video")
+            logger.debug("Playing video")
             self.video_timer.timeout.connect(self.btn_next_clicked)
             self.video_timer.start(1)
 

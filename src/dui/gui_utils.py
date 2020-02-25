@@ -758,11 +758,11 @@ class OuterCaller(QWidget):
 
         v_box = QVBoxLayout()
 
-        recip_lat_but = QPushButton("\n Open Reciprocal Lattice Viewer \n")
+        recip_lat_but = QPushButton("\n Open reciprocal lattice viewer \n")
         recip_lat_but.clicked.connect(self.run_recip_dialg)
         v_box.addWidget(recip_lat_but)
 
-        img_but = QPushButton("\n Open Image Viewer \n")
+        img_but = QPushButton("\n Open image viewer \n")
         img_but.clicked.connect(self.run_img_dialg)
         v_box.addWidget(img_but)
 
