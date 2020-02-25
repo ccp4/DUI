@@ -909,19 +909,20 @@ class MainWidget(QMainWindow):
 
         # TODO fix "generate_mask" and "modify_geometry" : it should be the same as the previous step
 
+        # This dictionary defines which tasks can be performed at each step and
+        # which should be grayed out
         cmd_connects = {
             "Root": ["import"],
             "import": ["find_spots"],
             "find_spots": ["index"],
-            "index": ["refine_bravais_settings", "refine", "integrate", "export"],
+            "index": ["refine_bravais_settings", "refine", "integrate"],
             "refine_bravais_settings": [None],
-            "reindex": ["refine", "integrate", "export", "index"],
+            "reindex": ["refine", "integrate", "index"],
             "refine": [
                 "refine_bravais_settings",
                 "refine",
                 "integrate",
                 "index",
-                "export",
             ],
             "integrate": ["symmetry", "scale", "export", "index", "export"],
             "symmetry": ["refine_bravais_settings", "scale", "export"],
