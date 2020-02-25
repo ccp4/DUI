@@ -39,6 +39,8 @@ try:
         QPushButton,
         QSpinBox,
         QLineEdit,
+        QRegExp,
+        QRegExpValidator,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -56,6 +58,8 @@ except ImportError:
         QPushButton,
         QSpinBox,
         QLineEdit,
+        QRegExp,
+        QRegExpValidator,
         QVBoxLayout,
         QWidget,
         Signal,
@@ -241,11 +245,18 @@ class IndexSimplerParamTab(QWidget):
 
         space_group_label = QLabel("Space group")
         space_group_line = QLineEdit()
+        # Simple validator to allow only characters in H-M symbols
+        regex = QRegExp("[ABCPIFR][0-9a-d\-/:nmHR]+")
+        validatorHM = QRegExpValidator(regex)
+        space_group_line.setValidator(validatorHM)
         space_group_line.local_path = "indexing.known_symmetry.space_group"
         space_group_line.editingFinished.connect(self.line_changed)
 
         unit_cell_label = QLabel("Unit cell")
         unit_cell_line = QLineEdit()
+        regex = QRegExp("[0-9\., ]+")
+        validatorUC = QRegExpValidator(regex)
+        unit_cell_line.setValidator(validatorUC)
         unit_cell_line.local_path = "indexing.known_symmetry.unit_cell"
         unit_cell_line.editingFinished.connect(self.line_changed)
 
