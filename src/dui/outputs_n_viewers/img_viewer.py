@@ -1854,7 +1854,7 @@ class MyImgWin(QWidget):
             img_pos = self.img_num - 1
             loc_stk_siz = self.stack_size
 
-            n_of_panels = len(self.my_sweep.get_raw_data(img_pos))
+            n_of_panels = len(self.my_sweep.get_detector())
             if n_of_panels == 1:
                 pan_num = 0
 
