@@ -95,7 +95,7 @@ class ResetButton(QPushButton):
         super(ResetButton, self).__init__()
         self.setContentsMargins(-5, -1, -5, -1)
 
-        my_label = QLabel("Reset to Default")
+        my_label = QLabel("Reset to default")
         v_box = QVBoxLayout()
         v_box.addWidget(my_label)
         self.setLayout(v_box)
@@ -123,7 +123,7 @@ class FindspotsSimplerParameterTab(QWidget):
         xds_gain_spn_bx.setValue(1.0)
         xds_gain_spn_bx.editingFinished.connect(self.spnbox_finished)
 
-        xds_sigma_background_label = QLabel("Sigma Background")
+        xds_sigma_background_label = QLabel("Sigma background")
         xds_sigma_background_spn_bx = QDoubleSpinBox()
         xds_sigma_background_spn_bx.setValue(6.0)
         xds_sigma_background_spn_bx.local_path = (
@@ -131,7 +131,7 @@ class FindspotsSimplerParameterTab(QWidget):
         )
         xds_sigma_background_spn_bx.editingFinished.connect(self.spnbox_finished)
 
-        xds_sigma_strong_label = QLabel("Sigma Strong")
+        xds_sigma_strong_label = QLabel("Sigma strong")
         xds_sigma_strong_spn_bx = QDoubleSpinBox()
         xds_sigma_strong_spn_bx.setValue(3.0)
         xds_sigma_strong_spn_bx.local_path = (
@@ -139,7 +139,7 @@ class FindspotsSimplerParameterTab(QWidget):
         )
         xds_sigma_strong_spn_bx.editingFinished.connect(self.spnbox_finished)
 
-        xds_global_threshold_label = QLabel("Global Threshold")
+        xds_global_threshold_label = QLabel("Global threshold")
         xds_global_threshold_spn_bx = QDoubleSpinBox()
         xds_global_threshold_spn_bx.setMaximum(9999.99)
         xds_global_threshold_spn_bx.local_path = (
@@ -170,7 +170,7 @@ class FindspotsSimplerParameterTab(QWidget):
         localLayout.addLayout(xds_global_threshold_hb)
 
         hbox_lay_nproc = QHBoxLayout()
-        label_nproc = QLabel("Number of Jobs")
+        label_nproc = QLabel("Number of jobs")
         # label_nproc.setPalette(palette_object)
         # label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
@@ -223,7 +223,7 @@ class IndexSimplerParamTab(QWidget):
         # indexing_method_check = QCheckBox("indexing.method")
 
         hbox_method = QHBoxLayout()
-        label_method_62 = QLabel("Indexing Method")
+        label_method_62 = QLabel("Indexing method")
         hbox_method.addWidget(label_method_62)
         box_method_62 = QComboBox()
         box_method_62.tmp_lst = []
@@ -316,14 +316,14 @@ class RefineBravaiSimplerParamTab(QWidget):
 
         localLayout = QVBoxLayout()
         hbox_lay_outlier_algorithm = QHBoxLayout()
-        label_outlier_algorithm = QLabel("Outlier Rejection Algorithm")
+        label_outlier_algorithm = QLabel("Outlier rejection algorithm")
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
         box_outlier_algorithm = QComboBox()
         box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
         box_outlier_algorithm.tmp_lst = []
         box_outlier_algorithm.tmp_lst.append("null")
-        box_outlier_algorithm.tmp_lst.append("auto")
+        box_outlier_algorithm.tmp_lst.append("Auto")
         box_outlier_algorithm.tmp_lst.append("mcd")
         box_outlier_algorithm.tmp_lst.append("tukey")
         box_outlier_algorithm.tmp_lst.append("sauter_poon")
@@ -373,7 +373,7 @@ class RefineSimplerParamTab(QWidget):
 
         hbox_lay_scan_varying = QHBoxLayout()
 
-        label_scan_varying = QLabel("Scan Varying Refinement")
+        label_scan_varying = QLabel("Scan varying refinement")
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
@@ -396,14 +396,14 @@ class RefineSimplerParamTab(QWidget):
         ###########################################################################
 
         hbox_lay_outlier_algorithm = QHBoxLayout()
-        label_outlier_algorithm = QLabel("Outlier Rejection Algorithm")
+        label_outlier_algorithm = QLabel("Outlier rejection algorithm")
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
         box_outlier_algorithm = QComboBox()
         box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
         box_outlier_algorithm.tmp_lst = []
         box_outlier_algorithm.tmp_lst.append("null")
-        box_outlier_algorithm.tmp_lst.append("auto")
+        box_outlier_algorithm.tmp_lst.append("Auto")
         box_outlier_algorithm.tmp_lst.append("mcd")
         box_outlier_algorithm.tmp_lst.append("tukey")
         box_outlier_algorithm.tmp_lst.append("sauter_poon")
@@ -473,7 +473,7 @@ class IntegrateSimplerParamTab(QWidget):
 
         localLayout = QVBoxLayout()
         PrFit_lay_out = QHBoxLayout()
-        label_PrFit = QLabel("Use Profile Fitting")
+        label_PrFit = QLabel("Use profile fitting")
         PrFit_lay_out.addWidget(label_PrFit)
 
         PrFit_comb_bx = QComboBox()
@@ -490,7 +490,7 @@ class IntegrateSimplerParamTab(QWidget):
         localLayout.addLayout(PrFit_lay_out)
 
         hbox_lay_algorithm_53 = QHBoxLayout()
-        label_algorithm_53 = QLabel("Background Algorithm")
+        label_algorithm_53 = QLabel("Background algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
         box_algorithm_53 = QComboBox()
@@ -510,7 +510,7 @@ class IntegrateSimplerParamTab(QWidget):
         localLayout.addLayout(hbox_lay_algorithm_53)
 
         hbox_d_min = QHBoxLayout()
-        label_d_min = QLabel("d_min")
+        label_d_min = QLabel("High resolution limit")
         hbox_d_min.addWidget(label_d_min)
         d_min_spn_bx = QDoubleSpinBox()
         d_min_spn_bx.local_path = "prediction.d_min"
@@ -521,7 +521,7 @@ class IntegrateSimplerParamTab(QWidget):
         localLayout.addLayout(hbox_d_min)
 
         hbox_lay_nproc = QHBoxLayout()
-        label_nproc = QLabel("Number of Jobs")
+        label_nproc = QLabel("Number of jobs")
         # label_nproc.setFont( QFont("Monospace", 10))
         hbox_lay_nproc.addWidget(label_nproc)
 
@@ -588,7 +588,7 @@ class SymmetrySimplerParamTab(QWidget):
 
         hbox_d_min = QHBoxLayout()
         localLayout = QVBoxLayout()
-        label_d_min = QLabel("d_min")
+        label_d_min = QLabel("High resolution limit")
 
         hbox_d_min.addWidget(label_d_min)
 
@@ -654,7 +654,7 @@ class ScaleSimplerParamTab(QWidget):
         hbox_lay_mod.addWidget(box_mod)
 
         hbox_lay_wgh_opt_err = QHBoxLayout()
-        label_wgh_opt_err = QLabel("Optimise Errors Model")
+        label_wgh_opt_err = QLabel("Error optimisation model")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
         """
@@ -674,7 +674,7 @@ class ScaleSimplerParamTab(QWidget):
         hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
 
         hbox_d_min = QHBoxLayout()
-        d_min_label = QLabel("d_min")
+        d_min_label = QLabel("High resolution limit")
         d_min_spn_bx = QDoubleSpinBox()
         d_min_spn_bx.local_path = "cut_data.d_min"
         d_min_spn_bx.setSpecialValueText("None")
