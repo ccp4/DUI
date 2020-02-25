@@ -582,7 +582,8 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.setWindowTitle("CCP4 DUI - {}".format(__version__))
+        self.setWindowTitle("CCP4 DUI - {}: {}".format(__version__,
+                dui_files_path))
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
         self.just_reindexed = False
