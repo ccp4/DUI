@@ -207,6 +207,7 @@ class IndexSimplerParamTab(QWidget):
     """
 
     item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
 
     def __init__(self, phl_obj=None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
@@ -236,7 +237,7 @@ class IndexSimplerParamTab(QWidget):
         max_cell_spn_bx.setSingleStep(5.0)
         max_cell_spn_bx.local_path = "indexing.max_cell"
         max_cell_spn_bx.setSpecialValueText("Auto")
-        max_cell_spn_bx.valueChanged.connect(self.spnbox_changed)
+        max_cell_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         space_group_label = QLabel("Space group")
         space_group_line = QLineEdit()
@@ -274,13 +275,15 @@ class IndexSimplerParamTab(QWidget):
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
 
-    def spnbox_changed(self, value):
+    def spnbox_finished(self):
         sender = self.sender()
-        str_value = str(value)
+        value = sender.value()
         str_path = str(sender.local_path)
-
-        # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
 
     def line_changed(self):
         sender = self.sender()
