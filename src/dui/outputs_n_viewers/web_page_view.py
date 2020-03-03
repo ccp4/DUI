@@ -81,7 +81,7 @@ class WebTab(QWidget):
         except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
+            #logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):

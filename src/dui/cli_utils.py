@@ -574,7 +574,7 @@ class DialsCommand(object):
 
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-                logger.info("\nRunning:", run_cmd, "\n")
+                #logger.info("\nRunning:", run_cmd, "\n")
 
                 my_process = subprocess.Popen(
                     run_cmd,

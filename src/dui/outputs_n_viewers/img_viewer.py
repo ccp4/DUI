@@ -1640,7 +1640,7 @@ class MyImgWin(QWidget):
                 """
 
                 n_of_imgs = len(self.my_sweep.indices())
-                logger.info("n_of_imgs =", n_of_imgs)
+                #logger.info("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1728,7 +1728,7 @@ class MyImgWin(QWidget):
 
             try:
 
-                logger.info("pckl_file_path[1]=", pckl_file_path[1])
+                #logger.info("pckl_file_path[1]=", pckl_file_path[1])
 
                 table = flex.reflection_table.from_file(pckl_file_path[1])
 

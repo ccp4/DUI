@@ -124,11 +124,13 @@ class CommandNode(object):
                     cwd_path = os.path.join(sys_arg.directory, "dui_files")
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
+                    '''
                     logger.info("..log_file_out =", file_path, "\n")
                     logger.info(
                         "self.dials_command.tmp_std_all:",
                         self.dials_command.tmp_std_all,
                     )
+                    '''
 
                     fil_obj = open(file_path, "w")
                     for line_out in self.dials_command.tmp_std_all:
@@ -202,7 +204,6 @@ class Runner(object):
         else:
             cmd_lst = command
 
-        logger.info("Runner(run) ... cmd_lst =", cmd_lst)
         if cmd_lst[0] == "goto":
             logger.info("doing << goto >>")
             self.goto(int(cmd_lst[1]))

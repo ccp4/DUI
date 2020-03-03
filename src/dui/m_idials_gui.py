@@ -173,7 +173,6 @@ class CommandThread(QThread):
         self.start()
 
     def run(self):
-        logger.info("self.cmd_to_run =", self.cmd_to_run)
         self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
 
     def emit_print_signal(self, str_lin):
@@ -887,7 +886,7 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
-        logger.info("OPENING busy pop bar with the text: ", text_in_bar)
+        #logger.info("OPENING busy pop bar with the text: ", text_in_bar)
         if (
             self.idials_runner.current_node.ll_command_lst[0][0]
             != "refine_bravais_settings"
