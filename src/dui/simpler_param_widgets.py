@@ -102,15 +102,18 @@ class ResetButton(QPushButton):
         # self.show()
 
 
-class FindspotsSimplerParameterTab(QWidget):
+class SimpleParamTab(QWidget):
+    """Base class shared by all simple parameter tabs"""
+
+    item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
+
+class FindspotsSimplerParameterTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the spot-finder, this widget is the first to appear once the button
     "Find Sots" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
@@ -206,15 +209,12 @@ class FindspotsSimplerParameterTab(QWidget):
         return cpu_max_proc
 
 
-class IndexSimplerParamTab(QWidget):
+class IndexSimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, phl_obj=None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
@@ -306,10 +306,8 @@ class IndexSimplerParamTab(QWidget):
 
         self.item_changed.emit(str_path, str_value)
 
-class RefineBravaiSimplerParamTab(QWidget):
+class RefineBravaiSimplerParamTab(SimpleParamTab):
     # TODO some doc string here
-
-    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(RefineBravaiSimplerParamTab, self).__init__()
@@ -356,15 +354,12 @@ class RefineBravaiSimplerParamTab(QWidget):
         self.item_changed.emit(str_path, str_value)
 
 
-class RefineSimplerParamTab(QWidget):
+class RefineSimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the refiner, this widget is the first to appear once the button
     "Refine" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__()
@@ -457,15 +452,12 @@ class RefineSimplerParamTab(QWidget):
             self.item_changed.emit(str_path, str_value)
 
 
-class IntegrateSimplerParamTab(QWidget):
+class IntegrateSimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the integrate algorithm, this widget is the first to appear once the button
     "Integrate" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
@@ -574,14 +566,12 @@ class IntegrateSimplerParamTab(QWidget):
         return cpu_max_proc
 
 
-class SymmetrySimplerParamTab(QWidget):
+class SymmetrySimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the symmetry command, this widget is the first to appear once the button
     "Symmetry" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(SymmetrySimplerParamTab, self).__init__()
@@ -621,15 +611,13 @@ class SymmetrySimplerParamTab(QWidget):
         self.item_changed.emit(str_path, str_value)
 
 
-class ScaleSimplerParamTab(QWidget):
+class ScaleSimplerParamTab(SimpleParamTab):
 
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the scale command, this widget is the first to appear once the button
     "Scale" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(ScaleSimplerParamTab, self).__init__()
