@@ -510,7 +510,7 @@ class IntegrateSimplerParamTab(SimpleParamTab):
         self.box_nproc = QSpinBox()
 
         self.box_nproc.local_path = "integration.mp.nproc"
-        self.box_nproc.valueChanged.connect(self.spnbox_changed)
+        self.box_nproc.editingFinished.connect(self.spnbox_finished)
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
@@ -530,15 +530,6 @@ class IntegrateSimplerParamTab(SimpleParamTab):
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
-
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
@@ -568,7 +559,7 @@ class SymmetrySimplerParamTab(SimpleParamTab):
         d_min_spn_bx.setValue(0.0)
         hbox_d_min.addWidget(d_min_spn_bx)
 
-        d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
+        d_min_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         localLayout.addLayout(hbox_d_min)
 
@@ -581,14 +572,6 @@ class SymmetrySimplerParamTab(SimpleParamTab):
         self.lst_var_widg = []
         self.lst_var_widg.append(d_min_spn_bx)
         self.lst_var_widg.append(label_d_min)
-
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        logger.debug(value)
-        str_path = str(sender.local_path)
-
-        self.item_changed.emit(str_path, str_value)
 
 
 class ScaleSimplerParamTab(SimpleParamTab):
@@ -676,14 +659,6 @@ class ScaleSimplerParamTab(SimpleParamTab):
         str_path = str(sender.local_path)
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        logger.debug(value)
-        str_path = str(sender.local_path)
-
         self.item_changed.emit(str_path, str_value)
 
 
