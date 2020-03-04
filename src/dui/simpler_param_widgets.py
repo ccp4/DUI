@@ -108,6 +108,16 @@ class SimpleParamTab(QWidget):
     item_changed = Signal(str, str)
     item_to_remove = Signal(str)
 
+    def spnbox_finished(self):
+        sender = self.sender()
+        value = sender.value()
+        str_path = str(sender.local_path)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
+
 class FindspotsSimplerParameterTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
@@ -192,16 +202,6 @@ class FindspotsSimplerParameterTab(SimpleParamTab):
         self.setLayout(localLayout)
 
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
-
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
@@ -288,16 +288,6 @@ class IndexSimplerParamTab(SimpleParamTab):
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
         self.item_changed.emit(str_path, str_value)
-
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
 
     def line_changed(self):
         sender = self.sender()
@@ -550,16 +540,6 @@ class IntegrateSimplerParamTab(SimpleParamTab):
             str_value = str(value)
             self.item_changed.emit(str_path, str_value)
 
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
-
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
         self.box_nproc.setValue(cpu_max_proc)
@@ -706,15 +686,6 @@ class ScaleSimplerParamTab(SimpleParamTab):
 
         self.item_changed.emit(str_path, str_value)
 
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
