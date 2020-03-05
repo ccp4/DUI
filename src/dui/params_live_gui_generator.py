@@ -181,6 +181,7 @@ class PhilWidget(QWidget):
                     labl_obj.setStyleSheet(
                         "color: rgba(0, 155, 255, 255);" "background-color: yellow;"
                     )
+                    self.parent().parent().ensureWidgetVisible(labl_obj)
 
                     logger.debug("pos_str = %s", nm)
 
