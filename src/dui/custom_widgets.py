@@ -614,7 +614,8 @@ class ParamAdvancedWidget(QWidget):
         vbox = QVBoxLayout()
 
         search_label = QLabel("Search:")
-        search_edit = QLineEdit("Type search here")
+        search_edit = QLineEdit()
+        search_edit.setPlaceholderText("Type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
 
         hbox = QHBoxLayout()
