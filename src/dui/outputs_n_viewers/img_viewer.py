@@ -480,12 +480,12 @@ class ImgPainter(QWidget):
         self.n_pan_xb_yb = n_pan_xb_yb
 
     def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
-        #x = float(reflection[0]) + 1.0
-        #y = float(reflection[1]) + 1.0
+        # x = float(reflection[0]) + 1.0
+        # y = float(reflection[1]) + 1.0
 
         x = float(reflection[0] + reflection[2]) + 0.3
         y = float(reflection[1] + float(reflection[3]) * 0.5) + 6.0 / self.my_scale
-        #y = float(reflection[1])
+        # y = float(reflection[1])
 
         if reflection[4] == "NOT indexed":
             painter.setPen(non_indexed_pen)
@@ -1260,29 +1260,32 @@ class MyImgWin(QWidget):
             btn.clicked.connect(slot)
             return btn
 
-
         my_code_path = get_main_path()
         icon_path = my_code_path + "/resources/"
 
-        self.btn_first = _create_and_connect(icon_path + "first_img.png",
-                                             self.btn_first_clicked)
+        self.btn_first = _create_and_connect(
+            icon_path + "first_img.png", self.btn_first_clicked
+        )
 
-        self.btn_rev = _create_and_connect(icon_path + "rew_img.png",
-                                           self.btn_rev_clicked)
+        self.btn_rev = _create_and_connect(
+            icon_path + "rew_img.png", self.btn_rev_clicked
+        )
 
-        self.btn_prev = _create_and_connect(icon_path + "prev_img.png",
-                                            self.btn_prev_clicked)
+        self.btn_prev = _create_and_connect(
+            icon_path + "prev_img.png", self.btn_prev_clicked
+        )
 
+        self.btn_next = _create_and_connect(
+            icon_path + "next_img.png", self.btn_next_clicked
+        )
 
-        self.btn_next = _create_and_connect(icon_path + "next_img.png",
-                                            self.btn_next_clicked)
+        self.btn_ffw = _create_and_connect(
+            icon_path + "ffw_img.png", self.btn_ffw_clicked
+        )
 
-        self.btn_ffw = _create_and_connect(icon_path + "ffw_img.png",
-                                           self.btn_ffw_clicked)
-
-        self.btn_last = _create_and_connect(icon_path + "last_img.png",
-                                            self.btn_last_clicked)
-
+        self.btn_last = _create_and_connect(
+            icon_path + "last_img.png", self.btn_last_clicked
+        )
 
         btn_f_size = sys_font_point_size - 1
 
@@ -1389,6 +1392,7 @@ class MyImgWin(QWidget):
         mid_box.addWidget(zoom_out_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
+        self.info_label.setFont(QFont("Monospace", btn_f_size))
 
         top_left_v_box = QVBoxLayout()
         top_left_v_box.setMargin(0)
@@ -1640,7 +1644,7 @@ class MyImgWin(QWidget):
                 """
 
                 n_of_imgs = len(self.my_sweep.indices())
-                #logger.info("n_of_imgs =", n_of_imgs)
+                # logger.info("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1728,7 +1732,7 @@ class MyImgWin(QWidget):
 
             try:
 
-                #logger.info("pckl_file_path[1]=", pckl_file_path[1])
+                # logger.info("pckl_file_path[1]=", pckl_file_path[1])
 
                 table = flex.reflection_table.from_file(pckl_file_path[1])
 
@@ -1824,17 +1828,18 @@ class MyImgWin(QWidget):
         new_label_txt = ""
         if self.ref2exp:
             image_file = os.path.basename(
-                self.ref2exp.imageset.get_image_identifier(self.img_num - 1))
+                self.ref2exp.imageset.get_image_identifier(self.img_num - 1)
+            )
             new_label_txt += "{0}: ".format(image_file)
 
         if self.img_arr:
             new_label_txt += (
                 "X = "
-                + str(x_pos)
+                + str(x_pos).rjust(4)
                 + ", Y = "
-                + str(y_pos)
+                + str(y_pos).rjust(4)
                 + ", I = "
-                + str(self.img_arr[y_pos, x_pos])
+                + str(self.img_arr[y_pos, x_pos]).rjust(4)
             )
 
         else:
@@ -1844,7 +1849,7 @@ class MyImgWin(QWidget):
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
-            res_str = str("{:4.2f}".format(res_float))
+            res_str = str("{: 4.2f}".format(res_float))
             new_label_txt += ", resolution = " + res_str + " " + u"\u00C5"
 
         else:
@@ -1869,7 +1874,9 @@ class MyImgWin(QWidget):
                 pan_num = tuple(range(24))
 
             else:
-                logger.info("number of  panels NOT supported, defaulting to only first one")
+                logger.info(
+                    "number of  panels NOT supported, defaulting to only first one"
+                )
                 pan_num = 1
 
             if loc_stk_siz == 1:
