@@ -36,18 +36,14 @@ try:
 except ImportError:
     pass
 
-from dials.command_line.find_spots import phil_scope
-
 try:
     from qt import (
         QApplication,
         QComboBox,
-        QDoubleSpinBox,
         QFont,
         QHBoxLayout,
         QLabel,
         QLineEdit,
-        QSpinBox,
         Qt,
         QVBoxLayout,
         QWidget,
@@ -58,12 +54,10 @@ except ImportError:
     from .qt import (
         QApplication,
         QComboBox,
-        QDoubleSpinBox,
         QFont,
         QHBoxLayout,
         QLabel,
         QLineEdit,
-        QSpinBox,
         Qt,
         QVBoxLayout,
         QWidget,
@@ -131,22 +125,22 @@ class tree_2_lineal(object):
                 # pass
 
 
-
 class MyQComboBox(QComboBox):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(MyQComboBox, self).__init__(parent)
         self.setFocusPolicy(Qt.ClickFocus)
 
     def wheelEvent(self, event):
-        '''
+        """
         if self.hasFocus():
             logger.info("self.hasFocus")
             #return QComboBox.wheelEvent(event)
         else:
             logger.info("NO hasFocus")
-        '''
+        """
         logger.info("event: ", event)
         return
+
 
 class PhilWidget(QWidget):
     item_changed = Signal(str, str)
@@ -233,91 +227,89 @@ class PhilWidget(QWidget):
 
                 self.lst_label_widg.append(tmp_label)
 
-                if obj.type.phil_type == "bool" or obj.type.phil_type == "choice":
+                if obj.type.phil_type == "bool":
 
-                    if obj.type.phil_type == "bool":
+                    tmp_widg = MyQComboBox()
+                    tmp_widg.tmp_lst = []
+                    tmp_widg.tmp_lst.append("True")
+                    tmp_widg.tmp_lst.append("False")
+                    tmp_widg.tmp_lst.append("Auto")
+                    # tmp_widg.setFocusPolicy(Qt.StrongFocus)
+                    for lst_itm in tmp_widg.tmp_lst:
+                        tmp_widg.addItem(lst_itm)
 
-                        tmp_widg = MyQComboBox()
-                        tmp_widg.tmp_lst = []
-                        tmp_widg.tmp_lst.append("True")
-                        tmp_widg.tmp_lst.append("False")
-                        tmp_widg.tmp_lst.append("Auto")
-                        #tmp_widg.setFocusPolicy(Qt.StrongFocus)
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
+                    if str(obj.extract()) == "True":
+                        tmp_widg.setCurrentIndex(0)
+                        tmp_str += "                          True"
 
-                        if str(obj.extract()) == "True":
-                            tmp_widg.setCurrentIndex(0)
-                            tmp_str += "                          True"
+                    elif str(obj.extract()) == "False":
+                        tmp_widg.setCurrentIndex(1)
+                        tmp_str += "                          False"
 
-                        elif str(obj.extract()) == "False":
-                            tmp_widg.setCurrentIndex(1)
-                            tmp_str += "                          False"
+                    elif str(obj.extract()) == "Auto":
+                        tmp_widg.setCurrentIndex(2)
+                        tmp_str += "                          Auto"
 
-                        elif str(obj.extract()) == "Auto":
-                            tmp_widg.setCurrentIndex(2)
-                            tmp_str += "                          Auto"
+                    else:
+                        tmp_str = None
 
-                        else:
-                            tmp_str = None
+                    # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
+                    # logger.info("tmp_str =", tmp_str)
 
-                        # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
-                        # logger.info("tmp_str =", tmp_str)
+                    tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+                elif obj.type.phil_type == "choice":
+                    # remember to ask david about the issue here
+                    # tmp_widg = QComboBox()
 
-                    elif obj.type.phil_type == "choice":
-                        # remember to ask david about the issue here
-                        # tmp_widg = QComboBox()
+                    # tmp_widg.tmp_lst=[]
+                    # pos = 0
+                    # found_choise = False
+                    # for num, opt in enumerate(obj.words):
+                    #     opt = str(opt)
+                    #     if(opt[0] == "*"):
+                    #         found_choise = True
+                    #         opt = opt[1:]
+                    #         pos = num
+                    #         tmp_str += "                          " + opt
 
-                        # tmp_widg.tmp_lst=[]
-                        # pos = 0
-                        # found_choise = False
-                        # for num, opt in enumerate(obj.words):
-                        #     opt = str(opt)
-                        #     if(opt[0] == "*"):
-                        #         found_choise = True
-                        #         opt = opt[1:]
-                        #         pos = num
-                        #         tmp_str += "                          " + opt
+                    #     tmp_widg.tmp_lst.append(opt)
 
-                        #     tmp_widg.tmp_lst.append(opt)
+                    # for lst_itm in tmp_widg.tmp_lst:
+                    #     tmp_widg.addItem(lst_itm)
 
-                        # for lst_itm in tmp_widg.tmp_lst:
-                        #     tmp_widg.addItem(lst_itm)
+                    # tmp_widg.setCurrentIndex(pos)
+                    # tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        # tmp_widg.setCurrentIndex(pos)
-                        # tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+                    # if(found_choise == False):
+                    #     tmp_str = None
+                    #     non_added_lst.append(str(obj.full_path()))
+                    # begins pathed version
+                    tmp_widg = MyQComboBox()
 
-                        # if(found_choise == False):
-                        #     tmp_str = None
-                        #     non_added_lst.append(str(obj.full_path()))
-                        # begins pathed version
-                        tmp_widg = MyQComboBox()
+                    tmp_widg.tmp_lst = []
+                    pos = 0
+                    found_choise = False
+                    for num, opt in enumerate(obj.words):
+                        opt = str(opt)
+                        if opt[0] == "*":
+                            found_choise = True
+                            opt = opt[1:]
+                            pos = num
+                            tmp_str += "                          " + opt
 
-                        tmp_widg.tmp_lst = []
-                        pos = 0
-                        found_choise = False
-                        for num, opt in enumerate(obj.words):
-                            opt = str(opt)
-                            if opt[0] == "*":
-                                found_choise = True
-                                opt = opt[1:]
-                                pos = num
-                                tmp_str += "                          " + opt
+                        tmp_widg.tmp_lst.append(opt)
 
-                            tmp_widg.tmp_lst.append(opt)
+                    if not found_choise:
+                        tmp_str += "                          " + str(obj.extract())
 
-                        if not found_choise:
-                            tmp_str += "                          " + str(obj.extract())
+                    for lst_itm in tmp_widg.tmp_lst:
+                        tmp_widg.addItem(lst_itm)
 
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
+                    tmp_widg.setCurrentIndex(pos)
+                    tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        tmp_widg.setCurrentIndex(pos)
-                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
-
-                        # ends pathed version
+                    # ends pathed version
 
                 else:
                     tmp_widg = QLineEdit()
