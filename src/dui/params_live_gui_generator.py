@@ -194,7 +194,7 @@ class PhilWidget(QWidget):
 
         for nm, obj in enumerate(lst_phil_obj):
 
-            if str(type(obj))[-11:-2] == "ScopeData":
+            if isinstance(obj, ScopeData):
                 tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
                 # print tmp_str
                 tmp_widg = QLabel(tmp_str)
