@@ -102,6 +102,8 @@ class tree_2_lineal(object):
                     scope_info.name = str(single_obj.name)
                     scope_info.f_path = str(single_obj.full_path())
                     scope_info.i_m_scope = True
+                    scope_info.short_caption = single_obj.short_caption
+                    scope_info.help = single_obj.help
 
                     # print "scope_info.f_path =", scope_info.f_path
                     scope_info.indent = scope_info.f_path.count(".")
@@ -158,6 +160,18 @@ class PhilWidget(QWidget):
 
         self.setLayout(self.bg_box)
 
+    @staticmethod
+    def _tooltip_from_phil_object(obj):
+        tooltip = ""
+        if obj.short_caption:
+            tooltip = "<b>" + obj.short_caption + "</b>"
+        if obj.help:
+            if tooltip:
+                tooltip += ": " + obj.help
+            else:
+                tooltip = obj.help
+        return tooltip
+
     def user_searching(self, value):
 
         for nm, labl_obj in enumerate(self.lst_label_widg):
@@ -203,6 +217,10 @@ class PhilWidget(QWidget):
                 tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
                 tmp_widg.style_orign = "color: rgba(85, 85, 85, 255)"
                 tmp_widg.setStyleSheet(tmp_widg.style_orign)
+
+                tooltip = self._tooltip_from_phil_object(obj)
+                if tooltip:
+                    tmp_widg.setToolTip(tooltip)
 
                 self.bg_box.addWidget(tmp_widg)
 
@@ -322,6 +340,9 @@ class PhilWidget(QWidget):
                 if tmp_str is not None:
                     tmp_widg.local_path = str(obj.full_path())
                     # tmp_h_box.addStretch()
+                    tooltip = self._tooltip_from_phil_object(obj)
+                    if tooltip:
+                        tmp_widg.setToolTip(tooltip)
                     tmp_h_box.addWidget(tmp_widg)
                     self.lst_var_widg.append(tmp_widg)
                     self.bg_box.addLayout(tmp_h_box)
