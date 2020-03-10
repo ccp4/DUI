@@ -843,15 +843,6 @@ class PopActionsMenu(QMenu):
 
         img_spot_find_box = QVBoxLayout()
 
-        gain_layout = QHBoxLayout()
-        gain_layout.addWidget(QLabel("Gain"))
-        gain_layout.addWidget(self.my_parent.gain_spin)
-
-        size_layout = QHBoxLayout()
-        size_layout.addWidget(QLabel("Kernel Size"))
-        size_layout.addWidget(self.my_parent.size_1_spin)
-        size_layout.addWidget(self.my_parent.size_2_spin)
-
         nsig_b_layout = QHBoxLayout()
         nsig_b_layout.addWidget(QLabel("Sigma Background"))
         nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
@@ -867,6 +858,15 @@ class PopActionsMenu(QMenu):
         min_local_layout = QHBoxLayout()
         min_local_layout.addWidget(QLabel("Minimum Local "))
         min_local_layout.addWidget(self.my_parent.min_count_spin)
+
+        gain_layout = QHBoxLayout()
+        gain_layout.addWidget(QLabel("Gain"))
+        gain_layout.addWidget(self.my_parent.gain_spin)
+
+        size_layout = QHBoxLayout()
+        size_layout.addWidget(QLabel("Kernel Size"))
+        size_layout.addWidget(self.my_parent.size_1_spin)
+        size_layout.addWidget(self.my_parent.size_2_spin)
 
         img_spot_find_box.addLayout(nsig_b_layout)
         img_spot_find_box.addLayout(nsig_s_layout)
