@@ -162,14 +162,10 @@ class PhilWidget(QWidget):
 
     @staticmethod
     def _tooltip_from_phil_object(obj):
-        tooltip = ""
-        if obj.short_caption:
-            tooltip = "<b>" + obj.short_caption + "</b>"
         if obj.help:
-            if tooltip:
-                tooltip += ": " + obj.help
-            else:
-                tooltip = obj.help
+            tooltip = "<p>" + obj.help + "</p>"
+        else:
+            tooltip = ""
         return tooltip
 
     def user_searching(self, value):
