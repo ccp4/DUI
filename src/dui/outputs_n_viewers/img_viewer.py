@@ -541,9 +541,9 @@ class ImgPainter(QWidget):
 
         try:
             pen_col = {
-                "white2black": Qt.blue,
-                "black2white": Qt.cyan,
-                "hot descend": Qt.magenta,
+                "grayscale": Qt.blue,
+                "invert": Qt.cyan,
+                "heat invert": Qt.magenta,
             }
             indexed_pen.setBrush(pen_col[self.my_parent.palette])
 
@@ -553,10 +553,7 @@ class ImgPainter(QWidget):
         indexed_pen.setStyle(Qt.SolidLine)
 
         non_indexed_pen = QPen()  # creates a default non_indexed_pen
-        if (
-            self.my_parent.palette == "white2black"
-            or self.my_parent.palette == "black2white"
-        ):
+        if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
             non_indexed_pen.setBrush(Qt.red)
             # non_indexed_pen.setBrush(Qt.magenta)
 
@@ -565,8 +562,8 @@ class ImgPainter(QWidget):
 
         to_do_pen = QPen()  # creates a default pen for user actions
         if (
-            self.my_parent.palette == "white2black"
-            or self.my_parent.palette == "hot descend"
+            self.my_parent.palette == "grayscale"
+            or self.my_parent.palette == "heat invert"
         ):
             to_do_pen.setBrush(QColor(0, 155, 0))
         else:
@@ -1258,7 +1255,7 @@ class MyImgWin(QWidget):
         type_grp.setLayout(ref_type_group_box_layout)
 
         self.palette_select = QComboBox()
-        self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
+        self.palette_lst = ["grayscale", "invert", "heat", "heat invert"]
         self.palette = self.palette_lst[0]
         for plt in self.palette_lst:
             self.palette_select.addItem(plt)
@@ -1429,10 +1426,6 @@ class MyImgWin(QWidget):
         my_box.addWidget(self.info_label)
 
         self.setLayout(my_box)
-
-        # changing default palette:
-
-        self.palette_select.setCurrentIndex(3)
 
     def set_img_img(self):
         self.draw_img_img()
