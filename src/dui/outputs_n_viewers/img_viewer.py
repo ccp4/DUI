@@ -27,7 +27,6 @@ import sys
 import os
 
 from dials.array_family import flex
-from dxtbx.datablock import DataBlockFactory
 
 from dials.algorithms.image.threshold import (
     DispersionThresholdDebug,
@@ -35,8 +34,6 @@ from dials.algorithms.image.threshold import (
 )
 
 from dxtbx.model.experiment_list import ExperimentListFactory
-import pickle
-
 
 import numpy as np
 
@@ -1043,7 +1040,7 @@ class PopDisplayMenu(QMenu):
         )
 
 
-class ThresholdDebugGenetator:
+class ThresholdDebugGenerator:
     # from dials.algorithms.image.threshold import DispersionThresholdDebug
 
     def __init__(self, image_in):
@@ -1052,7 +1049,7 @@ class ThresholdDebugGenetator:
     def set_mask(self, mask_flex_in):
         self.mask = mask_flex_in
 
-        if self.mask == None:
+        if self.mask is None:
             self.mask = flex.bool(flex.grid(self.image.all()), True)
 
     def set_pars(self, gain, size, nsig_b, nsig_s, global_threshold, min_count):
@@ -1531,7 +1528,7 @@ class MyImgWin(QWidget):
             logger.info("No image loaded yet")
 
     def get_debug_gen(self):
-        self.debug_gen_data = ThresholdDebugGenetator(image_in=self.img_arr)
+        self.debug_gen_data = ThresholdDebugGenerator(image_in=self.img_arr)
         self.debug_gen_data.set_mask(self.my_painter.mask_flex)
         self.debug_gen_data.set_pars(
             gain=self.gain_spin.value(),
@@ -1617,7 +1614,6 @@ class MyImgWin(QWidget):
                 logger.info("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
-        from dxtbx.model.experiment_list import ExperimentListFactory
 
         if json_file_path is not None:
             try:
@@ -1685,11 +1681,6 @@ class MyImgWin(QWidget):
 
             else:
                 self.my_painter.scale2fact(sc_height / pt_height)
-
-        tmp_off = """
-        except ZeroDivisionError:
-            print
-        """
 
     def set_reflection_table(self, pckl_file_path):
         if pckl_file_path[0] is not None:
