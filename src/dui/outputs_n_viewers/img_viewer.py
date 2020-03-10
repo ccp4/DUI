@@ -828,7 +828,7 @@ class PopActionsMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
 
-        info_grp = QGroupBox("Mask Tool")
+        info_grp = QGroupBox("Mask tool")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
@@ -839,7 +839,7 @@ class PopActionsMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        spot_find_grp = QGroupBox("Spot Finding Steps")
+        spot_find_grp = QGroupBox("Spot finding steps")
 
         img_spot_find_box = QVBoxLayout()
 
@@ -848,19 +848,19 @@ class PopActionsMenu(QMenu):
         algorithm_layout.addWidget(self.my_parent.spot_algorithm_select)
 
         nsig_b_layout = QHBoxLayout()
-        nsig_b_layout.addWidget(QLabel("Sigma Background"))
+        nsig_b_layout.addWidget(QLabel("Sigma background"))
         nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
 
         nsig_s_layout = QHBoxLayout()
-        nsig_s_layout.addWidget(QLabel("Sigma Strong"))
+        nsig_s_layout.addWidget(QLabel("Sigma strong"))
         nsig_s_layout.addWidget(self.my_parent.nsig_s_spin)
 
         global_threshold_spin_layout = QHBoxLayout()
-        global_threshold_spin_layout.addWidget(QLabel("Global Threshold"))
+        global_threshold_spin_layout.addWidget(QLabel("Global threshold"))
         global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
 
         min_local_layout = QHBoxLayout()
-        min_local_layout.addWidget(QLabel("Minimum Local "))
+        min_local_layout.addWidget(QLabel("Minimum local "))
         min_local_layout.addWidget(self.my_parent.min_count_spin)
 
         gain_layout = QHBoxLayout()
@@ -868,7 +868,7 @@ class PopActionsMenu(QMenu):
         gain_layout.addWidget(self.my_parent.gain_spin)
 
         size_layout = QHBoxLayout()
-        size_layout.addWidget(QLabel("Kernel Size"))
+        size_layout.addWidget(QLabel("Kernel size"))
         size_layout.addWidget(self.my_parent.size_1_spin)
         size_layout.addWidget(self.my_parent.size_2_spin)
 
@@ -921,7 +921,7 @@ class PopDisplayMenu(QMenu):
 
         # group to tune up palette
 
-        palette_grp = QGroupBox("Palette Tuning")
+        palette_grp = QGroupBox("Palette tuning")
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
         colour_box.addWidget(self.my_parent.min_i_edit)
@@ -969,7 +969,7 @@ class PopDisplayMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
-        info_grp = QGroupBox("Reflection Info ")
+        info_grp = QGroupBox("Reflection info ")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
@@ -981,18 +981,18 @@ class PopDisplayMenu(QMenu):
         # group to control how to navigate thru images
 
         mid_top_box = QHBoxLayout()
-        mid_top_box.addWidget(QLabel("Image Jump Step"))
+        mid_top_box.addWidget(QLabel("Image jump step"))
         mid_top_box.addWidget(self.my_parent.img_step)
 
         mid_bot_box = QHBoxLayout()
-        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
+        mid_bot_box.addWidget(QLabel("Number of images to add"))
         mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
 
         img_select_box = QVBoxLayout()
         img_select_box.addLayout(mid_top_box)
         img_select_box.addLayout(mid_bot_box)
 
-        img_select_group_box = QGroupBox("IMG Navigation")
+        img_select_group_box = QGroupBox("Navigation")
         img_select_group_box.setLayout(img_select_box)
 
         main_top_layout = QVBoxLayout()
