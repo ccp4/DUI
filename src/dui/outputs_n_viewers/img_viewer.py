@@ -843,6 +843,10 @@ class PopActionsMenu(QMenu):
 
         img_spot_find_box = QVBoxLayout()
 
+        algorithm_layout = QHBoxLayout()
+        algorithm_layout.addWidget(QLabel("Algorithm"))
+        algorithm_layout.addWidget(self.my_parent.spot_algorithm_select)
+
         nsig_b_layout = QHBoxLayout()
         nsig_b_layout.addWidget(QLabel("Sigma Background"))
         nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
@@ -868,6 +872,7 @@ class PopActionsMenu(QMenu):
         size_layout.addWidget(self.my_parent.size_1_spin)
         size_layout.addWidget(self.my_parent.size_2_spin)
 
+        img_spot_find_box.addLayout(algorithm_layout)
         img_spot_find_box.addLayout(nsig_b_layout)
         img_spot_find_box.addLayout(nsig_s_layout)
         img_spot_find_box.addLayout(global_threshold_spin_layout)
@@ -1041,8 +1046,6 @@ class PopDisplayMenu(QMenu):
 
 
 class ThresholdDebugGenerator:
-    # from dials.algorithms.image.threshold import DispersionThresholdDebug
-
     def __init__(self, image_in):
         self.image = image_in
 
@@ -1052,7 +1055,10 @@ class ThresholdDebugGenerator:
         if self.mask is None:
             self.mask = flex.bool(flex.grid(self.image.all()), True)
 
-    def set_pars(self, gain, size, nsig_b, nsig_s, global_threshold, min_count):
+    def set_pars(
+        self, algorithm, gain, size, nsig_b, nsig_s, global_threshold, min_count
+    ):
+        self.algorithm = algorithm
         self.gain = gain
         self.size = size
         self.nsig_b = nsig_b
@@ -1064,9 +1070,16 @@ class ThresholdDebugGenerator:
 
         self.gain_map = flex.double(flex.grid(self.image.all()), self.gain)
 
-        # debug = DispersionThresholdDebug(
+        if self.algorithm == "dispersion":
+            Debug = DispersionThresholdDebug
+        elif self.algorithm == "dispersion extended":
+            Debug = DispersionExtendedThresholdDebug
+        else:
+            raise ValueError(
+                "Unknown spot-finding algorithm: {}".format(self.algorithm)
+            )
 
-        debug = DispersionExtendedThresholdDebug(
+        debug = Debug(
             self.image,
             self.mask,
             self.gain_map,
@@ -1207,6 +1220,11 @@ class MyImgWin(QWidget):
         self.size_2_spin = QSpinBox()
         self.size_2_spin.setValue(3)
         self.size_2_spin.setMinimum(1)
+
+        self.spot_algorithm_select = QComboBox()
+        self.spot_algorithm = ["dispersion extended", "dispersion"]
+        for algorithm in self.spot_algorithm:
+            self.spot_algorithm_select.addItem(algorithm)
 
         self.nsig_b_spin = QDoubleSpinBox()
         self.nsig_b_spin.setValue(6)
@@ -1531,6 +1549,7 @@ class MyImgWin(QWidget):
         self.debug_gen_data = ThresholdDebugGenerator(image_in=self.img_arr)
         self.debug_gen_data.set_mask(self.my_painter.mask_flex)
         self.debug_gen_data.set_pars(
+            algorithm=self.spot_algorithm_select.currentText(),
             gain=self.gain_spin.value(),
             size=(self.size_1_spin.value(), self.size_2_spin.value()),
             nsig_b=self.nsig_b_spin.value(),
@@ -1546,7 +1565,8 @@ class MyImgWin(QWidget):
 
     def check_debug_pars(self, do_anyway=False):
         if (
-            self.debug_gen_data.gain != self.gain_spin.value()
+            self.debug_gen_data.algorithm != self.spot_algorithm_select.currentText()
+            or self.debug_gen_data.gain != self.gain_spin.value()
             or self.debug_gen_data.size
             != (self.size_1_spin.value(), self.size_2_spin.value())
             or self.debug_gen_data.nsig_b != self.nsig_b_spin.value()
