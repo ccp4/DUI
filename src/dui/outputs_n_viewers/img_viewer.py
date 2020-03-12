@@ -962,8 +962,8 @@ class PopDisplayMenu(QMenu):
         # group to control what to see from algorithms
 
         ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
         info_grp = QGroupBox("Reflection info ")
@@ -1143,12 +1143,11 @@ class MyImgWin(QWidget):
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
 
-        self.rad_but_all_hkl = QRadioButton("All HKLs")
-        self.rad_but_all_hkl.clicked.connect(self.set_img)
-
-        self.rad_but_all_hkl.setChecked(True)
         self.rad_but_near_hkl = QRadioButton("Nearest HKL")
         self.rad_but_near_hkl.clicked.connect(self.set_img)
+        self.rad_but_near_hkl.setChecked(True)
+        self.rad_but_all_hkl = QRadioButton("All HKLs")
+        self.rad_but_all_hkl.clicked.connect(self.set_img)
         self.rad_but_none_hkl = QRadioButton("No HKL")
         self.rad_but_none_hkl.clicked.connect(self.set_img)
 
