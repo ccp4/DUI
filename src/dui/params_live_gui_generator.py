@@ -102,6 +102,8 @@ class tree_2_lineal(object):
                     scope_info.name = str(single_obj.name)
                     scope_info.f_path = str(single_obj.full_path())
                     scope_info.i_m_scope = True
+                    scope_info.short_caption = single_obj.short_caption
+                    scope_info.help = single_obj.help
 
                     # print "scope_info.f_path =", scope_info.f_path
                     scope_info.indent = scope_info.f_path.count(".")
@@ -162,6 +164,14 @@ class PhilWidget(QWidget):
         self._found_labels = []
         self._current_label = 0
 
+    @staticmethod
+    def _tooltip_from_phil_object(obj):
+        if obj.help:
+            tooltip = "<p>" + obj.help + "</p>"
+        else:
+            tooltip = ""
+        return tooltip
+
     def user_searching(self, value):
 
         self.original_parent.search_next_button.setEnabled(False)
@@ -218,7 +228,7 @@ class PhilWidget(QWidget):
 
         for nm, obj in enumerate(lst_phil_obj):
 
-            if str(type(obj))[-11:-2] == "ScopeData":
+            if isinstance(obj, ScopeData):
                 tmp_str = " " * int(obj.indent * inde_step) + str(obj.name)
                 # print tmp_str
                 tmp_widg = QLabel(tmp_str)
@@ -227,6 +237,10 @@ class PhilWidget(QWidget):
                 tmp_widg.setFont(QFont("Monospace", sys_font_point_size, QFont.Bold))
                 tmp_widg.style_orign = "color: rgba(85, 85, 85, 255)"
                 tmp_widg.setStyleSheet(tmp_widg.style_orign)
+
+                tooltip = self._tooltip_from_phil_object(obj)
+                if tooltip:
+                    tmp_widg.setToolTip(tooltip)
 
                 self.bg_box.addWidget(tmp_widg)
 
@@ -251,91 +265,89 @@ class PhilWidget(QWidget):
 
                 self.lst_label_widg.append(tmp_label)
 
-                if obj.type.phil_type == "bool" or obj.type.phil_type == "choice":
+                if obj.type.phil_type == "bool":
 
-                    if obj.type.phil_type == "bool":
+                    tmp_widg = MyQComboBox()
+                    tmp_widg.tmp_lst = []
+                    tmp_widg.tmp_lst.append("True")
+                    tmp_widg.tmp_lst.append("False")
+                    tmp_widg.tmp_lst.append("Auto")
+                    # tmp_widg.setFocusPolicy(Qt.StrongFocus)
+                    for lst_itm in tmp_widg.tmp_lst:
+                        tmp_widg.addItem(lst_itm)
 
-                        tmp_widg = MyQComboBox()
-                        tmp_widg.tmp_lst = []
-                        tmp_widg.tmp_lst.append("True")
-                        tmp_widg.tmp_lst.append("False")
-                        tmp_widg.tmp_lst.append("Auto")
-                        # tmp_widg.setFocusPolicy(Qt.StrongFocus)
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
+                    if str(obj.extract()) == "True":
+                        tmp_widg.setCurrentIndex(0)
+                        tmp_str += "                          True"
 
-                        if str(obj.extract()) == "True":
-                            tmp_widg.setCurrentIndex(0)
-                            tmp_str += "                          True"
+                    elif str(obj.extract()) == "False":
+                        tmp_widg.setCurrentIndex(1)
+                        tmp_str += "                          False"
 
-                        elif str(obj.extract()) == "False":
-                            tmp_widg.setCurrentIndex(1)
-                            tmp_str += "                          False"
+                    elif str(obj.extract()) == "Auto":
+                        tmp_widg.setCurrentIndex(2)
+                        tmp_str += "                          Auto"
 
-                        elif str(obj.extract()) == "Auto":
-                            tmp_widg.setCurrentIndex(2)
-                            tmp_str += "                          Auto"
+                    else:
+                        tmp_str = None
 
-                        else:
-                            tmp_str = None
+                    # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
+                    # logger.info("tmp_str =", tmp_str)
 
-                        # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
-                        # logger.info("tmp_str =", tmp_str)
+                    tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+                elif obj.type.phil_type == "choice":
+                    # remember to ask david about the issue here
+                    # tmp_widg = QComboBox()
 
-                    elif obj.type.phil_type == "choice":
-                        # remember to ask david about the issue here
-                        # tmp_widg = QComboBox()
+                    # tmp_widg.tmp_lst=[]
+                    # pos = 0
+                    # found_choise = False
+                    # for num, opt in enumerate(obj.words):
+                    #     opt = str(opt)
+                    #     if(opt[0] == "*"):
+                    #         found_choise = True
+                    #         opt = opt[1:]
+                    #         pos = num
+                    #         tmp_str += "                          " + opt
 
-                        # tmp_widg.tmp_lst=[]
-                        # pos = 0
-                        # found_choise = False
-                        # for num, opt in enumerate(obj.words):
-                        #     opt = str(opt)
-                        #     if(opt[0] == "*"):
-                        #         found_choise = True
-                        #         opt = opt[1:]
-                        #         pos = num
-                        #         tmp_str += "                          " + opt
+                    #     tmp_widg.tmp_lst.append(opt)
 
-                        #     tmp_widg.tmp_lst.append(opt)
+                    # for lst_itm in tmp_widg.tmp_lst:
+                    #     tmp_widg.addItem(lst_itm)
 
-                        # for lst_itm in tmp_widg.tmp_lst:
-                        #     tmp_widg.addItem(lst_itm)
+                    # tmp_widg.setCurrentIndex(pos)
+                    # tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        # tmp_widg.setCurrentIndex(pos)
-                        # tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+                    # if(found_choise == False):
+                    #     tmp_str = None
+                    #     non_added_lst.append(str(obj.full_path()))
+                    # begins pathed version
+                    tmp_widg = MyQComboBox()
 
-                        # if(found_choise == False):
-                        #     tmp_str = None
-                        #     non_added_lst.append(str(obj.full_path()))
-                        # begins pathed version
-                        tmp_widg = MyQComboBox()
+                    tmp_widg.tmp_lst = []
+                    pos = 0
+                    found_choise = False
+                    for num, opt in enumerate(obj.words):
+                        opt = str(opt)
+                        if opt[0] == "*":
+                            found_choise = True
+                            opt = opt[1:]
+                            pos = num
+                            tmp_str += "                          " + opt
 
-                        tmp_widg.tmp_lst = []
-                        pos = 0
-                        found_choise = False
-                        for num, opt in enumerate(obj.words):
-                            opt = str(opt)
-                            if opt[0] == "*":
-                                found_choise = True
-                                opt = opt[1:]
-                                pos = num
-                                tmp_str += "                          " + opt
+                        tmp_widg.tmp_lst.append(opt)
 
-                            tmp_widg.tmp_lst.append(opt)
+                    if not found_choise:
+                        tmp_str += "                          " + str(obj.extract())
 
-                        if not found_choise:
-                            tmp_str += "                          " + str(obj.extract())
+                    for lst_itm in tmp_widg.tmp_lst:
+                        tmp_widg.addItem(lst_itm)
 
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
+                    tmp_widg.setCurrentIndex(pos)
+                    tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        tmp_widg.setCurrentIndex(pos)
-                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
-
-                        # ends pathed version
+                    # ends pathed version
 
                 else:
                     tmp_widg = QLineEdit()
@@ -348,6 +360,9 @@ class PhilWidget(QWidget):
                 if tmp_str is not None:
                     tmp_widg.local_path = str(obj.full_path())
                     # tmp_h_box.addStretch()
+                    tooltip = self._tooltip_from_phil_object(obj)
+                    if tooltip:
+                        tmp_widg.setToolTip(tooltip)
                     tmp_h_box.addWidget(tmp_widg)
                     self.lst_var_widg.append(tmp_widg)
                     self.bg_box.addLayout(tmp_h_box)
