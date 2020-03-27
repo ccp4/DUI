@@ -617,13 +617,14 @@ class ParamAdvancedWidget(QWidget):
         search_edit = QLineEdit()
         search_edit.setPlaceholderText("Type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
-        search_next_button = QPushButton("Find next")
-        search_next_button.setEnabled(False)
+        self.search_next_button = QPushButton("Find next")
+        self.search_next_button.setEnabled(False)
 
         hbox = QHBoxLayout()
         hbox.addWidget(search_label)
         hbox.addWidget(search_edit)
-        hbox.addWidget(search_next_button)
+        hbox.addWidget(self.search_next_button)
+        self.search_next_button.clicked.connect(self.scrollable_widget.find_next)
         vbox.addLayout(hbox)
 
         vbox.addWidget(scrollArea)

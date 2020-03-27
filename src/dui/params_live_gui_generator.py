@@ -36,18 +36,14 @@ try:
 except ImportError:
     pass
 
-from dials.command_line.find_spots import phil_scope
-
 try:
     from qt import (
         QApplication,
         QComboBox,
-        QDoubleSpinBox,
         QFont,
         QHBoxLayout,
         QLabel,
         QLineEdit,
-        QSpinBox,
         Qt,
         QVBoxLayout,
         QWidget,
@@ -58,12 +54,10 @@ except ImportError:
     from .qt import (
         QApplication,
         QComboBox,
-        QDoubleSpinBox,
         QFont,
         QHBoxLayout,
         QLabel,
         QLineEdit,
-        QSpinBox,
         Qt,
         QVBoxLayout,
         QWidget,
@@ -131,22 +125,22 @@ class tree_2_lineal(object):
                 # pass
 
 
-
 class MyQComboBox(QComboBox):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(MyQComboBox, self).__init__(parent)
         self.setFocusPolicy(Qt.ClickFocus)
 
     def wheelEvent(self, event):
-        '''
+        """
         if self.hasFocus():
             logger.info("self.hasFocus")
             #return QComboBox.wheelEvent(event)
         else:
             logger.info("NO hasFocus")
-        '''
+        """
         logger.info("event: ", event)
         return
+
 
 class PhilWidget(QWidget):
     item_changed = Signal(str, str)
@@ -154,6 +148,7 @@ class PhilWidget(QWidget):
     def __init__(self, phl_obj, parent=None):
         # TODO fix the order of this two parameters
         super(PhilWidget, self).__init__(parent)
+        self.original_parent = parent
 
         self.bg_box = QVBoxLayout(self)
 
@@ -164,28 +159,50 @@ class PhilWidget(QWidget):
 
         self.setLayout(self.bg_box)
 
+        self._found_labels = []
+        self._current_label = 0
+
     def user_searching(self, value):
 
+        self.original_parent.search_next_button.setEnabled(False)
+        self._found_labels = []
+
         for nm, labl_obj in enumerate(self.lst_label_widg):
-            # labl_obj.setPalette(labl_obj.style_orign)
             labl_obj.setStyleSheet(labl_obj.style_orign)
 
-        if len(value) > 1:
-            logger.debug("user searching for: %s", value)
-            logger.debug("len = %s", len(value))
+        if len(value) < 2:
+            return
 
-            for nm, labl_obj in enumerate(self.lst_label_widg):
-                labl_text = labl_obj.text()
-                if value in labl_text:
-                    # labl_obj.setPalette(self.plt_fnd)
-                    labl_obj.setStyleSheet(
-                        "color: rgba(0, 155, 255, 255);" "background-color: yellow;"
-                    )
-                    self.parent().parent().ensureWidgetVisible(labl_obj)
+        logger.debug("user searching for: %s", value)
+        logger.debug("len = %s", len(value))
 
-                    logger.debug("pos_str = %s", nm)
+        for nm, labl_obj in enumerate(self.lst_label_widg):
+            labl_text = labl_obj.text()
+            if value in labl_text:
+                self._found_labels.append(labl_obj)
+                logger.debug("pos_str = %s", nm)
 
-            # TODO make sure this keeps colours of grayed state
+        if self._found_labels:
+            self.parent().parent().ensureWidgetVisible(self._found_labels[0])
+            self._found_labels[0].setStyleSheet(
+                "color: rgba(0, 155, 255, 255);" "background-color: yellow;"
+            )
+            self._current_label = 0
+
+        if len(self._found_labels) > 1:
+            self.original_parent.search_next_button.setEnabled(True)
+
+    def find_next(self):
+        label = self._found_labels[self._current_label]
+        label.setStyleSheet(label.style_orign)
+        self._current_label += 1
+        self._current_label = self._current_label % len(self._found_labels)
+
+        label = self._found_labels[self._current_label]
+        self.parent().parent().ensureWidgetVisible(label)
+        label.setStyleSheet(
+            "color: rgba(0, 155, 255, 255);" "background-color: yellow;"
+        )
 
     def phil_list2gui(self, lst_phil_obj):
 
@@ -243,7 +260,7 @@ class PhilWidget(QWidget):
                         tmp_widg.tmp_lst.append("True")
                         tmp_widg.tmp_lst.append("False")
                         tmp_widg.tmp_lst.append("Auto")
-                        #tmp_widg.setFocusPolicy(Qt.StrongFocus)
+                        # tmp_widg.setFocusPolicy(Qt.StrongFocus)
                         for lst_itm in tmp_widg.tmp_lst:
                             tmp_widg.addItem(lst_itm)
 
