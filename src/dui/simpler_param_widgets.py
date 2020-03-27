@@ -93,8 +93,6 @@ def _get_all_direct_layout_widget_children(parent):
 class ResetButton(QPushButton):
     def __init__(self, parent=None):
         super(ResetButton, self).__init__()
-        self.setContentsMargins(-5, -1, -5, -1)
-
         my_label = QLabel("Reset to default")
         v_box = QVBoxLayout()
         v_box.addWidget(my_label)
@@ -305,6 +303,7 @@ class IndexSimplerParamTab(QWidget):
         str_path = str(sender.local_path)
 
         self.item_changed.emit(str_path, str_value)
+
 
 class RefineBravaiSimplerParamTab(QWidget):
     # TODO some doc string here
@@ -727,6 +726,7 @@ class ScaleSimplerParamTab(QWidget):
         else:
             str_value = str(value)
             self.item_changed.emit(str_path, str_value)
+
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
