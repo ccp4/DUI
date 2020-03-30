@@ -283,16 +283,16 @@ class img_w_cpp(object):
         show_nums=False,
         i_min=-3.0,
         i_max=200.0,
-        palette="hot ascend",
+        palette="heat",
     ):
 
         self.wx_bmp_arr.set_min_max(i_min, i_max)
 
-        if palette == "black2white":
+        if palette == "invert":
             palette_num = 1
-        elif palette == "white2black":
+        elif palette == "grayscale":
             palette_num = 2
-        elif palette == "hot ascend":
+        elif palette == "heat invert":
             palette_num = 3
         else:  # assuming "hot descend"
             palette_num = 4

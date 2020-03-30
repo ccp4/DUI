@@ -27,7 +27,6 @@ import sys
 import os
 
 from dials.array_family import flex
-from dxtbx.datablock import DataBlockFactory
 
 from dials.algorithms.image.threshold import (
     DispersionThresholdDebug,
@@ -35,8 +34,6 @@ from dials.algorithms.image.threshold import (
 )
 
 from dxtbx.model.experiment_list import ExperimentListFactory
-import pickle
-
 
 import numpy as np
 
@@ -480,12 +477,12 @@ class ImgPainter(QWidget):
         self.n_pan_xb_yb = n_pan_xb_yb
 
     def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
-        #x = float(reflection[0]) + 1.0
-        #y = float(reflection[1]) + 1.0
+        # x = float(reflection[0]) + 1.0
+        # y = float(reflection[1]) + 1.0
 
         x = float(reflection[0] + reflection[2]) + 0.3
         y = float(reflection[1] + float(reflection[3]) * 0.5) + 6.0 / self.my_scale
-        #y = float(reflection[1])
+        # y = float(reflection[1])
 
         if reflection[4] == "NOT indexed":
             painter.setPen(non_indexed_pen)
@@ -544,9 +541,9 @@ class ImgPainter(QWidget):
 
         try:
             pen_col = {
-                "white2black": Qt.blue,
-                "black2white": Qt.cyan,
-                "hot descend": Qt.magenta,
+                "grayscale": Qt.blue,
+                "invert": Qt.cyan,
+                "heat invert": Qt.magenta,
             }
             indexed_pen.setBrush(pen_col[self.my_parent.palette])
 
@@ -556,10 +553,7 @@ class ImgPainter(QWidget):
         indexed_pen.setStyle(Qt.SolidLine)
 
         non_indexed_pen = QPen()  # creates a default non_indexed_pen
-        if (
-            self.my_parent.palette == "white2black"
-            or self.my_parent.palette == "black2white"
-        ):
+        if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
             non_indexed_pen.setBrush(Qt.red)
             # non_indexed_pen.setBrush(Qt.magenta)
 
@@ -568,8 +562,8 @@ class ImgPainter(QWidget):
 
         to_do_pen = QPen()  # creates a default pen for user actions
         if (
-            self.my_parent.palette == "white2black"
-            or self.my_parent.palette == "hot descend"
+            self.my_parent.palette == "grayscale"
+            or self.my_parent.palette == "heat invert"
         ):
             to_do_pen.setBrush(QColor(0, 155, 0))
         else:
@@ -831,7 +825,7 @@ class PopActionsMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_circ_mask)
         ref_bond_group.addButton(self.my_parent.rad_but_poly_mask)
 
-        info_grp = QGroupBox("Mask Tool")
+        info_grp = QGroupBox("Mask tool")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_mask)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_rect_mask)
@@ -842,35 +836,40 @@ class PopActionsMenu(QMenu):
 
         info_grp.setLayout(ref_bond_group_box_layout)
 
-        spot_find_grp = QGroupBox("Spot Finding Steps")
+        spot_find_grp = QGroupBox("Spot finding steps")
 
         img_spot_find_box = QVBoxLayout()
+
+        algorithm_layout = QHBoxLayout()
+        algorithm_layout.addWidget(QLabel("Algorithm"))
+        algorithm_layout.addWidget(self.my_parent.spot_algorithm_select)
+
+        nsig_b_layout = QHBoxLayout()
+        nsig_b_layout.addWidget(QLabel("Sigma background"))
+        nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
+
+        nsig_s_layout = QHBoxLayout()
+        nsig_s_layout.addWidget(QLabel("Sigma strong"))
+        nsig_s_layout.addWidget(self.my_parent.nsig_s_spin)
+
+        global_threshold_spin_layout = QHBoxLayout()
+        global_threshold_spin_layout.addWidget(QLabel("Global threshold"))
+        global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
+
+        min_local_layout = QHBoxLayout()
+        min_local_layout.addWidget(QLabel("Minimum local "))
+        min_local_layout.addWidget(self.my_parent.min_count_spin)
 
         gain_layout = QHBoxLayout()
         gain_layout.addWidget(QLabel("Gain"))
         gain_layout.addWidget(self.my_parent.gain_spin)
 
         size_layout = QHBoxLayout()
-        size_layout.addWidget(QLabel("Kernel Size"))
+        size_layout.addWidget(QLabel("Kernel size"))
         size_layout.addWidget(self.my_parent.size_1_spin)
         size_layout.addWidget(self.my_parent.size_2_spin)
 
-        nsig_b_layout = QHBoxLayout()
-        nsig_b_layout.addWidget(QLabel("Sigma Background"))
-        nsig_b_layout.addWidget(self.my_parent.nsig_b_spin)
-
-        nsig_s_layout = QHBoxLayout()
-        nsig_s_layout.addWidget(QLabel("Sigma Strong"))
-        nsig_s_layout.addWidget(self.my_parent.nsig_s_spin)
-
-        global_threshold_spin_layout = QHBoxLayout()
-        global_threshold_spin_layout.addWidget(QLabel("Global Threshold"))
-        global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
-
-        min_local_layout = QHBoxLayout()
-        min_local_layout.addWidget(QLabel("Minimum Local "))
-        min_local_layout.addWidget(self.my_parent.min_count_spin)
-
+        img_spot_find_box.addLayout(algorithm_layout)
         img_spot_find_box.addLayout(nsig_b_layout)
         img_spot_find_box.addLayout(nsig_s_layout)
         img_spot_find_box.addLayout(global_threshold_spin_layout)
@@ -919,7 +918,7 @@ class PopDisplayMenu(QMenu):
 
         # group to tune up palette
 
-        palette_grp = QGroupBox("Palette Tuning")
+        palette_grp = QGroupBox("Palette tuning")
         colour_box = QHBoxLayout()
         colour_box.addWidget(QLabel("I min"))
         colour_box.addWidget(self.my_parent.min_i_edit)
@@ -963,11 +962,11 @@ class PopDisplayMenu(QMenu):
         # group to control what to see from algorithms
 
         ref_bond_group = QButtonGroup()
-        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_near_hkl)
+        ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
-        info_grp = QGroupBox("Reflection Info ")
+        info_grp = QGroupBox("Reflection info ")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
@@ -979,18 +978,18 @@ class PopDisplayMenu(QMenu):
         # group to control how to navigate thru images
 
         mid_top_box = QHBoxLayout()
-        mid_top_box.addWidget(QLabel("Image Jump Step"))
+        mid_top_box.addWidget(QLabel("Image jump step"))
         mid_top_box.addWidget(self.my_parent.img_step)
 
         mid_bot_box = QHBoxLayout()
-        mid_bot_box.addWidget(QLabel("Number of Images to Add"))
+        mid_bot_box.addWidget(QLabel("Number of images to add"))
         mid_bot_box.addWidget(self.my_parent.num_of_imgs_to_add)
 
         img_select_box = QVBoxLayout()
         img_select_box.addLayout(mid_top_box)
         img_select_box.addLayout(mid_bot_box)
 
-        img_select_group_box = QGroupBox("IMG Navigation")
+        img_select_group_box = QGroupBox("Navigation")
         img_select_group_box.setLayout(img_select_box)
 
         main_top_layout = QVBoxLayout()
@@ -1043,19 +1042,20 @@ class PopDisplayMenu(QMenu):
         )
 
 
-class ThresholdDebugGenetator:
-    # from dials.algorithms.image.threshold import DispersionThresholdDebug
-
+class ThresholdDebugGenerator:
     def __init__(self, image_in):
         self.image = image_in
 
     def set_mask(self, mask_flex_in):
         self.mask = mask_flex_in
 
-        if self.mask == None:
+        if self.mask is None:
             self.mask = flex.bool(flex.grid(self.image.all()), True)
 
-    def set_pars(self, gain, size, nsig_b, nsig_s, global_threshold, min_count):
+    def set_pars(
+        self, algorithm, gain, size, nsig_b, nsig_s, global_threshold, min_count
+    ):
+        self.algorithm = algorithm
         self.gain = gain
         self.size = size
         self.nsig_b = nsig_b
@@ -1067,9 +1067,16 @@ class ThresholdDebugGenetator:
 
         self.gain_map = flex.double(flex.grid(self.image.all()), self.gain)
 
-        # debug = DispersionThresholdDebug(
+        if self.algorithm == "dispersion":
+            Debug = DispersionThresholdDebug
+        elif self.algorithm == "dispersion extended":
+            Debug = DispersionExtendedThresholdDebug
+        else:
+            raise ValueError(
+                "Unknown spot-finding algorithm: {}".format(self.algorithm)
+            )
 
-        debug = DispersionExtendedThresholdDebug(
+        debug = Debug(
             self.image,
             self.mask,
             self.gain_map,
@@ -1136,12 +1143,11 @@ class MyImgWin(QWidget):
         self.chk_box_show.setChecked(True)
         self.chk_box_show.stateChanged.connect(self.set_img)
 
-        self.rad_but_all_hkl = QRadioButton("All HKLs")
-        self.rad_but_all_hkl.clicked.connect(self.set_img)
-
-        self.rad_but_all_hkl.setChecked(True)
         self.rad_but_near_hkl = QRadioButton("Nearest HKL")
         self.rad_but_near_hkl.clicked.connect(self.set_img)
+        self.rad_but_near_hkl.setChecked(True)
+        self.rad_but_all_hkl = QRadioButton("All HKLs")
+        self.rad_but_all_hkl.clicked.connect(self.set_img)
         self.rad_but_none_hkl = QRadioButton("No HKL")
         self.rad_but_none_hkl.clicked.connect(self.set_img)
 
@@ -1211,6 +1217,11 @@ class MyImgWin(QWidget):
         self.size_2_spin.setValue(3)
         self.size_2_spin.setMinimum(1)
 
+        self.spot_algorithm_select = QComboBox()
+        self.spot_algorithm = ["dispersion extended", "dispersion"]
+        for algorithm in self.spot_algorithm:
+            self.spot_algorithm_select.addItem(algorithm)
+
         self.nsig_b_spin = QDoubleSpinBox()
         self.nsig_b_spin.setValue(6)
 
@@ -1243,7 +1254,7 @@ class MyImgWin(QWidget):
         type_grp.setLayout(ref_type_group_box_layout)
 
         self.palette_select = QComboBox()
-        self.palette_lst = ["hot ascend", "hot descend", "black2white", "white2black"]
+        self.palette_lst = ["grayscale", "invert", "heat", "heat invert"]
         self.palette = self.palette_lst[0]
         for plt in self.palette_lst:
             self.palette_select.addItem(plt)
@@ -1260,29 +1271,32 @@ class MyImgWin(QWidget):
             btn.clicked.connect(slot)
             return btn
 
-
         my_code_path = get_main_path()
         icon_path = my_code_path + "/resources/"
 
-        self.btn_first = _create_and_connect(icon_path + "first_img.png",
-                                             self.btn_first_clicked)
+        self.btn_first = _create_and_connect(
+            icon_path + "first_img.png", self.btn_first_clicked
+        )
 
-        self.btn_rev = _create_and_connect(icon_path + "rew_img.png",
-                                           self.btn_rev_clicked)
+        self.btn_rev = _create_and_connect(
+            icon_path + "rew_img.png", self.btn_rev_clicked
+        )
 
-        self.btn_prev = _create_and_connect(icon_path + "prev_img.png",
-                                            self.btn_prev_clicked)
+        self.btn_prev = _create_and_connect(
+            icon_path + "prev_img.png", self.btn_prev_clicked
+        )
 
+        self.btn_next = _create_and_connect(
+            icon_path + "next_img.png", self.btn_next_clicked
+        )
 
-        self.btn_next = _create_and_connect(icon_path + "next_img.png",
-                                            self.btn_next_clicked)
+        self.btn_ffw = _create_and_connect(
+            icon_path + "ffw_img.png", self.btn_ffw_clicked
+        )
 
-        self.btn_ffw = _create_and_connect(icon_path + "ffw_img.png",
-                                           self.btn_ffw_clicked)
-
-        self.btn_last = _create_and_connect(icon_path + "last_img.png",
-                                            self.btn_last_clicked)
-
+        self.btn_last = _create_and_connect(
+            icon_path + "last_img.png", self.btn_last_clicked
+        )
 
         btn_f_size = sys_font_point_size - 1
 
@@ -1389,6 +1403,7 @@ class MyImgWin(QWidget):
         mid_box.addWidget(zoom_out_but)
 
         self.info_label = QLabel("X, Y, I = ?,?,?")
+        self.info_label.setFont(QFont("Monospace", btn_f_size))
 
         top_left_v_box = QVBoxLayout()
         top_left_v_box.setMargin(0)
@@ -1410,10 +1425,6 @@ class MyImgWin(QWidget):
         my_box.addWidget(self.info_label)
 
         self.setLayout(my_box)
-
-        # changing default palette:
-
-        self.palette_select.setCurrentIndex(3)
 
     def set_img_img(self):
         self.draw_img_img()
@@ -1527,9 +1538,10 @@ class MyImgWin(QWidget):
             logger.info("No image loaded yet")
 
     def get_debug_gen(self):
-        self.debug_gen_data = ThresholdDebugGenetator(image_in=self.img_arr)
+        self.debug_gen_data = ThresholdDebugGenerator(image_in=self.img_arr)
         self.debug_gen_data.set_mask(self.my_painter.mask_flex)
         self.debug_gen_data.set_pars(
+            algorithm=self.spot_algorithm_select.currentText(),
             gain=self.gain_spin.value(),
             size=(self.size_1_spin.value(), self.size_2_spin.value()),
             nsig_b=self.nsig_b_spin.value(),
@@ -1545,7 +1557,8 @@ class MyImgWin(QWidget):
 
     def check_debug_pars(self, do_anyway=False):
         if (
-            self.debug_gen_data.gain != self.gain_spin.value()
+            self.debug_gen_data.algorithm != self.spot_algorithm_select.currentText()
+            or self.debug_gen_data.gain != self.gain_spin.value()
             or self.debug_gen_data.size
             != (self.size_1_spin.value(), self.size_2_spin.value())
             or self.debug_gen_data.nsig_b != self.nsig_b_spin.value()
@@ -1613,7 +1626,6 @@ class MyImgWin(QWidget):
                 logger.info("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
-        from dxtbx.model.experiment_list import ExperimentListFactory
 
         if json_file_path is not None:
             try:
@@ -1640,7 +1652,7 @@ class MyImgWin(QWidget):
                 """
 
                 n_of_imgs = len(self.my_sweep.indices())
-                #logger.info("n_of_imgs =", n_of_imgs)
+                # logger.info("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1681,11 +1693,6 @@ class MyImgWin(QWidget):
 
             else:
                 self.my_painter.scale2fact(sc_height / pt_height)
-
-        tmp_off = """
-        except ZeroDivisionError:
-            print
-        """
 
     def set_reflection_table(self, pckl_file_path):
         if pckl_file_path[0] is not None:
@@ -1728,7 +1735,7 @@ class MyImgWin(QWidget):
 
             try:
 
-                #logger.info("pckl_file_path[1]=", pckl_file_path[1])
+                # logger.info("pckl_file_path[1]=", pckl_file_path[1])
 
                 table = flex.reflection_table.from_file(pckl_file_path[1])
 
@@ -1824,17 +1831,18 @@ class MyImgWin(QWidget):
         new_label_txt = ""
         if self.ref2exp:
             image_file = os.path.basename(
-                self.ref2exp.imageset.get_image_identifier(self.img_num - 1))
+                self.ref2exp.imageset.get_image_identifier(self.img_num - 1)
+            )
             new_label_txt += "{0}: ".format(image_file)
 
         if self.img_arr:
             new_label_txt += (
                 "X = "
-                + str(x_pos)
+                + str(x_pos).rjust(4)
                 + ", Y = "
-                + str(y_pos)
+                + str(y_pos).rjust(4)
                 + ", I = "
-                + str(self.img_arr[y_pos, x_pos])
+                + str(self.img_arr[y_pos, x_pos]).rjust(4)
             )
 
         else:
@@ -1844,7 +1852,7 @@ class MyImgWin(QWidget):
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
-            res_str = str("{:4.2f}".format(res_float))
+            res_str = str("{: 4.2f}".format(res_float))
             new_label_txt += ", resolution = " + res_str + " " + u"\u00C5"
 
         else:
@@ -1869,7 +1877,9 @@ class MyImgWin(QWidget):
                 pan_num = tuple(range(24))
 
             else:
-                logger.info("number of  panels NOT supported, defaulting to only first one")
+                logger.info(
+                    "number of  panels NOT supported, defaulting to only first one"
+                )
                 pan_num = 1
 
             if loc_stk_siz == 1:

@@ -51,6 +51,13 @@ setup(
                 "src/dui/resources/error_loading_dialog.ui",
                 "src/dui/resources/export.png",
                 "src/dui/resources/export_grayed.png",
+                "src/dui/resources/first_img.png",
+                "src/dui/resources/rew_img.png",
+                "src/dui/resources/prev_img.png",
+                "src/dui/resources/next_img.png",
+                "src/dui/resources/ffw_img.png",
+                "src/dui/resources/last_img.png",
+
             ],
         )
     ],

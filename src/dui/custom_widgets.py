@@ -283,7 +283,7 @@ class MaskPage(QWidget):
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
-        #logger.info("set_par(MaskPage)", lst_par)
+        # logger.info("set_par(MaskPage)", lst_par)
         self.update_widget_dat(lst_par)
         self.update_command_lst_medium_level.emit(lst_par[0])
 
@@ -547,14 +547,14 @@ class ImportPage(QWidget):
 
         if len(lst_file_path) > 0:
             new_dir, new_command = get_import_run_string(lst_file_path)
-            #logger.info("\n new_dir=", new_dir, ">>")
-            #logger.info("\n new_command =", new_command, ">>")
+            # logger.info("\n new_dir=", new_dir, ">>")
+            # logger.info("\n new_command =", new_command, ">>")
             self.path_file_str = new_command
             self.defa_dir = new_dir
             self.put_str_lin()
 
     def put_str_lin(self):
-        #logger.info("self.path_file_str =", self.path_file_str, ">>")
+        # logger.info("self.path_file_str =", self.path_file_str, ">>")
         self.cmd_list = [
             self.path_file_str,
             self.second_half.lstrip(),
@@ -614,12 +614,17 @@ class ParamAdvancedWidget(QWidget):
         vbox = QVBoxLayout()
 
         search_label = QLabel("Search:")
-        search_edit = QLineEdit("Type search here")
+        search_edit = QLineEdit()
+        search_edit.setPlaceholderText("Type search here")
         search_edit.textChanged.connect(self.scrollable_widget.user_searching)
+        self.search_next_button = QPushButton("Find next")
+        self.search_next_button.setEnabled(False)
 
         hbox = QHBoxLayout()
         hbox.addWidget(search_label)
         hbox.addWidget(search_edit)
+        hbox.addWidget(self.search_next_button)
+        self.search_next_button.clicked.connect(self.scrollable_widget.find_next)
         vbox.addLayout(hbox)
 
         vbox.addWidget(scrollArea)
@@ -791,11 +796,13 @@ class ParamMainWidget(QWidget):
                                 num_val = float(str_value)
                                 widg.setValue(num_val)
 
-                            except:
+                            except BaseException:
                                 try:
                                     str_val = str(str_value)
                                     widg.setText(str_val)
-                                    logger.debug("widg.local_path = %s", widg.local_path)
+                                    logger.debug(
+                                        "widg.local_path = %s", widg.local_path
+                                    )
 
                                 except BaseException as ee:
                                     logger.info("ee = ", ee)
@@ -808,7 +815,9 @@ class ParamMainWidget(QWidget):
                                     except BaseException as e:
                                         # We don't want to catch bare exceptions but
                                         # dont know what this was supposed to catch.
-                                        logger.info("Caught unknown exception #5 type: %s", e)
+                                        logger.info(
+                                            "Caught unknown exception #5 type: %s", e
+                                        )
                                         logger.info("failed to:")
                                         logger.info("widg.setCurrentIndex(pos)")
 
