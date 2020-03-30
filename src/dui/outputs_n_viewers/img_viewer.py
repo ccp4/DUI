@@ -254,6 +254,8 @@ class ImgPainter(QWidget):
         self.yb = None
         self.np_mask = None
         self.mask_flex = None
+        self.pre_flat_data = None
+        self.obs_flat_data = None
 
         self.closer_ref = None
         self.my_scale = 0.333
