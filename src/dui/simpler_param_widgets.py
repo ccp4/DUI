@@ -99,16 +99,55 @@ class ResetButton(QPushButton):
         self.setLayout(v_box)
         # self.show()
 
+class DefaultComboBox(QComboBox):
+    """A ComboBox initialised with a list of items and keeps track of which one
+    is default"""
 
-class FindspotsSimplerParameterTab(QWidget):
+    def __init__(self, local_path, items, default_index=0):
+
+        self.local_path = local_path
+        self.items = items
+        self.default_index = default_index
+        super(DefaultComboBox, self).__init__()
+        for item in items:
+            self.addItem(item)
+        self.setCurrentIndex(self.default_index)
+
+
+class SimpleParamTab(QWidget):
+    """Base class shared by all simple parameter tabs"""
+
+    item_changed = Signal(str, str)
+    item_to_remove = Signal(str)
+
+    def spnbox_finished(self):
+        sender = self.sender()
+        value = sender.value()
+        str_path = str(sender.local_path)
+        if sender.specialValueText() and value == sender.minimum():
+            self.item_to_remove.emit(str_path)
+        else:
+            str_value = str(value)
+            self.item_changed.emit(str_path, str_value)
+
+    def combobox_changed(self, value):
+
+        sender = self.sender()
+        str_value = str(sender.items[value])
+        str_path = str(sender.local_path)
+
+        if sender.currentIndex() == sender.default_index:
+            self.item_to_remove.emit(str_path)
+        else:
+            self.item_changed.emit(str_path, str_value)
+
+
+class FindspotsSimplerParameterTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the spot-finder, this widget is the first to appear once the button
     "Find Sots" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(FindspotsSimplerParameterTab, self).__init__()
@@ -188,31 +227,18 @@ class FindspotsSimplerParameterTab(QWidget):
 
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
-
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
         self.box_nproc.setValue(cpu_max_proc)
         return cpu_max_proc
 
 
-class IndexSimplerParamTab(QWidget):
+class IndexSimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the indexer, this widget is the first to appear once the button
     "Index" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, phl_obj=None, parent=None):
         super(IndexSimplerParamTab, self).__init__()
@@ -223,16 +249,8 @@ class IndexSimplerParamTab(QWidget):
         hbox_method = QHBoxLayout()
         label_method_62 = QLabel("Indexing method")
         hbox_method.addWidget(label_method_62)
-        box_method_62 = QComboBox()
-        box_method_62.tmp_lst = []
-        box_method_62.local_path = "indexing.method"
-        box_method_62.tmp_lst.append("fft3d")
-        box_method_62.tmp_lst.append("fft1d")
-        box_method_62.tmp_lst.append("real_space_grid_search")
-        box_method_62.tmp_lst.append("low_res_spot_match")
-
-        for lst_itm in box_method_62.tmp_lst:
-            box_method_62.addItem(lst_itm)
+        box_method_62 = DefaultComboBox("indexing.method", ["fft3d", "fft1d",
+            "real_space_grid_search", "low_res_spot_match"])
         box_method_62.currentIndexChanged.connect(self.combobox_changed)
 
         hbox_method.addWidget(box_method_62)
@@ -279,24 +297,6 @@ class IndexSimplerParamTab(QWidget):
 
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
-
-        # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
-
     def line_changed(self):
         sender = self.sender()
         str_value = sender.text()
@@ -305,10 +305,11 @@ class IndexSimplerParamTab(QWidget):
         self.item_changed.emit(str_path, str_value)
 
 
-class RefineBravaiSimplerParamTab(QWidget):
-    # TODO some doc string here
+#>>>>>>> old master
+#class RefineBravaiSimplerParamTab(QWidget):
 
-    item_changed = Signal(str, str)
+class RefineBravaiSimplerParamTab(SimpleParamTab):
+
 
     def __init__(self, parent=None):
         super(RefineBravaiSimplerParamTab, self).__init__()
@@ -318,20 +319,9 @@ class RefineBravaiSimplerParamTab(QWidget):
         label_outlier_algorithm = QLabel("Outlier rejection algorithm")
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
-        box_outlier_algorithm = QComboBox()
-        box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
-        box_outlier_algorithm.tmp_lst = []
-        box_outlier_algorithm.tmp_lst.append("null")
-        box_outlier_algorithm.tmp_lst.append("Auto")
-        box_outlier_algorithm.tmp_lst.append("mcd")
-        box_outlier_algorithm.tmp_lst.append("tukey")
-        box_outlier_algorithm.tmp_lst.append("sauter_poon")
-
-        for lst_itm in box_outlier_algorithm.tmp_lst:
-            box_outlier_algorithm.addItem(lst_itm)
-
-        box_outlier_algorithm.setCurrentIndex(1)
-
+        box_outlier_algorithm = DefaultComboBox(
+            "refinement.reflections.outlier.algorithm", ["null", "Auto", "mcd",
+            "tukey", "sauter_poon"], default_index=1)
         box_outlier_algorithm.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
         localLayout.addLayout(hbox_lay_outlier_algorithm)
@@ -346,24 +336,13 @@ class RefineBravaiSimplerParamTab(QWidget):
         self.lst_var_widg.append(box_outlier_algorithm)
         self.lst_var_widg.append(label_outlier_algorithm)
 
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
 
-        # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-
-class RefineSimplerParamTab(QWidget):
+class RefineSimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the refiner, this widget is the first to appear once the button
     "Refine" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(RefineSimplerParamTab, self).__init__()
@@ -376,18 +355,8 @@ class RefineSimplerParamTab(QWidget):
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
-        box_scan_varying = QComboBox()
-        box_scan_varying.local_path = "refinement.parameterisation.scan_varying"
-        box_scan_varying.tmp_lst = []
-        box_scan_varying.tmp_lst.append("True")
-        box_scan_varying.tmp_lst.append("False")
-        box_scan_varying.tmp_lst.append("Auto")
-
-        for lst_itm in box_scan_varying.tmp_lst:
-            box_scan_varying.addItem(lst_itm)
-
-        box_scan_varying.setCurrentIndex(2)
-
+        box_scan_varying = DefaultComboBox("refinement.parameterisation.scan_varying",
+            ["True", "False", "Auto"], default_index=2)
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
@@ -398,21 +367,11 @@ class RefineSimplerParamTab(QWidget):
         label_outlier_algorithm = QLabel("Outlier rejection algorithm")
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
-        box_outlier_algorithm = QComboBox()
-        box_outlier_algorithm.local_path = "refinement.reflections.outlier.algorithm"
-        box_outlier_algorithm.tmp_lst = []
-        box_outlier_algorithm.tmp_lst.append("null")
-        box_outlier_algorithm.tmp_lst.append("Auto")
-        box_outlier_algorithm.tmp_lst.append("mcd")
-        box_outlier_algorithm.tmp_lst.append("tukey")
-        box_outlier_algorithm.tmp_lst.append("sauter_poon")
-
-        for lst_itm in box_outlier_algorithm.tmp_lst:
-            box_outlier_algorithm.addItem(lst_itm)
-
-        box_outlier_algorithm.setCurrentIndex(1)
-
+        box_outlier_algorithm = DefaultComboBox(
+            "refinement.reflections.outlier.algorithm", ["null", "Auto", "mcd",
+            "tukey", "sauter_poon"], default_index=1)
         box_outlier_algorithm.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
         localLayout.addLayout(hbox_lay_outlier_algorithm)
 
@@ -441,30 +400,13 @@ class RefineSimplerParamTab(QWidget):
         self.lst_var_widg.append(box_outlier_algorithm)
         self.lst_var_widg.append(label_outlier_algorithm)
 
-    def combobox_changed(self, value):
 
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
-        logger.debug("str(sender.local_path) = %s", str(sender.local_path))
-
-        if str_value == "none":
-            logger.debug("trying to emit [item_to_remove] = %s", str_path)
-            self.item_to_remove.emit(str_path)
-
-        else:
-            self.item_changed.emit(str_path, str_value)
-
-
-class IntegrateSimplerParamTab(QWidget):
+class IntegrateSimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the integrate algorithm, this widget is the first to appear once the button
     "Integrate" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
-    item_to_remove = Signal(str)
 
     def __init__(self, parent=None):
         super(IntegrateSimplerParamTab, self).__init__()
@@ -475,16 +417,10 @@ class IntegrateSimplerParamTab(QWidget):
         label_PrFit = QLabel("Use profile fitting")
         PrFit_lay_out.addWidget(label_PrFit)
 
-        PrFit_comb_bx = QComboBox()
-        PrFit_comb_bx.local_path = "integration.profile.fitting"
-        PrFit_comb_bx.tmp_lst = []
-        PrFit_comb_bx.tmp_lst.append("True")
-        PrFit_comb_bx.tmp_lst.append("False")
-        PrFit_comb_bx.tmp_lst.append("Auto")
-
-        for lst_itm in PrFit_comb_bx.tmp_lst:
-            PrFit_comb_bx.addItem(lst_itm)
+        PrFit_comb_bx = DefaultComboBox("integration.profile.fitting",
+            ["True", "False", "Auto"])
         PrFit_comb_bx.currentIndexChanged.connect(self.combobox_changed)
+
         PrFit_lay_out.addWidget(PrFit_comb_bx)
         localLayout.addLayout(PrFit_lay_out)
 
@@ -492,19 +428,10 @@ class IntegrateSimplerParamTab(QWidget):
         label_algorithm_53 = QLabel("Background algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
-        box_algorithm_53 = QComboBox()
-        box_algorithm_53.local_path = "integration.background.algorithm"
-        box_algorithm_53.tmp_lst = []
-        box_algorithm_53.tmp_lst.append("simple")
-        box_algorithm_53.tmp_lst.append("null")
-        box_algorithm_53.tmp_lst.append("median")
-        box_algorithm_53.tmp_lst.append("gmodel")
-        box_algorithm_53.tmp_lst.append("glm")
-
-        for lst_itm in box_algorithm_53.tmp_lst:
-            box_algorithm_53.addItem(lst_itm)
-        box_algorithm_53.setCurrentIndex(4)
+        box_algorithm_53 = DefaultComboBox("integration.background.algorithm",
+            ["simple", "null", "median", "gmodel", "glm"], default_index=4)
         box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
+
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
         localLayout.addLayout(hbox_lay_algorithm_53)
 
@@ -527,7 +454,7 @@ class IntegrateSimplerParamTab(QWidget):
         self.box_nproc = QSpinBox()
 
         self.box_nproc.local_path = "integration.mp.nproc"
-        self.box_nproc.valueChanged.connect(self.spnbox_changed)
+        self.box_nproc.editingFinished.connect(self.spnbox_finished)
         hbox_lay_nproc.addWidget(self.box_nproc)
         localLayout.addLayout(hbox_lay_nproc)
 
@@ -540,32 +467,6 @@ class IntegrateSimplerParamTab(QWidget):
 
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
-
-        # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
-
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
 
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
@@ -573,14 +474,12 @@ class IntegrateSimplerParamTab(QWidget):
         return cpu_max_proc
 
 
-class SymmetrySimplerParamTab(QWidget):
+class SymmetrySimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the symmetry command, this widget is the first to appear once the button
     "Symmetry" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(SymmetrySimplerParamTab, self).__init__()
@@ -597,7 +496,7 @@ class SymmetrySimplerParamTab(QWidget):
         d_min_spn_bx.setValue(0.0)
         hbox_d_min.addWidget(d_min_spn_bx)
 
-        d_min_spn_bx.valueChanged.connect(self.spnbox_changed)
+        d_min_spn_bx.editingFinished.connect(self.spnbox_finished)
 
         localLayout.addLayout(hbox_d_min)
 
@@ -611,24 +510,14 @@ class SymmetrySimplerParamTab(QWidget):
         self.lst_var_widg.append(d_min_spn_bx)
         self.lst_var_widg.append(label_d_min)
 
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        logger.debug(value)
-        str_path = str(sender.local_path)
 
-        self.item_changed.emit(str_path, str_value)
-
-
-class ScaleSimplerParamTab(QWidget):
+class ScaleSimplerParamTab(SimpleParamTab):
 
     """
     This widget is the tool for tunning the simpler and most common parameters
     in the scale command, this widget is the first to appear once the button
     "Scale" at the left side of the GUI is clicked
     """
-
-    item_changed = Signal(str, str)
 
     def __init__(self, parent=None):
         super(ScaleSimplerParamTab, self).__init__()
@@ -640,15 +529,7 @@ class ScaleSimplerParamTab(QWidget):
 
         hbox_lay_mod.addWidget(label_mod)
 
-        box_mod = QComboBox()
-        box_mod.local_path = "model"
-        box_mod.tmp_lst = []
-        box_mod.tmp_lst.append("physical")
-        box_mod.tmp_lst.append("array")
-        box_mod.tmp_lst.append("KB")
-        for lst_itm in box_mod.tmp_lst:
-            box_mod.addItem(lst_itm)
-
+        box_mod = DefaultComboBox("model", ["physical", "array", "KB"])
         box_mod.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_mod.addWidget(box_mod)
 
@@ -661,14 +542,8 @@ class ScaleSimplerParamTab(QWidget):
           error_model {
             error_model = *basic None
         """
-        box_wgh_opt_err = QComboBox()
-        box_wgh_opt_err.local_path = "weighting.error_model.error_model"
-        box_wgh_opt_err.tmp_lst = []
-        box_wgh_opt_err.tmp_lst.append("basic")
-        box_wgh_opt_err.tmp_lst.append("None")
-        for lst_itm in box_wgh_opt_err.tmp_lst:
-            box_wgh_opt_err.addItem(lst_itm)
-
+        box_wgh_opt_err = DefaultComboBox("weighting.error_model.error_model",
+            ["basic", "None"])
         box_wgh_opt_err.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
 
@@ -701,31 +576,7 @@ class ScaleSimplerParamTab(QWidget):
         self.lst_var_widg.append(d_min_spn_bx)
         self.lst_var_widg.append(d_min_label)
 
-    def combobox_changed(self, value):
-        sender = self.sender()
-        str_value = str(sender.tmp_lst[value])
-        str_path = str(sender.local_path)
 
-        # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-    def spnbox_changed(self, value):
-        sender = self.sender()
-        str_value = str(value)
-        logger.debug(value)
-        str_path = str(sender.local_path)
-
-        self.item_changed.emit(str_path, str_value)
-
-    def spnbox_finished(self):
-        sender = self.sender()
-        value = sender.value()
-        str_path = str(sender.local_path)
-        if sender.specialValueText() and value == sender.minimum():
-            self.item_to_remove.emit(str_path)
-        else:
-            str_value = str(value)
-            self.item_changed.emit(str_path, str_value)
 
 
 class TmpTstWidget(QWidget):
