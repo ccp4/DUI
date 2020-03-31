@@ -858,7 +858,7 @@ class PopActionsMenu(QMenu):
         global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
 
         min_local_layout = QHBoxLayout()
-        min_local_layout.addWidget(QLabel("Minimum local "))
+        min_local_layout.addWidget(QLabel("Minimum local"))
         min_local_layout.addWidget(self.my_parent.min_count_spin)
 
         gain_layout = QHBoxLayout()
@@ -967,7 +967,7 @@ class PopDisplayMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
-        info_grp = QGroupBox("Reflection info ")
+        info_grp = QGroupBox("Reflection info")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
@@ -1251,7 +1251,7 @@ class MyImgWin(QWidget):
         ref_type_group_box_layout.addWidget(self.rad_but_fnd_hkl)
         ref_type_group_box_layout.addWidget(self.rad_but_pre_hkl)
 
-        type_grp = QGroupBox("Reflection type ")
+        type_grp = QGroupBox("Reflection type")
         type_grp.setLayout(ref_type_group_box_layout)
 
         self.palette_select = QComboBox()
@@ -1879,7 +1879,7 @@ class MyImgWin(QWidget):
 
             else:
                 logger.info(
-                    "number of  panels NOT supported, defaulting to only first one"
+                    "number of panels NOT supported, defaulting to only first one"
                 )
                 pan_num = 1
 
@@ -1996,7 +1996,7 @@ class MyImgWin(QWidget):
 
     def btn_play_clicked(self):
         if self.video_timer.isActive():
-            logger.debug("Stoping video")
+            logger.debug("Stopping video")
             self.video_timer.stop()
             try:
                 self.video_timer.timeout.disconnect()
