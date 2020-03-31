@@ -104,9 +104,8 @@ class DefaultComboBox(QComboBox):
     is default"""
 
     def __init__(self, local_path, items, default_index=0):
-
         self.local_path = local_path
-        self.items = items
+        self.tmp_lst = items
         self.default_index = default_index
         super(DefaultComboBox, self).__init__()
         for item in items:
@@ -133,7 +132,7 @@ class SimpleParamTab(QWidget):
     def combobox_changed(self, value):
 
         sender = self.sender()
-        str_value = str(sender.items[value])
+        str_value = str(sender.tmp_lst[value])
         str_path = str(sender.local_path)
 
         if sender.currentIndex() == sender.default_index:

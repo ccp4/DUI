@@ -825,7 +825,6 @@ class ParamMainWidget(QWidget):
                     pass
 
     def update_simpler_widget(self, str_path, str_value):
-
         for widg in self.simpler_widget.lst_var_widg:
             try:
                 if widg.local_path == str_path:
@@ -835,14 +834,10 @@ class ParamMainWidget(QWidget):
                         widg.setValue(num_val)
 
                     except ValueError:
-                        try:
-                            for pos, val in enumerate(widg.tmp_lst):
-                                if val == str_value:
-                                    logger.info("found val, v= %s", val)
-                                    widg.setCurrentIndex(pos)
-
-                        except AttributeError:
-                            pass
+                        for pos, val in enumerate(widg.tmp_lst):
+                            if val == str_value:
+                                logger.info("found val, v= %s", val)
+                                widg.setCurrentIndex(pos)
 
             except AttributeError:
                 pass
