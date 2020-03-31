@@ -990,8 +990,8 @@ if __name__ == "__main__":
     # ex = ParamWidget("refine")
     # ex = ParamWidget("integrate")
     # ex = ParamWidget("symmetry")
-    # ex = ParamWidget("scale")  # someting hapen with the Advanced parameters
-    ex = ParamWidget("export")
+    ex = ParamWidget("scale")  # someting hapen with the Advanced parameters
+    # ex = ParamWidget("export")
 
     ex.show()
 

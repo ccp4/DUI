@@ -84,9 +84,11 @@ def _get_all_direct_layout_widget_children(parent):
     if isinstance(parent, QLayout):
         for child in [parent.itemAt(i) for i in range(parent.count())]:
             children.extend(_get_all_direct_layout_widget_children(child))
+
     elif hasattr(parent, "widget"):
         if parent.widget():
             children.append(parent.widget())
+
     return children
 
 
@@ -104,12 +106,13 @@ class DefaultComboBox(QComboBox):
     is default"""
 
     def __init__(self, local_path, items, default_index=0):
+        super(DefaultComboBox, self).__init__()
         self.local_path = local_path
         self.tmp_lst = items
         self.default_index = default_index
-        super(DefaultComboBox, self).__init__()
         for item in items:
             self.addItem(item)
+
         self.setCurrentIndex(self.default_index)
 
 
@@ -527,7 +530,6 @@ class ScaleSimplerParamTab(SimpleParamTab):
         label_mod = QLabel("Model")
 
         hbox_lay_mod.addWidget(label_mod)
-
         box_mod = DefaultComboBox("model", ["physical", "array", "KB"])
         box_mod.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_mod.addWidget(box_mod)
@@ -536,15 +538,15 @@ class ScaleSimplerParamTab(SimpleParamTab):
         label_wgh_opt_err = QLabel("Error optimisation model")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
+        box_wgh_opt_err = DefaultComboBox("weighting.error_model.error_model",
+            ["basic", "None"])
+        box_wgh_opt_err.currentIndexChanged.connect(self.combobox_changed)
+        hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
         """
         weighting {
           error_model {
             error_model = *basic None
         """
-        box_wgh_opt_err = DefaultComboBox("weighting.error_model.error_model",
-            ["basic", "None"])
-        box_wgh_opt_err.currentIndexChanged.connect(self.combobox_changed)
-        hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
 
         hbox_d_min = QHBoxLayout()
         d_min_label = QLabel("High resolution limit")
