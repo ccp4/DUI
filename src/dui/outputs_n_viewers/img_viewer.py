@@ -147,88 +147,87 @@ def build_mask_item(img_paint_obj):
 
         same_item = False
 
-        if img_paint_obj.my_parent.chk_box_mask.isChecked():
-            if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
-                if x1 > x2:
-                    x1, x2 = x2, x1
+        if not img_paint_obj.my_parent.chk_box_mask.isChecked():
+            return False, None, False
 
-                if y1 > y2:
-                    y1, y2 = y2, y1
+        if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
+            if x1 > x2:
+                x1, x2 = x2, x1
 
-                if x2 > img_paint_obj.img_width:
-                    x2 = float(img_paint_obj.img_width)
+            if y1 > y2:
+                y1, y2 = y2, y1
 
-                if y2 > img_paint_obj.img_height:
-                    y2 = float(img_paint_obj.img_height)
+            if x2 > img_paint_obj.img_width:
+                x2 = float(img_paint_obj.img_width)
 
-                if x1 < 0:
-                    x1 = 0.0
+            if y2 > img_paint_obj.img_height:
+                y2 = float(img_paint_obj.img_height)
 
-                if y1 < 0:
-                    y1 = 0.0
+            if x1 < 0:
+                x1 = 0.0
 
-                # https://github.com/ccp4/DUI/issues/136
-                if x1 == x2 and y1 == y2:
-                    return False, None, False
+            if y1 < 0:
+                y1 = 0.0
 
-                to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
+            # https://github.com/ccp4/DUI/issues/136
+            if x1 == x2 and y1 == y2:
+                return False, None, False
 
-            elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
-                dx = x2 - x1
-                dy = y2 - y1
-                r = float(dx * dx + dy * dy) ** (0.5)
+            to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
-                if x1 + r > img_paint_obj.img_width:
-                    r = img_paint_obj.img_width - x1
+        elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
+            dx = x2 - x1
+            dy = y2 - y1
+            r = float(dx * dx + dy * dy) ** (0.5)
 
-                if y1 + r > img_paint_obj.img_height:
-                    r = img_paint_obj.img_height - y1
+            if x1 + r > img_paint_obj.img_width:
+                r = img_paint_obj.img_width - x1
 
-                if r > x1:
-                    r = x1
+            if y1 + r > img_paint_obj.img_height:
+                r = img_paint_obj.img_height - y1
 
-                if r > y1:
-                    r = y1
+            if r > x1:
+                r = x1
 
-                # https://github.com/ccp4/DUI/issues/136
-                if r < 1:
-                    return False, None, False
+            if r > y1:
+                r = y1
 
-                to_append = ("circ", int(x1), int(y1), int(r))
+            # https://github.com/ccp4/DUI/issues/136
+            if r < 1:
+                return False, None, False
 
-            if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
+            to_append = ("circ", int(x1), int(y1), int(r))
 
-                if x2 > img_paint_obj.img_width:
-                    x2 = float(img_paint_obj.img_width)
+        if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
 
-                if y2 > img_paint_obj.img_height:
-                    y2 = float(img_paint_obj.img_height)
+            if x2 > img_paint_obj.img_width:
+                x2 = float(img_paint_obj.img_width)
 
-                if x2 < 0:
-                    x2 = 0.0
+            if y2 > img_paint_obj.img_height:
+                y2 = float(img_paint_obj.img_height)
 
-                if y2 < 0:
-                    y2 = 0.0
+            if x2 < 0:
+                x2 = 0.0
 
-                to_append_append = (int(x2), int(y2))
+            if y2 < 0:
+                y2 = 0.0
 
-                try:
-                    if img_paint_obj.mask_items[-1][0] == "poly":
-                        same_item = True
-                        item_list = list(img_paint_obj.mask_items[-1])
-                        item_list.append(to_append_append)
-                        to_append = tuple(item_list)
+            to_append_append = (int(x2), int(y2))
 
-                    else:
-                        to_append = ("poly", to_append_append)
+            try:
+                if img_paint_obj.mask_items[-1][0] == "poly":
+                    same_item = True
+                    item_list = list(img_paint_obj.mask_items[-1])
+                    item_list.append(to_append_append)
+                    to_append = tuple(item_list)
 
-                except IndexError:
+                else:
                     to_append = ("poly", to_append_append)
 
-            return True, to_append, same_item
+            except IndexError:
+                to_append = ("poly", to_append_append)
 
-        else:
-            return False, None, False
+        return True, to_append, same_item
 
     except TypeError:
         # logger.info("except(build_mask_item) ... TypeError")
