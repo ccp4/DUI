@@ -249,8 +249,12 @@ class ImgPainter(QWidget):
 
         self.img = None
         self.setMouseTracking(True)
+
         self.xb = None
         self.yb = None
+        self.tmp_bc_x = None
+        self.tmp_bc_y = None
+
         self.np_mask = None
         self.mask_flex = None
         self.pre_flat_data = None
@@ -613,24 +617,25 @@ class ImgPainter(QWidget):
                 int((self.yb + det_mov) * self.my_scale),
             )
 
-        if self.my_parent.chk_box_B_centr.isChecked():
-            try:
-                painter.setPen(to_do_pen)
-                painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale),
-                    int(self.tmp_bc_y * self.my_scale - cen_siz),
-                    int(self.tmp_bc_x * self.my_scale),
-                    int(self.tmp_bc_y * self.my_scale + cen_siz),
-                )
-                painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale) - cen_siz,
-                    int(self.tmp_bc_y * self.my_scale),
-                    int(self.tmp_bc_x * self.my_scale) + cen_siz,
-                    int(self.tmp_bc_y * self.my_scale),
-                )
+        if (
+            self.my_parent.chk_box_B_centr.isChecked()
+            and self.tmp_bc_x
+            and self.tmp_bc_y
+        ):
 
-            except AttributeError:
-                pass
+            painter.setPen(to_do_pen)
+            painter.drawLine(
+                int(self.tmp_bc_x * self.my_scale),
+                int(self.tmp_bc_y * self.my_scale - cen_siz),
+                int(self.tmp_bc_x * self.my_scale),
+                int(self.tmp_bc_y * self.my_scale + cen_siz),
+            )
+            painter.drawLine(
+                int(self.tmp_bc_x * self.my_scale) - cen_siz,
+                int(self.tmp_bc_y * self.my_scale),
+                int(self.tmp_bc_x * self.my_scale) + cen_siz,
+                int(self.tmp_bc_y * self.my_scale),
+            )
 
         if self.my_parent.chk_box_mask.isChecked():
             painter.setPen(to_do_pen)
