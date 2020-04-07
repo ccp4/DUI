@@ -148,7 +148,7 @@ def build_mask_item(img_paint_obj):
         same_item = False
 
         if not img_paint_obj.my_parent.chk_box_mask.isChecked():
-            return False, None, False
+            return {}
 
         if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
             if x1 > x2:
@@ -171,7 +171,7 @@ def build_mask_item(img_paint_obj):
 
             # https://github.com/ccp4/DUI/issues/136
             if x1 == x2 and y1 == y2:
-                return False, None, False
+                return {}
 
             to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
@@ -194,7 +194,7 @@ def build_mask_item(img_paint_obj):
 
             # https://github.com/ccp4/DUI/issues/136
             if r < 1:
-                return False, None, False
+                return {}
 
             to_append = ("circ", int(x1), int(y1), int(r))
 
@@ -227,15 +227,15 @@ def build_mask_item(img_paint_obj):
             except IndexError:
                 to_append = ("poly", to_append_append)
 
-        return True, to_append, same_item
+        return {"to_append": to_append, "same_item": same_item}
 
     except TypeError:
         logger.info("except(build_mask_item) ... TypeError")
-        return False, None, False
+        return {}
 
     except AttributeError:
         logger.info(" except(build_mask_item) ... AttributeError")
-        return False, None, False
+        return {}
 
 
 class ImgPainter(QWidget):
@@ -288,16 +288,15 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
 
-        emit_mask = False
         if self.my_parent.chk_box_mask.isChecked():
-            emit_mask, to_append, same_item = build_mask_item(self)
+            mask_item = build_mask_item(self)
 
-        if emit_mask:
-            if same_item:
-                self.mask_items[-1] = to_append
+        if mask_item:
+            if mask_item["same_item"]:
+                self.mask_items[-1] = mask_item["to_append"]
 
             else:
-                self.mask_items.append(to_append)
+                self.mask_items.append(mask_item["to_append"])
 
             self.ll_mask_applied.emit(self.mask_items)
 
@@ -650,8 +649,9 @@ class ImgPainter(QWidget):
                         prev_tup = posi
 
         # Drawing current mask item
-        draw_mask_item, item, same_item = build_mask_item(self)
-        if draw_mask_item:
+        mask_item = build_mask_item(self)
+        if mask_item:
+            item = mask_item["to_append"]
             if item[0] == "rect":
                 xd = item[2] - item[1]
                 yd = item[4] - item[3]
