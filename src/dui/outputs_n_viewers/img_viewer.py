@@ -523,6 +523,52 @@ class ImgPainter(QWidget):
         self.ll_b_centr_applied.emit(self.new_bc)
         self.unpop_menu()
 
+    def _create_pens(self):
+        # Create a pen for indexed spots
+        indexed_pen = QPen()
+        try:
+            pen_col = {
+                "grayscale": Qt.blue,
+                "invert": Qt.cyan,
+                "heat invert": Qt.magenta,
+            }
+            indexed_pen.setBrush(pen_col[self.my_parent.palette])
+        except KeyError:
+            indexed_pen.setBrush(Qt.green)
+
+        indexed_pen.setStyle(Qt.SolidLine)
+
+        # Create a pen for non-indexed spots
+        non_indexed_pen = QPen()
+        if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
+            non_indexed_pen.setBrush(Qt.red)
+        else:
+            non_indexed_pen.setBrush(QColor(75, 150, 200))
+
+        # Create a pen for user actions
+        to_do_pen = QPen()
+        if (
+            self.my_parent.palette == "grayscale"
+            or self.my_parent.palette == "heat invert"
+        ):
+            to_do_pen.setBrush(QColor(0, 155, 0))
+        else:
+            to_do_pen.setBrush(Qt.green)
+
+        # Set pen widths and styles
+        if self.my_scale >= 5.0:
+            indexed_pen.setWidth(self.my_scale / 3.5)
+            non_indexed_pen.setWidth(self.my_scale / 3.5)
+            to_do_pen.setWidth(self.my_scale / 3.5)
+            non_indexed_pen.setStyle(Qt.DotLine)
+        else:
+            indexed_pen.setWidth(0.0)
+            non_indexed_pen.setWidth(0.0)
+            to_do_pen.setWidth(0.0)
+            non_indexed_pen.setStyle(Qt.SolidLine)
+
+        return indexed_pen, non_indexed_pen, to_do_pen
+
     def paintEvent(self, event):
         # logger.info("paintEvent(img_viewer)")
         if self.img is None:
@@ -540,49 +586,7 @@ class ImgPainter(QWidget):
         pixmap = QPixmap(self.img)
         painter = QPainter(self)
 
-        indexed_pen = QPen()  # creates a default indexed_pen
-
-        try:
-            pen_col = {
-                "grayscale": Qt.blue,
-                "invert": Qt.cyan,
-                "heat invert": Qt.magenta,
-            }
-            indexed_pen.setBrush(pen_col[self.my_parent.palette])
-
-        except KeyError:
-            indexed_pen.setBrush(Qt.green)
-
-        indexed_pen.setStyle(Qt.SolidLine)
-
-        non_indexed_pen = QPen()  # creates a default non_indexed_pen
-        if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
-            non_indexed_pen.setBrush(Qt.red)
-            # non_indexed_pen.setBrush(Qt.magenta)
-
-        else:
-            non_indexed_pen.setBrush(QColor(75, 150, 200))
-
-        to_do_pen = QPen()  # creates a default pen for user actions
-        if (
-            self.my_parent.palette == "grayscale"
-            or self.my_parent.palette == "heat invert"
-        ):
-            to_do_pen.setBrush(QColor(0, 155, 0))
-        else:
-            to_do_pen.setBrush(Qt.green)
-
-        if self.my_scale >= 5.0:
-            indexed_pen.setWidth(self.my_scale / 3.5)
-            non_indexed_pen.setWidth(self.my_scale / 3.5)
-            to_do_pen.setWidth(self.my_scale / 3.5)
-            non_indexed_pen.setStyle(Qt.DotLine)
-
-        else:
-            indexed_pen.setWidth(0.0)
-            non_indexed_pen.setWidth(0.0)
-            to_do_pen.setWidth(0.0)
-            non_indexed_pen.setStyle(Qt.SolidLine)
+        indexed_pen, non_indexed_pen, to_do_pen = self._create_pens()
 
         painter.drawPixmap(rect, pixmap)
 
