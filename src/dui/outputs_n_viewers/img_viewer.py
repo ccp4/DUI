@@ -681,33 +681,20 @@ class ImgPainter(QWidget):
             # Drawing current mask item
             draw_mask_item, item, same_item = build_mask_item(self)
             if draw_mask_item:
-                try:
-                    if item[0] == "rect":
-                        xd = item[2] - item[1]
-                        yd = item[4] - item[3]
-                        painter.drawRect(
-                            item[1] * self.my_scale,
-                            item[3] * self.my_scale,
-                            xd * self.my_scale,
-                            yd * self.my_scale,
-                        )
-
-                    elif item[0] == "circ":
-                        r = item[3] * self.my_scale
-                        q_center = QPointF(
-                            item[1] * self.my_scale, item[2] * self.my_scale
-                        )
-                        painter.drawEllipse(q_center, r, r)
-
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.info(
-                        "\n exception(draw_mask_item) = %s: %s",
-                        type(e).__name__,
-                        e,
-                        "\n",
+                if item[0] == "rect":
+                    xd = item[2] - item[1]
+                    yd = item[4] - item[3]
+                    painter.drawRect(
+                        item[1] * self.my_scale,
+                        item[3] * self.my_scale,
+                        xd * self.my_scale,
+                        yd * self.my_scale,
                     )
+
+                elif item[0] == "circ":
+                    r = item[3] * self.my_scale
+                    q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
+                    painter.drawEllipse(q_center, r, r)
 
         if (
             self.obs_flat_data is not None
