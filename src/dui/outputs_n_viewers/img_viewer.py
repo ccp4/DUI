@@ -273,6 +273,8 @@ class ImgPainter(QWidget):
         self.reset_mask_tool(None)
         self.reset_bc_tool(None)
 
+        self._create_pens()
+
     def reset_mask_tool(self, event):
         self.mask_items = []
         self.unpop_menu()
@@ -483,7 +485,7 @@ class ImgPainter(QWidget):
         self.yb = yb
         self.n_pan_xb_yb = n_pan_xb_yb
 
-    def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
+    def _draw_hkl(self, reflection, painter, i, j):
         # x = float(reflection[0]) + 1.0
         # y = float(reflection[1]) + 1.0
 
@@ -492,10 +494,10 @@ class ImgPainter(QWidget):
         # y = float(reflection[1])
 
         if reflection[4] == "NOT indexed":
-            painter.setPen(non_indexed_pen)
+            painter.setPen(self.non_indexed_pen)
 
         else:
-            painter.setPen(indexed_pen)
+            painter.setPen(self.indexed_pen)
 
         if (
             self.my_parent.rad_but_all_hkl.isChecked()
@@ -529,49 +531,86 @@ class ImgPainter(QWidget):
 
     def _create_pens(self):
         # Create a pen for indexed spots
-        indexed_pen = QPen()
+        self.indexed_pen = QPen()
         try:
             pen_col = {
                 "grayscale": Qt.blue,
                 "invert": Qt.cyan,
                 "heat invert": Qt.magenta,
             }
-            indexed_pen.setBrush(pen_col[self.my_parent.palette])
+            self.indexed_pen.setBrush(pen_col[self.my_parent.palette])
         except KeyError:
-            indexed_pen.setBrush(Qt.green)
+            self.indexed_pen.setBrush(Qt.green)
 
-        indexed_pen.setStyle(Qt.SolidLine)
+        self.indexed_pen.setStyle(Qt.SolidLine)
 
         # Create a pen for non-indexed spots
-        non_indexed_pen = QPen()
+        self.non_indexed_pen = QPen()
         if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
-            non_indexed_pen.setBrush(Qt.red)
+            self.non_indexed_pen.setBrush(Qt.red)
         else:
-            non_indexed_pen.setBrush(QColor(75, 150, 200))
+            self.non_indexed_pen.setBrush(QColor(75, 150, 200))
 
         # Create a pen for user actions
-        to_do_pen = QPen()
+        self.to_do_pen = QPen()
         if (
             self.my_parent.palette == "grayscale"
             or self.my_parent.palette == "heat invert"
         ):
-            to_do_pen.setBrush(QColor(0, 155, 0))
+            self.to_do_pen.setBrush(QColor(0, 155, 0))
         else:
-            to_do_pen.setBrush(Qt.green)
+            self.to_do_pen.setBrush(Qt.green)
 
         # Set pen widths and styles
         if self.my_scale >= 5.0:
-            indexed_pen.setWidth(self.my_scale / 3.5)
-            non_indexed_pen.setWidth(self.my_scale / 3.5)
-            to_do_pen.setWidth(self.my_scale / 3.5)
-            non_indexed_pen.setStyle(Qt.DotLine)
+            self.indexed_pen.setWidth(self.my_scale / 3.5)
+            self.non_indexed_pen.setWidth(self.my_scale / 3.5)
+            self.to_do_pen.setWidth(self.my_scale / 3.5)
+            self.non_indexed_pen.setStyle(Qt.DotLine)
         else:
-            indexed_pen.setWidth(0.0)
-            non_indexed_pen.setWidth(0.0)
-            to_do_pen.setWidth(0.0)
-            non_indexed_pen.setStyle(Qt.SolidLine)
+            self.indexed_pen.setWidth(0.0)
+            self.non_indexed_pen.setWidth(0.0)
+            self.to_do_pen.setWidth(0.0)
+            self.non_indexed_pen.setStyle(Qt.SolidLine)
 
-        return indexed_pen, non_indexed_pen, to_do_pen
+    def _paint_crosshairs(self, painter):
+        cen_siz = 20.0
+        if self.xb is not None and self.yb is not None:
+            painter.setPen(self.indexed_pen)
+            det_mov = self.n_pan_xb_yb * 213
+            painter.drawLine(
+                int(self.xb * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale - cen_siz),
+                int(self.xb * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale + cen_siz),
+            )
+
+            painter.drawLine(
+                int(self.xb * self.my_scale + cen_siz),
+                int((self.yb + det_mov) * self.my_scale),
+                int(self.xb * self.my_scale - cen_siz),
+                int((self.yb + det_mov) * self.my_scale),
+            )
+
+        if (
+            self.my_parent.chk_box_B_centr.isChecked()
+            and self.tmp_bc_x is not None
+            and self.tmp_bc_y is not None
+        ):
+
+            painter.setPen(self.to_do_pen)
+            painter.drawLine(
+                int(self.tmp_bc_x * self.my_scale),
+                int(self.tmp_bc_y * self.my_scale - cen_siz),
+                int(self.tmp_bc_x * self.my_scale),
+                int(self.tmp_bc_y * self.my_scale + cen_siz),
+            )
+            painter.drawLine(
+                int(self.tmp_bc_x * self.my_scale) - cen_siz,
+                int(self.tmp_bc_y * self.my_scale),
+                int(self.tmp_bc_x * self.my_scale) + cen_siz,
+                int(self.tmp_bc_y * self.my_scale),
+            )
 
     def paintEvent(self, event):
         # logger.info("paintEvent(img_viewer)")
@@ -590,7 +629,7 @@ class ImgPainter(QWidget):
         pixmap = QPixmap(self.img)
         painter = QPainter(self)
 
-        indexed_pen, non_indexed_pen, to_do_pen = self._create_pens()
+        self._create_pens()
 
         painter.drawPixmap(rect, pixmap)
 
@@ -599,46 +638,10 @@ class ImgPainter(QWidget):
             painter.drawPixmap(rect, self.mask_pixmap)
             # logger.info(" .Drawing Mask end")
 
-        cen_siz = 20.0
-        if self.xb is not None and self.yb is not None:
-            painter.setPen(indexed_pen)
-            det_mov = self.n_pan_xb_yb * 213
-            painter.drawLine(
-                int(self.xb * self.my_scale),
-                int((self.yb + det_mov) * self.my_scale - cen_siz),
-                int(self.xb * self.my_scale),
-                int((self.yb + det_mov) * self.my_scale + cen_siz),
-            )
-
-            painter.drawLine(
-                int(self.xb * self.my_scale + cen_siz),
-                int((self.yb + det_mov) * self.my_scale),
-                int(self.xb * self.my_scale - cen_siz),
-                int((self.yb + det_mov) * self.my_scale),
-            )
-
-        if (
-            self.my_parent.chk_box_B_centr.isChecked()
-            and self.tmp_bc_x
-            and self.tmp_bc_y
-        ):
-
-            painter.setPen(to_do_pen)
-            painter.drawLine(
-                int(self.tmp_bc_x * self.my_scale),
-                int(self.tmp_bc_y * self.my_scale - cen_siz),
-                int(self.tmp_bc_x * self.my_scale),
-                int(self.tmp_bc_y * self.my_scale + cen_siz),
-            )
-            painter.drawLine(
-                int(self.tmp_bc_x * self.my_scale) - cen_siz,
-                int(self.tmp_bc_y * self.my_scale),
-                int(self.tmp_bc_x * self.my_scale) + cen_siz,
-                int(self.tmp_bc_y * self.my_scale),
-            )
+        self._paint_crosshairs(painter)
 
         if self.my_parent.chk_box_mask.isChecked():
-            painter.setPen(to_do_pen)
+            painter.setPen(self.to_do_pen)
 
             # Drawing list of previous mask items
             try:
@@ -746,10 +749,10 @@ class ImgPainter(QWidget):
                             )
 
                             if reflection[4] == "NOT indexed":
-                                painter.setPen(non_indexed_pen)
+                                painter.setPen(self.non_indexed_pen)
 
                             else:
-                                painter.setPen(indexed_pen)
+                                painter.setPen(self.indexed_pen)
 
                             painter.drawRect(rectangle)
                             lst_tmp_hkl = self.obs_flat_data
@@ -773,10 +776,10 @@ class ImgPainter(QWidget):
                             y = float(reflection[1]) + 1.0
 
                             if reflection[4] == "NOT indexed":
-                                painter.setPen(non_indexed_pen)
+                                painter.setPen(self.non_indexed_pen)
 
                             else:
-                                painter.setPen(indexed_pen)
+                                painter.setPen(self.indexed_pen)
 
                             cross_size = float(reflection[2]) + 1.0
                             cross_2_size = float(reflection[3])
@@ -817,9 +820,7 @@ class ImgPainter(QWidget):
             try:
                 for j, img_flat_data in enumerate(lst_tmp_hkl):
                     for i, reflection in enumerate(img_flat_data):
-                        self._draw_hkl(
-                            reflection, painter, indexed_pen, non_indexed_pen, i, j
-                        )
+                        self._draw_hkl(reflection, painter, i, j)
 
             except TypeError:
                 logger.debug("not printing HKLs ")
