@@ -710,38 +710,27 @@ class ImgPainter(QWidget):
 
             lst_tmp_hkl = None
             if self.user_choice[0]:
-                try:
-                    for j, img_flat_data in enumerate(self.obs_flat_data):
-                        for i, reflection in enumerate(img_flat_data):
-                            x = float(reflection[0])
-                            y = float(reflection[1])
-                            width = float(reflection[2])
-                            height = float(reflection[3])
-                            rectangle = QRectF(
-                                x * self.my_scale,
-                                y * self.my_scale,
-                                width * self.my_scale,
-                                height * self.my_scale,
-                            )
+                for j, img_flat_data in enumerate(self.obs_flat_data):
+                    for i, reflection in enumerate(img_flat_data):
+                        x = float(reflection[0])
+                        y = float(reflection[1])
+                        width = float(reflection[2])
+                        height = float(reflection[3])
+                        rectangle = QRectF(
+                            x * self.my_scale,
+                            y * self.my_scale,
+                            width * self.my_scale,
+                            height * self.my_scale,
+                        )
 
-                            if reflection[4] == "NOT indexed":
-                                painter.setPen(self.non_indexed_pen)
+                        if reflection[4] == "NOT indexed":
+                            painter.setPen(self.non_indexed_pen)
 
-                            else:
-                                painter.setPen(self.indexed_pen)
+                        else:
+                            painter.setPen(self.indexed_pen)
 
-                            painter.drawRect(rectangle)
-                            lst_tmp_hkl = self.obs_flat_data
-
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.info(
-                        " \n >>> Caught unknown exception type %s: %s",
-                        type(e).__name__,
-                        e,
-                    )
-                    logger.info("No reflection (Obsevations) to show ... None type")
+                        painter.drawRect(rectangle)
+                        lst_tmp_hkl = self.obs_flat_data
 
             if self.user_choice[1]:
                 try:
