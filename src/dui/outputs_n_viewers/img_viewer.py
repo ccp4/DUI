@@ -612,6 +612,61 @@ class ImgPainter(QWidget):
                 int(self.tmp_bc_y * self.my_scale),
             )
 
+    def _paint_mask_items(self, painter):
+        # Drawing list of previous mask items
+        painter.setPen(self.to_do_pen)
+        for item in self.mask_items:
+            if item[0] == "rect":
+                xd = item[2] - item[1]
+                yd = item[4] - item[3]
+                painter.drawRect(
+                    item[1] * self.my_scale,
+                    item[3] * self.my_scale,
+                    xd * self.my_scale,
+                    yd * self.my_scale,
+                )
+
+            elif item[0] == "circ":
+                r = item[3] * self.my_scale
+                q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
+                painter.drawEllipse(q_center, r, r)
+
+            elif item[0] == "poly":
+                if len(item[1:]) >= 2:
+                    prev_tup = item[1]
+                    for posi in item[2:]:
+                        x1 = prev_tup[0]
+                        y1 = prev_tup[1]
+                        x2 = posi[0]
+                        y2 = posi[1]
+
+                        painter.drawLine(
+                            x1 * self.my_scale,
+                            y1 * self.my_scale,
+                            x2 * self.my_scale,
+                            y2 * self.my_scale,
+                        )
+
+                        prev_tup = posi
+
+        # Drawing current mask item
+        draw_mask_item, item, same_item = build_mask_item(self)
+        if draw_mask_item:
+            if item[0] == "rect":
+                xd = item[2] - item[1]
+                yd = item[4] - item[3]
+                painter.drawRect(
+                    item[1] * self.my_scale,
+                    item[3] * self.my_scale,
+                    xd * self.my_scale,
+                    yd * self.my_scale,
+                )
+
+            elif item[0] == "circ":
+                r = item[3] * self.my_scale
+                q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
+                painter.drawEllipse(q_center, r, r)
+
     def paintEvent(self, event):
         # logger.info("paintEvent(img_viewer)")
         if self.img is None:
@@ -641,60 +696,7 @@ class ImgPainter(QWidget):
         self._paint_crosshairs(painter)
 
         if self.my_parent.chk_box_mask.isChecked():
-            painter.setPen(self.to_do_pen)
-
-            # Drawing list of previous mask items
-            for item in self.mask_items:
-                if item[0] == "rect":
-                    xd = item[2] - item[1]
-                    yd = item[4] - item[3]
-                    painter.drawRect(
-                        item[1] * self.my_scale,
-                        item[3] * self.my_scale,
-                        xd * self.my_scale,
-                        yd * self.my_scale,
-                    )
-
-                elif item[0] == "circ":
-                    r = item[3] * self.my_scale
-                    q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
-                    painter.drawEllipse(q_center, r, r)
-
-                elif item[0] == "poly":
-                    if len(item[1:]) >= 2:
-                        prev_tup = item[1]
-                        for posi in item[2:]:
-                            x1 = prev_tup[0]
-                            y1 = prev_tup[1]
-                            x2 = posi[0]
-                            y2 = posi[1]
-
-                            painter.drawLine(
-                                x1 * self.my_scale,
-                                y1 * self.my_scale,
-                                x2 * self.my_scale,
-                                y2 * self.my_scale,
-                            )
-
-                            prev_tup = posi
-
-            # Drawing current mask item
-            draw_mask_item, item, same_item = build_mask_item(self)
-            if draw_mask_item:
-                if item[0] == "rect":
-                    xd = item[2] - item[1]
-                    yd = item[4] - item[3]
-                    painter.drawRect(
-                        item[1] * self.my_scale,
-                        item[3] * self.my_scale,
-                        xd * self.my_scale,
-                        yd * self.my_scale,
-                    )
-
-                elif item[0] == "circ":
-                    r = item[3] * self.my_scale
-                    q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
-                    painter.drawEllipse(q_center, r, r)
+            self._paint_mask_items(painter)
 
         if (
             self.obs_flat_data is not None
