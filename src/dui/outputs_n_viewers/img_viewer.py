@@ -711,6 +711,8 @@ class ImgPainter(QWidget):
             lst_tmp_hkl = None
             if self.user_choice[0]:
                 for j, img_flat_data in enumerate(self.obs_flat_data):
+                    if img_flat_data is None:
+                        continue
                     for i, reflection in enumerate(img_flat_data):
                         x = float(reflection[0])
                         y = float(reflection[1])
@@ -733,54 +735,52 @@ class ImgPainter(QWidget):
                         lst_tmp_hkl = self.obs_flat_data
 
             if self.user_choice[1]:
-                try:
-                    for j, img_flat_data in enumerate(self.pre_flat_data):
-                        for i, reflection in enumerate(img_flat_data):
+                for j, img_flat_data in enumerate(self.pre_flat_data):
+                    if img_flat_data is None:
+                        continue
+                    for i, reflection in enumerate(img_flat_data):
 
-                            x = float(reflection[0]) + 1.0
-                            y = float(reflection[1]) + 1.0
+                        x = float(reflection[0]) + 1.0
+                        y = float(reflection[1]) + 1.0
 
-                            if reflection[4] == "NOT indexed":
-                                painter.setPen(self.non_indexed_pen)
+                        if reflection[4] == "NOT indexed":
+                            painter.setPen(self.non_indexed_pen)
 
-                            else:
-                                painter.setPen(self.indexed_pen)
+                        else:
+                            painter.setPen(self.indexed_pen)
 
-                            cross_size = float(reflection[2]) + 1.0
-                            cross_2_size = float(reflection[3])
+                        cross_size = float(reflection[2]) + 1.0
+                        cross_2_size = float(reflection[3])
 
-                            painter.drawLine(
-                                x * self.my_scale,
-                                (y - cross_size) * self.my_scale,
-                                x * self.my_scale,
-                                (y + cross_size) * self.my_scale,
-                            )
+                        painter.drawLine(
+                            x * self.my_scale,
+                            (y - cross_size) * self.my_scale,
+                            x * self.my_scale,
+                            (y + cross_size) * self.my_scale,
+                        )
 
-                            painter.drawLine(
-                                (x + cross_size) * self.my_scale,
-                                y * self.my_scale,
-                                (x - cross_size) * self.my_scale,
-                                y * self.my_scale,
-                            )
+                        painter.drawLine(
+                            (x + cross_size) * self.my_scale,
+                            y * self.my_scale,
+                            (x - cross_size) * self.my_scale,
+                            y * self.my_scale,
+                        )
 
-                            painter.drawLine(
-                                (x - cross_2_size) * self.my_scale,
-                                (y - cross_2_size) * self.my_scale,
-                                (x + cross_2_size) * self.my_scale,
-                                (y + cross_2_size) * self.my_scale,
-                            )
+                        painter.drawLine(
+                            (x - cross_2_size) * self.my_scale,
+                            (y - cross_2_size) * self.my_scale,
+                            (x + cross_2_size) * self.my_scale,
+                            (y + cross_2_size) * self.my_scale,
+                        )
 
-                            painter.drawLine(
-                                (x + cross_2_size) * self.my_scale,
-                                (y - cross_2_size) * self.my_scale,
-                                (x - cross_2_size) * self.my_scale,
-                                (y + cross_2_size) * self.my_scale,
-                            )
+                        painter.drawLine(
+                            (x + cross_2_size) * self.my_scale,
+                            (y - cross_2_size) * self.my_scale,
+                            (x - cross_2_size) * self.my_scale,
+                            (y + cross_2_size) * self.my_scale,
+                        )
 
-                            lst_tmp_hkl = self.pre_flat_data
-
-                except TypeError:
-                    logger.info("No reflection (Predictions) to show ... None type")
+                        lst_tmp_hkl = self.pre_flat_data
 
             try:
                 for j, img_flat_data in enumerate(lst_tmp_hkl):
