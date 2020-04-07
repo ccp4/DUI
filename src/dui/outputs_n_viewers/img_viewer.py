@@ -282,7 +282,9 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
 
-        emit_mask, to_append, same_item = build_mask_item(self)
+        emit_mask = False
+        if self.my_parent.chk_box_mask.isChecked():
+            emit_mask, to_append, same_item = build_mask_item(self)
 
         if emit_mask:
             if same_item:
