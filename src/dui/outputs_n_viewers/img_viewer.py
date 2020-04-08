@@ -147,96 +147,95 @@ def build_mask_item(img_paint_obj):
 
         same_item = False
 
-        if img_paint_obj.my_parent.chk_box_mask.isChecked():
-            if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
-                if x1 > x2:
-                    x1, x2 = x2, x1
+        if not img_paint_obj.my_parent.chk_box_mask.isChecked():
+            return {}
 
-                if y1 > y2:
-                    y1, y2 = y2, y1
+        if img_paint_obj.my_parent.rad_but_rect_mask.isChecked():
+            if x1 > x2:
+                x1, x2 = x2, x1
 
-                if x2 > img_paint_obj.img_width:
-                    x2 = float(img_paint_obj.img_width)
+            if y1 > y2:
+                y1, y2 = y2, y1
 
-                if y2 > img_paint_obj.img_height:
-                    y2 = float(img_paint_obj.img_height)
+            if x2 > img_paint_obj.img_width:
+                x2 = float(img_paint_obj.img_width)
 
-                if x1 < 0:
-                    x1 = 0.0
+            if y2 > img_paint_obj.img_height:
+                y2 = float(img_paint_obj.img_height)
 
-                if y1 < 0:
-                    y1 = 0.0
+            if x1 < 0:
+                x1 = 0.0
 
-                # https://github.com/ccp4/DUI/issues/136
-                if x1 == x2 and y1 == y2:
-                    return False, None, False
+            if y1 < 0:
+                y1 = 0.0
 
-                to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
+            # https://github.com/ccp4/DUI/issues/136
+            if x1 == x2 and y1 == y2:
+                return {}
 
-            elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
-                dx = x2 - x1
-                dy = y2 - y1
-                r = float(dx * dx + dy * dy) ** (0.5)
+            to_append = ("rect", int(x1), int(x2), int(y1), int(y2))
 
-                if x1 + r > img_paint_obj.img_width:
-                    r = img_paint_obj.img_width - x1
+        elif img_paint_obj.my_parent.rad_but_circ_mask.isChecked():
+            dx = x2 - x1
+            dy = y2 - y1
+            r = float(dx * dx + dy * dy) ** (0.5)
 
-                if y1 + r > img_paint_obj.img_height:
-                    r = img_paint_obj.img_height - y1
+            if x1 + r > img_paint_obj.img_width:
+                r = img_paint_obj.img_width - x1
 
-                if r > x1:
-                    r = x1
+            if y1 + r > img_paint_obj.img_height:
+                r = img_paint_obj.img_height - y1
 
-                if r > y1:
-                    r = y1
+            if r > x1:
+                r = x1
 
-                # https://github.com/ccp4/DUI/issues/136
-                if r < 1:
-                    return False, None, False
+            if r > y1:
+                r = y1
 
-                to_append = ("circ", int(x1), int(y1), int(r))
+            # https://github.com/ccp4/DUI/issues/136
+            if r < 1:
+                return {}
 
-            if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
+            to_append = ("circ", int(x1), int(y1), int(r))
 
-                if x2 > img_paint_obj.img_width:
-                    x2 = float(img_paint_obj.img_width)
+        if img_paint_obj.my_parent.rad_but_poly_mask.isChecked():
 
-                if y2 > img_paint_obj.img_height:
-                    y2 = float(img_paint_obj.img_height)
+            if x2 > img_paint_obj.img_width:
+                x2 = float(img_paint_obj.img_width)
 
-                if x2 < 0:
-                    x2 = 0.0
+            if y2 > img_paint_obj.img_height:
+                y2 = float(img_paint_obj.img_height)
 
-                if y2 < 0:
-                    y2 = 0.0
+            if x2 < 0:
+                x2 = 0.0
 
-                to_append_append = (int(x2), int(y2))
+            if y2 < 0:
+                y2 = 0.0
 
-                try:
-                    if img_paint_obj.mask_items[-1][0] == "poly":
-                        same_item = True
-                        item_list = list(img_paint_obj.mask_items[-1])
-                        item_list.append(to_append_append)
-                        to_append = tuple(item_list)
+            to_append_append = (int(x2), int(y2))
 
-                    else:
-                        to_append = ("poly", to_append_append)
+            try:
+                if img_paint_obj.mask_items[-1][0] == "poly":
+                    same_item = True
+                    item_list = list(img_paint_obj.mask_items[-1])
+                    item_list.append(to_append_append)
+                    to_append = tuple(item_list)
 
-                except IndexError:
+                else:
                     to_append = ("poly", to_append_append)
 
-            return True, to_append, same_item
+            except IndexError:
+                to_append = ("poly", to_append_append)
 
-        else:
-            return False, None, False
+        return {"to_append": to_append, "same_item": same_item}
 
     except TypeError:
-        # logger.info("except(build_mask_item) ... TypeError")
-        return False, None, False
+        logger.info("except(build_mask_item) ... TypeError")
+        return {}
 
     except AttributeError:
-        # logger.info(" except(build_mask_item) ... AttributeError")
-        return False, None, False
+        logger.info(" except(build_mask_item) ... AttributeError")
+        return {}
 
 
 class ImgPainter(QWidget):
@@ -250,8 +249,12 @@ class ImgPainter(QWidget):
 
         self.img = None
         self.setMouseTracking(True)
+
         self.xb = None
         self.yb = None
+        self.tmp_bc_x = None
+        self.tmp_bc_y = None
+
         self.np_mask = None
         self.mask_flex = None
         self.pre_flat_data = None
@@ -270,6 +273,8 @@ class ImgPainter(QWidget):
         self.reset_mask_tool(None)
         self.reset_bc_tool(None)
 
+        self._create_pens()
+
     def reset_mask_tool(self, event):
         self.mask_items = []
         self.unpop_menu()
@@ -283,14 +288,15 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
 
-        emit_mask, to_append, same_item = build_mask_item(self)
+        if self.my_parent.chk_box_mask.isChecked():
+            mask_item = build_mask_item(self)
 
-        if emit_mask:
-            if same_item:
-                self.mask_items[-1] = to_append
+        if mask_item:
+            if mask_item["same_item"]:
+                self.mask_items[-1] = mask_item["to_append"]
 
             else:
-                self.mask_items.append(to_append)
+                self.mask_items.append(mask_item["to_append"])
 
             self.ll_mask_applied.emit(self.mask_items)
 
@@ -478,7 +484,7 @@ class ImgPainter(QWidget):
         self.yb = yb
         self.n_pan_xb_yb = n_pan_xb_yb
 
-    def _draw_hkl(self, reflection, painter, indexed_pen, non_indexed_pen, i, j):
+    def _draw_hkl(self, reflection, painter, i, j):
         # x = float(reflection[0]) + 1.0
         # y = float(reflection[1]) + 1.0
 
@@ -487,10 +493,10 @@ class ImgPainter(QWidget):
         # y = float(reflection[1])
 
         if reflection[4] == "NOT indexed":
-            painter.setPen(non_indexed_pen)
+            painter.setPen(self.non_indexed_pen)
 
         else:
-            painter.setPen(indexed_pen)
+            painter.setPen(self.indexed_pen)
 
         if (
             self.my_parent.rad_but_all_hkl.isChecked()
@@ -522,6 +528,145 @@ class ImgPainter(QWidget):
         self.ll_b_centr_applied.emit(self.new_bc)
         self.unpop_menu()
 
+    def _create_pens(self):
+        # Create a pen for indexed spots
+        self.indexed_pen = QPen()
+        try:
+            pen_col = {
+                "grayscale": Qt.blue,
+                "invert": Qt.cyan,
+                "heat invert": Qt.magenta,
+            }
+            self.indexed_pen.setBrush(pen_col[self.my_parent.palette])
+        except KeyError:
+            self.indexed_pen.setBrush(Qt.green)
+
+        self.indexed_pen.setStyle(Qt.SolidLine)
+
+        # Create a pen for non-indexed spots
+        self.non_indexed_pen = QPen()
+        if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
+            self.non_indexed_pen.setBrush(Qt.red)
+        else:
+            self.non_indexed_pen.setBrush(QColor(75, 150, 200))
+
+        # Create a pen for user actions
+        self.to_do_pen = QPen()
+        if (
+            self.my_parent.palette == "grayscale"
+            or self.my_parent.palette == "heat invert"
+        ):
+            self.to_do_pen.setBrush(QColor(0, 155, 0))
+        else:
+            self.to_do_pen.setBrush(Qt.green)
+
+        # Set pen widths and styles
+        if self.my_scale >= 5.0:
+            self.indexed_pen.setWidth(self.my_scale / 3.5)
+            self.non_indexed_pen.setWidth(self.my_scale / 3.5)
+            self.to_do_pen.setWidth(self.my_scale / 3.5)
+            self.non_indexed_pen.setStyle(Qt.DotLine)
+        else:
+            self.indexed_pen.setWidth(0.0)
+            self.non_indexed_pen.setWidth(0.0)
+            self.to_do_pen.setWidth(0.0)
+            self.non_indexed_pen.setStyle(Qt.SolidLine)
+
+    def _paint_crosshairs(self, painter):
+        cen_siz = 20.0
+        if self.xb is not None and self.yb is not None:
+            painter.setPen(self.indexed_pen)
+            det_mov = self.n_pan_xb_yb * 213
+            painter.drawLine(
+                int(self.xb * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale - cen_siz),
+                int(self.xb * self.my_scale),
+                int((self.yb + det_mov) * self.my_scale + cen_siz),
+            )
+
+            painter.drawLine(
+                int(self.xb * self.my_scale + cen_siz),
+                int((self.yb + det_mov) * self.my_scale),
+                int(self.xb * self.my_scale - cen_siz),
+                int((self.yb + det_mov) * self.my_scale),
+            )
+
+        if (
+            self.my_parent.chk_box_B_centr.isChecked()
+            and self.tmp_bc_x is not None
+            and self.tmp_bc_y is not None
+        ):
+
+            painter.setPen(self.to_do_pen)
+            painter.drawLine(
+                int(self.tmp_bc_x * self.my_scale),
+                int(self.tmp_bc_y * self.my_scale - cen_siz),
+                int(self.tmp_bc_x * self.my_scale),
+                int(self.tmp_bc_y * self.my_scale + cen_siz),
+            )
+            painter.drawLine(
+                int(self.tmp_bc_x * self.my_scale) - cen_siz,
+                int(self.tmp_bc_y * self.my_scale),
+                int(self.tmp_bc_x * self.my_scale) + cen_siz,
+                int(self.tmp_bc_y * self.my_scale),
+            )
+
+    def _paint_mask_items(self, painter):
+        # Drawing list of previous mask items
+        painter.setPen(self.to_do_pen)
+        for item in self.mask_items:
+            if item[0] == "rect":
+                xd = item[2] - item[1]
+                yd = item[4] - item[3]
+                painter.drawRect(
+                    item[1] * self.my_scale,
+                    item[3] * self.my_scale,
+                    xd * self.my_scale,
+                    yd * self.my_scale,
+                )
+
+            elif item[0] == "circ":
+                r = item[3] * self.my_scale
+                q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
+                painter.drawEllipse(q_center, r, r)
+
+            elif item[0] == "poly":
+                if len(item[1:]) >= 2:
+                    prev_tup = item[1]
+                    for posi in item[2:]:
+                        x1 = prev_tup[0]
+                        y1 = prev_tup[1]
+                        x2 = posi[0]
+                        y2 = posi[1]
+
+                        painter.drawLine(
+                            x1 * self.my_scale,
+                            y1 * self.my_scale,
+                            x2 * self.my_scale,
+                            y2 * self.my_scale,
+                        )
+
+                        prev_tup = posi
+
+        # Drawing current mask item
+        mask_item = build_mask_item(self)
+        if mask_item:
+            item = mask_item["to_append"]
+            if item[0] == "rect":
+                xd = item[2] - item[1]
+                yd = item[4] - item[3]
+                painter.drawRect(
+                    item[1] * self.my_scale,
+                    item[3] * self.my_scale,
+                    xd * self.my_scale,
+                    yd * self.my_scale,
+                )
+
+            elif item[0] == "circ":
+                r = item[3] * self.my_scale
+                q_center = QPointF(item[1] * self.my_scale, item[2] * self.my_scale)
+                painter.drawEllipse(q_center, r, r)
+
     def paintEvent(self, event):
         # logger.info("paintEvent(img_viewer)")
         if self.img is None:
@@ -539,49 +684,7 @@ class ImgPainter(QWidget):
         pixmap = QPixmap(self.img)
         painter = QPainter(self)
 
-        indexed_pen = QPen()  # creates a default indexed_pen
-
-        try:
-            pen_col = {
-                "grayscale": Qt.blue,
-                "invert": Qt.cyan,
-                "heat invert": Qt.magenta,
-            }
-            indexed_pen.setBrush(pen_col[self.my_parent.palette])
-
-        except KeyError:
-            indexed_pen.setBrush(Qt.green)
-
-        indexed_pen.setStyle(Qt.SolidLine)
-
-        non_indexed_pen = QPen()  # creates a default non_indexed_pen
-        if self.my_parent.palette == "grayscale" or self.my_parent.palette == "invert":
-            non_indexed_pen.setBrush(Qt.red)
-            # non_indexed_pen.setBrush(Qt.magenta)
-
-        else:
-            non_indexed_pen.setBrush(QColor(75, 150, 200))
-
-        to_do_pen = QPen()  # creates a default pen for user actions
-        if (
-            self.my_parent.palette == "grayscale"
-            or self.my_parent.palette == "heat invert"
-        ):
-            to_do_pen.setBrush(QColor(0, 155, 0))
-        else:
-            to_do_pen.setBrush(Qt.green)
-
-        if self.my_scale >= 5.0:
-            indexed_pen.setWidth(self.my_scale / 3.5)
-            non_indexed_pen.setWidth(self.my_scale / 3.5)
-            to_do_pen.setWidth(self.my_scale / 3.5)
-            non_indexed_pen.setStyle(Qt.DotLine)
-
-        else:
-            indexed_pen.setWidth(0.0)
-            non_indexed_pen.setWidth(0.0)
-            to_do_pen.setWidth(0.0)
-            non_indexed_pen.setStyle(Qt.SolidLine)
+        self._create_pens()
 
         painter.drawPixmap(rect, pixmap)
 
@@ -590,124 +693,10 @@ class ImgPainter(QWidget):
             painter.drawPixmap(rect, self.mask_pixmap)
             # logger.info(" .Drawing Mask end")
 
-        cen_siz = 20.0
-        if self.xb is not None and self.yb is not None:
-            painter.setPen(indexed_pen)
-            det_mov = self.n_pan_xb_yb * 213
-            painter.drawLine(
-                int(self.xb * self.my_scale),
-                int((self.yb + det_mov) * self.my_scale - cen_siz),
-                int(self.xb * self.my_scale),
-                int((self.yb + det_mov) * self.my_scale + cen_siz),
-            )
-
-            painter.drawLine(
-                int(self.xb * self.my_scale + cen_siz),
-                int((self.yb + det_mov) * self.my_scale),
-                int(self.xb * self.my_scale - cen_siz),
-                int((self.yb + det_mov) * self.my_scale),
-            )
-
-        if self.my_parent.chk_box_B_centr.isChecked():
-            try:
-                painter.setPen(to_do_pen)
-                painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale),
-                    int(self.tmp_bc_y * self.my_scale - cen_siz),
-                    int(self.tmp_bc_x * self.my_scale),
-                    int(self.tmp_bc_y * self.my_scale + cen_siz),
-                )
-                painter.drawLine(
-                    int(self.tmp_bc_x * self.my_scale) - cen_siz,
-                    int(self.tmp_bc_y * self.my_scale),
-                    int(self.tmp_bc_x * self.my_scale) + cen_siz,
-                    int(self.tmp_bc_y * self.my_scale),
-                )
-
-            except AttributeError:
-                pass
+        self._paint_crosshairs(painter)
 
         if self.my_parent.chk_box_mask.isChecked():
-            painter.setPen(to_do_pen)
-
-            # Drawing list of previous mask items
-            try:
-                for item in self.mask_items:
-                    if item[0] == "rect":
-                        xd = item[2] - item[1]
-                        yd = item[4] - item[3]
-                        painter.drawRect(
-                            item[1] * self.my_scale,
-                            item[3] * self.my_scale,
-                            xd * self.my_scale,
-                            yd * self.my_scale,
-                        )
-
-                    elif item[0] == "circ":
-                        r = item[3] * self.my_scale
-                        q_center = QPointF(
-                            item[1] * self.my_scale, item[2] * self.my_scale
-                        )
-                        painter.drawEllipse(q_center, r, r)
-
-                    elif item[0] == "poly":
-                        if len(item[1:]) >= 2:
-                            prev_tup = item[1]
-                            for posi in item[2:]:
-                                x1 = prev_tup[0]
-                                y1 = prev_tup[1]
-                                x2 = posi[0]
-                                y2 = posi[1]
-
-                                painter.drawLine(
-                                    x1 * self.my_scale,
-                                    y1 * self.my_scale,
-                                    x2 * self.my_scale,
-                                    y2 * self.my_scale,
-                                )
-
-                                prev_tup = posi
-
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.info(
-                    "\n exception(item in self.mask_items ... for loop ): %s: %s",
-                    type(e).__name__,
-                    e,
-                    "\n",
-                )
-
-            # Drawing current mask item
-            draw_mask_item, item, same_item = build_mask_item(self)
-            if draw_mask_item:
-                try:
-                    if item[0] == "rect":
-                        xd = item[2] - item[1]
-                        yd = item[4] - item[3]
-                        painter.drawRect(
-                            item[1] * self.my_scale,
-                            item[3] * self.my_scale,
-                            xd * self.my_scale,
-                            yd * self.my_scale,
-                        )
-
-                    elif item[0] == "circ":
-                        r = item[3] * self.my_scale
-                        q_center = QPointF(
-                            item[1] * self.my_scale, item[2] * self.my_scale
-                        )
-                        painter.drawEllipse(q_center, r, r)
-
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.info(
-                        "\n exception(draw_mask_item) = %s: %s",
-                        type(e).__name__,
-                        e,
-                        "\n",
-                    )
+            self._paint_mask_items(painter)
 
         if (
             self.obs_flat_data is not None
@@ -721,95 +710,82 @@ class ImgPainter(QWidget):
 
             lst_tmp_hkl = None
             if self.user_choice[0]:
-                try:
-                    for j, img_flat_data in enumerate(self.obs_flat_data):
-                        for i, reflection in enumerate(img_flat_data):
-                            x = float(reflection[0])
-                            y = float(reflection[1])
-                            width = float(reflection[2])
-                            height = float(reflection[3])
-                            rectangle = QRectF(
-                                x * self.my_scale,
-                                y * self.my_scale,
-                                width * self.my_scale,
-                                height * self.my_scale,
-                            )
+                for j, img_flat_data in enumerate(self.obs_flat_data):
+                    if img_flat_data is None:
+                        continue
+                    for i, reflection in enumerate(img_flat_data):
+                        x = float(reflection[0])
+                        y = float(reflection[1])
+                        width = float(reflection[2])
+                        height = float(reflection[3])
+                        rectangle = QRectF(
+                            x * self.my_scale,
+                            y * self.my_scale,
+                            width * self.my_scale,
+                            height * self.my_scale,
+                        )
 
-                            if reflection[4] == "NOT indexed":
-                                painter.setPen(non_indexed_pen)
+                        if reflection[4] == "NOT indexed":
+                            painter.setPen(self.non_indexed_pen)
 
-                            else:
-                                painter.setPen(indexed_pen)
+                        else:
+                            painter.setPen(self.indexed_pen)
 
-                            painter.drawRect(rectangle)
-                            lst_tmp_hkl = self.obs_flat_data
-
-                except BaseException as e:
-                    # We don't want to catch bare exceptions but don't know
-                    # what this was supposed to catch. Log it.
-                    logger.info(
-                        " \n >>> Caught unknown exception type %s: %s",
-                        type(e).__name__,
-                        e,
-                    )
-                    logger.info("No reflection (Obsevations) to show ... None type")
+                        painter.drawRect(rectangle)
+                        lst_tmp_hkl = self.obs_flat_data
 
             if self.user_choice[1]:
-                try:
-                    for j, img_flat_data in enumerate(self.pre_flat_data):
-                        for i, reflection in enumerate(img_flat_data):
+                for j, img_flat_data in enumerate(self.pre_flat_data):
+                    if img_flat_data is None:
+                        continue
+                    for i, reflection in enumerate(img_flat_data):
 
-                            x = float(reflection[0]) + 1.0
-                            y = float(reflection[1]) + 1.0
+                        x = float(reflection[0]) + 1.0
+                        y = float(reflection[1]) + 1.0
 
-                            if reflection[4] == "NOT indexed":
-                                painter.setPen(non_indexed_pen)
+                        if reflection[4] == "NOT indexed":
+                            painter.setPen(self.non_indexed_pen)
 
-                            else:
-                                painter.setPen(indexed_pen)
+                        else:
+                            painter.setPen(self.indexed_pen)
 
-                            cross_size = float(reflection[2]) + 1.0
-                            cross_2_size = float(reflection[3])
+                        cross_size = float(reflection[2]) + 1.0
+                        cross_2_size = float(reflection[3])
 
-                            painter.drawLine(
-                                x * self.my_scale,
-                                (y - cross_size) * self.my_scale,
-                                x * self.my_scale,
-                                (y + cross_size) * self.my_scale,
-                            )
+                        painter.drawLine(
+                            x * self.my_scale,
+                            (y - cross_size) * self.my_scale,
+                            x * self.my_scale,
+                            (y + cross_size) * self.my_scale,
+                        )
 
-                            painter.drawLine(
-                                (x + cross_size) * self.my_scale,
-                                y * self.my_scale,
-                                (x - cross_size) * self.my_scale,
-                                y * self.my_scale,
-                            )
+                        painter.drawLine(
+                            (x + cross_size) * self.my_scale,
+                            y * self.my_scale,
+                            (x - cross_size) * self.my_scale,
+                            y * self.my_scale,
+                        )
 
-                            painter.drawLine(
-                                (x - cross_2_size) * self.my_scale,
-                                (y - cross_2_size) * self.my_scale,
-                                (x + cross_2_size) * self.my_scale,
-                                (y + cross_2_size) * self.my_scale,
-                            )
+                        painter.drawLine(
+                            (x - cross_2_size) * self.my_scale,
+                            (y - cross_2_size) * self.my_scale,
+                            (x + cross_2_size) * self.my_scale,
+                            (y + cross_2_size) * self.my_scale,
+                        )
 
-                            painter.drawLine(
-                                (x + cross_2_size) * self.my_scale,
-                                (y - cross_2_size) * self.my_scale,
-                                (x - cross_2_size) * self.my_scale,
-                                (y + cross_2_size) * self.my_scale,
-                            )
+                        painter.drawLine(
+                            (x + cross_2_size) * self.my_scale,
+                            (y - cross_2_size) * self.my_scale,
+                            (x - cross_2_size) * self.my_scale,
+                            (y + cross_2_size) * self.my_scale,
+                        )
 
-                            lst_tmp_hkl = self.pre_flat_data
-
-                except TypeError:
-                    logger.info("No reflection (Predictions) to show ... None type")
+                        lst_tmp_hkl = self.pre_flat_data
 
             try:
                 for j, img_flat_data in enumerate(lst_tmp_hkl):
                     for i, reflection in enumerate(img_flat_data):
-                        self._draw_hkl(
-                            reflection, painter, indexed_pen, non_indexed_pen, i, j
-                        )
+                        self._draw_hkl(reflection, painter, i, j)
 
             except TypeError:
                 logger.debug("not printing HKLs ")
@@ -859,7 +835,7 @@ class PopActionsMenu(QMenu):
         global_threshold_spin_layout.addWidget(self.my_parent.global_threshold_spin)
 
         min_local_layout = QHBoxLayout()
-        min_local_layout.addWidget(QLabel("Minimum local "))
+        min_local_layout.addWidget(QLabel("Minimum local"))
         min_local_layout.addWidget(self.my_parent.min_count_spin)
 
         gain_layout = QHBoxLayout()
@@ -968,7 +944,7 @@ class PopDisplayMenu(QMenu):
         ref_bond_group.addButton(self.my_parent.rad_but_all_hkl)
         ref_bond_group.addButton(self.my_parent.rad_but_none_hkl)
 
-        info_grp = QGroupBox("Reflection info ")
+        info_grp = QGroupBox("Reflection info")
         ref_bond_group_box_layout = QVBoxLayout()
         ref_bond_group_box_layout.addWidget(self.my_parent.chk_box_show)
         ref_bond_group_box_layout.addWidget(self.my_parent.rad_but_all_hkl)
@@ -1252,7 +1228,7 @@ class MyImgWin(QWidget):
         ref_type_group_box_layout.addWidget(self.rad_but_fnd_hkl)
         ref_type_group_box_layout.addWidget(self.rad_but_pre_hkl)
 
-        type_grp = QGroupBox("Reflection type ")
+        type_grp = QGroupBox("Reflection type")
         type_grp.setLayout(ref_type_group_box_layout)
 
         self.palette_select = QComboBox()
@@ -1880,7 +1856,7 @@ class MyImgWin(QWidget):
 
             else:
                 logger.info(
-                    "number of  panels NOT supported, defaulting to only first one"
+                    "number of panels NOT supported, defaulting to only first one"
                 )
                 pan_num = 1
 
@@ -1997,7 +1973,7 @@ class MyImgWin(QWidget):
 
     def btn_play_clicked(self):
         if self.video_timer.isActive():
-            logger.debug("Stoping video")
+            logger.debug("Stopping video")
             self.video_timer.stop()
             try:
                 self.video_timer.timeout.disconnect()
