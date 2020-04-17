@@ -288,6 +288,7 @@ class ImgPainter(QWidget):
 
     def mouseReleaseEvent(self, event):
 
+        mask_item = None
         if self.my_parent.chk_box_mask.isChecked():
             mask_item = build_mask_item(self)
 
