@@ -8,6 +8,9 @@ copyright (c) CCP4 - DLS
 """
 from __future__ import absolute_import, division, print_function
 
+import logging
+import sys
+
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,8 +25,6 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import logging
-import sys
 
 # FIXME Copied from dials.index.py. This is needed here because scipy needs to
 # be imported before cctbx otherwise there will be a segmentation fault. This
@@ -48,7 +49,6 @@ from dui.qt import (
     QWidget,
     Signal,
 )
-
 
 logger = logging.getLogger(__name__)
 

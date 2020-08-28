@@ -1,6 +1,7 @@
 """pytest configuration file"""
 
 import os
+
 import pytest
 
 from dui.qt import QApplication, QPixmap, QStyleFactory

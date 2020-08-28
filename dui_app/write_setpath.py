@@ -1,7 +1,7 @@
 from __future__ import print_function
-import sys
 
 import logging
+import sys
 
 logger = logging.getLogger(__name__)
 

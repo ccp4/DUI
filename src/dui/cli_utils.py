@@ -9,6 +9,14 @@ copyright (c) CCP4 - DLS
 """
 from __future__ import absolute_import, division, print_function
 
+import json
+import logging
+import os
+import subprocess
+
+import libtbx.phil
+from six.moves import range
+
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,13 +31,6 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import json
-import logging
-import os
-import subprocess
-
-import libtbx.phil
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 

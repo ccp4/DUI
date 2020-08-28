@@ -6,9 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,21 +20,25 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from collections import OrderedDict, namedtuple
+from __future__ import absolute_import, division, print_function
+
+import json
 import logging
 import os
 import re
-import sys
 import shutil
 import subprocess
-import psutil
-import json
+import sys
+from collections import OrderedDict, namedtuple
 
+import psutil
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
+from six.moves import range
 
 from .cli_utils import get_next_step, sys_arg
 from .m_idials import generate_report
 from .qt import (
+    QT5,
     QDialog,
     QFont,
     QHeaderView,
@@ -51,7 +52,6 @@ from .qt import (
     QStandardItemModel,
     QStyleFactory,
     Qt,
-    QT5,
     QTextEdit,
     QThread,
     QToolButton,
@@ -61,10 +61,6 @@ from .qt import (
     Signal,
     uic,
 )
-
-
-from six.moves import range
-
 
 logger = logging.getLogger(__name__)
 

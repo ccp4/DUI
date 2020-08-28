@@ -5,7 +5,6 @@
 from __future__ import absolute_import, division, print_function
 
 import logging
-
 from distutils import sysconfig
 from subprocess import call as shell_call
 

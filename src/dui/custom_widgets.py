@@ -6,9 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,33 +20,25 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from __future__ import absolute_import, division, print_function
+
 import logging
 import os
 import sys
-import libtbx.phil
 
+import libtbx.phil
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import working_phil as phil_scope_index
+from dials.command_line.integrate import phil_scope as phil_scope_integrate
+from dials.command_line.refine import working_phil as phil_scope_refine
 from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )
+from six.moves import range
 
-from dials.command_line.refine import working_phil as phil_scope_refine
-
-from dials.command_line.integrate import phil_scope as phil_scope_integrate
-
+from dui.cli_utils import sys_arg
 from dui.gui_utils import get_import_run_string, get_main_path
 from dui.params_live_gui_generator import PhilWidget
-from dui.cli_utils import sys_arg
-from dui.simpler_param_widgets import (
-    FindspotsSimplerParameterTab,
-    IndexSimplerParamTab,
-    RefineBravaiSimplerParamTab,
-    RefineSimplerParamTab,
-    IntegrateSimplerParamTab,
-    SymmetrySimplerParamTab,
-    ScaleSimplerParamTab,
-)
 from dui.qt import (
     QApplication,
     QCheckBox,
@@ -71,8 +60,15 @@ from dui.qt import (
     QWidget,
     Signal,
 )
-
-from six.moves import range
+from dui.simpler_param_widgets import (
+    FindspotsSimplerParameterTab,
+    IndexSimplerParamTab,
+    IntegrateSimplerParamTab,
+    RefineBravaiSimplerParamTab,
+    RefineSimplerParamTab,
+    ScaleSimplerParamTab,
+    SymmetrySimplerParamTab,
+)
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
 # still runs. This isn't generally robust but solves this specifically

@@ -4,8 +4,8 @@
 
 import pytest
 
-from dui.m_idials_gui import MainWidget
 from dui.cli_utils import sys_arg
+from dui.m_idials_gui import MainWidget
 
 
 @pytest.mark.gui

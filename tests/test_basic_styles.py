@@ -4,9 +4,9 @@
 
 import pytest
 
-from dui.m_idials_gui import MainWidget, DUIDataLoadingError
 from dui.cli_utils import sys_arg
 from dui.gui_utils import loading_error_dialog
+from dui.m_idials_gui import DUIDataLoadingError, MainWidget
 
 
 @pytest.fixture
