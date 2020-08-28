@@ -12,90 +12,14 @@ import os
 
 logger = logging.getLogger(__name__)
 
-try:
-    # Try preferred interface first - PyQt5
-    from PyQt5 import QtWebEngineWidgets as QWebSettings
-    from PyQt5 import uic
-    from PyQt5.QtCore import *
-    from PyQt5.QtGui import *
-    from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
-    from PyQt5.QtWebEngineWidgets import *
-    from PyQt5.QtWidgets import *
+QT5 = True
 
-    # Signal implementation changes slightly across implementations
-    Signal = pyqtSignal
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWebEngineWidgets import *
+from PySide2.QtWidgets import *
 
-    QT5 = True
-    # In case we're using pytest-qt, force the same API
-    os.environ["PYTEST_QT_API"] = "pyqt5"
+# In case we're using pytest-qt, force the same API
+os.environ["PYTEST_QT_API"] = "pyside2"
 
-    logger.info("Using PyQt5 for QT ...")
-
-except ImportError:
-    # Fallback to QT4
-    try:
-        # Explicitly choose the v2 APIs for QT4
-        try:
-            import sip
-        except ImportError:
-            from PyQt4 import sip
-
-        try:
-            sip.setapi("QDate", 2)
-            sip.setapi("QDateTime", 2)
-            sip.setapi("QString", 2)
-            sip.setapi("QTextStream", 2)
-            sip.setapi("QTime", 2)
-            sip.setapi("QUrl", 2)
-            sip.setapi("QVariant", 2)
-        except ValueError:
-            # These may have already been set
-            pass
-
-        # Primary interface: PyQt4
-        from PyQt4 import uic
-        from PyQt4.QtCore import *
-        from PyQt4.QtGui import *
-        from PyQt4.QtWebKit import *
-
-        Signal = pyqtSignal
-
-        QT5 = False
-        # In case we're using pytest-qt, force the same API
-        os.environ["PYTEST_QT_API"] = "pyqt4v2"
-
-        logger.info("Using PyQt4 for QT")
-
-    except ImportError:
-        # Tying both versions of PySide
-        try:
-            # Backup: try PySide
-            from PySide.QtCore import *
-            from PySide.QtGui import *
-            from PySide.QtWebKit import *
-
-            # from PySide import uic
-
-            QT5 = False
-            # In case we're using pytest-qt, force the same API
-            os.environ["PYTEST_QT_API"] = "pyside"
-
-            logger.info("Using PySide for QT")
-        except ImportError:
-            # Backup: try PySide
-            logger.info("Try pyside2")
-            from PySide2.QtCore import *
-            from PySide2.QtGui import *
-            from PySide2.QtWebKit import *
-            from PySide2.QtWidgets import *
-
-            # from PySide2 import QtWebEngineWidgets as QWebSettings
-            # from PySide2.QtWebEngineWidgets import *
-            # QWebSettings = PySide2.QtWebEngineWidgets
-            # from PySide2.QtWebKit import *
-
-            QT5 = True
-            # In case we're using pytest-qt, force the same API
-            os.environ["PYTEST_QT_API"] = "pyside2"
-
-            logger.info("Using PySide2 for QT")
+logger.info("Using PySide2 for QT")
