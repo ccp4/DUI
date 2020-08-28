@@ -57,7 +57,6 @@ setup(
                 "src/dui/resources/next_img.png",
                 "src/dui/resources/ffw_img.png",
                 "src/dui/resources/last_img.png",
-
             ],
         )
     ],

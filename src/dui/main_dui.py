@@ -28,11 +28,7 @@ import logging
 import os
 import sys
 
-try:
-    from cli_utils import sys_arg
-
-except ImportError:
-    from .cli_utils import sys_arg
+from dui.cli_utils import sys_arg
 
 logger = logging.getLogger(__name__)
 

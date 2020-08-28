@@ -27,43 +27,23 @@ import sys
 
 import libtbx.introspection
 
-try:
-    from qt import (
-        QApplication,
-        QComboBox,
-        QDoubleSpinBox,
-        QHBoxLayout,
-        QLabel,
-        QLayout,
-        QFormLayout,
-        QPushButton,
-        QSpinBox,
-        QLineEdit,
-        QRegExp,
-        QRegExpValidator,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-except ImportError:
-    from .qt import (
-        QApplication,
-        QComboBox,
-        QDoubleSpinBox,
-        QHBoxLayout,
-        QLabel,
-        QLayout,
-        QFormLayout,
-        QPushButton,
-        QSpinBox,
-        QLineEdit,
-        QRegExp,
-        QRegExpValidator,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
+from dui.qt import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QHBoxLayout,
+    QLabel,
+    QLayout,
+    QFormLayout,
+    QPushButton,
+    QSpinBox,
+    QLineEdit,
+    QRegExp,
+    QRegExpValidator,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 
 from six.moves import range
@@ -100,6 +80,7 @@ class ResetButton(QPushButton):
         v_box.addWidget(my_label)
         self.setLayout(v_box)
         # self.show()
+
 
 class DefaultComboBox(QComboBox):
     """A ComboBox initialised with a list of items and keeps track of which one
@@ -251,8 +232,10 @@ class IndexSimplerParamTab(SimpleParamTab):
         hbox_method = QHBoxLayout()
         label_method_62 = QLabel("Indexing method")
         hbox_method.addWidget(label_method_62)
-        box_method_62 = DefaultComboBox("indexing.method", ["fft3d", "fft1d",
-            "real_space_grid_search", "low_res_spot_match"])
+        box_method_62 = DefaultComboBox(
+            "indexing.method",
+            ["fft3d", "fft1d", "real_space_grid_search", "low_res_spot_match"],
+        )
         box_method_62.currentIndexChanged.connect(self.combobox_changed)
 
         hbox_method.addWidget(box_method_62)
@@ -267,7 +250,7 @@ class IndexSimplerParamTab(SimpleParamTab):
         space_group_label = QLabel("Space group")
         space_group_line = QLineEdit()
         # Simple validator to allow only characters in H-M symbols
-        regex = QRegExp("[ABCPIFR][0-9a-d\-/:nmHR]+")
+        regex = QRegExp(r"[ABCPIFR][0-9a-d\-/:nmHR]+")
         validatorHM = QRegExpValidator(regex)
         space_group_line.setValidator(validatorHM)
         space_group_line.local_path = "indexing.known_symmetry.space_group"
@@ -275,7 +258,7 @@ class IndexSimplerParamTab(SimpleParamTab):
 
         unit_cell_label = QLabel("Unit cell")
         unit_cell_line = QLineEdit()
-        regex = QRegExp("[0-9\., ]+")
+        regex = QRegExp(r"[0-9\., ]+")
         validatorUC = QRegExpValidator(regex)
         unit_cell_line.setValidator(validatorUC)
         unit_cell_line.local_path = "indexing.known_symmetry.unit_cell"
@@ -307,12 +290,11 @@ class IndexSimplerParamTab(SimpleParamTab):
         self.item_changed.emit(str_path, str_value)
 
 
-#>>>>>>> old master
-#class RefineBravaiSimplerParamTab(QWidget):
+# >>>>>>> old master
+# class RefineBravaiSimplerParamTab(QWidget):
+
 
 class RefineBravaiSimplerParamTab(SimpleParamTab):
-
-
     def __init__(self, parent=None):
         super(RefineBravaiSimplerParamTab, self).__init__()
 
@@ -322,8 +304,10 @@ class RefineBravaiSimplerParamTab(SimpleParamTab):
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
         box_outlier_algorithm = DefaultComboBox(
-            "refinement.reflections.outlier.algorithm", ["null", "Auto", "mcd",
-            "tukey", "sauter_poon"], default_index=1)
+            "refinement.reflections.outlier.algorithm",
+            ["null", "Auto", "mcd", "tukey", "sauter_poon"],
+            default_index=1,
+        )
         box_outlier_algorithm.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
         localLayout.addLayout(hbox_lay_outlier_algorithm)
@@ -357,8 +341,11 @@ class RefineSimplerParamTab(SimpleParamTab):
 
         hbox_lay_scan_varying.addWidget(label_scan_varying)
 
-        box_scan_varying = DefaultComboBox("refinement.parameterisation.scan_varying",
-            ["True", "False", "Auto"], default_index=2)
+        box_scan_varying = DefaultComboBox(
+            "refinement.parameterisation.scan_varying",
+            ["True", "False", "Auto"],
+            default_index=2,
+        )
         box_scan_varying.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_scan_varying.addWidget(box_scan_varying)
         localLayout.addLayout(hbox_lay_scan_varying)
@@ -370,8 +357,10 @@ class RefineSimplerParamTab(SimpleParamTab):
 
         hbox_lay_outlier_algorithm.addWidget(label_outlier_algorithm)
         box_outlier_algorithm = DefaultComboBox(
-            "refinement.reflections.outlier.algorithm", ["null", "Auto", "mcd",
-            "tukey", "sauter_poon"], default_index=1)
+            "refinement.reflections.outlier.algorithm",
+            ["null", "Auto", "mcd", "tukey", "sauter_poon"],
+            default_index=1,
+        )
         box_outlier_algorithm.currentIndexChanged.connect(self.combobox_changed)
 
         hbox_lay_outlier_algorithm.addWidget(box_outlier_algorithm)
@@ -419,8 +408,9 @@ class IntegrateSimplerParamTab(SimpleParamTab):
         label_PrFit = QLabel("Use profile fitting")
         PrFit_lay_out.addWidget(label_PrFit)
 
-        PrFit_comb_bx = DefaultComboBox("integration.profile.fitting",
-            ["True", "False", "Auto"])
+        PrFit_comb_bx = DefaultComboBox(
+            "integration.profile.fitting", ["True", "False", "Auto"]
+        )
         PrFit_comb_bx.currentIndexChanged.connect(self.combobox_changed)
 
         PrFit_lay_out.addWidget(PrFit_comb_bx)
@@ -430,8 +420,11 @@ class IntegrateSimplerParamTab(SimpleParamTab):
         label_algorithm_53 = QLabel("Background algorithm")
         hbox_lay_algorithm_53.addWidget(label_algorithm_53)
 
-        box_algorithm_53 = DefaultComboBox("integration.background.algorithm",
-            ["simple", "null", "median", "gmodel", "glm"], default_index=4)
+        box_algorithm_53 = DefaultComboBox(
+            "integration.background.algorithm",
+            ["simple", "null", "median", "gmodel", "glm"],
+            default_index=4,
+        )
         box_algorithm_53.currentIndexChanged.connect(self.combobox_changed)
 
         hbox_lay_algorithm_53.addWidget(box_algorithm_53)
@@ -468,7 +461,6 @@ class IntegrateSimplerParamTab(SimpleParamTab):
         self.box_nproc.tmp_lst = None
 
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
-
 
     def set_max_nproc(self):
         cpu_max_proc = int(libtbx.introspection.number_of_processors())
@@ -538,8 +530,9 @@ class ScaleSimplerParamTab(SimpleParamTab):
         label_wgh_opt_err = QLabel("Error optimisation model")
 
         hbox_lay_wgh_opt_err.addWidget(label_wgh_opt_err)
-        box_wgh_opt_err = DefaultComboBox("weighting.error_model.error_model",
-            ["basic", "None"])
+        box_wgh_opt_err = DefaultComboBox(
+            "weighting.error_model.error_model", ["basic", "None"]
+        )
         box_wgh_opt_err.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_wgh_opt_err.addWidget(box_wgh_opt_err)
         """
@@ -576,8 +569,6 @@ class ScaleSimplerParamTab(SimpleParamTab):
         self.lst_var_widg.append(label_wgh_opt_err)
         self.lst_var_widg.append(d_min_spn_bx)
         self.lst_var_widg.append(d_min_label)
-
-
 
 
 class TmpTstWidget(QWidget):

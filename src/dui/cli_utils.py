@@ -278,7 +278,7 @@ def build_command_lst(node_obj, cmd_lst):
             logger.info("\n reindex \n exeption:", e, "type:", type(e))
 
             # getting to exeption: list index out of range
-            # type: <type 'exceptions.IndexError'>
+            # type <type 'exceptions.IndexError'>
 
             logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
@@ -574,7 +574,7 @@ class DialsCommand(object):
 
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-                #logger.info("\nRunning:", run_cmd, "\n")
+                # logger.info("\nRunning:", run_cmd, "\n")
 
                 my_process = subprocess.Popen(
                     run_cmd,
@@ -603,7 +603,9 @@ class DialsCommand(object):
                 else:
                     local_success = False
                     # TODO handle error outputs
-                    logger.info("\n __________________ Failed ______________________ \n")
+                    logger.info(
+                        "\n __________________ Failed ______________________ \n"
+                    )
                     try:
                         ref_to_class.emit_fail_signal()
                         return False

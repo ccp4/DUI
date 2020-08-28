@@ -37,97 +37,50 @@ from dxtbx.model.experiment_list import ExperimentListFactory
 
 import numpy as np
 
-try:
-    sys.path.append("../")
-    from dui.cli_utils import sys_arg
-    from dui.gui_utils import get_main_path
-    from dui.outputs_n_viewers.img_view_tools import (
-        panel_data_as_double,
-        build_qimg,
-        draw_palette_label,
-        find_hkl_near,
-        list_arrange,
-        list_p_arrange,
-    )
-    from dui.qt import (
-        QApplication,
-        QButtonGroup,
-        QCheckBox,
-        QColor,
-        QComboBox,
-        QDoubleSpinBox,
-        QFont,
-        QGroupBox,
-        QHBoxLayout,
-        QIcon,
-        QIntValidator,
-        QLabel,
-        QLineEdit,
-        QMenu,
-        QPainter,
-        QPen,
-        QPixmap,
-        QImage,
-        QPoint,
-        QPointF,
-        QPushButton,
-        QRadioButton,
-        QRect,
-        QRectF,
-        QScrollArea,
-        QSlider,
-        QSpinBox,
-        Qt,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-except ImportError:
-    from ..cli_utils import sys_arg
-    from ..gui_utils import get_main_path
-    from .img_view_tools import (
-        panel_data_as_double,
-        build_qimg,
-        draw_palette_label,
-        find_hkl_near,
-        list_arrange,
-        list_p_arrange,
-    )
-    from ..qt import (
-        QApplication,
-        QButtonGroup,
-        QCheckBox,
-        QColor,
-        QComboBox,
-        QDoubleSpinBox,
-        QFont,
-        QGroupBox,
-        QHBoxLayout,
-        QIcon,
-        QIntValidator,
-        QLabel,
-        QLineEdit,
-        QMenu,
-        QPainter,
-        QPen,
-        QPixmap,
-        QImage,
-        QPoint,
-        QPointF,
-        QPushButton,
-        QRadioButton,
-        QRect,
-        QRectF,
-        QScrollArea,
-        QSlider,
-        QSpinBox,
-        Qt,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
+from dui.cli_utils import sys_arg
+from dui.gui_utils import get_main_path
+from dui.outputs_n_viewers.img_view_tools import (
+    panel_data_as_double,
+    build_qimg,
+    draw_palette_label,
+    find_hkl_near,
+    list_arrange,
+    list_p_arrange,
+)
+from dui.qt import (
+    QApplication,
+    QButtonGroup,
+    QCheckBox,
+    QColor,
+    QComboBox,
+    QDoubleSpinBox,
+    QFont,
+    QGroupBox,
+    QHBoxLayout,
+    QIcon,
+    QIntValidator,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QPainter,
+    QPen,
+    QPixmap,
+    QImage,
+    QPoint,
+    QPointF,
+    QPushButton,
+    QRadioButton,
+    QRect,
+    QRectF,
+    QScrollArea,
+    QSlider,
+    QSpinBox,
+    Qt,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 
 from six.moves import range
@@ -1832,7 +1785,7 @@ class MyImgWin(QWidget):
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
             res_str = str("{: 4.2f}".format(res_float))
-            new_label_txt += ", resolution = " + res_str + " " + u"\u00C5"
+            new_label_txt += ", resolution = " + res_str + " " + "\u00C5"
 
         else:
             new_label_txt += ", resolution = ?"

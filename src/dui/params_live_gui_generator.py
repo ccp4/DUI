@@ -36,33 +36,18 @@ try:
 except ImportError:
     pass
 
-try:
-    from qt import (
-        QApplication,
-        QComboBox,
-        QFont,
-        QHBoxLayout,
-        QLabel,
-        QLineEdit,
-        Qt,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-except ImportError:
-    from .qt import (
-        QApplication,
-        QComboBox,
-        QFont,
-        QHBoxLayout,
-        QLabel,
-        QLineEdit,
-        Qt,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
+from dui.qt import (
+    QApplication,
+    QComboBox,
+    QFont,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    Qt,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 
 logger = logging.getLogger(__name__)
