@@ -6,8 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,31 +20,32 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
+from __future__ import absolute_import, division, print_function
+
 import logging
 import sys
 
 import libtbx.introspection
+from six.moves import range
 
 from dui.qt import (
     QApplication,
     QComboBox,
     QDoubleSpinBox,
+    QFormLayout,
     QHBoxLayout,
     QLabel,
     QLayout,
-    QFormLayout,
-    QPushButton,
-    QSpinBox,
     QLineEdit,
+    QPushButton,
     QRegExp,
     QRegExpValidator,
+    QSpinBox,
     QVBoxLayout,
     QWidget,
     Signal,
 )
-
-
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 

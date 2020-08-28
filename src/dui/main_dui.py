@@ -84,9 +84,9 @@ def main():
 
     # Inline import so that we can load this after logging setup
 
-    from dui.qt import QApplication, QStyleFactory
-    from dui.m_idials_gui import MainWidget, DUIDataLoadingError
     from dui.gui_utils import loading_error_dialog
+    from dui.m_idials_gui import DUIDataLoadingError, MainWidget
+    from dui.qt import QApplication, QStyleFactory
 
     app = QApplication(sys.argv)
     logger.debug(

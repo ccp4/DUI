@@ -6,7 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,30 +21,30 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from __future__ import absolute_import, division, print_function
+
 import logging
-import sys
 import os
-
-from dials.array_family import flex
-
-from dials.algorithms.image.threshold import (
-    DispersionThresholdDebug,
-    DispersionExtendedThresholdDebug,
-)
-
-from dxtbx.model.experiment_list import ExperimentListFactory
+import sys
 
 import numpy as np
+from dials.algorithms.image.threshold import (
+    DispersionExtendedThresholdDebug,
+    DispersionThresholdDebug,
+)
+from dials.array_family import flex
+from dxtbx.model.experiment_list import ExperimentListFactory
+from six.moves import range
 
 from dui.cli_utils import sys_arg
 from dui.gui_utils import get_main_path
 from dui.outputs_n_viewers.img_view_tools import (
-    panel_data_as_double,
     build_qimg,
     draw_palette_label,
     find_hkl_near,
     list_arrange,
     list_p_arrange,
+    panel_data_as_double,
 )
 from dui.qt import (
     QApplication,
@@ -58,6 +57,7 @@ from dui.qt import (
     QGroupBox,
     QHBoxLayout,
     QIcon,
+    QImage,
     QIntValidator,
     QLabel,
     QLineEdit,
@@ -65,7 +65,6 @@ from dui.qt import (
     QPainter,
     QPen,
     QPixmap,
-    QImage,
     QPoint,
     QPointF,
     QPushButton,
@@ -81,9 +80,6 @@ from dui.qt import (
     QWidget,
     Signal,
 )
-
-
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 

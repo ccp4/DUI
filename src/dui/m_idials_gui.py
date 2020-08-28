@@ -6,8 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,38 +20,39 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from __future__ import absolute_import, division, print_function
+
 import logging
 import os
 import pickle
-import traceback
 import time
-
+import traceback
 
 from six import raise_from
 
 from ._version import __version__
+from .cli_utils import TreeShow, build_mask_command_lst, prn_lst_lst_cmd, sys_arg
+from .custom_widgets import BeamCentrPage, MaskPage, ParamWidget
 from .dynamic_reindex_gui import MyReindexOpts
-from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
 from .gui_utils import (
-    CliOutView,
-    Text_w_Bar,
-    OuterCaller,
-    update_info,
-    update_pbar_msg,
-    kill_w_child,
-    TreeNavWidget,
     ACTIONS,
+    CliOutView,
     MyActionButton,
+    OuterCaller,
+    Text_w_Bar,
+    TreeNavWidget,
+    get_main_path,
+    kill_w_child,
     try_find_prev_mask_pickle,
     try_move_last_info,
-    get_main_path,
+    update_info,
+    update_pbar_msg,
 )
 from .m_idials import Runner
-from .outputs_n_viewers.web_page_view import WebTab
+from .outputs_gui import InfoWidget
 from .outputs_n_viewers.img_view_tools import ProgBarBox
 from .outputs_n_viewers.img_viewer import MyImgWin
-from .outputs_gui import InfoWidget
+from .outputs_n_viewers.web_page_view import WebTab
 from .qt import (
     QHBoxLayout,
     QIcon,
@@ -71,7 +70,6 @@ from .qt import (
     QWidget,
     Signal,
 )
-
 
 logger = logging.getLogger(__name__)
 

@@ -6,9 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,13 +20,17 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
+from __future__ import absolute_import, division, print_function
+
 import json
 import logging
-import sys
 import os
+import sys
+
+from six.moves import range
 
 from dui.cli_utils import sys_arg
-
 from dui.qt import (
     QApplication,
     QColor,
@@ -45,9 +46,6 @@ from dui.qt import (
     QWidget,
     Signal,
 )
-
-
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 

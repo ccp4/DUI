@@ -1,5 +1,6 @@
-from setuptools import setup
 import os
+
+from setuptools import setup
 
 # Read the DUI version out of a version file in the package
 _ver_file = os.path.join(os.path.dirname(__file__), "src", "dui", "_version.py")

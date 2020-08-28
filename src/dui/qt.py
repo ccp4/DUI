@@ -14,14 +14,13 @@ logger = logging.getLogger(__name__)
 
 try:
     # Try preferred interface first - PyQt5
-    from PyQt5.QtWidgets import *
+    from PyQt5 import QtWebEngineWidgets as QWebSettings
+    from PyQt5 import uic
     from PyQt5.QtCore import *
     from PyQt5.QtGui import *
-
-    from PyQt5 import QtWebEngineWidgets as QWebSettings
     from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
     from PyQt5.QtWebEngineWidgets import *
-    from PyQt5 import uic
+    from PyQt5.QtWidgets import *
 
     # Signal implementation changes slightly across implementations
     Signal = pyqtSignal
@@ -54,10 +53,10 @@ except ImportError:
             pass
 
         # Primary interface: PyQt4
-        from PyQt4.QtGui import *
-        from PyQt4.QtCore import *
-        from PyQt4.QtWebKit import *
         from PyQt4 import uic
+        from PyQt4.QtCore import *
+        from PyQt4.QtGui import *
+        from PyQt4.QtWebKit import *
 
         Signal = pyqtSignal
 
@@ -71,8 +70,8 @@ except ImportError:
         # Tying both versions of PySide
         try:
             # Backup: try PySide
-            from PySide.QtGui import *
             from PySide.QtCore import *
+            from PySide.QtGui import *
             from PySide.QtWebKit import *
 
             # from PySide import uic
@@ -85,14 +84,13 @@ except ImportError:
         except ImportError:
             # Backup: try PySide
             logger.info("Try pyside2")
-            from PySide2.QtGui import *
             from PySide2.QtCore import *
-            from PySide2.QtWidgets import *
+            from PySide2.QtGui import *
             from PySide2.QtWebKit import *
+            from PySide2.QtWidgets import *
 
             # from PySide2 import QtWebEngineWidgets as QWebSettings
             # from PySide2.QtWebEngineWidgets import *
-
             # QWebSettings = PySide2.QtWebEngineWidgets
             # from PySide2.QtWebKit import *
 

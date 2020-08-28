@@ -4,7 +4,6 @@ import logging
 import os
 import sys
 
-
 from dui.outputs_n_viewers.img_view_tools import ProgBarBox
 from dui.qt import (
     QApplication,
@@ -15,7 +14,6 @@ from dui.qt import (
     QWebView,
     QWidget,
 )
-
 
 logger = logging.getLogger(__name__)
 

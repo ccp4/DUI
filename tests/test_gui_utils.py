@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
+import ntpath
 import os
 import posixpath
-import ntpath
 
 from dui.gui_utils import get_import_run_string
 

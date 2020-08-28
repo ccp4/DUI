@@ -9,6 +9,24 @@ copyright (c) CCP4 - DLS
 """
 from __future__ import absolute_import, division, print_function
 
+import logging
+import os
+import pickle
+import shutil
+import sys
+
+from six.moves import input
+
+from dui.cli_utils import (
+    DialsCommand,
+    TreeShow,
+    build_command_lst,
+    generate_predict,
+    generate_report,
+    get_next_step,
+    sys_arg,
+)
+
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,24 +41,6 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
-import logging
-import os
-import pickle
-import shutil
-import sys
-
-from six.moves import input
-
-from dui.cli_utils import (
-    TreeShow,
-    DialsCommand,
-    sys_arg,
-    generate_report,
-    build_command_lst,
-    get_next_step,
-    generate_predict,
-)
 
 logger = logging.getLogger(__name__)
 
