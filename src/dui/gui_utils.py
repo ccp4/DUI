@@ -482,7 +482,7 @@ def update_pbar_msg(main_obj):
 
 class MyActionButton(QToolButton):
     def __init__(self, action, parent=None):
-        super(QToolButton, self).__init__(parent=parent)
+        super().__init__(parent=parent)
 
         self.action = action
 
