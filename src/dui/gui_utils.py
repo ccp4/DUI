@@ -38,7 +38,6 @@ from six.moves import range
 from .cli_utils import get_next_step, sys_arg
 from .m_idials import generate_report
 from .qt import (
-    QT5,
     QDialog,
     QFont,
     QHeaderView,
@@ -520,10 +519,7 @@ class TreeNavWidget(QTreeView):
         self.setIndentation(18)
 
         header_view = self.header()
-        if QT5:
-            header_view.setSectionResizeMode(QHeaderView.ResizeToContents)
-        else:
-            header_view.setResizeMode(QHeaderView.ResizeToContents)
+        header_view.setSectionResizeMode(QHeaderView.ResizeToContents)
         header_view.setStretchLastSection(True)
 
     def update_me(self, root_node, lst_path_idx):
