@@ -11,7 +11,7 @@ from dui.qt import (
     QPushButton,
     QUrl,
     QVBoxLayout,
-    QWebView,
+    QWebEngineView,
     QWidget,
 )
 
@@ -31,7 +31,7 @@ class WebTab(QWidget):
             </body>
             </html>"""
 
-        self.web = QWebView()
+        self.web = QWebEngineView()
         logger.debug("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
 
