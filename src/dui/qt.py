@@ -12,8 +12,6 @@ import os
 
 logger = logging.getLogger(__name__)
 
-QT5 = True
-
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWebEngineWidgets import *
