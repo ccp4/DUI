@@ -497,7 +497,7 @@ class ImportPage(QWidget):
 
     def open_files(self):
 
-        lst_file_path = QFileDialog.getOpenFileNames(
+        lst_file_path, _ = QFileDialog.getOpenFileNames(
             self, "Open File(s)", self.defa_dir, "All Files (*.*)"
         )
 
