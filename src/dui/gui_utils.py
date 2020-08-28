@@ -59,7 +59,7 @@ from .qt import (
     QVBoxLayout,
     QWidget,
     Signal,
-    uic,
+    loadUiType,
 )
 
 logger = logging.getLogger(__name__)
@@ -849,6 +849,6 @@ class Text_w_Bar(QProgressBar):
 def loading_error_dialog(message):
     """Create an error message about loading in a dialog box."""
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
-    dialog = uic.loadUi(dialog_filename)
+    dialog = loadUiType(dialog_filename)
     dialog.errorMessage.setPlainText(message)
     return dialog
