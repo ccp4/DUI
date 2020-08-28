@@ -34,97 +34,57 @@ from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )
 
-# from dials.command_line.refine import phil_scope as phil_scope_refine
 from dials.command_line.refine import working_phil as phil_scope_refine
 
 from dials.command_line.integrate import phil_scope as phil_scope_integrate
+
+from dui.gui_utils import get_import_run_string, get_main_path
+from dui.params_live_gui_generator import PhilWidget
+from dui.cli_utils import sys_arg
+from dui.simpler_param_widgets import (
+    FindspotsSimplerParameterTab,
+    IndexSimplerParamTab,
+    RefineBravaiSimplerParamTab,
+    RefineSimplerParamTab,
+    IntegrateSimplerParamTab,
+    SymmetrySimplerParamTab,
+    ScaleSimplerParamTab,
+)
+from dui.qt import (
+    QApplication,
+    QCheckBox,
+    QColor,
+    QFileDialog,
+    QFont,
+    QHBoxLayout,
+    QIcon,
+    QLabel,
+    QLineEdit,
+    QPalette,
+    QPushButton,
+    QScrollArea,
+    QSize,
+    QSpinBox,
+    QTabWidget,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
+
+from six.moves import range
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
 # still runs. This isn't generally robust but solves this specifically
 try:
     from dials.command_line.symmetry import phil_scope as phil_scope_symetry
-
 except ImportError:
     phil_scope_symetry = libtbx.phil.parse("")
 
 try:
     from dials.command_line.scale import phil_scope as phil_scope_scale
-
 except ImportError:
     phil_scope_scale = libtbx.phil.parse("")
-
-# from dials.command_line.export import phil_scope as phil_scope_export
-try:
-    from gui_utils import get_import_run_string, get_main_path
-    from params_live_gui_generator import PhilWidget
-    from cli_utils import sys_arg
-    from simpler_param_widgets import (
-        FindspotsSimplerParameterTab,
-        IndexSimplerParamTab,
-        RefineBravaiSimplerParamTab,
-        RefineSimplerParamTab,
-        IntegrateSimplerParamTab,
-        SymmetrySimplerParamTab,
-        ScaleSimplerParamTab,
-    )
-    from qt import (
-        QApplication,
-        QCheckBox,
-        QColor,
-        QFileDialog,
-        QFont,
-        QHBoxLayout,
-        QIcon,
-        QLabel,
-        QLineEdit,
-        QPalette,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSpinBox,
-        QTabWidget,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-except ImportError:
-    from .gui_utils import get_import_run_string, get_main_path
-    from .params_live_gui_generator import PhilWidget
-    from .cli_utils import sys_arg
-    from .simpler_param_widgets import (
-        FindspotsSimplerParameterTab,
-        IndexSimplerParamTab,
-        RefineBravaiSimplerParamTab,
-        RefineSimplerParamTab,
-        IntegrateSimplerParamTab,
-        SymmetrySimplerParamTab,
-        ScaleSimplerParamTab,
-    )
-    from .qt import (
-        QApplication,
-        QCheckBox,
-        QColor,
-        QFileDialog,
-        QFont,
-        QHBoxLayout,
-        QIcon,
-        QLabel,
-        QLineEdit,
-        QPalette,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSpinBox,
-        QTabWidget,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 

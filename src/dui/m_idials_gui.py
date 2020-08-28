@@ -31,92 +31,46 @@ import time
 
 from six import raise_from
 
-try:
-    from _version import __version__
-    from dynamic_reindex_gui import MyReindexOpts
-    from cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-    from custom_widgets import ParamWidget, MaskPage, BeamCentrPage
-    from gui_utils import (
-        CliOutView,
-        Text_w_Bar,
-        OuterCaller,
-        update_info,
-        update_pbar_msg,
-        kill_w_child,
-        TreeNavWidget,
-        ACTIONS,
-        MyActionButton,
-        try_find_prev_mask_pickle,
-        try_move_last_info,
-        get_main_path,
-    )
-    from m_idials import Runner
-    from outputs_n_viewers.web_page_view import WebTab
-    from outputs_n_viewers.img_view_tools import ProgBarBox
-    from outputs_n_viewers.img_viewer import MyImgWin
-    from outputs_gui import InfoWidget
-    from qt import (
-        QHBoxLayout,
-        QIcon,
-        QMainWindow,
-        QModelIndex,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSizePolicy,
-        QSplitter,
-        QStackedWidget,
-        Qt,
-        QTabWidget,
-        QThread,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-
-except ImportError:
-    from ._version import __version__
-    from .dynamic_reindex_gui import MyReindexOpts
-    from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-    from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
-    from .gui_utils import (
-        CliOutView,
-        Text_w_Bar,
-        OuterCaller,
-        update_info,
-        update_pbar_msg,
-        kill_w_child,
-        TreeNavWidget,
-        ACTIONS,
-        MyActionButton,
-        try_find_prev_mask_pickle,
-        try_move_last_info,
-        get_main_path,
-    )
-    from .m_idials import Runner
-    from .outputs_n_viewers.web_page_view import WebTab
-    from .outputs_n_viewers.img_view_tools import ProgBarBox
-    from .outputs_n_viewers.img_viewer import MyImgWin
-    from .outputs_gui import InfoWidget
-    from .qt import (
-        QHBoxLayout,
-        QIcon,
-        QMainWindow,
-        QModelIndex,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSizePolicy,
-        QSplitter,
-        QStackedWidget,
-        Qt,
-        QTabWidget,
-        QThread,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
+from ._version import __version__
+from .dynamic_reindex_gui import MyReindexOpts
+from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
+from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
+from .gui_utils import (
+    CliOutView,
+    Text_w_Bar,
+    OuterCaller,
+    update_info,
+    update_pbar_msg,
+    kill_w_child,
+    TreeNavWidget,
+    ACTIONS,
+    MyActionButton,
+    try_find_prev_mask_pickle,
+    try_move_last_info,
+    get_main_path,
+)
+from .m_idials import Runner
+from .outputs_n_viewers.web_page_view import WebTab
+from .outputs_n_viewers.img_view_tools import ProgBarBox
+from .outputs_n_viewers.img_viewer import MyImgWin
+from .outputs_gui import InfoWidget
+from .qt import (
+    QHBoxLayout,
+    QIcon,
+    QMainWindow,
+    QModelIndex,
+    QPushButton,
+    QSize,
+    QSizePolicy,
+    QSplitter,
+    QStackedWidget,
+    Qt,
+    QTabWidget,
+    QThread,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -581,8 +535,7 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.setWindowTitle("CCP4 DUI - {}: {}".format(__version__,
-                dui_files_path))
+        self.setWindowTitle("CCP4 DUI - {}: {}".format(__version__, dui_files_path))
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
         self.just_reindexed = False
@@ -709,13 +662,6 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.step_param_widg.currentWidget()
         )
         action_name = current_parameter_widget.my_widget.command_lst[0][0]
-
-        to_remove = """
-        if (
-            action_name in ["find_spots", "integrate"]
-            and self.idials_runner.current_node.success is None
-        ):
-        """
 
         if (
             action_name == "find_spots"
@@ -886,7 +832,7 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
-        #logger.info("OPENING busy pop bar with the text: ", text_in_bar)
+        # logger.info("OPENING busy pop bar with the text: ", text_in_bar)
         if (
             self.idials_runner.current_node.ll_command_lst[0][0]
             != "refine_bravais_settings"
@@ -933,33 +879,14 @@ class MainWidget(QMainWindow):
             "None": [None],
         }
 
-        more_conservative = """
-        cmd_connects = {
-            "Root": ["import"],
-            "import": ["find_spots"],
-            "find_spots": ["index"],
-            "index": ["refine_bravais_settings", "refine", "integrate"],
-            "refine_bravais_settings": [None],
-            "reindex": ["refine", "integrate"],
-            "refine": ["refine_bravais_settings", "refine", "integrate"],
-            "integrate": ["symmetry", "scale", "export"],
-            "symmetry": ["scale", "export"],
-            "scale": ["symmetry", "export"],
-            "export": [None],
-            "generate_mask": ["find_spots"],
-            "modify_geometry":["find_spots"],
-            "None": [None],
-        }
-        """
-
         lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        #logger.info("\n_________________________ check_reindex_pop 01 \n")
+        # logger.info("\n_________________________ check_reindex_pop 01 \n")
         if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
-            #logger.info("\n_________________________ check_reindex_pop 02 \n")
+            # logger.info("\n_________________________ check_reindex_pop 02 \n")
 
             try:
                 self.my_pop = MyReindexOpts()
@@ -1045,7 +972,9 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info(" Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info(
+                    " Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.info("\n Tst A1 \n")
 
             item = self.tree_out.std_mod.itemFromIndex(it_index)

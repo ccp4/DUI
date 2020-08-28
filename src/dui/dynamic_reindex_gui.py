@@ -28,43 +28,23 @@ import logging
 import sys
 import os
 
-try:
-    from cli_utils import sys_arg
+from dui.cli_utils import sys_arg
 
-    from qt import (
-        QApplication,
-        QColor,
-        QFont,
-        QHBoxLayout,
-        QLabel,
-        QMainWindow,
-        QPushButton,
-        Qt,
-        QTableWidget,
-        QTableWidgetItem,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-except ImportError:
-    from .cli_utils import sys_arg
-
-    from .qt import (
-        QApplication,
-        QColor,
-        QFont,
-        QHBoxLayout,
-        QLabel,
-        QMainWindow,
-        QPushButton,
-        Qt,
-        QTableWidget,
-        QTableWidgetItem,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
+from dui.qt import (
+    QApplication,
+    QColor,
+    QFont,
+    QHBoxLayout,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    Qt,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 
 from six.moves import range
@@ -207,7 +187,7 @@ def heather_text_from_lin(lin_num, j_path):
     n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
         logger.debug("pos1, single_lin1:", pos1, single_lin1)
-        #if str(single_lin1[0:19]) == "Chiral space groups":
+        # if str(single_lin1[0:19]) == "Chiral space groups":
         if "Chiral space groups" in single_lin1:
 
             start_block = pos1
@@ -299,11 +279,11 @@ class ReindexTable(QTableWidget):
         self.setRowCount(n_row)
         self.setColumnCount(n_col - 1)
 
-        alpha_str = " " + u"\u03B1" + " "
-        beta_str = " " + u"\u03B2" + " "
-        gamma_str = " " + u"\u03B3" + " "
+        alpha_str = " " + "\u03B1" + " "
+        beta_str = " " + "\u03B2" + " "
+        gamma_str = " " + "\u03B3" + " "
 
-        low_delta_str = u"\u03B4"
+        low_delta_str = "\u03B4"
         delta_max_str = "max " + low_delta_str
 
         header_label_lst = [

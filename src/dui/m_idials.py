@@ -32,33 +32,15 @@ import sys
 
 from six.moves import input
 
-# if __name__ == "__main__" and __package__ is None:
-try:
-    from os import path
-
-    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-    from cli_utils import (
-        TreeShow,
-        DialsCommand,
-        sys_arg,
-        generate_report,
-        build_command_lst,
-        get_next_step,
-        generate_predict,
-    )
-
-except ImportError:
-    # else:
-    from .cli_utils import (
-        TreeShow,
-        DialsCommand,
-        sys_arg,
-        generate_report,
-        build_command_lst,
-        get_next_step,
-        generate_predict,
-    )
+from dui.cli_utils import (
+    TreeShow,
+    DialsCommand,
+    sys_arg,
+    generate_report,
+    build_command_lst,
+    get_next_step,
+    generate_predict,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -124,13 +106,13 @@ class CommandNode(object):
                     cwd_path = os.path.join(sys_arg.directory, "dui_files")
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
-                    '''
+                    """
                     logger.info("..log_file_out =", file_path, "\n")
                     logger.info(
                         "self.dials_command.tmp_std_all:",
                         self.dials_command.tmp_std_all,
                     )
-                    '''
+                    """
 
                     fil_obj = open(file_path, "w")
                     for line_out in self.dials_command.tmp_std_all:
@@ -425,7 +407,7 @@ if __name__ == "__main__" and __package__ is None:
             logger.info(" ... interrupting")
             sys.exit(0)
 
-        except:
+        except BaseException as e:
             logger.info("Caught << some error >>", e)
             logger.info(" ... interrupting")
             sys.exit(1)

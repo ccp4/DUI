@@ -27,29 +27,16 @@ import sys
 
 from dxtbx.model.experiment_list import InvalidExperimentListError
 
-try:
-    from outputs_n_viewers.info_handler import update_all_data
-    from qt import (
-        QApplication,
-        QGroupBox,
-        QHBoxLayout,
-        QLabel,
-        QVBoxLayout,
-        QWidget,
-        QScrollArea,
-    )
-
-except ImportError:
-    from .outputs_n_viewers.info_handler import update_all_data
-    from .qt import (
-        QApplication,
-        QGroupBox,
-        QHBoxLayout,
-        QLabel,
-        QVBoxLayout,
-        QWidget,
-        QScrollArea,
-    )
+from dui.outputs_n_viewers.info_handler import update_all_data
+from dui.qt import (
+    QApplication,
+    QGroupBox,
+    QHBoxLayout,
+    QLabel,
+    QVBoxLayout,
+    QWidget,
+    QScrollArea,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -110,7 +97,7 @@ class InfoWidget(QWidget):
 
         bm_v_layout.addWidget(QLabel("  "))
 
-        tmp_str = "  Wavelength (" + u"\u212B" + ") "
+        tmp_str = "  Wavelength (" + "\u212B" + ") "
 
         w_lambda_label = QLabel(tmp_str)
         bm_v_layout.addWidget(w_lambda_label)
@@ -145,9 +132,9 @@ class InfoWidget(QWidget):
         cell_v_layout.addWidget(QLabel("  "))
 
         left_margin_str = "    "
-        alpha_str = left_margin_str + u"\u03B1"
-        beta_str = left_margin_str + u"\u03B2"
-        gamma_str = left_margin_str + u"\u03B3"
+        alpha_str = left_margin_str + "\u03B1"
+        beta_str = left_margin_str + "\u03B2"
+        gamma_str = left_margin_str + "\u03B3"
 
         alpha_label = QLabel(alpha_str)
         beta_label = QLabel(beta_str)
@@ -326,7 +313,7 @@ class InfoWidget(QWidget):
         detec_v_layout.addLayout(gain_hbox)
 
         # detec_v_layout.addWidget(QLabel("  "))
-        max_res_label = QLabel(" Max res (" + u"\u212B" + ")")
+        max_res_label = QLabel(" Max res (" + "\u212B" + ")")
         self.max_res_data = QLabel(empty_str)
         max_res_hbox = QHBoxLayout()
         max_res_hbox.addWidget(max_res_label)

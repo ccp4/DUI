@@ -4,8 +4,12 @@
 """
 from __future__ import absolute_import, division, print_function
 
+import logging
+
 from distutils import sysconfig
 from subprocess import call as shell_call
+
+logger = logging.getLogger(__name__)
 
 obj_name = "lst_ext"
 inc_path = sysconfig.get_python_inc()

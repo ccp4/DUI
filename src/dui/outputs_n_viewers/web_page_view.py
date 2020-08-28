@@ -5,31 +5,17 @@ import os
 import sys
 
 
-try:
-    from dui.outputs_n_viewers.img_view_tools import ProgBarBox
-    from dui.qt import (
-        QApplication,
-        QHBoxLayout,
-        QPushButton,
-        QUrl,
-        QVBoxLayout,
-        QWebSettings,
-        QWebView,
-        QWidget,
-    )
+from dui.outputs_n_viewers.img_view_tools import ProgBarBox
+from dui.qt import (
+    QApplication,
+    QHBoxLayout,
+    QPushButton,
+    QUrl,
+    QVBoxLayout,
+    QWebView,
+    QWidget,
+)
 
-except ImportError:
-    from .img_view_tools import ProgBarBox
-    from ..qt import (
-        QApplication,
-        QHBoxLayout,
-        QPushButton,
-        QUrl,
-        QVBoxLayout,
-        QWebSettings,
-        QWebView,
-        QWidget,
-    )
 
 logger = logging.getLogger(__name__)
 
@@ -37,12 +23,6 @@ logger = logging.getLogger(__name__)
 class WebTab(QWidget):
     def __init__(self):
         super(WebTab, self).__init__()
-        tmp_off = """
-        logger.debug(
-            " QWebSettings.JavascriptEnabled = %s", QWebSettings.JavascriptEnabled
-        )
-        QWebSettings.JavascriptEnabled = True
-        """
 
         self.dummy_html = """<html>
             <head>
@@ -78,18 +58,14 @@ class WebTab(QWidget):
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
             self.my_bar(5)
 
-        except BaseException as e:
+        except BaseException:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            #logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
+            # logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
         logger.info("HTML Load(ok) = %s", ok_bool)
-        tmp_off = """
-        if not ok_bool:
-            self.web.setHtml(self.dummy_html)
-        """
 
         self.web.show()
         logger.info(" finished Loading HTML ")

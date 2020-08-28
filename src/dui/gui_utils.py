@@ -35,65 +35,32 @@ import json
 
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
 
-"""
-from dxtbx.sweep_filenames import template_regex, template_regex_from_list
-"""
-
-try:
-    from cli_utils import get_next_step, sys_arg, get_phil_par
-    from m_idials import generate_report
-    from qt import (
-        QDialog,
-        QFont,
-        QHeaderView,
-        QIcon,
-        QLabel,
-        QProgressBar,
-        QPushButton,
-        QSize,
-        QSizePolicy,
-        QStandardItem,
-        QStandardItemModel,
-        QStyleFactory,
-        Qt,
-        QT5,
-        QTextEdit,
-        QThread,
-        QToolButton,
-        QTreeView,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-        uic,
-    )
-
-except ImportError:
-    from .cli_utils import get_next_step, sys_arg, get_phil_par
-    from .m_idials import generate_report
-    from .qt import (
-        QDialog,
-        QFont,
-        QHeaderView,
-        QIcon,
-        QLabel,
-        QProgressBar,
-        QPushButton,
-        QSize,
-        QSizePolicy,
-        QStandardItem,
-        QStandardItemModel,
-        QStyleFactory,
-        Qt,
-        QT5,
-        QTextEdit,
-        QThread,
-        QToolButton,
-        QTreeView,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-        uic,
-    )
+from .cli_utils import get_next_step, sys_arg
+from .m_idials import generate_report
+from .qt import (
+    QDialog,
+    QFont,
+    QHeaderView,
+    QIcon,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QSize,
+    QSizePolicy,
+    QStandardItem,
+    QStandardItemModel,
+    QStyleFactory,
+    Qt,
+    QT5,
+    QTextEdit,
+    QThread,
+    QToolButton,
+    QTreeView,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+    uic,
+)
 
 
 from six.moves import range
@@ -217,12 +184,12 @@ def try_move_last_info(export_node, gui2_log):
 
         gui2_log_path = os.path.join(cwd_path, "output.json")
 
-        #logger.info("Writing:", gui2_log_path)
+        # logger.info("Writing:", gui2_log_path)
 
         with open(gui2_log_path, "w") as fp:
             json.dump(gui2_log, fp, indent=4)
 
-        #logger.info("\n ___________________ gui2_log:", gui2_log, "\n")
+        # logger.info("\n ___________________ gui2_log:", gui2_log, "\n")
 
     except IOError:
         logger.info("ERROR: mtz file not there")
@@ -512,9 +479,9 @@ def update_pbar_msg(main_obj):
         except KeyError:
             txt = "Done"
 
-    #main_obj.txt_bar.setText(txt)
+    # main_obj.txt_bar.setText(txt)
     main_obj.txt_bar.setText(" \n ")
-    #logger.info(txt)
+    # logger.info(txt)
 
 
 class MyActionButton(QToolButton):
