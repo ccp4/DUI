@@ -392,7 +392,7 @@ class InfoWidget(QWidget):
                 pickle_to_read = None
 
             logger.debug(
-                "experiments_path=", exp_json_path, "reflections_path=", pickle_to_read
+                f"experiments_path={exp_json_path} reflections_path={pickle_to_read}"
             )
 
             self.all_data = update_all_data(
