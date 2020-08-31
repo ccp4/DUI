@@ -94,6 +94,7 @@ def main():
     from dui.qt import QApplication, QStyleFactory
 
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     logger.debug(
         "QT Style: %s [%s]", app.style().objectName(), ", ".join(QStyleFactory.keys())
     )
