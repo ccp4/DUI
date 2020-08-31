@@ -23,11 +23,21 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_gui)
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "gui: Mark as a GUI test")
+
+
 @pytest.fixture(params=list(QStyleFactory.keys()))
 def qtstyles(request, qtbot):
     "Runs tests with every different available style"
     QApplication.setStyle(request.param)
     return str(request.param)
+
+
+@pytest.fixture
+def qapp(qapp):
+    qapp.setStyle("Fusion")
+    return qapp
 
 
 @pytest.fixture
