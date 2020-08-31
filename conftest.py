@@ -31,7 +31,7 @@ def qtstyles(request, qtbot):
 
 
 @pytest.fixture
-def screenshots(qtbot, request):
+def screenshots(qapp, qtbot, request):
     """Fixture to simplify making screenshots"""
 
     # Find the repo root
@@ -75,8 +75,14 @@ def screenshots(qtbot, request):
             window.raise_()
             qtbot.waitForWindowShown(window)
 
-            desktop = QPixmap.grabWindow(QApplication.desktop().winId())
-            crop = desktop.copy(window.frameGeometry())
+            screen = qapp.primaryScreen()
+            geom = window.frameGeometry()
+            winid = QApplication.desktop().winId()
+            desktop = screen.grabWindow(
+                winid, geom.x(), geom.y(), geom.width(), geom.height()
+            )
+
+            crop = desktop
             crop.save(full_path)
 
             self.count += 1
