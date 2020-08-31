@@ -27,6 +27,7 @@ import argparse
 import logging
 import os
 import sys
+import signal
 
 from dui.cli_utils import sys_arg
 
@@ -60,6 +61,10 @@ def main():
     # Turn things off unless at varying depths of verbosity
     if args.verbose <= 2:
         logging.getLogger("PyQt4.uic").setLevel(logging.WARNING)
+
+    if args.verbose >= 2:
+        logging.debug("Running debug out: ctrl-c will close application")
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     # Process the phil-style parameters
     for arg in args.positionals[:]:
