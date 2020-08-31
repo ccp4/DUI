@@ -844,7 +844,14 @@ class Text_w_Bar(QProgressBar):
 
 def loading_error_dialog(message):
     """Create an error message about loading in a dialog box."""
+    # If pre-building:
+    # from dui.resources.error_loading_dialog import Ui_LoadErrorDialog
+
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
-    dialog = loadUiType(dialog_filename)
-    dialog.errorMessage.setPlainText(message)
+    Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
+
+    dialog = QDialog()
+    errwidget = Ui_LoadErrorDialog()
+    errwidget.setupUi(dialog)
+    errwidget.errorMessage.setPlainText(message)
     return dialog
