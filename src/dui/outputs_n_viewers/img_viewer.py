@@ -833,7 +833,6 @@ class PopActionsMenu(QMenu):
         my_main_box.addWidget(spot_find_grp)
 
         self.setLayout(my_main_box)
-        self.show()
 
 
 class PopDisplayMenu(QMenu):
@@ -930,7 +929,6 @@ class PopDisplayMenu(QMenu):
         main_top_layout.addLayout(bott_layout)
 
         self.setLayout(main_top_layout)
-        self.show()
 
     def showEvent(self, event):
         logger.debug("repainting")
