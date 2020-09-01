@@ -298,7 +298,7 @@ class ControlWidget(QWidget):
 
         else:
             logger.info("No action widget found in set_widget")
-            logger.info("nxt_cmd =", nxt_cmd)
+            logger.info(f"nxt_cmd = {nxt_cmd}")
 
     def _action_button_clicked(self):
         "Slot: An action button was clicked"
@@ -555,7 +555,7 @@ class MainWidget(QMainWindow):
         )
 
     def pop_b_centr_coord(self, new_b_centr):
-        logger.info("New b_centr =", new_b_centr)
+        logger.info(f"New b_centr = {new_b_centr}")
         self.centre_par_widget.b_centr_page.set_par(new_b_centr)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.b_centr_page
@@ -830,7 +830,7 @@ class MainWidget(QMainWindow):
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
-        # logger.info("OPENING busy pop bar with the text: ", text_in_bar)
+        # logger.info(f"OPENING busy pop bar with the text: {text_in_bar}")
         if (
             self.idials_runner.current_node.ll_command_lst[0][0]
             != "refine_bravais_settings"
@@ -896,9 +896,9 @@ class MainWidget(QMainWindow):
 
             except Exception as my_err:
                 logger.info("ERROR in check_reindex_pop(m_idials_gui) \n")
-                logger.info("str(my_err) = ", str(my_err))
-                logger.info("my_err.__doc__ = ", my_err.__doc__)
-                logger.info("my_err.message = ", my_err.message)
+                logger.info(f"str(my_err) = {my_err}")
+                logger.info(f"my_err.__doc__ = {my_err.__doc__}")
+                logger.info(f"my_err.message = {my_err.message}")
 
             # TODO find an elegant way to interrupt and remove nodes
 
@@ -940,7 +940,7 @@ class MainWidget(QMainWindow):
             + "_err_out.log"
         )
 
-        logger.info("\n ERROR \n err_log_file_out = %s %s", err_log_file_out, "\n")
+        logger.info(f"\n ERROR \n err_log_file_out = {err_log_file_out}")
 
         fil_obj = open(err_log_file_out, "w")
         for err_lin in curr_step.dials_command.tmp_std_all:

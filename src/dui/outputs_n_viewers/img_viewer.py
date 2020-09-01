@@ -406,12 +406,10 @@ class ImgPainter(QWidget):
         self.update()
 
     def update_my_mask(self, np_mask, mask_flex):
-        # logger.info("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
         self.mask_flex = mask_flex
 
         if np_mask is not None:
-            # logger.info("self.np_mask.shape =", self.np_mask.shape)
 
             width = self.np_mask.shape[0]
             height = self.np_mask.shape[1]
@@ -639,9 +637,7 @@ class ImgPainter(QWidget):
         painter.drawPixmap(rect, pixmap)
 
         if self.np_mask is not None:
-            # logger.info("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
-            # logger.info(" .Drawing Mask end")
 
         self._paint_crosshairs(painter)
 
@@ -948,8 +944,8 @@ class PopDisplayMenu(QMenu):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.info("no (...my_sweep) yet, skipping palette label paint")
+            logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+            logger.info("no (...my_sweep) yet - skipping palette label paint")
 
     def slider_max_changed(self, value):
         if self.my_parent.slider_min.sliderPosition() > value - 15:
@@ -1548,7 +1544,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
                 logger.info("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
@@ -1566,7 +1562,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
                 logger.info("Failed to load images from  datablock.json")
 
             try:
@@ -1578,7 +1574,6 @@ class MyImgWin(QWidget):
                 """
 
                 n_of_imgs = len(self.my_sweep.indices())
-                # logger.info("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1592,7 +1587,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
                 logger.info("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
@@ -1655,14 +1650,11 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
                 self.find_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
             try:
-
-                # logger.info("pckl_file_path[1]=", pckl_file_path[1])
-
                 table = flex.reflection_table.from_file(pckl_file_path[1])
 
                 logger.debug("table = %s", table)

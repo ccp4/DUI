@@ -82,7 +82,7 @@ class CommandNode(object):
         # self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
-        # logger.info("\n cmd_lst in =", cmd_lst)
+        # logger.info(f"\n cmd_lst in = {cmd_lst}")
         self.ll_command_lst = list(cmd_lst)
         if cmd_lst == ["fail"]:
             # testing virtual failed step
@@ -92,7 +92,6 @@ class CommandNode(object):
         else:
             if cmd_lst[0][0] in self.dials_com_lst:
                 self.build_command(cmd_lst)
-                # logger.info("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
@@ -107,10 +106,9 @@ class CommandNode(object):
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
                     """
-                    logger.info("..log_file_out =", file_path, "\n")
+                    logger.info(f"..log_file_out = {file_path}")
                     logger.info(
-                        "self.dials_command.tmp_std_all:",
-                        self.dials_command.tmp_std_all,
+                        "self.dials_command.tmp_std_all: {self.dials_command.tmp_std_all}",
                     )
                     """
 
@@ -126,7 +124,7 @@ class CommandNode(object):
 
             else:
                 logger.info("\n NOT dials command")
-                logger.info("cmd_lst =", cmd_lst, "\n")
+                logger.info(f"cmd_lst = {cmd_lst}")
                 self.success = False
 
         self.info_generating = False
@@ -161,7 +159,7 @@ class CommandNode(object):
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
-        logger.info("cmd_lst_to_run(CommandNode) = %s", self.cmd_lst_to_run)
+        logger.info(f"cmd_lst_to_run(CommandNode) = {self.cmd_lst_to_run}")
 
     def get_next_step(self):
         return get_next_step(self)
@@ -177,7 +175,7 @@ class Runner(object):
         self.current_line = self.bigger_lin
         self.create_step(root_node)
 
-        logger.info("root_node.lin_num = %s", root_node.lin_num)
+        logger.info(f"root_node.lin_num = {root_node.lin_num}")
         # self.current_node = root_node
 
     def run(self, command, ref_to_class):
@@ -306,7 +304,7 @@ class Runner(object):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch
-            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+            logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
             logger.info("failed to retrieve log path")
 
         return path_to_log
@@ -382,9 +380,9 @@ if __name__ == "__main__" and __package__ is None:
         # 'module' object has no attribute 'CommandNode'
 
     except Exception as e:
-        logger.info("str(e) = %s", str(e))
-        logger.info("e.__doc__ = %s", e.__doc__)
-        logger.info("e.message = %s", e.message)
+        logger.info(f"str(e) = {e}")
+        logger.info(f"e.__doc__ = {e.__doc__}")
+        logger.info(f"e.message = {e.message}")
         idials_runner = Runner()
         try:
             shutil.rmtree(storage_path + "/dui_files")
@@ -408,11 +406,11 @@ if __name__ == "__main__" and __package__ is None:
             sys.exit(0)
 
         except BaseException as e:
-            logger.info("Caught << some error >>", e)
+            logger.info(f"Caught << some error >> {e}")
             logger.info(" ... interrupting")
             sys.exit(1)
 
-        logger.info("command =", command)
+        logger.info(f"command = {command}")
         if command[0:5] == "goto ":
             idials_runner.run(command.split(" "), None)
             tree_output(idials_runner)

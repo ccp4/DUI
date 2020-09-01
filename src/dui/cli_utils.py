@@ -276,7 +276,7 @@ def build_command_lst(node_obj, cmd_lst):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info("\n reindex \n exeption:", e, "type:", type(e))
+            logger.info(f"\n reindex \n exeption: {e} type: {type(e)}")
 
             # getting to exeption: list index out of range
             # type <type 'exceptions.IndexError'>
@@ -388,7 +388,7 @@ def build_command_lst(node_obj, cmd_lst):
 
     cmd_lst_to_run.append(lst_inner)
 
-    # logger.info("\n\n test:", cmd_lst_to_run, "\n")
+    # logger.info(f"\n\n test: {cmd_lst_to_run}\n")
 
     return cmd_lst_to_run
 
@@ -575,7 +575,7 @@ class DialsCommand(object):
 
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-                # logger.info("\nRunning:", run_cmd, "\n")
+                # logger.info(f"\nRunning: {run_cmd}\n")
 
                 my_process = subprocess.Popen(
                     run_cmd,
@@ -588,13 +588,13 @@ class DialsCommand(object):
                 self.my_pid = my_process.pid
                 for line in iter(my_process.stdout.readline, b""):
                     single_line = line[0 : len(line) - 1]
-                    # logger.info(">>: ", single_line)
+                    # logger.info(f">>: {single_line}")
                     self.tmp_std_all.append(single_line)
                     try:
                         ref_to_class.emit_print_signal(single_line)
 
                     except AttributeError:
-                        logger.info(">>: ", single_line)
+                        logger.info(f">>: {single_line}")
 
                 my_process.wait()
                 my_process.stdout.close()
@@ -686,7 +686,7 @@ class TreeShow(object):
         self.add_tree(step=my_runner.step_list[0], indent=0)
         self.tree_print(my_runner.current_line)
         # TODO maybe here goes a print print function instead of logger ...
-        logger.info("---------------------" + self.max_indent * self.ind_lin)
+        logger.info(f"---------------------{self.max_indent * self.ind_lin}")
 
     def add_tree(self, step=None, indent=None):
         if step.success is True:

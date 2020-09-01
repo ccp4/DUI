@@ -125,7 +125,7 @@ class MyQComboBox(QComboBox):
         else:
             logger.info("NO hasFocus")
         """
-        logger.info("event: ", event)
+        logger.info(f"event: {event}")
         return
 
 
@@ -275,9 +275,6 @@ class PhilWidget(QWidget):
 
                     else:
                         tmp_str = None
-
-                    # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
-                    # logger.info("tmp_str =", tmp_str)
 
                     tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
