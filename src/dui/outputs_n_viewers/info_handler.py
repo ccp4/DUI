@@ -111,7 +111,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             )
 
             logger.info("failed to find reflections")
-            logger.info("reflections_path = %s", reflections_path)
+            logger.info(f"reflections_path = {reflections_path}")
 
     if experiments_path is not None:
         try:

@@ -56,10 +56,10 @@ class WebTab(QWidget):
             self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
             self.my_bar(5)
 
-        except BaseException:
+        except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            # logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
+            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):

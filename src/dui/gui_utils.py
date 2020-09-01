@@ -179,12 +179,12 @@ def try_move_last_info(export_node, gui2_log):
 
         gui2_log_path = os.path.join(cwd_path, "output.json")
 
-        # logger.info("Writing:", gui2_log_path)
+        # logger.info(f"Writing: {gui2_log_path}")
 
         with open(gui2_log_path, "w") as fp:
             json.dump(gui2_log, fp, indent=4)
 
-        # logger.info("\n ___________________ gui2_log:", gui2_log, "\n")
+        # logger.info(f"\n ___________________ gui2_log: {gui2_log}")
 
     except IOError:
         logger.info("ERROR: mtz file not there")

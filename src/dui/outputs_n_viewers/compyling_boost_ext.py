@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 obj_name = "lst_ext"
 inc_path = sysconfig.get_python_inc()
-logger.info("\n sysconfig.get_python_inc() =", inc_path)
+logger.info(f"\n sysconfig.get_python_inc() = {inc_path}")
 for pos, single_shar in enumerate(inc_path):
     if single_shar == "/":
         cut_inc_path = inc_path[0:pos]
@@ -20,10 +20,10 @@ for pos, single_shar in enumerate(inc_path):
 com_lin_01 = (
     "g++ -I" + inc_path + " -I" + cut_inc_path + " -fPIC -c " + obj_name + ".cpp"
 )
-logger.info("com_lin_01 =\n", com_lin_01)
+logger.info(f"com_lin_01 = {com_lin_01}")
 
 lib_path = sysconfig.get_python_lib()
-logger.info("\n sysconfig.get_python_lib() =", lib_path)
+logger.info(f"sysconfig.get_python_lib() = {lib_path}")
 for pos, single_shar in enumerate(lib_path):
     if single_shar == "/":
         cut_lib_path = lib_path[0:pos]
@@ -45,10 +45,10 @@ com_lin_02 = (
 )
 
 logger.info("\n Compiling line 1:")
-logger.info("cmd =", com_lin_01)
+logger.info(f"cmd = {com_lin_01}")
 err_msg_01 = shell_call(com_lin_01, shell=True)
 logger.info("\n Compiling line 2:")
-logger.info("cmd =", com_lin_02)
+logger.info(f"cmd = {com_lin_02}")
 err_msg_02 = shell_call(com_lin_02, shell=True)
 logger.info("\n done compiling")
 
