@@ -30,6 +30,7 @@ import shutil
 import subprocess
 import sys
 from collections import OrderedDict, namedtuple
+from pathlib import Path
 
 import psutil
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
@@ -790,14 +791,11 @@ class CliOutView(QTextEdit):
 
         logger.debug(" path_to_log = %s", path_to_log)
 
-        try:
+        if path_to_log and Path(path_to_log).is_file():
             fil_obj = open(path_to_log, "r")
             lst_lin = fil_obj.readlines()
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("Failed to read log file")
+        else:
+            logger.debug("No log file")
             lst_lin = ["Ready to Run:"]
             self.make_green()
 
