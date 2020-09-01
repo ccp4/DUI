@@ -24,10 +24,11 @@ copyright (c) CCP4 - DLS
 from __future__ import absolute_import, division, print_function
 
 import argparse
+import faulthandler
 import logging
 import os
-import sys
 import signal
+import sys
 
 from dui.cli_utils import sys_arg
 
@@ -65,6 +66,7 @@ def main():
     if args.verbose >= 2:
         logging.debug("Running debug out: ctrl-c will close application")
         signal.signal(signal.SIGINT, signal.SIG_DFL)
+        faulthandler.enable()
 
     # Process the phil-style parameters
     for arg in args.positionals[:]:
