@@ -41,6 +41,7 @@ from .m_idials import generate_report
 from .qt import (
     QDialog,
     QFont,
+    QFontDatabase,
     QHeaderView,
     QIcon,
     QLabel,
@@ -750,7 +751,8 @@ class OuterCaller(QWidget):
 class CliOutView(QTextEdit):
     def __init__(self, app=None):
         super(CliOutView, self).__init__()
-        self.setFont(QFont("Monospace", 10, QFont.Bold))
+        self.setFont(QFontDatabase.systemFont(QFontDatabase.FixedFont))
+
         self.make_green()
 
     def add_txt(self, str_to_print):
