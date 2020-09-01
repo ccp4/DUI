@@ -1706,16 +1706,16 @@ class MyImgWin(QWidget):
             self.bc_applied.emit(new_bc)
 
     def unchec_my_mask(self):
-        self.chk_box_mask.setCheckState(False)
+        self.chk_box_mask.setChecked(False)
 
     def chec_my_mask(self):
-        self.chk_box_mask.setCheckState(True)
+        self.chk_box_mask.setChecked(True)
 
     def unchec_b_centr(self):
-        self.chk_box_B_centr.setCheckState(False)
+        self.chk_box_B_centr.setChecked(False)
 
     def chec_b_centr(self):
-        self.chk_box_B_centr.setCheckState(True)
+        self.chk_box_B_centr.setChecked(True)
 
     def zoom2one(self):
         self.my_painter.scale2fact()
