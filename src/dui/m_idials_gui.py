@@ -76,7 +76,7 @@ class CheckStatusThread(QThread):
     end_busy_box = Signal()
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
     def __call__(self, ref_to_controler):
         self.ref_to_controler = ref_to_controler
@@ -108,7 +108,7 @@ class CommandThread(QThread):
     busy_box_off = Signal()
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
     def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
@@ -166,7 +166,7 @@ class ControlWidget(QWidget):
     click_b_centr = Signal()
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         top_box = QVBoxLayout()
         # top_box.setMargin(0)
@@ -342,7 +342,7 @@ class ControlWidget(QWidget):
 
 class StopRunRetry(QWidget):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         main_path = get_main_path()
 

@@ -127,7 +127,7 @@ class FindspotsSimplerParameterTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         # self.param_widget_parent = parent.param_widget_parent
         # TODO thinks about making "None equivalent to 1"
         xds_gain_label = QLabel("Gain")
@@ -218,7 +218,7 @@ class IndexSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, phl_obj=None, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         # self.param_widget_parent = parent.param_widget_parent
         # indexing_method_check = QCheckBox("indexing.method")
@@ -290,7 +290,7 @@ class IndexSimplerParamTab(SimpleParamTab):
 
 class RefineBravaiSimplerParamTab(SimpleParamTab):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         localLayout = QVBoxLayout()
         hbox_lay_outlier_algorithm = QHBoxLayout()
@@ -325,7 +325,7 @@ class RefineSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         # self.param_widget_parent = parent.param_widget_parent
         localLayout = QVBoxLayout()
 
@@ -394,7 +394,7 @@ class IntegrateSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         # self.param_widget_parent = parent.param_widget_parent
 
         localLayout = QVBoxLayout()
@@ -470,7 +470,7 @@ class SymmetrySimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         hbox_d_min = QHBoxLayout()
         localLayout = QVBoxLayout()
@@ -508,7 +508,7 @@ class ScaleSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         localLayout = QVBoxLayout()
 
@@ -567,7 +567,7 @@ class ScaleSimplerParamTab(SimpleParamTab):
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         # self.param_widget_parent = self
 
         my_widget = RefineSimplerParamTab(self)

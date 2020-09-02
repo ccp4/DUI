@@ -72,7 +72,7 @@ class WebTab(QWidget):
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         # self.param_widget_parent = self
         self.my_widget = WebTab()
         self.btn1 = QPushButton("Click me", self)

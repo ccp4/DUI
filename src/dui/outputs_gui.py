@@ -68,7 +68,7 @@ def get_spacebox(size):
 
 class InfoWidget(QWidget):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         empty_str = "__________"
 
