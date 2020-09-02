@@ -627,12 +627,13 @@ class ImgPainter(QWidget):
         self.resize(scaled_width, scaled_height)
 
         rect = QRect(0, 0, scaled_width, scaled_height)
-        pixmap = QPixmap(self.img)
         painter = QPainter(self)
 
         self._create_pens()
 
-        painter.drawPixmap(rect, pixmap)
+        # pixmap = QPixmap(self.img)
+        # painter.drawPixmap(rect, pixmap)
+        painter.drawText(30, 30, "Image Disabled until SEGV tracked down")
 
         if self.np_mask is not None:
             painter.drawPixmap(rect, self.mask_pixmap)
