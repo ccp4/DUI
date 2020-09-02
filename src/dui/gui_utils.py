@@ -512,7 +512,7 @@ class MyActionButton(QToolButton):
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         logger.debug("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
@@ -806,7 +806,7 @@ class CliOutView(QTextEdit):
 
 class Text_w_Bar(QProgressBar):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
         logger.debug("test setStyle(QStyleFactory.create())")

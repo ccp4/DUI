@@ -97,7 +97,7 @@ class BeamCentrPage(QWidget):
     b_centr_set = Signal()
 
     def __init__(self, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
@@ -160,7 +160,7 @@ class BeamCentrPage(QWidget):
 
 class InnerMask(QWidget):
     def __init__(self, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
 
         self.outher_box = QVBoxLayout()
         self.list_widg = QVBoxLayout()
@@ -196,7 +196,7 @@ class MaskPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
@@ -257,7 +257,7 @@ class ExportPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
@@ -370,7 +370,7 @@ class ImportPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
@@ -560,7 +560,7 @@ class ImportPage(QWidget):
 
 class ParamAdvancedWidget(QWidget):
     def __init__(self, phl_obj=None, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         self.scrollable_widget = PhilWidget(phl_obj, parent=self)
         scrollArea = QScrollArea()
@@ -642,7 +642,7 @@ class ParamMainWidget(QWidget):
     update_command_lst_low_level = Signal(list)
 
     def __init__(self, phl_obj=None, simp_widg=None, parent=None, upper_label=None):
-        super().__init__()
+        super().__init__(parent)
 
         self.command_lst = [[None]]
         self.lst_pair = []
