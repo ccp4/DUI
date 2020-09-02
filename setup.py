@@ -37,7 +37,7 @@ class BuildQt(Command):
 
     def _compile_ui(self, infile, outfile):
         try:
-            subprocess.call([self.pyuic, infile, "-o", outfile])
+            subprocess.call([self.pyuic, infile, "-x", "-o", outfile])
         except OSError:
             print("uic command failed - make sure that pyside-uic " "is in your $PATH")
 
