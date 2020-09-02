@@ -20,7 +20,6 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import logging
 import sys
@@ -69,7 +68,7 @@ def get_spacebox(size):
 
 class InfoWidget(QWidget):
     def __init__(self, parent=None):
-        super(InfoWidget, self).__init__()
+        super().__init__()
 
         empty_str = "__________"
 

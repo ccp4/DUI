@@ -20,7 +20,6 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import logging
 import os
@@ -34,7 +33,6 @@ from dials.command_line.refine import working_phil as phil_scope_refine
 from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )
-from six.moves import range
 
 from dui.cli_utils import sys_arg
 from dui.gui_utils import get_import_run_string, get_main_path
@@ -99,17 +97,17 @@ class BeamCentrPage(QWidget):
     b_centr_set = Signal()
 
     def __init__(self, parent=None):
-        super(BeamCentrPage, self).__init__(parent=None)
+        super().__init__(parent=None)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Modify Geometry"))
+        step_label = QLabel("Modify Geometry")
         step_label.setFont(label_font)
 
-        self.data_bc_label = QLabel(str("empty Data ... for now"))
+        self.data_bc_label = QLabel("empty Data ... for now")
 
         main_v_box.addWidget(step_label)
         main_v_box.addStretch()
@@ -162,11 +160,11 @@ class BeamCentrPage(QWidget):
 
 class InnerMask(QWidget):
     def __init__(self, parent=None):
-        super(InnerMask, self).__init__(parent=None)
+        super().__init__(parent=None)
 
         self.outher_box = QVBoxLayout()
         self.list_widg = QVBoxLayout()
-        self.list_widg.addWidget(QLabel(str("empty List ... for now")))
+        self.list_widg.addWidget(QLabel("empty List ... for now"))
         self.outher_box.addStretch()
         self.outher_box.addLayout(self.list_widg)
         self.outher_box.addStretch()
@@ -198,14 +196,14 @@ class MaskPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(MaskPage, self).__init__(parent=None)
+        super().__init__(parent=None)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Apply Mask"))
+        step_label = QLabel("Apply Mask")
         step_label.setFont(label_font)
 
         self.my_scroll_area = QScrollArea()
@@ -259,17 +257,17 @@ class ExportPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(ExportPage, self).__init__(parent=None)
+        super().__init__(parent=None)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Export"))
+        step_label = QLabel("Export")
         step_label.setFont(label_font)
 
-        out_file_label = QLabel(str("mtz output name:"))
+        out_file_label = QLabel("mtz output name:")
 
         self.simple_lin = QLineEdit(self)
         self.simple_lin.textChanged.connect(self.update_command)
@@ -278,7 +276,7 @@ class ExportPage(QWidget):
         self.check_scale.setChecked(False)
         self.check_scale.stateChanged.connect(self.update_command)
 
-        self.warning_label = QLabel(str(" "))
+        self.warning_label = QLabel(" ")
         self.warning_label.setWordWrap(True)
 
         main_v_box.addWidget(step_label)
@@ -372,14 +370,14 @@ class ImportPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(ImportPage, self).__init__(parent=None)
+        super().__init__(parent=None)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Import"))
+        step_label = QLabel("Import")
         step_label.setFont(label_font)
 
         self.simple_lin = QLineEdit(self)
@@ -562,7 +560,7 @@ class ImportPage(QWidget):
 
 class ParamAdvancedWidget(QWidget):
     def __init__(self, phl_obj=None, parent=None):
-        super(ParamAdvancedWidget, self).__init__()
+        super().__init__()
 
         self.scrollable_widget = PhilWidget(phl_obj, parent=self)
         scrollArea = QScrollArea()
@@ -644,7 +642,7 @@ class ParamMainWidget(QWidget):
     update_command_lst_low_level = Signal(list)
 
     def __init__(self, phl_obj=None, simp_widg=None, parent=None, upper_label=None):
-        super(ParamMainWidget, self).__init__()
+        super().__init__()
 
         self.command_lst = [[None]]
         self.lst_pair = []
@@ -889,7 +887,7 @@ class ParamWidget(QWidget):
     update_command_lst_medium_level = Signal(list)
 
     def __init__(self, label_str):
-        super(ParamWidget, self).__init__()
+        super().__init__()
         self.my_label = label_str
 
         inner_widgs = {

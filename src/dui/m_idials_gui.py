@@ -20,15 +20,12 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import logging
 import os
 import pickle
 import time
 import traceback
-
-from six import raise_from
 
 from ._version import __version__
 from .cli_utils import TreeShow, build_mask_command_lst, prn_lst_lst_cmd, sys_arg
@@ -79,7 +76,7 @@ class CheckStatusThread(QThread):
     end_busy_box = Signal()
 
     def __init__(self, parent=None):
-        super(CheckStatusThread, self).__init__()
+        super().__init__()
 
     def __call__(self, ref_to_controler):
         self.ref_to_controler = ref_to_controler
@@ -111,7 +108,7 @@ class CommandThread(QThread):
     busy_box_off = Signal()
 
     def __init__(self, parent=None):
-        super(CommandThread, self).__init__()
+        super().__init__()
 
     def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
@@ -169,7 +166,7 @@ class ControlWidget(QWidget):
     click_b_centr = Signal()
 
     def __init__(self, parent=None):
-        super(ControlWidget, self).__init__()
+        super().__init__()
 
         top_box = QVBoxLayout()
         # top_box.setMargin(0)
@@ -345,7 +342,7 @@ class ControlWidget(QWidget):
 
 class StopRunRetry(QWidget):
     def __init__(self, parent=None):
-        super(StopRunRetry, self).__init__()
+        super().__init__()
 
         main_path = get_main_path()
 
@@ -404,7 +401,7 @@ def load_previous_state(dui_files_path):
 
 class MainWidget(QMainWindow):
     def __init__(self):
-        super(MainWidget, self).__init__()
+        super().__init__()
 
         self.my_pop = None  # Any child popup windows. Only bravais_table ATM
         self.storage_path = sys_arg.directory
@@ -422,7 +419,7 @@ class MainWidget(QMainWindow):
                 # Something went wrong - tell the user then close
                 msg = traceback.format_exc()
                 logger.error("ERROR LOADING PREVIOUS DATA:\n%s", msg)
-                raise_from(DUIDataLoadingError(msg), e)
+                raise DUIDataLoadingError(msg) from e
 
             refresh_gui = True
         else:
@@ -533,7 +530,7 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.setWindowTitle("CCP4 DUI - {}: {}".format(__version__, dui_files_path))
+        self.setWindowTitle(f"CCP4 DUI - {__version__}: {dui_files_path}")
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
         self.just_reindexed = False

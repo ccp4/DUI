@@ -20,7 +20,6 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import json
 import logging
@@ -34,7 +33,6 @@ from pathlib import Path
 
 import psutil
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
-from six.moves import range
 
 from .cli_utils import get_next_step, sys_arg
 from .m_idials import generate_report
@@ -188,7 +186,7 @@ def try_move_last_info(export_node, gui2_log):
 
         # logger.info(f"\n ___________________ gui2_log: {gui2_log}")
 
-    except IOError:
+    except OSError:
         logger.info("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
@@ -514,7 +512,7 @@ class MyActionButton(QToolButton):
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent=None):
-        super(TreeNavWidget, self).__init__()
+        super().__init__()
         logger.debug("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
@@ -598,7 +596,7 @@ class ViewerThread(QThread):
     """
 
     def __init__(self, process):
-        super(ViewerThread, self).__init__()
+        super().__init__()
         self.process = process
 
     def run(self):
@@ -624,15 +622,13 @@ class ExternalProcDialog(QDialog):
     outputFileFound = Signal(list)
 
     def __init__(self, parent=None):
-        super(ExternalProcDialog, self).__init__(parent)
+        super().__init__(parent)
 
         vbox = QVBoxLayout()
         label = QLabel(
-            (
-                "Running a pop-up viewer ...\n\n"
-                "remember to close the viewer before\n"
-                "performing any other task"
-            )
+            "Running a pop-up viewer ...\n\n"
+            "remember to close the viewer before\n"
+            "performing any other task"
         )
         label.setAlignment(Qt.AlignCenter)
         vbox.addWidget(label)
@@ -683,7 +679,7 @@ class ExternalProcDialog(QDialog):
 
         logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
-        logger.debug("Running PID {}".format(self.my_process.pid))
+        logger.debug(f"Running PID {self.my_process.pid}")
 
         # Track the process status in a separate thread
         self.thrd = ViewerThread(self.my_process)
@@ -715,7 +711,7 @@ class ExternalProcDialog(QDialog):
 
 class OuterCaller(QWidget):
     def __init__(self):
-        super(OuterCaller, self).__init__()
+        super().__init__()
 
         v_box = QVBoxLayout()
 
@@ -750,7 +746,7 @@ class OuterCaller(QWidget):
 
 class CliOutView(QTextEdit):
     def __init__(self, app=None):
-        super(CliOutView, self).__init__()
+        super().__init__()
         self.setFont(QFontDatabase.systemFont(QFontDatabase.FixedFont))
 
         self.make_green()
@@ -794,7 +790,7 @@ class CliOutView(QTextEdit):
         logger.debug(" path_to_log = %s", path_to_log)
 
         if path_to_log and Path(path_to_log).is_file():
-            fil_obj = open(path_to_log, "r")
+            fil_obj = open(path_to_log)
             lst_lin = fil_obj.readlines()
         else:
             logger.debug("No log file")
@@ -810,7 +806,7 @@ class CliOutView(QTextEdit):
 
 class Text_w_Bar(QProgressBar):
     def __init__(self, parent=None):
-        super(Text_w_Bar, self).__init__()
+        super().__init__()
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
         logger.debug("test setStyle(QStyleFactory.create())")

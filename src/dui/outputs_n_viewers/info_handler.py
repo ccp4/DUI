@@ -6,7 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
 
 import json
 import logging
@@ -36,7 +35,7 @@ from dxtbx.model.experiment_list import ExperimentListFactory
 logger = logging.getLogger(__name__)
 
 
-class InfoData(object):
+class InfoData:
     def __init__(self):
 
         self.a = None
@@ -157,7 +156,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             mask_np_arr = dat.mask_flex.as_numpy_array()
             dat.np_mask = mask_np_arr
 
-        except IOError:
+        except OSError:
             logger.info("No mask in this node")
             dat.np_mask = None
             dat.mask_flex = None

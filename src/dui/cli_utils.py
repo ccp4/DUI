@@ -7,7 +7,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
 
 import json
 import logging
@@ -15,7 +14,6 @@ import os
 import subprocess
 
 import libtbx.phil
-from six.moves import range
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,7 +33,7 @@ from six.moves import range
 logger = logging.getLogger(__name__)
 
 
-class SysArgvData(object):
+class SysArgvData:
     """
     Some data related to how the GUI gets launched from CLI
     """
@@ -101,7 +99,7 @@ def get_next_step(node_obj):
     return None
 
 
-class ScopeData(object):
+class ScopeData:
     """
     class conceived to store only data related to the scope Phil object
     """
@@ -109,7 +107,7 @@ class ScopeData(object):
     pass
 
 
-class tree_2_lineal(object):
+class tree_2_lineal:
 
     """
     Recursively navigates the Phil objects in a way that the final
@@ -540,7 +538,7 @@ def generate_report(node_obj):
     return rep_out
 
 
-class DialsCommand(object):
+class DialsCommand:
     def __init__(self):
         logger.debug("creating new DialsCommand (obj)")
         self.full_cmd_lst = [None]
@@ -664,7 +662,7 @@ def print_list(lst, curr):
         logger.info(stp_str)
 
 
-class TreeShow(object):
+class TreeShow:
     def __init__(self):
         self.ind_spc = "      "
         self.ind_lin = "------"
@@ -696,7 +694,7 @@ class TreeShow(object):
         else:
             stp_prn = " N "
 
-        str_lin_num = "{0:3}".format(int(step.lin_num))
+        str_lin_num = "{:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + r"   \___"
         stp_prn += str(step.ll_command_lst[0][0])
