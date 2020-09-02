@@ -72,13 +72,11 @@ def _get_all_direct_layout_widget_children(parent):
 
 
 class ResetButton(QPushButton):
-    def __init__(self, parent=None):
-        super(ResetButton, self).__init__()
-        my_label = QLabel("Reset to default")
-        v_box = QVBoxLayout()
-        v_box.addWidget(my_label)
-        self.setLayout(v_box)
-        # self.show()
+    """QPushButton with default text."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setText("Reset to default")
 
 
 class DefaultComboBox(QComboBox):
