@@ -7,7 +7,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
 
 import logging
 import os
@@ -15,7 +14,6 @@ import pickle
 import shutil
 import sys
 
-from six.moves import input
 
 from dui.cli_utils import (
     DialsCommand,
@@ -45,7 +43,7 @@ from dui.cli_utils import (
 logger = logging.getLogger(__name__)
 
 
-class CommandNode(object):
+class CommandNode:
     dials_com_lst = [
         "import",
         "find_spots",
@@ -165,7 +163,7 @@ class CommandNode(object):
         return get_next_step(self)
 
 
-class Runner(object):
+class Runner:
     def __init__(self):
         root_node = CommandNode(prev_step=None)
         root_node.success = True

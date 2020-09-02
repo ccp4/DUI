@@ -47,7 +47,7 @@ class BuildQt(Command):
             directory, ui_filename = os.path.split(infile)
             py_filename = ui_filename.replace(".ui", ".py")
             outfile = os.path.join(directory, "ui_" + py_filename)
-            print("Compiling: {0} -> {1}".format(infile, outfile))
+            print(f"Compiling: {infile} -> {outfile}")
             self._compile_ui(infile, outfile)
 
 

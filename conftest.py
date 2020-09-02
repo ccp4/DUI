@@ -51,7 +51,7 @@ def screenshots(qapp, qtbot, request):
     if not os.path.isdir(ss_dir):
         os.mkdir(ss_dir)
 
-    class SSSaver(object):
+    class SSSaver:
         """Returnable object to save test-context screenshots"""
 
         def __init__(self, root_path):
@@ -63,7 +63,7 @@ def screenshots(qapp, qtbot, request):
             test_file_name = os.path.splitext(
                 os.path.basename(request.node.parent.name)
             )[0]
-            return "{}__{}_{}.png".format(test_file_name, request.node.name, self.count)
+            return f"{test_file_name}__{request.node.name}_{self.count}.png"
 
         def saveWidget(self, widget, filename=None):
             """Save a widget screenshot."""

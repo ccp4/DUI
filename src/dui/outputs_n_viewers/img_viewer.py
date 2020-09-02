@@ -21,7 +21,6 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import logging
 import os
@@ -34,7 +33,6 @@ from dials.algorithms.image.threshold import (
 )
 from dials.array_family import flex
 from dxtbx.model.experiment_list import ExperimentListFactory
-from six.moves import range
 
 from dui.cli_utils import sys_arg
 from dui.gui_utils import get_main_path
@@ -193,7 +191,7 @@ class ImgPainter(QWidget):
     ll_b_centr_applied = Signal(list)
 
     def __init__(self, parent=None):
-        super(ImgPainter, self).__init__()
+        super().__init__()
         self.my_parent = parent
 
         self.img = None
@@ -741,7 +739,7 @@ class ImgPainter(QWidget):
 
 class PopActionsMenu(QMenu):
     def __init__(self, parent=None):
-        super(PopActionsMenu, self).__init__(parent)
+        super().__init__(parent)
         self.my_parent = parent
 
         ref_bond_group = QButtonGroup()
@@ -836,7 +834,7 @@ class PopDisplayMenu(QMenu):
     sliders_changed = Signal(int, int)
 
     def __init__(self, parent=None):
-        super(PopDisplayMenu, self).__init__(parent)
+        super().__init__(parent)
         self.my_parent = parent
 
         # group to tune up palette
@@ -994,9 +992,7 @@ class ThresholdDebugGenerator:
         elif self.algorithm == "dispersion extended":
             Debug = DispersionExtendedThresholdDebug
         else:
-            raise ValueError(
-                "Unknown spot-finding algorithm: {}".format(self.algorithm)
-            )
+            raise ValueError(f"Unknown spot-finding algorithm: {self.algorithm}")
 
         debug = Debug(
             self.image,
@@ -1026,7 +1022,7 @@ class MyImgWin(QWidget):
     new_pars_applied = Signal(list)
 
     def __init__(self, json_file_path=None, pckl_file_path=None):
-        super(MyImgWin, self).__init__()
+        super().__init__()
 
         self.my_scrollable = QScrollArea()
         self.my_painter = ImgPainter(self)
@@ -1751,7 +1747,7 @@ class MyImgWin(QWidget):
             image_file = os.path.basename(
                 self.ref2exp.imageset.get_image_identifier(self.img_num - 1)
             )
-            new_label_txt += "{0}: ".format(image_file)
+            new_label_txt += f"{image_file}: "
 
         if self.img_arr:
             new_label_txt += (
@@ -1770,7 +1766,7 @@ class MyImgWin(QWidget):
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
-            res_str = str("{: 4.2f}".format(res_float))
+            res_str = str(f"{res_float: 4.2f}")
             new_label_txt += ", resolution = " + res_str + " " + "\u00C5"
 
         else:

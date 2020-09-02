@@ -6,7 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
 
 import logging
 import sys
@@ -53,7 +52,7 @@ from dui.qt import (
 logger = logging.getLogger(__name__)
 
 
-class ScopeData(object):
+class ScopeData:
     """
     class conceived to store only data related to the scope Phil object
     """
@@ -61,7 +60,7 @@ class ScopeData(object):
     pass
 
 
-class tree_2_lineal(object):
+class tree_2_lineal:
     """
     Recursively navigates the Phil objects in a way that the final
     self.lst_obj is a lineal list without ramifications, this final list
@@ -114,7 +113,7 @@ class tree_2_lineal(object):
 
 class MyQComboBox(QComboBox):
     def __init__(self, parent=None):
-        super(MyQComboBox, self).__init__(parent)
+        super().__init__(parent)
         self.setFocusPolicy(Qt.ClickFocus)
 
     def wheelEvent(self, event):
@@ -134,7 +133,7 @@ class PhilWidget(QWidget):
 
     def __init__(self, phl_obj, parent=None):
         # TODO fix the order of this two parameters
-        super(PhilWidget, self).__init__(parent)
+        super().__init__(parent)
         self.original_parent = parent
 
         self.bg_box = QVBoxLayout(self)
@@ -383,7 +382,7 @@ class PhilWidget(QWidget):
 
 class TstTmpWidget(QWidget):
     def __init__(self, phl_obj=None, parent=None):
-        super(TstTmpWidget, self).__init__(parent)
+        super().__init__(parent)
         # self.param_widget_parent = self
         inner_widget = PhilWidget(
             phl_obj, self

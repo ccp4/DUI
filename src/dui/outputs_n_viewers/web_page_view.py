@@ -1,5 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
 import logging
 import os
 import sys
@@ -20,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class WebTab(QWidget):
     def __init__(self):
-        super(WebTab, self).__init__()
+        super().__init__()
 
         self.dummy_html = """<html>
             <head>
@@ -74,7 +72,7 @@ class WebTab(QWidget):
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
-        super(TmpTstWidget, self).__init__()
+        super().__init__()
         # self.param_widget_parent = self
         self.my_widget = WebTab()
         self.btn1 = QPushButton("Click me", self)

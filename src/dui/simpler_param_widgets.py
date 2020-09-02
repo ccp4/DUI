@@ -21,13 +21,10 @@ copyright (c) CCP4 - DLS
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-from __future__ import absolute_import, division, print_function
-
 import logging
 import sys
 
 import libtbx.introspection
-from six.moves import range
 
 from dui.qt import (
     QApplication,
@@ -84,7 +81,7 @@ class DefaultComboBox(QComboBox):
     is default"""
 
     def __init__(self, local_path, items, default_index=0):
-        super(DefaultComboBox, self).__init__()
+        super().__init__()
         self.local_path = local_path
         self.tmp_lst = items
         self.default_index = default_index
@@ -130,7 +127,7 @@ class FindspotsSimplerParameterTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super(FindspotsSimplerParameterTab, self).__init__()
+        super().__init__()
         # self.param_widget_parent = parent.param_widget_parent
         # TODO thinks about making "None equivalent to 1"
         xds_gain_label = QLabel("Gain")
@@ -221,7 +218,7 @@ class IndexSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, phl_obj=None, parent=None):
-        super(IndexSimplerParamTab, self).__init__()
+        super().__init__()
 
         # self.param_widget_parent = parent.param_widget_parent
         # indexing_method_check = QCheckBox("indexing.method")
@@ -293,7 +290,7 @@ class IndexSimplerParamTab(SimpleParamTab):
 
 class RefineBravaiSimplerParamTab(SimpleParamTab):
     def __init__(self, parent=None):
-        super(RefineBravaiSimplerParamTab, self).__init__()
+        super().__init__()
 
         localLayout = QVBoxLayout()
         hbox_lay_outlier_algorithm = QHBoxLayout()
@@ -328,7 +325,7 @@ class RefineSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super(RefineSimplerParamTab, self).__init__()
+        super().__init__()
         # self.param_widget_parent = parent.param_widget_parent
         localLayout = QVBoxLayout()
 
@@ -397,7 +394,7 @@ class IntegrateSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super(IntegrateSimplerParamTab, self).__init__()
+        super().__init__()
         # self.param_widget_parent = parent.param_widget_parent
 
         localLayout = QVBoxLayout()
@@ -473,7 +470,7 @@ class SymmetrySimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super(SymmetrySimplerParamTab, self).__init__()
+        super().__init__()
 
         hbox_d_min = QHBoxLayout()
         localLayout = QVBoxLayout()
@@ -511,7 +508,7 @@ class ScaleSimplerParamTab(SimpleParamTab):
     """
 
     def __init__(self, parent=None):
-        super(ScaleSimplerParamTab, self).__init__()
+        super().__init__()
 
         localLayout = QVBoxLayout()
 
@@ -570,7 +567,7 @@ class ScaleSimplerParamTab(SimpleParamTab):
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
-        super(TmpTstWidget, self).__init__()
+        super().__init__()
         # self.param_widget_parent = self
 
         my_widget = RefineSimplerParamTab(self)

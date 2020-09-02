@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """Test running DUI, but in a screenshot-friendly way"""
 
 import pytest

@@ -21,7 +21,6 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import argparse
 import faulthandler
@@ -82,7 +81,7 @@ def main():
         logger.warning(
             "Unknown parameter%s %s",
             "s" if len(args.positionals) > 1 else "",
-            " ".join("'{}'".format(x) for x in args.positionals),
+            " ".join(f"'{x}'" for x in args.positionals),
         )
         # Should we exit here? Maybe QT can handle it(???)
 

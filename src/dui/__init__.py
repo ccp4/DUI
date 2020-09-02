@@ -8,7 +8,6 @@ With strong help from DIALS and CCP4 teams
 copyright (c) CCP4 - DLS
 """
 
-from __future__ import absolute_import, division, print_function
 
 from ._version import __version__  # noqa F401
 

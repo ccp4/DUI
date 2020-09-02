@@ -2,7 +2,6 @@
 (Nick) - Appears to be file to compile optional C++ extension?
          Potentially unused in normal runnning?
 """
-from __future__ import absolute_import, division, print_function
 
 import logging
 from distutils import sysconfig

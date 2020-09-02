@@ -21,14 +21,11 @@ copyright (c) CCP4 - DLS
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-from __future__ import absolute_import, division, print_function
-
 import json
 import logging
 import os
 import sys
 
-from six.moves import range
 
 from dui.cli_utils import sys_arg
 from dui.qt import (
@@ -58,7 +55,7 @@ lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
 
 def choice_if_decimal(num_in):
 
-    str_f = "{:6.2f}".format(num_in)
+    str_f = f"{num_in:6.2f}"
     if str_f[-3:] == ".00":
         str_out = str_f[0:-3]
 
@@ -81,11 +78,11 @@ def ops_list_from_json(json_path=None):
         for inner_key in value:
             if inner_key == "rmsd":
                 rmsd_val = value["rmsd"]
-                rmsd_str = " {:7.2}".format(rmsd_val)
+                rmsd_str = f" {rmsd_val:7.2}"
 
             elif inner_key == "min_cc":
                 min_cc_val = value["min_cc"]
-                min_cc_str = " {:7.2}".format(min_cc_val)
+                min_cc_str = f" {min_cc_val:7.2}"
 
                 if "Non" in min_cc_str:
                     min_cc_str = "    - "
@@ -97,7 +94,7 @@ def ops_list_from_json(json_path=None):
 
             elif inner_key == "max_cc":
                 max_cc_val = value["max_cc"]
-                max_cc_str = " {:7.2}".format(max_cc_val)
+                max_cc_str = f" {max_cc_val:7.2}"
 
                 if "Non" in max_cc_str:
                     max_cc_str = "    - "
@@ -115,7 +112,7 @@ def ops_list_from_json(json_path=None):
 
             elif inner_key == "max_angular_difference":
                 angular_diff_val = value["max_angular_difference"]
-                angular_diff_str = " {:7.2} ".format(angular_diff_val)
+                angular_diff_str = f" {angular_diff_val:7.2} "
 
             elif inner_key == "correlation_coefficients":
                 # corr_coeff_val = value["correlation_coefficients"]
@@ -175,7 +172,7 @@ def heather_text_from_lin(lin_num, j_path):
 
     logger.debug("my_file_path: ", my_file_path)
 
-    myfile = open(my_file_path, "r")
+    myfile = open(my_file_path)
     all_lines = myfile.readlines()
     myfile.close()
 
@@ -212,7 +209,7 @@ class ReindexTable(QTableWidget):
     opt_signal = Signal(int)
 
     def __init__(self, parent=None):
-        super(ReindexTable, self).__init__(parent)
+        super().__init__(parent)
 
         self.cellClicked.connect(self.opt_clicked)
 
@@ -348,7 +345,7 @@ class ReindexTable(QTableWidget):
 
 class MyReindexOpts(QWidget):
     def __init__(self, parent=None):
-        super(MyReindexOpts, self).__init__(parent)
+        super().__init__(parent)
         self.setWindowTitle("Reindex")
 
     def set_ref(self, in_json_path, lin_num):
@@ -407,7 +404,7 @@ class MyReindexOpts(QWidget):
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
+        super().__init__(parent)
 
         self.btn1 = QPushButton("Click me", self)
 
