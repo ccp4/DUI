@@ -30,7 +30,7 @@ import subprocess
 import sys
 from collections import OrderedDict, namedtuple
 from pathlib import Path
-from typing import List, Tuple
+from typing import Iterable, List, Tuple
 
 import psutil
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
@@ -68,6 +68,12 @@ logger = logging.getLogger(__name__)
 ActionInformation = namedtuple(
     "ActionInformation", ["id", "label", "tooltip", "icon", "icon_disabled"]
 )
+
+
+def escaped_join(args: Iterable[str]) -> str:
+    """Join a list of strings, escaping spaces if necessary"""
+    return " ".join(x.replace(" ", r"\ ") for x in args)
+
 
 # Basic implementation of a simple actions lookup table - not a perfect solution
 # but allows partial refactoring to centralised previously scattered info
@@ -307,7 +313,9 @@ def get_import_run_string(in_str_lst: List[str]) -> Tuple[str, str]:
                     '/some/path/images_master.nxs'
                     '/some/path/filename_*.cbf'
                     '/some/path/filename_*.cbf image_range=1,100'
-                but in other cases may include several filenames...
+                but in other cases may include several filenames. Spaces
+                within filenames will be escaped, so that shlex.split
+                can recover the initial list.
     """
     logger.debug("Converting string for import: %s", in_str_lst)
 
@@ -326,13 +334,13 @@ def get_import_run_string(in_str_lst: List[str]) -> Tuple[str, str]:
     if template is None:
         # Unable to collapse?? Just pass through all filenames as <name>
         # and trust dials to process
-        return os.path.dirname(in_str_lst[0]), " ".join(in_str_lst)
+        return os.path.dirname(in_str_lst[0]), escaped_join(in_str_lst)
 
     dirname = os.path.dirname(template)
 
     # We're currently using wildcards, so continue with this by
     # replacing the template placeholder for now.
-    out_str = re.sub("#+", "*", template)
+    out_str = escaped_join([re.sub("#+", "*", template)])
 
     # Do we have a restricted image range?
     image_range = None

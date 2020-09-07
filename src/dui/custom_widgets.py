@@ -23,6 +23,7 @@ copyright (c) CCP4 - DLS
 
 import logging
 import os
+import shlex
 import sys
 from typing import List
 
@@ -36,7 +37,7 @@ from dials.command_line.refine_bravais_settings import (
 )
 
 from dui.cli_utils import sys_arg
-from dui.gui_utils import get_import_run_string, get_main_path
+from dui.gui_utils import escaped_join, get_import_run_string, get_main_path
 from dui.params_live_gui_generator import PhilWidget
 from dui.qt import (
     QApplication,
@@ -467,7 +468,7 @@ class ImportPage(QWidget):
             else:
                 input_params.append(singl_com)
 
-        self.path_file_str = " ".join(input_params)
+        self.path_file_str = escaped_join(input_params)
         self.put_str_lin()
 
     def inv_rota_changed(self):
@@ -533,15 +534,10 @@ class ImportPage(QWidget):
 
     def update_command(self):
         """Update self.command_lst from the Text widget contents"""
-        self.command_lst = [["import"]]
-        param_com = str(self.simple_lin.text())
+        command = ["import"] + shlex.split(self.simple_lin.text())
 
-        cmd_lst = param_com.split(" ")
-
-        for single_com in cmd_lst:
-            self.command_lst[0].append(single_com)
-
-        self.update_command_lst_low_level.emit(self.command_lst[0])
+        self.command_lst = [command]
+        self.update_command_lst_low_level.emit(command)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
