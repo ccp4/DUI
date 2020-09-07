@@ -2,7 +2,7 @@ import ntpath
 import os
 import posixpath
 
-from dui.gui_utils import get_import_run_string
+from dui.gui_utils import escaped_join, get_import_run_string
 
 
 def test_import_run_string_posix(monkeypatch):
@@ -54,6 +54,15 @@ def test_import_run_string_other():
         (["something_some.h5"], "something_some.h5"),
         (["a.h5", "b.h5"], "a.h5 b.h5"),
         (["a_001.cbf", "another_form_0002.cbf"], "a_001.cbf another_form_0002.cbf"),
+        (
+            ["a/path/with spaces/a_001.cbf", "another_form_0002.cbf"],
+            r"a/path/with\ spaces/a_001.cbf another_form_0002.cbf",
+        ),
     ]
     for input, output in filenames:
         assert get_import_run_string(input)[1] == output
+
+
+def test_escaped_join():
+    assert escaped_join(["a", "b", "a b"]) == r"a b a\ b"
+    assert escaped_join(["a*b.cbf"]) == "a*b.cbf"
