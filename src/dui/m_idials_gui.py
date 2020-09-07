@@ -939,10 +939,10 @@ class MainWidget(QMainWindow):
 
         logger.info(f"\n ERROR \n err_log_file_out = {err_log_file_out}")
 
-        fil_obj = open(err_log_file_out, "w")
+        fil_obj = open(err_log_file_out, "wb")
         for err_lin in curr_step.dials_command.tmp_std_all:
             fil_obj.write(err_lin)
-            fil_obj.write("\n")
+            fil_obj.write(b"\n")
 
         fil_obj.close()
         self.idials_runner.current_node.err_file_out = err_log_file_out
