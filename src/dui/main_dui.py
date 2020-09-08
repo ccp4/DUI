@@ -28,6 +28,7 @@ import logging
 import os
 import signal
 import sys
+from pathlib import Path
 
 from dui.cli_utils import sys_arg
 
@@ -88,14 +89,21 @@ def main():
     logger.info(f"sys_arg.template = {sys_arg.template}")
     logger.info(f"sys_arg.directory= {sys_arg.directory}")
 
-    # Inline import so that we can load this after logging setup
-
-    from dui.gui_utils import loading_error_dialog
-    from dui.m_idials_gui import DUIDataLoadingError, MainWidget
-    from dui.qt import QApplication, QStyleFactory
+    from dui.qt import QApplication, QPixmap, QSplashScreen, QStyleFactory
 
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
+    # Get resource path directly for now
+    splash_img = QPixmap(
+        str(Path(__file__).resolve().parent / "resources" / "splash.png")
+    )
+    splash = QSplashScreen(splash_img)
+    splash.show()
+
+    # Inline import so that we can load the main GUI after logging setup
+    from dui.gui_utils import loading_error_dialog
+    from dui.m_idials_gui import DUIDataLoadingError, MainWidget
+
     logger.debug(
         "QT Style: %s [%s]", app.style().objectName(), ", ".join(QStyleFactory.keys())
     )
@@ -106,6 +114,7 @@ def main():
         ex = loading_error_dialog(e.original_traceback)
 
     ex.show()
+    splash.close()
 
     # Needed for a QT4 bug(?) on mac - windows don't steal focus on open
     ex.activateWindow()
