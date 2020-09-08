@@ -30,6 +30,7 @@ import subprocess
 import sys
 from collections import OrderedDict, namedtuple
 from pathlib import Path
+from typing import List, Tuple
 
 import psutil
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
@@ -287,27 +288,26 @@ def get_package_path(path):
     return os.path.join(get_main_path(), path)
 
 
-def get_import_run_string(in_str_lst):
+def get_import_run_string(in_str_lst: List[str]) -> Tuple[str, str]:
     """
     Calculate the dials.import filename and image_range parameters.
 
     Args:
-        in_str_lst ([str]): List of files to open
+        in_str_lst: List of files to open
 
     Returns:
-        (Tuple[str,str]):
-            Tuple containing
-                dir_path (str):
-                    The location of the data. Note: This only appears to
-                    be used for re-opening the data dialog?
-                import_string (str):
-                    The string containing parts to pass to dials.import.
-                    This could be of the forms:
-                        '/some/path/single_file_0002.cbf'
-                        '/some/path/images_master.nxs'
-                        '/some/path/filename_*.cbf'
-                        '/some/path/filename_*.cbf image_range=1,100'
-                    but in other cases may include several filenames...
+        Tuple containing
+            dir_path (str):
+                The location of the data. Note: This only appears to
+                be used for re-opening the data dialog?
+            import_string (str):
+                The string containing parts to pass to dials.import.
+                This could be of the forms:
+                    '/some/path/single_file_0002.cbf'
+                    '/some/path/images_master.nxs'
+                    '/some/path/filename_*.cbf'
+                    '/some/path/filename_*.cbf image_range=1,100'
+                but in other cases may include several filenames...
     """
     logger.debug("Converting string for import: %s", in_str_lst)
 
