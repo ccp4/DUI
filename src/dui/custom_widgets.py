@@ -527,6 +527,7 @@ class ImportPage(QWidget):
             self.simple_lin.setText(str_arg)
 
     def update_command(self):
+        """Update self.command_lst from the Text widget contents"""
         self.command_lst = [["import"]]
         param_com = str(self.simple_lin.text())
 
