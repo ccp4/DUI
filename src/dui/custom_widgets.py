@@ -24,6 +24,7 @@ copyright (c) CCP4 - DLS
 import logging
 import os
 import sys
+from typing import List
 
 import libtbx.phil
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
@@ -441,29 +442,33 @@ class ImportPage(QWidget):
         self.second_half = ""
         self.third_half = ""
 
-    def update_param_w_lst(self, lst_in):
+    def update_param_w_lst(self, lst_in: List[str]) -> None:
+        """
+        Refresh the widget with parameters by re-reading a command list.
+
+        Args:
+            lst_in: A command list
+        """
+
         self.reset_par()
         logger.info(f"update_param_w_lst(ImportPage) lst: {lst_in}")
-        for singl_com in lst_in:
-            if singl_com[0:1] == "/":
-                self.path_file_str = str(singl_com)
-                self.put_str_lin()
 
-            if singl_com[0:12] == "image_range=":
-                self.path_file_str += " "
-                self.path_file_str += str(singl_com)
-                self.put_str_lin()
-
+        input_params = []
+        for singl_com in lst_in[1:]:
             if singl_com == "invert_rotation_axis=True":
                 self.chk_invert.setChecked(True)
-
-            if singl_com[0:22] == "slow_fast_beam_centre=":
+            elif singl_com.startswith("slow_fast_beam_centre="):
                 yb_xb_str = singl_com[22:]
                 yb_str, xb_str = yb_xb_str.split(",")
                 yb = float(yb_str)
                 xb = float(xb_str)
                 self.y_spn_bx.setValue(yb)
                 self.x_spn_bx.setValue(xb)
+            else:
+                input_params.append(singl_com)
+
+        self.path_file_str = " ".join(input_params)
+        self.put_str_lin()
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():
