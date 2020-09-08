@@ -26,7 +26,6 @@ import logging
 import os
 import sys
 
-
 from dui.cli_utils import sys_arg
 from dui.qt import (
     QApplication,

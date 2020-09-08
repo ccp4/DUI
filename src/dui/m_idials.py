@@ -14,7 +14,6 @@ import pickle
 import shutil
 import sys
 
-
 from dui.cli_utils import (
     DialsCommand,
     TreeShow,
