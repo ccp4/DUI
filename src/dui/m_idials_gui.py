@@ -51,6 +51,7 @@ from .outputs_n_viewers.img_view_tools import ProgBarBox
 from .outputs_n_viewers.img_viewer import MyImgWin
 from .outputs_n_viewers.web_page_view import WebTab
 from .qt import (
+    QDialog,
     QHBoxLayout,
     QIcon,
     QMainWindow,
@@ -403,9 +404,8 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.my_pop: MyReindexOpts = (
-            None  # Any child popup windows. Only bravais_table ATM
-        )
+        # Any child popup windows. Only bravais_table ATM
+        self.reindex_dialog: MyReindexOpts = None
         self.storage_path = sys_arg.directory
 
         restoring_session = False
@@ -872,34 +872,22 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         # Always either close popup or open new one when calling this
-        if self.my_pop is not None:
-            self.my_pop.close()
-
-        tmp_curr = self.idials_runner.current_node
+        node = self.idials_runner.current_node
+        command = node.ll_command_lst[0][0]
         logger.debug(
             "check_reindex_pop: just_reindexed: %s, command: %s",
             self.just_reindexed,
-            tmp_curr.ll_command_lst[0][0],
+            command,
         )
-        if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
+        if command == "reindex" and not self.just_reindexed:
             logger.debug("Redetermining reindex decision")
-            try:
-                self.my_pop = MyReindexOpts()
-                self.my_pop.set_ref(
-                    in_json_path=tmp_curr.prev_step.json_file_out,
-                    lin_num=tmp_curr.prev_step.lin_num,
-                )
-                self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
-                self.my_pop.show()
-
-            except Exception as my_err:
-                logger.info(
-                    "ERROR in check_reindex_pop(m_idials_gui);\n   %s: %s",
-                    type(my_err).__name__,
-                    my_err,
-                )
-
-            # TODO find an elegant way to interrupt and remove nodes
+            self.reindex_dialog = MyReindexOpts(
+                parent=self,
+                summary_json=node.prev_step.json_file_out,
+                node_id=node.prev_step.lin_num,
+            )
+            self.reindex_dialog.finished.connect(self.reindex_dialog_finished)
+            self.reindex_dialog.open()
 
         # Either we closed, or opened - can do so next time also
         self.just_reindexed = False
@@ -939,11 +927,24 @@ class MainWidget(QMainWindow):
         fil_obj.close()
         self.idials_runner.current_node.err_file_out = err_log_file_out
 
-    def opt_dobl_clicked(self, row):
-        re_idx = row + 1
-        logger.debug("Solution clicked = %s", re_idx)
-        cmd_tmp = ["reindex", "solution=" + str(re_idx)]
-        self.cmd_launch([cmd_tmp])
+    def reindex_dialog_finished(self, result: int):
+        """Process the results from a reindex dialog closing."""
+        # Grab the result and discard the dialog
+        reindex_index = self.reindex_dialog.row + 1
+        self.reindex_dialog = None
+
+        if result == QDialog.DialogCode.Rejected:
+            return
+
+        logger.debug("Chose reindex solution %s", reindex_index)
+
+        # Reindex to this solution
+        node = self.idials_runner.current_node
+        reindex_command = ["reindex", f"solution={reindex_index}"]
+        if node.ll_command_lst[0] != reindex_command or node.success is None:
+            self.cmd_launch([reindex_command])
+        else:
+            logger.info("Reindex would result in no change. Skipping.")
 
     def node_clicked(self, it_index):
 
@@ -1022,5 +1023,5 @@ class MainWidget(QMainWindow):
         logger.info("\n ... recovering from previous run of GUI \n")
 
     def closeEvent(self, event):
-        if self.my_pop:
-            self.my_pop.close()
+        if self.reindex_dialog:
+            self.reindex_dialog.close()
