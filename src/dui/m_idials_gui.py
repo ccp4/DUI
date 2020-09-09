@@ -403,10 +403,12 @@ class MainWidget(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.my_pop = None  # Any child popup windows. Only bravais_table ATM
+        self.my_pop: MyReindexOpts = (
+            None  # Any child popup windows. Only bravais_table ATM
+        )
         self.storage_path = sys_arg.directory
 
-        refresh_gui = False
+        restoring_session = False
 
         # Load the previous state of DUI, if present
         dui_files_path = os.path.join(self.storage_path, "dui_files")
@@ -421,7 +423,7 @@ class MainWidget(QMainWindow):
                 logger.error("ERROR LOADING PREVIOUS DATA:\n%s", msg)
                 raise DUIDataLoadingError(msg) from e
 
-            refresh_gui = True
+            restoring_session = True
         else:
             # No dui_files path - start with a fresh state
             if not os.path.isdir(dui_files_path):
@@ -533,14 +535,13 @@ class MainWidget(QMainWindow):
         self.setWindowTitle(f"CCP4 DUI - {__version__}: {dui_files_path}")
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
+        # Variable supresses showing the reindex GUI if on reindex step
         self.just_reindexed = False
         self.user_stoped = False
         self.reconnect_when_ready()
 
-        self.my_pop = None
-
-        if refresh_gui:
-            self.refresh_my_gui()
+        if restoring_session:
+            self.restore_gui_after_load()
 
     def pop_mask_list(self, mask_itm_lst):
 
@@ -793,16 +794,8 @@ class MainWidget(QMainWindow):
 
         elif tmp_curr.ll_command_lst[0][0] == "reindex" and tmp_curr.success is True:
 
+            # Supress opening of the reindex popup next time
             self.just_reindexed = True
-            try:
-                self.my_pop.close()
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                logger.debug("no need to close reindex table")
 
         elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
             self.gui2_log = try_move_last_info(tmp_curr, self.gui2_log)
@@ -878,11 +871,18 @@ class MainWidget(QMainWindow):
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
     def check_reindex_pop(self):
-        tmp_curr = self.idials_runner.current_node
-        logger.info("\n_________________________ check_reindex_pop 01")
-        if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
-            # logger.info("\n_________________________ check_reindex_pop 02 \n")
+        # Always either close popup or open new one when calling this
+        if self.my_pop is not None:
+            self.my_pop.close()
 
+        tmp_curr = self.idials_runner.current_node
+        logger.debug(
+            "check_reindex_pop: just_reindexed: %s, command: %s",
+            self.just_reindexed,
+            tmp_curr.ll_command_lst[0][0],
+        )
+        if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
+            logger.debug("Redetermining reindex decision")
             try:
                 self.my_pop = MyReindexOpts()
                 self.my_pop.set_ref(
@@ -890,6 +890,7 @@ class MainWidget(QMainWindow):
                     lin_num=tmp_curr.prev_step.lin_num,
                 )
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
+                self.my_pop.show()
 
             except Exception as my_err:
                 logger.info(
@@ -900,17 +901,7 @@ class MainWidget(QMainWindow):
 
             # TODO find an elegant way to interrupt and remove nodes
 
-        else:
-            try:
-                self.my_pop.close()
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                logger.debug("no need to close reindex table")
-
+        # Either we closed, or opened - can do so next time also
         self.just_reindexed = False
 
     def update_nav_tree(self):
@@ -977,6 +968,9 @@ class MainWidget(QMainWindow):
             prn_lst_lst_cmd(item.idials_node)
             lin_num = item.idials_node.lin_num
             cmd_ovr = "goto " + str(lin_num)
+
+            # Suppress reindex gui for cmd_exe - we will try explicitly
+            self.just_reindexed = True
             self.cmd_exe(cmd_ovr)
 
             self.centre_par_widget.set_widget(
@@ -984,6 +978,8 @@ class MainWidget(QMainWindow):
                 curr_step=self.idials_runner.current_node,
             )
 
+            # Always want to show if clicking a new reindex node
+            self.just_reindexed = False
             self.check_reindex_pop()
 
             self.chouse_if_predict_or_report()
@@ -996,22 +992,32 @@ class MainWidget(QMainWindow):
                 self.update_low_level_command_lst
             )
 
-    def refresh_my_gui(self):
+    def restore_gui_after_load(self):
+        """Restore the GUI state after first loading dui"""
 
         lin_num = self.idials_runner.current_node.lin_num
         logger.debug("doing goto:  %s", lin_num)
         cmd_ovr = "goto " + str(lin_num)
+        # cmd_exe calls check_reindex_pop - prevent displaying reindex gui on load
+        self.just_reindexed = True
         self.cmd_exe(cmd_ovr)
+
         self.centre_par_widget.set_widget(
             nxt_cmd=self.idials_runner.current_node.ll_command_lst[0][0],
             curr_step=self.idials_runner.current_node,
         )
 
-        self.check_reindex_pop()
+        # Called this explicitly to implicitly cause the popup to to close
+        # - we never want to do this now because want to prevent popup opening
+        # self.check_reindex_pop()
+
         self.chouse_if_predict_or_report()
         update_info(self)
         self.check_gray_outs()
         self.reconnect_when_ready()
+
+        # We want to show the dialog next time... probably
+        self.just_reindexed = False
 
         logger.info("\n ... recovering from previous run of GUI \n")
 
