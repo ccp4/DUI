@@ -105,7 +105,9 @@ def main():
     from dui.m_idials_gui import DUIDataLoadingError, MainWidget
 
     logger.debug(
-        "QT Style: %s [%s]", app.style().objectName(), ", ".join(QStyleFactory.keys())
+        "QT Style: %s [%s]",
+        app.style().objectName(),
+        ", ".join(list(QStyleFactory.keys())),
     )
 
     try:

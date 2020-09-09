@@ -72,7 +72,7 @@ def ops_list_from_json(json_path=None):
         json_data = json.load(json_file)
 
     lst_ops = []
-    for key, value in json_data.iteritems():
+    for key, value in json_data.items():
         recommended_str = "  "
         for inner_key in value:
             if inner_key == "rmsd":
@@ -273,15 +273,8 @@ class ReindexTable(QTableWidget):
         self.setRowCount(n_row)
         self.setColumnCount(n_col - 1)
 
-        alpha_str = " " + "\u03B1" + " "
-        beta_str = " " + "\u03B2" + " "
-        gamma_str = " " + "\u03B3" + " "
-
-        low_delta_str = "\u03B4"
-        delta_max_str = "max " + low_delta_str
-
         header_label_lst = [
-            delta_max_str,
+            "max δ",
             "rmsd",
             " min cc",
             "max cc",
@@ -289,9 +282,9 @@ class ReindexTable(QTableWidget):
             "  a ",
             "  b ",
             "  c ",
-            alpha_str,
-            beta_str,
-            gamma_str,
+            " α ",
+            " β ",
+            " γ ",
             "Ok",
         ]
 

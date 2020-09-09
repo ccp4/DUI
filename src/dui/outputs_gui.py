@@ -95,7 +95,7 @@ class InfoWidget(QWidget):
 
         bm_v_layout.addWidget(QLabel("  "))
 
-        tmp_str = "  Wavelength (" + "\u212B" + ") "
+        tmp_str = "  Wavelength (Å) "
 
         w_lambda_label = QLabel(tmp_str)
         bm_v_layout.addWidget(w_lambda_label)
@@ -129,14 +129,9 @@ class InfoWidget(QWidget):
         cell_v_layout.addLayout(cell_data_layout)
         cell_v_layout.addWidget(QLabel("  "))
 
-        left_margin_str = "    "
-        alpha_str = left_margin_str + "\u03B1"
-        beta_str = left_margin_str + "\u03B2"
-        gamma_str = left_margin_str + "\u03B3"
-
-        alpha_label = QLabel(alpha_str)
-        beta_label = QLabel(beta_str)
-        gamma_label = QLabel(gamma_str)
+        alpha_label = QLabel("    α")
+        beta_label = QLabel("    β")
+        gamma_label = QLabel("    γ")
 
         cell_label_a_layout = QHBoxLayout()
         cell_label_a_layout.addWidget(alpha_label)
@@ -311,7 +306,7 @@ class InfoWidget(QWidget):
         detec_v_layout.addLayout(gain_hbox)
 
         # detec_v_layout.addWidget(QLabel("  "))
-        max_res_label = QLabel(" Max res (" + "\u212B" + ")")
+        max_res_label = QLabel(" Max res (Å)")
         self.max_res_data = QLabel(empty_str)
         max_res_hbox = QHBoxLayout()
         max_res_hbox.addWidget(max_res_label)
