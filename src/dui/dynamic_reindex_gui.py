@@ -24,7 +24,7 @@ copyright (c) CCP4 - DLS
 import json
 import logging
 import os
-from typing import List, Tuple
+from typing import List
 
 from dui.cli_utils import sys_arg
 from dui.qt import (
@@ -34,6 +34,7 @@ from dui.qt import (
     QHBoxLayout,
     QLabel,
     QPushButton,
+    QSizePolicy,
     Qt,
     QTableWidget,
     QTableWidgetItem,
@@ -102,7 +103,7 @@ def ops_list_from_json(json_path: str) -> List:
     return sorted(operations)
 
 
-def header_text_from_node(lin_num: int, j_path: str) -> Tuple[str, int]:
+def header_text_from_node(lin_num: int, j_path: str) -> str:
     """
     Extract the symmetry header text for the reindex table
 
@@ -111,9 +112,7 @@ def header_text_from_node(lin_num: int, j_path: str) -> Tuple[str, int]:
         j_path: The path to the json summary file
 
     Returns:
-        Tuple containing:
-            header: The symmetry header text
-            num_lines: The number of lines in this header text
+        The symmetry header text
     """
 
     dir_path_end = j_path.find("lin_")
@@ -130,7 +129,6 @@ def header_text_from_node(lin_num: int, j_path: str) -> Tuple[str, int]:
     logger.debug("len(all_lines): %s", len(all_lines))
 
     multi_lin_txt = ""
-    n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
         logger.debug("pos1, single_lin1: %s, %s", pos1, single_lin1)
         # if str(single_lin1[0:19]) == "Chiral space groups":
@@ -140,7 +138,6 @@ def header_text_from_node(lin_num: int, j_path: str) -> Tuple[str, int]:
             logger.debug("start_block = %s", start_block)
 
             for pos2, single_lin2 in enumerate(all_lines[start_block:]):
-                n_of_lines += 1
                 if "----" in single_lin2:
                     end_block = pos2 + start_block
                     logger.debug("end_block = %s", end_block)
@@ -153,7 +150,7 @@ def header_text_from_node(lin_num: int, j_path: str) -> Tuple[str, int]:
     for single_lin in all_lines[start_block:end_block]:
         multi_lin_txt += single_lin
 
-    return multi_lin_txt, n_of_lines
+    return multi_lin_txt
 
 
 class ReindexTable(QTableWidget):
@@ -343,25 +340,25 @@ class MyReindexOpts(QDialog):
         ok_but = QPushButton("     OK      ")
         ok_but.clicked.connect(self.my_inner_table.ok_clicked)
         bot_box.addWidget(ok_but)
-        header_text, v_header_size = header_text_from_node(lin_num, full_json_path)
+        header_text = header_text_from_node(lin_num, full_json_path)
         my_box.addWidget(QLabel(header_text))
         my_box.addWidget(self.my_inner_table)
         my_box.addLayout(bot_box)
 
         self.setLayout(my_box)
 
-        n_col = self.my_inner_table.columnCount()
-        tot_width = 80
-        for col in range(n_col):
-            loc_width = self.my_inner_table.columnWidth(col)
-            tot_width += loc_width
-
-        n_row = self.my_inner_table.rowCount()
-        row_height = self.my_inner_table.rowHeight(1)
-        tot_heght = int((float(n_row)) * float(row_height))
-        tot_heght += int((float(v_header_size + 2)) * float(row_height * 0.62))
-
-        self.resize(tot_width, tot_heght)
+        # Attempt to set table to exact size required
+        self.my_inner_table.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.my_inner_table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.my_inner_table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.my_inner_table.resizeColumnsToContents()
+        self.my_inner_table.setFixedSize(
+            self.my_inner_table.horizontalHeader().length()
+            + self.my_inner_table.verticalHeader().width(),
+            self.my_inner_table.verticalHeader().length()
+            + self.my_inner_table.horizontalHeader().height()
+            + 2,
+        )
 
     def _select_row(self, row: int):
         """A row in the reindex table has been firmly selected"""
