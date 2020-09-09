@@ -892,10 +892,11 @@ class MainWidget(QMainWindow):
                 self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
 
             except Exception as my_err:
-                logger.info("ERROR in check_reindex_pop(m_idials_gui) \n")
-                logger.info(f"str(my_err) = {my_err}")
-                logger.info(f"my_err.__doc__ = {my_err.__doc__}")
-                logger.info(f"my_err.message = {my_err.message}")
+                logger.info(
+                    "ERROR in check_reindex_pop(m_idials_gui);\n   %s: %s",
+                    type(my_err).__name__,
+                    my_err,
+                )
 
             # TODO find an elegant way to interrupt and remove nodes
 
