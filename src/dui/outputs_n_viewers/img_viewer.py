@@ -1621,10 +1621,10 @@ class MyImgWin(QWidget):
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
-                bbox_col = map(list, table["bbox"])
-                pan_col = map(int, table["panel"])
+                bbox_col = list(map(list, table["bbox"]))
+                pan_col = list(map(int, table["panel"]))
                 try:
-                    hkl_col = map(str, table["miller_index"])
+                    hkl_col = list(map(str, table["miller_index"]))
 
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
@@ -1657,10 +1657,10 @@ class MyImgWin(QWidget):
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
                 # n_refs = len(table)
-                pos_col = map(list, table["xyzcal.px"])
-                pan_col = map(int, table["panel"])
+                pos_col = list(map(list, table["xyzcal.px"]))
+                pan_col = list(map(int, table["panel"]))
                 try:
-                    hkl_col = map(str, table["miller_index"])
+                    hkl_col = list(map(str, table["miller_index"]))
 
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
@@ -1768,7 +1768,7 @@ class MyImgWin(QWidget):
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
             res_str = str(f"{res_float: 4.2f}")
-            new_label_txt += ", resolution = " + res_str + " " + "\u00C5"
+            new_label_txt += f", resolution = {res_str} Å"
 
         else:
             new_label_txt += ", resolution = ?"
