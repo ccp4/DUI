@@ -377,9 +377,7 @@ if __name__ == "__main__" and __package__ is None:
         # 'module' object has no attribute 'CommandNode'
 
     except Exception as e:
-        logger.info(f"str(e) = {e}")
-        logger.info(f"e.__doc__ = {e.__doc__}")
-        logger.info(f"e.message = {e.message}")
+        logger.info("%s: %s", type(e).__name__, e)
         idials_runner = Runner()
         try:
             shutil.rmtree(storage_path + "/dui_files")
