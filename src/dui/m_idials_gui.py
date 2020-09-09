@@ -22,10 +22,10 @@ copyright (c) CCP4 - DLS
 
 
 import logging
-import os
 import pickle
 import time
 import traceback
+from pathlib import Path
 
 from ._version import __version__
 from .cli_utils import TreeShow, build_mask_command_lst, prn_lst_lst_cmd, sys_arg
@@ -396,7 +396,7 @@ class DUIDataLoadingError(Exception):
 
 
 def load_previous_state(dui_files_path):
-    with open(os.path.join(dui_files_path, "bkp.pickle"), "rb") as bkp_in:
+    with open(dui_files_path / "bkp.pickle", "rb") as bkp_in:
         return pickle.load(bkp_in)
 
 
@@ -406,14 +406,14 @@ class MainWidget(QMainWindow):
 
         # Any child popup windows. Only bravais_table ATM
         self.reindex_dialog: MyReindexOpts = None
-        self.storage_path = sys_arg.directory
+        self.storage_path = Path(sys_arg.directory)
 
         restoring_session = False
 
         # Load the previous state of DUI, if present
-        dui_files_path = os.path.join(self.storage_path, "dui_files")
+        dui_files_path = self.storage_path / "dui_files"
 
-        if os.path.isfile(os.path.join(dui_files_path, "bkp.pickle")):
+        if (dui_files_path / "bkp.pickle").is_file():
             try:
                 self.idials_runner = load_previous_state(dui_files_path)
 
@@ -425,10 +425,6 @@ class MainWidget(QMainWindow):
 
             restoring_session = True
         else:
-            # No dui_files path - start with a fresh state
-            if not os.path.isdir(dui_files_path):
-                os.mkdir(dui_files_path)
-
             self.idials_runner = Runner()
 
         self.gui2_log = {"pairs_list": []}
@@ -766,6 +762,9 @@ class MainWidget(QMainWindow):
         self.reconnect_when_ready()
 
     def cmd_launch(self, new_cmd):
+        # Ensure output directory for log files exists
+        (self.storage_path / "dui_files").mkdir(exist_ok=True)
+
         # Running WITH threading
         self.cli_out.clear()
         self.cli_out.make_green()
@@ -816,7 +815,7 @@ class MainWidget(QMainWindow):
         ):
             self.img_view.my_painter.reset_bc_tool(None)
 
-        with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
+        with open(self.storage_path / "dui_files" / "bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
@@ -910,11 +909,7 @@ class MainWidget(QMainWindow):
             logger.debug(err_lin)
 
         err_log_file_out = (
-            self.storage_path
-            + "/dui_files"
-            + os.sep
-            + str(curr_step.lin_num)
-            + "_err_out.log"
+            self.storage_path / "dui_files" / f"{curr_step.lin_num}_err_out.log"
         )
 
         logger.info("\n ERROR \n err_log_file_out = %s", err_log_file_out)
