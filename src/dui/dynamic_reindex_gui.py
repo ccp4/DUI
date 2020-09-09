@@ -25,6 +25,7 @@ import json
 import logging
 import os
 import sys
+from typing import List
 
 from dui.cli_utils import sys_arg
 from dui.qt import (
@@ -45,121 +46,63 @@ from dui.qt import (
 
 logger = logging.getLogger(__name__)
 
-copied_from_SymmetryExpert_d_py = """
-lattice_to_spacegroup_number = {'aP':1, 'mP':3, 'mC':5, 'oP':16, 'oC':20,
-                                'oF':22, 'oI':23, 'tP':75, 'tI':79,'hP':143,
-                                'hR':146, 'cP':195, 'cF':196, 'cI':197}
-"""
 
-
-def choice_if_decimal(num_in):
+def choice_if_decimal(num_in: float) -> str:
+    """Remove the decimal places if zero"""
 
     str_f = f"{num_in:6.2f}"
     if str_f[-3:] == ".00":
         str_out = str_f[0:-3]
-
     else:
         str_out = str_f
 
     return str_out
 
 
-def ops_list_from_json(json_path=None):
+def ops_list_from_json(json_path: str) -> List:
+    """Extract a summary of bravais settings solutions from a summary file"""
     if json_path is None:
         return None
 
     with open(json_path) as json_file:
         json_data = json.load(json_file)
 
-    lst_ops = []
-    for key, value in json_data.items():
-        recommended_str = "  "
-        for inner_key in value:
-            if inner_key == "rmsd":
-                rmsd_val = value["rmsd"]
-                rmsd_str = f" {rmsd_val:7.2}"
+    operations = []
 
-            elif inner_key == "min_cc":
-                min_cc_val = value["min_cc"]
-                min_cc_str = f" {min_cc_val:7.2}"
+    for index, solution in json_data.items():
+        angular_diff = f" {solution['max_angular_difference']:7.2}"
+        rmsd = f" {solution['rmsd']:7.2}"
+        bravais = f" {solution['bravais']:<3}"
+        recommended = " Y" if solution["recommended"] else " N"
 
-                if "Non" in min_cc_str:
-                    min_cc_str = "    - "
+        edges, angles = solution["unit_cell"][:3], solution["unit_cell"][-3:]
+        unit_cell_edges = [f"{edge:6.1f}" for edge in edges]
+        unit_cell_angles = [choice_if_decimal(angle) for angle in angles]
 
-                # TODO the format here is not always giving the same with
+        if solution["min_cc"] is not None:
+            min_cc = f" {solution['min_cc']:7.2}"
+        else:
+            min_cc = "    - "
+        if solution["max_cc"] is not None:
+            max_cc = f" {solution['max_cc']:7.2}"
+        else:
+            max_cc = "    - "
 
-                # TODO think about someting like:
-                #   "aa = list(round(i, ndigits=6) for i in aa)"
+        operations.append(
+            [
+                int(index),
+                angular_diff,
+                rmsd,
+                min_cc,
+                max_cc,
+                bravais,
+                *unit_cell_edges,
+                *unit_cell_angles,
+                recommended,
+            ]
+        )
 
-            elif inner_key == "max_cc":
-                max_cc_val = value["max_cc"]
-                max_cc_str = f" {max_cc_val:7.2}"
-
-                if "Non" in max_cc_str:
-                    max_cc_str = "    - "
-
-                # print "__________________________________________
-                # type(max_cc_val) =", type(max_cc_val)
-                # TODO the format here is not always giving the same with
-
-                # TODO think about someting like:
-                #   "aa = list(round(i, ndigits=6) for i in aa)"
-
-            elif inner_key == "bravais":
-                bravais_val = value["bravais"]
-                bravais_str = " " + str(bravais_val).ljust(3)
-
-            elif inner_key == "max_angular_difference":
-                angular_diff_val = value["max_angular_difference"]
-                angular_diff_str = f" {angular_diff_val:7.2} "
-
-            elif inner_key == "correlation_coefficients":
-                # corr_coeff_val = value["correlation_coefficients"]
-                # corr_coeff_str = str(corr_coeff_val)
-                pass
-
-            elif inner_key == "unit_cell":
-                unit_cell_val = value["unit_cell"]
-                uc_d = unit_cell_val[0:3]
-                uc_a = unit_cell_val[3:6]
-                unit_cell_str_a = "{:6.1f}".format(uc_d[0])
-                unit_cell_str_b = "{:6.1f}".format(uc_d[1])
-                unit_cell_str_c = "{:6.1f}".format(uc_d[2])
-
-                unit_cell_str_apl = choice_if_decimal(uc_a[0])
-                unit_cell_str_bet = choice_if_decimal(uc_a[1])
-                unit_cell_str_gam = choice_if_decimal(uc_a[2])
-
-            elif inner_key == "recommended":
-                recommended_val = value["recommended"]
-                if recommended_val:
-                    recommended_str = " Y"
-                else:
-                    recommended_str = " N"
-
-            else:
-                logger.debug("Fell off end of key list with inner_key=%s", inner_key)
-
-        single_lin_lst = [
-            int(key),
-            angular_diff_str,
-            rmsd_str,
-            min_cc_str,
-            max_cc_str,
-            bravais_str,
-            unit_cell_str_a,
-            unit_cell_str_b,
-            unit_cell_str_c,
-            unit_cell_str_apl,
-            unit_cell_str_bet,
-            unit_cell_str_gam,
-            recommended_str,
-        ]
-
-        lst_ops.append(single_lin_lst)
-
-    sorted_lst_ops = sorted(lst_ops)
-    return sorted_lst_ops
+    return sorted(operations)
 
 
 def heather_text_from_lin(lin_num, j_path):
