@@ -685,9 +685,9 @@ class ExternalProcDialog(QDialog):
         # Save the working directory
         self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-        logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
+        logger.debug("\n running Popen>>>\n   %s\n<<<", " ".join(cmd_to_run))
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
-        logger.debug(f"Running PID {self.my_process.pid}")
+        logger.debug("Running PID %s", self.my_process.pid)
 
         # Track the process status in a separate thread
         self.thrd = ViewerThread(self.my_process)

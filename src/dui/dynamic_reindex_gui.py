@@ -112,18 +112,18 @@ def heather_text_from_lin(lin_num, j_path):
     lin_num_str = str(lin_num)
     my_file_path = dir_path + lin_num_str + "_refine_bravais_settings.log"
 
-    logger.debug("my_file_path: ", my_file_path)
+    logger.debug("my_file_path: %s", my_file_path)
 
     myfile = open(my_file_path)
     all_lines = myfile.readlines()
     myfile.close()
 
-    logger.debug("len(all_lines):", len(all_lines))
+    logger.debug("len(all_lines): %s", len(all_lines))
 
     multi_lin_txt = ""
     n_of_lines = 0
     for pos1, single_lin1 in enumerate(all_lines):
-        logger.debug("pos1, single_lin1:", pos1, single_lin1)
+        logger.debug("pos1, single_lin1: %s, %s", pos1, single_lin1)
         # if str(single_lin1[0:19]) == "Chiral space groups":
         if "Chiral space groups" in single_lin1:
 
@@ -165,7 +165,7 @@ class ReindexTable(QTableWidget):
         # self.show()
 
     def opt_clicked(self, row, col):
-        logger.info(f"Solution clicked = {row + 1}")
+        logger.info("Solution clicked = %s", row + 1)
         # p_h_svar = self.horizontalScrollBar().value()
         # p_v_svar = self.verticalScrollBar().value()
 

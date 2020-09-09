@@ -121,7 +121,7 @@ class CommandNode:
 
             else:
                 logger.info("\n NOT dials command")
-                logger.info(f"cmd_lst = {cmd_lst}")
+                logger.info("cmd_lst = %s", cmd_lst)
                 self.success = False
 
         self.info_generating = False
@@ -156,7 +156,7 @@ class CommandNode:
 
     def build_command(self, cmd_lst):
         self.cmd_lst_to_run = build_command_lst(self, cmd_lst)
-        logger.info(f"cmd_lst_to_run(CommandNode) = {self.cmd_lst_to_run}")
+        logger.info("cmd_lst_to_run(CommandNode) = %s", self.cmd_lst_to_run)
 
     def get_next_step(self):
         return get_next_step(self)
@@ -172,7 +172,7 @@ class Runner:
         self.current_line = self.bigger_lin
         self.create_step(root_node)
 
-        logger.info(f"root_node.lin_num = {root_node.lin_num}")
+        logger.info("root_node.lin_num = %s", root_node.lin_num)
         # self.current_node = root_node
 
     def run(self, command, ref_to_class):
@@ -301,7 +301,7 @@ class Runner:
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch
-            logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
             logger.info("failed to retrieve log path")
 
         return path_to_log
@@ -401,11 +401,11 @@ if __name__ == "__main__" and __package__ is None:
             sys.exit(0)
 
         except BaseException as e:
-            logger.info(f"Caught << some error >> {e}")
+            logger.info("Caught << some error >> %s", e)
             logger.info(" ... interrupting")
             sys.exit(1)
 
-        logger.info(f"command = {command}")
+        logger.info("command = %s", command)
         if command[0:5] == "goto ":
             idials_runner.run(command.split(" "), None)
             tree_output(idials_runner)

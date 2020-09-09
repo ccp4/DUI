@@ -943,7 +943,7 @@ class PopDisplayMenu(QMenu):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+            logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
             logger.info("no (...my_sweep) yet - skipping palette label paint")
 
     def slider_max_changed(self, value):
@@ -1541,7 +1541,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+                logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
                 logger.info("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
@@ -1559,7 +1559,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+                logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
                 logger.info("Failed to load images from  datablock.json")
 
             try:
@@ -1584,7 +1584,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+                logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
                 logger.info("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
@@ -1647,7 +1647,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info(f"Caught unknown exception type {type(e).__name__}: {e}")
+                logger.info("Caught unknown exception %s :%s", type(e).__name__, e)
                 self.find_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
