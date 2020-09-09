@@ -24,24 +24,20 @@ copyright (c) CCP4 - DLS
 import json
 import logging
 import os
-import sys
-from typing import List
+from typing import List, Tuple
 
 from dui.cli_utils import sys_arg
 from dui.qt import (
-    QApplication,
     QColor,
     QDialog,
     QFont,
     QHBoxLayout,
     QLabel,
-    QMainWindow,
     QPushButton,
     Qt,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
-    QWidget,
     Signal,
 )
 
@@ -106,7 +102,19 @@ def ops_list_from_json(json_path: str) -> List:
     return sorted(operations)
 
 
-def heather_text_from_lin(lin_num, j_path):
+def header_text_from_node(lin_num: int, j_path: str) -> Tuple[str, int]:
+    """
+    Extract the symmetry header text for the reindex table
+
+    Args:
+        lin_num: The node number of the refine_bravais_settings step
+        j_path: The path to the json summary file
+
+    Returns:
+        Tuple containing:
+            header: The symmetry header text
+            num_lines: The number of lines in this header text
+    """
 
     dir_path_end = j_path.find("lin_")
     dir_path = j_path[0:dir_path_end]
@@ -280,11 +288,23 @@ class ReindexTable(QTableWidget):
 
 
 class MyReindexOpts(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent, summary_json: str, node_id: int):
+        """
+        Create a reindex dialog.
+
+        Args:
+            parent: The parent window for the dialog
+            summary_json: Path to the summary.json for a step
+            node_id:
+                The node number of the refine_bravais_settings step.
+                Used to locate the log file for the symmetry header.
+        """
         super().__init__(parent)
         self.setWindowTitle("Reindex")
+        self.row = -1
+        self._set_ref(summary_json, node_id)
 
-    def set_ref(self, in_json_path: str, lin_num: int):
+    def _set_ref(self, in_json_path: str, lin_num: int):
         """
         Set the reference data for the settings table.
 
@@ -294,6 +314,7 @@ class MyReindexOpts(QDialog):
         """
         my_box = QVBoxLayout()
         self.my_inner_table = ReindexTable(self)
+        self.my_inner_table.opt_signal.connect(self._select_row)
 
         cwd_path = os.path.join(sys_arg.directory, "dui_files")
         full_json_path = os.path.join(cwd_path, in_json_path)
@@ -322,8 +343,8 @@ class MyReindexOpts(QDialog):
         ok_but = QPushButton("     OK      ")
         ok_but.clicked.connect(self.my_inner_table.ok_clicked)
         bot_box.addWidget(ok_but)
-        heather_text, v_heather_size = heather_text_from_lin(lin_num, full_json_path)
-        my_box.addWidget(QLabel(heather_text))
+        header_text, v_header_size = header_text_from_node(lin_num, full_json_path)
+        my_box.addWidget(QLabel(header_text))
         my_box.addWidget(self.my_inner_table)
         my_box.addLayout(bot_box)
 
@@ -338,49 +359,12 @@ class MyReindexOpts(QDialog):
         n_row = self.my_inner_table.rowCount()
         row_height = self.my_inner_table.rowHeight(1)
         tot_heght = int((float(n_row)) * float(row_height))
-        tot_heght += int((float(v_heather_size + 2)) * float(row_height * 0.62))
+        tot_heght += int((float(v_header_size + 2)) * float(row_height * 0.62))
 
         self.resize(tot_width, tot_heght)
 
-
-class MainWindow(QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.btn1 = QPushButton("Click me", self)
-
-        vbox = QVBoxLayout()
-        vbox.addWidget(QLabel("A1"))
-        vbox.addWidget(self.btn1)
-        vbox.addWidget(QLabel("B2"))
-
-        self.btn1.clicked.connect(self.doit)
-        self.my_pop = None
-
-        self.main_widget = QWidget(self)
-        self.main_widget.setLayout(vbox)
-        self.setCentralWidget(self.main_widget)
-
-    def doit(self):
-        logger.debug("Opening a new popup window")
-        self.my_pop = MyReindexOpts()
-        self.my_pop.set_ref(
-            in_json_path="/tmp/dui2run/dui_files/lin_4_bravais_summary.json", lin_num=4
-        )
-        # in_json_path="/tmp/dui_run/dui_files/lin_4_bravais_summary.json"
-
-    def opt_picked(self, opt_num):
-        logger.debug("\n from dynamic_reindex_gui.py MainWindow")
-        logger.debug("opt_num = %s %s", opt_num, "\n")
-
-    def closeEvent(self, event):
-        logger.debug("<< closeEvent ( from QMainWindow) >>")
-        if self.my_pop is not None:
-            self.my_pop.close()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    myWidget = MainWindow()
-    myWidget.show()
-    app.exec_()
+    def _select_row(self, row: int):
+        """A row in the reindex table has been firmly selected"""
+        logger.debug("Selected row %s", row)
+        self.row = row
+        self.accept()
