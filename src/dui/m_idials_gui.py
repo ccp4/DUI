@@ -295,7 +295,7 @@ class ControlWidget(QWidget):
 
         else:
             logger.info("No action widget found in set_widget")
-            logger.info(f"nxt_cmd = {nxt_cmd}")
+            logger.info("nxt_cmd = %s", nxt_cmd)
 
     def _action_button_clicked(self):
         "Slot: An action button was clicked"
@@ -552,7 +552,7 @@ class MainWidget(QMainWindow):
         )
 
     def pop_b_centr_coord(self, new_b_centr):
-        logger.info(f"New b_centr = {new_b_centr}")
+        logger.info("New b_centr = %s", new_b_centr)
         self.centre_par_widget.b_centr_page.set_par(new_b_centr)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.b_centr_page
@@ -879,7 +879,7 @@ class MainWidget(QMainWindow):
 
     def check_reindex_pop(self):
         tmp_curr = self.idials_runner.current_node
-        # logger.info("\n_________________________ check_reindex_pop 01 \n")
+        logger.info("\n_________________________ check_reindex_pop 01")
         if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
             # logger.info("\n_________________________ check_reindex_pop 02 \n")
 
@@ -938,7 +938,7 @@ class MainWidget(QMainWindow):
             + "_err_out.log"
         )
 
-        logger.info(f"\n ERROR \n err_log_file_out = {err_log_file_out}")
+        logger.info("\n ERROR \n err_log_file_out = %s", err_log_file_out)
 
         fil_obj = open(err_log_file_out, "wb")
         for err_lin in curr_step.dials_command.tmp_std_all:

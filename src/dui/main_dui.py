@@ -86,8 +86,8 @@ def main():
         )
         # Should we exit here? Maybe QT can handle it(???)
 
-    logger.info(f"sys_arg.template = {sys_arg.template}")
-    logger.info(f"sys_arg.directory= {sys_arg.directory}")
+    logger.info("sys_arg.template = %s", sys_arg.template)
+    logger.info("sys_arg.directory= %s", sys_arg.directory)
 
     from dui.qt import QApplication, QPixmap, QSplashScreen, QStyleFactory
 

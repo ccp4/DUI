@@ -124,7 +124,7 @@ class MyQComboBox(QComboBox):
         else:
             logger.info("NO hasFocus")
         """
-        logger.info(f"event: {event}")
+        logger.info("event: %s", event)
         return
 
 

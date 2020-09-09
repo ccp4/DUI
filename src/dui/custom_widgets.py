@@ -129,7 +129,7 @@ class BeamCentrPage(QWidget):
 
     def update_param(self, curr_step):
         logger.info("update_param(BeamCentrPage)")
-        logger.info(f"curr_step.ll_command_lst: {curr_step.ll_command_lst}")
+        logger.info("curr_step.ll_command_lst: %s", curr_step.ll_command_lst)
 
     def activate_me(self, cur_nod=None):
         self.b_centr_set.emit()
@@ -138,7 +138,7 @@ class BeamCentrPage(QWidget):
         logger.info("reset_par(BeamCentrPage)")
 
     def set_par(self, lst_par):
-        logger.info(f"set_par(BeamCentrPage) {lst_par}")
+        logger.info("set_par(BeamCentrPage) %s", lst_par)
 
         self.data_bc_label.setText(
             "New beam centre:\n ("
@@ -346,7 +346,7 @@ class ExportPage(QWidget):
                         break
 
                 except AttributeError as at_err:
-                    logger.info(f"found {at_err} in for loop - not to worry")
+                    logger.info("found %s in for loop - not to worry", at_err)
 
                 my_node = my_node.prev_step
 
@@ -357,7 +357,7 @@ class ExportPage(QWidget):
         self.check_repeated_file()
 
     def reset_par(self):
-        logger.info(f"command_lst(ExportPage.reset_par) = {self.command_lst}")
+        logger.info("command_lst(ExportPage.reset_par) = %s", self.command_lst)
         logger.info(" Not supposed to reset export page")
 
 
@@ -452,7 +452,7 @@ class ImportPage(QWidget):
         """
 
         self.reset_par()
-        logger.info(f"update_param_w_lst(ImportPage) lst: {lst_in}")
+        logger.info("update_param_w_lst(ImportPage) lst: %s", lst_in)
 
         input_params = []
         for singl_com in lst_in[1:]:
@@ -656,7 +656,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info(f"Caught unknown exception #1 type {type(e).__name__}: {e}")
+            logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
             logger.info("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
@@ -686,7 +686,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info(f"Caught unknown exception #2 type {type(e).__name__}: {e}")
+            logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
             logger.info("found self.simpler_widget without << item_changed >> signal")
 
         try:
@@ -761,7 +761,7 @@ class ParamMainWidget(QWidget):
                                     )
 
                                 except BaseException as ee:
-                                    logger.info(f"ee = {ee}")
+                                    logger.info("ee = %s", ee)
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
@@ -792,7 +792,7 @@ class ParamMainWidget(QWidget):
                     except ValueError:
                         for pos, val in enumerate(widg.tmp_lst):
                             if val == str_value:
-                                logger.info(f"found val v= {val}")
+                                logger.info("found val v= %s", val)
                                 widg.setCurrentIndex(pos)
 
             except AttributeError:

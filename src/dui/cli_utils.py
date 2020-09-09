@@ -272,13 +272,6 @@ def build_command_lst(node_obj, cmd_lst):
                 sol_num = 1
 
         except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.info(f"\n reindex \n exeption: {e} type: {type(e)}")
-
-            # getting to exeption: list index out of range
-            # type <type 'exceptions.IndexError'>
-
             logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
 
@@ -489,7 +482,7 @@ def generate_report(node_obj):
 
         tst_path = os.path.join(cwd_path, htm_fil)
         if not (os.path.exists(tst_path)):
-            logger.debug("\n ___________________________ tst_path =", tst_path, "\n")
+            logger.debug("\n ___________________________ tst_path = %s", tst_path)
             if node_obj.ll_command_lst[0][0] == "find_spots":
                 rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
 
@@ -592,7 +585,7 @@ class DialsCommand:
                         ref_to_class.emit_print_signal(single_line)
 
                     except AttributeError:
-                        logger.info(f">>: {single_line}")
+                        logger.info("AttributeError: %s", single_line)
 
                 my_process.wait()
                 my_process.stdout.close()
@@ -684,7 +677,7 @@ class TreeShow:
         self.add_tree(step=my_runner.step_list[0], indent=0)
         self.tree_print(my_runner.current_line)
         # TODO maybe here goes a print print function instead of logger ...
-        logger.info(f"---------------------{self.max_indent * self.ind_lin}")
+        logger.info("---------------------%s", self.max_indent * self.ind_lin)
 
     def add_tree(self, step=None, indent=None):
         if step.success is True:

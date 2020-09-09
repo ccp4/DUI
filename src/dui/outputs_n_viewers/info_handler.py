@@ -106,11 +106,11 @@ def update_all_data(reflections_path=None, experiments_path=None):
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
             logger.info(
-                " >> Caught unknown exception type:", type(e).__name__, e, "N###"
+                " >> Caught unknown exception type: %s, %s", type(e).__name__, e
             )
 
             logger.info("failed to find reflections")
-            logger.info(f"reflections_path = {reflections_path}")
+            logger.info("reflections_path = %s", reflections_path)
 
     if experiments_path is not None:
         try:
