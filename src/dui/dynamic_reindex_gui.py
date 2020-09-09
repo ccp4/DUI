@@ -31,6 +31,7 @@ from dui.cli_utils import sys_arg
 from dui.qt import (
     QApplication,
     QColor,
+    QDialog,
     QFont,
     QHBoxLayout,
     QLabel,
@@ -278,12 +279,19 @@ class ReindexTable(QTableWidget):
         self.setColumnCount(1)
 
 
-class MyReindexOpts(QWidget):
+class MyReindexOpts(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Reindex")
 
-    def set_ref(self, in_json_path, lin_num):
+    def set_ref(self, in_json_path: str, lin_num: int):
+        """
+        Set the reference data for the settings table.
+
+        Args:
+            in_json_path: Path to the summary.json for a step
+            lin_num: The node number of the refine_bravais_settings step
+        """
         my_box = QVBoxLayout()
         self.my_inner_table = ReindexTable(self)
 
@@ -333,8 +341,6 @@ class MyReindexOpts(QWidget):
         tot_heght += int((float(v_heather_size + 2)) * float(row_height * 0.62))
 
         self.resize(tot_width, tot_heght)
-        # self.adjustSize()
-        self.show()
 
 
 class MainWindow(QMainWindow):
