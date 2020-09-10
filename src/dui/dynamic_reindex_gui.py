@@ -30,7 +30,6 @@ from dui.cli_utils import sys_arg
 from dui.qt import (
     QColor,
     QDialog,
-    QFont,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -39,7 +38,6 @@ from dui.qt import (
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
-    Signal,
 )
 
 logger = logging.getLogger(__name__)
@@ -154,48 +152,31 @@ def header_text_from_node(lin_num: int, j_path: str) -> str:
 
 
 class ReindexTable(QTableWidget):
-    opt_signal = Signal(int)
-
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.cellClicked.connect(self.opt_clicked)
+        self.solution = None
+        self.recommended_solution = None
 
-        self.v_sliderBar = self.verticalScrollBar()
-        self.h_sliderBar = self.horizontalScrollBar()
+        self.setSelectionBehavior(QTableWidget.SelectRows)
+        self.setAlternatingRowColors(True)
 
-        self.tmp_sel = None
-
-        sys_font = QFont()
-        self.sys_font_point_size = sys_font.pointSize()
-        # self.show()
-
-    def opt_clicked(self, row, col):
-        logger.info("Solution clicked = %s", row + 1)
-        # p_h_svar = self.horizontalScrollBar().value()
-        # p_v_svar = self.verticalScrollBar().value()
-
-        v_sliderValue = self.v_sliderBar.value()
-        h_sliderValue = self.h_sliderBar.value()
-
-        self.del_opts_lst()
-        self.add_opts_lst(lst_labels=self.list_labl, selected_pos=row)
-
-        self.v_sliderBar.setValue(v_sliderValue)
-        self.h_sliderBar.setValue(h_sliderValue)
-
-        self.opt_pick(row)
-
-    def ok_clicked(self):
-        self.opt_pick(self.tmp_sel)
-
-    def opt_pick(self, row):
-
-        if self.tmp_sel == row:
-            logger.debug("\n selecting opt: %s %s", row + 1, "\n")
-            self.opt_signal.emit(row)
-
-        self.tmp_sel = row
+    def selectionChanged(self, selected, deselected):
+        """Handle updating the selected solution"""
+        super().selectionChanged(selected, deselected)
+        rows = self.selectionModel().selectedRows()
+        if rows:
+            assert len(rows) == 1
+            self.solution = rows[0].row() + 1
+            logger.info("Updating solution to %s", self.solution)
+        else:
+            if not deselected:
+                self.selectRow(0)
+            else:
+                # We don't want to allow this. Reselect
+                logger.info(deselected.indexes()[0].row())
+                self.selectRow(deselected.indexes()[0].row())
+        assert len(rows) <= 1
 
     def find_best_solu(self):
         bst_sol = -1
@@ -208,80 +189,64 @@ class ReindexTable(QTableWidget):
 
         return bst_sol
 
-    def add_opts_lst(self, lst_labels=None, json_path=None, selected_pos=None):
+    def load_data(self, json_path=None):
 
-        if lst_labels is None:
-            logger.debug("json_path = %s", json_path)
-            self.list_labl = ops_list_from_json(json_path)
+        logger.debug("json_path = %s", json_path)
 
-        n_row = len(self.list_labl)
-        logger.debug("n_row = %s", n_row)
-        n_col = len(self.list_labl[0])
-        logger.debug("n_col = %s", n_col)
+        data = ops_list_from_json(json_path)
 
-        self.setRowCount(n_row)
-        self.setColumnCount(n_col - 1)
+        logger.debug("n_row = %s", len(data))
+        logger.debug("n_col = %s", len(data[0]))
 
-        header_label_lst = [
-            "max δ",
-            "rmsd",
-            " min cc",
-            "max cc",
-            "latt",
-            "  a ",
-            "  b ",
-            "  c ",
-            " α ",
-            " β ",
-            " γ ",
-            "Ok",
-        ]
+        self.setRowCount(len(data))
+        # Don't count the solution number
+        self.setColumnCount(len(data[0]) - 1)
 
-        self.setHorizontalHeaderLabels(header_label_lst)
+        self.setHorizontalHeaderLabels(
+            [
+                "max δ",
+                "rmsd",
+                " min cc",
+                "max cc",
+                "latt",
+                "a",
+                "b",
+                "c",
+                "α",
+                "β",
+                "γ",
+                "Ok",
+            ]
+        )
 
-        self.rec_col = None
-
-        for row, row_cont in enumerate(self.list_labl):
-            for col, col_cont in enumerate(row_cont[1:]):
-                item = QTableWidgetItem(col_cont)
-                item.setFlags(Qt.ItemIsEnabled)
-                if col_cont == " Y":
+        last_recommendation = None
+        for row, row_cont in enumerate(data):
+            for col, col_value in enumerate(row_cont[1:]):
+                item = QTableWidgetItem(col_value)
+                item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+                # TODO: Do we need monospace font here again? Just numbers though...
+                # item.setFont(QFont("Monospace", self.sys_font_point_size))
+                if col_value == " Y":
                     item.setBackground(QColor(Qt.green).lighter())
-                    item.setForeground(Qt.black)
-
-                    self.rec_col = col + 1
-
-                elif col_cont == " N":
+                    item.setFlags(Qt.ItemIsEnabled)
+                    last_recommendation = row + 1
+                elif col_value == " N":
                     item.setBackground(QColor(Qt.red).lighter())
-                    item.setForeground(Qt.black)
+                    item.setFlags(Qt.ItemIsEnabled)
 
-                else:
-                    if row == selected_pos:
-                        item.setBackground(Qt.blue)
-                        item.setForeground(Qt.yellow)
-
-                    else:
-                        if float(row) / 2.0 == int(float(row) / 2.0):
-                            item.setBackground(QColor(50, 50, 50, 50))
-
-                        else:
-                            item.setBackground(Qt.white)
-
-                        item.setForeground(Qt.black)
-
-                item.setFont(
-                    QFont("Monospace", self.sys_font_point_size)
-                )  # , QFont.Bold))
                 self.setItem(row, col, item)
 
         self.resizeColumnsToContents()
 
-    def del_opts_lst(self):
+        self.recommended_solution = last_recommendation
 
-        logger.debug("del_opts_lst")
-        self.clear()
-        self.setRowCount(1)
-        self.setColumnCount(1)
+        # If no solution given, default to the last recommendation
+        if self.solution is None:
+            self.solution = last_recommendation
+
+        print("Solution", self.solution)
+        if self.solution is not None:
+            self.selectRow(self.solution - 1)
 
 
 class MyReindexOpts(QDialog):
@@ -293,7 +258,7 @@ class MyReindexOpts(QDialog):
 
         Args:
             parent: The parent window for the dialog
-            summary_json: Path to the summary.json for a step
+            summary_json: Name of the summary.json for a step
             node_id:
                 The node number of the refine_bravais_settings step.
                 Used to locate the log file for the symmetry header.
@@ -301,7 +266,7 @@ class MyReindexOpts(QDialog):
         """
         super().__init__(parent)
         self.setWindowTitle("Reindex")
-        self.row = -1
+        self.solution = None
         self.show_cancel = show_cancel
         self._set_ref(summary_json, node_id)
 
@@ -310,32 +275,22 @@ class MyReindexOpts(QDialog):
         Set the reference data for the settings table.
 
         Args:
-            in_json_path: Path to the summary.json for a step
+            in_json_path: Name of the summary.json file for the bravais step
             lin_num: The node number of the refine_bravais_settings step
         """
-        my_box = QVBoxLayout()
-        self.my_inner_table = ReindexTable(self)
-        self.my_inner_table.opt_signal.connect(self._select_row)
-
         cwd_path = os.path.join(sys_arg.directory, "dui_files")
         full_json_path = os.path.join(cwd_path, in_json_path)
 
-        self.my_inner_table.add_opts_lst(json_path=full_json_path)
+        header_text = header_text_from_node(lin_num, full_json_path)
 
-        if self.my_inner_table.rec_col is not None:
-            my_solu = self.my_inner_table.find_best_solu()
-            self.my_inner_table.opt_clicked(my_solu, 0)
+        self.my_inner_table = ReindexTable(self)
+        self.my_inner_table.doubleClicked.connect(self.accept)
+        self.my_inner_table.load_data(full_json_path)
 
-        recomd_str = "Select a bravais lattice to enforce: \n"
-        try:
-            recomd_str += "(best guess solution = row {})".format(
-                self.my_inner_table.tmp_sel + 1
-            )
-
-        except BaseException as e:
-            # Since we don't know exactly what this was supposed to be
-            # - AttributeError? We don't know how to cleanly catch
-            logger.error("Unknown exception catch caught. Was: %s", e)
+        recomd_str = "Select a bravais lattice to enforce\n"
+        if self.my_inner_table.recommended_solution:
+            recomd_str += f"(best guess solution = row {self.my_inner_table.recommended_solution})"
+        else:
             recomd_str += "(no best solution could be automatically determined)"
 
         bot_box = QHBoxLayout()
@@ -346,16 +301,15 @@ class MyReindexOpts(QDialog):
             cancel_button.clicked.connect(self.reject)
             bot_box.addWidget(cancel_button)
         ok_but = QPushButton("OK")
-        ok_but.clicked.connect(self.my_inner_table.ok_clicked)
+        ok_but.clicked.connect(self.accept)
         ok_but.setDefault(True)
         bot_box.addWidget(ok_but)
 
-        header_text = header_text_from_node(lin_num, full_json_path)
-        my_box.addWidget(QLabel(header_text))
-        my_box.addWidget(self.my_inner_table)
-        my_box.addLayout(bot_box)
-
-        self.setLayout(my_box)
+        vbox = QVBoxLayout()
+        vbox.addWidget(QLabel(header_text))
+        vbox.addWidget(self.my_inner_table)
+        vbox.addLayout(bot_box)
+        self.setLayout(vbox)
 
         # Attempt to set table to exact size required
         self.my_inner_table.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
@@ -370,8 +324,8 @@ class MyReindexOpts(QDialog):
             + 2,
         )
 
-    def _select_row(self, row: int):
-        """A row in the reindex table has been firmly selected"""
-        logger.debug("Selected row %s", row)
-        self.row = row
-        self.accept()
+    def accept(self):
+        """The user confirmed selection of an item."""
+        self.solution = self.my_inner_table.solution
+        logger.debug("Selected solution %s", self.solution)
+        super().accept()
