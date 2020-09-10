@@ -926,7 +926,7 @@ class MainWidget(QMainWindow):
     def reindex_dialog_finished(self, result: int):
         """Process the results from a reindex dialog closing."""
         # Grab the result and discard the dialog
-        reindex_index = self.reindex_dialog.row + 1
+        reindex_index = self.reindex_dialog.solution
         self.reindex_dialog = None
 
         if result == QDialog.DialogCode.Rejected:
