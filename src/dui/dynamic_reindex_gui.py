@@ -313,14 +313,18 @@ class MyReindexOpts(QDialog):
 
         # Attempt to set table to exact size required
         self.my_inner_table.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.my_inner_table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.my_inner_table.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.my_inner_table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.my_inner_table.resizeColumnsToContents()
         self.my_inner_table.setFixedSize(
             self.my_inner_table.horizontalHeader().length()
             + self.my_inner_table.verticalHeader().width(),
-            self.my_inner_table.verticalHeader().length()
-            + self.my_inner_table.horizontalHeader().height()
+            min(
+                self.my_inner_table.rowHeight(0) * 10
+                + self.my_inner_table.horizontalHeader().height(),
+                self.my_inner_table.verticalHeader().length()
+                + self.my_inner_table.horizontalHeader().height(),
+            )
             + 2,
         )
 
