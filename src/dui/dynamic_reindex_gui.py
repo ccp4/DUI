@@ -285,7 +285,9 @@ class ReindexTable(QTableWidget):
 
 
 class MyReindexOpts(QDialog):
-    def __init__(self, parent, summary_json: str, node_id: int):
+    def __init__(
+        self, parent, summary_json: str, node_id: int, show_cancel: bool = False
+    ):
         """
         Create a reindex dialog.
 
@@ -295,10 +297,12 @@ class MyReindexOpts(QDialog):
             node_id:
                 The node number of the refine_bravais_settings step.
                 Used to locate the log file for the symmetry header.
+            show_cancel: Show a cancel button on the dialog
         """
         super().__init__(parent)
         self.setWindowTitle("Reindex")
         self.row = -1
+        self.show_cancel = show_cancel
         self._set_ref(summary_json, node_id)
 
     def _set_ref(self, in_json_path: str, lin_num: int):
@@ -337,9 +341,15 @@ class MyReindexOpts(QDialog):
         bot_box = QHBoxLayout()
         bot_box.addWidget(QLabel(recomd_str))
         bot_box.addStretch()
-        ok_but = QPushButton("     OK      ")
+        if self.show_cancel:
+            cancel_button = QPushButton("Cancel")
+            cancel_button.clicked.connect(self.reject)
+            bot_box.addWidget(cancel_button)
+        ok_but = QPushButton("OK")
         ok_but.clicked.connect(self.my_inner_table.ok_clicked)
+        ok_but.setDefault(True)
         bot_box.addWidget(ok_but)
+
         header_text = header_text_from_node(lin_num, full_json_path)
         my_box.addWidget(QLabel(header_text))
         my_box.addWidget(self.my_inner_table)

@@ -869,7 +869,7 @@ class MainWidget(QMainWindow):
         lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
-    def check_reindex_pop(self):
+    def check_reindex_pop(self, allow_cancel=False):
         # Always either close popup or open new one when calling this
         node = self.idials_runner.current_node
         command = node.ll_command_lst[0][0]
@@ -884,6 +884,7 @@ class MainWidget(QMainWindow):
                 parent=self,
                 summary_json=node.prev_step.json_file_out,
                 node_id=node.prev_step.lin_num,
+                show_cancel=allow_cancel,
             )
             self.reindex_dialog.finished.connect(self.reindex_dialog_finished)
             self.reindex_dialog.open()
@@ -976,7 +977,7 @@ class MainWidget(QMainWindow):
 
             # Always want to show if clicking a new reindex node
             self.just_reindexed = False
-            self.check_reindex_pop()
+            self.check_reindex_pop(allow_cancel=True)
 
             self.chouse_if_predict_or_report()
             update_info(self)
