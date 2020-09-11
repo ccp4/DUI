@@ -23,17 +23,21 @@ copyright (c) CCP4 - DLS
 
 import json
 import logging
-import os
+import re
+from pathlib import Path
 from typing import List
 
 from dui.cli_utils import sys_arg
 from dui.qt import (
+    QApplication,
     QColor,
     QDialog,
     QHBoxLayout,
     QLabel,
     QPushButton,
+    QSize,
     QSizePolicy,
+    QStyle,
     Qt,
     QTableWidget,
     QTableWidgetItem,
@@ -55,13 +59,32 @@ def choice_if_decimal(num_in: float) -> str:
     return str_out
 
 
-def ops_list_from_json(json_path: str) -> List:
+def _calculate_table_size(table: QTableWidget, maximum_rows: int = 10) -> QSize:
+    """Calculate the fixed size to show a whole table, up to a maximum row count"""
+    calculated_width = (
+        table.horizontalHeader().length() + table.verticalHeader().width()
+    )
+    # If more than the maximum rows, we need to account for a scrollbar
+    if table.rowCount() > maximum_rows:
+        calculated_width += (
+            QApplication.instance().style().pixelMetric(QStyle.PM_ScrollBarExtent)
+        )
+    calculated_height = (
+        min(
+            table.rowHeight(0) * maximum_rows + table.horizontalHeader().height(),
+            table.verticalHeader().length() + table.horizontalHeader().height(),
+        )
+        + 2
+    )
+    return QSize(calculated_width, calculated_height)
+
+
+def ops_list_from_json(json_path: Path) -> List:
     """Extract a summary of bravais settings solutions from a summary file"""
     if json_path is None:
         return None
 
-    with open(json_path) as json_file:
-        json_data = json.load(json_file)
+    json_data = json.loads(json_path.read_text())
 
     operations = []
 
@@ -101,54 +124,36 @@ def ops_list_from_json(json_path: str) -> List:
     return sorted(operations)
 
 
-def header_text_from_node(lin_num: int, j_path: str) -> str:
+def extract_chiral_header(node_id: int, json_summary_file: Path) -> str:
     """
     Extract the symmetry header text for the reindex table
 
     Args:
-        lin_num: The node number of the refine_bravais_settings step
-        j_path: The path to the json summary file
+        node_id: The node number of the refine_bravais_settings step
+        json_summary_file: The path to the json summary file
 
     Returns:
         The symmetry header text
     """
 
-    dir_path_end = j_path.find("lin_")
-    dir_path = j_path[0:dir_path_end]
-    lin_num_str = str(lin_num)
-    my_file_path = dir_path + lin_num_str + "_refine_bravais_settings.log"
+    bravais_logfile = (
+        json_summary_file.parent / f"{node_id}_refine_bravais_settings.log"
+    )
+    logger.debug("refine_bravais_settings logfile: %s", bravais_logfile)
+    if not bravais_logfile.is_file():
+        logger.error("Could not find bravais settings logfile: %s", bravais_logfile)
+        return ""
 
-    logger.debug("my_file_path: %s", my_file_path)
+    match = re.search(
+        r"(Chiral space groups(?:.|\n)*?)\n.*?---",
+        bravais_logfile.read_text(),
+        re.MULTILINE,
+    )
+    if not match:
+        logger.error("Could not read summary from bravais log %s", bravais_logfile)
+        return ""
 
-    myfile = open(my_file_path)
-    all_lines = myfile.readlines()
-    myfile.close()
-
-    logger.debug("len(all_lines): %s", len(all_lines))
-
-    multi_lin_txt = ""
-    for pos1, single_lin1 in enumerate(all_lines):
-        logger.debug("pos1, single_lin1: %s, %s", pos1, single_lin1)
-        # if str(single_lin1[0:19]) == "Chiral space groups":
-        if "Chiral space groups" in single_lin1:
-
-            start_block = pos1
-            logger.debug("start_block = %s", start_block)
-
-            for pos2, single_lin2 in enumerate(all_lines[start_block:]):
-                if "----" in single_lin2:
-                    end_block = pos2 + start_block
-                    logger.debug("end_block = %s", end_block)
-                    break
-
-            break
-
-    logger.debug("start_block, end_block = %s %s", start_block, end_block)
-
-    for single_lin in all_lines[start_block:end_block]:
-        multi_lin_txt += single_lin
-
-    return multi_lin_txt
+    return match.group(1)
 
 
 class ReindexTable(QTableWidget):
@@ -189,7 +194,7 @@ class ReindexTable(QTableWidget):
 
         return bst_sol
 
-    def load_data(self, json_path=None):
+    def load_data(self, json_path: Path = None):
 
         logger.debug("json_path = %s", json_path)
 
@@ -244,14 +249,13 @@ class ReindexTable(QTableWidget):
         if self.solution is None:
             self.solution = last_recommendation
 
-        print("Solution", self.solution)
         if self.solution is not None:
             self.selectRow(self.solution - 1)
 
 
 class MyReindexOpts(QDialog):
     def __init__(
-        self, parent, summary_json: str, node_id: int, show_cancel: bool = False
+        self, parent, summary_json: str, bravais_node_id: int, show_cancel: bool = False
     ):
         """
         Create a reindex dialog.
@@ -259,37 +263,28 @@ class MyReindexOpts(QDialog):
         Args:
             parent: The parent window for the dialog
             summary_json: Name of the summary.json for a step
-            node_id:
+            bravais_node_id:
                 The node number of the refine_bravais_settings step.
                 Used to locate the log file for the symmetry header.
             show_cancel: Show a cancel button on the dialog
         """
         super().__init__(parent)
-        self.setWindowTitle("Reindex")
+        self.setWindowTitle("Re-index to solution")
         self.solution = None
         self.show_cancel = show_cancel
-        self._set_ref(summary_json, node_id)
 
-    def _set_ref(self, in_json_path: str, lin_num: int):
-        """
-        Set the reference data for the settings table.
+        json_path = Path(sys_arg.directory) / "dui_files" / summary_json
+        header_text = extract_chiral_header(bravais_node_id, json_path)
 
-        Args:
-            in_json_path: Name of the summary.json file for the bravais step
-            lin_num: The node number of the refine_bravais_settings step
-        """
-        cwd_path = os.path.join(sys_arg.directory, "dui_files")
-        full_json_path = os.path.join(cwd_path, in_json_path)
-
-        header_text = header_text_from_node(lin_num, full_json_path)
-
-        self.my_inner_table = ReindexTable(self)
-        self.my_inner_table.doubleClicked.connect(self.accept)
-        self.my_inner_table.load_data(full_json_path)
+        self.table = ReindexTable(self)
+        self.table.doubleClicked.connect(self.accept)
+        self.table.load_data(json_path)
 
         recomd_str = "Select a bravais lattice to enforce\n"
-        if self.my_inner_table.recommended_solution:
-            recomd_str += f"(best guess solution = row {self.my_inner_table.recommended_solution})"
+        if self.table.recommended_solution:
+            recomd_str += (
+                f"(best guess solution = row {self.table.recommended_solution})"
+            )
         else:
             recomd_str += "(no best solution could be automatically determined)"
 
@@ -307,29 +302,19 @@ class MyReindexOpts(QDialog):
 
         vbox = QVBoxLayout()
         vbox.addWidget(QLabel(header_text))
-        vbox.addWidget(self.my_inner_table)
+        vbox.addWidget(self.table)
         vbox.addLayout(bot_box)
         self.setLayout(vbox)
 
         # Attempt to set table to exact size required
-        self.my_inner_table.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.my_inner_table.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.my_inner_table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.my_inner_table.resizeColumnsToContents()
-        self.my_inner_table.setFixedSize(
-            self.my_inner_table.horizontalHeader().length()
-            + self.my_inner_table.verticalHeader().width(),
-            min(
-                self.my_inner_table.rowHeight(0) * 10
-                + self.my_inner_table.horizontalHeader().height(),
-                self.my_inner_table.verticalHeader().length()
-                + self.my_inner_table.horizontalHeader().height(),
-            )
-            + 2,
-        )
+        self.table.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.table.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.table.resizeColumnsToContents()
+        self.table.setFixedSize(_calculate_table_size(self.table))
 
     def accept(self):
         """The user confirmed selection of an item."""
-        self.solution = self.my_inner_table.solution
+        self.solution = self.table.solution
         logger.debug("Selected solution %s", self.solution)
         super().accept()

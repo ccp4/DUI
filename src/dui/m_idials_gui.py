@@ -883,7 +883,7 @@ class MainWidget(QMainWindow):
             self.reindex_dialog = MyReindexOpts(
                 parent=self,
                 summary_json=node.prev_step.json_file_out,
-                node_id=node.prev_step.lin_num,
+                bravais_node_id=node.prev_step.lin_num,
                 show_cancel=allow_cancel,
             )
             self.reindex_dialog.finished.connect(self.reindex_dialog_finished)
