@@ -157,10 +157,10 @@ def extract_chiral_header(node_id: int, json_summary_file: Path) -> str:
 
 
 class ReindexTable(QTableWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, solution=None):
         super().__init__(parent)
 
-        self.solution = None
+        self.solution = solution
         self.recommended_solution = None
 
         self.setSelectionBehavior(QTableWidget.SelectRows)
@@ -255,7 +255,12 @@ class ReindexTable(QTableWidget):
 
 class MyReindexOpts(QDialog):
     def __init__(
-        self, parent, summary_json: str, bravais_node_id: int, show_cancel: bool = False
+        self,
+        parent,
+        summary_json: str,
+        bravais_node_id: int,
+        show_cancel: bool = False,
+        solution=None,
     ):
         """
         Create a reindex dialog.
@@ -267,16 +272,17 @@ class MyReindexOpts(QDialog):
                 The node number of the refine_bravais_settings step.
                 Used to locate the log file for the symmetry header.
             show_cancel: Show a cancel button on the dialog
+            solution: The existing solution to select
         """
         super().__init__(parent)
         self.setWindowTitle("Re-index to solution")
-        self.solution = None
         self.show_cancel = show_cancel
+        self.solution = None
 
         json_path = Path(sys_arg.directory) / "dui_files" / summary_json
         header_text = extract_chiral_header(bravais_node_id, json_path)
 
-        self.table = ReindexTable(self)
+        self.table = ReindexTable(self, solution=solution)
         self.table.doubleClicked.connect(self.accept)
         self.table.load_data(json_path)
 
