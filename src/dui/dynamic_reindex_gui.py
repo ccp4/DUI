@@ -79,7 +79,7 @@ def _calculate_table_size(table: QTableWidget, maximum_rows: int = 10) -> QSize:
     return QSize(calculated_width, calculated_height)
 
 
-def ops_list_from_json(json_path: Path) -> List:
+def extract_solutions_summary(json_path: Path) -> List:
     """Extract a summary of bravais settings solutions from a summary file"""
     if json_path is None:
         return None
@@ -198,7 +198,7 @@ class ReindexTable(QTableWidget):
 
         logger.debug("json_path = %s", json_path)
 
-        data = ops_list_from_json(json_path)
+        data = extract_solutions_summary(json_path)
 
         logger.debug("n_row = %s", len(data))
         logger.debug("n_col = %s", len(data[0]))
