@@ -23,6 +23,7 @@ copyright (c) CCP4 - DLS
 
 import logging
 import pickle
+import re
 import time
 import traceback
 from pathlib import Path
@@ -872,19 +873,29 @@ class MainWidget(QMainWindow):
     def check_reindex_pop(self, allow_cancel=False):
         # Always either close popup or open new one when calling this
         node = self.idials_runner.current_node
-        command = node.ll_command_lst[0][0]
+        command = node.ll_command_lst[0]
         logger.debug(
             "check_reindex_pop: just_reindexed: %s, command: %s",
             self.just_reindexed,
             command,
         )
-        if command == "reindex" and not self.just_reindexed:
+        if command[0] == "reindex" and not self.just_reindexed:
+            # Find if one of the command arguments was a previous solution
+            solution_argument = [x for x in command if "solution=" in x]
+            prev_solution = None
+            if solution_argument:
+                prev_solution = int(
+                    re.match(r"solution=(\d+)", solution_argument[-1]).group(1)
+                )
+                logger.debug("Found previous solution: %s", prev_solution)
+
             logger.debug("Redetermining reindex decision")
             self.reindex_dialog = MyReindexOpts(
                 parent=self,
                 summary_json=node.prev_step.json_file_out,
                 bravais_node_id=node.prev_step.lin_num,
                 show_cancel=allow_cancel,
+                solution=prev_solution,
             )
             self.reindex_dialog.finished.connect(self.reindex_dialog_finished)
             self.reindex_dialog.open()
