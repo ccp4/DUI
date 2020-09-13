@@ -502,11 +502,7 @@ class MainWidget(QMainWindow):
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
 
-        v_info_splitter = QSplitter()
-        v_info_splitter.setOrientation(Qt.Vertical)
-        v_info_splitter.addWidget(self.output_info_tabs)
-
-        h_main_splitter.addWidget(v_info_splitter)
+        h_main_splitter.addWidget(self.output_info_tabs)
 
         main_box.addWidget(h_main_splitter)
 
