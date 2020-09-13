@@ -464,11 +464,10 @@ class MainWidget(QMainWindow):
         centre_control_box.addWidget(self.stop_run_retry)
         left_control_box.addLayout(centre_control_box)
 
+        # Splitters can only contain widgets, not layouts
         dummy_left_widget = QWidget()
-        dummy_h_layout = QHBoxLayout()
-        dummy_h_layout.addLayout(left_control_box)
-        dummy_left_widget.setLayout(dummy_h_layout)
-        dummy_left_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        left_control_box.setContentsMargins(0, 0, 0, 0)
+        dummy_left_widget.setLayout(left_control_box)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
