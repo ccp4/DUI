@@ -13,6 +13,7 @@ import os
 import pickle
 import shutil
 import sys
+from pathlib import Path
 
 from dui.cli_utils import (
     DialsCommand,
@@ -92,6 +93,10 @@ class CommandNode:
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
+                # For cases where the run command does not write it's own log
+                # file, we need to create one - so there is something to
+                # display. This includes: Reindex, generate_mask - see
+                # generated list in cli_utils.build_command_lst
                 if self.log_file_out is None:
                     logger.info("\n *** time to write ...log_file_out manually *** \n")
 
@@ -102,19 +107,9 @@ class CommandNode:
                     cwd_path = os.path.join(sys_arg.directory, "dui_files")
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
-                    """
-                    logger.info(f"..log_file_out = {file_path}")
-                    logger.info(
-                        "self.dials_command.tmp_std_all: {self.dials_command.tmp_std_all}",
+                    Path(file_path).write_bytes(
+                        b"\n".join(self.dials_command.tmp_std_all) + b"\n"
                     )
-                    """
-
-                    fil_obj = open(file_path, "w")
-                    for line_out in self.dials_command.tmp_std_all:
-                        fil_obj.write(line_out)
-                        fil_obj.write("\n")
-
-                    fil_obj.close()
 
                 logger.info("\n Done \n")
                 # self.gen_repr_n_pred()
