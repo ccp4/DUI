@@ -579,13 +579,10 @@ class DialsCommand:
                 self.my_pid = my_process.pid
                 for line in iter(my_process.stdout.readline, b""):
                     single_line = line[0 : len(line) - 1]
-                    # logger.info(f">>: {single_line}")
                     self.tmp_std_all.append(single_line)
-                    try:
-                        ref_to_class.emit_print_signal(single_line)
 
-                    except AttributeError:
-                        logger.info("AttributeError: %s", single_line)
+                    if ref_to_class:
+                        ref_to_class.emit_print_signal(single_line)
 
                 my_process.wait()
                 my_process.stdout.close()
