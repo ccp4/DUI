@@ -21,18 +21,16 @@ copyright (c) CCP4 - DLS
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from __future__ import absolute_import, division, print_function
 
 import argparse
+import faulthandler
 import logging
 import os
+import signal
 import sys
+from pathlib import Path
 
-try:
-    from cli_utils import sys_arg
-
-except ImportError:
-    from .cli_utils import sys_arg
+from dui.cli_utils import sys_arg
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +63,11 @@ def main():
     if args.verbose <= 2:
         logging.getLogger("PyQt4.uic").setLevel(logging.WARNING)
 
+    if args.verbose >= 2:
+        logging.debug("Running debug out: ctrl-c will close application")
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
+        faulthandler.enable()
+
     # Process the phil-style parameters
     for arg in args.positionals[:]:
         if arg.startswith("template="):
@@ -79,22 +82,32 @@ def main():
         logger.warning(
             "Unknown parameter%s %s",
             "s" if len(args.positionals) > 1 else "",
-            " ".join("'{}'".format(x) for x in args.positionals),
+            " ".join(f"'{x}'" for x in args.positionals),
         )
         # Should we exit here? Maybe QT can handle it(???)
 
-    logger.info("sys_arg.template =%s", sys_arg.template)
-    logger.info("sys_arg.directory=%s", sys_arg.directory)
+    logger.info("sys_arg.template = %s", sys_arg.template)
+    logger.info("sys_arg.directory= %s", sys_arg.directory)
 
-    # Inline import so that we can load this after logging setup
-
-    from dui.qt import QApplication, QStyleFactory
-    from dui.m_idials_gui import MainWidget, DUIDataLoadingError
-    from dui.gui_utils import loading_error_dialog
+    from dui.qt import QApplication, QPixmap, QSplashScreen, QStyleFactory
 
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+    # Get resource path directly for now
+    splash_img = QPixmap(
+        str(Path(__file__).resolve().parent / "resources" / "splash.png")
+    )
+    splash = QSplashScreen(splash_img)
+    splash.show()
+
+    # Inline import so that we can load the main GUI after logging setup
+    from dui.gui_utils import loading_error_dialog
+    from dui.m_idials_gui import DUIDataLoadingError, MainWidget
+
     logger.debug(
-        "QT Style: %s [%s]", app.style().objectName(), ", ".join(QStyleFactory.keys())
+        "QT Style: %s [%s]",
+        app.style().objectName(),
+        ", ".join(list(QStyleFactory.keys())),
     )
 
     try:
@@ -103,6 +116,7 @@ def main():
         ex = loading_error_dialog(e.original_traceback)
 
     ex.show()
+    splash.close()
 
     # Needed for a QT4 bug(?) on mac - windows don't steal focus on open
     ex.activateWindow()

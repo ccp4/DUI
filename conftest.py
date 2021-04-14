@@ -1,6 +1,7 @@
 """pytest configuration file"""
 
 import os
+
 import pytest
 
 from dui.qt import QApplication, QPixmap, QStyleFactory
@@ -22,6 +23,10 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_gui)
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "gui: Mark as a GUI test")
+
+
 @pytest.fixture(params=list(QStyleFactory.keys()))
 def qtstyles(request, qtbot):
     "Runs tests with every different available style"
@@ -30,7 +35,13 @@ def qtstyles(request, qtbot):
 
 
 @pytest.fixture
-def screenshots(qtbot, request):
+def qapp(qapp):
+    qapp.setStyle("Fusion")
+    return qapp
+
+
+@pytest.fixture
+def screenshots(qapp, qtbot, request):
     """Fixture to simplify making screenshots"""
 
     # Find the repo root
@@ -40,7 +51,7 @@ def screenshots(qtbot, request):
     if not os.path.isdir(ss_dir):
         os.mkdir(ss_dir)
 
-    class SSSaver(object):
+    class SSSaver:
         """Returnable object to save test-context screenshots"""
 
         def __init__(self, root_path):
@@ -52,7 +63,7 @@ def screenshots(qtbot, request):
             test_file_name = os.path.splitext(
                 os.path.basename(request.node.parent.name)
             )[0]
-            return "{}__{}_{}.png".format(test_file_name, request.node.name, self.count)
+            return f"{test_file_name}__{request.node.name}_{self.count}.png"
 
         def saveWidget(self, widget, filename=None):
             """Save a widget screenshot."""
@@ -74,8 +85,14 @@ def screenshots(qtbot, request):
             window.raise_()
             qtbot.waitForWindowShown(window)
 
-            desktop = QPixmap.grabWindow(QApplication.desktop().winId())
-            crop = desktop.copy(window.frameGeometry())
+            screen = qapp.primaryScreen()
+            geom = window.frameGeometry()
+            winid = QApplication.desktop().winId()
+            desktop = screen.grabWindow(
+                winid, geom.x(), geom.y(), geom.width(), geom.height()
+            )
+
+            crop = desktop
             crop.save(full_path)
 
             self.count += 1

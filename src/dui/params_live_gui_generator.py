@@ -6,7 +6,9 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
+
+import logging
+import sys
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,8 +24,6 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import logging
-import sys
 
 # FIXME Copied from dials.index.py. This is needed here because scipy needs to
 # be imported before cctbx otherwise there will be a segmentation fault. This
@@ -36,39 +36,23 @@ try:
 except ImportError:
     pass
 
-try:
-    from qt import (
-        QApplication,
-        QComboBox,
-        QFont,
-        QHBoxLayout,
-        QLabel,
-        QLineEdit,
-        Qt,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-except ImportError:
-    from .qt import (
-        QApplication,
-        QComboBox,
-        QFont,
-        QHBoxLayout,
-        QLabel,
-        QLineEdit,
-        Qt,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
+from dui.qt import (
+    QApplication,
+    QComboBox,
+    QFont,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    Qt,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
 
-class ScopeData(object):
+class ScopeData:
     """
     class conceived to store only data related to the scope Phil object
     """
@@ -76,7 +60,7 @@ class ScopeData(object):
     pass
 
 
-class tree_2_lineal(object):
+class tree_2_lineal:
     """
     Recursively navigates the Phil objects in a way that the final
     self.lst_obj is a lineal list without ramifications, this final list
@@ -129,7 +113,7 @@ class tree_2_lineal(object):
 
 class MyQComboBox(QComboBox):
     def __init__(self, parent=None):
-        super(MyQComboBox, self).__init__(parent)
+        super().__init__(parent)
         self.setFocusPolicy(Qt.ClickFocus)
 
     def wheelEvent(self, event):
@@ -140,7 +124,7 @@ class MyQComboBox(QComboBox):
         else:
             logger.info("NO hasFocus")
         """
-        logger.info("event: ", event)
+        logger.info("event: %s", event)
         return
 
 
@@ -149,7 +133,7 @@ class PhilWidget(QWidget):
 
     def __init__(self, phl_obj, parent=None):
         # TODO fix the order of this two parameters
-        super(PhilWidget, self).__init__(parent)
+        super().__init__(parent)
         self.original_parent = parent
 
         self.bg_box = QVBoxLayout(self)
@@ -291,9 +275,6 @@ class PhilWidget(QWidget):
                     else:
                         tmp_str = None
 
-                    # logger.info("tmp_widg.tmp_lst =", tmp_widg.tmp_lst)
-                    # logger.info("tmp_str =", tmp_str)
-
                     tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
                 elif obj.type.phil_type == "choice":
@@ -401,7 +382,7 @@ class PhilWidget(QWidget):
 
 class TstTmpWidget(QWidget):
     def __init__(self, phl_obj=None, parent=None):
-        super(TstTmpWidget, self).__init__(parent)
+        super().__init__(parent)
         # self.param_widget_parent = self
         inner_widget = PhilWidget(
             phl_obj, self

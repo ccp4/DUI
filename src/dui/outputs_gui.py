@@ -6,8 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,35 +20,22 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 import logging
 import sys
 
 from dxtbx.model.experiment_list import InvalidExperimentListError
 
-try:
-    from outputs_n_viewers.info_handler import update_all_data
-    from qt import (
-        QApplication,
-        QGroupBox,
-        QHBoxLayout,
-        QLabel,
-        QVBoxLayout,
-        QWidget,
-        QScrollArea,
-    )
-
-except ImportError:
-    from .outputs_n_viewers.info_handler import update_all_data
-    from .qt import (
-        QApplication,
-        QGroupBox,
-        QHBoxLayout,
-        QLabel,
-        QVBoxLayout,
-        QWidget,
-        QScrollArea,
-    )
-
+from dui.outputs_n_viewers.info_handler import update_all_data
+from dui.qt import (
+    QApplication,
+    QGroupBox,
+    QHBoxLayout,
+    QLabel,
+    QScrollArea,
+    QVBoxLayout,
+    QWidget,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +68,7 @@ def get_spacebox(size):
 
 class InfoWidget(QWidget):
     def __init__(self, parent=None):
-        super(InfoWidget, self).__init__()
+        super().__init__(parent)
 
         empty_str = "__________"
 
@@ -110,7 +95,7 @@ class InfoWidget(QWidget):
 
         bm_v_layout.addWidget(QLabel("  "))
 
-        tmp_str = "  Wavelength (" + u"\u212B" + ") "
+        tmp_str = "  Wavelength (Å) "
 
         w_lambda_label = QLabel(tmp_str)
         bm_v_layout.addWidget(w_lambda_label)
@@ -144,14 +129,9 @@ class InfoWidget(QWidget):
         cell_v_layout.addLayout(cell_data_layout)
         cell_v_layout.addWidget(QLabel("  "))
 
-        left_margin_str = "    "
-        alpha_str = left_margin_str + u"\u03B1"
-        beta_str = left_margin_str + u"\u03B2"
-        gamma_str = left_margin_str + u"\u03B3"
-
-        alpha_label = QLabel(alpha_str)
-        beta_label = QLabel(beta_str)
-        gamma_label = QLabel(gamma_str)
+        alpha_label = QLabel("    α")
+        beta_label = QLabel("    β")
+        gamma_label = QLabel("    γ")
 
         cell_label_a_layout = QHBoxLayout()
         cell_label_a_layout.addWidget(alpha_label)
@@ -326,7 +306,7 @@ class InfoWidget(QWidget):
         detec_v_layout.addLayout(gain_hbox)
 
         # detec_v_layout.addWidget(QLabel("  "))
-        max_res_label = QLabel(" Max res (" + u"\u212B" + ")")
+        max_res_label = QLabel(" Max res (Å)")
         self.max_res_data = QLabel(empty_str)
         max_res_hbox = QHBoxLayout()
         max_res_hbox.addWidget(max_res_label)
@@ -406,7 +386,7 @@ class InfoWidget(QWidget):
                 pickle_to_read = None
 
             logger.debug(
-                "experiments_path=", exp_json_path, "reflections_path=", pickle_to_read
+                "experiments_path=%s reflections_path=%s", exp_json_path, pickle_to_read
             )
 
             self.all_data = update_all_data(

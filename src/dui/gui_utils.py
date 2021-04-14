@@ -6,9 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,81 +20,47 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from collections import OrderedDict, namedtuple
+
+import json
 import logging
 import os
 import re
-import sys
 import shutil
 import subprocess
-import psutil
-import json
+import sys
+from collections import OrderedDict, namedtuple
+from pathlib import Path
+from typing import Iterable, List, Tuple
 
+import psutil
 from dxtbx.sequence_filenames import template_regex, template_regex_from_list
 
-"""
-from dxtbx.sweep_filenames import template_regex, template_regex_from_list
-"""
-
-try:
-    from cli_utils import get_next_step, sys_arg, get_phil_par
-    from m_idials import generate_report
-    from qt import (
-        QDialog,
-        QFont,
-        QHeaderView,
-        QIcon,
-        QLabel,
-        QProgressBar,
-        QPushButton,
-        QSize,
-        QSizePolicy,
-        QStandardItem,
-        QStandardItemModel,
-        QStyleFactory,
-        Qt,
-        QT5,
-        QTextEdit,
-        QThread,
-        QToolButton,
-        QTreeView,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-        uic,
-    )
-
-except ImportError:
-    from .cli_utils import get_next_step, sys_arg, get_phil_par
-    from .m_idials import generate_report
-    from .qt import (
-        QDialog,
-        QFont,
-        QHeaderView,
-        QIcon,
-        QLabel,
-        QProgressBar,
-        QPushButton,
-        QSize,
-        QSizePolicy,
-        QStandardItem,
-        QStandardItemModel,
-        QStyleFactory,
-        Qt,
-        QT5,
-        QTextEdit,
-        QThread,
-        QToolButton,
-        QTreeView,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-        uic,
-    )
-
-
-from six.moves import range
-
+from .cli_utils import get_next_step, sys_arg
+from .m_idials import generate_report
+from .qt import (
+    QDialog,
+    QFont,
+    QFontDatabase,
+    QHeaderView,
+    QIcon,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QSize,
+    QSizePolicy,
+    QStandardItem,
+    QStandardItemModel,
+    QStyleFactory,
+    Qt,
+    QTextEdit,
+    QThread,
+    QToolButton,
+    QTreeView,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+    loadUiType,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -105,6 +68,12 @@ logger = logging.getLogger(__name__)
 ActionInformation = namedtuple(
     "ActionInformation", ["id", "label", "tooltip", "icon", "icon_disabled"]
 )
+
+
+def escaped_join(args: Iterable[str]) -> str:
+    """Join a list of strings, escaping spaces if necessary"""
+    return " ".join(x.replace(" ", r"\ ") for x in args)
+
 
 # Basic implementation of a simple actions lookup table - not a perfect solution
 # but allows partial refactoring to centralised previously scattered info
@@ -217,14 +186,14 @@ def try_move_last_info(export_node, gui2_log):
 
         gui2_log_path = os.path.join(cwd_path, "output.json")
 
-        #logger.info("Writing:", gui2_log_path)
+        # logger.info(f"Writing: {gui2_log_path}")
 
         with open(gui2_log_path, "w") as fp:
             json.dump(gui2_log, fp, indent=4)
 
-        #logger.info("\n ___________________ gui2_log:", gui2_log, "\n")
+        # logger.info(f"\n ___________________ gui2_log: {gui2_log}")
 
-    except IOError:
+    except OSError:
         logger.info("ERROR: mtz file not there")
         logger.debug("IOError on try_move_last_info(gui_utils)")
 
@@ -325,27 +294,28 @@ def get_package_path(path):
     return os.path.join(get_main_path(), path)
 
 
-def get_import_run_string(in_str_lst):
+def get_import_run_string(in_str_lst: List[str]) -> Tuple[str, str]:
     """
     Calculate the dials.import filename and image_range parameters.
 
     Args:
-        in_str_lst ([str]): List of files to open
+        in_str_lst: List of files to open
 
     Returns:
-        (Tuple[str,str]):
-            Tuple containing
-                dir_path (str):
-                    The location of the data. Note: This only appears to
-                    be used for re-opening the data dialog?
-                import_string (str):
-                    The string containing parts to pass to dials.import.
-                    This could be of the forms:
-                        '/some/path/single_file_0002.cbf'
-                        '/some/path/images_master.nxs'
-                        '/some/path/filename_*.cbf'
-                        '/some/path/filename_*.cbf image_range=1,100'
-                    but in other cases may include several filenames...
+        Tuple containing
+            dir_path (str):
+                The location of the data. Note: This only appears to
+                be used for re-opening the data dialog?
+            import_string (str):
+                The string containing parts to pass to dials.import.
+                This could be of the forms:
+                    '/some/path/single_file_0002.cbf'
+                    '/some/path/images_master.nxs'
+                    '/some/path/filename_*.cbf'
+                    '/some/path/filename_*.cbf image_range=1,100'
+                but in other cases may include several filenames. Spaces
+                within filenames will be escaped, so that shlex.split
+                can recover the initial list.
     """
     logger.debug("Converting string for import: %s", in_str_lst)
 
@@ -364,13 +334,13 @@ def get_import_run_string(in_str_lst):
     if template is None:
         # Unable to collapse?? Just pass through all filenames as <name>
         # and trust dials to process
-        return os.path.dirname(in_str_lst[0]), " ".join(in_str_lst)
+        return os.path.dirname(in_str_lst[0]), escaped_join(in_str_lst)
 
     dirname = os.path.dirname(template)
 
     # We're currently using wildcards, so continue with this by
     # replacing the template placeholder for now.
-    out_str = re.sub("#+", "*", template)
+    out_str = escaped_join([re.sub("#+", "*", template)])
 
     # Do we have a restricted image range?
     image_range = None
@@ -512,14 +482,14 @@ def update_pbar_msg(main_obj):
         except KeyError:
             txt = "Done"
 
-    #main_obj.txt_bar.setText(txt)
+    # main_obj.txt_bar.setText(txt)
     main_obj.txt_bar.setText(" \n ")
-    #logger.info(txt)
+    # logger.info(txt)
 
 
 class MyActionButton(QToolButton):
     def __init__(self, action, parent=None):
-        super(QToolButton, self).__init__(parent=parent)
+        super().__init__(parent=parent)
 
         self.action = action
 
@@ -550,17 +520,14 @@ class MyActionButton(QToolButton):
 
 class TreeNavWidget(QTreeView):
     def __init__(self, parent=None):
-        super(TreeNavWidget, self).__init__()
+        super().__init__(parent)
         logger.debug("TreeNavWidget(__init__)")
         self.setSortingEnabled(False)
         self.setAnimated(True)
         self.setIndentation(18)
 
         header_view = self.header()
-        if QT5:
-            header_view.setSectionResizeMode(QHeaderView.ResizeToContents)
-        else:
-            header_view.setResizeMode(QHeaderView.ResizeToContents)
+        header_view.setSectionResizeMode(QHeaderView.ResizeToContents)
         header_view.setStretchLastSection(True)
 
     def update_me(self, root_node, lst_path_idx):
@@ -637,7 +604,7 @@ class ViewerThread(QThread):
     """
 
     def __init__(self, process):
-        super(ViewerThread, self).__init__()
+        super().__init__()
         self.process = process
 
     def run(self):
@@ -663,15 +630,13 @@ class ExternalProcDialog(QDialog):
     outputFileFound = Signal(list)
 
     def __init__(self, parent=None):
-        super(ExternalProcDialog, self).__init__(parent)
+        super().__init__(parent)
 
         vbox = QVBoxLayout()
         label = QLabel(
-            (
-                "Running a pop-up viewer ...\n\n"
-                "remember to close the viewer before\n"
-                "performing any other task"
-            )
+            "Running a pop-up viewer ...\n\n"
+            "remember to close the viewer before\n"
+            "performing any other task"
         )
         label.setAlignment(Qt.AlignCenter)
         vbox.addWidget(label)
@@ -720,9 +685,9 @@ class ExternalProcDialog(QDialog):
         # Save the working directory
         self.cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-        logger.debug("\n running Popen>>>\n   " + " ".join(cmd_to_run) + "\n<<<")
+        logger.debug("\n running Popen>>>\n   %s\n<<<", " ".join(cmd_to_run))
         self.my_process = subprocess.Popen(args=cmd_to_run, cwd=self.cwd_path)
-        logger.debug("Running PID {}".format(self.my_process.pid))
+        logger.debug("Running PID %s", self.my_process.pid)
 
         # Track the process status in a separate thread
         self.thrd = ViewerThread(self.my_process)
@@ -754,7 +719,7 @@ class ExternalProcDialog(QDialog):
 
 class OuterCaller(QWidget):
     def __init__(self):
-        super(OuterCaller, self).__init__()
+        super().__init__()
 
         v_box = QVBoxLayout()
 
@@ -789,8 +754,9 @@ class OuterCaller(QWidget):
 
 class CliOutView(QTextEdit):
     def __init__(self, app=None):
-        super(CliOutView, self).__init__()
-        self.setFont(QFont("Monospace", 10, QFont.Bold))
+        super().__init__()
+        self.setFont(QFontDatabase.systemFont(QFontDatabase.FixedFont))
+
         self.make_green()
 
     def add_txt(self, str_to_print):
@@ -831,14 +797,11 @@ class CliOutView(QTextEdit):
 
         logger.debug(" path_to_log = %s", path_to_log)
 
-        try:
-            fil_obj = open(path_to_log, "r")
+        if path_to_log and Path(path_to_log).is_file():
+            fil_obj = open(path_to_log)
             lst_lin = fil_obj.readlines()
-        except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.debug("Failed to read log file")
+        else:
+            logger.debug("No log file")
             lst_lin = ["Ready to Run:"]
             self.make_green()
 
@@ -851,7 +814,7 @@ class CliOutView(QTextEdit):
 
 class Text_w_Bar(QProgressBar):
     def __init__(self, parent=None):
-        super(Text_w_Bar, self).__init__()
+        super().__init__(parent)
         self.setAlignment(Qt.AlignCenter)
         self._text = ""
         logger.debug("test setStyle(QStyleFactory.create())")
@@ -885,7 +848,14 @@ class Text_w_Bar(QProgressBar):
 
 def loading_error_dialog(message):
     """Create an error message about loading in a dialog box."""
+    # If pre-building:
+    # from dui.resources.error_loading_dialog import Ui_LoadErrorDialog
+
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
-    dialog = uic.loadUi(dialog_filename)
-    dialog.errorMessage.setPlainText(message)
+    Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
+
+    dialog = QDialog()
+    errwidget = Ui_LoadErrorDialog()
+    errwidget.setupUi(dialog)
+    errwidget.errorMessage.setPlainText(message)
     return dialog

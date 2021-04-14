@@ -1,48 +1,24 @@
-from __future__ import absolute_import, division, print_function
-
 import logging
 import os
 import sys
 
-
-try:
-    from dui.outputs_n_viewers.img_view_tools import ProgBarBox
-    from dui.qt import (
-        QApplication,
-        QHBoxLayout,
-        QPushButton,
-        QUrl,
-        QVBoxLayout,
-        QWebSettings,
-        QWebView,
-        QWidget,
-    )
-
-except ImportError:
-    from .img_view_tools import ProgBarBox
-    from ..qt import (
-        QApplication,
-        QHBoxLayout,
-        QPushButton,
-        QUrl,
-        QVBoxLayout,
-        QWebSettings,
-        QWebView,
-        QWidget,
-    )
+from dui.outputs_n_viewers.img_view_tools import ProgBarBox
+from dui.qt import (
+    QApplication,
+    QHBoxLayout,
+    QPushButton,
+    QUrl,
+    QVBoxLayout,
+    QWebEngineView,
+    QWidget,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class WebTab(QWidget):
     def __init__(self):
-        super(WebTab, self).__init__()
-        tmp_off = """
-        logger.debug(
-            " QWebSettings.JavascriptEnabled = %s", QWebSettings.JavascriptEnabled
-        )
-        QWebSettings.JavascriptEnabled = True
-        """
+        super().__init__()
 
         self.dummy_html = """<html>
             <head>
@@ -53,7 +29,7 @@ class WebTab(QWidget):
             </body>
             </html>"""
 
-        self.web = QWebView()
+        self.web = QWebEngineView()
         logger.debug("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
 
@@ -81,15 +57,11 @@ class WebTab(QWidget):
         except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
             # to catch so catch all for now and work out what it was supposed to be
-            #logger.info("\n failed to show <<", new_path, ">>  on web view (", e, ")")
+            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
             self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
         logger.info("HTML Load(ok) = %s", ok_bool)
-        tmp_off = """
-        if not ok_bool:
-            self.web.setHtml(self.dummy_html)
-        """
 
         self.web.show()
         logger.info(" finished Loading HTML ")
@@ -100,7 +72,7 @@ class WebTab(QWidget):
 
 class TmpTstWidget(QWidget):
     def __init__(self, parent=None):
-        super(TmpTstWidget, self).__init__()
+        super().__init__(parent)
         # self.param_widget_parent = self
         self.my_widget = WebTab()
         self.btn1 = QPushButton("Click me", self)

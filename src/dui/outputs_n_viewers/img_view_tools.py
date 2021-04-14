@@ -6,8 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,28 +21,19 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import logging
-import sys
 
 import numpy as np
-
-from dials_viewer_ext import rgb_img
 from dials.array_family import flex
+from dials_viewer_ext import rgb_img
 
-try:
-    sys.path.append("../")
-    from qt import QImage, QProgressDialog, Qt
-
-except ImportError:
-    from ..qt import QImage, QProgressDialog, Qt
-
-from six.moves import range
+from dui.qt import QImage, QProgressDialog, Qt
 
 logger = logging.getLogger(__name__)
 
 
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val=100, min_val=0, text="Working"):
-        super(ProgBarBox, self).__init__(parent=None)
+        super().__init__(parent=None)
         self.setMinimumDuration(50)
 
         if max_val > min_val:
@@ -272,7 +261,7 @@ def list_arrange(bbox_lst, hkl_lst, pan_lst, n_imgs):
     return list_arr(bbox_lst, hkl_lst, pan_lst, n_imgs)
 
 
-class img_w_cpp(object):
+class img_w_cpp:
     def __init__(self):
         self.wx_bmp_arr = rgb_img()
 
@@ -316,7 +305,7 @@ class img_w_cpp(object):
         return img_array
 
 
-class build_qimg(object):
+class build_qimg:
     def __init__(self):
         self.arr_img = img_w_cpp()
 

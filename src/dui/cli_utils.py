@@ -7,7 +7,13 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
+
+import json
+import logging
+import os
+import subprocess
+
+import libtbx.phil
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,18 +29,11 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import json
-import logging
-import os
-import subprocess
-
-import libtbx.phil
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 
 
-class SysArgvData(object):
+class SysArgvData:
     """
     Some data related to how the GUI gets launched from CLI
     """
@@ -100,7 +99,7 @@ def get_next_step(node_obj):
     return None
 
 
-class ScopeData(object):
+class ScopeData:
     """
     class conceived to store only data related to the scope Phil object
     """
@@ -108,7 +107,7 @@ class ScopeData(object):
     pass
 
 
-class tree_2_lineal(object):
+class tree_2_lineal:
 
     """
     Recursively navigates the Phil objects in a way that the final
@@ -273,13 +272,6 @@ def build_command_lst(node_obj, cmd_lst):
                 sol_num = 1
 
         except BaseException as e:
-            # We don't want to catch bare exceptions but don't know
-            # what this was supposed to catch. Log it.
-            logger.info("\n reindex \n exeption:", e, "type:", type(e))
-
-            # getting to exeption: list index out of range
-            # type: <type 'exceptions.IndexError'>
-
             logger.debug("Caught unknown exception type %s: %s", type(e).__name__, e)
             sol_num = 1
 
@@ -387,7 +379,7 @@ def build_command_lst(node_obj, cmd_lst):
 
     cmd_lst_to_run.append(lst_inner)
 
-    # logger.info("\n\n test:", cmd_lst_to_run, "\n")
+    # logger.info(f"\n\n test: {cmd_lst_to_run}\n")
 
     return cmd_lst_to_run
 
@@ -490,7 +482,7 @@ def generate_report(node_obj):
 
         tst_path = os.path.join(cwd_path, htm_fil)
         if not (os.path.exists(tst_path)):
-            logger.debug("\n ___________________________ tst_path =", tst_path, "\n")
+            logger.debug("\n ___________________________ tst_path = %s", tst_path)
             if node_obj.ll_command_lst[0][0] == "find_spots":
                 rep_cmd = "dials.report " + refl_inp + " " + deps_outp + " " + html_outp
 
@@ -539,7 +531,7 @@ def generate_report(node_obj):
     return rep_out
 
 
-class DialsCommand(object):
+class DialsCommand:
     def __init__(self):
         logger.debug("creating new DialsCommand (obj)")
         self.full_cmd_lst = [None]
@@ -574,7 +566,7 @@ class DialsCommand(object):
 
                 cwd_path = os.path.join(sys_arg.directory, "dui_files")
 
-                #logger.info("\nRunning:", run_cmd, "\n")
+                # logger.info(f"\nRunning: {run_cmd}\n")
 
                 my_process = subprocess.Popen(
                     run_cmd,
@@ -587,13 +579,10 @@ class DialsCommand(object):
                 self.my_pid = my_process.pid
                 for line in iter(my_process.stdout.readline, b""):
                     single_line = line[0 : len(line) - 1]
-                    # logger.info(">>: ", single_line)
                     self.tmp_std_all.append(single_line)
-                    try:
-                        ref_to_class.emit_print_signal(single_line)
 
-                    except AttributeError:
-                        logger.info(">>: ", single_line)
+                    if ref_to_class:
+                        ref_to_class.emit_print_signal(single_line)
 
                 my_process.wait()
                 my_process.stdout.close()
@@ -603,7 +592,9 @@ class DialsCommand(object):
                 else:
                     local_success = False
                     # TODO handle error outputs
-                    logger.info("\n __________________ Failed ______________________ \n")
+                    logger.info(
+                        "\n __________________ Failed ______________________ \n"
+                    )
                     try:
                         ref_to_class.emit_fail_signal()
                         return False
@@ -661,7 +652,7 @@ def print_list(lst, curr):
         logger.info(stp_str)
 
 
-class TreeShow(object):
+class TreeShow:
     def __init__(self):
         self.ind_spc = "      "
         self.ind_lin = "------"
@@ -683,7 +674,7 @@ class TreeShow(object):
         self.add_tree(step=my_runner.step_list[0], indent=0)
         self.tree_print(my_runner.current_line)
         # TODO maybe here goes a print print function instead of logger ...
-        logger.info("---------------------" + self.max_indent * self.ind_lin)
+        logger.info("---------------------%s", self.max_indent * self.ind_lin)
 
     def add_tree(self, step=None, indent=None):
         if step.success is True:
@@ -693,7 +684,7 @@ class TreeShow(object):
         else:
             stp_prn = " N "
 
-        str_lin_num = "{0:3}".format(int(step.lin_num))
+        str_lin_num = "{:3}".format(int(step.lin_num))
 
         stp_prn += str_lin_num + self.ind_spc * indent + r"   \___"
         stp_prn += str(step.ll_command_lst[0][0])

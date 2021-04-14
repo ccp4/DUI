@@ -7,7 +7,23 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
+
+import logging
+import os
+import pickle
+import shutil
+import sys
+from pathlib import Path
+
+from dui.cli_utils import (
+    DialsCommand,
+    TreeShow,
+    build_command_lst,
+    generate_predict,
+    generate_report,
+    get_next_step,
+    sys_arg,
+)
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,46 +40,10 @@ from __future__ import absolute_import, division, print_function
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import logging
-import os
-import pickle
-import shutil
-import sys
-
-from six.moves import input
-
-# if __name__ == "__main__" and __package__ is None:
-try:
-    from os import path
-
-    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-    from cli_utils import (
-        TreeShow,
-        DialsCommand,
-        sys_arg,
-        generate_report,
-        build_command_lst,
-        get_next_step,
-        generate_predict,
-    )
-
-except ImportError:
-    # else:
-    from .cli_utils import (
-        TreeShow,
-        DialsCommand,
-        sys_arg,
-        generate_report,
-        build_command_lst,
-        get_next_step,
-        generate_predict,
-    )
-
 logger = logging.getLogger(__name__)
 
 
-class CommandNode(object):
+class CommandNode:
     dials_com_lst = [
         "import",
         "find_spots",
@@ -100,7 +80,7 @@ class CommandNode(object):
         # self.work_dir = os.getcwd()
 
     def __call__(self, cmd_lst, ref_to_class):
-        # logger.info("\n cmd_lst in =", cmd_lst)
+        # logger.info(f"\n cmd_lst in = {cmd_lst}")
         self.ll_command_lst = list(cmd_lst)
         if cmd_lst == ["fail"]:
             # testing virtual failed step
@@ -110,10 +90,13 @@ class CommandNode(object):
         else:
             if cmd_lst[0][0] in self.dials_com_lst:
                 self.build_command(cmd_lst)
-                # logger.info("Running:", self.cmd_lst_to_run)
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
+                # For cases where the run command does not write it's own log
+                # file, we need to create one - so there is something to
+                # display. This includes: Reindex, generate_mask - see
+                # generated list in cli_utils.build_command_lst
                 if self.log_file_out is None:
                     logger.info("\n *** time to write ...log_file_out manually *** \n")
 
@@ -124,27 +107,16 @@ class CommandNode(object):
                     cwd_path = os.path.join(sys_arg.directory, "dui_files")
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
-                    '''
-                    logger.info("..log_file_out =", file_path, "\n")
-                    logger.info(
-                        "self.dials_command.tmp_std_all:",
-                        self.dials_command.tmp_std_all,
+                    Path(file_path).write_bytes(
+                        b"\n".join(self.dials_command.tmp_std_all) + b"\n"
                     )
-                    '''
-
-                    fil_obj = open(file_path, "w")
-                    for line_out in self.dials_command.tmp_std_all:
-                        fil_obj.write(line_out)
-                        fil_obj.write("\n")
-
-                    fil_obj.close()
 
                 logger.info("\n Done \n")
                 # self.gen_repr_n_pred()
 
             else:
                 logger.info("\n NOT dials command")
-                logger.info("cmd_lst =", cmd_lst, "\n")
+                logger.info("cmd_lst = %s", cmd_lst)
                 self.success = False
 
         self.info_generating = False
@@ -185,7 +157,7 @@ class CommandNode(object):
         return get_next_step(self)
 
 
-class Runner(object):
+class Runner:
     def __init__(self):
         root_node = CommandNode(prev_step=None)
         root_node.success = True
@@ -400,9 +372,7 @@ if __name__ == "__main__" and __package__ is None:
         # 'module' object has no attribute 'CommandNode'
 
     except Exception as e:
-        logger.info("str(e) = %s", str(e))
-        logger.info("e.__doc__ = %s", e.__doc__)
-        logger.info("e.message = %s", e.message)
+        logger.info("%s: %s", type(e).__name__, e)
         idials_runner = Runner()
         try:
             shutil.rmtree(storage_path + "/dui_files")
@@ -425,12 +395,12 @@ if __name__ == "__main__" and __package__ is None:
             logger.info(" ... interrupting")
             sys.exit(0)
 
-        except:
-            logger.info("Caught << some error >>", e)
+        except BaseException as e:
+            logger.info("Caught << some error >> %s", e)
             logger.info(" ... interrupting")
             sys.exit(1)
 
-        logger.info("command =", command)
+        logger.info("command = %s", command)
         if command[0:5] == "goto ":
             idials_runner.run(command.split(" "), None)
             tree_output(idials_runner)

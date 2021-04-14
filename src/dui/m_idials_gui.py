@@ -6,8 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,102 +20,55 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 import logging
-import os
 import pickle
-import traceback
+import re
 import time
+import traceback
+from pathlib import Path
 
-
-from six import raise_from
-
-try:
-    from _version import __version__
-    from dynamic_reindex_gui import MyReindexOpts
-    from cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-    from custom_widgets import ParamWidget, MaskPage, BeamCentrPage
-    from gui_utils import (
-        CliOutView,
-        Text_w_Bar,
-        OuterCaller,
-        update_info,
-        update_pbar_msg,
-        kill_w_child,
-        TreeNavWidget,
-        ACTIONS,
-        MyActionButton,
-        try_find_prev_mask_pickle,
-        try_move_last_info,
-        get_main_path,
-    )
-    from m_idials import Runner
-    from outputs_n_viewers.web_page_view import WebTab
-    from outputs_n_viewers.img_view_tools import ProgBarBox
-    from outputs_n_viewers.img_viewer import MyImgWin
-    from outputs_gui import InfoWidget
-    from qt import (
-        QHBoxLayout,
-        QIcon,
-        QMainWindow,
-        QModelIndex,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSizePolicy,
-        QSplitter,
-        QStackedWidget,
-        Qt,
-        QTabWidget,
-        QThread,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-
-except ImportError:
-    from ._version import __version__
-    from .dynamic_reindex_gui import MyReindexOpts
-    from .cli_utils import TreeShow, prn_lst_lst_cmd, sys_arg, build_mask_command_lst
-    from .custom_widgets import ParamWidget, MaskPage, BeamCentrPage
-    from .gui_utils import (
-        CliOutView,
-        Text_w_Bar,
-        OuterCaller,
-        update_info,
-        update_pbar_msg,
-        kill_w_child,
-        TreeNavWidget,
-        ACTIONS,
-        MyActionButton,
-        try_find_prev_mask_pickle,
-        try_move_last_info,
-        get_main_path,
-    )
-    from .m_idials import Runner
-    from .outputs_n_viewers.web_page_view import WebTab
-    from .outputs_n_viewers.img_view_tools import ProgBarBox
-    from .outputs_n_viewers.img_viewer import MyImgWin
-    from .outputs_gui import InfoWidget
-    from .qt import (
-        QHBoxLayout,
-        QIcon,
-        QMainWindow,
-        QModelIndex,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSizePolicy,
-        QSplitter,
-        QStackedWidget,
-        Qt,
-        QTabWidget,
-        QThread,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
+from ._version import __version__
+from .cli_utils import TreeShow, build_mask_command_lst, prn_lst_lst_cmd, sys_arg
+from .custom_widgets import BeamCentrPage, MaskPage, ParamWidget
+from .dynamic_reindex_gui import MyReindexOpts
+from .gui_utils import (
+    ACTIONS,
+    CliOutView,
+    MyActionButton,
+    OuterCaller,
+    Text_w_Bar,
+    TreeNavWidget,
+    get_main_path,
+    kill_w_child,
+    try_find_prev_mask_pickle,
+    try_move_last_info,
+    update_info,
+    update_pbar_msg,
+)
+from .m_idials import Runner
+from .outputs_gui import InfoWidget
+from .outputs_n_viewers.img_view_tools import ProgBarBox
+from .outputs_n_viewers.img_viewer import MyImgWin
+from .outputs_n_viewers.web_page_view import WebTab
+from .qt import (
+    QDialog,
+    QHBoxLayout,
+    QIcon,
+    QMainWindow,
+    QModelIndex,
+    QPushButton,
+    QSize,
+    QSizePolicy,
+    QSplitter,
+    QStackedWidget,
+    Qt,
+    QTabWidget,
+    QThread,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +78,7 @@ class CheckStatusThread(QThread):
     end_busy_box = Signal()
 
     def __init__(self, parent=None):
-        super(CheckStatusThread, self).__init__()
+        super().__init__(parent)
 
     def __call__(self, ref_to_controler):
         self.ref_to_controler = ref_to_controler
@@ -159,7 +110,7 @@ class CommandThread(QThread):
     busy_box_off = Signal()
 
     def __init__(self, parent=None):
-        super(CommandThread, self).__init__()
+        super().__init__(parent)
 
     def __call__(self, cmd_to_run, ref_to_controler):
         self.cmd_to_run = cmd_to_run
@@ -217,7 +168,7 @@ class ControlWidget(QWidget):
     click_b_centr = Signal()
 
     def __init__(self, parent=None):
-        super(ControlWidget, self).__init__()
+        super().__init__(parent)
 
         top_box = QVBoxLayout()
         # top_box.setMargin(0)
@@ -346,7 +297,7 @@ class ControlWidget(QWidget):
 
         else:
             logger.info("No action widget found in set_widget")
-            logger.info("nxt_cmd =", nxt_cmd)
+            logger.info("nxt_cmd = %s", nxt_cmd)
 
     def _action_button_clicked(self):
         "Slot: An action button was clicked"
@@ -393,7 +344,7 @@ class ControlWidget(QWidget):
 
 class StopRunRetry(QWidget):
     def __init__(self, parent=None):
-        super(StopRunRetry, self).__init__()
+        super().__init__(parent)
 
         main_path = get_main_path()
 
@@ -446,23 +397,24 @@ class DUIDataLoadingError(Exception):
 
 
 def load_previous_state(dui_files_path):
-    with open(os.path.join(dui_files_path, "bkp.pickle"), "rb") as bkp_in:
+    with open(dui_files_path / "bkp.pickle", "rb") as bkp_in:
         return pickle.load(bkp_in)
 
 
 class MainWidget(QMainWindow):
     def __init__(self):
-        super(MainWidget, self).__init__()
+        super().__init__()
 
-        self.my_pop = None  # Any child popup windows. Only bravais_table ATM
-        self.storage_path = sys_arg.directory
+        # Any child popup windows. Only bravais_table ATM
+        self.reindex_dialog: MyReindexOpts = None
+        self.storage_path = Path(sys_arg.directory)
 
-        refresh_gui = False
+        restoring_session = False
 
         # Load the previous state of DUI, if present
-        dui_files_path = os.path.join(self.storage_path, "dui_files")
+        dui_files_path = self.storage_path / "dui_files"
 
-        if os.path.isfile(os.path.join(dui_files_path, "bkp.pickle")):
+        if (dui_files_path / "bkp.pickle").is_file():
             try:
                 self.idials_runner = load_previous_state(dui_files_path)
 
@@ -470,14 +422,10 @@ class MainWidget(QMainWindow):
                 # Something went wrong - tell the user then close
                 msg = traceback.format_exc()
                 logger.error("ERROR LOADING PREVIOUS DATA:\n%s", msg)
-                raise_from(DUIDataLoadingError(msg), e)
+                raise DUIDataLoadingError(msg) from e
 
-            refresh_gui = True
+            restoring_session = True
         else:
-            # No dui_files path - start with a fresh state
-            if not os.path.isdir(dui_files_path):
-                os.mkdir(dui_files_path)
-
             self.idials_runner = Runner()
 
         self.gui2_log = {"pairs_list": []}
@@ -516,11 +464,10 @@ class MainWidget(QMainWindow):
         centre_control_box.addWidget(self.stop_run_retry)
         left_control_box.addLayout(centre_control_box)
 
+        # Splitters can only contain widgets, not layouts
         dummy_left_widget = QWidget()
-        dummy_h_layout = QHBoxLayout()
-        dummy_h_layout.addLayout(left_control_box)
-        dummy_left_widget.setLayout(dummy_h_layout)
-        dummy_left_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        left_control_box.setContentsMargins(0, 0, 0, 0)
+        dummy_left_widget.setLayout(left_control_box)
 
         h_main_splitter = QSplitter()
         h_main_splitter.setOrientation(Qt.Horizontal)
@@ -555,11 +502,7 @@ class MainWidget(QMainWindow):
         self.centre_par_widget.finished_b_centr.connect(self.img_view.unchec_b_centr)
         self.centre_par_widget.click_b_centr.connect(self.img_view.chec_b_centr)
 
-        v_info_splitter = QSplitter()
-        v_info_splitter.setOrientation(Qt.Vertical)
-        v_info_splitter.addWidget(self.output_info_tabs)
-
-        h_main_splitter.addWidget(v_info_splitter)
+        h_main_splitter.addWidget(self.output_info_tabs)
 
         main_box.addWidget(h_main_splitter)
 
@@ -581,18 +524,16 @@ class MainWidget(QMainWindow):
         self.main_widget.setLayout(main_box)
         self.setCentralWidget(self.main_widget)
 
-        self.setWindowTitle("CCP4 DUI - {}: {}".format(__version__,
-                dui_files_path))
+        self.setWindowTitle(f"CCP4 DUI - {__version__}: {dui_files_path}")
         self.setWindowIcon(QIcon(self.stop_run_retry.dials_logo_path))
 
+        # Variable supresses showing the reindex GUI if on reindex step
         self.just_reindexed = False
         self.user_stoped = False
         self.reconnect_when_ready()
 
-        self.my_pop = None
-
-        if refresh_gui:
-            self.refresh_my_gui()
+        if restoring_session:
+            self.restore_gui_after_load()
 
     def pop_mask_list(self, mask_itm_lst):
 
@@ -604,7 +545,7 @@ class MainWidget(QMainWindow):
         )
 
     def pop_b_centr_coord(self, new_b_centr):
-        logger.info("New b_centr =", new_b_centr)
+        logger.info("New b_centr = %s", new_b_centr)
         self.centre_par_widget.b_centr_page.set_par(new_b_centr)
         self.centre_par_widget.step_param_widg.setCurrentWidget(
             self.centre_par_widget.b_centr_page
@@ -709,13 +650,6 @@ class MainWidget(QMainWindow):
             self.centre_par_widget.step_param_widg.currentWidget()
         )
         action_name = current_parameter_widget.my_widget.command_lst[0][0]
-
-        to_remove = """
-        if (
-            action_name in ["find_spots", "integrate"]
-            and self.idials_runner.current_node.success is None
-        ):
-        """
 
         if (
             action_name == "find_spots"
@@ -824,6 +758,9 @@ class MainWidget(QMainWindow):
         self.reconnect_when_ready()
 
     def cmd_launch(self, new_cmd):
+        # Ensure output directory for log files exists
+        (self.storage_path / "dui_files").mkdir(exist_ok=True)
+
         # Running WITH threading
         self.cli_out.clear()
         self.cli_out.make_green()
@@ -852,16 +789,8 @@ class MainWidget(QMainWindow):
 
         elif tmp_curr.ll_command_lst[0][0] == "reindex" and tmp_curr.success is True:
 
+            # Supress opening of the reindex popup next time
             self.just_reindexed = True
-            try:
-                self.my_pop.close()
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                logger.debug("no need to close reindex table")
 
         elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
             self.gui2_log = try_move_last_info(tmp_curr, self.gui2_log)
@@ -882,11 +811,11 @@ class MainWidget(QMainWindow):
         ):
             self.img_view.my_painter.reset_bc_tool(None)
 
-        with open(self.storage_path + "/dui_files/bkp.pickle", "wb") as bkp_out:
+        with open(self.storage_path / "dui_files" / "bkp.pickle", "wb") as bkp_out:
             pickle.dump(self.idials_runner, bkp_out)
 
     def pop_busy_box(self, text_in_bar):
-        #logger.info("OPENING busy pop bar with the text: ", text_in_bar)
+        # logger.info(f"OPENING busy pop bar with the text: {text_in_bar}")
         if (
             self.idials_runner.current_node.ll_command_lst[0][0]
             != "refine_bravais_settings"
@@ -933,61 +862,40 @@ class MainWidget(QMainWindow):
             "None": [None],
         }
 
-        more_conservative = """
-        cmd_connects = {
-            "Root": ["import"],
-            "import": ["find_spots"],
-            "find_spots": ["index"],
-            "index": ["refine_bravais_settings", "refine", "integrate"],
-            "refine_bravais_settings": [None],
-            "reindex": ["refine", "integrate"],
-            "refine": ["refine_bravais_settings", "refine", "integrate"],
-            "integrate": ["symmetry", "scale", "export"],
-            "symmetry": ["scale", "export"],
-            "scale": ["symmetry", "export"],
-            "export": [None],
-            "generate_mask": ["find_spots"],
-            "modify_geometry":["find_spots"],
-            "None": [None],
-        }
-        """
-
         lst_nxt = cmd_connects[str(tmp_curr.ll_command_lst[0][0])]
         self.centre_par_widget.gray_outs_from_lst(lst_nxt)
 
-    def check_reindex_pop(self):
-        tmp_curr = self.idials_runner.current_node
-        #logger.info("\n_________________________ check_reindex_pop 01 \n")
-        if tmp_curr.ll_command_lst[0][0] == "reindex" and not self.just_reindexed:
-            #logger.info("\n_________________________ check_reindex_pop 02 \n")
-
-            try:
-                self.my_pop = MyReindexOpts()
-                self.my_pop.set_ref(
-                    in_json_path=tmp_curr.prev_step.json_file_out,
-                    lin_num=tmp_curr.prev_step.lin_num,
+    def check_reindex_pop(self, allow_cancel=False):
+        # Always either close popup or open new one when calling this
+        node = self.idials_runner.current_node
+        command = node.ll_command_lst[0]
+        logger.debug(
+            "check_reindex_pop: just_reindexed: %s, command: %s",
+            self.just_reindexed,
+            command,
+        )
+        if command[0] == "reindex" and not self.just_reindexed:
+            # Find if one of the command arguments was a previous solution
+            solution_argument = [x for x in command if "solution=" in x]
+            prev_solution = None
+            if solution_argument:
+                prev_solution = int(
+                    re.match(r"solution=(\d+)", solution_argument[-1]).group(1)
                 )
-                self.my_pop.my_inner_table.opt_signal.connect(self.opt_dobl_clicked)
+                logger.debug("Found previous solution: %s", prev_solution)
 
-            except Exception as my_err:
-                logger.info("ERROR in check_reindex_pop(m_idials_gui) \n")
-                logger.info("str(my_err) = ", str(my_err))
-                logger.info("my_err.__doc__ = ", my_err.__doc__)
-                logger.info("my_err.message = ", my_err.message)
+            logger.debug("Redetermining reindex decision")
+            self.reindex_dialog = MyReindexOpts(
+                parent=self,
+                summary_json=node.prev_step.json_file_out,
+                bravais_node_id=node.prev_step.lin_num,
+                show_cancel=allow_cancel,
+                solution=prev_solution,
+            )
+            self.reindex_dialog.finished.connect(self.reindex_dialog_finished)
+            self.reindex_dialog.open()
 
-            # TODO find an elegant way to interrupt and remove nodes
-
-        else:
-            try:
-                self.my_pop.close()
-            except BaseException as e:
-                # We don't want to catch bare exceptions but don't know
-                # what this was supposed to catch. Log it.
-                logger.debug(
-                    "Caught unknown exception type %s: %s", type(e).__name__, e
-                )
-                logger.debug("no need to close reindex table")
-
+        # Either we closed, or opened - can do so next time also
         self.just_reindexed = False
 
     def update_nav_tree(self):
@@ -1008,28 +916,37 @@ class MainWidget(QMainWindow):
             logger.debug(err_lin)
 
         err_log_file_out = (
-            self.storage_path
-            + "/dui_files"
-            + os.sep
-            + str(curr_step.lin_num)
-            + "_err_out.log"
+            self.storage_path / "dui_files" / f"{curr_step.lin_num}_err_out.log"
         )
 
-        logger.info("\n ERROR \n err_log_file_out = %s %s", err_log_file_out, "\n")
+        logger.info("\n ERROR \n err_log_file_out = %s", err_log_file_out)
 
-        fil_obj = open(err_log_file_out, "w")
+        fil_obj = open(err_log_file_out, "wb")
         for err_lin in curr_step.dials_command.tmp_std_all:
             fil_obj.write(err_lin)
-            fil_obj.write("\n")
+            fil_obj.write(b"\n")
 
         fil_obj.close()
         self.idials_runner.current_node.err_file_out = err_log_file_out
 
-    def opt_dobl_clicked(self, row):
-        re_idx = row + 1
-        logger.debug("Solution clicked = %s", re_idx)
-        cmd_tmp = ["reindex", "solution=" + str(re_idx)]
-        self.cmd_launch([cmd_tmp])
+    def reindex_dialog_finished(self, result: int):
+        """Process the results from a reindex dialog closing."""
+        # Grab the result and discard the dialog
+        reindex_index = self.reindex_dialog.solution
+        self.reindex_dialog = None
+
+        if result == QDialog.DialogCode.Rejected:
+            return
+
+        logger.debug("Chose reindex solution %s", reindex_index)
+
+        # Reindex to this solution
+        node = self.idials_runner.current_node
+        reindex_command = ["reindex", f"solution={reindex_index}"]
+        if node.ll_command_lst[0] != reindex_command or node.success is None:
+            self.cmd_launch([reindex_command])
+        else:
+            logger.info("Reindex would result in no change. Skipping.")
 
     def node_clicked(self, it_index):
 
@@ -1045,13 +962,18 @@ class MainWidget(QMainWindow):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info(" Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info(
+                    " Caught unknown exception type %s: %s", type(e).__name__, e
+                )
                 logger.info("\n Tst A1 \n")
 
             item = self.tree_out.std_mod.itemFromIndex(it_index)
             prn_lst_lst_cmd(item.idials_node)
             lin_num = item.idials_node.lin_num
             cmd_ovr = "goto " + str(lin_num)
+
+            # Suppress reindex gui for cmd_exe - we will try explicitly
+            self.just_reindexed = True
             self.cmd_exe(cmd_ovr)
 
             self.centre_par_widget.set_widget(
@@ -1059,7 +981,9 @@ class MainWidget(QMainWindow):
                 curr_step=self.idials_runner.current_node,
             )
 
-            self.check_reindex_pop()
+            # Always want to show if clicking a new reindex node
+            self.just_reindexed = False
+            self.check_reindex_pop(allow_cancel=True)
 
             self.chouse_if_predict_or_report()
             update_info(self)
@@ -1071,25 +995,35 @@ class MainWidget(QMainWindow):
                 self.update_low_level_command_lst
             )
 
-    def refresh_my_gui(self):
+    def restore_gui_after_load(self):
+        """Restore the GUI state after first loading dui"""
 
         lin_num = self.idials_runner.current_node.lin_num
         logger.debug("doing goto:  %s", lin_num)
         cmd_ovr = "goto " + str(lin_num)
+        # cmd_exe calls check_reindex_pop - prevent displaying reindex gui on load
+        self.just_reindexed = True
         self.cmd_exe(cmd_ovr)
+
         self.centre_par_widget.set_widget(
             nxt_cmd=self.idials_runner.current_node.ll_command_lst[0][0],
             curr_step=self.idials_runner.current_node,
         )
 
-        self.check_reindex_pop()
+        # Called this explicitly to implicitly cause the popup to to close
+        # - we never want to do this now because want to prevent popup opening
+        # self.check_reindex_pop()
+
         self.chouse_if_predict_or_report()
         update_info(self)
         self.check_gray_outs()
         self.reconnect_when_ready()
 
+        # We want to show the dialog next time... probably
+        self.just_reindexed = False
+
         logger.info("\n ... recovering from previous run of GUI \n")
 
     def closeEvent(self, event):
-        if self.my_pop:
-            self.my_pop.close()
+        if self.reindex_dialog:
+            self.reindex_dialog.close()

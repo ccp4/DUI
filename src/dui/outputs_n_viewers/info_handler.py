@@ -6,7 +6,19 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
+
+import json
+import logging
+import pickle
+import sys
+
+from dials.array_family import flex
+from dxtbx.datablock import DataBlockFactory
+from dxtbx.model import Experiment, ExperimentList
+from dxtbx.model.experiment_list import (
+    ExperimentListFactory,
+    InvalidExperimentListError,
+)
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,20 +34,11 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import logging
-import json
-import sys
-
-from dxtbx.model.experiment_list import ExperimentListFactory
-from dxtbx.model import ExperimentList, Experiment
-from dxtbx.datablock import DataBlockFactory
-from dials.array_family import flex
-import pickle
 
 logger = logging.getLogger(__name__)
 
 
-class InfoData(object):
+class InfoData:
     def __init__(self):
 
         self.a = None
@@ -105,7 +108,9 @@ def update_all_data(reflections_path=None, experiments_path=None):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info(" >> Caught unknown exception type:", type(e).__name__, e, "N###")
+            logger.info(
+                " >> Caught unknown exception type: %s, %s", type(e).__name__, e
+            )
 
             logger.info("failed to find reflections")
             logger.info("reflections_path = %s", reflections_path)
@@ -115,10 +120,15 @@ def update_all_data(reflections_path=None, experiments_path=None):
             experiments = ExperimentListFactory.from_json_file(
                 experiments_path, check_format=False
             )
+        except InvalidExperimentListError as e:
+            # Commonly this happens when given a refine_bravais_settings summary file
+            if not experiments_path.endswith("_bravais_summary.json"):
+                logger.info("Got invalid experiment list %s: %s", experiments_path, e)
+
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info("\n exception #1 %s: %s", type(e).__name__, e)
+            logger.info("exception #1 %s: %s", type(e).__name__, e)
 
             # TODO Maybe the next try block is not needed, consider removing all
 
@@ -154,7 +164,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
             mask_np_arr = dat.mask_flex.as_numpy_array()
             dat.np_mask = mask_np_arr
 
-        except IOError:
+        except OSError:
             logger.info("No mask in this node")
             dat.np_mask = None
             dat.mask_flex = None

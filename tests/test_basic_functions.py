@@ -1,11 +1,9 @@
-# coding: utf-8
-
 """Test running DUI, but in a screenshot-friendly way"""
 
 import pytest
 
-from dui.m_idials_gui import MainWidget
 from dui.cli_utils import sys_arg
+from dui.m_idials_gui import MainWidget
 
 
 @pytest.mark.gui

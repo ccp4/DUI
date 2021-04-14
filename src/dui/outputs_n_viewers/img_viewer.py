@@ -6,7 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-from __future__ import absolute_import, division, print_function
 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,115 +21,63 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 import logging
-import sys
 import os
-
-from dials.array_family import flex
-
-from dials.algorithms.image.threshold import (
-    DispersionThresholdDebug,
-    DispersionExtendedThresholdDebug,
-)
-
-from dxtbx.model.experiment_list import ExperimentListFactory
+import sys
 
 import numpy as np
+from dials.algorithms.image.threshold import (
+    DispersionExtendedThresholdDebug,
+    DispersionThresholdDebug,
+)
+from dials.array_family import flex
+from dxtbx.model.experiment_list import ExperimentListFactory
 
-try:
-    sys.path.append("../")
-    from dui.cli_utils import sys_arg
-    from dui.gui_utils import get_main_path
-    from dui.outputs_n_viewers.img_view_tools import (
-        panel_data_as_double,
-        build_qimg,
-        draw_palette_label,
-        find_hkl_near,
-        list_arrange,
-        list_p_arrange,
-    )
-    from dui.qt import (
-        QApplication,
-        QButtonGroup,
-        QCheckBox,
-        QColor,
-        QComboBox,
-        QDoubleSpinBox,
-        QFont,
-        QGroupBox,
-        QHBoxLayout,
-        QIcon,
-        QIntValidator,
-        QLabel,
-        QLineEdit,
-        QMenu,
-        QPainter,
-        QPen,
-        QPixmap,
-        QImage,
-        QPoint,
-        QPointF,
-        QPushButton,
-        QRadioButton,
-        QRect,
-        QRectF,
-        QScrollArea,
-        QSlider,
-        QSpinBox,
-        Qt,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-except ImportError:
-    from ..cli_utils import sys_arg
-    from ..gui_utils import get_main_path
-    from .img_view_tools import (
-        panel_data_as_double,
-        build_qimg,
-        draw_palette_label,
-        find_hkl_near,
-        list_arrange,
-        list_p_arrange,
-    )
-    from ..qt import (
-        QApplication,
-        QButtonGroup,
-        QCheckBox,
-        QColor,
-        QComboBox,
-        QDoubleSpinBox,
-        QFont,
-        QGroupBox,
-        QHBoxLayout,
-        QIcon,
-        QIntValidator,
-        QLabel,
-        QLineEdit,
-        QMenu,
-        QPainter,
-        QPen,
-        QPixmap,
-        QImage,
-        QPoint,
-        QPointF,
-        QPushButton,
-        QRadioButton,
-        QRect,
-        QRectF,
-        QScrollArea,
-        QSlider,
-        QSpinBox,
-        Qt,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-
-from six.moves import range
+from dui.cli_utils import sys_arg
+from dui.gui_utils import get_main_path
+from dui.outputs_n_viewers.img_view_tools import (
+    build_qimg,
+    draw_palette_label,
+    find_hkl_near,
+    list_arrange,
+    list_p_arrange,
+    panel_data_as_double,
+)
+from dui.qt import (
+    QApplication,
+    QButtonGroup,
+    QCheckBox,
+    QColor,
+    QComboBox,
+    QDoubleSpinBox,
+    QFont,
+    QGroupBox,
+    QHBoxLayout,
+    QIcon,
+    QImage,
+    QIntValidator,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QPainter,
+    QPen,
+    QPixmap,
+    QPoint,
+    QPointF,
+    QPushButton,
+    QRadioButton,
+    QRect,
+    QRectF,
+    QScrollArea,
+    QSlider,
+    QSpinBox,
+    Qt,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -244,7 +191,7 @@ class ImgPainter(QWidget):
     ll_b_centr_applied = Signal(list)
 
     def __init__(self, parent=None):
-        super(ImgPainter, self).__init__()
+        super().__init__()
         self.my_parent = parent
 
         self.img = None
@@ -457,12 +404,10 @@ class ImgPainter(QWidget):
         self.update()
 
     def update_my_mask(self, np_mask, mask_flex):
-        # logger.info("\n np_mask =", np_mask, "\n")
         self.np_mask = np_mask
         self.mask_flex = mask_flex
 
         if np_mask is not None:
-            # logger.info("self.np_mask.shape =", self.np_mask.shape)
 
             width = self.np_mask.shape[0]
             height = self.np_mask.shape[1]
@@ -682,17 +627,16 @@ class ImgPainter(QWidget):
         self.resize(scaled_width, scaled_height)
 
         rect = QRect(0, 0, scaled_width, scaled_height)
-        pixmap = QPixmap(self.img)
         painter = QPainter(self)
 
         self._create_pens()
 
-        painter.drawPixmap(rect, pixmap)
+        # pixmap = QPixmap(self.img)
+        # painter.drawPixmap(rect, pixmap)
+        painter.drawText(30, 30, "Image Disabled until SEGV tracked down")
 
         if self.np_mask is not None:
-            # logger.info("Drawing Mask start   ...", end="")
             painter.drawPixmap(rect, self.mask_pixmap)
-            # logger.info(" .Drawing Mask end")
 
         self._paint_crosshairs(painter)
 
@@ -796,7 +740,7 @@ class ImgPainter(QWidget):
 
 class PopActionsMenu(QMenu):
     def __init__(self, parent=None):
-        super(PopActionsMenu, self).__init__(parent)
+        super().__init__(parent)
         self.my_parent = parent
 
         ref_bond_group = QButtonGroup()
@@ -884,7 +828,6 @@ class PopActionsMenu(QMenu):
         my_main_box.addWidget(spot_find_grp)
 
         self.setLayout(my_main_box)
-        self.show()
 
 
 class PopDisplayMenu(QMenu):
@@ -892,7 +835,7 @@ class PopDisplayMenu(QMenu):
     sliders_changed = Signal(int, int)
 
     def __init__(self, parent=None):
-        super(PopDisplayMenu, self).__init__(parent)
+        super().__init__(parent)
         self.my_parent = parent
 
         # group to tune up palette
@@ -981,7 +924,6 @@ class PopDisplayMenu(QMenu):
         main_top_layout.addLayout(bott_layout)
 
         self.setLayout(main_top_layout)
-        self.show()
 
     def showEvent(self, event):
         logger.debug("repainting")
@@ -1001,8 +943,8 @@ class PopDisplayMenu(QMenu):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
-            logger.info("no (...my_sweep) yet, skipping palette label paint")
+            logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
+            logger.info("no (...my_sweep) yet - skipping palette label paint")
 
     def slider_max_changed(self, value):
         if self.my_parent.slider_min.sliderPosition() > value - 15:
@@ -1051,9 +993,7 @@ class ThresholdDebugGenerator:
         elif self.algorithm == "dispersion extended":
             Debug = DispersionExtendedThresholdDebug
         else:
-            raise ValueError(
-                "Unknown spot-finding algorithm: {}".format(self.algorithm)
-            )
+            raise ValueError(f"Unknown spot-finding algorithm: {self.algorithm}")
 
         debug = Debug(
             self.image,
@@ -1083,7 +1023,7 @@ class MyImgWin(QWidget):
     new_pars_applied = Signal(list)
 
     def __init__(self, json_file_path=None, pckl_file_path=None):
-        super(MyImgWin, self).__init__()
+        super().__init__()
 
         self.my_scrollable = QScrollArea()
         self.my_painter = ImgPainter(self)
@@ -1601,7 +1541,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
                 logger.info("Unable to calculate mean and adjust contrast")
 
     def ini_datablock(self, json_file_path):
@@ -1619,7 +1559,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
                 logger.info("Failed to load images from  datablock.json")
 
             try:
@@ -1631,7 +1571,6 @@ class MyImgWin(QWidget):
                 """
 
                 n_of_imgs = len(self.my_sweep.indices())
-                # logger.info("n_of_imgs =", n_of_imgs)
 
                 self.img_select.setMaximum(n_of_imgs)
                 self.img_select.setMinimum(1)
@@ -1645,7 +1584,7 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
                 logger.info("Failed to set up IMG control dialog")
 
         self.btn_first_clicked()
@@ -1682,10 +1621,10 @@ class MyImgWin(QWidget):
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
-                bbox_col = map(list, table["bbox"])
-                pan_col = map(int, table["panel"])
+                bbox_col = list(map(list, table["bbox"]))
+                pan_col = list(map(int, table["panel"]))
                 try:
-                    hkl_col = map(str, table["miller_index"])
+                    hkl_col = list(map(str, table["miller_index"]))
 
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
@@ -1708,23 +1647,20 @@ class MyImgWin(QWidget):
             except BaseException as e:
                 # We don't want to catch bare exceptions but don't know
                 # what this was supposed to catch. Log it.
-                logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
+                logger.info("Caught unknown exception %s :%s", type(e).__name__, e)
                 self.find_spt_flat_data_lst = [None]
                 logger.debug("\n something failed with the reflection pickle \n\n")
 
             try:
-
-                # logger.info("pckl_file_path[1]=", pckl_file_path[1])
-
                 table = flex.reflection_table.from_file(pckl_file_path[1])
 
                 logger.debug("table = %s", table)
                 logger.debug("len(table) =  %s", len(table))
                 # n_refs = len(table)
-                pos_col = map(list, table["xyzcal.px"])
-                pan_col = map(int, table["panel"])
+                pos_col = list(map(list, table["xyzcal.px"]))
+                pan_col = list(map(int, table["panel"]))
                 try:
-                    hkl_col = map(str, table["miller_index"])
+                    hkl_col = list(map(str, table["miller_index"]))
 
                 except BaseException as e:
                     # We don't want to catch bare exceptions but don't know
@@ -1767,16 +1703,16 @@ class MyImgWin(QWidget):
             self.bc_applied.emit(new_bc)
 
     def unchec_my_mask(self):
-        self.chk_box_mask.setCheckState(False)
+        self.chk_box_mask.setChecked(False)
 
     def chec_my_mask(self):
-        self.chk_box_mask.setCheckState(True)
+        self.chk_box_mask.setChecked(True)
 
     def unchec_b_centr(self):
-        self.chk_box_B_centr.setCheckState(False)
+        self.chk_box_B_centr.setChecked(False)
 
     def chec_b_centr(self):
-        self.chk_box_B_centr.setCheckState(True)
+        self.chk_box_B_centr.setChecked(True)
 
     def zoom2one(self):
         self.my_painter.scale2fact()
@@ -1812,7 +1748,7 @@ class MyImgWin(QWidget):
             image_file = os.path.basename(
                 self.ref2exp.imageset.get_image_identifier(self.img_num - 1)
             )
-            new_label_txt += "{0}: ".format(image_file)
+            new_label_txt += f"{image_file}: "
 
         if self.img_arr:
             new_label_txt += (
@@ -1831,8 +1767,8 @@ class MyImgWin(QWidget):
             mybeam = self.ref2exp.beam
             p = self.ref2exp.detector[0]
             res_float = p.get_resolution_at_pixel(mybeam.get_s0(), (x_pos, y_pos))
-            res_str = str("{: 4.2f}".format(res_float))
-            new_label_txt += ", resolution = " + res_str + " " + u"\u00C5"
+            res_str = str(f"{res_float: 4.2f}")
+            new_label_txt += f", resolution = {res_str} Å"
 
         else:
             new_label_txt += ", resolution = ?"

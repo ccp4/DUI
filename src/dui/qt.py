@@ -5,99 +5,52 @@ QT Cross-compatibility for DUI
 # Because we *-import as a shim in this file, ignore for flake8 purposes
 # flake8: noqa
 
-from __future__ import absolute_import, division, print_function
 
 import logging
 import os
 
 logger = logging.getLogger(__name__)
 
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWebEngineWidgets import *
+from PySide2.QtWidgets import *
+
+# In case we're using pytest-qt, force the same API
+os.environ["PYTEST_QT_API"] = "pyside2"
+
+logger.info("Using PySide2 for QT")
+
 try:
-    # Try preferred interface first - PyQt5
-    from PyQt5.QtWidgets import *
-    from PyQt5.QtCore import *
-    from PyQt5.QtGui import *
-
-    from PyQt5 import QtWebEngineWidgets as QWebSettings
-    from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
-    from PyQt5.QtWebEngineWidgets import *
-    from PyQt5 import uic
-
-    # Signal implementation changes slightly across implementations
-    Signal = pyqtSignal
-
-    QT5 = True
-    # In case we're using pytest-qt, force the same API
-    os.environ["PYTEST_QT_API"] = "pyqt5"
-
-    logger.info("Using PyQt5 for QT ...")
-
+    from PySide2.QtUiTools import loadUiType
 except ImportError:
-    # Fallback to QT4
-    try:
-        # Explicitly choose the v2 APIs for QT4
-        try:
-            import sip
-        except ImportError:
-            from PyQt4 import sip
+    logger.info("no loadUiType in PySide; using backport")
 
-        try:
-            sip.setapi("QDate", 2)
-            sip.setapi("QDateTime", 2)
-            sip.setapi("QString", 2)
-            sip.setapi("QTextStream", 2)
-            sip.setapi("QTime", 2)
-            sip.setapi("QUrl", 2)
-            sip.setapi("QVariant", 2)
-        except ValueError:
-            # These may have already been set
-            pass
+    from io import StringIO
+    from xml.etree import ElementTree
 
-        # Primary interface: PyQt4
-        from PyQt4.QtGui import *
-        from PyQt4.QtCore import *
-        from PyQt4.QtWebKit import *
-        from PyQt4 import uic
+    from PySide2 import QtWidgets
+    from pyside2uic import compileUi
 
-        Signal = pyqtSignal
+    # Backport from https://stackoverflow.com/a/56658315/1118662
+    # Included in PySide2 from 5.14.2
+    def loadUiType(design):
+        """
+        PySide2 equivalent of PyQt5's `uic.loadUiType()` function.
 
-        QT5 = False
-        # In case we're using pytest-qt, force the same API
-        os.environ["PYTEST_QT_API"] = "pyqt4v2"
-
-        logger.info("Using PyQt4 for QT")
-
-    except ImportError:
-        # Tying both versions of PySide
-        try:
-            # Backup: try PySide
-            from PySide.QtGui import *
-            from PySide.QtCore import *
-            from PySide.QtWebKit import *
-
-            # from PySide import uic
-
-            QT5 = False
-            # In case we're using pytest-qt, force the same API
-            os.environ["PYTEST_QT_API"] = "pyside"
-
-            logger.info("Using PySide for QT")
-        except ImportError:
-            # Backup: try PySide
-            logger.info("Try pyside2")
-            from PySide2.QtGui import *
-            from PySide2.QtCore import *
-            from PySide2.QtWidgets import *
-            from PySide2.QtWebKit import *
-
-            # from PySide2 import QtWebEngineWidgets as QWebSettings
-            # from PySide2.QtWebEngineWidgets import *
-
-            # QWebSettings = PySide2.QtWebEngineWidgets
-            # from PySide2.QtWebKit import *
-
-            QT5 = True
-            # In case we're using pytest-qt, force the same API
-            os.environ["PYTEST_QT_API"] = "pyside2"
-
-            logger.info("Using PySide2 for QT")
+        Compiles the given `.ui` design file in-memory and executes the
+        resulting Python code. Returns form and base class.
+        """
+        parsed_xml = ElementTree.parse(design)
+        widget_class = parsed_xml.find("widget").get("class")
+        form_class = parsed_xml.find("class").text
+        with open(design) as input:
+            output = StringIO()
+            compileUi(input, output, indent=0)
+            source_code = output.getvalue()
+            syntax_tree = compile(source_code, filename="<string>", mode="exec")
+            scope = {}
+            exec(syntax_tree, scope)
+            form_class = scope[f"Ui_{form_class}"]
+            base_class = eval(f"QtWidgets.{widget_class}")
+        return (form_class, base_class)

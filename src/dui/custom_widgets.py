@@ -6,9 +6,6 @@ With strong help from DIALS and CCP4 teams
 
 copyright (c) CCP4 - DLS
 """
-
-from __future__ import absolute_import, division, print_function
-
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -23,108 +20,67 @@ from __future__ import absolute_import, division, print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 import logging
 import os
+import shlex
 import sys
-import libtbx.phil
+from typing import List
 
+import libtbx.phil
 from dials.command_line.find_spots import phil_scope as phil_scope_find_spots
 from dials.command_line.index import working_phil as phil_scope_index
+from dials.command_line.integrate import phil_scope as phil_scope_integrate
+from dials.command_line.refine import working_phil as phil_scope_refine
 from dials.command_line.refine_bravais_settings import (
     phil_scope as phil_scope_r_b_settings,
 )
 
-# from dials.command_line.refine import phil_scope as phil_scope_refine
-from dials.command_line.refine import working_phil as phil_scope_refine
-
-from dials.command_line.integrate import phil_scope as phil_scope_integrate
+from dui.cli_utils import sys_arg
+from dui.gui_utils import escaped_join, get_import_run_string, get_main_path
+from dui.params_live_gui_generator import PhilWidget
+from dui.qt import (
+    QApplication,
+    QCheckBox,
+    QColor,
+    QFileDialog,
+    QFont,
+    QHBoxLayout,
+    QIcon,
+    QLabel,
+    QLineEdit,
+    QPalette,
+    QPushButton,
+    QScrollArea,
+    QSize,
+    QSpinBox,
+    QTabWidget,
+    QTimer,
+    QVBoxLayout,
+    QWidget,
+    Signal,
+)
+from dui.simpler_param_widgets import (
+    FindspotsSimplerParameterTab,
+    IndexSimplerParamTab,
+    IntegrateSimplerParamTab,
+    RefineBravaiSimplerParamTab,
+    RefineSimplerParamTab,
+    ScaleSimplerParamTab,
+    SymmetrySimplerParamTab,
+)
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
 # still runs. This isn't generally robust but solves this specifically
 try:
     from dials.command_line.symmetry import phil_scope as phil_scope_symetry
-
 except ImportError:
     phil_scope_symetry = libtbx.phil.parse("")
 
 try:
     from dials.command_line.scale import phil_scope as phil_scope_scale
-
 except ImportError:
     phil_scope_scale = libtbx.phil.parse("")
-
-# from dials.command_line.export import phil_scope as phil_scope_export
-try:
-    from gui_utils import get_import_run_string, get_main_path
-    from params_live_gui_generator import PhilWidget
-    from cli_utils import sys_arg
-    from simpler_param_widgets import (
-        FindspotsSimplerParameterTab,
-        IndexSimplerParamTab,
-        RefineBravaiSimplerParamTab,
-        RefineSimplerParamTab,
-        IntegrateSimplerParamTab,
-        SymmetrySimplerParamTab,
-        ScaleSimplerParamTab,
-    )
-    from qt import (
-        QApplication,
-        QCheckBox,
-        QColor,
-        QFileDialog,
-        QFont,
-        QHBoxLayout,
-        QIcon,
-        QLabel,
-        QLineEdit,
-        QPalette,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSpinBox,
-        QTabWidget,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-except ImportError:
-    from .gui_utils import get_import_run_string, get_main_path
-    from .params_live_gui_generator import PhilWidget
-    from .cli_utils import sys_arg
-    from .simpler_param_widgets import (
-        FindspotsSimplerParameterTab,
-        IndexSimplerParamTab,
-        RefineBravaiSimplerParamTab,
-        RefineSimplerParamTab,
-        IntegrateSimplerParamTab,
-        SymmetrySimplerParamTab,
-        ScaleSimplerParamTab,
-    )
-    from .qt import (
-        QApplication,
-        QCheckBox,
-        QColor,
-        QFileDialog,
-        QFont,
-        QHBoxLayout,
-        QIcon,
-        QLabel,
-        QLineEdit,
-        QPalette,
-        QPushButton,
-        QScrollArea,
-        QSize,
-        QSpinBox,
-        QTabWidget,
-        QTimer,
-        QVBoxLayout,
-        QWidget,
-        Signal,
-    )
-
-from six.moves import range
 
 logger = logging.getLogger(__name__)
 
@@ -143,17 +99,17 @@ class BeamCentrPage(QWidget):
     b_centr_set = Signal()
 
     def __init__(self, parent=None):
-        super(BeamCentrPage, self).__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Modify Geometry"))
+        step_label = QLabel("Modify Geometry")
         step_label.setFont(label_font)
 
-        self.data_bc_label = QLabel(str("empty Data ... for now"))
+        self.data_bc_label = QLabel("empty Data ... for now")
 
         main_v_box.addWidget(step_label)
         main_v_box.addStretch()
@@ -173,7 +129,7 @@ class BeamCentrPage(QWidget):
 
     def update_param(self, curr_step):
         logger.info("update_param(BeamCentrPage)")
-        logger.info("curr_step.ll_command_lst:", curr_step.ll_command_lst)
+        logger.info("curr_step.ll_command_lst: %s", curr_step.ll_command_lst)
 
     def activate_me(self, cur_nod=None):
         self.b_centr_set.emit()
@@ -182,7 +138,7 @@ class BeamCentrPage(QWidget):
         logger.info("reset_par(BeamCentrPage)")
 
     def set_par(self, lst_par):
-        logger.info("set_par(BeamCentrPage)", lst_par)
+        logger.info("set_par(BeamCentrPage) %s", lst_par)
 
         self.data_bc_label.setText(
             "New beam centre:\n ("
@@ -206,11 +162,11 @@ class BeamCentrPage(QWidget):
 
 class InnerMask(QWidget):
     def __init__(self, parent=None):
-        super(InnerMask, self).__init__(parent=None)
+        super().__init__(parent)
 
         self.outher_box = QVBoxLayout()
         self.list_widg = QVBoxLayout()
-        self.list_widg.addWidget(QLabel(str("empty List ... for now")))
+        self.list_widg.addWidget(QLabel("empty List ... for now"))
         self.outher_box.addStretch()
         self.outher_box.addLayout(self.list_widg)
         self.outher_box.addStretch()
@@ -242,14 +198,14 @@ class MaskPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(MaskPage, self).__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Apply Mask"))
+        step_label = QLabel("Apply Mask")
         step_label.setFont(label_font)
 
         self.my_scroll_area = QScrollArea()
@@ -283,7 +239,7 @@ class MaskPage(QWidget):
         self.command_lst = [["generate_mask"]]
 
     def set_par(self, lst_par):
-        # logger.info("set_par(MaskPage)", lst_par)
+        # logger.info(f"set_par(MaskPage) {lst_par}")
         self.update_widget_dat(lst_par)
         self.update_command_lst_medium_level.emit(lst_par[0])
 
@@ -303,17 +259,17 @@ class ExportPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(ExportPage, self).__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Export"))
+        step_label = QLabel("Export")
         step_label.setFont(label_font)
 
-        out_file_label = QLabel(str("mtz output name:"))
+        out_file_label = QLabel("mtz output name:")
 
         self.simple_lin = QLineEdit(self)
         self.simple_lin.textChanged.connect(self.update_command)
@@ -322,7 +278,7 @@ class ExportPage(QWidget):
         self.check_scale.setChecked(False)
         self.check_scale.stateChanged.connect(self.update_command)
 
-        self.warning_label = QLabel(str(" "))
+        self.warning_label = QLabel(" ")
         self.warning_label.setWordWrap(True)
 
         main_v_box.addWidget(step_label)
@@ -390,7 +346,7 @@ class ExportPage(QWidget):
                         break
 
                 except AttributeError as at_err:
-                    logger.info("found ", at_err, " in for loop, not to worry")
+                    logger.info("found %s in for loop - not to worry", at_err)
 
                 my_node = my_node.prev_step
 
@@ -401,7 +357,7 @@ class ExportPage(QWidget):
         self.check_repeated_file()
 
     def reset_par(self):
-        logger.info("command_lst(ExportPage.reset_par) = ", self.command_lst)
+        logger.info("command_lst(ExportPage.reset_par) = %s", self.command_lst)
         logger.info(" Not supposed to reset export page")
 
 
@@ -416,14 +372,14 @@ class ImportPage(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(ImportPage, self).__init__(parent=None)
+        super().__init__(parent)
 
         main_v_box = QVBoxLayout()
 
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
-        step_label = QLabel(str("Import"))
+        step_label = QLabel("Import")
         step_label.setFont(label_font)
 
         self.simple_lin = QLineEdit(self)
@@ -487,29 +443,33 @@ class ImportPage(QWidget):
         self.second_half = ""
         self.third_half = ""
 
-    def update_param_w_lst(self, lst_in):
+    def update_param_w_lst(self, lst_in: List[str]) -> None:
+        """
+        Refresh the widget with parameters by re-reading a command list.
+
+        Args:
+            lst_in: A command list
+        """
+
         self.reset_par()
-        logger.info("update_param_w_lst(ImportPage) \n lst: \n", lst_in)
-        for singl_com in lst_in:
-            if singl_com[0:1] == "/":
-                self.path_file_str = str(singl_com)
-                self.put_str_lin()
+        logger.info("update_param_w_lst(ImportPage) lst: %s", lst_in)
 
-            if singl_com[0:12] == "image_range=":
-                self.path_file_str += " "
-                self.path_file_str += str(singl_com)
-                self.put_str_lin()
-
+        input_params = []
+        for singl_com in lst_in[1:]:
             if singl_com == "invert_rotation_axis=True":
                 self.chk_invert.setChecked(True)
-
-            if singl_com[0:22] == "slow_fast_beam_centre=":
+            elif singl_com.startswith("slow_fast_beam_centre="):
                 yb_xb_str = singl_com[22:]
                 yb_str, xb_str = yb_xb_str.split(",")
                 yb = float(yb_str)
                 xb = float(xb_str)
                 self.y_spn_bx.setValue(yb)
                 self.x_spn_bx.setValue(xb)
+            else:
+                input_params.append(singl_com)
+
+        self.path_file_str = escaped_join(input_params)
+        self.put_str_lin()
 
     def inv_rota_changed(self):
         if self.chk_invert.checkState():
@@ -541,20 +501,20 @@ class ImportPage(QWidget):
 
     def open_files(self):
 
-        lst_file_path = QFileDialog.getOpenFileNames(
+        lst_file_path, _ = QFileDialog.getOpenFileNames(
             self, "Open File(s)", self.defa_dir, "All Files (*.*)"
         )
 
         if len(lst_file_path) > 0:
             new_dir, new_command = get_import_run_string(lst_file_path)
-            # logger.info("\n new_dir=", new_dir, ">>")
-            # logger.info("\n new_command =", new_command, ">>")
+            # logger.info(f"\n new_dir= {new_dir} >>")
+            # logger.info(f"\n new_command = {new_command} >>")
             self.path_file_str = new_command
             self.defa_dir = new_dir
             self.put_str_lin()
 
     def put_str_lin(self):
-        # logger.info("self.path_file_str =", self.path_file_str, ">>")
+        # logger.info(f"self.path_file_str = {self.path_file_str} >>")
         self.cmd_list = [
             self.path_file_str,
             self.second_half.lstrip(),
@@ -573,15 +533,11 @@ class ImportPage(QWidget):
             self.simple_lin.setText(str_arg)
 
     def update_command(self):
-        self.command_lst = [["import"]]
-        param_com = str(self.simple_lin.text())
+        """Update self.command_lst from the Text widget contents"""
+        command = ["import"] + shlex.split(self.simple_lin.text())
 
-        cmd_lst = param_com.split(" ")
-
-        for single_com in cmd_lst:
-            self.command_lst[0].append(single_com)
-
-        self.update_command_lst_low_level.emit(self.command_lst[0])
+        self.command_lst = [command]
+        self.update_command_lst_low_level.emit(command)
 
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
@@ -606,7 +562,7 @@ class ImportPage(QWidget):
 
 class ParamAdvancedWidget(QWidget):
     def __init__(self, phl_obj=None, parent=None):
-        super(ParamAdvancedWidget, self).__init__()
+        super().__init__(parent)
 
         self.scrollable_widget = PhilWidget(phl_obj, parent=self)
         scrollArea = QScrollArea()
@@ -688,7 +644,7 @@ class ParamMainWidget(QWidget):
     update_command_lst_low_level = Signal(list)
 
     def __init__(self, phl_obj=None, simp_widg=None, parent=None, upper_label=None):
-        super(ParamMainWidget, self).__init__()
+        super().__init__(parent)
 
         self.command_lst = [[None]]
         self.lst_pair = []
@@ -700,7 +656,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info("Caught unknown exception #1 type %s: %s", type(e).__name__, e)
+            logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
             logger.info("\n\n\n something went wrong here wiht the phil object \n\n\n")
 
         self.build_param_widget()
@@ -730,7 +686,7 @@ class ParamMainWidget(QWidget):
         except BaseException as e:
             # We don't want to catch bare exceptions but don't know
             # what this was supposed to catch. Log it.
-            logger.info("Caught unknown exception #2 type %s: %s", type(e).__name__, e)
+            logger.info("Caught unknown exception %s: %s", type(e).__name__, e)
             logger.info("found self.simpler_widget without << item_changed >> signal")
 
         try:
@@ -805,7 +761,7 @@ class ParamMainWidget(QWidget):
                                     )
 
                                 except BaseException as ee:
-                                    logger.info("ee = ", ee)
+                                    logger.info("ee = %s", ee)
 
                         else:
                             for pos, val in enumerate(widg.tmp_lst):
@@ -836,7 +792,7 @@ class ParamMainWidget(QWidget):
                     except ValueError:
                         for pos, val in enumerate(widg.tmp_lst):
                             if val == str_value:
-                                logger.info("found val, v= %s", val)
+                                logger.info("found val v= %s", val)
                                 widg.setCurrentIndex(pos)
 
             except AttributeError:
@@ -933,7 +889,7 @@ class ParamWidget(QWidget):
     update_command_lst_medium_level = Signal(list)
 
     def __init__(self, label_str):
-        super(ParamWidget, self).__init__()
+        super().__init__()
         self.my_label = label_str
 
         inner_widgs = {
