@@ -48,6 +48,7 @@ class ProgBarBox(QProgressDialog):
         self.setWindowTitle("Updating GUI data")
         self.setWindowModality(Qt.WindowModal)
         self.setMinimumDuration(100)
+        self.setCancelButton(None)
 
     def __call__(self, updated_val):
 
