@@ -33,27 +33,25 @@ logger = logging.getLogger(__name__)
 
 class ProgBarBox(QProgressDialog):
     def __init__(self, max_val=100, min_val=0, text="Working"):
-        super().__init__(parent=None)
-        self.setMinimumDuration(50)
 
-        if max_val > min_val:
-            self.my_max = max_val
-            self.my_min = min_val
+        if max_val <= min_val:
+            raise ValueError("max_val must be larger than min_val")
 
-        self.my_delta = max_val - min_val
-        self.my_txt = text
+        super().__init__(
+            labelText=text,
+            cancelButtonText="",
+            minimum=min_val,
+            maximum=max_val,
+            parent=None)
 
-        self.setLabelText(text)
-        self.setWindowTitle("updating GUI data")
-        self.setCancelButtonText("")
+        self.setValue(min_val)
+        self.setWindowTitle("Updating GUI data")
         self.setWindowModality(Qt.WindowModal)
-        self.setValue(200)
-        self.show()
+        self.setMinimumDuration(100)
 
     def __call__(self, updated_val):
-        prog_psent = float(updated_val - self.my_min) / self.my_delta
-        # sys.stdout.write('\r' + self.my_txt + " " + str(prog_psent))
-        self.setValue(prog_psent * 100)
+
+        self.setValue(updated_val)
 
     def ended(self):
         self.setValue(100)
