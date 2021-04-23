@@ -324,5 +324,9 @@ class build_qimg:
             np.size(arr_i[:, 0:1, 0:1]),
             QImage.Format_RGB32,
         )
+        # The data buffer must remain valid throughout the life of the QImage.
+        # A simple way to do this is to assign the NumPy array as an attribute
+        # of the QImage.
+        q_img.array = arr_i
 
         return q_img
