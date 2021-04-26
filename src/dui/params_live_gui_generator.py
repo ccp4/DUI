@@ -132,6 +132,7 @@ class MyQComboBox(QComboBox):
         logger.info("event: %s", event)
         return
 
+
 # https://gis.stackexchange.com/questions/350148/qcombobox-multiple-selection-pyqt5
 class CheckableComboBox(QComboBox):
 
@@ -423,10 +424,12 @@ class PhilWidget(QWidget):
                             tmp_str += "                          " + opt
                             tmp_widg.tmp_lst.append(opt)
 
-                        tmp_widg.currentTextChanged.connect(self.checkable_combobox_changed)
+                        tmp_widg.currentTextChanged.connect(
+                            self.checkable_combobox_changed
+                        )
 
                     else:
-                    # Single choice combo box
+                        # Single choice combo box
                         tmp_widg = MyQComboBox()
 
                         tmp_widg.tmp_lst = []
@@ -508,6 +511,7 @@ class PhilWidget(QWidget):
             str_value = ""
         str_path = str(sender.local_path)
         self.item_changed.emit(str_path, str_value)
+
 
 class TstTmpWidget(QWidget):
     def __init__(self, phl_obj=None, parent=None):
