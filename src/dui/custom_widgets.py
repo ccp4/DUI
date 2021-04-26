@@ -570,7 +570,6 @@ class ImportPage(QWidget):
             self.put_str_lin()
 
     def put_str_lin(self):
-        print(f"self.path_file_str = {self.path_file_str} >>")
         if not self.path_file_str:
             self.simple_lin.setText("")
         self.cmd_list = [
