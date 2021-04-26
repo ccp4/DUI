@@ -504,6 +504,8 @@ class PhilWidget(QWidget):
         sender = self.sender()
         data = sender.currentData()
         str_value = " ".join(data)
+        if "*" not in str_value:
+            str_value = ""
         str_path = str(sender.local_path)
         self.item_changed.emit(str_path, str_value)
 
