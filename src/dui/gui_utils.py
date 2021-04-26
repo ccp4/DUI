@@ -723,13 +723,15 @@ class OuterCaller(QWidget):
 
         v_box = QVBoxLayout()
 
-        recip_lat_but = QPushButton("\n Open reciprocal lattice viewer \n")
-        recip_lat_but.clicked.connect(self.run_recip_dialg)
-        v_box.addWidget(recip_lat_but)
+        self.recip_lat_but = QPushButton("\n Open reciprocal lattice viewer \n")
+        self.recip_lat_but.clicked.connect(self.run_recip_dialg)
+        self.recip_lat_but.setEnabled(False)
+        v_box.addWidget(self.recip_lat_but)
 
-        img_but = QPushButton("\n Open image viewer \n")
-        img_but.clicked.connect(self.run_img_dialg)
-        v_box.addWidget(img_but)
+        self.img_but = QPushButton("\n Open image viewer \n")
+        self.img_but.clicked.connect(self.run_img_dialg)
+        self.img_but.setEnabled(False)
+        v_box.addWidget(self.img_but)
 
         self.diag = ExternalProcDialog(parent=self.window())
         self.setLayout(v_box)
@@ -738,6 +740,11 @@ class OuterCaller(QWidget):
     def update_data(self, new_pick=None, new_json=None):
         self.my_pick = new_pick
         self.my_json = new_json
+
+        if new_json and os.path.exists(new_json):
+            self.img_but.setEnabled(True)
+            if new_pick[0] and os.path.exists(new_pick[0]):
+                self.recip_lat_but.setEnabled(True)
 
     def run_recip_dialg(self):
         self.diag.run_my_proc(
@@ -852,7 +859,7 @@ def loading_error_dialog(message):
     # from dui.resources.error_loading_dialog import Ui_LoadErrorDialog
 
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
-    #Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
+    # Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
     # Use compiled class while pyside2-uic is broken in CCP4
     from .error_loading_dialog import Ui_LoadErrorDialog
 
