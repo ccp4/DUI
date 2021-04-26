@@ -409,6 +409,8 @@ class MainWidget(QMainWindow):
         self.reindex_dialog: MyReindexOpts = None
         self.storage_path = Path(sys_arg.directory)
 
+        self.cli_tree_output = TreeShow()
+
         restoring_session = False
 
         # Load the previous state of DUI, if present
@@ -417,6 +419,7 @@ class MainWidget(QMainWindow):
         if (dui_files_path / "bkp.pickle").is_file():
             try:
                 self.idials_runner = load_previous_state(dui_files_path)
+                self.cli_tree_output(self.idials_runner)
 
             except Exception as e:
                 # Something went wrong - tell the user then close
@@ -427,11 +430,9 @@ class MainWidget(QMainWindow):
             restoring_session = True
         else:
             self.idials_runner = Runner()
+            self.cli_tree_output(self.idials_runner)
 
         self.gui2_log = {"pairs_list": []}
-
-        self.cli_tree_output = TreeShow()
-        self.cli_tree_output(self.idials_runner)
 
         self.cur_html = None
         self.cur_pick = None
