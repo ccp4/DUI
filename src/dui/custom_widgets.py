@@ -68,6 +68,7 @@ from dui.simpler_param_widgets import (
     RefineSimplerParamTab,
     ScaleSimplerParamTab,
     SymmetrySimplerParamTab,
+    ResetButton,
 )
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
@@ -385,6 +386,15 @@ class ImportPage(QWidget):
         self.simple_lin = QLineEdit(self)
         self.simple_lin.textChanged.connect(self.update_command)
 
+        self.start_image = QSpinBox()
+        self.start_image.setMinimum(-1)
+        self.start_image.setSpecialValueText(" ")
+        self.start_image.valueChanged.connect(self.start_image_changed)
+        self.end_image = QSpinBox()
+        self.end_image.setMinimum(-1)
+        self.end_image.setSpecialValueText(" ")
+        self.end_image.valueChanged.connect(self.end_image_changed)
+
         self.x_spn_bx = QSpinBox()
         self.x_spn_bx.setMaximum(99999)
         self.x_spn_bx.setSpecialValueText(" ")
@@ -402,13 +412,26 @@ class ImportPage(QWidget):
 
         main_path = get_main_path()
 
-        self.opn_fil_btn.setIcon(QIcon(main_path + "/resources/import.png"))
         self.opn_fil_btn.setIconSize(QSize(80, 48))
 
         main_v_box.addWidget(step_label)
         main_v_box.addWidget(self.opn_fil_btn)
         main_v_box.addWidget(self.simple_lin)
-        self.b_cetre_label = QLabel("\n\n Beam centre")
+
+        self.image_range = [-1, -1]
+        self.image_range_label = QLabel("\n\n Image range")
+        main_v_box.addWidget(self.image_range_label)
+        image_range_hbox = QHBoxLayout()
+        self.start_label = QLabel("    Start: ")
+        image_range_hbox.addWidget(self.start_label)
+        image_range_hbox.addWidget(self.start_image)
+        self.end_label = QLabel("    End: ")
+        image_range_hbox.addWidget(self.end_label)
+        image_range_hbox.addWidget(self.end_image)
+        image_range_hbox.addStretch()
+        main_v_box.addLayout(image_range_hbox)
+
+        self.b_cetre_label = QLabel("\n Beam centre")
         main_v_box.addWidget(self.b_cetre_label)
         cent_hbox = QHBoxLayout()
         self.x_label = QLabel("    X: ")
@@ -417,10 +440,16 @@ class ImportPage(QWidget):
         self.y_label = QLabel("    Y: ")
         cent_hbox.addWidget(self.y_label)
         cent_hbox.addWidget(self.y_spn_bx)
-        #    cent_hbox.addWidget(QLabel(" \n "))
+
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
+
         main_v_box.addWidget(self.chk_invert)
+
+        self.reset_button = ResetButton()
+        main_v_box.addWidget(self.reset_button)
+        self.reset_button.clicked.connect(self.reset_par)
+
         main_v_box.addStretch()
 
         self.opn_fil_btn.clicked.connect(self.open_files)
@@ -433,11 +462,14 @@ class ImportPage(QWidget):
     def reset_par(self):
         logger.info("reset_par(ImportPage)")
         self.cmd_list = []
-        self.simple_lin.setText(" ? ")
+        self.simple_lin.setText("")
+        self.start_image.setValue(-1)
+        self.end_image.setValue(-1)
         self.x_spn_bx.setValue(0.0)
         self.y_spn_bx.setValue(0.0)
         self.chk_invert.setChecked(False)
 
+        self.image_range = [-1, -1]
         self.x_beam, self.y_beam = 0.0, 0.0
         self.path_file_str = ""
         self.second_half = ""
@@ -465,6 +497,13 @@ class ImportPage(QWidget):
                 xb = float(xb_str)
                 self.y_spn_bx.setValue(yb)
                 self.x_spn_bx.setValue(xb)
+            elif singl_com.startswith("image_range="):
+                image_range_str = singl_com[12:]
+                start, end = image_range_str.split(",")
+                start = int(start)
+                end = int(end)
+                self.start_image.setValue(start)
+                self.end_image.setValue(end)
             else:
                 input_params.append(singl_com)
 
@@ -488,15 +527,31 @@ class ImportPage(QWidget):
         self.y_beam = value
         self.build_second_half()
 
+    def start_image_changed(self, value):
+        self.image_range[0] = value
+        if self.image_range[1] != -1:
+            self.build_second_half()
+
+    def end_image_changed(self, value):
+        self.image_range[1] = value
+        if self.image_range[0] != -1:
+            self.build_second_half()
+
     def build_second_half(self):
+        second_half = []
         if self.x_beam != 0.0 and self.y_beam != 0.0:
-            self.second_half = (
+            second_half.append(
                 "slow_fast_beam_centre=" + str(self.y_beam) + "," + str(self.x_beam)
             )
+        if (
+            all(e > -1 for e in self.image_range)
+            and self.image_range[1] >= self.image_range[0]
+        ):
 
-        else:
-            self.second_half = ""
-
+            second_half.append(
+                f"image_range={self.image_range[0]},{self.image_range[1]}"
+            )
+        self.second_half = " ".join(second_half)
         self.put_str_lin()
 
     def open_files(self):
@@ -506,6 +561,7 @@ class ImportPage(QWidget):
         )
 
         if len(lst_file_path) > 0:
+            self.reset_par()
             new_dir, new_command = get_import_run_string(lst_file_path)
             # logger.info(f"\n new_dir= {new_dir} >>")
             # logger.info(f"\n new_command = {new_command} >>")
@@ -514,7 +570,8 @@ class ImportPage(QWidget):
             self.put_str_lin()
 
     def put_str_lin(self):
-        # logger.info(f"self.path_file_str = {self.path_file_str} >>")
+        if not self.path_file_str:
+            self.simple_lin.setText("")
         self.cmd_list = [
             self.path_file_str,
             self.second_half.lstrip(),
