@@ -543,7 +543,10 @@ class ImportPage(QWidget):
             second_half.append(
                 "slow_fast_beam_centre=" + str(self.y_beam) + "," + str(self.x_beam)
             )
-        if all(e > -1 for e in self.image_range) and self.image_range[1] >= self.image_range[0]:
+        if (
+            all(e > -1 for e in self.image_range)
+            and self.image_range[1] >= self.image_range[0]
+        ):
 
             second_half.append(
                 f"image_range={self.image_range[0]},{self.image_range[1]}"
