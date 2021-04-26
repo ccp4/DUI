@@ -42,7 +42,8 @@ class ProgBarBox(QProgressDialog):
             cancelButtonText="",
             minimum=min_val,
             maximum=max_val,
-            parent=None)
+            parent=None,
+        )
 
         self.setValue(min_val)
         self.setWindowTitle("Updating GUI data")
