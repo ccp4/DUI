@@ -68,6 +68,7 @@ from dui.simpler_param_widgets import (
     RefineSimplerParamTab,
     ScaleSimplerParamTab,
     SymmetrySimplerParamTab,
+    ResetButton,
 )
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
@@ -444,6 +445,11 @@ class ImportPage(QWidget):
         main_v_box.addLayout(cent_hbox)
 
         main_v_box.addWidget(self.chk_invert)
+
+        self.reset_button = ResetButton()
+        main_v_box.addWidget(self.reset_button)
+        self.reset_button.clicked.connect(self.reset_par)
+
         main_v_box.addStretch()
 
         self.opn_fil_btn.clicked.connect(self.open_files)
@@ -457,8 +463,8 @@ class ImportPage(QWidget):
         logger.info("reset_par(ImportPage)")
         self.cmd_list = []
         self.simple_lin.setText("")
-        self.start_image.setValue(self.start_image.minimum())
-        self.end_image.setValue(self.end_image.minimum())
+        self.start_image.setValue(-1)
+        self.end_image.setValue(-1)
         self.x_spn_bx.setValue(0.0)
         self.y_spn_bx.setValue(0.0)
         self.chk_invert.setChecked(False)
@@ -491,6 +497,13 @@ class ImportPage(QWidget):
                 xb = float(xb_str)
                 self.y_spn_bx.setValue(yb)
                 self.x_spn_bx.setValue(xb)
+            elif singl_com.startswith("image_range="):
+                image_range_str = singl_com[12:]
+                start, end = image_range_str.split(",")
+                start = int(start)
+                end = int(end)
+                self.start_image.setValue(start)
+                self.end_image.setValue(end)
             else:
                 input_params.append(singl_com)
 
@@ -536,7 +549,6 @@ class ImportPage(QWidget):
                 f"image_range={self.image_range[0]},{self.image_range[1]}"
             )
         self.second_half = " ".join(second_half)
-        print(self.second_half)
         self.put_str_lin()
 
     def open_files(self):
@@ -555,7 +567,9 @@ class ImportPage(QWidget):
             self.put_str_lin()
 
     def put_str_lin(self):
-        # logger.info(f"self.path_file_str = {self.path_file_str} >>")
+        print(f"self.path_file_str = {self.path_file_str} >>")
+        if not self.path_file_str:
+            self.simple_lin.setText("")
         self.cmd_list = [
             self.path_file_str,
             self.second_half.lstrip(),
