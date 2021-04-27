@@ -409,23 +409,30 @@ class PhilWidget(QWidget):
                 elif obj.type.phil_type == "choice":
 
                     # Multi choice checkable combo box
-                    #if obj.type.multi:
-                    if False:
+                    if obj.type.multi:
                         tmp_widg = CheckableComboBox()
 
                         tmp_widg.tmp_lst = []
-
+                        pos = 0
+                        found_choise = False
                         for num, opt in enumerate(obj.words):
                             opt = str(opt)
                             if opt[0] == "*":
+                                found_choise = True
                                 opt = opt[1:]
-                                tmp_widg.addItem(opt, checked=True)
-                            else:
-                                tmp_widg.addItem(opt)
-                            tmp_str += "                          " + opt
+                                pos = num
+                                tmp_str += "                          " + opt
+
                             tmp_widg.tmp_lst.append(opt)
 
-                        tmp_widg.currentTextChanged.connect(
+                        if not found_choise:
+                            tmp_str += "                          " + str(obj.extract())
+
+                        for lst_itm in tmp_widg.tmp_lst:
+                            tmp_widg.addItem(lst_itm)
+
+                        tmp_widg.setCurrentIndex(pos)
+                        tmp_widg.currentIndexChanged.connect(
                             self.checkable_combobox_changed
                         )
 
