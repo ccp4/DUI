@@ -47,11 +47,6 @@ from dui.qt import (
     QVBoxLayout,
     QWidget,
     Signal,
-    QStyledItemDelegate,
-    QPalette,
-    QStandardItem,
-    QEvent,
-    QFontMetrics,
 )
 
 logger = logging.getLogger(__name__)
@@ -131,130 +126,6 @@ class MyQComboBox(QComboBox):
         """
         logger.info("event: %s", event)
         return
-
-
-# https://gis.stackexchange.com/questions/350148/qcombobox-multiple-selection-pyqt5
-class CheckableComboBox(QComboBox):
-
-    # Subclass Delegate to increase item height
-    class Delegate(QStyledItemDelegate):
-        def sizeHint(self, option, index):
-            size = super().sizeHint(option, index)
-            size.setHeight(20)
-            return size
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Make the combo editable to set a custom text, but readonly
-        self.setEditable(True)
-        self.lineEdit().setReadOnly(True)
-        # Make the lineedit the same color as QPushButton
-        palette = qApp.palette()
-        palette.setBrush(QPalette.Base, palette.button())
-        self.lineEdit().setPalette(palette)
-
-        # Use custom delegate
-        self.setItemDelegate(CheckableComboBox.Delegate())
-
-        # Update the text when an item is toggled
-        self.model().dataChanged.connect(self.updateText)
-
-        # Hide and show popup when clicking the line edit
-        self.lineEdit().installEventFilter(self)
-        self.closeOnLineEditClick = False
-
-        # Prevent popup from closing when clicking on an item
-        self.view().viewport().installEventFilter(self)
-
-    def resizeEvent(self, event):
-        # Recompute text to elide as needed
-        self.updateText()
-        super().resizeEvent(event)
-
-    def eventFilter(self, object, event):
-
-        if object == self.lineEdit():
-            if event.type() == QEvent.MouseButtonRelease:
-                if self.closeOnLineEditClick:
-                    self.hidePopup()
-                else:
-                    self.showPopup()
-                return True
-            return False
-
-        if object == self.view().viewport():
-            if event.type() == QEvent.MouseButtonRelease:
-                index = self.view().indexAt(event.pos())
-                item = self.model().item(index.row())
-
-                if item.checkState() == Qt.Checked:
-                    item.setCheckState(Qt.Unchecked)
-                else:
-                    item.setCheckState(Qt.Checked)
-                return True
-        return False
-
-    def showPopup(self):
-        super().showPopup()
-        # When the popup is displayed, a click on the lineedit should close it
-        self.closeOnLineEditClick = True
-
-    def hidePopup(self):
-        super().hidePopup()
-        # Used to prevent immediate reopening when clicking on the lineEdit
-        self.startTimer(100)
-        # Refresh the display text when closing
-        self.updateText()
-
-    def timerEvent(self, event):
-        # After timeout, kill timer, and reenable click on line edit
-        self.killTimer(event.timerId())
-        self.closeOnLineEditClick = False
-
-    def updateText(self):
-        texts = []
-        for i in range(self.model().rowCount()):
-            if self.model().item(i).checkState() == Qt.Checked:
-                texts.append(self.model().item(i).text())
-        text = ", ".join(texts)
-
-        # Compute elided text (with "...")
-        metrics = QFontMetrics(self.lineEdit().font())
-        elidedText = metrics.elidedText(text, Qt.ElideRight, self.lineEdit().width())
-        self.lineEdit().setText(elidedText)
-
-    def addItem(self, text, data=None, checked=False):
-        item = QStandardItem()
-        item.setText(text)
-        if data is None:
-            item.setData(text)
-        else:
-            item.setData(data)
-        item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsUserCheckable)
-        if checked:
-            item.setData(Qt.Checked, Qt.CheckStateRole)
-        else:
-            item.setData(Qt.Unchecked, Qt.CheckStateRole)
-        self.model().appendRow(item)
-
-    def addItems(self, texts, datalist=None):
-        for i, text in enumerate(texts):
-            try:
-                data = datalist[i]
-            except (TypeError, IndexError):
-                data = None
-            self.addItem(text, data)
-
-    def currentData(self):
-        # Return the list of selected items data, prepending "*" to selected items
-        res = []
-        for i in range(self.model().rowCount()):
-            elt = str(self.model().item(i).data())
-            if self.model().item(i).checkState() == Qt.Checked:
-                elt = "*" + elt
-            res.append(elt)
-        return res
 
 
 class PhilWidget(QWidget):
@@ -407,52 +278,57 @@ class PhilWidget(QWidget):
                     tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
                 elif obj.type.phil_type == "choice":
+                    # remember to ask david about the issue here
+                    # tmp_widg = QComboBox()
 
-                    # Multi choice checkable combo box
-                    if obj.type.multi:
-                        tmp_widg = CheckableComboBox()
+                    # tmp_widg.tmp_lst=[]
+                    # pos = 0
+                    # found_choise = False
+                    # for num, opt in enumerate(obj.words):
+                    #     opt = str(opt)
+                    #     if(opt[0] == "*"):
+                    #         found_choise = True
+                    #         opt = opt[1:]
+                    #         pos = num
+                    #         tmp_str += "                          " + opt
 
-                        tmp_widg.tmp_lst = []
+                    #     tmp_widg.tmp_lst.append(opt)
 
-                        for num, opt in enumerate(obj.words):
-                            opt = str(opt)
-                            if opt[0] == "*":
-                                opt = opt[1:]
-                                tmp_widg.addItem(opt, checked=True)
-                            else:
-                                tmp_widg.addItem(opt)
+                    # for lst_itm in tmp_widg.tmp_lst:
+                    #     tmp_widg.addItem(lst_itm)
+
+                    # tmp_widg.setCurrentIndex(pos)
+                    # tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+
+                    # if(found_choise == False):
+                    #     tmp_str = None
+                    #     non_added_lst.append(str(obj.full_path()))
+                    # begins pathed version
+                    tmp_widg = MyQComboBox()
+
+                    tmp_widg.tmp_lst = []
+                    pos = 0
+                    found_choise = False
+                    for num, opt in enumerate(obj.words):
+                        opt = str(opt)
+                        if opt[0] == "*":
+                            found_choise = True
+                            opt = opt[1:]
+                            pos = num
                             tmp_str += "                          " + opt
-                            tmp_widg.tmp_lst.append(opt)
 
-                        tmp_widg.currentTextChanged.connect(
-                            self.checkable_combobox_changed
-                        )
+                        tmp_widg.tmp_lst.append(opt)
 
-                    else:
-                        # Single choice combo box
-                        tmp_widg = MyQComboBox()
+                    if not found_choise:
+                        tmp_str += "                          " + str(obj.extract())
 
-                        tmp_widg.tmp_lst = []
-                        pos = 0
-                        found_choise = False
-                        for num, opt in enumerate(obj.words):
-                            opt = str(opt)
-                            if opt[0] == "*":
-                                found_choise = True
-                                opt = opt[1:]
-                                pos = num
-                                tmp_str += "                          " + opt
+                    for lst_itm in tmp_widg.tmp_lst:
+                        tmp_widg.addItem(lst_itm)
 
-                            tmp_widg.tmp_lst.append(opt)
+                    tmp_widg.setCurrentIndex(pos)
+                    tmp_widg.currentIndexChanged.connect(self.combobox_changed)
 
-                        if not found_choise:
-                            tmp_str += "                          " + str(obj.extract())
-
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
-
-                        tmp_widg.setCurrentIndex(pos)
-                        tmp_widg.currentIndexChanged.connect(self.combobox_changed)
+                    # ends pathed version
 
                 else:
                     tmp_widg = QLineEdit()
@@ -501,15 +377,6 @@ class PhilWidget(QWidget):
         logger.debug("local_path = %s", str_path)
 
         # self.param_widget_parent.update_lin_txt(str_path, str_value)
-        self.item_changed.emit(str_path, str_value)
-
-    def checkable_combobox_changed(self, value):
-        sender = self.sender()
-        data = sender.currentData()
-        str_value = " ".join(data)
-        if "*" not in str_value:
-            str_value = ""
-        str_path = str(sender.local_path)
         self.item_changed.emit(str_path, str_value)
 
 
