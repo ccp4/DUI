@@ -420,16 +420,16 @@ class PhilWidget(QWidget):
                             if opt[0] == "*":
                                 found_choise = True
                                 opt = opt[1:]
+                                tmp_widg.addItem(opt, checked=True)
                                 pos = num
                                 tmp_str += "                          " + opt
+                            else:
+                                tmp_widg.addItem(opt)
 
                             tmp_widg.tmp_lst.append(opt)
 
                         if not found_choise:
                             tmp_str += "                          " + str(obj.extract())
-
-                        for lst_itm in tmp_widg.tmp_lst:
-                            tmp_widg.addItem(lst_itm)
 
                         tmp_widg.setCurrentIndex(pos)
                         tmp_widg.currentIndexChanged.connect(
