@@ -377,100 +377,122 @@ class ImportPage(QWidget):
 
         main_v_box = QVBoxLayout()
 
+        # Page title
         label_font = QFont()
         sys_font_point_size = label_font.pointSize()
         label_font.setPointSize(sys_font_point_size + 2)
         step_label = QLabel("Import")
         step_label.setFont(label_font)
+        main_v_box.addWidget(step_label)
 
+        # Keep track of which items to enable/disable (grey out)
+        self._toggle_enabled = []
+
+        # File selection launcher
+        self.opn_fil_btn = QPushButton(" \n Select file(s) \n ")
+        self.opn_fil_btn.setIconSize(QSize(80, 48))
+        self.opn_fil_btn.clicked.connect(self.open_files)
+        main_v_box.addWidget(self.opn_fil_btn)
+        self._toggle_enabled.append(self.opn_fil_btn)
+
+        # File selection and command line options text
         self.simple_lin = QLineEdit(self)
         self.simple_lin.textChanged.connect(self.update_command)
+        main_v_box.addWidget(self.simple_lin)
+        self._toggle_enabled.append(self.simple_lin)
 
+        # Image range
+        # self.image_range = [-1, -1]
+        self.image_range_label = QLabel("\n\n Image range")
+        main_v_box.addWidget(self.image_range_label)
+        self._toggle_enabled.append(self.image_range_label)
+
+        image_range_hbox = QHBoxLayout()
+
+        self.start_label = QLabel("    Start: ")
+        image_range_hbox.addWidget(self.start_label)
+        self._toggle_enabled.append(self.start_label)
         self.start_image = QSpinBox()
         self.start_image.setMinimum(-1)
         self.start_image.setSpecialValueText(" ")
         self.start_image.valueChanged.connect(self.start_image_changed)
+        image_range_hbox.addWidget(self.start_image)
+        self._toggle_enabled.append(self.start_image)
+
+        self.end_label = QLabel("    End: ")
+        image_range_hbox.addWidget(self.end_label)
+        self._toggle_enabled.append(self.end_label)
         self.end_image = QSpinBox()
         self.end_image.setMinimum(-1)
         self.end_image.setSpecialValueText(" ")
         self.end_image.valueChanged.connect(self.end_image_changed)
-
-        self.x_spn_bx = QSpinBox()
-        self.x_spn_bx.setMaximum(99999)
-        self.x_spn_bx.setSpecialValueText(" ")
-        self.y_spn_bx = QSpinBox()
-        self.y_spn_bx.setMaximum(99999)
-        self.y_spn_bx.setSpecialValueText(" ")
-
-        self.x_spn_bx.valueChanged.connect(self.x_beam_changed)
-        self.y_spn_bx.valueChanged.connect(self.y_beam_changed)
-
-        self.chk_invert = QCheckBox("Invert rotation axis")
-        self.chk_invert.stateChanged.connect(self.inv_rota_changed)
-
-        self.opn_fil_btn = QPushButton(" \n Select file(s) \n ")
-
-        main_path = get_main_path()
-
-        self.opn_fil_btn.setIconSize(QSize(80, 48))
-
-        main_v_box.addWidget(step_label)
-        main_v_box.addWidget(self.opn_fil_btn)
-        main_v_box.addWidget(self.simple_lin)
-
-        self.image_range = [-1, -1]
-        self.image_range_label = QLabel("\n\n Image range")
-        main_v_box.addWidget(self.image_range_label)
-        image_range_hbox = QHBoxLayout()
-        self.start_label = QLabel("    Start: ")
-        image_range_hbox.addWidget(self.start_label)
-        image_range_hbox.addWidget(self.start_image)
-        self.end_label = QLabel("    End: ")
-        image_range_hbox.addWidget(self.end_label)
         image_range_hbox.addWidget(self.end_image)
+        self._toggle_enabled.append(self.end_image)
+
         image_range_hbox.addStretch()
         main_v_box.addLayout(image_range_hbox)
 
-        self.b_cetre_label = QLabel("\n Beam centre")
-        main_v_box.addWidget(self.b_cetre_label)
+        # Beam centre
+        self.beam_centre_label = QLabel("\n Beam centre")
+        main_v_box.addWidget(self.beam_centre_label)
+        self._toggle_enabled.append(self.beam_centre_label)
+
         cent_hbox = QHBoxLayout()
+
         self.x_label = QLabel("    X: ")
         cent_hbox.addWidget(self.x_label)
+        self._toggle_enabled.append(self.x_label)
+        self.x_spn_bx = QSpinBox()
+        self.x_spn_bx.setMaximum(99999)
+        self.x_spn_bx.setSpecialValueText(" ")
+        self.x_spn_bx.valueChanged.connect(self.x_beam_changed)
         cent_hbox.addWidget(self.x_spn_bx)
+        self._toggle_enabled.append(self.x_spn_bx)
+
         self.y_label = QLabel("    Y: ")
         cent_hbox.addWidget(self.y_label)
+        self._toggle_enabled.append(self.y_label)
+        self.y_spn_bx = QSpinBox()
+        self.y_spn_bx.setMaximum(99999)
+        self.y_spn_bx.setSpecialValueText(" ")
+        self.y_spn_bx.valueChanged.connect(self.y_beam_changed)
         cent_hbox.addWidget(self.y_spn_bx)
+        self._toggle_enabled.append(self.y_spn_bx)
 
         cent_hbox.addStretch()
         main_v_box.addLayout(cent_hbox)
 
+        # Invert axis
+        self.chk_invert = QCheckBox("Invert rotation axis")
+        self.chk_invert.stateChanged.connect(self.inv_rota_changed)
         main_v_box.addWidget(self.chk_invert)
+        self._toggle_enabled.append(self.chk_invert)
 
+        # Reset
         self.reset_button = ResetButton()
-        main_v_box.addWidget(self.reset_button)
         self.reset_button.clicked.connect(self.reset_par)
+        main_v_box.addWidget(self.reset_button)
+        self._toggle_enabled.append(self.reset_button)
 
         main_v_box.addStretch()
-
-        self.opn_fil_btn.clicked.connect(self.open_files)
-
-        self.defa_dir = str(os.getcwd())
         self.setLayout(main_v_box)
-        # self.show()
+
+        # Set parameters to defaults
         self.reset_par()
+        self.defa_dir = str(os.getcwd())
 
     def reset_par(self):
+
         logger.info("reset_par(ImportPage)")
         self.cmd_list = []
         self.simple_lin.setText("")
+        self.image_range = [-1, -1]
         self.start_image.setValue(-1)
         self.end_image.setValue(-1)
+        self.x_beam, self.y_beam = 0.0, 0.0
         self.x_spn_bx.setValue(0.0)
         self.y_spn_bx.setValue(0.0)
         self.chk_invert.setChecked(False)
-
-        self.image_range = [-1, -1]
-        self.x_beam, self.y_beam = 0.0, 0.0
         self.path_file_str = ""
         self.second_half = ""
         self.third_half = ""
@@ -597,24 +619,12 @@ class ImportPage(QWidget):
         self.update_command_lst_low_level.emit(command)
 
     def gray_me_out(self):
-        self.simple_lin.setEnabled(False)
-        self.opn_fil_btn.setEnabled(False)
-        self.x_spn_bx.setEnabled(False)
-        self.y_spn_bx.setEnabled(False)
-        self.x_label.setEnabled(False)
-        self.y_label.setEnabled(False)
-        self.b_cetre_label.setEnabled(False)
-        self.chk_invert.setEnabled(False)
+        for widget in self._toggle_enabled:
+            widget.setEnabled(False)
 
     def activate_me(self, cur_nod=None):
-        self.simple_lin.setEnabled(True)
-        self.opn_fil_btn.setEnabled(True)
-        self.y_spn_bx.setEnabled(True)
-        self.x_spn_bx.setEnabled(True)
-        self.x_label.setEnabled(True)
-        self.y_label.setEnabled(True)
-        self.b_cetre_label.setEnabled(True)
-        self.chk_invert.setEnabled(True)
+        for widget in self._toggle_enabled:
+            widget.setEnabled(True)
 
 
 class ParamAdvancedWidget(QWidget):
