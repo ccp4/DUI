@@ -409,7 +409,8 @@ class PhilWidget(QWidget):
                 elif obj.type.phil_type == "choice":
 
                     # Multi choice checkable combo box
-                    if obj.type.multi:
+                    #if obj.type.multi:
+                    if False:
                         tmp_widg = CheckableComboBox()
 
                         tmp_widg.tmp_lst = []
