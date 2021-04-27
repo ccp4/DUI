@@ -414,11 +414,11 @@ class PhilWidget(QWidget):
 
                         tmp_widg.tmp_lst = []
                         pos = 0
-                        found_choise = False
+                        found_choice = False
                         for num, opt in enumerate(obj.words):
                             opt = str(opt)
                             if opt[0] == "*":
-                                found_choise = True
+                                found_choice = True
                                 opt = opt[1:]
                                 tmp_widg.addItem(opt, checked=True)
                                 pos = num
@@ -428,7 +428,7 @@ class PhilWidget(QWidget):
 
                             tmp_widg.tmp_lst.append(opt)
 
-                        if not found_choise:
+                        if not found_choice:
                             tmp_str += "                          " + str(obj.extract())
 
                         tmp_widg.setCurrentIndex(pos)
@@ -442,18 +442,18 @@ class PhilWidget(QWidget):
 
                         tmp_widg.tmp_lst = []
                         pos = 0
-                        found_choise = False
+                        found_choice = False
                         for num, opt in enumerate(obj.words):
                             opt = str(opt)
                             if opt[0] == "*":
-                                found_choise = True
+                                found_choice = True
                                 opt = opt[1:]
                                 pos = num
                                 tmp_str += "                          " + opt
 
                             tmp_widg.tmp_lst.append(opt)
 
-                        if not found_choise:
+                        if not found_choice:
                             tmp_str += "                          " + str(obj.extract())
 
                         for lst_itm in tmp_widg.tmp_lst:
