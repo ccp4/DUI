@@ -574,11 +574,12 @@ class DialsCommand:
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     bufsize=1,
+                    universal_newlines=True,
                     cwd=cwd_path,
                 )
                 self.my_pid = my_process.pid
-                for line in iter(my_process.stdout.readline, b""):
-                    single_line = line[0 : len(line) - 1]
+                for single_line in my_process.stdout:
+                    single_line = single_line.rstrip()
                     self.tmp_std_all.append(single_line)
 
                     if ref_to_class:
