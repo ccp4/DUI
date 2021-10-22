@@ -827,12 +827,9 @@ class MainWidget(QMainWindow):
             self.my_bar(5)
 
     def close_busy_box(self):
-        logger.info("trying to close busy pop bar")
-        try:
+        if hasattr(self, "my_bar"):
+            logger.info("closing busy pop bar")
             self.my_bar.ended()
-
-        except AttributeError:
-            logger.info("no need to close busy pop bar")
 
     def check_gray_outs(self):
         tmp_curr = self.idials_runner.current_node
