@@ -48,19 +48,32 @@ class Ui_LoadErrorDialog(object):
 
         self.verticalLayout.addWidget(self.buttonBox)
 
-
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
-
 
         self.retranslateUi(LoadErrorDialog)
         self.buttonBox.rejected.connect(LoadErrorDialog.close)
 
         QMetaObject.connectSlotsByName(LoadErrorDialog)
+
     # setupUi
 
     def retranslateUi(self, LoadErrorDialog):
-        LoadErrorDialog.setWindowTitle(QCoreApplication.translate("LoadErrorDialog", u"Error loading DUI", None))
-        self.label.setText(QCoreApplication.translate("LoadErrorDialog", u"An unexpected error occured whilst loading your previous DUI workspace:", None))
-        self.label_2.setText(QCoreApplication.translate("LoadErrorDialog", u"<html><head/><body><p>Please report this error to <a href=\"mailto:dials-support@lists.sourceforge.net\"><span style=\" text-decoration: underline; color:#0000ff;\">dials-support@lists.sourceforge.net</span></a>.</p><p>Please move or remove the <tt>dui-files/</tt> subfolder or change your working directory to continue.</p></body></html>", None))
-    # retranslateUi
+        LoadErrorDialog.setWindowTitle(
+            QCoreApplication.translate("LoadErrorDialog", u"Error loading DUI", None)
+        )
+        self.label.setText(
+            QCoreApplication.translate(
+                "LoadErrorDialog",
+                u"An unexpected error occured whilst loading your previous DUI workspace:",
+                None,
+            )
+        )
+        self.label_2.setText(
+            QCoreApplication.translate(
+                "LoadErrorDialog",
+                u'<html><head/><body><p>Please report this error to <a href="mailto:dials-support@lists.sourceforge.net"><span style=" text-decoration: underline; color:#0000ff;">dials-support@lists.sourceforge.net</span></a>.</p><p>Please move or remove the <tt>dui-files/</tt> subfolder or change your working directory to continue.</p></body></html>',
+                None,
+            )
+        )
 
+    # retranslateUi

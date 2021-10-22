@@ -852,7 +852,7 @@ def loading_error_dialog(message):
     # from dui.resources.error_loading_dialog import Ui_LoadErrorDialog
 
     dialog_filename = get_package_path("resources/error_loading_dialog.ui")
-    #Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
+    # Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
     # Use compiled class while pyside2-uic is broken in CCP4
     from .error_loading_dialog import Ui_LoadErrorDialog
 

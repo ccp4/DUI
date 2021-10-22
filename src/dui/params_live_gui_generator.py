@@ -39,19 +39,19 @@ except ImportError:
 from dui.qt import (
     QApplication,
     QComboBox,
+    QEvent,
     QFont,
+    QFontMetrics,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QPalette,
+    QStandardItem,
+    QStyledItemDelegate,
     Qt,
     QVBoxLayout,
     QWidget,
     Signal,
-    QStyledItemDelegate,
-    QPalette,
-    QStandardItem,
-    QEvent,
-    QFontMetrics,
 )
 
 logger = logging.getLogger(__name__)

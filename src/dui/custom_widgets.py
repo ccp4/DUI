@@ -66,9 +66,9 @@ from dui.simpler_param_widgets import (
     IntegrateSimplerParamTab,
     RefineBravaiSimplerParamTab,
     RefineSimplerParamTab,
+    ResetButton,
     ScaleSimplerParamTab,
     SymmetrySimplerParamTab,
-    ResetButton,
 )
 
 # HACK - CCP4 7.69 both scale and symmetry are broken - so make sure DUI
