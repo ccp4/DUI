@@ -125,6 +125,7 @@ class CommandThread(QThread):
 
     def run(self):
         self.ref_to_controler.run(command=self.cmd_to_run, ref_to_class=self)
+        self.status_thread.wait()
 
     def emit_print_signal(self, str_lin):
         self.str_print_signal.emit(str_lin)
