@@ -27,6 +27,7 @@ import re
 import time
 import traceback
 from pathlib import Path
+from typing import List
 
 from ._version import __version__
 from .cli_utils import TreeShow, build_mask_command_lst, prn_lst_lst_cmd, sys_arg
@@ -112,7 +113,7 @@ class CommandThread(QThread):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def __call__(self, cmd_to_run, ref_to_controler):
+    def __call__(self, cmd_to_run: List[str], ref_to_controler: Runner):
         self.cmd_to_run = cmd_to_run
         self.ref_to_controler = ref_to_controler
         self.status_thread = CheckStatusThread()
