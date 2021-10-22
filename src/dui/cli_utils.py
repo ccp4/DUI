@@ -573,10 +573,30 @@ class DialsCommand:
                     shell=self.use_shell,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
+                    universal_newlines = True,
+                    cwd=cwd_path,
+                )
+
+                old_style = '''
+                my_process = subprocess.Popen(
+                    run_cmd,
+                    shell=self.use_shell,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
                     bufsize=1,
                     cwd=cwd_path,
                 )
+                '''
                 self.my_pid = my_process.pid
+
+                while my_process.poll() is None or single_line != '':
+                    single_line = my_process.stdout.readline()
+                    self.tmp_std_all.append(single_line)
+
+                    if ref_to_class:
+                        ref_to_class.emit_print_signal(single_line)
+
+                old_style = '''
                 for line in iter(my_process.stdout.readline, b""):
                     single_line = line[0 : len(line) - 1]
                     self.tmp_std_all.append(single_line)
@@ -585,6 +605,8 @@ class DialsCommand:
                         ref_to_class.emit_print_signal(single_line)
 
                 my_process.wait()
+                '''
+
                 my_process.stdout.close()
                 if my_process.poll() == 0:
                     local_success = True
