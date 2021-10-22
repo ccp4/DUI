@@ -8,5 +8,6 @@ ignore = E203, E266, E501, W503
 # E266 too many leading '#' for block comment
 # E501 line too long
 # W503 line break before binary operator
+exclude = src/dui/error_loading_dialog.py
 
 max-line-length = 88

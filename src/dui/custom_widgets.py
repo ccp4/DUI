@@ -37,7 +37,7 @@ from dials.command_line.refine_bravais_settings import (
 )
 
 from dui.cli_utils import sys_arg
-from dui.gui_utils import escaped_join, get_import_run_string, get_main_path
+from dui.gui_utils import escaped_join, get_import_run_string
 from dui.params_live_gui_generator import PhilWidget
 from dui.qt import (
     QApplication,
@@ -46,7 +46,6 @@ from dui.qt import (
     QFileDialog,
     QFont,
     QHBoxLayout,
-    QIcon,
     QLabel,
     QLineEdit,
     QPalette,

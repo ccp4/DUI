@@ -59,7 +59,6 @@ from .qt import (
     QVBoxLayout,
     QWidget,
     Signal,
-    loadUiType,
 )
 
 logger = logging.getLogger(__name__)
@@ -353,7 +352,7 @@ def get_import_run_string(in_str_lst: List[str]) -> Tuple[str, str]:
         if not set(indices) == set(range(min_image_range, max_image_range + 1)):
             logger.warning("Non-continuous image range selected - output may be wrong")
             logger.info(indices)
-            logger.info(list(sorted(set(range(min_image_range, max_image_range + 1)))))
+            logger.info(sorted(set(range(min_image_range, max_image_range + 1))))
 
     if image_range is not None:
         out_str += " image_range={},{}".format(*image_range)
@@ -851,7 +850,7 @@ def loading_error_dialog(message):
     # If pre-building:
     # from dui.resources.error_loading_dialog import Ui_LoadErrorDialog
 
-    dialog_filename = get_package_path("resources/error_loading_dialog.ui")
+    # dialog_filename = get_package_path("resources/error_loading_dialog.ui")
     # Ui_LoadErrorDialog, _ = loadUiType(dialog_filename)
     # Use compiled class while pyside2-uic is broken in CCP4
     from .error_loading_dialog import Ui_LoadErrorDialog
