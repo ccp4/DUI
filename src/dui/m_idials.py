@@ -104,13 +104,6 @@ class CommandNode:
                         str(self.lin_num) + "_" + self.cmd_lst_to_run[0][0] + ".log"
                     )
 
-                    cwd_path = os.path.join(sys_arg.directory, "dui_files")
-                    file_path = os.path.join(cwd_path, self.log_file_out)
-
-                    Path(file_path).write_bytes(
-                        b"\n".join(self.dials_command.tmp_std_all) + b"\n"
-                    )
-
                 logger.info("\n Done \n")
                 # self.gen_repr_n_pred()
 
