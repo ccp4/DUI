@@ -108,7 +108,9 @@ class CommandNode:
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
                     Path(file_path).write_bytes(
-                        b"\n".join(self.dials_command.tmp_std_all) + b"\n"
+                        bytes('\n'.join(
+                            self.dials_command.tmp_std_all
+                        ).encode('UTF-8'))
                     )
 
                 logger.info("\n Done \n")
