@@ -107,10 +107,8 @@ class CommandNode:
                     cwd_path = os.path.join(sys_arg.directory, "dui_files")
                     file_path = os.path.join(cwd_path, self.log_file_out)
 
-                    Path(file_path).write_bytes(
-                        bytes('\n'.join(
-                            self.dials_command.tmp_std_all
-                        ).encode('UTF-8'))
+                    Path(file_path).write_text(
+                        "\n".join(self.dials_command.tmp_std_all)
                     )
 
                 logger.info("\n Done \n")
