@@ -783,27 +783,6 @@ class ParamMainWidget(QWidget):
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
 
-        try:
-            max_nproc = self.simpler_widget.set_max_nproc()
-            if max_nproc > 1:
-                self.raise_nproc_str = (
-                    str(self.simpler_widget.box_nproc.local_path) + "=" + str(max_nproc)
-                )
-                QTimer.singleShot(1000, self.raise_nproc_to_max)
-
-        except AttributeError:
-            pass
-
-    def raise_nproc_to_max(self):
-        found_nproc = False
-        for single_par in self.command_lst[0]:
-            if "mp.nproc" in single_par:
-                found_nproc = True
-
-        if not found_nproc:
-            self.command_lst[0].append(self.raise_nproc_str)
-            self.update_command_lst_low_level.emit(self.command_lst[0])
-
     def update_advanced_widget(self, str_path, str_value):
 
         for bg_widg in (
