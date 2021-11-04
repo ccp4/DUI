@@ -269,22 +269,28 @@ class ExportPage(QWidget):
         step_label = QLabel("Export")
         step_label.setFont(label_font)
 
+        self.check_scale = QCheckBox("Output scaled intensities")
+        self.check_scale.setChecked(False)
+        self.check_scale.stateChanged.connect(self.update_command)
+
+        self.check_merge = QCheckBox("Output merged reflections")
+        self.check_merge.setChecked(False)
+        self.check_merge.setEnabled(False)
+        self.check_merge.stateChanged.connect(self.update_command)
+
         out_file_label = QLabel("mtz output name:")
 
         self.simple_lin = QLineEdit(self)
         self.simple_lin.textChanged.connect(self.update_command)
 
-        self.check_scale = QCheckBox("Output Scaled Intensities")
-        self.check_scale.setChecked(False)
-        self.check_scale.stateChanged.connect(self.update_command)
-
         self.warning_label = QLabel(" ")
         self.warning_label.setWordWrap(True)
 
         main_v_box.addWidget(step_label)
+        main_v_box.addWidget(self.check_scale)
+        main_v_box.addWidget(self.check_merge)
         main_v_box.addWidget(out_file_label)
         main_v_box.addWidget(self.simple_lin)
-        main_v_box.addWidget(self.check_scale)
         main_v_box.addStretch()
         main_v_box.addWidget(self.warning_label)
         main_v_box.addStretch()
@@ -303,6 +309,11 @@ class ExportPage(QWidget):
         if self.check_scale.checkState():
             param2_com = "intensity=scale"
             self.command_lst[0].append(param2_com)
+            self.check_merge.setEnabled(True)
+        else:
+            print("checkState false")
+            self.check_merge.setChecked(False)
+            self.check_merge.setEnabled(False)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
         self.check_repeated_file()
@@ -327,6 +338,7 @@ class ExportPage(QWidget):
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
         self.check_scale.setEnabled(False)
+        self.check_merge.setEnabled(False)
 
         self.fist_time = False
 
@@ -337,6 +349,9 @@ class ExportPage(QWidget):
             self.fist_time = True
             self.simple_lin.setText("integrated.mtz")
             self.check_scale.setChecked(False)
+            self.check_merge.setChecked(False)
+            self.check_merge.setEnabled(False)
+
             my_node = cur_nod
             found_scale = False
             for iters in range(5):
@@ -353,6 +368,7 @@ class ExportPage(QWidget):
             if found_scale is True:
                 self.simple_lin.setText("scaled.mtz")
                 self.check_scale.setChecked(True)
+                self.check_merge.setEnabled(True)
 
         self.check_repeated_file()
 
