@@ -270,6 +270,7 @@ class ExportPage(QWidget):
         step_label.setFont(label_font)
 
         self.check_scale = QCheckBox("Output scaled intensities")
+        self.check_scale.setEnabled(False)
         self.check_scale.setChecked(False)
         self.check_scale.stateChanged.connect(self.update_command)
 
@@ -278,9 +279,14 @@ class ExportPage(QWidget):
         self.check_merge.setEnabled(False)
         self.check_merge.stateChanged.connect(self.update_command)
 
-        out_file_label = QLabel("mtz output name:")
+        # File selection launcher
+        self.save_file_btn = QPushButton("Select output file")
+        self.save_file_btn.setIconSize(QSize(80, 48))
+        self.save_file_btn.clicked.connect(self.select_file)
 
-        self.simple_lin = QLineEdit(self)
+        out_file_label = QLabel("mtz output name:")
+        self.dui_files_dir = os.path.join(sys_arg.directory, "dui_files")
+        self.simple_lin = QLineEdit(self, readOnly=True)
         self.simple_lin.textChanged.connect(self.update_command)
 
         self.warning_label = QLabel(" ")
@@ -289,6 +295,7 @@ class ExportPage(QWidget):
         main_v_box.addWidget(step_label)
         main_v_box.addWidget(self.check_scale)
         main_v_box.addWidget(self.check_merge)
+        main_v_box.addWidget(self.save_file_btn)
         main_v_box.addWidget(out_file_label)
         main_v_box.addWidget(self.simple_lin)
         main_v_box.addStretch()
@@ -298,7 +305,16 @@ class ExportPage(QWidget):
         self.fist_time = False
         # self.show()
 
-        self.simple_lin.setText("integrated.mtz")
+        self.simple_lin.setText(os.path.join(self.dui_files_dir,"integrated.mtz"))
+
+    def select_file(self):
+        filter = "MTZ Files (*.mtz)"
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Select file", os.path.join(sys_arg.directory, "dui_files"), "MTZ Files (*.mtz)"
+        )
+        if not file_path.lower().endswith(".mtz"):
+            file_path += ".mtz"
+        self.simple_lin.setText(file_path)
 
     def update_command(self):
         param1_com = str(self.simple_lin.text())
@@ -312,7 +328,7 @@ class ExportPage(QWidget):
                 param2_com = "intensity=scale"
                 self.command_lst[0].append(param2_com)
 
-        # Enable/disable the merge button according to selection of scaled
+        # Enable/disable the merge check according to selection of scaled
         if self.check_scale.checkState():
             self.check_merge.setEnabled(True)
         else:
@@ -348,7 +364,6 @@ class ExportPage(QWidget):
 
     def activate_me(self, cur_nod=None):
         self.simple_lin.setEnabled(True)
-        self.check_scale.setEnabled(True)
         if self.fist_time is False:
             self.fist_time = True
             self.simple_lin.setText("integrated.mtz")
@@ -370,8 +385,9 @@ class ExportPage(QWidget):
                 my_node = my_node.prev_step
 
             if found_scale is True:
-                self.simple_lin.setText("scaled.mtz")
+                self.simple_lin.setText(os.path.join(self.dui_files_dir,"scaled.mtz"))
                 self.check_scale.setChecked(True)
+                self.check_scale.setEnabled(True)
                 self.check_merge.setEnabled(True)
 
         self.check_repeated_file()
