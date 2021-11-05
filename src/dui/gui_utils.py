@@ -164,8 +164,8 @@ def try_move_last_info(export_node, gui2_log):
         mtz_name_from = "integrated.mtz"
         for parm in export_node.ll_command_lst[0]:
             logger.info(parm)
-            if "mtz.hklout=" in parm:
-                mtz_name_from = parm[11:]
+            if parm.startswith("mtz.hklout=") or parm.startswith("output.mtz="):
+                mtz_name_from = parm.split("=")[1]
 
         mtz_name_from = os.path.join(cwd_path, mtz_name_from)
         mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
