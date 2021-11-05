@@ -343,7 +343,7 @@ class ExportPage(QWidget):
         cwd_path = os.path.join(sys_arg.directory, "dui_files")
         mtz_file_path = os.path.join(cwd_path, param1_com)
         if os.path.isfile(mtz_file_path):
-            txt_warning = "Warning, file: " + param1_com + " already exists"
+            txt_warning = "Warning, output file already exists and will be overwritten"
             self.warning_label.setText(txt_warning)
             self.warning_label.setStyleSheet("color: rgba(255, 55, 55, 255)")
             """
