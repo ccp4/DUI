@@ -255,7 +255,7 @@ class ExportPage(QWidget):
     """
     This stacked widget basically helps the user to export by
     generating an MTZ file, there is no auto-generated GUI
-    form Phil parameters in use withing this widget.
+    form Phil parameters in use within this widget.
     """
 
     def __init__(self, parent=None):
@@ -301,17 +301,21 @@ class ExportPage(QWidget):
         self.simple_lin.setText("integrated.mtz")
 
     def update_command(self):
-        self.command_lst = [["export"]]
-
         param1_com = str(self.simple_lin.text())
-        self.command_lst[0].append("mtz.hklout=" + param1_com)
 
+        if self.check_merge.checkState():
+            self.command_lst = [["merge", "output.mtz=" + param1_com]]
+        else:
+            self.command_lst = [["export", "mtz.hklout=" + param1_com]]
+
+            if self.check_scale.checkState():
+                param2_com = "intensity=scale"
+                self.command_lst[0].append(param2_com)
+
+        # Enable/disable the merge button according to selection of scaled
         if self.check_scale.checkState():
-            param2_com = "intensity=scale"
-            self.command_lst[0].append(param2_com)
             self.check_merge.setEnabled(True)
         else:
-            print("checkState false")
             self.check_merge.setChecked(False)
             self.check_merge.setEnabled(False)
 

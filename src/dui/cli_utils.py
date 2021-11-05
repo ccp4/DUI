@@ -331,7 +331,7 @@ def build_command_lst(node_obj, cmd_lst):
             output_str = "output.json=" + node_obj.json_sym_out
             lst_inner.append(output_str)
 
-    elif cmd_lst_ini == "export":
+    elif cmd_lst_ini in ("export", "merge"):
         lst_inner.append(node_obj.prev_step.json_file_out)
         lst_inner.append(node_obj.prev_step.refl_pickle_file_out)
         node_obj.log_file_out = str(node_obj.lin_num) + "_" + cmd_lst_ini + ".log"
