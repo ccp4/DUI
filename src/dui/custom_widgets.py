@@ -280,7 +280,7 @@ class ExportPage(QWidget):
         self.check_merge.stateChanged.connect(self.update_command)
 
         # File selection launcher
-        self.save_file_btn = QPushButton("Select output file")
+        self.save_file_btn = QPushButton("Change output file")
         self.save_file_btn.setIconSize(QSize(80, 48))
         self.save_file_btn.clicked.connect(self.select_file)
 
@@ -305,7 +305,7 @@ class ExportPage(QWidget):
         self.fist_time = False
         # self.show()
 
-        self.simple_lin.setText(os.path.join(self.dui_files_dir, "integrated.mtz"))
+        self.simple_lin.setText(os.path.join(self.dui_files_dir, "dui_output.mtz"))
 
     def select_file(self):
         file_path, _ = QFileDialog.getSaveFileName(
@@ -314,6 +314,8 @@ class ExportPage(QWidget):
             os.path.join(sys_arg.directory, "dui_files"),
             "MTZ Files (*.mtz)",
         )
+        if file_path.strip() == "":
+            file_path = "dui_output.mtz"
         if not file_path.lower().endswith(".mtz"):
             file_path += ".mtz"
         self.simple_lin.setText(file_path)
@@ -368,7 +370,7 @@ class ExportPage(QWidget):
         self.simple_lin.setEnabled(True)
         if self.fist_time is False:
             self.fist_time = True
-            self.simple_lin.setText("integrated.mtz")
+            self.simple_lin.setText("dui_output.mtz")
             self.check_scale.setChecked(False)
             self.check_merge.setChecked(False)
             self.check_merge.setEnabled(False)
@@ -387,7 +389,6 @@ class ExportPage(QWidget):
                 my_node = my_node.prev_step
 
             if found_scale is True:
-                self.simple_lin.setText(os.path.join(self.dui_files_dir, "scaled.mtz"))
                 self.check_scale.setChecked(True)
                 self.check_scale.setEnabled(True)
                 self.check_merge.setEnabled(True)
