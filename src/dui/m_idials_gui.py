@@ -43,7 +43,7 @@ from .gui_utils import (
     get_main_path,
     kill_w_child,
     try_find_prev_mask_pickle,
-    try_move_last_info,
+    update_manifest,
     update_info,
     update_pbar_msg,
 )
@@ -434,8 +434,6 @@ class MainWidget(QMainWindow):
             self.idials_runner = Runner()
             self.cli_tree_output(self.idials_runner)
 
-        self.gui2_log = {"pairs_list": []}
-
         self.cur_html = None
         self.cur_pick = None
         self.cur_json = None
@@ -802,7 +800,7 @@ class MainWidget(QMainWindow):
             tmp_curr.ll_command_lst[0][0] in ("export", "merge")
             and tmp_curr.success is True
         ):
-            self.gui2_log = try_move_last_info(tmp_curr, self.gui2_log)
+            update_manifest(tmp_curr)
 
         self.check_reindex_pop()
         self.check_gray_outs()
