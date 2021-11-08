@@ -152,7 +152,7 @@ def update_manifest(export_node):
     """Update or create manifest.json, which contains information about exported
     MTZ files for use by calling software such as ccp4i2 and CCP4 Cloud"""
 
-    manifest_path = os.path.join(sys_arg.directory, "manifest.json")
+    manifest_path = os.path.join(sys_arg.directory, "dui_files", "manifest.json")
 
     # Read or set up the manifest dictionary
     if os.path.exists(manifest_path):
