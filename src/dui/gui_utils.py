@@ -148,55 +148,44 @@ ACTIONS = OrderedDict(
 )
 
 
-def try_move_last_info(export_node, gui2_log):
-    logger.debug(
-        "\n JUST exported MOVING start ... \n ______________________________________________________"
-    )
+def update_manifest(export_node):
+    """Update or create manifest.json, which contains information about exported
+    MTZ files for use by calling software such as ccp4i2 and CCP4 Cloud"""
 
-    cwd_path = os.path.join(sys_arg.directory, "dui_files")
-    report_out = generate_report(export_node.prev_step)
+    manifest_path = os.path.join(sys_arg.directory, "dui_files", "manifest.json")
 
-    try:
-        prev_step_rept_from = os.path.join(cwd_path, report_out)
-        # prev_step_rept_to = os.path.join(sys_arg.directory, export_node.prev_step.report_out)
-        prev_step_rept_to = os.path.join(sys_arg.directory, "dui_report.html")
+    # Read or set up the manifest dictionary
+    if os.path.exists(manifest_path):
+        try:
+            with open(manifest_path) as f:
+                manifest = json.load(f)
+        except json.decoder.JSONDecodeError:
+            pass
+    else:
+        manifest = {}
 
-        mtz_name_from = "integrated.mtz"
-        for parm in export_node.ll_command_lst[0]:
-            logger.info(parm)
-            if "mtz.hklout=" in parm:
-                mtz_name_from = parm[11:]
+    # Identify the MTZ file and type
+    mtz_path = None
+    mtz_type = "integrated"
+    for parm in export_node.ll_command_lst[0]:
+        logger.info(parm)
+        if parm.startswith("mtz.hklout=") or parm.startswith("output.mtz="):
+            mtz_path = os.path.realpath(parm.split("=")[1])
+        elif parm == "intensity=scale":
+            mtz_type = "scaled"
+    if export_node.ll_command_lst[0][0] == "merge":
+        mtz_type = "merged"
 
-        mtz_name_from = os.path.join(cwd_path, mtz_name_from)
-        mtz_name_to = os.path.join(sys_arg.directory, "integrated.mtz")
+    # Get a path for the DIALS report for the previous step (if it already
+    # exists this will return the existing path)
+    report_out = os.path.realpath(generate_report(export_node.prev_step))
 
-        gui2_log["last_HTML_report"] = prev_step_rept_from
-        gui2_log["last_MTZ"] = mtz_name_from
+    # Add to the manifest and write it out
+    manifest[mtz_path] = {"type": mtz_type, "report": report_out}
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=4)
 
-        for pair in gui2_log["pairs_list"]:
-            if pair[1] == mtz_name_from:
-                logger.info("\nfound same name \n")
-                gui2_log["pairs_list"].remove(pair)
-
-        gui2_log["pairs_list"].append((prev_step_rept_from, mtz_name_from))
-
-        shutil.copy(mtz_name_from, mtz_name_to)
-        shutil.copy(prev_step_rept_from, prev_step_rept_to)
-
-        gui2_log_path = os.path.join(cwd_path, "output.json")
-
-        # logger.info(f"Writing: {gui2_log_path}")
-
-        with open(gui2_log_path, "w") as fp:
-            json.dump(gui2_log, fp, indent=4)
-
-        # logger.info(f"\n ___________________ gui2_log: {gui2_log}")
-
-    except OSError:
-        logger.info("ERROR: mtz file not there")
-        logger.debug("IOError on try_move_last_info(gui_utils)")
-
-    return gui2_log
+    return
 
 
 def try_find_prev_mask_pickle(cur_nod):

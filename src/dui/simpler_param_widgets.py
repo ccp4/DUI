@@ -426,7 +426,6 @@ class IntegrateSimplerParamTab(SimpleParamTab):
         self.lst_var_widg = _get_all_direct_layout_widget_children(localLayout)
 
 
-
 class SymmetrySimplerParamTab(SimpleParamTab):
     """
     This widget is the tool for tunning the simpler and most common parameters

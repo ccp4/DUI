@@ -43,7 +43,7 @@ from .gui_utils import (
     get_main_path,
     kill_w_child,
     try_find_prev_mask_pickle,
-    try_move_last_info,
+    update_manifest,
     update_info,
     update_pbar_msg,
 )
@@ -434,8 +434,6 @@ class MainWidget(QMainWindow):
             self.idials_runner = Runner()
             self.cli_tree_output(self.idials_runner)
 
-        self.gui2_log = {"pairs_list": []}
-
         self.cur_html = None
         self.cur_pick = None
         self.cur_json = None
@@ -603,7 +601,10 @@ class MainWidget(QMainWindow):
             my_widget.activate_me(cur_nod=self.idials_runner.current_node)
 
         else:
-            if self.idials_runner.current_node.ll_command_lst[0][0] != "export":
+            if self.idials_runner.current_node.ll_command_lst[0][0] not in (
+                "export",
+                "merge",
+            ):
                 self.stop_run_retry.repeat_btn.setEnabled(True)
 
             my_widget.gray_me_out()
@@ -795,8 +796,11 @@ class MainWidget(QMainWindow):
             # Supress opening of the reindex popup next time
             self.just_reindexed = True
 
-        elif tmp_curr.ll_command_lst[0][0] == "export" and tmp_curr.success is True:
-            self.gui2_log = try_move_last_info(tmp_curr, self.gui2_log)
+        elif (
+            tmp_curr.ll_command_lst[0][0] in ("export", "merge")
+            and tmp_curr.success is True
+        ):
+            update_manifest(tmp_curr)
 
         self.check_reindex_pop()
         self.check_gray_outs()
@@ -857,6 +861,7 @@ class MainWidget(QMainWindow):
             "symmetry": ["refine_bravais_settings", "scale", "export"],
             "scale": ["refine_bravais_settings", "symmetry", "export"],
             "export": [None],
+            "merge": [None],
             "generate_mask": ["find_spots"],
             "modify_geometry": ["find_spots"],
             "None": [None],

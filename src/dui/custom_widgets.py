@@ -255,7 +255,7 @@ class ExportPage(QWidget):
     """
     This stacked widget basically helps the user to export by
     generating an MTZ file, there is no auto-generated GUI
-    form Phil parameters in use withing this widget.
+    form Phil parameters in use within this widget.
     """
 
     def __init__(self, parent=None):
@@ -269,22 +269,35 @@ class ExportPage(QWidget):
         step_label = QLabel("Export")
         step_label.setFont(label_font)
 
-        out_file_label = QLabel("mtz output name:")
-
-        self.simple_lin = QLineEdit(self)
-        self.simple_lin.textChanged.connect(self.update_command)
-
-        self.check_scale = QCheckBox("Output Scaled Intensities")
+        self.check_scale = QCheckBox("Output scaled intensities")
+        self.check_scale.setEnabled(False)
         self.check_scale.setChecked(False)
         self.check_scale.stateChanged.connect(self.update_command)
+
+        self.check_merge = QCheckBox("Output merged reflections")
+        self.check_merge.setChecked(False)
+        self.check_merge.setEnabled(False)
+        self.check_merge.stateChanged.connect(self.update_command)
+
+        # File selection launcher
+        self.save_file_btn = QPushButton("Change output file")
+        self.save_file_btn.setIconSize(QSize(80, 48))
+        self.save_file_btn.clicked.connect(self.select_file)
+
+        out_file_label = QLabel("MTZ file to write:")
+        self.dui_files_dir = os.path.join(sys_arg.directory, "dui_files")
+        self.simple_lin = QLineEdit(self, readOnly=True)
+        self.simple_lin.textChanged.connect(self.update_command)
 
         self.warning_label = QLabel(" ")
         self.warning_label.setWordWrap(True)
 
         main_v_box.addWidget(step_label)
+        main_v_box.addWidget(self.check_scale)
+        main_v_box.addWidget(self.check_merge)
+        main_v_box.addWidget(self.save_file_btn)
         main_v_box.addWidget(out_file_label)
         main_v_box.addWidget(self.simple_lin)
-        main_v_box.addWidget(self.check_scale)
         main_v_box.addStretch()
         main_v_box.addWidget(self.warning_label)
         main_v_box.addStretch()
@@ -292,17 +305,39 @@ class ExportPage(QWidget):
         self.fist_time = False
         # self.show()
 
-        self.simple_lin.setText("integrated.mtz")
+        self.simple_lin.setText(os.path.join(self.dui_files_dir, "dui_output.mtz"))
+
+    def select_file(self):
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Select file",
+            os.path.join(sys_arg.directory, "dui_files"),
+            "MTZ Files (*.mtz)",
+        )
+        if file_path.strip() == "":
+            file_path = "dui_output.mtz"
+        if not file_path.lower().endswith(".mtz"):
+            file_path += ".mtz"
+        self.simple_lin.setText(file_path)
 
     def update_command(self):
-        self.command_lst = [["export"]]
-
         param1_com = str(self.simple_lin.text())
-        self.command_lst[0].append("mtz.hklout=" + param1_com)
 
+        if self.check_merge.checkState():
+            self.command_lst = [["merge", "output.mtz=" + param1_com]]
+        else:
+            self.command_lst = [["export", "mtz.hklout=" + param1_com]]
+
+            if self.check_scale.checkState():
+                param2_com = "intensity=scale"
+                self.command_lst[0].append(param2_com)
+
+        # Enable/disable the merge check according to selection of scaled
         if self.check_scale.checkState():
-            param2_com = "intensity=scale"
-            self.command_lst[0].append(param2_com)
+            self.check_merge.setEnabled(True)
+        else:
+            self.check_merge.setChecked(False)
+            self.check_merge.setEnabled(False)
 
         self.update_command_lst_low_level.emit(self.command_lst[0])
         self.check_repeated_file()
@@ -312,7 +347,7 @@ class ExportPage(QWidget):
         cwd_path = os.path.join(sys_arg.directory, "dui_files")
         mtz_file_path = os.path.join(cwd_path, param1_com)
         if os.path.isfile(mtz_file_path):
-            txt_warning = "Warning, file: " + param1_com + " already exists"
+            txt_warning = "Warning, output file already exists and will be overwritten"
             self.warning_label.setText(txt_warning)
             self.warning_label.setStyleSheet("color: rgba(255, 55, 55, 255)")
             """
@@ -327,16 +362,19 @@ class ExportPage(QWidget):
     def gray_me_out(self):
         self.simple_lin.setEnabled(False)
         self.check_scale.setEnabled(False)
+        self.check_merge.setEnabled(False)
 
         self.fist_time = False
 
     def activate_me(self, cur_nod=None):
         self.simple_lin.setEnabled(True)
-        self.check_scale.setEnabled(True)
         if self.fist_time is False:
             self.fist_time = True
-            self.simple_lin.setText("integrated.mtz")
+            self.simple_lin.setText("dui_output.mtz")
             self.check_scale.setChecked(False)
+            self.check_merge.setChecked(False)
+            self.check_merge.setEnabled(False)
+
             my_node = cur_nod
             found_scale = False
             for iters in range(5):
@@ -351,8 +389,9 @@ class ExportPage(QWidget):
                 my_node = my_node.prev_step
 
             if found_scale is True:
-                self.simple_lin.setText("scaled.mtz")
                 self.check_scale.setChecked(True)
+                self.check_scale.setEnabled(True)
+                self.check_merge.setEnabled(True)
 
         self.check_repeated_file()
 

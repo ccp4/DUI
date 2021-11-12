@@ -55,6 +55,7 @@ class CommandNode:
         "symmetry",
         "scale",
         "export",
+        "merge",
         "generate_mask",
         "modify_geometry",
     ]
@@ -93,7 +94,7 @@ class CommandNode:
                 self.success = self.dials_command(
                     lst_cmd_to_run=self.cmd_lst_to_run, ref_to_class=ref_to_class
                 )
-                # For cases where the run command does not write it's own log
+                # For cases where the run command does not write its own log
                 # file, we need to create one - so there is something to
                 # display. This includes: Reindex, generate_mask - see
                 # generated list in cli_utils.build_command_lst
