@@ -462,6 +462,7 @@ class ImportPage(QWidget):
         self._toggle_enabled.append(self.end_label)
         self.end_image = QSpinBox()
         self.end_image.setMinimum(-1)
+        self.end_image.setMaximum(99999)
         self.end_image.setSpecialValueText(" ")
         self.end_image.valueChanged.connect(self.end_image_changed)
         image_range_hbox.addWidget(self.end_image)
