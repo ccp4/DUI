@@ -480,7 +480,7 @@ class ScaleSimplerParamTab(SimpleParamTab):
         label_mod = QLabel("Model")
 
         hbox_lay_mod.addWidget(label_mod)
-        box_mod = DefaultComboBox("model", ["KB", "array", "dose_decay", "physical"])
+        box_mod = DefaultComboBox("model", ["Auto", "KB", "array", "dose_decay", "physical"])
 
         box_mod.currentIndexChanged.connect(self.combobox_changed)
         hbox_lay_mod.addWidget(box_mod)
