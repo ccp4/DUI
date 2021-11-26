@@ -11,6 +11,8 @@ from dui.qt import (
     QVBoxLayout,
     QWebEngineView,
     QWidget,
+    QLabel,
+    Qt
 )
 
 logger = logging.getLogger(__name__)
@@ -30,12 +32,17 @@ class WebTab(QWidget):
             </html>"""
 
         self.web = QWebEngineView()
+        self.not_web=QLabel("<h3>There is no report available for this step.</h3>")
+        self.not_web.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        self.not_web.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        self.not_web.setOpenExternalLinks(True)
+
         logger.debug("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
 
         self.my_bar = None
         hbox = QHBoxLayout()
-        hbox.addWidget(self.web)
+        hbox.addWidget(self.not_web)
         self.setLayout(hbox)
 
     def update_page(self, new_path=None):
@@ -43,16 +50,18 @@ class WebTab(QWidget):
             logger.info("\n >> update_page( %s )", new_path)
             new_path = os.path.abspath(new_path)
 
-            # new_path = "file://" + new_path # unix way
-            new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
+            new_path = "file://" + new_path # unix way
+            #new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
             logger.info(" >> new_path: %s", new_path)
-            self.web.load(QUrl(new_path))
+            #self.web.load(QUrl(new_path))
+            label_text = f'<p>Please copy this path to the browser address bar to see the report</p><h3><a href="{new_path}">{new_path}</a></h3>'
+            self.not_web.setText(label_text)
 
             logger.info(" Loading  %s", new_path)
 
-            txt_lab = "updating Report view:"
-            self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
-            self.my_bar(5)
+            #txt_lab = "updating Report view:"
+            #self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
+            #self.my_bar(5)
 
         except BaseException as e:
             # TODO(nick) - Don't know what this generic exception was supposed
