@@ -2,17 +2,14 @@ import logging
 import os
 import sys
 
-from dui.outputs_n_viewers.img_view_tools import ProgBarBox
 from dui.qt import (
     QApplication,
     QHBoxLayout,
-    QPushButton,
-    QUrl,
-    QVBoxLayout,
-    QWebEngineView,
-    QWidget,
     QLabel,
-    Qt
+    QPushButton,
+    Qt,
+    QVBoxLayout,
+    QWidget,
 )
 
 logger = logging.getLogger(__name__)
@@ -22,67 +19,44 @@ class WebTab(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.dummy_html = """<html>
-            <head>
-            <title>A Sample Page</title>
-            </head>
-            <body>
-            <h3>There is no report available for this step.</h3>
-            </body>
-            </html>"""
-
-        self.web = QWebEngineView()
-        self.not_web=QLabel("<h3>There is no report available for this step.</h3>")
+        self.not_web = QLabel()
         self.not_web.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        #self.not_web.setTextInteractionFlags(Qt.TextBrowserInteraction)
-        #self.not_web.setOpenExternalLinks(True)
         self.copy_button = QPushButton("Copy")
-        self.copy_button.clicked.connect(self.copy_path_to_clipboard)
+        self.copy_button.clicked.connect(
+            lambda: QApplication.clipboard().setText(self.new_path)
+        )
         self.new_path = ""
 
         logger.debug("No need to load HTML file yet\n")
-        self.web.loadFinished.connect(self.load_finished)
 
         self.my_bar = None
         hbox = QHBoxLayout()
         hbox.addWidget(self.not_web)
         hbox.addWidget(self.copy_button)
+        self.copy_button.setVisible(False)
         hbox.setAlignment(Qt.AlignTop)
         self.setLayout(hbox)
 
-    def copy_path_to_clipboard(self):
-        cb = QApplication.clipboard()
-        cb.clear(mode=cb.Clipboard)
-        cb.setText(self.new_path, mode=cb.Clipboard)
+        self.update_page()
 
     def update_page(self, new_path=None):
-        try:
+        if not new_path:
+            self.not_web.setText("<h3>There is no report available for this step.</h3>")
+            self.copy_button.setVisible(False)
+        else:
             logger.info("\n >> update_page( %s )", new_path)
             new_path = os.path.abspath(new_path)
 
-            self.new_path = "file://" + new_path # unix way
-            #new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
+            self.new_path = "file://" + new_path  # unix way
             logger.info(" >> new_path: %s", self.new_path)
-            #self.web.load(QUrl(new_path))
-            label_text = f'<p>Please copy this path to the browser address bar to see the report</p><h3>{self.new_path}</h3>'
+            label_text = f"<p>Please copy this path to the nx browser address bar to see the report</p><h3>{self.new_path}</h3>"
             self.not_web.setText(label_text)
-
+            self.copy_button.setVisible(True)
             logger.info(" Loading  %s", self.new_path)
-
-            #txt_lab = "updating Report view:"
-            #self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
-            #self.my_bar(5)
-
-        except BaseException as e:
-            # TODO(nick) - Don't know what this generic exception was supposed
-            # to catch so catch all for now and work out what it was supposed to be
-            logger.info("Caught unknown exception type %s: %s", type(e).__name__, e)
-            self.web.setHtml(self.dummy_html)
 
     def load_finished(self, ok_bool):
         logger.info("HTML Load(ok) = %s", ok_bool)
 
-        self.web.show()
         logger.info(" finished Loading HTML ")
 
         if self.my_bar is not None:
