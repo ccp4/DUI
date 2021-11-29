@@ -34,8 +34,8 @@ class WebTab(QWidget):
         self.web = QWebEngineView()
         self.not_web=QLabel("<h3>There is no report available for this step.</h3>")
         self.not_web.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.not_web.setTextInteractionFlags(Qt.TextBrowserInteraction)
-        self.not_web.setOpenExternalLinks(True)
+        #self.not_web.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        #self.not_web.setOpenExternalLinks(True)
 
         logger.debug("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
@@ -54,7 +54,7 @@ class WebTab(QWidget):
             #new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
             logger.info(" >> new_path: %s", new_path)
             #self.web.load(QUrl(new_path))
-            label_text = f'<p>Please copy this path to the browser address bar to see the report</p><h3><a href="{new_path}">{new_path}</a></h3>'
+            label_text = f'<p>Please copy this path to the browser address bar to see the report</p><h3>{new_path}</h3>'
             self.not_web.setText(label_text)
 
             logger.info(" Loading  %s", new_path)
