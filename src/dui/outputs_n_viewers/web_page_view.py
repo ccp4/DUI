@@ -36,6 +36,9 @@ class WebTab(QWidget):
         self.not_web.setTextInteractionFlags(Qt.TextSelectableByMouse)
         #self.not_web.setTextInteractionFlags(Qt.TextBrowserInteraction)
         #self.not_web.setOpenExternalLinks(True)
+        self.copy_button = QPushButton("Copy")
+        self.copy_button.clicked.connect(self.copy_path_to_clipboard)
+        self.new_path = ""
 
         logger.debug("No need to load HTML file yet\n")
         self.web.loadFinished.connect(self.load_finished)
@@ -43,21 +46,28 @@ class WebTab(QWidget):
         self.my_bar = None
         hbox = QHBoxLayout()
         hbox.addWidget(self.not_web)
+        hbox.addWidget(self.copy_button)
+        hbox.setAlignment(Qt.AlignTop)
         self.setLayout(hbox)
+
+    def copy_path_to_clipboard(self):
+        cb = QApplication.clipboard()
+        cb.clear(mode=cb.Clipboard)
+        cb.setText(self.new_path, mode=cb.Clipboard)
 
     def update_page(self, new_path=None):
         try:
             logger.info("\n >> update_page( %s )", new_path)
             new_path = os.path.abspath(new_path)
 
-            new_path = "file://" + new_path # unix way
+            self.new_path = "file://" + new_path # unix way
             #new_path = "file:///" + new_path  # Windows way(seems to work on Unix too)
-            logger.info(" >> new_path: %s", new_path)
+            logger.info(" >> new_path: %s", self.new_path)
             #self.web.load(QUrl(new_path))
-            label_text = f'<p>Please copy this path to the browser address bar to see the report</p><h3>{new_path}</h3>'
+            label_text = f'<p>Please copy this path to the browser address bar to see the report</p><h3>{self.new_path}</h3>'
             self.not_web.setText(label_text)
 
-            logger.info(" Loading  %s", new_path)
+            logger.info(" Loading  %s", self.new_path)
 
             #txt_lab = "updating Report view:"
             #self.my_bar = ProgBarBox(min_val=0, max_val=10, text=txt_lab)
