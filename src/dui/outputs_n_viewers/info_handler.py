@@ -13,7 +13,7 @@ import pickle
 import sys
 
 from dials.array_family import flex
-from dxtbx.datablock import DataBlockFactory
+#from dxtbx.datablock import DataBlockFactory
 from dxtbx.model import Experiment, ExperimentList
 from dxtbx.model.experiment_list import (
     ExperimentListFactory,
@@ -134,6 +134,7 @@ def update_all_data(reflections_path=None, experiments_path=None):
 
             try:
                 # FIXME here only take the first datablock. What if there are more?
+                Deprecated_code = '''
                 datablock = DataBlockFactory.from_serialized_format(
                     experiments_path, check_format=False
                 )[0]
@@ -146,6 +147,10 @@ def update_all_data(reflections_path=None, experiments_path=None):
                 # build a pseudo ExperimentList (with empty crystals)
                 experiments = ExperimentList()
                 experiments.append(Experiment(beam=beam, detector=detector, scan=scan))
+                '''
+                experiments = ExperimentList.from_file(
+                    experiments_path
+                )
 
             except ValueError:
                 logger.info("failed to read json file")
