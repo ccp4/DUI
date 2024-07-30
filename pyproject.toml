@@ -1,0 +1,15 @@
+[project]
+name = "dui"
+version = "2024.07.30"
+description = "Dials User Interface"
+requires-python = ">=3.7"
+dependencies = [
+  'PySide2 > 5.15.1'
+]
+
+[project.gui-scripts]
+dui = "run_dui:main"
+
+[tool.setuptools.package-data]
+"dui.resources" = ["error_loading_dialog.ui"]
+"dui.resources" = ["*.png"]
